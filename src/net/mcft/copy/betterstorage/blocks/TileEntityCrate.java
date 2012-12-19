@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
+import buildcraft.api.inventory.ISpecialInventory;
+
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.minecraft.src.EntityItem;
 import net.minecraft.src.EntityPlayer;
@@ -15,7 +17,7 @@ import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import net.minecraftforge.common.ForgeDirection;
 
-public class TileEntityCrate extends TileEntity implements IInventory {
+public class TileEntityCrate extends TileEntity implements IInventory, ISpecialInventory {
 	
 	private static final ForgeDirection[] sideDirections = {
 		ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.WEST, ForgeDirection.EAST
@@ -218,6 +220,7 @@ public class TileEntityCrate extends TileEntity implements IInventory {
 		return (getCrate(world, x, y, z) != null);
 	}
 	
+	// IInventory methods
 	// BuildCraft calls these client-side, hence the worldObj.isRemote checks.
 	@Override
 	public int getSizeInventory() {
@@ -259,6 +262,33 @@ public class TileEntityCrate extends TileEntity implements IInventory {
 	public void closeChest() {
 		if (worldObj.isRemote) return;
 		getPileData().blockView.closeChest();
+	}
+	
+	// ISpecialInventory methods
+	@Override
+	public int addItem(ItemStack stack, boolean doAdd, ForgeDirection from) {
+		if (worldObj.isRemote) return 0;
+		CratePileData pileData = getPileData();
+		int amount = Math.min(pileData.spaceForItem(stack), stack.stackSize);
+		if (doAdd && amount > 0) pileData.addItems(stack);
+		return amount;
+	}
+	@Override
+	public ItemStack[] extractItem(boolean doRemove, ForgeDirection from, int maxItemCount) {
+		if (worldObj.isRemote) return null;
+		List<ItemStack> list = new ArrayList<ItemStack>();
+		CratePileData pileData = getPileData();
+		for (int i = 0; i < pileData.getNumItems() && maxItemCount > 0; i++) {
+			ItemStack stack = pileData.getItemStack(i);
+			int amount = Math.min(maxItemCount, stack.stackSize);
+			stack = stack.copy();
+			stack.stackSize = amount;
+			maxItemCount -= amount;
+			list.add(stack);
+			if (doRemove)
+				pileData.removeItems(stack);
+		}
+		return list.toArray(new ItemStack[list.size()]);
 	}
 	
 }
