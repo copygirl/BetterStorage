@@ -1,5 +1,7 @@
 package net.mcft.copy.betterstorage.blocks;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -164,22 +166,27 @@ public class BlockReinforcedChest extends BlockContainer {
 	
 	@Override
 	public boolean canPlaceBlockAt(World world, int x, int y, int z) {
-		int chests = 0;
-		if (world.getBlockId(x, y, z - 1) == blockID &&
-		    (isThereANeighborChest(world, x, y, z - 1) || ++chests > 1))
-			return false;
-		if (world.getBlockId(x, y, z + 1) == blockID &&
-		    (isThereANeighborChest(world, x, y, z + 1) || ++chests > 1))
-			return false;
-		if (world.getBlockId(x - 1, y, z) == blockID &&
-		    (isThereANeighborChest(world, x - 1, y, z) || ++chests > 1))
-			return false;
-		if (world.getBlockId(x + 1, y, z) == blockID &&
-		    (isThereANeighborChest(world, x + 1, y, z) || ++chests > 1))
-			return false;
+		AtomicBoolean chestFound = new AtomicBoolean(false);
+		if (!checkChestPosition(world, x + 1, y, z, chestFound)) return false;
+		if (!checkChestPosition(world, x - 1, y, z, chestFound)) return false;
+		if (!checkChestPosition(world, x, y, z + 1, chestFound)) return false;
+		if (!checkChestPosition(world, x, y, z - 1, chestFound)) return false;
 		return true;
 	}
-	
+	/** Checks to see if a chest can be placed next to another chest, if there is one. */
+	private boolean checkChestPosition(World world, int x, int y, int z, AtomicBoolean chestFound) {
+		// If there is no chest, we're fine.
+		if (world.getBlockId(x, y, z) != blockID) return true;
+		// If there is a chest and
+		// - there already was another chest,
+		// - it has a neighbor chest or
+		// - it is locked
+		// return that the chest can't be placed.
+		if (chestFound.get() || isThereANeighborChest(world, x, y, z) ||
+		    TileEntityReinforcedChest.getChestAt(world, x, y, z).isLocked()) return false;
+		chestFound.set(true);
+		return true;
+	}
 	private boolean isThereANeighborChest(World world, int x, int y, int z) {
 		return (world.getBlockId(x, y, z - 1) == blockID || world.getBlockId(x, y, z + 1) == blockID ||
 		        world.getBlockId(x - 1, y, z) == blockID || world.getBlockId(x + 1, y, z) == blockID);
