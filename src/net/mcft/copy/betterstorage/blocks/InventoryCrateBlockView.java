@@ -15,7 +15,11 @@ public class InventoryCrateBlockView implements IInventory {
 	}
 	
 	@Override
-	public int getSizeInventory() { return data.getCapacity(); }
+	public int getSizeInventory() {
+		// Return lower inventory size so machines don't look at all the
+		// empty slots, looking for specific item or stacks to merge with.
+		return Math.min(data.getOccupiedSlots() + 10, data.getCapacity());
+	}
 	@Override
 	public String getInvName() { return "container.crate"; }
 	@Override

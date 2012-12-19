@@ -221,30 +221,26 @@ public class TileEntityCrate extends TileEntity implements IInventory, ISpecialI
 	}
 	
 	// IInventory methods
-	// BuildCraft calls these client-side, hence the worldObj.isRemote checks.
 	@Override
 	public int getSizeInventory() {
+		// BuildCraft calls this client-side.
 		if (worldObj.isRemote) return 1;
 		return getPileData().blockView.getSizeInventory();
 	}
 	@Override
 	public ItemStack getStackInSlot(int slot) {
-		if (worldObj.isRemote) return null;
 		return getPileData().blockView.getStackInSlot(slot);
 	}
 	@Override
 	public ItemStack decrStackSize(int slot, int amount) {
-		if (worldObj.isRemote) return null;
 		return getPileData().blockView.decrStackSize(slot, amount);
 	}
 	@Override
 	public ItemStack getStackInSlotOnClosing(int slot) {
-		if (worldObj.isRemote) return null;
 		return getPileData().blockView.getStackInSlotOnClosing(slot);
 	}
 	@Override
 	public void setInventorySlotContents(int slot, ItemStack stack) {
-		if (worldObj.isRemote) return;
 		getPileData().blockView.setInventorySlotContents(slot, stack);
 	}
 	@Override
@@ -255,19 +251,16 @@ public class TileEntityCrate extends TileEntity implements IInventory, ISpecialI
 	public boolean isUseableByPlayer(EntityPlayer player) { return false; }
 	@Override
 	public void openChest() {
-		if (worldObj.isRemote) return;
 		getPileData().blockView.openChest();
 	}
 	@Override
 	public void closeChest() {
-		if (worldObj.isRemote) return;
 		getPileData().blockView.closeChest();
 	}
 	
 	// ISpecialInventory methods
 	@Override
 	public int addItem(ItemStack stack, boolean doAdd, ForgeDirection from) {
-		if (worldObj.isRemote) return 0;
 		CratePileData pileData = getPileData();
 		int amount = Math.min(pileData.spaceForItem(stack), stack.stackSize);
 		if (doAdd && amount > 0) pileData.addItems(stack);
@@ -275,7 +268,6 @@ public class TileEntityCrate extends TileEntity implements IInventory, ISpecialI
 	}
 	@Override
 	public ItemStack[] extractItem(boolean doRemove, ForgeDirection from, int maxItemCount) {
-		if (worldObj.isRemote) return null;
 		List<ItemStack> list = new ArrayList<ItemStack>();
 		CratePileData pileData = getPileData();
 		for (int i = 0; i < pileData.getNumItems() && maxItemCount > 0; i++) {

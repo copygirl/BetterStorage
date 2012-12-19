@@ -4,10 +4,10 @@ import static net.minecraftforge.common.ForgeDirection.DOWN;
 import net.mcft.copy.betterstorage.blocks.ContainerCrate;
 import net.mcft.copy.betterstorage.blocks.ContainerReinforcedChest;
 import net.mcft.copy.betterstorage.blocks.InventoryCratePlayerView;
+import net.mcft.copy.betterstorage.blocks.InventoryWrapper;
 import net.mcft.copy.betterstorage.blocks.TileEntityCrate;
 import net.mcft.copy.betterstorage.blocks.TileEntityReinforcedChest;
 import net.mcft.copy.betterstorage.client.GuiReinforcedChest;
-import net.minecraft.src.ContainerChest;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.GuiChest;
 import net.minecraft.src.IInventory;
@@ -25,28 +25,27 @@ public class GuiHandler implements IGuiHandler {
 		if (world.isBlockSolidOnSide(x, y + 1, z, DOWN)) return null;
 		
 		TileEntityReinforcedChest chest = (TileEntityReinforcedChest)tileEntity;
-		IInventory inventory = chest;
+		IInventory inventory = new InventoryWrapper(chest);
 		int id = chest.getBlockType().blockID;
 		if (world.getBlockId(x, y, z - 1) == id)
-			inventory = new InventoryLargeChest("container.reinforcedChestLarge", (IInventory)world.getBlockTileEntity(x, y, z - 1), inventory);
+			inventory = new InventoryLargeChest("container.reinforcedChestLarge", getChestWrapper(world, x, y, z - 1), inventory);
 		else if (world.getBlockId(x, y, z + 1) == id)
-			inventory = new InventoryLargeChest("container.reinforcedChestLarge", inventory, (IInventory)world.getBlockTileEntity(x, y, z + 1));
+			inventory = new InventoryLargeChest("container.reinforcedChestLarge", inventory, getChestWrapper(world, x, y, z + 1));
 		else if (world.getBlockId(x - 1, y, z) == id)
-			inventory = new InventoryLargeChest("container.reinforcedChestLarge", (IInventory)world.getBlockTileEntity(x - 1, y, z), inventory);
+			inventory = new InventoryLargeChest("container.reinforcedChestLarge", getChestWrapper(world, x - 1, y, z), inventory);
 		else if (world.getBlockId(x + 1, y, z) == id)
-			inventory = new InventoryLargeChest("container.reinforcedChestLarge", inventory, (IInventory)world.getBlockTileEntity(x + 1, y, z));
+			inventory = new InventoryLargeChest("container.reinforcedChestLarge", inventory, getChestWrapper(world, x + 1, y, z));
 		return inventory;
+	}
+	private IInventory getChestWrapper(World world, int x, int y, int z) {
+		TileEntityReinforcedChest chest = TileEntityReinforcedChest.getChestAt(world, x, y, z);
+		return new InventoryWrapper(chest);
 	}
 	
 	@Override
 	public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
 		IInventory inventory;
 		switch (id) {
-			case Constants.reinforcedChestGuiIdSmall:
-			case Constants.reinforcedChestGuiIdLarge:
-				inventory = getChestInventory(world, x, y, z);
-				if (inventory == null) return null;
-				return new ContainerReinforcedChest(player, inventory);
 			case Constants.crateGuiIdSmall:
 			case Constants.crateGuiIdMedium:
 			case Constants.crateGuiIdLarge:
@@ -55,27 +54,39 @@ public class GuiHandler implements IGuiHandler {
 				TileEntityCrate crate = (TileEntityCrate)tileEntity;
 				return new ContainerCrate(player, new InventoryCratePlayerView(crate));
 			default:
-				return null;
+				if (id >= Constants.chestGuiIdSmall &&
+				    id <  Constants.chestGuiIdLarge + 10) {
+					inventory = getChestInventory(world, x, y, z);
+					if (inventory == null) return null;
+					boolean large = (id >= Constants.chestGuiIdLarge);
+					int columns = 9 + (id % 10);
+					int rows    = (large ? 6 : 3);
+					return new ContainerReinforcedChest(player, columns, rows, inventory);
+				} else return null;
 		}
 	}
 	
 	@Override
 	public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
+		int rows;
+		int columns = 9;
 		switch (id) {
-			case Constants.reinforcedChestGuiIdSmall:
-			case Constants.reinforcedChestGuiIdLarge:
-				boolean large = (id == Constants.reinforcedChestGuiIdLarge);
-				String name = "container.reinforcedChest" + (large ? "Large" : "");
-				int slots = (large ? 6 : 3) * 13;
-				return new GuiReinforcedChest(player, new InventoryBasic(name, slots));
 			case Constants.crateGuiIdSmall:
 			case Constants.crateGuiIdMedium:
 			case Constants.crateGuiIdLarge:
-				int rows = 2;
+				rows = 2;
 				if (id == Constants.crateGuiIdMedium) rows = 4;
 				else if (id == Constants.crateGuiIdLarge) rows = 6;
-				return new GuiChest(player.inventory, new InventoryBasic("container.crate", rows * 9));
+				return new GuiChest(player.inventory, new InventoryBasic("container.crate", columns * rows));
 			default:
+				if (id >= Constants.chestGuiIdSmall &&
+				    id <  Constants.chestGuiIdLarge + 10) {
+					boolean large = (id >= Constants.chestGuiIdLarge);
+					String name = "container.reinforcedChest" + (large ? "Large" : "");
+					columns = 9 + (id % 10);
+					rows    = (large ? 6 : 3);
+					return new GuiReinforcedChest(player, columns, rows, new InventoryBasic(name, columns * rows));
+				}
 				return null;
 		}
 	}

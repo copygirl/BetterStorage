@@ -10,25 +10,23 @@ public class ContainerReinforcedChest extends Container {
 	
 	private IInventory inventory;
 	
-	public ContainerReinforcedChest(EntityPlayer player, IInventory inventory) {
+	public ContainerReinforcedChest(EntityPlayer player, int columns, int rows, IInventory inventory) {
 		this.inventory = inventory;
 		inventory.openChest();
 		
-		int width = ((inventory.getSizeInventory() % 13 == 0) ? 13 : 15);
-		int height = inventory.getSizeInventory() / width;
-		for (int y = 0; y < height; y++)
-			for (int x = 0; x < width; x++)
-				addSlotToContainer(new Slot(inventory, x + y * width,
+		for (int y = 0; y < rows; y++)
+			for (int x = 0; x < columns; x++)
+				addSlotToContainer(new Slot(inventory, x + y * columns,
 						8 + x * 18, 18 + y * 18));
 		
 		// Add player inventory
 		for (int y = 0; y < 3; y++)
 			for (int x = 0; x < 9; x++)
 				addSlotToContainer(new Slot(player.inventory, 9 + x + y * 9,
-						8 + x * 18 + (width - 9) * 9, height * 18 + y * 18 + 32));
+						8 + x * 18 + (columns - 9) * 9, rows * 18 + y * 18 + 32));
 		for (int x = 0; x < 9; x++)
 			addSlotToContainer(new Slot(player.inventory, x,
-					8 + x * 18 + (width - 9) * 9, height * 18 + 90));
+					8 + x * 18 + (columns - 9) * 9, rows * 18 + 90));
 	}
 	
 	@Override

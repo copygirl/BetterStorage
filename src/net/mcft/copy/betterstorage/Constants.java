@@ -12,8 +12,8 @@ public class Constants {
 	public final static int crateGuiIdSmall  = 0;
 	public final static int crateGuiIdMedium = 1;
 	public final static int crateGuiIdLarge  = 2;
-	public final static int reinforcedChestGuiIdSmall = 3;
-	public final static int reinforcedChestGuiIdLarge = 4;
+	public final static int chestGuiIdSmall  = 10;
+	public final static int chestGuiIdLarge  = 20;
 	
 	public static String getReinforcedChestTexture(String name, boolean large) {
 		return gfxbase + (large ? "largeReinforced" : "reinforced") + name + "Chest.png";

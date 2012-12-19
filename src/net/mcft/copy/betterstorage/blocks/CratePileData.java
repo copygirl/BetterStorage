@@ -1,20 +1,15 @@
 package net.mcft.copy.betterstorage.blocks;
 
-import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.ItemIdentifier;
 import net.minecraft.src.IInventory;
 import net.minecraft.src.ItemStack;
-import net.minecraft.src.NBTTagCompound;
-import net.minecraft.src.NBTTagList;
 
 /** Holds data for a single crate pile, a multi-block
  *  structure made from individual crate blocks */

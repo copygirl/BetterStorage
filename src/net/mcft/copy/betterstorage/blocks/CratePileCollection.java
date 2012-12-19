@@ -1,8 +1,6 @@
 package net.mcft.copy.betterstorage.blocks;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -14,7 +12,6 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NBTTagList;
 import net.minecraft.src.World;
-import net.minecraft.src.WorldSavedData;
 
 /** Holds all CratePileData objects for one world / dimension. */
 public class CratePileCollection {

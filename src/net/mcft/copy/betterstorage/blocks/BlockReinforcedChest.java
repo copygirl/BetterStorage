@@ -13,8 +13,6 @@ import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IBlockAccess;
-import net.minecraft.src.IInventory;
-import net.minecraft.src.InventoryLargeChest;
 import net.minecraft.src.Material;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.TileEntity;
@@ -41,14 +39,22 @@ public class BlockReinforcedChest extends BlockContainer {
 		setHardness(8.0f);
 		setResistance(20.0f);
 		setStepSound(Block.soundWoodFootstep);
-		setCreativeTab(CreativeTabs.tabDecorations);
 		setRequiresSelfNotify();
 		setBlockBounds(1.0f / 16, 0, 1.0f / 16, 15.0f / 16, 14.0f / 16, 15.0f / 16);
 		
 		GameRegistry.registerBlock(this);
 		MinecraftForge.setBlockHarvestLevel(this, "axe", 2);
+		
 		setBlockName("reinforced" + name + "Chest");
 		LanguageRegistry.addName(this, "Reinforced " + name + " Chest");
+		
+		setCreativeTab(CreativeTabs.tabDecorations);
+	}
+	
+	@Override
+	public float getBlockHardness(World world, int x, int y, int z) {
+		TileEntityReinforcedChest chest = TileEntityReinforcedChest.getChestAt(world, x, y, z);
+		return blockHardness * ((chest == null || !chest.isLocked()) ? 1.0F : 12.0F);
 	}
 	
 	@Override
@@ -127,9 +133,9 @@ public class BlockReinforcedChest extends BlockContainer {
 			metadata = 5;
 			otherMetadata = world.getBlockMetadata(x, y, z + ((idNegZ == blockID) ? -1 : 1));
 			if (otherMetadata == 4) metadata = 4;
-			if ((Block.opaqueCubeLookup[idNegX] || Block.opaqueCubeLookup[idCorner1]) &&
+			if ((Block.opaqueCubeLookup[idNegX] ||  Block.opaqueCubeLookup[idCorner1]) &&
 			    !Block.opaqueCubeLookup[idPosX] && !Block.opaqueCubeLookup[idCorner2]) metadata = 5;
-			if ((Block.opaqueCubeLookup[idPosX] || Block.opaqueCubeLookup[idCorner2]) &&
+			if ((Block.opaqueCubeLookup[idPosX] ||  Block.opaqueCubeLookup[idCorner2]) &&
 			    !Block.opaqueCubeLookup[idNegX] && !Block.opaqueCubeLookup[idCorner1]) metadata = 4;
 		} else if (idNegX == blockID || idPosX == blockID) {
 			idCorner1 = world.getBlockId(x + ((idNegX == blockID) ? -1 : 1), y, z - 1);
@@ -137,9 +143,9 @@ public class BlockReinforcedChest extends BlockContainer {
 			metadata = 3;
 			otherMetadata = world.getBlockMetadata(x + ((idNegX == blockID) ? -1 : 1), y, z);
 			if (otherMetadata == 2) metadata = 2;
-			if ((Block.opaqueCubeLookup[idNegZ] || Block.opaqueCubeLookup[idCorner1]) &&
+			if ((Block.opaqueCubeLookup[idNegZ] ||  Block.opaqueCubeLookup[idCorner1]) &&
 			    !Block.opaqueCubeLookup[idPosZ] && !Block.opaqueCubeLookup[idCorner2]) metadata = 3;
-			if ((Block.opaqueCubeLookup[idPosZ] || Block.opaqueCubeLookup[idCorner2]) &&
+			if ((Block.opaqueCubeLookup[idPosZ] ||  Block.opaqueCubeLookup[idCorner2]) &&
 			    !Block.opaqueCubeLookup[idNegZ] && !Block.opaqueCubeLookup[idCorner1]) metadata = 2;
 		} else {
 			metadata = 3;
@@ -182,13 +188,13 @@ public class BlockReinforcedChest extends BlockContainer {
 	@Override
 	public void onNeighborBlockChange(World world, int x, int y, int z, int id) {
 		super.onNeighborBlockChange(world, x, y, z, id);
-		TileEntityReinforcedChest chest = (TileEntityReinforcedChest)world.getBlockTileEntity(x, y, z);
+		TileEntityReinforcedChest chest = TileEntityReinforcedChest.getChestAt(world, x, y, z);
 		if (chest != null) chest.updateContainingBlockInfo();
 	}
 	
 	@Override
 	public void breakBlock(World world, int x, int y, int z, int id, int meta) {
-		TileEntityReinforcedChest chest = (TileEntityReinforcedChest)world.getBlockTileEntity(x, y, z);
+		TileEntityReinforcedChest chest = TileEntityReinforcedChest.getChestAt(world, x, y, z);
 		if (chest != null) chest.dropContents();
 		super.breakBlock(world, x, y, z, id, meta);
 	}
@@ -196,10 +202,12 @@ public class BlockReinforcedChest extends BlockContainer {
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {
 		if (world.isRemote) return true;
-		int guiID = Constants.reinforcedChestGuiIdSmall;
+		TileEntityReinforcedChest chest = TileEntityReinforcedChest.getChestAt(world, x, y, z);
+		if (!chest.openChest(player)) return true;
+		int guiID = Constants.chestGuiIdSmall + (chest.getColumns() - 9);
 		if (world.getBlockId(x, y, z - 1) == blockID || world.getBlockId(x, y, z + 1) == blockID ||
 		    world.getBlockId(x - 1, y, z) == blockID || world.getBlockId(x + 1, y, z) == blockID)
-			guiID = Constants.reinforcedChestGuiIdLarge;
+			guiID = Constants.chestGuiIdLarge + (chest.getColumns() - 9);
 		player.openGui(BetterStorage.instance, guiID, world, x, y, z);
 		return true;
 	}

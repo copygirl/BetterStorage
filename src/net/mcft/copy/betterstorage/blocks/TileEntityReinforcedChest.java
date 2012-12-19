@@ -1,16 +1,23 @@
 package net.mcft.copy.betterstorage.blocks;
 
+import java.security.InvalidParameterException;
 import java.util.Random;
-
 import net.mcft.copy.betterstorage.BetterStorage;
+import net.mcft.copy.betterstorage.Config;
+import net.mcft.copy.betterstorage.items.ItemKey;
+import net.mcft.copy.betterstorage.items.ItemLock;
 import net.minecraft.src.Block;
 import net.minecraft.src.EntityItem;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IInventory;
+import net.minecraft.src.INetworkManager;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NBTTagList;
+import net.minecraft.src.Packet;
+import net.minecraft.src.Packet132TileEntityData;
 import net.minecraft.src.TileEntity;
+import net.minecraft.src.World;
 
 public class TileEntityReinforcedChest extends TileEntity implements IInventory {
 	
@@ -30,23 +37,112 @@ public class TileEntityReinforcedChest extends TileEntity implements IInventory 
 	public ItemStack[] contents;
 	public int id;
 	
+	private ItemStack lock;
+	
 	public TileEntityReinforcedChest() { this(null); }
 	public TileEntityReinforcedChest(Block block) {
 		id = ((block != null) ? block.blockID : -1);
 		contents = new ItemStack[getColumns() * getRows()];
 	}
 	
-	@Override
-	public int getSizeInventory() { return contents.length; }
+	public static TileEntityReinforcedChest getChestAt(World world, int x, int y, int z) {
+		TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
+		if (tileEntity == null || !(tileEntity instanceof TileEntityReinforcedChest)) return null;
+		return (TileEntityReinforcedChest)tileEntity;
+	}
 	
-	public int getColumns() { return 13; }
+	// Begin locking stuff
+	
+	private TileEntityReinforcedChest getMainChest() {
+		if (adjacentChestXNeg != null) return adjacentChestXNeg;
+		if (adjacentChestZNeg != null) return adjacentChestZNeg;
+		return this;
+	}
+	private boolean isItemStackKey(ItemStack stack) {
+		return (stack != null && stack.getItem() instanceof ItemKey);
+	}
+	private boolean isItemStackLock(ItemStack stack) {
+		return (stack != null && stack.getItem() instanceof ItemLock);
+	}
+	
+	public ItemStack getLock() { return getMainChest().lock; }
+	public void setLock(ItemStack lock) {
+		if (lock != null && !isItemStackLock(lock))
+			throw new InvalidParameterException("lock is not an ItemStack of ItemLock.");
+		TileEntityReinforcedChest chest = getMainChest();
+		chest.lock = lock;
+		worldObj.markBlockForUpdate(chest.xCoord, chest.yCoord, chest.zCoord);
+	}
+	public boolean isLocked() { return (getLock() != null); }
+	public boolean canLock(ItemStack lock) {
+		if (!isItemStackLock(lock)) return false;
+		return (isLocked() == false);
+	}
+	public boolean canUnlock(ItemStack key) {
+		if (!isItemStackKey(key)) return false;
+		if (!isLocked()) return false;
+		return (key.getItemDamage() == getLock().getItemDamage());
+	}
+	/** Locks the chest with the item the player is currently holding, if possible. */
+	public boolean lockChest(EntityPlayer player) {
+		ItemStack lock = player.getHeldItem();
+		if (!canLock(lock)) return false;
+		setLock(lock);
+		player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
+		return true;
+	}
+	/** Unlocks the chest with the item the player is currently holding, if possible. */
+	public boolean unlockChest(EntityPlayer player) {
+		ItemStack key = player.getHeldItem();
+		if (!canUnlock(key)) return false;
+		ItemStack lock = getLock();
+		setLock(null);
+		EntityItem item = player.dropPlayerItem(lock);
+		item.delayBeforeCanPickup = 0;
+		return true;
+	}
+	/** Called when the chest is opened by a player. */
+	public boolean openChest(EntityPlayer player) {
+		// Tries to lock the chest with the currently held item.
+		if (lockChest(player)) return false;
+		// If the player is sneaking, try to unlock the chest.
+		if (player.isSneaking() && unlockChest(player)) return false;
+		// Return if the chest can be opened by the player.
+		return (!isLocked() || canUnlock(player.getHeldItem()) || numUsingPlayers > 0);
+	}
+	
+	// Tile entity synchronization
+	
+	@Override
+	public Packet getDescriptionPacket() {
+		NBTTagCompound compound = new NBTTagCompound();
+		if (lock != null) lock.writeToNBT(compound);
+        return new Packet132TileEntityData(xCoord, yCoord, zCoord, 0, compound);
+	}
+	@Override
+	public void onDataPacket(INetworkManager net, Packet132TileEntityData packet) {
+		if (packet.customParam1.hasNoTags()) lock = null;
+		lock = ItemStack.loadItemStackFromNBT(packet.customParam1);
+	}
+	
+	// Begin chest stuff
+	
+	@Override
+	public int getSizeInventory() {
+		return (isLocked() ? 0 : contents.length);
+	}
+	
+	public int getColumns() { return (Config.normalSizedChests ? 9 : 13); }
 	public int getRows() { return 3; }
 	
 	@Override
-	public ItemStack getStackInSlot(int slot) { return contents[slot]; }
+	public ItemStack getStackInSlot(int slot) {
+		return (isLocked() ? null : contents[slot]);
+	}
 	
 	@Override
 	public ItemStack decrStackSize(int slot, int amount) {
+		if (isLocked()) return null;
 		ItemStack stack = getStackInSlot(slot);
 		if (stack == null) return null;
 		ItemStack returnStack;
@@ -60,6 +156,7 @@ public class TileEntityReinforcedChest extends TileEntity implements IInventory 
 	
 	@Override
 	public ItemStack getStackInSlotOnClosing(int slot) {
+		if (isLocked()) return null;
 		ItemStack stack = contents[slot];
 		contents[slot] = null;
 		return stack;
@@ -67,6 +164,7 @@ public class TileEntityReinforcedChest extends TileEntity implements IInventory 
 	
 	@Override
 	public void setInventorySlotContents(int slot, ItemStack stack) {
+		if (isLocked()) return;
 		contents[slot] = stack;
 		if (stack != null && stack.stackSize > getInventoryStackLimit())
 			stack.stackSize = getInventoryStackLimit();
@@ -87,6 +185,8 @@ public class TileEntityReinforcedChest extends TileEntity implements IInventory 
 			if (slot >= 0 && slot < contents.length)
 				contents[slot] = ItemStack.loadItemStackFromNBT(item);
 		}
+		if (compound.hasKey("lock"))
+			lock = ItemStack.loadItemStackFromNBT(compound.getCompoundTag("lock"));
 	}
 	
 	@Override
@@ -101,6 +201,8 @@ public class TileEntityReinforcedChest extends TileEntity implements IInventory 
 			list.appendTag(item);
 		}
 		compound.setTag("Items", list);
+		if (lock != null)
+			compound.setCompoundTag("lock", lock.writeToNBT(new NBTTagCompound("")));
 	}
 	
 	@Override
@@ -128,13 +230,13 @@ public class TileEntityReinforcedChest extends TileEntity implements IInventory 
 		adjacentChestZPos = null;
 		
 		if (worldObj.getBlockId(xCoord, yCoord, zCoord - 1) == id)
-			adjacentChestZNeg = (TileEntityReinforcedChest)worldObj.getBlockTileEntity(xCoord, yCoord, zCoord - 1);
+			adjacentChestZNeg = getChestAt(worldObj, xCoord, yCoord, zCoord - 1);
 		if (worldObj.getBlockId(xCoord, yCoord, zCoord + 1) == id)
-			adjacentChestZPos = (TileEntityReinforcedChest)worldObj.getBlockTileEntity(xCoord, yCoord, zCoord + 1);
+			adjacentChestZPos = getChestAt(worldObj, xCoord, yCoord, zCoord + 1);
 		if (worldObj.getBlockId(xCoord - 1, yCoord, zCoord) == id)
-			adjacentChestXNeg = (TileEntityReinforcedChest)worldObj.getBlockTileEntity(xCoord - 1, yCoord, zCoord);
+			adjacentChestXNeg = getChestAt(worldObj, xCoord - 1, yCoord, zCoord);
 		if (worldObj.getBlockId(xCoord + 1, yCoord, zCoord) == id)
-			adjacentChestXPos = (TileEntityReinforcedChest)worldObj.getBlockTileEntity(xCoord + 1, yCoord, zCoord);
+			adjacentChestXPos = getChestAt(worldObj, xCoord + 1, yCoord, zCoord);
 		if (adjacentChestZNeg != null)
 			adjacentChestZNeg.updateContainingBlockInfo();
 		if (adjacentChestZPos != null)
@@ -145,7 +247,6 @@ public class TileEntityReinforcedChest extends TileEntity implements IInventory 
 			adjacentChestXPos.updateContainingBlockInfo();
 	}
 	
-	int i = 0;
 	@Override
 	public void updateEntity() {
 		if (id == -1) getBlockType();

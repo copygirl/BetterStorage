@@ -12,15 +12,15 @@ import net.mcft.copy.betterstorage.blocks.BlockCrate;
 import net.mcft.copy.betterstorage.blocks.BlockReinforcedChest;
 import net.mcft.copy.betterstorage.blocks.CratePileCollection;
 import net.mcft.copy.betterstorage.blocks.InventoryBlockCrafting;
+import net.mcft.copy.betterstorage.items.ItemKey;
+import net.mcft.copy.betterstorage.items.ItemLock;
 import net.minecraft.src.Block;
 import net.minecraft.src.CraftingManager;
 import net.minecraft.src.InventoryCrafting;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
-import net.minecraft.src.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;
-import net.minecraftforge.event.world.WorldEvent.Load;
 import net.minecraftforge.event.world.WorldEvent.Save;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -39,7 +39,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 
-@Mod(modid="BetterStorage", name="BetterStorage", version="0.2.2")
+@Mod(modid="BetterStorage", name="BetterStorage", version="0.3.1")
 @NetworkMod(clientSideRequired=true, serverSideRequired=false)
 public class BetterStorage {
 	
@@ -57,6 +57,9 @@ public class BetterStorage {
 	public static BlockReinforcedChest reinforcedCopperChest;
 	public static BlockReinforcedChest reinforcedTinChest;
 	public static BlockReinforcedChest reinforcedSilverChest;
+	
+	public static ItemKey key;
+	public static ItemLock lock;
 
 	private final static String[] materials = { "copper", "tin", "silver" };
 	
@@ -79,9 +82,10 @@ public class BetterStorage {
 	
 	@Init
 	public void load(FMLInitializationEvent event) {
-		initializeBlocks();
+		initializeItems();
 		addRecipes();
 		addLocalizations();
+		GameRegistry.registerCraftingHandler(new CraftingHandler());
 		NetworkRegistry.instance().registerGuiHandler(this, new GuiHandler());
 		proxy.init();
 	}
@@ -93,7 +97,7 @@ public class BetterStorage {
 			tryAddModdedMaterialChestRecipe(material, oreNames);
 	}
 	
-	private void initializeBlocks() {
+	private void initializeItems() {
 		crate = new BlockCrate(Config.crateId);
 		
 		reinforcedIronChest    = new BlockReinforcedChest(getChestId(0), "iron");
@@ -104,6 +108,9 @@ public class BetterStorage {
 		reinforcedCopperChest  = new BlockReinforcedChest(getChestId(4), "copper");
 		reinforcedTinChest     = new BlockReinforcedChest(getChestId(5), "tin");
 		reinforcedSilverChest  = new BlockReinforcedChest(getChestId(6), "silver");
+		
+		key = new ItemKey(Config.keyId);
+		lock = new ItemLock(Config.lockId);
 	}
 	private int getChestId(int offset) {
 		return Config.chestBaseId + offset;
@@ -120,6 +127,26 @@ public class BetterStorage {
 		addReinforcedChestRecipe(reinforcedGoldChest, Item.ingotGold, Block.blockGold);
 		addReinforcedChestRecipe(reinforcedDiamondChest, Item.diamond, Block.blockDiamond);
 		addReinforcedChestRecipe(reinforcedEmeraldChest, Item.emerald, Block.blockEmerald);
+		
+		// Key recipe
+		GameRegistry.addRecipe(new ItemStack(key),
+		        ".o",
+		        ".o",
+		        " o", 'o', Item.ingotGold,
+		              '.', Item.goldNugget);
+		// Key duplicate recipe
+		GameRegistry.addRecipe(new ItemStack(key),
+		        ".o",
+		        ".o",
+		        "ko", 'o', Item.ingotGold,
+		              '.', Item.goldNugget,
+		              'k', new ItemStack(key, 1, -1));
+		// Lock recipe
+		GameRegistry.addRecipe(new ItemStack(lock),
+		        " o ",
+		        "oko",
+		        "ooo", 'o', Item.ingotGold,
+		               'k', new ItemStack(key, 1, -1));
 	}
 	
 	private void addReinforcedChestRecipe(Block result, Object ingot, Object block) {

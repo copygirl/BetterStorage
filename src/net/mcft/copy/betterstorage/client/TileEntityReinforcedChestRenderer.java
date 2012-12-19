@@ -6,11 +6,15 @@ import org.lwjgl.opengl.GL12;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
+import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.Constants;
 import net.mcft.copy.betterstorage.blocks.BlockReinforcedChest;
 import net.mcft.copy.betterstorage.blocks.TileEntityReinforcedChest;
+import net.minecraft.src.EntityLiving;
+import net.minecraft.src.ItemStack;
 import net.minecraft.src.ModelChest;
 import net.minecraft.src.ModelLargeChest;
+import net.minecraft.src.RenderManager;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.TileEntitySpecialRenderer;
 
@@ -21,6 +25,12 @@ public class TileEntityReinforcedChestRenderer extends TileEntitySpecialRenderer
 	
 	private ModelChest chestModel = new ModelChest();
 	private ModelChest largeChestModel = new ModelLargeChest();
+
+	private ItemStack lock = new ItemStack(BetterStorage.lock);
+	private EntityLiving dummyEntity = new EntityLiving(null) {
+		@Override
+		public int getMaxHealth() { return 0; }
+	};
 	
 	public void renderTileEntityAt(TileEntityReinforcedChest chest, double x, double y, double z, float par8) {
 		BlockReinforcedChest block = (BlockReinforcedChest)chest.getBlockType();
@@ -60,16 +70,12 @@ public class TileEntityReinforcedChestRenderer extends TileEntitySpecialRenderer
 			float var12 = chest.prevLidAngle + (chest.lidAngle - chest.prevLidAngle) * par8;
 			float var13;
 			if (chest.adjacentChestZNeg != null) {
-				var13 = chest.adjacentChestZNeg.prevLidAngle
-						+ (chest.adjacentChestZNeg.lidAngle - chest.adjacentChestZNeg.prevLidAngle)
-						* par8;
+				var13 = chest.adjacentChestZNeg.prevLidAngle + (chest.adjacentChestZNeg.lidAngle - chest.adjacentChestZNeg.prevLidAngle) * par8;
 				if (var13 > var12) var12 = var13;
 			}
 			
 			if (chest.adjacentChestXNeg != null) {
-				var13 = chest.adjacentChestXNeg.prevLidAngle
-						+ (chest.adjacentChestXNeg.lidAngle - chest.adjacentChestXNeg.prevLidAngle)
-						* par8;
+				var13 = chest.adjacentChestXNeg.prevLidAngle + (chest.adjacentChestXNeg.lidAngle - chest.adjacentChestXNeg.prevLidAngle) * par8;
 				if (var13 > var12) var12 = var13;
 			}
 			
@@ -77,6 +83,21 @@ public class TileEntityReinforcedChestRenderer extends TileEntitySpecialRenderer
 			var12 = 1.0F - var12 * var12 * var12;
 			model.chestLid.rotateAngleX = -(var12 * (float) Math.PI / 2.0F);
 			model.renderAll();
+			
+			if (chest.isLocked()) {
+		        GL11.glPushMatrix();
+	            GL11.glScalef(0.5F, 0.5F, 1.5F);
+	            GL11.glTranslatef((large ? 2.5F : 1.5F), 1.3125F, 1.5F/32F);
+	            GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
+		        GL11.glTranslatef(0.9375F, 0.0625F, 0.0F);
+	            GL11.glRotatef(-335.0F, 0.0F, 0.0F, 1.0F);
+	            GL11.glRotatef(-50.0F, 0.0F, 1.0F, 0.0F);
+	            GL11.glScalef(1/1.5F, 1/1.5F, 1/1.5F);
+	            GL11.glTranslatef(0, 0.3F, 0.0F);
+				RenderManager.instance.itemRenderer.renderItem(dummyEntity, chest.getLock(), 0);
+				GL11.glPopMatrix();
+			}
+			
 			GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 			GL11.glPopMatrix();
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
