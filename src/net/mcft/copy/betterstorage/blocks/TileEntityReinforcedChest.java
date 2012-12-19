@@ -306,21 +306,30 @@ public class TileEntityReinforcedChest extends TileEntity implements IInventory 
 		checkForAdjacentChests();
 		super.invalidate();
 	}
-
-	public void dropContents() {
+	
+	private void dropItemStack(ItemStack stack) {
 		Random random = BetterStorage.random;
+		float x = random.nextFloat() * 0.8F + 0.1F;
+		float y = random.nextFloat() * 0.8F + 0.1F;
+		float z = random.nextFloat() * 0.8F + 0.1F;
+		EntityItem item = new EntityItem(worldObj, xCoord + x, yCoord + y, zCoord + z, stack);
+		item.motionX = random.nextGaussian() * 0.05F;
+		item.motionY = random.nextGaussian() * 0.05F + 0.2F;
+		item.motionZ = random.nextGaussian() * 0.05F;
+		worldObj.spawnEntityInWorld(item);
+	}
+	public void dropContents() {
 		for (int slot = 0; slot < contents.length; slot++) {
 			ItemStack stack = contents[slot];
 			if (stack == null) continue;
-			float x = random.nextFloat() * 0.8F + 0.1F;
-			float y = random.nextFloat() * 0.8F + 0.1F;
-			float z = random.nextFloat() * 0.8F + 0.1F;
-			EntityItem item = new EntityItem(worldObj, xCoord + x, yCoord + y, zCoord + z, stack);
-			item.motionX = random.nextGaussian() * 0.05F;
-			item.motionY = random.nextGaussian() * 0.05F + 0.2F;
-			item.motionZ = random.nextGaussian() * 0.05F;
-			worldObj.spawnEntityInWorld(item);
+			dropItemStack(stack);
 		}
+	}
+	public void dropLock() {
+		ItemStack lock = getLock();
+		if (lock == null) return;
+		dropItemStack(lock);
+		setLock(null);
 	}
 	
 	@Override
