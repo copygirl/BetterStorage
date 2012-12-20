@@ -24,6 +24,9 @@ public class GuiReinforcedChest extends GuiContainer {
 	private String name;
 	private int columns, rows;
 	
+	public int getColumns() { return columns; }
+	public int getRows() { return rows; }
+	
 	public GuiReinforcedChest(EntityPlayer player, int columns, int rows, IInventory inventory) {
 		super(new ContainerReinforcedChest(player, columns, rows, inventory));
 		this.name = inventory.getInvName();
