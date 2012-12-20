@@ -84,35 +84,31 @@ public class TileEntityCrate extends TileEntity implements IInventory, ISpecialI
 				for (ForgeDirection ndir : sideDirections)
 					checkConnections(nx + ndir.offsetX, y, nz + ndir.offsetZ, set);
 				crateSets.add(set);
-				// If we checked all chests, stop the loop.
+				// If we checked all crates, stop the loop.
 				checkedChecks += set.size();
 				if (checkedChecks == data.getNumCrates()) break;
 			}
-			boolean first = true;
-			for (int i = 0; i < crateSets.size(); i++) {
+			// The first crate set will keep the original pile data.
+			// All other sets will get new pile data objects.
+			for (int i = 1; i < crateSets.size(); i++) {
 				HashSet<TileEntityCrate> set = crateSets.get(i);
-				// The first crate set will keep the original pile data.
-				// All other sets will get new pile data objects.
-				if (!first) {
-					CratePileData newPileData = data.collection.createCratePile();
-					int numCrates = set.size();
-					// Add the base crates from the set.
-					for (TileEntityCrate newPileCrate : set) {
+				CratePileData newPileData = data.collection.createCratePile();
+				int numCrates = set.size();
+				// Add the base crates from the set.
+				for (TileEntityCrate newPileCrate : set) {
+					newPileCrate.setPileData(newPileData, true);
+					// Add all crates above the base crate.
+					while (true) {
+						newPileCrate = getCrate(worldObj, newPileCrate.xCoord, newPileCrate.yCoord + 1, newPileCrate.zCoord);
+						if (newPileCrate == null) break;
 						newPileCrate.setPileData(newPileData, true);
-						// Add all crates above the base crate.
-						while (true) {
-							newPileCrate = getCrate(worldObj, newPileCrate.xCoord, newPileCrate.yCoord + 1, newPileCrate.zCoord);
-							if (newPileCrate == null) break;
-							newPileCrate.setPileData(newPileData, true);
-							numCrates++;
-						}
+						numCrates++;
 					}
-					// Move some of the items over to the new crate pile.
-					int count = numCrates * data.getOccupiedSlots() / (data.getNumCrates() + numCrates);
-					List<ItemStack> stacks = data.pickAndRemoveItemStacks(count);
-					newPileData.addItems(stacks);
 				}
-				first = false;
+				// Move some of the items over to the new crate pile.
+				int count = numCrates * data.getOccupiedSlots() / (data.getNumCrates() + numCrates);
+				List<ItemStack> stacks = data.pickAndRemoveItemStacks(count);
+				stacks = newPileData.addItems(stacks);
 			}
 		}
 	}
