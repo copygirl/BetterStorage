@@ -3,20 +3,20 @@ package net.mcft.copy.betterstorage.client;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import cpw.mods.fml.common.Side;
-import cpw.mods.fml.common.asm.SideOnly;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.Constants;
 import net.mcft.copy.betterstorage.blocks.BlockReinforcedChest;
 import net.mcft.copy.betterstorage.blocks.TileEntityReinforcedChest;
-import net.minecraft.src.EntityLiving;
-import net.minecraft.src.ItemStack;
-import net.minecraft.src.ModelChest;
-import net.minecraft.src.ModelLargeChest;
-import net.minecraft.src.RenderManager;
-import net.minecraft.src.TileEntity;
-import net.minecraft.src.TileEntitySpecialRenderer;
+import net.minecraft.client.model.ModelChest;
+import net.minecraft.client.model.ModelLargeChest;
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 
 @SideOnly(Side.CLIENT)
 public class TileEntityReinforcedChestRenderer extends TileEntitySpecialRenderer {

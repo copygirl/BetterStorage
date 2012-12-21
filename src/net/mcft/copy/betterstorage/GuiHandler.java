@@ -8,13 +8,13 @@ import net.mcft.copy.betterstorage.blocks.InventoryWrapper;
 import net.mcft.copy.betterstorage.blocks.TileEntityCrate;
 import net.mcft.copy.betterstorage.blocks.TileEntityReinforcedChest;
 import net.mcft.copy.betterstorage.client.GuiReinforcedChest;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.GuiChest;
-import net.minecraft.src.IInventory;
-import net.minecraft.src.InventoryBasic;
-import net.minecraft.src.InventoryLargeChest;
-import net.minecraft.src.TileEntity;
-import net.minecraft.src.World;
+import net.minecraft.client.gui.inventory.GuiChest;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryBasic;
+import net.minecraft.inventory.InventoryLargeChest;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import cpw.mods.fml.common.network.IGuiHandler;
 
 public class GuiHandler implements IGuiHandler {

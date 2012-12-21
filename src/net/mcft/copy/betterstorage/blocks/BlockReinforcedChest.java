@@ -2,23 +2,25 @@ package net.mcft.copy.betterstorage.blocks;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import cpw.mods.fml.common.Side;
-import cpw.mods.fml.common.asm.SideOnly;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.Constants;
 import net.mcft.copy.betterstorage.client.ReinforcedChestRenderingHandler;
-import net.minecraft.src.Block;
-import net.minecraft.src.BlockContainer;
-import net.minecraft.src.CreativeTabs;
-import net.minecraft.src.EntityLiving;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.IBlockAccess;
-import net.minecraft.src.Material;
-import net.minecraft.src.MathHelper;
-import net.minecraft.src.TileEntity;
-import net.minecraft.src.World;
+import net.mcft.copy.betterstorage.items.ItemLock;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockContainer;
+import net.minecraft.block.material.Material;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
 public class BlockReinforcedChest extends BlockContainer {
@@ -213,7 +215,14 @@ public class BlockReinforcedChest extends BlockContainer {
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {
 		if (world.isRemote) return true;
 		TileEntityReinforcedChest chest = TileEntityReinforcedChest.getChestAt(world, x, y, z);
-		if (!chest.openChest(player)) return true;
+		
+		// Use item when it is a lock and chest is not locked.
+		ItemStack holding = player.getHeldItem();
+		if (holding != null && (holding.getItem() instanceof ItemLock) && !chest.isLocked()) return false;
+		
+		// Only continue if the chest can be opened.
+		if (!chest.canOpenChest(player)) return true;
+		
 		int guiID = Constants.chestGuiIdSmall + (chest.getColumns() - 9);
 		if (world.getBlockId(x, y, z - 1) == blockID || world.getBlockId(x, y, z + 1) == blockID ||
 		    world.getBlockId(x - 1, y, z) == blockID || world.getBlockId(x + 1, y, z) == blockID)

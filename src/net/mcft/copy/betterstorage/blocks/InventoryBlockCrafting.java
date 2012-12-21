@@ -1,7 +1,7 @@
 package net.mcft.copy.betterstorage.blocks;
 
-import net.minecraft.src.InventoryCrafting;
-import net.minecraft.src.ItemStack;
+import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.item.ItemStack;
 
 /** Simplifies looking up block recipes. */
 public class InventoryBlockCrafting extends InventoryCrafting {

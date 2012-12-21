@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Map;
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.ItemIdentifier;
-import net.minecraft.src.IInventory;
-import net.minecraft.src.ItemStack;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
 
 /** Holds data for a single crate pile, a multi-block
  *  structure made from individual crate blocks */
@@ -45,11 +45,13 @@ public class CratePileData implements Iterable<ItemStack> {
 		this.numCrates = numCrates;
 	}
 	
+	public boolean canAdd(TileEntityCrate crate) {
+		return true;
+	}
 	public void addCrate(TileEntityCrate crate) {
 		numCrates++;
 		markDirty();
 	}
-	
 	public void removeCrate(TileEntityCrate crate) {
 		if (--numCrates <= 0) {
 			collection.removeCratePile(this);

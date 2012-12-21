@@ -1,9 +1,9 @@
 package net.mcft.copy.betterstorage.blocks;
 
 import net.mcft.copy.betterstorage.ItemIdentifier;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.IInventory;
-import net.minecraft.src.ItemStack;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
 
 /** An inventory interface built for machines accessing the crate pile. */
 public class InventoryCrateBlockView implements IInventory {

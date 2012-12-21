@@ -1,16 +1,16 @@
 package net.mcft.copy.betterstorage.items;
 
 import cpw.mods.fml.common.registry.LanguageRegistry;
-import net.mcft.copy.betterstorage.Constants;
-import net.minecraft.src.CreativeTabs;
-import net.minecraft.src.Item;
-import net.minecraft.src.ItemStack;
+import net.mcft.copy.betterstorage.blocks.TileEntityReinforcedChest;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 
-public class ItemKey extends Item {
+public class ItemKey extends ItemBetterStorage {
 	
 	public ItemKey(int id) {
 		super(id);
-		setMaxStackSize(1);
 		setIconCoord(0, 0);
 		
 		setItemName("key");
@@ -23,11 +23,19 @@ public class ItemKey extends Item {
 	}
 	
 	@Override
-	public String getTextureFile() { return Constants.items; }
-	
-	@Override
 	public boolean doesContainerItemLeaveCraftingGrid(ItemStack stack) { return false; }
 	@Override
 	public ItemStack getContainerItemStack(ItemStack stack) { return stack; }
+	
+	@Override
+	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world,
+	                         int x, int y, int z, int side, float subX, float subY, float subZ) {
+		if (world.isRemote) return false;
+		TileEntityReinforcedChest chest = TileEntityReinforcedChest.getChestAt(world, x, y, z);
+		if (chest != null && chest.isLocked() && player.isSneaking()) {
+			chest.unlockChest(player);
+			return true;
+		} else return false;
+	}
 	
 }

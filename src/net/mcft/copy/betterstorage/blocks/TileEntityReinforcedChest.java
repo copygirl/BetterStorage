@@ -2,22 +2,23 @@ package net.mcft.copy.betterstorage.blocks;
 
 import java.security.InvalidParameterException;
 import java.util.Random;
+
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.Config;
 import net.mcft.copy.betterstorage.items.ItemKey;
 import net.mcft.copy.betterstorage.items.ItemLock;
-import net.minecraft.src.Block;
-import net.minecraft.src.EntityItem;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.IInventory;
-import net.minecraft.src.INetworkManager;
-import net.minecraft.src.ItemStack;
-import net.minecraft.src.NBTTagCompound;
-import net.minecraft.src.NBTTagList;
-import net.minecraft.src.Packet;
-import net.minecraft.src.Packet132TileEntityData;
-import net.minecraft.src.TileEntity;
-import net.minecraft.src.World;
+import net.minecraft.block.Block;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.INetworkManager;
+import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.Packet132TileEntityData;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 
 public class TileEntityReinforcedChest extends TileEntity implements IInventory {
 	
@@ -102,11 +103,7 @@ public class TileEntityReinforcedChest extends TileEntity implements IInventory 
 		return true;
 	}
 	/** Called when the chest is opened by a player. */
-	public boolean openChest(EntityPlayer player) {
-		// Tries to lock the chest with the currently held item.
-		if (lockChest(player)) return false;
-		// If the player is sneaking, try to unlock the chest.
-		if (player.isSneaking() && unlockChest(player)) return false;
+	public boolean canOpenChest(EntityPlayer player) {
 		// Return if the chest can be opened by the player.
 		return (!isLocked() || canUnlock(player.getHeldItem()) || numUsingPlayers > 0);
 	}

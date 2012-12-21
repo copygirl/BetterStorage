@@ -7,11 +7,11 @@ import java.util.Map;
 import java.util.Set;
 
 import net.mcft.copy.betterstorage.BetterStorage;
-import net.minecraft.src.CompressedStreamTools;
-import net.minecraft.src.ItemStack;
-import net.minecraft.src.NBTTagCompound;
-import net.minecraft.src.NBTTagList;
-import net.minecraft.src.World;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompressedStreamTools;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.world.World;
 
 /** Holds all CratePileData objects for one world / dimension. */
 public class CratePileCollection {

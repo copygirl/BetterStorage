@@ -8,13 +8,13 @@ import java.util.Random;
 import buildcraft.api.inventory.ISpecialInventory;
 
 import net.mcft.copy.betterstorage.BetterStorage;
-import net.minecraft.src.EntityItem;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.IInventory;
-import net.minecraft.src.ItemStack;
-import net.minecraft.src.NBTTagCompound;
-import net.minecraft.src.TileEntity;
-import net.minecraft.src.World;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 
 public class TileEntityCrate extends TileEntity implements IInventory, ISpecialInventory {
@@ -148,7 +148,7 @@ public class TileEntityCrate extends TileEntity implements IInventory, ISpecialI
 			if (checkedPileData == null) continue;
 			if ((pileData != null && checkedPileData.id != pileData.id) ||
 			    (dir != ForgeDirection.DOWN && !crateBelow && isCrate(worldObj, x, y - 1, z)) ||
-			    dir == ForgeDirection.UP) {
+			    dir == ForgeDirection.UP || !checkedPileData.canAdd(this)) {
 				destroyCrate();
 				return false;
 			}
