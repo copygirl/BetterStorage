@@ -222,7 +222,7 @@ public class CratePileData implements Iterable<ItemStack> {
 		for (ItemStack contentsStack : this) {
 			int numStacks = ItemIdentifier.calcNumStacks(contentsStack);
 			for (int i = 0; i < numStacks; i++) {
-				ItemStack stack = contentsStack;
+				ItemStack stack = contentsStack.copy();
 				int maxStackSize = stack.getMaxStackSize();
 				int max = Math.min(contentsStack.stackSize - maxStackSize * i, maxStackSize);
 				stack.stackSize = Math.min(stack.stackSize, max);
