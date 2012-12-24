@@ -5,7 +5,7 @@ import java.util.Random;
 
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.Config;
-import net.mcft.copy.betterstorage.items.ItemKey;
+import net.mcft.copy.betterstorage.items.ILockable;
 import net.mcft.copy.betterstorage.items.ItemLock;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
@@ -20,7 +20,7 @@ import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-public class TileEntityReinforcedChest extends TileEntity implements IInventory {
+public class TileEntityReinforcedChest extends TileEntity implements IInventory, ILockable {
 	
 	// Code from this class is mainly stolen from the TileEntityChest class.
 	// A little prettified here and there, but basically the same.
@@ -52,60 +52,10 @@ public class TileEntityReinforcedChest extends TileEntity implements IInventory 
 		return (TileEntityReinforcedChest)tileEntity;
 	}
 	
-	// Begin locking stuff
-	
 	private TileEntityReinforcedChest getMainChest() {
 		if (adjacentChestXNeg != null) return adjacentChestXNeg;
 		if (adjacentChestZNeg != null) return adjacentChestZNeg;
 		return this;
-	}
-	private boolean isItemStackKey(ItemStack stack) {
-		return (stack != null && stack.getItem() instanceof ItemKey);
-	}
-	private boolean isItemStackLock(ItemStack stack) {
-		return (stack != null && stack.getItem() instanceof ItemLock);
-	}
-	
-	public ItemStack getLock() { return getMainChest().lock; }
-	public void setLock(ItemStack lock) {
-		if (lock != null && !isItemStackLock(lock))
-			throw new InvalidParameterException("lock is not an ItemStack of ItemLock.");
-		TileEntityReinforcedChest chest = getMainChest();
-		chest.lock = lock;
-		worldObj.markBlockForUpdate(chest.xCoord, chest.yCoord, chest.zCoord);
-	}
-	public boolean isLocked() { return (getLock() != null); }
-	public boolean canLock(ItemStack lock) {
-		if (!isItemStackLock(lock)) return false;
-		return (isLocked() == false);
-	}
-	public boolean canUnlock(ItemStack key) {
-		if (!isItemStackKey(key)) return false;
-		if (!isLocked()) return false;
-		return (key.getItemDamage() == getLock().getItemDamage());
-	}
-	/** Locks the chest with the item the player is currently holding, if possible. */
-	public boolean lockChest(EntityPlayer player) {
-		ItemStack lock = player.getHeldItem();
-		if (!canLock(lock)) return false;
-		setLock(lock);
-		player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
-		return true;
-	}
-	/** Unlocks the chest with the item the player is currently holding, if possible. */
-	public boolean unlockChest(EntityPlayer player) {
-		ItemStack key = player.getHeldItem();
-		if (!canUnlock(key)) return false;
-		ItemStack lock = getLock();
-		setLock(null);
-		EntityItem item = player.dropPlayerItem(lock);
-		item.delayBeforeCanPickup = 0;
-		return true;
-	}
-	/** Called when the chest is opened by a player. */
-	public boolean canOpenChest(EntityPlayer player) {
-		// Return if the chest can be opened by the player.
-		return (!isLocked() || canUnlock(player.getHeldItem()) || numUsingPlayers > 0);
 	}
 	
 	// Tile entity synchronization
@@ -304,6 +254,16 @@ public class TileEntityReinforcedChest extends TileEntity implements IInventory 
 		super.invalidate();
 	}
 	
+	@Override
+	public Block getBlockType() {
+		super.getBlockType();
+		if (blockType != null)
+			id = blockType.blockID;
+		return blockType;
+	}
+	
+	// Dropping stuff
+	
 	private void dropItemStack(ItemStack stack) {
 		Random random = BetterStorage.random;
 		float x = random.nextFloat() * 0.8F + 0.1F;
@@ -329,12 +289,30 @@ public class TileEntityReinforcedChest extends TileEntity implements IInventory 
 		setLock(null);
 	}
 	
+	// ILockable implementation
+	
 	@Override
-	public Block getBlockType() {
-		super.getBlockType();
-		if (blockType != null)
-			id = blockType.blockID;
-		return blockType;
+	public ItemStack getLock() { return getMainChest().lock; }
+	@Override
+	public void setLock(ItemStack lock) {
+		if (lock != null && !ItemLock.isLock(lock))
+			throw new InvalidParameterException("lock is not an ItemStack of ItemLock.");
+		TileEntityReinforcedChest chest = getMainChest();
+		chest.lock = lock;
+		// Mark the block for an update, sends description packet to players.
+		worldObj.markBlockForUpdate(chest.xCoord, chest.yCoord, chest.zCoord);
+	}
+	
+	@Override
+	public boolean isLocked() { return (getLock() != null); }
+	@Override
+	public boolean canLock(ItemStack lock) {
+		if (!ItemLock.isLock(lock)) return false;
+		return !isLocked();
+	}
+	@Override
+	public boolean canUse(EntityPlayer player) {
+		return (!isLocked() || numUsingPlayers > 0);
 	}
 	
 }

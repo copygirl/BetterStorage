@@ -214,14 +214,18 @@ public class BlockReinforcedChest extends BlockContainer {
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {
 		if (world.isRemote) return true;
-		TileEntityReinforcedChest chest = TileEntityReinforcedChest.getChestAt(world, x, y, z);
 		
-		// Use item when it is a lock and chest is not locked.
+		TileEntityReinforcedChest chest = TileEntityReinforcedChest.getChestAt(world, x, y, z);
 		ItemStack holding = player.getHeldItem();
-		if (holding != null && (holding.getItem() instanceof ItemLock) && !chest.isLocked()) return false;
+		
+		// Use item if it's a lock and the chest is not locked.
+		if (ItemLock.isLock(holding) && !chest.isLocked())
+			return false;
 		
 		// Only continue if the chest can be opened.
-		if (!chest.canOpenChest(player)) return true;
+		if (!chest.canUse(player) &&
+		    !ItemLock.lockTryOpen(chest.getLock(), player, holding))
+			return true;
 		
 		int guiID = Constants.chestGuiIdSmall + (chest.getColumns() - 9);
 		if (world.getBlockId(x, y, z - 1) == blockID || world.getBlockId(x, y, z + 1) == blockID ||
