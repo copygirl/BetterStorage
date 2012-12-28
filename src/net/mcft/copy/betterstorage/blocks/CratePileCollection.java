@@ -7,10 +7,8 @@ import java.util.Map;
 import java.util.Set;
 
 import net.mcft.copy.betterstorage.BetterStorage;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 
 /** Holds all CratePileData objects for one world / dimension. */
@@ -78,45 +76,6 @@ public class CratePileCollection {
 			removeCollectionFromMap();
 	}
 	
-	/** Returns a new CratePileData with its contents read from the compound. */
-	public CratePileData readPileData(NBTTagCompound compound) {
-		int cratePileId = compound.getInteger("id");
-		int numCrates = compound.getShort("numCrates");
-		CratePileData pileData = new CratePileData(this, cratePileId, numCrates);
-		NBTTagList stacks = compound.getTagList("stacks");
-		for (int j = 0; j < stacks.tagCount(); j++) {
-			NBTTagCompound stackCompound = (NBTTagCompound)stacks.tagAt(j);
-			int id = stackCompound.getShort("id");
-			int count = stackCompound.getInteger("Count");
-			int damage = stackCompound.getShort("Damage");
-			ItemStack stack = new ItemStack(id, count, damage);
-			if (stackCompound.hasKey("tag"))
-				stack.stackTagCompound = stackCompound.getCompoundTag("tag");
-			if (stack.getItem() != null)
-				pileData.addItems(stack);
-		}
-		return pileData;
-	}
-	
-	/** Returns a new compound from the pileData and its contents. */
-	public NBTTagCompound writePileData(CratePileData pileData) {
-		NBTTagCompound compound = new NBTTagCompound("");
-		compound.setInteger("id", pileData.id);
-		compound.setShort("numCrates", (short)pileData.getNumCrates());
-		NBTTagList stacks = new NBTTagList("stacks");
-		for (ItemStack stack : pileData) {
-			NBTTagCompound stackCompound = new NBTTagCompound("");
-			stackCompound.setShort("id", (short)stack.itemID);
-			stackCompound.setInteger("Count", stack.stackSize);
-			stackCompound.setShort("Damage", (short)stack.getItemDamage());
-			if (stack.hasTagCompound())
-				stackCompound.setCompoundTag("tag", stack.getTagCompound());
-			stacks.appendTag(stackCompound);
-		}
-		compound.setTag("stacks", stacks);
-		return compound;
-	}
-	
 	/** Saves the pile data to file. */
 	// Gets saved to <world>[/<dimension>]/crates/<id>.dat in uncompressed NBT.
 	public void save(CratePileData pileData) {
@@ -124,7 +83,7 @@ public class CratePileCollection {
 			File file = getSaveFile(pileData.id);
 			file.getParentFile().mkdir();
 			NBTTagCompound root = new NBTTagCompound();
-			root.setCompoundTag("data", writePileData(pileData));
+			root.setCompoundTag("data", pileData.toCompound());
 			CompressedStreamTools.write(root, file);
 		} catch (Exception e) {
 			System.out.println("[BetterStorage] Error saving CratePileData: " + e);
@@ -138,7 +97,7 @@ public class CratePileCollection {
 			File file = getSaveFile(id);
 			if (!file.exists()) return null;
 			NBTTagCompound root = CompressedStreamTools.read(file);
-			return readPileData(root.getCompoundTag("data"));
+			return CratePileData.fromCompound(this, root.getCompoundTag("data"));
 		} catch (Exception e) {
 			System.out.println("[BetterStorage] Error loading CratePileData: " + e);
 			e.printStackTrace();

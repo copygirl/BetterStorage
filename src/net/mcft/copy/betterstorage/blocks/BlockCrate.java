@@ -22,7 +22,7 @@ public class BlockCrate extends BlockContainer {
 		setCreativeTab(CreativeTabs.tabDecorations);
 		blockIndexInTexture = 0;
 		
-		GameRegistry.registerBlock(this);
+		GameRegistry.registerBlock(this, "crate");
 		MinecraftForge.setBlockHarvestLevel(this, "axe", 0);
 		setBlockName("crate");
 		LanguageRegistry.addName(this, "Storage Crate");

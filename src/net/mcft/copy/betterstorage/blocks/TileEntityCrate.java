@@ -58,7 +58,7 @@ public class TileEntityCrate extends TileEntity implements IInventory, ISpecialI
 		int y = yCoord;
 		int z = zCoord;
 		// Destroy all crates above.
-		TileEntityCrate crateAbove = getCrate(worldObj, x, y + 1, z);
+		TileEntityCrate crateAbove = getCrateAt(worldObj, x, y + 1, z);
 		if (crateAbove != null && crateAbove.data == data)
 			crateAbove.destroyCrate();
 		// If there's still some crates left and this is a
@@ -72,7 +72,7 @@ public class TileEntityCrate extends TileEntity implements IInventory, ISpecialI
 				int nx = x + dir.offsetX;
 				int nz = z + dir.offsetZ;
 				// Continue if this neighbor block is not a crate.
-				TileEntityCrate neighborCrate = getCrate(worldObj, nx, y, nz);
+				TileEntityCrate neighborCrate = getCrateAt(worldObj, nx, y, nz);
 				if (neighborCrate == null) continue;
 				// See if the neighbor crate is already in a crate set,
 				// in that case continue with the next neighbor block.
@@ -88,32 +88,39 @@ public class TileEntityCrate extends TileEntity implements IInventory, ISpecialI
 				checkedChecks += set.size();
 				if (checkedChecks == data.getNumCrates()) break;
 			}
-			// The first crate set will keep the original pile data.
-			// All other sets will get new pile data objects.
-			for (int i = 1; i < crateSets.size(); i++) {
-				HashSet<TileEntityCrate> set = crateSets.get(i);
-				CratePileData newPileData = data.collection.createCratePile();
-				int numCrates = set.size();
-				// Add the base crates from the set.
-				for (TileEntityCrate newPileCrate : set) {
-					newPileCrate.setPileData(newPileData, true);
-					// Add all crates above the base crate.
-					while (true) {
-						newPileCrate = getCrate(worldObj, newPileCrate.xCoord, newPileCrate.yCoord + 1, newPileCrate.zCoord);
-						if (newPileCrate == null) break;
+			// If there's more than one crate set, they need to split.
+			if (crateSets.size() > 0) {
+				// The first crate set will keep the original pile data.
+				// All other sets will get new pile data objects.
+				for (int i = 1; i < crateSets.size(); i++) {
+					HashSet<TileEntityCrate> set = crateSets.get(i);
+					CratePileData newPileData = data.collection.createCratePile();
+					int numCrates = set.size();
+					// Add the base crates from the set.
+					for (TileEntityCrate newPileCrate : set) {
 						newPileCrate.setPileData(newPileData, true);
-						numCrates++;
+						// Add all crates above the base crate.
+						while (true) {
+							newPileCrate = getCrateAt(worldObj, newPileCrate.xCoord, newPileCrate.yCoord + 1, newPileCrate.zCoord);
+							if (newPileCrate == null) break;
+							newPileCrate.setPileData(newPileData, true);
+							numCrates++;
+						}
 					}
+					// Move some of the items over to the new crate pile.
+					int count = numCrates * data.getOccupiedSlots() / (data.getNumCrates() + numCrates);
+					List<ItemStack> stacks = data.pickAndRemoveItemStacks(count);
+					stacks = newPileData.addItems(stacks);
 				}
-				// Move some of the items over to the new crate pile.
-				int count = numCrates * data.getOccupiedSlots() / (data.getNumCrates() + numCrates);
-				List<ItemStack> stacks = data.pickAndRemoveItemStacks(count);
-				stacks = newPileData.addItems(stacks);
+				// Trim the original map to the size it actually is.
+				// This is needed because the crates may not be removed in
+				// order, from outside to inside.
+				data.trimMap();
 			}
 		}
 	}
 	private void checkConnections(int x, int y, int z, HashSet<TileEntityCrate> set) {
-		TileEntityCrate crate = getCrate(worldObj, x, y, z);
+		TileEntityCrate crate = getCrateAt(worldObj, x, y, z);
 		if (crate == null || set.contains(crate)) return;
 		set.add(crate);
 		for (ForgeDirection ndir : sideDirections)
@@ -163,7 +170,7 @@ public class TileEntityCrate extends TileEntity implements IInventory, ISpecialI
 	/** Destroys the crate when for example the crate's placement is invalid. */
 	private void destroyCrate() {
 		worldObj.setBlockWithNotify(xCoord, yCoord, zCoord, 0);
-		dropItemStack(worldObj, new ItemStack(BetterStorage.crate), xCoord + 0.5, yCoord + 0.5, zCoord + 0.5);
+		dropItemStack(worldObj, new ItemStack(BetterStorage.crate), xCoord, yCoord, zCoord);
 	}
 	
 	@Override
@@ -201,19 +208,19 @@ public class TileEntityCrate extends TileEntity implements IInventory, ISpecialI
 	}
 	
 	/** Returns the TileEntityCrate at a position in the world, null if there's none. */
-	private static TileEntityCrate getCrate(World world, int x, int y, int z) {
+	private static TileEntityCrate getCrateAt(World world, int x, int y, int z) {
 		TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
 		if (!(tileEntity instanceof TileEntityCrate)) return null;
 		return (TileEntityCrate)tileEntity;
 	}
 	/** Returns the pile data of a crate at a position in the world, null if there's none */
 	private static CratePileData getCratePileData(World world, int x, int y, int z) {
-		TileEntityCrate crate = getCrate(world, x, y, z);
+		TileEntityCrate crate = getCrateAt(world, x, y, z);
 		return ((crate != null) ? crate.getPileData() : null);
 	}
 	/** Returns whether there's a crate at a position in the world. */
 	private static boolean isCrate(World world, int x, int y, int z) {
-		return (getCrate(world, x, y, z) != null);
+		return (getCrateAt(world, x, y, z) != null);
 	}
 	
 	// IInventory methods

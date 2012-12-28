@@ -10,6 +10,8 @@ import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.ItemIdentifier;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 
 /** Holds data for a single crate pile, a multi-block
  *  structure made from individual crate blocks */
@@ -23,6 +25,7 @@ public class CratePileData implements Iterable<ItemStack> {
 	private int numCrates = 0;
 	private int numSlots = 0;
 	private boolean destroyed = false;
+	private CratePileMap map;
 	
 	/** An inventory interface built for machines accessing the crate pile. */
 	public final IInventory blockView = new InventoryCrateBlockView(this);
@@ -46,9 +49,33 @@ public class CratePileData implements Iterable<ItemStack> {
 	}
 	
 	public boolean canAdd(TileEntityCrate crate) {
+		return ((map != null) && (map.region.contains(crate) || canExpand(crate)));
+	}
+	private boolean canExpand(TileEntityCrate crate) {
+		int volume = map.region.volume();
+		if (numCrates < Math.min((int)(volume * 0.8), volume - 5)) return false;
+		if (crate.xCoord < map.region.minX || crate.xCoord > map.region.maxX) {
+			int maxDiff = ((map.region.height() == 1) ? 1 : 3);
+			if (map.region.width() >= maxDiff + Math.min(map.region.height(), map.region.depth()))
+				return false;
+		} else if (crate.zCoord < map.region.minZ || crate.zCoord > map.region.maxZ) {
+			int maxDiff = ((map.region.width() == 1) ? 1 : 3);
+			if (map.region.height() >= maxDiff + Math.min(map.region.width(), map.region.depth()))
+				return false;
+		} else if (crate.yCoord < map.region.minY || crate.yCoord > map.region.maxY) {
+			int maxDiff = ((map.region.width() == 1 || map.region.height() == 1) ? 1 : 4);
+			if (map.region.depth() >= maxDiff + Math.min(map.region.width(), map.region.height()))
+				return false;
+		}
 		return true;
 	}
+	
+	public void trimMap() { map.trim(); }
+	
 	public void addCrate(TileEntityCrate crate) {
+		if (numCrates == 0)
+			map = new CratePileMap(crate);
+		map.add(crate);
 		numCrates++;
 		markDirty();
 	}
@@ -56,7 +83,11 @@ public class CratePileData implements Iterable<ItemStack> {
 		if (--numCrates <= 0) {
 			collection.removeCratePile(this);
 			destroyed = true;
-		} else markDirty();
+		} else {
+			if (map != null)
+				map.remove(crate);
+			markDirty();
+		}
 	}
 	
 	// For safety reasons, these functions don't
@@ -242,6 +273,47 @@ public class CratePileData implements Iterable<ItemStack> {
 		for (ItemStack stack : stacks)
 			removeItems(stack);
 		return stacks;
+	}
+	
+	public NBTTagCompound toCompound() {
+		NBTTagCompound compound = new NBTTagCompound("");
+		compound.setInteger("id", id);
+		compound.setShort("numCrates", (short)getNumCrates());
+		NBTTagList stacks = new NBTTagList("stacks");
+		for (ItemStack stack : this) {
+			NBTTagCompound stackCompound = new NBTTagCompound("");
+			stackCompound.setShort("id", (short)stack.itemID);
+			stackCompound.setInteger("Count", stack.stackSize);
+			stackCompound.setShort("Damage", (short)stack.getItemDamage());
+			if (stack.hasTagCompound())
+				stackCompound.setCompoundTag("tag", stack.getTagCompound());
+			stacks.appendTag(stackCompound);
+		}
+		compound.setTag("stacks", stacks);
+		if (map != null)
+			compound.setCompoundTag("map", map.toCompound());
+		return compound;
+	}
+	
+	public static CratePileData fromCompound(CratePileCollection collection, NBTTagCompound compound) {
+		int cratePileId = compound.getInteger("id");
+		int numCrates = compound.getShort("numCrates");
+		CratePileData pileData = new CratePileData(collection, cratePileId, numCrates);
+		NBTTagList stacks = compound.getTagList("stacks");
+		for (int j = 0; j < stacks.tagCount(); j++) {
+			NBTTagCompound stackCompound = (NBTTagCompound)stacks.tagAt(j);
+			int id = stackCompound.getShort("id");
+			int count = stackCompound.getInteger("Count");
+			int damage = stackCompound.getShort("Damage");
+			ItemStack stack = new ItemStack(id, count, damage);
+			if (stackCompound.hasKey("tag"))
+				stack.stackTagCompound = stackCompound.getCompoundTag("tag");
+			if (stack.getItem() != null)
+				pileData.addItems(stack);
+		}
+		if (compound.hasKey("map"))
+			pileData.map = CratePileMap.fromCompound(compound.getCompoundTag("map"));
+		return pileData;
 	}
 	
 }
