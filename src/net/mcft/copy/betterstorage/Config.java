@@ -15,6 +15,8 @@ public class Config {
 	public static int keyId = 28540;
 	public static int lockId = 28545;
 	
+	public static int enchantmentBaseId = 180;
+	
 	/** When set to true, will make all chests the vanilla chest size. */
 	public static boolean normalSizedChests = false;
 	
@@ -29,6 +31,8 @@ public class Config {
 		
 		keyId  = config.getItem("key", keyId).getInt();
 		lockId = config.getItem("lock", lockId).getInt();
+		
+		enchantmentBaseId = config.get(Configuration.CATEGORY_GENERAL, "enchantmentBaseId", enchantmentBaseId).getInt();
 		
 		normalSizedChests = config.get(Configuration.CATEGORY_GENERAL, "normalSizedChests", normalSizedChests,
 		                               "When set to true, will make all chests the vanilla chest size.").getBoolean(normalSizedChests);

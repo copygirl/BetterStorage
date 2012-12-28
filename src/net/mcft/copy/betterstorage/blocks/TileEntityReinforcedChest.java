@@ -19,6 +19,7 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class TileEntityReinforcedChest extends TileEntityChest implements IInventory, ILockable {
@@ -30,6 +31,7 @@ public class TileEntityReinforcedChest extends TileEntityChest implements IInven
 	public int id;
 	
 	private ItemStack lock;
+	private boolean powered;
 	
 	public TileEntityReinforcedChest() { this(null); }
 	public TileEntityReinforcedChest(Block block) {
@@ -37,7 +39,45 @@ public class TileEntityReinforcedChest extends TileEntityChest implements IInven
 		contents = new ItemStack[getNumColumns() * getNumRows()];
 	}
 	
-	public static TileEntityReinforcedChest getChestAt(World world, int x, int y, int z) {
+	public boolean isPowered() {
+		return getMainChest().powered;
+	}
+	public void setPowered(boolean powered) {
+		TileEntityReinforcedChest chest = getMainChest();
+		if (chest != this) {
+			chest.setPowered(powered);
+			return;
+		}
+		
+		if (this.powered == powered) return;
+		this.powered = powered;
+		
+		if (powered) worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, id, 10);
+		
+		worldObj.notifyBlocksOfNeighborChange(xCoord - 1, yCoord, zCoord, id);
+		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord + 1, zCoord, id);
+		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord - 1, zCoord, id);
+		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord - 1, id);
+		
+		if (adjacentChestXPos != null) {
+			worldObj.notifyBlocksOfNeighborChange(xCoord + 2, yCoord, zCoord, id);
+			worldObj.notifyBlocksOfNeighborChange(xCoord + 1, yCoord + 1, zCoord, id);
+			worldObj.notifyBlocksOfNeighborChange(xCoord + 1, yCoord - 1, zCoord, id);
+			worldObj.notifyBlocksOfNeighborChange(xCoord + 1, yCoord, zCoord + 1, id);
+			worldObj.notifyBlocksOfNeighborChange(xCoord + 1, yCoord, zCoord - 1, id);
+		} else worldObj.notifyBlocksOfNeighborChange(xCoord + 1, yCoord, zCoord, id);
+		
+		if (adjacentChestZPosition != null) {
+			worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord + 2, id);
+			worldObj.notifyBlocksOfNeighborChange(xCoord + 1, yCoord, zCoord + 1, id);
+			worldObj.notifyBlocksOfNeighborChange(xCoord - 1, yCoord, zCoord + 1, id);
+			worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord + 1, zCoord + 1, id);
+			worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord - 1, zCoord + 1, id);
+		} else worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord + 1, id);
+			
+	}
+	
+	public static TileEntityReinforcedChest getChestAt(IBlockAccess world, int x, int y, int z) {
 		TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
 		if (tileEntity == null || !(tileEntity instanceof TileEntityReinforcedChest)) return null;
 		return (TileEntityReinforcedChest)tileEntity;
@@ -187,6 +227,17 @@ public class TileEntityReinforcedChest extends TileEntityChest implements IInven
 		if (blockType != null)
 			id = blockType.blockID;
 		return blockType;
+	}
+	
+	@Override
+	public void openChest() {
+		numUsingPlayers++;
+		worldObj.addBlockEvent(xCoord, yCoord, zCoord, id, 1, numUsingPlayers);
+	}
+	@Override
+	public void closeChest() {
+		numUsingPlayers--;
+		worldObj.addBlockEvent(xCoord, yCoord, zCoord, id, 1, numUsingPlayers);
 	}
 	
 	// Dropping stuff

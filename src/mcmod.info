@@ -2,7 +2,7 @@
   {
     "modid": "mod_BetterStorage",
     "name": "BetterStorage",
-    "version": "0.3.5",
+    "version": "0.4.0",
     "description": "Adds more storage options like Reinforced Chests and Storage Crates.",
     "authors": [ "copygirl", "copyboy" ],
     "credits": "Sponsored by RichardG. Thanks to all the nice folk in #Direwolf20.",

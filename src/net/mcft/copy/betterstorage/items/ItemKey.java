@@ -1,10 +1,14 @@
 package net.mcft.copy.betterstorage.items;
 
 import cpw.mods.fml.common.registry.LanguageRegistry;
+import net.mcft.copy.betterstorage.enchantments.EnchantmentBetterStorage;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
@@ -18,10 +22,15 @@ public class ItemKey extends ItemBetterStorage {
 		LanguageRegistry.addName(this, "Key");
 		
 		setCreativeTab(CreativeTabs.tabMisc);
-		// This is needed to make sure the item stays in
-		// the crafting matrix when used to craft a lock.
-		this.setContainerItem(this);
+		// This is needed to make sure the item stays in the crafting
+		// matrix when used to craft a lock or duplicate a key.
+		setContainerItem(this);
 	}
+	
+	@Override
+	public boolean isItemTool(ItemStack stack) { return true; }
+	@Override
+	public int getItemEnchantability() { return 20; }
 	
 	@Override
 	public boolean doesContainerItemLeaveCraftingGrid(ItemStack stack) { return false; }
@@ -53,6 +62,59 @@ public class ItemKey extends ItemBetterStorage {
 	
 	public static boolean isKey(ItemStack stack) {
 		return (stack != null && stack.getItem() instanceof ItemKey);
+	}
+	
+	public static boolean tryKeyOpenLock(ItemStack lock, ItemStack key) {
+		if (!ItemKey.isKey(key)) return false;
+		
+		int lockId = lock.getItemDamage();
+		int keyId  = key.getItemDamage();
+		
+		int lockSecurity = EnchantmentHelper.getEnchantmentLevel(EnchantmentBetterStorage.security.effectId, lock);
+		int unlocking    = EnchantmentHelper.getEnchantmentLevel(EnchantmentBetterStorage.unlocking.effectId, key);
+		int lockpicking  = EnchantmentHelper.getEnchantmentLevel(EnchantmentBetterStorage.lockpicking.effectId, key);
+		int morphing     = EnchantmentHelper.getEnchantmentLevel(EnchantmentBetterStorage.morphing.effectId, key);
+		
+		int effectiveUnlocking   = Math.max(0, unlocking - lockSecurity);
+		int effectiveLockpicking = Math.max(0, lockpicking - lockSecurity);
+		int effectiveMorphing    = Math.max(0, morphing - lockSecurity);
+		
+		if (lockId == keyId) return true;
+		
+		if (effectiveUnlocking > 0) {
+			int div = (int)Math.pow(2, 9 + effectiveUnlocking * 1.5);
+			if (lockId / div == keyId / div) return true;
+		}
+		if (effectiveLockpicking > 0) {
+			NBTTagList list = key.getEnchantmentTagList();
+			for (int i = 0; i < list.tagCount(); i++) {
+				NBTTagCompound compound = (NBTTagCompound)list.tagAt(i);
+				if (compound.getShort("id") != EnchantmentBetterStorage.lockpicking.effectId) continue;
+				int level = compound.getShort("lvl") - 1;
+				if (level == 0) {
+					list.removeTag(i);
+					if (list.tagCount() == 0)
+						key.getTagCompound().removeTag("ench");
+				} else compound.setShort("lvl", (short)level);
+				break;
+			}
+			return true;
+		}
+		if (effectiveMorphing > 0) {
+			key.setItemDamage(lockId);
+			NBTTagList list = key.getEnchantmentTagList();
+			for (int i = 0; i < list.tagCount(); i++) {
+				NBTTagCompound compound = (NBTTagCompound)list.tagAt(i);
+				if (compound.getShort("id") != EnchantmentBetterStorage.morphing.effectId) continue;
+				list.removeTag(i);
+				// Morphed keys keep their enchanted look, it looks sweet.
+				// if (list.tagCount() == 0)
+				//	key.getTagCompound().removeTag("ench");
+			}
+			return true;
+		}
+		
+		return false;
 	}
 	
 }

@@ -1,10 +1,13 @@
 package net.mcft.copy.betterstorage.items;
 
 import cpw.mods.fml.common.registry.LanguageRegistry;
+import net.mcft.copy.betterstorage.enchantments.EnchantmentBetterStorage;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
 public class ItemLock extends ItemBetterStorage {
@@ -18,6 +21,11 @@ public class ItemLock extends ItemBetterStorage {
 		
 		setCreativeTab(CreativeTabs.tabMisc);
 	}
+
+	@Override
+	public boolean isItemTool(ItemStack stack) { return true; }
+	@Override
+	public int getItemEnchantability() { return 20; }
 
 	@Override
 	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world,
@@ -37,23 +45,27 @@ public class ItemLock extends ItemBetterStorage {
 	public static boolean isLock(ItemStack stack) {
 		return (stack != null && stack.getItem() instanceof ItemLock);
 	}
-	public static boolean isLocked(ILockable lockable) {
-		return (lockable.getLock() != null);
-	}
-	public static boolean canKeyOpenLock(ItemStack lock, ItemStack key) {
-		if (!ItemKey.isKey(key)) return false;
-		return (lock.getItemDamage() == key.getItemDamage());
-	}
 	
 	/** Gets called when a player tries to open a locked container. <br>
 	 *  Returns if the container can be opened. */
 	public boolean tryOpen(ItemStack lock, EntityPlayer player, ItemStack key) {
-		return canKeyOpenLock(lock, key);
+		boolean success = ItemKey.tryKeyOpenLock(lock, key);
+		if (!success) applyEffects(lock, player, 1);
+		return success;
 	}
 	/** Gets called when a player tries to unlock a locked container. <br>
 	 *  Returns if the container can be unlocked. */
 	public boolean tryUnlock(ItemStack lock, EntityPlayer player, ItemStack key) {
-		return canKeyOpenLock(lock, key);
+		boolean success = ItemKey.tryKeyOpenLock(lock, key);
+		if (!success) applyEffects(lock, player, 2);
+		return success;
+	}
+	/** Applies effects when a player tries to unsuccessfully open / unlock a locked container. */
+	public void applyEffects(ItemStack lock, EntityPlayer player, int power) {
+		int shock = EnchantmentHelper.getEnchantmentLevel(EnchantmentBetterStorage.shock.effectId, lock);
+		player.attackEntityFrom(DamageSource.magic, shock * power * 5 / 2);
+		if (shock >= 3)
+			player.setFire(shock * 2 * power);
 	}
 	
 	// Static helper methods which just call the above methods:
@@ -69,6 +81,11 @@ public class ItemLock extends ItemBetterStorage {
 	public static boolean lockTryUnlock(ItemStack lock, EntityPlayer player, ItemStack key) {
 		if (!isLock(lock)) return false;
 		return ((ItemLock)lock.getItem()).tryUnlock(lock, player, key);
+	}
+	/** Applies effects when a player tries to unsuccessfully open / unlock a locked container. */
+	public static void lockApplyEffects(ItemStack lock, EntityPlayer player, int power) {
+		if (!isLock(lock)) return;
+		((ItemLock)lock.getItem()).applyEffects(lock, player, power);
 	}
 	
 }

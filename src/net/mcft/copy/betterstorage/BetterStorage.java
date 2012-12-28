@@ -12,6 +12,7 @@ import net.mcft.copy.betterstorage.blocks.BlockCrate;
 import net.mcft.copy.betterstorage.blocks.BlockReinforcedChest;
 import net.mcft.copy.betterstorage.blocks.CratePileCollection;
 import net.mcft.copy.betterstorage.blocks.InventoryBlockCrafting;
+import net.mcft.copy.betterstorage.enchantments.EnchantmentBetterStorage;
 import net.mcft.copy.betterstorage.items.ItemKey;
 import net.mcft.copy.betterstorage.items.ItemLock;
 import net.minecraft.block.Block;
@@ -39,7 +40,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 
-@Mod(modid="BetterStorage", name="BetterStorage", version="0.3.5")
+@Mod(modid="BetterStorage", name="BetterStorage", version="0.4.0")
 @NetworkMod(clientSideRequired=true, serverSideRequired=false)
 public class BetterStorage {
 	
@@ -84,6 +85,7 @@ public class BetterStorage {
 	@Init
 	public void load(FMLInitializationEvent event) {
 		initializeItems();
+		EnchantmentBetterStorage.init();
 		addRecipes();
 		addLocalizations();
 		GameRegistry.registerCraftingHandler(new CraftingHandler());
@@ -188,9 +190,23 @@ public class BetterStorage {
 	}
 	
 	private void addLocalizations() {
-		LanguageRegistry.instance().addStringLocalization("container.reinforcedChest", "Reinforced Chest");
-		LanguageRegistry.instance().addStringLocalization("container.reinforcedChestLarge", "Large Reinforced Chest");
-		LanguageRegistry.instance().addStringLocalization("container.crate", "Storage Crate");
+		
+		addLocal("container.reinforcedChest", "Reinforced Chest");
+		addLocal("container.reinforcedChestLarge", "Large Reinforced Chest");
+		addLocal("container.crate", "Storage Crate");
+		
+		addLocal("enchantment.key.unlocking", "Unlocking");
+		addLocal("enchantment.key.lockpicking", "Lockpicking");
+		addLocal("enchantment.key.morphing", "Morphing");
+		
+		addLocal("enchantment.lock.persistance", "Persistance");
+		addLocal("enchantment.lock.security", "Security");
+		addLocal("enchantment.lock.shock", "Shock");
+		addLocal("enchantment.lock.trigger", "Trigger");
+		
+	}
+	private void addLocal(String key, String value) {
+		LanguageRegistry.instance().addStringLocalization(key, value);
 	}
 	
 	@ForgeSubscribe
