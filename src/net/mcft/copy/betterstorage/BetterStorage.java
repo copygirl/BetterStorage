@@ -117,11 +117,12 @@ public class BetterStorage {
 	}
 	
 	private void addRecipes() {
-		GameRegistry.addRecipe(new ItemStack(crate),
+		ShapedOreRecipe recipe = new ShapedOreRecipe(new ItemStack(crate),
 		        "o/o",
 		        "/ /",
-		        "o/o", 'o', Block.planks,
+		        "o/o", 'o', "plankWood",
 		               '/', Item.stick);
+		CraftingManager.getInstance().getRecipeList().add(recipe);
 		
 		addReinforcedChestRecipe(reinforcedIronChest, Item.ingotIron, Block.blockSteel);
 		addReinforcedChestRecipe(reinforcedGoldChest, Item.ingotGold, Block.blockGold);
@@ -145,8 +146,9 @@ public class BetterStorage {
 		GameRegistry.addRecipe(new ItemStack(lock),
 		        " o ",
 		        "oko",
-		        "ooo", 'o', Item.ingotGold,
-		               'k', new ItemStack(key, 1, -1));
+		        "oio", 'o', Item.ingotGold,
+		               'k', new ItemStack(key, 1, -1),
+		               'i', Item.ingotIron);
 	}
 	
 	private void addReinforcedChestRecipe(Block result, Object ingot, Object block) {
