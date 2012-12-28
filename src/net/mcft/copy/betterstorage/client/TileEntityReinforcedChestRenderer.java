@@ -48,7 +48,7 @@ public class TileEntityReinforcedChestRenderer extends TileEntitySpecialRenderer
 		} else metadata = 0;
 		
 		if (chest.adjacentChestZNeg == null && chest.adjacentChestXNeg == null) {
-			boolean large = (chest.adjacentChestXPos != null || chest.adjacentChestZPos != null);
+			boolean large = (chest.adjacentChestXPos != null || chest.adjacentChestZPosition != null);
 			ModelChest model = (large ? largeChestModel : chestModel);
 			bindTextureByName(Constants.getReinforcedChestTexture(block.name, large));
 			
@@ -62,7 +62,7 @@ public class TileEntityReinforcedChestRenderer extends TileEntitySpecialRenderer
 			short rotation = metadataRotationLookup[metadata];
 			if (metadata == 2 && chest.adjacentChestXPos != null)
 				GL11.glTranslatef(1.0F, 0.0F, 0.0F);
-			if (metadata == 5 && chest.adjacentChestZPos != null)
+			if (metadata == 5 && chest.adjacentChestZPosition != null)
 				GL11.glTranslatef(0.0F, 0.0F, -1.0F);
 			GL11.glRotatef(rotation, 0.0F, 1.0F, 0.0F);
 			GL11.glTranslatef(-0.5F, -0.5F, -0.5F);

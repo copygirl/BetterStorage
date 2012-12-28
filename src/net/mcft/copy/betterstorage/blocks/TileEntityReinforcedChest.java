@@ -18,22 +18,13 @@ import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.world.World;
 
-public class TileEntityReinforcedChest extends TileEntity implements IInventory, ILockable {
+public class TileEntityReinforcedChest extends TileEntityChest implements IInventory, ILockable {
 	
 	// Code from this class is mainly stolen from the TileEntityChest class.
 	// A little prettified here and there, but basically the same.
-	
-	public boolean adjacentChestChecked = false;
-	public TileEntityReinforcedChest adjacentChestZNeg;
-	public TileEntityReinforcedChest adjacentChestZPos;
-	public TileEntityReinforcedChest adjacentChestXNeg;
-	public TileEntityReinforcedChest adjacentChestXPos;
-	
-	public float lidAngle = 0.0f;
-	public float prevLidAngle = 0.0f;
-	public int numUsingPlayers = 0;
 	
 	public ItemStack[] contents;
 	public int id;
@@ -43,7 +34,7 @@ public class TileEntityReinforcedChest extends TileEntity implements IInventory,
 	public TileEntityReinforcedChest() { this(null); }
 	public TileEntityReinforcedChest(Block block) {
 		id = ((block != null) ? block.blockID : -1);
-		contents = new ItemStack[getColumns() * getRows()];
+		contents = new ItemStack[getNumColumns() * getNumRows()];
 	}
 	
 	public static TileEntityReinforcedChest getChestAt(World world, int x, int y, int z) {
@@ -53,8 +44,8 @@ public class TileEntityReinforcedChest extends TileEntity implements IInventory,
 	}
 	
 	private TileEntityReinforcedChest getMainChest() {
-		if (adjacentChestXNeg != null) return adjacentChestXNeg;
-		if (adjacentChestZNeg != null) return adjacentChestZNeg;
+		if (adjacentChestXNeg != null) return (TileEntityReinforcedChest)adjacentChestXNeg;
+		if (adjacentChestZNeg != null) return (TileEntityReinforcedChest)adjacentChestZNeg;
 		return this;
 	}
 	
@@ -74,19 +65,20 @@ public class TileEntityReinforcedChest extends TileEntity implements IInventory,
 	
 	// Begin chest stuff
 	
+	public int getNumColumns() { return (Config.normalSizedChests ? 9 : 13); }
+	public int getNumRows() { return 3; }
+	
+	@Override
+	public String getInvName() { return "container.reinforcedChest"; }
+	
 	@Override
 	public int getSizeInventory() {
 		return (isLocked() ? 0 : contents.length);
 	}
-	
-	public int getColumns() { return (Config.normalSizedChests ? 9 : 13); }
-	public int getRows() { return 3; }
-	
 	@Override
 	public ItemStack getStackInSlot(int slot) {
 		return (isLocked() ? null : contents[slot]);
 	}
-	
 	@Override
 	public ItemStack decrStackSize(int slot, int amount) {
 		if (isLocked()) return null;
@@ -100,7 +92,6 @@ public class TileEntityReinforcedChest extends TileEntity implements IInventory,
 		onInventoryChanged();
 		return returnStack;
 	}
-	
 	@Override
 	public ItemStack getStackInSlotOnClosing(int slot) {
 		if (isLocked()) return null;
@@ -108,7 +99,6 @@ public class TileEntityReinforcedChest extends TileEntity implements IInventory,
 		contents[slot] = null;
 		return stack;
 	}
-	
 	@Override
 	public void setInventorySlotContents(int slot, ItemStack stack) {
 		if (isLocked()) return;
@@ -119,11 +109,10 @@ public class TileEntityReinforcedChest extends TileEntity implements IInventory,
 	}
 	
 	@Override
-	public String getInvName() { return "container.reinforcedChest"; }
-	
-	@Override
 	public void readFromNBT(NBTTagCompound compound) {
-		super.readFromNBT(compound);
+        xCoord = compound.getInteger("x");
+        yCoord = compound.getInteger("y");
+        zCoord = compound.getInteger("z");
 		NBTTagList items = compound.getTagList("Items");
 		contents = new ItemStack[getSizeInventory()];
 		for (int i = 0; i < items.tagCount(); i++) {
@@ -135,10 +124,12 @@ public class TileEntityReinforcedChest extends TileEntity implements IInventory,
 		if (compound.hasKey("lock"))
 			lock = ItemStack.loadItemStackFromNBT(compound.getCompoundTag("lock"));
 	}
-	
 	@Override
 	public void writeToNBT(NBTTagCompound compound) {
-		super.writeToNBT(compound);
+        compound.setString("id", "container.reinforcedChest");
+        compound.setInteger("x", this.xCoord);
+        compound.setInteger("y", this.yCoord);
+        compound.setInteger("z", this.zCoord);
 		NBTTagList list = new NBTTagList();
 		for (int i = 0; i < contents.length; i++) {
 			if (contents[i] == null) continue;
@@ -154,19 +145,11 @@ public class TileEntityReinforcedChest extends TileEntity implements IInventory,
 	
 	@Override
 	public int getInventoryStackLimit() { return 64; }
-	
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) {
-		return (worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) == this &&
-				player.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <= 64.0D);
+		return super.isUseableByPlayer(player);
 	}
-	
 	@Override
-	public void updateContainingBlockInfo() {
-		super.updateContainingBlockInfo();
-		adjacentChestChecked = false;
-	}
-	
 	public void checkForAdjacentChests() {
 		if (adjacentChestChecked) return;
 		
@@ -174,86 +157,30 @@ public class TileEntityReinforcedChest extends TileEntity implements IInventory,
 		adjacentChestZNeg = null;
 		adjacentChestXPos = null;
 		adjacentChestXNeg = null;
-		adjacentChestZPos = null;
+		adjacentChestZPosition = null;
 		
 		if (worldObj.getBlockId(xCoord, yCoord, zCoord - 1) == id)
 			adjacentChestZNeg = getChestAt(worldObj, xCoord, yCoord, zCoord - 1);
 		if (worldObj.getBlockId(xCoord, yCoord, zCoord + 1) == id)
-			adjacentChestZPos = getChestAt(worldObj, xCoord, yCoord, zCoord + 1);
+			adjacentChestZPosition = getChestAt(worldObj, xCoord, yCoord, zCoord + 1);
 		if (worldObj.getBlockId(xCoord - 1, yCoord, zCoord) == id)
 			adjacentChestXNeg = getChestAt(worldObj, xCoord - 1, yCoord, zCoord);
 		if (worldObj.getBlockId(xCoord + 1, yCoord, zCoord) == id)
 			adjacentChestXPos = getChestAt(worldObj, xCoord + 1, yCoord, zCoord);
 		if (adjacentChestZNeg != null)
 			adjacentChestZNeg.updateContainingBlockInfo();
-		if (adjacentChestZPos != null)
-			adjacentChestZPos.updateContainingBlockInfo();
+		if (adjacentChestZPosition != null)
+			adjacentChestZPosition.updateContainingBlockInfo();
 		if (adjacentChestXNeg != null)
 			adjacentChestXNeg.updateContainingBlockInfo();
 		if (adjacentChestXPos != null)
 			adjacentChestXPos.updateContainingBlockInfo();
 	}
-	
 	@Override
 	public void updateEntity() {
 		if (id == -1) getBlockType();
-		checkForAdjacentChests();
-		prevLidAngle = lidAngle;
-		float lidSpeed = 0.1F;
-		
-		// Play sound when opening chest.
-		if (numUsingPlayers > 0 && lidAngle == 0.0F && 
-			adjacentChestZNeg == null && adjacentChestXNeg == null) {
-			double x = xCoord + 0.5D;
-			double z = zCoord + 0.5D;
-			if (adjacentChestZPos != null) z += 0.5D;
-			if (adjacentChestXPos != null) x += 0.5D;
-			worldObj.playSoundEffect(x, yCoord + 0.5D, z, "random.chestopen",
-			                         0.5F, worldObj.rand.nextFloat() * 0.1F + 0.9F);
-		}
-		
-		if ((numUsingPlayers == 0 && lidAngle > 0.0F) ||
-			(numUsingPlayers > 0 && lidAngle < 1.0F)) {
-			
-			lidAngle = Math.max(0, Math.min(1, lidAngle + ((numUsingPlayers > 0) ? lidSpeed : -lidSpeed)));
-			
-			// Play sound when closing chest.
-			if (lidAngle < 0.5F && prevLidAngle >= 0.5F && 
-				adjacentChestZNeg == null && adjacentChestXNeg == null) {
-				double x = xCoord + 0.5D;
-				double z = zCoord + 0.5D;
-				if (adjacentChestZPos != null) z += 0.5D;
-				if (adjacentChestXPos != null) x += 0.5D;
-				worldObj.playSoundEffect(x, yCoord + 0.5D, z, "random.chestclosed",
-				                         0.5F, worldObj.rand.nextFloat() * 0.1F + 0.9F);
-			}
-		}
+		super.updateEntity();
 	}
-	
-	@Override
-	public void receiveClientEvent(int par1, int par2) {
-		if (par1 == 1) numUsingPlayers = par2;
-	}
-	
-	@Override
-	public void openChest() {
-		numUsingPlayers++;
-		worldObj.addBlockEvent(xCoord, yCoord, zCoord, id, 1, numUsingPlayers);
-	}
-	
-	@Override
-	public void closeChest() {
-		numUsingPlayers--;
-		worldObj.addBlockEvent(xCoord, yCoord, zCoord, id, 1, numUsingPlayers);
-	}
-	
-	@Override
-	public void invalidate() {
-		updateContainingBlockInfo();
-		checkForAdjacentChests();
-		super.invalidate();
-	}
-	
 	@Override
 	public Block getBlockType() {
 		super.getBlockType();
