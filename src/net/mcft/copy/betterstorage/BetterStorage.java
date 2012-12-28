@@ -39,7 +39,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 
-@Mod(modid="BetterStorage", name="BetterStorage", version="0.3.4")
+@Mod(modid="BetterStorage", name="BetterStorage", version="0.3.5")
 @NetworkMod(clientSideRequired=true, serverSideRequired=false)
 public class BetterStorage {
 	
@@ -57,11 +57,12 @@ public class BetterStorage {
 	public static BlockReinforcedChest reinforcedCopperChest;
 	public static BlockReinforcedChest reinforcedTinChest;
 	public static BlockReinforcedChest reinforcedSilverChest;
+	public static BlockReinforcedChest reinforcedZincChest;
 	
 	public static ItemKey key;
 	public static ItemLock lock;
 
-	private final static String[] materials = { "copper", "tin", "silver" };
+	private final static String[] modMaterials = { "copper", "tin", "silver", "zinc" };
 	
 	public final static Map<String, BlockReinforcedChest> chestsByMaterial = new HashMap();
 	
@@ -93,7 +94,7 @@ public class BetterStorage {
 	@PostInit
 	public void postInit(FMLPostInitializationEvent event) {
 		Set<String> oreNames = new HashSet(Arrays.asList(OreDictionary.getOreNames()));
-		for (String material : materials)
+		for (String material : modMaterials)
 			tryAddModdedMaterialChestRecipe(material, oreNames);
 	}
 	
@@ -108,6 +109,7 @@ public class BetterStorage {
 		reinforcedCopperChest  = new BlockReinforcedChest(getChestId(4), "copper");
 		reinforcedTinChest     = new BlockReinforcedChest(getChestId(5), "tin");
 		reinforcedSilverChest  = new BlockReinforcedChest(getChestId(6), "silver");
+		reinforcedZincChest    = new BlockReinforcedChest(getChestId(7), "zinc");
 		
 		key = new ItemKey(Config.keyId);
 		lock = new ItemLock(Config.lockId);
