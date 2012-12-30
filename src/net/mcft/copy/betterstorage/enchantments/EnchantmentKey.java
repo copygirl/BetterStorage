@@ -6,7 +6,7 @@ import net.minecraft.item.ItemStack;
 public abstract class EnchantmentKey extends EnchantmentBetterStorage {
 	
 	public EnchantmentKey(int id, int weight, String name) {
-		super(id, weight, name);
+		super(id, weight, key, name);
 	}
 	
 	@Override

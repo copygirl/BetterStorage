@@ -2,8 +2,13 @@ package net.mcft.copy.betterstorage.enchantments;
 
 import net.mcft.copy.betterstorage.Config;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnumEnchantmentType;
+import net.minecraftforge.common.EnumHelper;
 
 public abstract class EnchantmentBetterStorage extends Enchantment {
+
+	public static EnumEnchantmentType key  = EnumHelper.addEnchantmentType("key");
+	public static EnumEnchantmentType lock = EnumHelper.addEnchantmentType("lock");
 	
 	// Key enchantments
 	public static Enchantment unlocking;
@@ -31,8 +36,8 @@ public abstract class EnchantmentBetterStorage extends Enchantment {
 		
 	}
 	
-	public EnchantmentBetterStorage(int id, int weight, String name) {
-		super(id, weight, null);
+	public EnchantmentBetterStorage(int id, int weight, EnumEnchantmentType type, String name) {
+		super(id, weight, type);
 		setName(name);
 	}
 	
