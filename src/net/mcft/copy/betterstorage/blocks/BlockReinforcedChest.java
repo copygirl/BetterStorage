@@ -13,6 +13,7 @@ import net.mcft.copy.betterstorage.items.ItemLock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -52,11 +53,24 @@ public class BlockReinforcedChest extends BlockChest {
 	@Override
 	public float getBlockHardness(World world, int x, int y, int z) {
 		TileEntityReinforcedChest chest = TileEntityReinforcedChest.getChestAt(world, x, y, z);
-		if (chest == null) return 1.0F;
-		float hardness = blockHardness * (chest.isLocked() ? 15.0F : 1.0F);
-		int persistance = EnchantmentHelper.getEnchantmentLevel(EnchantmentBetterStorage.persistance.effectId, chest.getLock());
-		if (persistance > 0) hardness *= 2 + persistance;
+		float hardness = blockHardness;
+		if (chest != null && chest.isLocked()) {
+			hardness *= 15.0F;
+			int persistance = EnchantmentHelper.getEnchantmentLevel(EnchantmentBetterStorage.persistance.effectId, chest.getLock());
+			if (persistance > 0) hardness *= persistance + 2;
+		}
 		return hardness;
+	}
+	
+	@Override
+	public float getExplosionResistance(Entity entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ) {
+		float modifier = 1.0F;
+		TileEntityReinforcedChest chest = TileEntityReinforcedChest.getChestAt(world, x, y, z);
+		if (chest != null) {
+			int persistance = EnchantmentHelper.getEnchantmentLevel(EnchantmentBetterStorage.persistance.effectId, chest.getLock());
+			if (persistance > 0) modifier += Math.pow(2, persistance);
+		}
+		return super.getExplosionResistance(entity) * modifier;
 	}
 	
 	@Override
