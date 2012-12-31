@@ -4,6 +4,7 @@ import net.mcft.copy.betterstorage.Region;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
+/** Keeps track of the crates in a crate pile and its bounding box. */
 public class CratePileMap {
 	
 	public Region region;
@@ -42,13 +43,7 @@ public class CratePileMap {
 		else map[index] &= ~(1 << (y % 8));
 	}
 	
-	private void resize() {
-		Region newRegion = region.clone();
-		newRegion.expand(2, 0, 2, 2, 2, 2);
-		newRegion.minY /= 8;
-		newRegion.maxY /= 8;
-		resize(newRegion);
-	}
+	/** Resizes the internal map region, copying the old data over. */
 	private void resize(Region region) {
 		byte[] newMap = new byte[region.width() * region.depth() * region.height()];
 		int minX = Math.max(mapRegion.minX, region.minX);
@@ -67,6 +62,14 @@ public class CratePileMap {
 			}
 		map = newMap;
 		mapRegion = region;
+	}
+	/** Resizes the internal map region, copying the old data over. */
+	private void resize() {
+		Region newRegion = region.clone();
+		newRegion.expand(2, 0, 2, 2, 2, 2);
+		newRegion.minY /= 8;
+		newRegion.maxY /= 8;
+		resize(newRegion);
 	}
 	
 	/** Returns if the cuboid contains this position and all values are not set. */
@@ -115,6 +118,9 @@ public class CratePileMap {
 		set(entity.xCoord, entity.yCoord, entity.zCoord, false);
 	}
 	
+	/** Trims the bounding box to the actual size of the crate pile. <br>
+	 *  This is needed when crates are not removed in order, for
+	 *  example when they're split. */
 	public void trim() {
 		int minX = region.minX, minY = region.minY, minZ = region.minZ;
 		int maxX = region.maxX, maxY = region.maxY, maxZ = region.maxZ;

@@ -48,12 +48,16 @@ public class CratePileData implements Iterable<ItemStack> {
 		this.numCrates = numCrates;
 	}
 	
+	/** Returns if the crate can be added to the crate pile. */
 	public boolean canAdd(TileEntityCrate crate) {
 		return ((map != null) && (map.region.contains(crate) || canExpand(crate)));
 	}
+	/** Returns if the crate can expand the crate pile. */
 	private boolean canExpand(TileEntityCrate crate) {
 		int volume = map.region.volume();
+		// Can't expand if there's not enough crates in the bounding box.
 		if (numCrates < Math.min((int)(volume * 0.8), volume - 5)) return false;
+		
 		if (crate.xCoord < map.region.minX || crate.xCoord > map.region.maxX) {
 			int maxDiff = ((map.region.height() == 1) ? 1 : 3);
 			if (map.region.width() >= maxDiff + Math.min(map.region.height(), map.region.depth()))
@@ -72,6 +76,8 @@ public class CratePileData implements Iterable<ItemStack> {
 	
 	public void trimMap() { map.trim(); }
 	
+	/** Adds a crate to the crate pile, increasing the number
+	 *  of crates and adding it to the crate pile map. */
 	public void addCrate(TileEntityCrate crate) {
 		if (numCrates == 0)
 			map = new CratePileMap(crate);
@@ -79,6 +85,8 @@ public class CratePileData implements Iterable<ItemStack> {
 		numCrates++;
 		markDirty();
 	}
+	/** Removes a crate from the crate pile, decreasing the number
+	 *  of crates and removing it from the crate pile map. */
 	public void removeCrate(TileEntityCrate crate) {
 		if (--numCrates <= 0) {
 			collection.removeCratePile(this);
@@ -119,7 +127,7 @@ public class CratePileData implements Iterable<ItemStack> {
 	
 	/** Returns the number of items of this type in the contents. */
 	public int getItemCount(ItemIdentifier item) {
-		ItemStack stack = getItemStack(item);
+		ItemStack stack = getItemStack(item, false);
 		return ((stack != null) ? stack.stackSize : 0);
 	}
 	/** Returns the number of items of this type in the contents. */
