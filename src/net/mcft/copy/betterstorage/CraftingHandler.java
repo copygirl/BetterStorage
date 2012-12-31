@@ -15,11 +15,12 @@ public class CraftingHandler implements ICraftingHandler {
 		// If item crafted is a key, set its damage value to ..
 		if (item.getItem() instanceof ItemKey) {
 			int damage;
-			// .. another key's damage value, if it was crafted with one.
+			// .. another key's damage value, if it was crafted with one ..
 			ItemStack stack = craftMatrix.getStackInSlot(6);
+			if (stack == null) stack = craftMatrix.getStackInSlot(7);
 			if (stack != null && stack.getItem() instanceof ItemKey)
 				damage = stack.getItemDamage();
-			// .. a random value, if not.
+			// .. or a random value, if not.
 			else damage = -32000 + BetterStorage.random.nextInt(64000);
 			item.setItemDamage(damage);
 		}
