@@ -1,7 +1,5 @@
 package net.mcft.copy.betterstorage.enchantments;
 
-import net.minecraft.enchantment.Enchantment;
-
 /** Damages any player who tries to (unsuccessfully) open
  *  or pick the lock, or break the chest. */
 public class EnchantmentLockShock extends EnchantmentLock {

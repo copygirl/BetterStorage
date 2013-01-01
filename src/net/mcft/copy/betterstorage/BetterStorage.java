@@ -40,7 +40,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 
-@Mod(modid="BetterStorage", name="BetterStorage", version="0.4.0")
+@Mod(modid="BetterStorage", name="BetterStorage", version="0.4.1")
 @NetworkMod(clientSideRequired=true, serverSideRequired=false)
 public class BetterStorage {
 	

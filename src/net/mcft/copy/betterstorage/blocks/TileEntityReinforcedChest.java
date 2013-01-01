@@ -20,7 +20,6 @@ import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
 
 public class TileEntityReinforcedChest extends TileEntityChest implements IInventory, ILockable {
 	
