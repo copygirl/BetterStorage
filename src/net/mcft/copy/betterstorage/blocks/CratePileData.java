@@ -74,7 +74,10 @@ public class CratePileData implements Iterable<ItemStack> {
 		return true;
 	}
 	
-	public void trimMap() { map.trim(); }
+	public void trimMap() {
+		if (map != null)
+			map.trim();
+	}
 	
 	/** Adds a crate to the crate pile, increasing the number
 	 *  of crates and adding it to the crate pile map. */
