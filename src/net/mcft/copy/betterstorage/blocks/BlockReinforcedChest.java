@@ -5,6 +5,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.Constants;
 import net.mcft.copy.betterstorage.client.ReinforcedChestRenderingHandler;
@@ -73,6 +75,7 @@ public class BlockReinforcedChest extends BlockChest {
 		return super.getExplosionResistance(entity) * modifier;
 	}
 	
+	@SideOnly(Side.CLIENT)
 	@Override
 	public int getRenderType() {
 		return ReinforcedChestRenderingHandler.renderId;
