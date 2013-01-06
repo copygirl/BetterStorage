@@ -5,8 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
-import buildcraft.api.inventory.ISpecialInventory;
-
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,7 +15,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 
-public class TileEntityCrate extends TileEntity implements IInventory, ISpecialInventory {
+public class TileEntityCrate extends TileEntity implements IInventory {
 	
 	private static final ForgeDirection[] sideDirections = {
 		ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.WEST, ForgeDirection.EAST
@@ -224,9 +222,9 @@ public class TileEntityCrate extends TileEntity implements IInventory, ISpecialI
 	}
 	
 	// IInventory methods
+	
 	@Override
 	public int getSizeInventory() {
-		// BuildCraft calls this client-side.
 		if (worldObj.isRemote) return 1;
 		return getPileData().blockView.getSizeInventory();
 	}
@@ -259,31 +257,6 @@ public class TileEntityCrate extends TileEntity implements IInventory, ISpecialI
 	@Override
 	public void closeChest() {
 		getPileData().blockView.closeChest();
-	}
-	
-	// ISpecialInventory methods
-	@Override
-	public int addItem(ItemStack stack, boolean doAdd, ForgeDirection from) {
-		CratePileData pileData = getPileData();
-		int amount = Math.min(pileData.spaceForItem(stack), stack.stackSize);
-		if (doAdd && amount > 0) pileData.addItems(stack);
-		return amount;
-	}
-	@Override
-	public ItemStack[] extractItem(boolean doRemove, ForgeDirection from, int maxItemCount) {
-		List<ItemStack> list = new ArrayList<ItemStack>();
-		CratePileData pileData = getPileData();
-		for (int i = 0; i < pileData.getNumItems() && maxItemCount > 0; i++) {
-			ItemStack stack = pileData.getItemStack(i);
-			int amount = Math.min(maxItemCount, stack.stackSize);
-			stack = stack.copy();
-			stack.stackSize = amount;
-			maxItemCount -= amount;
-			list.add(stack);
-			if (doRemove)
-				pileData.removeItems(stack);
-		}
-		return list.toArray(new ItemStack[list.size()]);
 	}
 	
 }
