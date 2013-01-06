@@ -81,12 +81,16 @@ public class CratePileCollection {
 	public void save(CratePileData pileData) {
 		try {
 			File file = getSaveFile(pileData.id);
+			File tempFile = getTempSaveFile(pileData.id);
 			file.getParentFile().mkdir();
 			NBTTagCompound root = new NBTTagCompound();
 			root.setCompoundTag("data", pileData.toCompound());
-			CompressedStreamTools.write(root, file);
+			CompressedStreamTools.write(root, tempFile);
+			if (!file.delete())
+				throw new Exception(file + " could not be deleted.");
+			tempFile.renameTo(file);
 		} catch (Exception e) {
-			System.out.println("[BetterStorage] Error saving CratePileData: " + e);
+			System.err.println("[BetterStorage] Error saving CratePileData: " + e);
 			e.printStackTrace();
 		}
 	}
@@ -99,7 +103,7 @@ public class CratePileCollection {
 			NBTTagCompound root = CompressedStreamTools.read(file);
 			return CratePileData.fromCompound(this, root.getCompoundTag("data"));
 		} catch (Exception e) {
-			System.out.println("[BetterStorage] Error loading CratePileData: " + e);
+			System.err.println("[BetterStorage] Error loading CratePileData: " + e);
 			e.printStackTrace();
 			return null;
 		}
@@ -110,6 +114,9 @@ public class CratePileCollection {
 	}
 	private File getSaveFile(int id) {
 		return new File(getSaveDirectory(), id + ".dat");
+	}
+	private File getTempSaveFile(int id) {
+		return new File(getSaveDirectory(), id + ".tmp");
 	}
 	
 	/** Marks the pile data as dirty so it gets saved. */
