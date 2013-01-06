@@ -1,4 +1,4 @@
-package net.mcft.copy.betterstorage.items;
+package net.mcft.copy.betterstorage.item;
 
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import net.mcft.copy.betterstorage.enchantments.EnchantmentBetterStorage;

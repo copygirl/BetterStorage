@@ -8,8 +8,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.Constants;
-import net.mcft.copy.betterstorage.blocks.BlockReinforcedChest;
-import net.mcft.copy.betterstorage.blocks.TileEntityReinforcedChest;
+import net.mcft.copy.betterstorage.block.BlockReinforcedChest;
+import net.mcft.copy.betterstorage.block.TileEntityReinforcedChest;
 import net.minecraft.client.model.ModelChest;
 import net.minecraft.client.model.ModelLargeChest;
 import net.minecraft.client.renderer.entity.RenderManager;

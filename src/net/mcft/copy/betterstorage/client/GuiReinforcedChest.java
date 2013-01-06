@@ -6,7 +6,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import net.mcft.copy.betterstorage.Constants;
-import net.mcft.copy.betterstorage.blocks.ContainerReinforcedChest;
+import net.mcft.copy.betterstorage.block.ContainerReinforcedChest;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,16 +16,14 @@ import net.minecraft.util.StatCollector;
 @SideOnly(Side.CLIENT)
 public class GuiReinforcedChest extends GuiContainer {
 	
-	// TODO: Add support for custom column / row sizes.
-	
 	private final static int fullWidth = 98;
 	private final static int fullHeight = 258;
 	
 	private String name;
 	private int columns, rows;
 	
-	public int getColumns() { return columns; }
-	public int getRows() { return rows; }
+	public int getNumColumns() { return columns; }
+	public int getNumRows() { return rows; }
 	
 	public GuiReinforcedChest(EntityPlayer player, int columns, int rows, IInventory inventory) {
 		super(new ContainerReinforcedChest(player, columns, rows, inventory));

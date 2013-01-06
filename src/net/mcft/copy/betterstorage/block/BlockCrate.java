@@ -1,4 +1,4 @@
-package net.mcft.copy.betterstorage.blocks;
+package net.mcft.copy.betterstorage.block;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;

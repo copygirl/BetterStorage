@@ -7,8 +7,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.CommonProxy;
 import net.mcft.copy.betterstorage.Constants;
-import net.mcft.copy.betterstorage.blocks.BlockReinforcedChest;
-import net.mcft.copy.betterstorage.blocks.TileEntityReinforcedChest;
+import net.mcft.copy.betterstorage.block.BlockReinforcedChest;
+import net.mcft.copy.betterstorage.block.TileEntityReinforcedChest;
 import net.minecraftforge.client.MinecraftForgeClient;
 
 @SideOnly(Side.CLIENT)

@@ -1,4 +1,4 @@
-package net.mcft.copy.betterstorage.blocks;
+package net.mcft.copy.betterstorage.block;
 
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -11,7 +11,8 @@ import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.Constants;
 import net.mcft.copy.betterstorage.client.ReinforcedChestRenderingHandler;
 import net.mcft.copy.betterstorage.enchantments.EnchantmentBetterStorage;
-import net.mcft.copy.betterstorage.items.ItemLock;
+import net.mcft.copy.betterstorage.item.ItemLock;
+import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -54,7 +55,7 @@ public class BlockReinforcedChest extends BlockChest {
 	
 	@Override
 	public float getBlockHardness(World world, int x, int y, int z) {
-		TileEntityReinforcedChest chest = TileEntityReinforcedChest.getChestAt(world, x, y, z);
+		TileEntityReinforcedChest chest = WorldUtils.getChest(world, x, y, z);
 		float hardness = blockHardness;
 		if (chest != null && chest.isLocked()) {
 			hardness *= 15.0F;
@@ -67,7 +68,7 @@ public class BlockReinforcedChest extends BlockChest {
 	@Override
 	public float getExplosionResistance(Entity entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ) {
 		float modifier = 1.0F;
-		TileEntityReinforcedChest chest = TileEntityReinforcedChest.getChestAt(world, x, y, z);
+		TileEntityReinforcedChest chest = WorldUtils.getChest(world, x, y, z);
 		if (chest != null) {
 			int persistance = EnchantmentHelper.getEnchantmentLevel(EnchantmentBetterStorage.persistance.effectId, chest.getLock());
 			if (persistance > 0) modifier += Math.pow(2, persistance);
@@ -105,7 +106,7 @@ public class BlockReinforcedChest extends BlockChest {
 		// - it is locked
 		// return that the chest can't be placed.
 		if (chestFound.get() || isThereANeighborChest(world, x, y, z) ||
-		    TileEntityReinforcedChest.getChestAt(world, x, y, z).isLocked()) return false;
+			WorldUtils.getChest(world, x, y, z).isLocked()) return false;
 		chestFound.set(true);
 		return true;
 	}
@@ -116,7 +117,7 @@ public class BlockReinforcedChest extends BlockChest {
 	
 	@Override
 	public void breakBlock(World world, int x, int y, int z, int id, int meta) {
-		TileEntityReinforcedChest chest = TileEntityReinforcedChest.getChestAt(world, x, y, z);
+		TileEntityReinforcedChest chest = WorldUtils.getChest(world, x, y, z);
 		if (chest != null) {
 			chest.dropContents();
 			chest.dropLock();
@@ -133,7 +134,7 @@ public class BlockReinforcedChest extends BlockChest {
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {
 		if (world.isRemote) return true;
 		
-		TileEntityReinforcedChest chest = TileEntityReinforcedChest.getChestAt(world, x, y, z);
+		TileEntityReinforcedChest chest = WorldUtils.getChest(world, x, y, z);
 		ItemStack holding = player.getHeldItem();
 		
 		// Use item if it's a lock and the chest is not locked.
@@ -159,13 +160,13 @@ public class BlockReinforcedChest extends BlockChest {
 	public void applyTrigger(World world, int x, int y, int z, ItemStack lock) {
 		if (!ItemLock.isLock(lock)) return;
 		int trigger = EnchantmentHelper.getEnchantmentLevel(EnchantmentBetterStorage.trigger.effectId, lock);
-		if (trigger > 0) TileEntityReinforcedChest.getChestAt(world, x, y, z).setPowered(true);
+		if (trigger > 0) WorldUtils.getChest(world, x, y, z).setPowered(true);
 	}
 	
 	@Override
 	public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player) {
 		if (world.isRemote) return;
-		TileEntityReinforcedChest chest = TileEntityReinforcedChest.getChestAt(world, x, y, z);
+		TileEntityReinforcedChest chest = WorldUtils.getChest(world, x, y, z);
 		ItemStack lock = chest.getLock();
 		ItemLock.lockApplyEffects(lock, player, 2);
 		applyTrigger(world, x, y, z, lock);
@@ -177,7 +178,7 @@ public class BlockReinforcedChest extends BlockChest {
 	public boolean canProvidePower() { return true; }
 	@Override
 	public boolean isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int side) {
-		return TileEntityReinforcedChest.getChestAt(world, x, y, z).isPowered();
+		return WorldUtils.getChest(world, x, y, z).isPowered();
 	}
 	@Override
 	public boolean isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int side) {
@@ -185,7 +186,7 @@ public class BlockReinforcedChest extends BlockChest {
 	}
 	@Override
 	public void updateTick(World world, int x, int y, int z, Random random) {
-		TileEntityReinforcedChest.getChestAt(world, x, y, z).setPowered(false);
+		WorldUtils.getChest(world, x, y, z).setPowered(false);
 	}
 	
 }

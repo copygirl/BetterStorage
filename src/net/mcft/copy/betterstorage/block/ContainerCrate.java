@@ -1,5 +1,6 @@
-package net.mcft.copy.betterstorage.blocks;
+package net.mcft.copy.betterstorage.block;
 
+import net.mcft.copy.betterstorage.inventory.InventoryCratePlayerView;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;

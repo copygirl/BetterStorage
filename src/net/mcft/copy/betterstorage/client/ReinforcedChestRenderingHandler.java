@@ -3,7 +3,7 @@ package net.mcft.copy.betterstorage.client;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import net.mcft.copy.betterstorage.blocks.TileEntityReinforcedChest;
+import net.mcft.copy.betterstorage.block.TileEntityReinforcedChest;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;

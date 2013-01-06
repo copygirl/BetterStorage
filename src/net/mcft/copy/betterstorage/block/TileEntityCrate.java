@@ -1,18 +1,15 @@
-package net.mcft.copy.betterstorage.blocks;
+package net.mcft.copy.betterstorage.block;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
-
 import net.mcft.copy.betterstorage.BetterStorage;
-import net.minecraft.entity.item.EntityItem;
+import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 
 public class TileEntityCrate extends TileEntity implements IInventory {
@@ -56,12 +53,12 @@ public class TileEntityCrate extends TileEntity implements IInventory {
 		int y = yCoord;
 		int z = zCoord;
 		// Destroy all crates above.
-		TileEntityCrate crateAbove = getCrateAt(worldObj, x, y + 1, z);
+		TileEntityCrate crateAbove = WorldUtils.getCrate(worldObj, x, y + 1, z);
 		if (crateAbove != null && crateAbove.data == data)
 			crateAbove.destroyCrate();
 		// If there's still some crates left and this is a
 		// base crate, see which crates are still connected.
-		if (data.getNumCrates() > 0 && !isCrate(worldObj, x, y - 1, z)) {
+		if (data.getNumCrates() > 0 && !WorldUtils.is(worldObj, x, y - 1, z, BetterStorage.crate)) {
 			List<HashSet<TileEntityCrate>> crateSets =
 					new ArrayList<HashSet<TileEntityCrate>>();
 			int checkedChecks = 0;
@@ -70,7 +67,7 @@ public class TileEntityCrate extends TileEntity implements IInventory {
 				int nx = x + dir.offsetX;
 				int nz = z + dir.offsetZ;
 				// Continue if this neighbor block is not a crate.
-				TileEntityCrate neighborCrate = getCrateAt(worldObj, nx, y, nz);
+				TileEntityCrate neighborCrate = WorldUtils.getCrate(worldObj, nx, y, nz);
 				if (neighborCrate == null) continue;
 				// See if the neighbor crate is already in a crate set,
 				// in that case continue with the next neighbor block.
@@ -99,7 +96,7 @@ public class TileEntityCrate extends TileEntity implements IInventory {
 						newPileCrate.setPileData(newPileData, true);
 						// Add all crates above the base crate.
 						while (true) {
-							newPileCrate = getCrateAt(worldObj, newPileCrate.xCoord, newPileCrate.yCoord + 1, newPileCrate.zCoord);
+							newPileCrate = WorldUtils.getCrate(worldObj, newPileCrate.xCoord, newPileCrate.yCoord + 1, newPileCrate.zCoord);
 							if (newPileCrate == null) break;
 							newPileCrate.setPileData(newPileData, true);
 							numCrates++;
@@ -118,7 +115,7 @@ public class TileEntityCrate extends TileEntity implements IInventory {
 		}
 	}
 	private void checkConnections(int x, int y, int z, HashSet<TileEntityCrate> set) {
-		TileEntityCrate crate = getCrateAt(worldObj, x, y, z);
+		TileEntityCrate crate = WorldUtils.getCrate(worldObj, x, y, z);
 		if (crate == null || set.contains(crate)) return;
 		set.add(crate);
 		for (ForgeDirection ndir : sideDirections)
@@ -149,10 +146,11 @@ public class TileEntityCrate extends TileEntity implements IInventory {
 			int x = xCoord + dir.offsetX;
 			int y = yCoord + dir.offsetY;
 			int z = zCoord + dir.offsetZ;
-			CratePileData checkedPileData = getCratePileData(worldObj, x, y, z);
+			CratePileData checkedPileData = WorldUtils.getCratePileData(worldObj, x, y, z);
 			if (checkedPileData == null) continue;
 			if ((pileData != null && checkedPileData.id != pileData.id) ||
-			    (dir != ForgeDirection.DOWN && !crateBelow && isCrate(worldObj, x, y - 1, z)) ||
+			    (dir != ForgeDirection.DOWN && !crateBelow &&
+			     WorldUtils.is(worldObj, x, y - 1, z, BetterStorage.crate)) ||
 			    dir == ForgeDirection.UP || !checkedPileData.canAdd(this)) {
 				destroyCrate();
 				return false;
@@ -168,7 +166,7 @@ public class TileEntityCrate extends TileEntity implements IInventory {
 	/** Destroys the crate when for example the crate's placement is invalid. */
 	private void destroyCrate() {
 		worldObj.setBlockWithNotify(xCoord, yCoord, zCoord, 0);
-		dropItemStack(worldObj, new ItemStack(BetterStorage.crate), xCoord, yCoord, zCoord);
+		dropItem(new ItemStack(BetterStorage.crate));
 	}
 	
 	@Override
@@ -182,81 +180,58 @@ public class TileEntityCrate extends TileEntity implements IInventory {
 		compound.setInteger("crateId", id);
 	}
 	
-	private static void dropItemStack(World world, ItemStack stack, double x, double y, double z) {
-		Random random = BetterStorage.random;
-		float rx = random.nextFloat() * 0.8F + 0.1F;
-		float ry = random.nextFloat() * 0.8F + 0.1F;
-		float rz = random.nextFloat() * 0.8F + 0.1F;
-		EntityItem item = new EntityItem(world, x + rx, y + ry, z + rz, stack);
-		item.motionX = random.nextGaussian() * 0.05F;
-		item.motionY = random.nextGaussian() * 0.05F + 0.2F;
-		item.motionZ = random.nextGaussian() * 0.05F;
-		world.spawnEntityInWorld(item);
+	/** Drops a single item from the (destroyed) crate. */
+	private void dropItem(ItemStack stack) {
+		WorldUtils.dropStackFromBlock(worldObj, xCoord, yCoord, zCoord, stack);
 	}
-	private void dropItemStack(ItemStack stack) {
-		dropItemStack(worldObj, stack, xCoord, yCoord, zCoord);
-	}
-	private void dropItemStacks(List<ItemStack> stacks) {
+	/** Drops multiple item from the (destroyed) crate. */
+	private void dropItems(List<ItemStack> stacks) {
 		for (ItemStack stack : stacks)
-			dropItemStack(stack);
+			dropItem(stack);
 	}
+	/** Drops contents that don't fit into the
+	 *  crate pile after a crate got destroyed. */
 	private void dropOverflowContents(CratePileData data) {
 		int amount = -data.getFreeSlots();
-		dropItemStacks(data.pickAndRemoveItemStacks(amount));
+		dropItems(data.pickAndRemoveItemStacks(amount));
 	}
 	
-	/** Returns the TileEntityCrate at a position in the world, null if there's none. */
-	private static TileEntityCrate getCrateAt(World world, int x, int y, int z) {
-		TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
-		if (!(tileEntity instanceof TileEntityCrate)) return null;
-		return (TileEntityCrate)tileEntity;
-	}
-	/** Returns the pile data of a crate at a position in the world, null if there's none */
-	private static CratePileData getCratePileData(World world, int x, int y, int z) {
-		TileEntityCrate crate = getCrateAt(world, x, y, z);
-		return ((crate != null) ? crate.getPileData() : null);
-	}
-	/** Returns whether there's a crate at a position in the world. */
-	private static boolean isCrate(World world, int x, int y, int z) {
-		return (getCrateAt(world, x, y, z) != null);
-	}
-	
-	// IInventory methods
+	// IInventory implementation
+
+	@Override
+	public String getInvName() { return "container.crate"; }
+	@Override
+	public int getInventoryStackLimit() { return 64; }
 	
 	@Override
 	public int getSizeInventory() {
 		if (worldObj.isRemote) return 1;
 		return getPileData().blockView.getSizeInventory();
 	}
+	
 	@Override
 	public ItemStack getStackInSlot(int slot) {
 		return getPileData().blockView.getStackInSlot(slot);
-	}
-	@Override
-	public ItemStack decrStackSize(int slot, int amount) {
-		return getPileData().blockView.decrStackSize(slot, amount);
-	}
-	@Override
-	public ItemStack getStackInSlotOnClosing(int slot) {
-		return getPileData().blockView.getStackInSlotOnClosing(slot);
 	}
 	@Override
 	public void setInventorySlotContents(int slot, ItemStack stack) {
 		getPileData().blockView.setInventorySlotContents(slot, stack);
 	}
 	@Override
-	public String getInvName() { return "container.crate"; }
+	public ItemStack getStackInSlotOnClosing(int slot) {
+		return getPileData().blockView.getStackInSlotOnClosing(slot);
+	}
 	@Override
-	public int getInventoryStackLimit() { return 64; }
+	public ItemStack decrStackSize(int slot, int amount) {
+		return getPileData().blockView.decrStackSize(slot, amount);
+	}
+	
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) { return false; }
+	
 	@Override
-	public void openChest() {
-		getPileData().blockView.openChest();
-	}
+	public void openChest() { getPileData().blockView.openChest(); }
 	@Override
-	public void closeChest() {
-		getPileData().blockView.closeChest();
-	}
+	public void closeChest() { getPileData().blockView.closeChest(); }
 	
 }

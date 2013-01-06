@@ -1,6 +1,6 @@
 package net.mcft.copy.betterstorage.enchantments;
 
-import net.mcft.copy.betterstorage.items.ItemLock;
+import net.mcft.copy.betterstorage.item.ItemLock;
 import net.minecraft.item.ItemStack;
 
 public class EnchantmentLock extends EnchantmentBetterStorage {

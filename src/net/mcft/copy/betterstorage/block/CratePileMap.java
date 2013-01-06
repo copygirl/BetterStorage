@@ -1,4 +1,4 @@
-package net.mcft.copy.betterstorage.blocks;
+package net.mcft.copy.betterstorage.block;
 
 import net.mcft.copy.betterstorage.Region;
 import net.minecraft.nbt.NBTTagCompound;

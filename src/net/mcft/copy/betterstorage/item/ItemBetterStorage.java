@@ -1,4 +1,4 @@
-package net.mcft.copy.betterstorage.items;
+package net.mcft.copy.betterstorage.item;
 
 import net.mcft.copy.betterstorage.Constants;
 import net.minecraft.item.Item;

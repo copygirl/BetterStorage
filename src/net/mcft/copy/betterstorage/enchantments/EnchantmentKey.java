@@ -1,6 +1,6 @@
 package net.mcft.copy.betterstorage.enchantments;
 
-import net.mcft.copy.betterstorage.items.ItemKey;
+import net.mcft.copy.betterstorage.item.ItemKey;
 import net.minecraft.item.ItemStack;
 
 public abstract class EnchantmentKey extends EnchantmentBetterStorage {

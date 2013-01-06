@@ -1,4 +1,4 @@
-package net.mcft.copy.betterstorage.blocks;
+package net.mcft.copy.betterstorage.block;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.ItemIdentifier;
+import net.mcft.copy.betterstorage.inventory.InventoryCrateBlockView;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;

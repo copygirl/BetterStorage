@@ -1,4 +1,4 @@
-package net.mcft.copy.betterstorage.blocks;
+package net.mcft.copy.betterstorage.block;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 
 public class ContainerReinforcedChest extends Container {
 	
-	private IInventory inventory;
+	public IInventory inventory;
 	
 	public ContainerReinforcedChest(EntityPlayer player, int columns, int rows, IInventory inventory) {
 		this.inventory = inventory;

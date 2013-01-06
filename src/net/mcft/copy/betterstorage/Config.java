@@ -14,7 +14,8 @@ public class Config {
 	
 	public static int keyId = 28540;
 	public static int lockId = 28545;
-	
+
+	// Uses 180 - 182 and 185 - 188 (or w/e the base id is).
 	public static int enchantmentBaseId = 180;
 	
 	/** When set to true, will make all chests the vanilla chest size. */

@@ -1,4 +1,4 @@
-package net.mcft.copy.betterstorage.blocks;
+package net.mcft.copy.betterstorage.inventory;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -9,12 +9,13 @@ import java.util.Map.Entry;
 
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.ItemIdentifier;
+import net.mcft.copy.betterstorage.block.CratePileData;
+import net.mcft.copy.betterstorage.block.TileEntityCrate;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 
-/** An inventory interface built for players accessing the crate pile. */
-public class InventoryCratePlayerView implements IInventory {
+/** An inventory interface built for players accessing crate piles. */
+public class InventoryCratePlayerView extends InventoryBetterStorage {
 	
 	private static final int inventoryMaxSize = 9 * 6;
 	
@@ -25,6 +26,7 @@ public class InventoryCratePlayerView implements IInventory {
 	private Map<ItemIdentifier, Integer> itemCounts = new HashMap<ItemIdentifier, Integer>();
 	
 	public InventoryCratePlayerView(TileEntityCrate crate) {
+		super("container.crate");
 		this.data = crate.getPileData();
 		this.crate = crate;
 		
@@ -64,20 +66,6 @@ public class InventoryCratePlayerView implements IInventory {
 	
 	@Override
 	public int getSizeInventory() { return tempContents.length; }
-	@Override
-	public String getInvName() { return "container.crate"; }
-	@Override
-	public int getInventoryStackLimit() { return 64; }
-	
-	@Override
-	public boolean isUseableByPlayer(EntityPlayer player) {
-		int x = crate.xCoord;
-		int y = crate.yCoord;
-		int z = crate.zCoord;
-		return (player.worldObj.getBlockTileEntity(x, y, z) == crate &&
-				player.getDistanceSq(x + 0.5, y + 0.5, z + 0.5) < 64.0 &&
-				getSizeInventory() <= data.getCapacity());
-	}
 	
 	@Override
 	public ItemStack getStackInSlot(int slot) {
@@ -127,22 +115,6 @@ public class InventoryCratePlayerView implements IInventory {
 	}
 	
 	@Override
-	public ItemStack getStackInSlotOnClosing(int slot) { return null; }
-	
-	@Override
-	public ItemStack decrStackSize(int slot, int amount) {
-		ItemStack stack = getStackInSlot(slot);
-		if (stack == null) return null;
-		amount = Math.min(amount, stack.stackSize);
-		stack.stackSize -= amount;
-		if (stack.stackSize <= 0)
-			tempContents[slot] = null;
-		setItemCountRelative(stack, -amount);
-		ItemStack result = data.removeItems(stack, amount);
-		return result;
-	}
-	
-	@Override
 	public void setInventorySlotContents(int slot, ItemStack stack) {
 		if (slot < 0 || slot >= getSizeInventory()) return;
 		ItemStack oldStack = getStackInSlot(slot);
@@ -161,8 +133,30 @@ public class InventoryCratePlayerView implements IInventory {
 	}
 	
 	@Override
-	public void onInventoryChanged() { }
+	public ItemStack decrStackSize(int slot, int amount) {
+		ItemStack stack = getStackInSlot(slot);
+		if (stack == null) return null;
+		amount = Math.min(amount, stack.stackSize);
+		stack.stackSize -= amount;
+		if (stack.stackSize <= 0)
+			tempContents[slot] = null;
+		setItemCountRelative(stack, -amount);
+		ItemStack result = data.removeItems(stack, amount);
+		return result;
+	}
 	
+	@Override
+	public boolean isUseableByPlayer(EntityPlayer player) {
+		int x = crate.xCoord;
+		int y = crate.yCoord;
+		int z = crate.zCoord;
+		return (player.worldObj.getBlockTileEntity(x, y, z) == crate &&
+				player.getDistanceSq(x + 0.5, y + 0.5, z + 0.5) < 64.0 &&
+				getSizeInventory() <= data.getCapacity());
+	}
+	
+	@Override
+	public void onInventoryChanged() { }
 	@Override
 	public void openChest() { }
 	@Override

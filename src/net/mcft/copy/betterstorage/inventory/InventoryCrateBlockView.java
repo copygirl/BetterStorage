@@ -1,16 +1,17 @@
-package net.mcft.copy.betterstorage.blocks;
+package net.mcft.copy.betterstorage.inventory;
 
 import net.mcft.copy.betterstorage.ItemIdentifier;
+import net.mcft.copy.betterstorage.block.CratePileData;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 
-/** An inventory interface built for machines accessing the crate pile. */
-public class InventoryCrateBlockView implements IInventory {
+/** An inventory interface built for machines accessing crate piles. */
+public class InventoryCrateBlockView extends InventoryBetterStorage {
 	
 	private CratePileData data;
 	
 	public InventoryCrateBlockView(CratePileData data) {
+		super("container.crate");
 		this.data = data;
 	}
 	
@@ -20,13 +21,6 @@ public class InventoryCrateBlockView implements IInventory {
 		// empty slots, looking for specific item or stacks to merge with.
 		return Math.min(data.getOccupiedSlots() + 10, data.getCapacity());
 	}
-	@Override
-	public String getInvName() { return "container.crate"; }
-	@Override
-	public int getInventoryStackLimit() { return 64; }
-	
-	@Override
-	public boolean isUseableByPlayer(EntityPlayer player) { return false; }
 	
 	@Override
 	public ItemStack getStackInSlot(int slot) {
@@ -59,7 +53,12 @@ public class InventoryCrateBlockView implements IInventory {
 	}
 	
 	@Override
-	public ItemStack getStackInSlotOnClosing(int slot) { return null; }
+	public void setInventorySlotContents(int slot, ItemStack stack) {
+		if (slot < 0 || slot >= getSizeInventory()) return;
+		ItemStack oldStack = getStackInSlot(slot);
+		if (oldStack != null) data.removeItems(oldStack);
+		data.addItems(stack);
+	}
 	
 	@Override
 	public ItemStack decrStackSize(int slot, int amount) {
@@ -70,16 +69,10 @@ public class InventoryCrateBlockView implements IInventory {
 	}
 	
 	@Override
-	public void setInventorySlotContents(int slot, ItemStack stack) {
-		if (slot < 0 || slot >= getSizeInventory()) return;
-		ItemStack oldStack = getStackInSlot(slot);
-		if (oldStack != null) data.removeItems(oldStack);
-		data.addItems(stack);
-	}
+	public boolean isUseableByPlayer(EntityPlayer player) { return false; }
 	
 	@Override
 	public void onInventoryChanged() { }
-	
 	@Override
 	public void openChest() { }
 	@Override

@@ -1,7 +1,7 @@
 package net.mcft.copy.betterstorage;
 
-import net.mcft.copy.betterstorage.blocks.TileEntityCrate;
-import net.mcft.copy.betterstorage.blocks.TileEntityReinforcedChest;
+import net.mcft.copy.betterstorage.block.TileEntityCrate;
+import net.mcft.copy.betterstorage.block.TileEntityReinforcedChest;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class CommonProxy {

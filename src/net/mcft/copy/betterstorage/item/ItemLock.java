@@ -1,4 +1,4 @@
-package net.mcft.copy.betterstorage.items;
+package net.mcft.copy.betterstorage.item;
 
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import net.mcft.copy.betterstorage.enchantments.EnchantmentBetterStorage;
@@ -21,12 +21,12 @@ public class ItemLock extends ItemBetterStorage {
 		
 		setCreativeTab(CreativeTabs.tabMisc);
 	}
-
+	
 	@Override
 	public boolean isItemTool(ItemStack stack) { return true; }
 	@Override
 	public int getItemEnchantability() { return 20; }
-
+	
 	@Override
 	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world,
 	                         int x, int y, int z, int side, float subX, float subY, float subZ) {
