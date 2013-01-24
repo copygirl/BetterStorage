@@ -1,6 +1,7 @@
 package net.mcft.copy.betterstorage.item;
 
 import cpw.mods.fml.common.registry.LanguageRegistry;
+import net.mcft.copy.betterstorage.ILockable;
 import net.mcft.copy.betterstorage.enchantments.EnchantmentBetterStorage;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -62,7 +63,7 @@ public class ItemLock extends ItemBetterStorage {
 	}
 	/** Applies effects when a player tries to unsuccessfully open / unlock a locked container. */
 	public void applyEffects(ItemStack lock, EntityPlayer player, int power) {
-		int shock = EnchantmentHelper.getEnchantmentLevel(EnchantmentBetterStorage.shock.effectId, lock);
+		int shock = EnchantmentHelper.getLevel(EnchantmentBetterStorage.shock.effectId, lock);
 		player.attackEntityFrom(DamageSource.magic, shock * power * 5 / 2);
 		if (shock >= 3)
 			player.setFire(shock * 2 * power);

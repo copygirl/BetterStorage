@@ -29,6 +29,7 @@ public class ReinforcedChestRenderingHandler implements ISimpleBlockRenderingHan
 	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
 		reinforcedChest.blockType = block;
+		reinforcedChest.blockMetadata = metadata;
 		reinforcedChestRenderer.renderTileEntityAt(reinforcedChest, -0.5, -0.5, -0.5, 0);
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 	}

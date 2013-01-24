@@ -1,4 +1,4 @@
-package net.mcft.copy.betterstorage.item;
+package net.mcft.copy.betterstorage;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;

@@ -4,10 +4,9 @@ import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.CommonProxy;
 import net.mcft.copy.betterstorage.Constants;
-import net.mcft.copy.betterstorage.block.BlockReinforcedChest;
+import net.mcft.copy.betterstorage.block.ChestMaterial;
 import net.mcft.copy.betterstorage.block.TileEntityReinforcedChest;
 import net.minecraftforge.client.MinecraftForgeClient;
 
@@ -27,18 +26,13 @@ public class ClientProxy extends CommonProxy {
 		MinecraftForgeClient.preloadTexture(Constants.terrain);
 		MinecraftForgeClient.preloadTexture(Constants.items);
 		MinecraftForgeClient.preloadTexture(Constants.reinforcedChestContainer);
-		preloadChestTextures(BetterStorage.reinforcedIronChest);
-		preloadChestTextures(BetterStorage.reinforcedGoldChest);
-		preloadChestTextures(BetterStorage.reinforcedDiamondChest);
-		preloadChestTextures(BetterStorage.reinforcedEmeraldChest);
-		preloadChestTextures(BetterStorage.reinforcedCopperChest);
-		preloadChestTextures(BetterStorage.reinforcedTinChest);
-		preloadChestTextures(BetterStorage.reinforcedSilverChest);
+		for (ChestMaterial material : ChestMaterial.materials)
+			preloadChestTextures(material);
 	}
 	
-	private void preloadChestTextures(BlockReinforcedChest block) {
-		MinecraftForgeClient.preloadTexture(Constants.getReinforcedChestTexture(block.name, false));
-		MinecraftForgeClient.preloadTexture(Constants.getReinforcedChestTexture(block.name, true));
+	private void preloadChestTextures(ChestMaterial material) {
+		MinecraftForgeClient.preloadTexture(material.getTexture(false));
+		MinecraftForgeClient.preloadTexture(material.getTexture(true));
 	}
 	
 }

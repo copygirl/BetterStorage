@@ -1,6 +1,5 @@
 package net.mcft.copy.betterstorage;
 
-import static net.minecraftforge.common.ForgeDirection.DOWN;
 import net.mcft.copy.betterstorage.block.ContainerCrate;
 import net.mcft.copy.betterstorage.block.ContainerReinforcedChest;
 import net.mcft.copy.betterstorage.block.TileEntityCrate;
@@ -8,14 +7,13 @@ import net.mcft.copy.betterstorage.block.TileEntityReinforcedChest;
 import net.mcft.copy.betterstorage.client.GuiReinforcedChest;
 import net.mcft.copy.betterstorage.inventory.InventoryCombined;
 import net.mcft.copy.betterstorage.inventory.InventoryCratePlayerView;
-import net.mcft.copy.betterstorage.inventory.InventoryWrapper;
-import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.client.gui.inventory.GuiChest;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 import cpw.mods.fml.common.network.IGuiHandler;
 
 public class GuiHandler implements IGuiHandler {
@@ -23,27 +21,18 @@ public class GuiHandler implements IGuiHandler {
 	private IInventory getChestInventory(World world, int x, int y, int z) {
 		TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
 		if (!(tileEntity instanceof TileEntityReinforcedChest)) return null;
-		if (world.isBlockSolidOnSide(x, y + 1, z, DOWN)) return null;
-		
+		if (world.isBlockSolidOnSide(x, y + 1, z, ForgeDirection.DOWN)) return null;
 		TileEntityReinforcedChest chest = (TileEntityReinforcedChest)tileEntity;
-		InventoryWrapper wrapper = chest.getWrapper();
-		IInventory inventory = wrapper;
-		int id = chest.getBlockType().blockID;
-		if (world.getBlockId(x, y, z - 1) == id)
-			inventory = makeLargeChest(getChestWrapper(world, x, y, z - 1), wrapper);
-		else if (world.getBlockId(x, y, z + 1) == id)
-			inventory = makeLargeChest(wrapper, getChestWrapper(world, x, y, z + 1));
-		else if (world.getBlockId(x - 1, y, z) == id)
-			inventory = makeLargeChest(getChestWrapper(world, x - 1, y, z), wrapper);
-		else if (world.getBlockId(x + 1, y, z) == id)
-			inventory = makeLargeChest(wrapper, getChestWrapper(world, x + 1, y, z));
-		return inventory;
-	}
-	private InventoryWrapper getChestWrapper(World world, int x, int y, int z) {
-		return WorldUtils.getChest(world, x, y, z).getWrapper();
-	}
-	private IInventory makeLargeChest(InventoryWrapper... wrappers) {
-		return new InventoryCombined<InventoryWrapper>("container.reinforcedChestLarge", wrappers);
+		if (chest.isLarge()) {
+			TileEntityReinforcedChest connectedChest = chest.getConnectedChest();
+			if (connectedChest == null) {
+				BetterStorage.log("Warning: getConnectedChest returned null.");
+				return null;
+			}
+			IInventory mainInventory = (chest.isMainChest() ? chest.getWrapper() : connectedChest.getWrapper());
+			IInventory sideInventory = (chest.isMainChest() ? connectedChest.getWrapper() : chest.getWrapper());
+			return new InventoryCombined<IInventory>("container.reinforcedChestLarge", mainInventory, sideInventory);
+		} else return chest.getWrapper();
 	}
 	
 	@Override

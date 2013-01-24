@@ -52,25 +52,25 @@ public class WorldUtils {
 	public static <T extends TileEntity> boolean is(IBlockAccess world, int x, int y, int z, Class<T> tileClass) {
 		return tileClass.isInstance(world.getBlockTileEntity(x, y, z));
 	}
-	/** Returns the TileEntity at the position, null if there's none. */
+	/** Returns the TileEntity at the position if it's an instance of tileClass, null if not. */
 	public static <T extends TileEntity> T get(IBlockAccess world, int x, int y, int z, Class<T> tileClass) {
 		TileEntity t = world.getBlockTileEntity(x, y, z);
 		return (tileClass.isInstance(t) ? (T)t : null);
 	}
 	
-	/** Returns the TileEntityCrate at a position in the world, null if there's none. */
-	public static TileEntityReinforcedChest getChest(IBlockAccess world, int x, int y, int z) {
-		return get(world, x, y, z, TileEntityReinforcedChest.class);
-	}
-	
-	/** Returns the TileEntityCrate at a position in the world, null if there's none. */
+	/** Returns the TileEntityCrate at a position, null if there's none. */
 	public static TileEntityCrate getCrate(IBlockAccess world, int x, int y, int z) {
 		return get(world, x, y, z, TileEntityCrate.class);
 	}
-	/** Returns the pile data of a crate at a position in the world, null if there's none */
+	/** Returns the pile data of a crate at a position, null if there's none */
 	public static CratePileData getCratePileData(IBlockAccess world, int x, int y, int z) {
 		TileEntityCrate crate = getCrate(world, x, y, z);
 		return ((crate != null) ? crate.getPileData() : null);
+	}
+	
+	/** Returns the TileEntityReinforcedChest at a position, null if there's none. */
+	public static TileEntityReinforcedChest getChest(IBlockAccess world, int x, int y, int z) {
+		return get(world, x, y, z, TileEntityReinforcedChest.class);
 	}
 	
 }

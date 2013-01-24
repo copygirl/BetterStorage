@@ -2,8 +2,10 @@ package net.mcft.copy.betterstorage;
 
 import net.mcft.copy.betterstorage.item.ItemKey;
 import net.mcft.copy.betterstorage.item.ItemLock;
+import net.mcft.copy.betterstorage.utils.InventoryUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.ICraftingHandler;
 
@@ -12,17 +14,22 @@ public class CraftingHandler implements ICraftingHandler {
 	
 	@Override
 	public void onCrafting(EntityPlayer player, ItemStack item, IInventory craftMatrix) {
-		// If item crafted is a key, set its damage value to ..
+		// If item crafted is a key ...
 		if (item.getItem() instanceof ItemKey) {
-			int damage;
-			// .. another key's damage value, if it was crafted with one ..
-			ItemStack stack = craftMatrix.getStackInSlot(6);
-			if (stack == null) stack = craftMatrix.getStackInSlot(7);
-			if (stack != null && stack.getItem() instanceof ItemKey)
-				damage = stack.getItemDamage();
-			// .. or a random value, if not.
-			else damage = -32000 + BetterStorage.random.nextInt(64000);
-			item.setItemDamage(damage);
+			
+			// Get the key used in the crafting recipe, if there was one.
+			int keyIndex = InventoryUtils.findItemSlot(craftMatrix, BetterStorage.key);
+			ItemStack key = ((keyIndex >= 0) ? craftMatrix.getStackInSlot(keyIndex) : null);
+			
+			// See if a key was modified by checking if no gold was used in the recipe.
+			boolean modifyKey = !InventoryUtils.hasItem(craftMatrix, Item.ingotGold);
+			
+			// If a key is being modified, remove it from the crafting matrix.
+			if (modifyKey) craftMatrix.setInventorySlotContents(keyIndex, null);
+			// Otherwise, if a new key is crafted (not duplicated),
+			// set the the damege of the key to a random value.
+			else if (key == null) item.setItemDamage(-32000 + BetterStorage.random.nextInt(64000));
+			
 		}
 		// If item crafted is a lock, copy the damage value from the key.
 		if (item.getItem() instanceof ItemLock)

@@ -9,12 +9,11 @@ public class Config {
 	// The following IDs are also used as default values.
 	
 	public static int crateId = 2830;
-	// Defines the beginning of a ~20 id range.
-	public static int chestBaseId = 2835;
+	public static int chestId = 2831;
 	
-	public static int keyId = 28540;
-	public static int lockId = 28545;
-
+	public static int keyId   = 28540;
+	public static int lockId  = 28541;
+	
 	// Uses 180 - 182 and 185 - 188 (or w/e the base id is).
 	public static int enchantmentBaseId = 180;
 	
@@ -27,11 +26,11 @@ public class Config {
 		config = new Configuration(file);
 		config.load();
 		
-		crateId     = config.getBlock("crate", crateId).getInt();
-		chestBaseId = config.getBlock("chestBaseId", chestBaseId).getInt();
+		crateId = config.getBlock("crate", crateId).getInt();
+		chestId = config.getBlock("chestId", chestId).getInt();
 		
-		keyId  = config.getItem("key", keyId).getInt();
-		lockId = config.getItem("lock", lockId).getInt();
+		keyId   = config.getItem("key", keyId).getInt();
+		lockId  = config.getItem("lock", lockId).getInt();
 		
 		enchantmentBaseId = config.get(Configuration.CATEGORY_GENERAL, "enchantmentBaseId", enchantmentBaseId).getInt();
 		

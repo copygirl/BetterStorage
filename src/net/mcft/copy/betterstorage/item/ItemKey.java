@@ -1,7 +1,11 @@
 package net.mcft.copy.betterstorage.item;
 
 import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import net.mcft.copy.betterstorage.ILockable;
 import net.mcft.copy.betterstorage.enchantments.EnchantmentBetterStorage;
+import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.item.EntityItem;
@@ -37,6 +41,28 @@ public class ItemKey extends ItemBetterStorage {
 	@Override
 	public ItemStack getContainerItemStack(ItemStack stack) { return stack; }
 	
+	@SideOnly(Side.CLIENT)
+	@Override
+	public boolean requiresMultipleRenderPasses() { return true; }
+	
+	@SideOnly(Side.CLIENT)
+	@Override
+	public int getColorFromItemStack(ItemStack stack, int renderPass) {
+		if (renderPass == 0) return 0xFFFFFF;
+		return StackUtils.get(stack, 0xFFFFFF, "display", "color");
+	}
+	
+	@Override
+	public int getIconIndex(ItemStack stack, int renderPass) {
+		boolean colored = StackUtils.has(stack, "display", "color");
+		boolean ironPlated = (StackUtils.get(stack, (byte)0, "display", "ironPlated") == 1);
+		int index = 0;
+		if (renderPass == 0) {
+			if (ironPlated) index += 1;
+		} else index = (colored ? 15 : 14);
+		return (index * 16);
+	}
+	
 	@Override
 	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world,
 	                         int x, int y, int z, int side, float subX, float subY, float subZ) {
@@ -70,10 +96,10 @@ public class ItemKey extends ItemBetterStorage {
 		int lockId = lock.getItemDamage();
 		int keyId  = key.getItemDamage();
 		
-		int lockSecurity = EnchantmentHelper.getEnchantmentLevel(EnchantmentBetterStorage.security.effectId, lock);
-		int unlocking    = EnchantmentHelper.getEnchantmentLevel(EnchantmentBetterStorage.unlocking.effectId, key);
-		int lockpicking  = EnchantmentHelper.getEnchantmentLevel(EnchantmentBetterStorage.lockpicking.effectId, key);
-		int morphing     = EnchantmentHelper.getEnchantmentLevel(EnchantmentBetterStorage.morphing.effectId, key);
+		int lockSecurity = EnchantmentHelper.getLevel(EnchantmentBetterStorage.security.effectId, lock);
+		int unlocking    = EnchantmentHelper.getLevel(EnchantmentBetterStorage.unlocking.effectId, key);
+		int lockpicking  = EnchantmentHelper.getLevel(EnchantmentBetterStorage.lockpicking.effectId, key);
+		int morphing     = EnchantmentHelper.getLevel(EnchantmentBetterStorage.morphing.effectId, key);
 		
 		int effectiveUnlocking   = Math.max(0, unlocking - lockSecurity);
 		int effectiveLockpicking = Math.max(0, lockpicking - lockSecurity);

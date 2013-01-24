@@ -86,7 +86,7 @@ public class CratePileCollection {
 			NBTTagCompound root = new NBTTagCompound();
 			root.setCompoundTag("data", pileData.toCompound());
 			CompressedStreamTools.write(root, tempFile);
-			if (!file.delete())
+			if (file.exists() && !file.delete())
 				throw new Exception(file + " could not be deleted.");
 			tempFile.renameTo(file);
 		} catch (Exception e) {
