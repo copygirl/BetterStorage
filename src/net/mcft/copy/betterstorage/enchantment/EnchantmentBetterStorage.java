@@ -1,4 +1,4 @@
-package net.mcft.copy.betterstorage.enchantments;
+package net.mcft.copy.betterstorage.enchantment;
 
 import net.mcft.copy.betterstorage.Config;
 import net.minecraft.enchantment.Enchantment;

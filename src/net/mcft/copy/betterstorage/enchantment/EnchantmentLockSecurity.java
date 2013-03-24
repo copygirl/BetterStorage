@@ -1,4 +1,4 @@
-package net.mcft.copy.betterstorage.enchantments;
+package net.mcft.copy.betterstorage.enchantment;
 
 /** Protects the lock against Lockpicking, Unlocking and Morphing. */
 public class EnchantmentLockSecurity extends EnchantmentLock {

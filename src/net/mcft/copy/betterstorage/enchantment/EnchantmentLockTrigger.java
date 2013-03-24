@@ -1,4 +1,4 @@
-package net.mcft.copy.betterstorage.enchantments;
+package net.mcft.copy.betterstorage.enchantment;
 
 /** Makes the chest emit redstone when a player tries to open
  *  the lock (unsuccessfully) or pick it, or break the chest. */

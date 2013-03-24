@@ -1,4 +1,4 @@
-package net.mcft.copy.betterstorage.enchantments;
+package net.mcft.copy.betterstorage.enchantment;
 
 /** Can open more locks. The higher the level, the more locks
  *  this key will be able to open. <br>

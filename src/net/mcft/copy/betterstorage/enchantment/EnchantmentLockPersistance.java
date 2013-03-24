@@ -1,4 +1,4 @@
-package net.mcft.copy.betterstorage.enchantments;
+package net.mcft.copy.betterstorage.enchantment;
 
 /** Makes the chest take longer to break. */
 public class EnchantmentLockPersistance extends EnchantmentLock {

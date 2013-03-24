@@ -3,7 +3,7 @@ package net.mcft.copy.betterstorage.item;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.mcft.copy.betterstorage.api.ILockable;
-import net.mcft.copy.betterstorage.enchantments.EnchantmentBetterStorage;
+import net.mcft.copy.betterstorage.enchantment.EnchantmentBetterStorage;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.enchantment.EnchantmentHelper;

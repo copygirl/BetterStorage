@@ -8,7 +8,7 @@ import net.mcft.copy.betterstorage.block.BlockLocker;
 import net.mcft.copy.betterstorage.block.BlockReinforcedChest;
 import net.mcft.copy.betterstorage.block.ChestMaterial;
 import net.mcft.copy.betterstorage.block.crate.BlockCrate;
-import net.mcft.copy.betterstorage.enchantments.EnchantmentBetterStorage;
+import net.mcft.copy.betterstorage.enchantment.EnchantmentBetterStorage;
 import net.mcft.copy.betterstorage.item.ItemKey;
 import net.mcft.copy.betterstorage.item.ItemLock;
 import net.mcft.copy.betterstorage.item.KeyRecipe;

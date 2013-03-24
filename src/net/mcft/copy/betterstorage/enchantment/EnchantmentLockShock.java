@@ -1,4 +1,4 @@
-package net.mcft.copy.betterstorage.enchantments;
+package net.mcft.copy.betterstorage.enchantment;
 
 /** Damages any player who tries to (unsuccessfully) open
  *  or pick the lock, or break the chest. */
