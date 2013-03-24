@@ -1,16 +1,15 @@
 package net.mcft.copy.betterstorage.block;
 
 import java.security.InvalidParameterException;
-import java.util.List;
 
-import net.mcft.copy.betterstorage.BetterStorage;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.mcft.copy.betterstorage.Config;
-import net.mcft.copy.betterstorage.ILockable;
-import net.mcft.copy.betterstorage.inventory.InventoryCombined;
+import net.mcft.copy.betterstorage.api.ILockable;
 import net.mcft.copy.betterstorage.inventory.InventoryWrapper;
 import net.mcft.copy.betterstorage.item.ItemLock;
+import net.mcft.copy.betterstorage.utils.NbtUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -19,15 +18,10 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.ForgeDirection;
 
-public class TileEntityReinforcedChest extends TileEntity implements IInventory, ILockable {
-	
-	private static ForgeDirection[] neighborChests = {
-			ForgeDirection.EAST, ForgeDirection.NORTH,
-			ForgeDirection.WEST, ForgeDirection.SOUTH };
+public class TileEntityReinforcedChest extends TileEntityConnectable implements IInventory, ILockable {
 
 	private ItemStack[] contents;
 	private IInventory wrapper;
@@ -40,103 +34,91 @@ public class TileEntityReinforcedChest extends TileEntity implements IInventory,
 	public float lidAngle = 0;
 	public float prevLidAngle = 0;
 	
-	public ForgeDirection orientation = ForgeDirection.UNKNOWN;
-	public ForgeDirection connected = ForgeDirection.UNKNOWN;
-	
 	/** Gets the chest's wrapper inventory. <br>
 	 *  This is needed since the chest itself may be protected
 	 *  from a lock so it's unable to be accessed by machines. */
 	public IInventory getWrapper() { return wrapper; }
 	
-	public boolean isLarge() { return (connected != ForgeDirection.UNKNOWN); }
-	public boolean isMainChest() { return (!isLarge() || (connected.offsetX + connected.offsetZ > 0)); }
-	public TileEntityReinforcedChest getMainChest() {
-		if (isMainChest()) return this;
-		TileEntityReinforcedChest chest = getConnectedChest();
-		if (chest != null) return chest;
-		BetterStorage.log("Warning: getConnectedChest returned null.");
-		return this;
-	}
-	public TileEntityReinforcedChest getConnectedChest() {
-		return WorldUtils.getChest(worldObj, xCoord + connected.offsetX, yCoord, zCoord + connected.offsetZ);
-	}
-	
-	public TileEntityReinforcedChest() { this(null); }
-	public TileEntityReinforcedChest(Block block) {
+	public TileEntityReinforcedChest() {
 		contents = new ItemStack[getNumColumns() * getNumRows()];
 		wrapper = new InventoryWrapper(contents, this);
 	}
 	
-	// Chest connecting stuff
-	
-	/** Connects chests that can be connected. */
-	public void checkForAdjacentChests() {
-		TileEntityReinforcedChest chestFound = null;
-		ForgeDirection dirFound = ForgeDirection.UNKNOWN;
-		for (ForgeDirection dir : neighborChests) {
-			TileEntityReinforcedChest chest = WorldUtils.getChest(worldObj, xCoord + dir.offsetX, yCoord, zCoord + dir.offsetZ);
-			if (!canConnectChests(chest)) continue;
-			if (chestFound != null) return;
-			chestFound = chest;
-			dirFound = dir;
-		}
-		if (chestFound == null) return;
-		connected = dirFound;
-		chestFound.connected = dirFound.getOpposite();
-		// Mark the block for an update, sends description packet to players.
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-		worldObj.markBlockForUpdate(chestFound.xCoord, chestFound.yCoord, chestFound.zCoord);
+	@Override
+	@SideOnly(Side.CLIENT)
+	public AxisAlignedBB getRenderBoundingBox() {
+		return WorldUtils.getAABB(this, 0, 0, 0, 1, 1, 1);
 	}
 	
-	public boolean canConnectChests(TileEntityReinforcedChest chest) {
-		return (chest != null &&                                  // check for null
-				getBlockType() == chest.getBlockType() &&         // check for same block id
-				getBlockMetadata() == chest.getBlockMetadata() && // check for same material
-		        orientation == chest.orientation &&               // check for same orientation
-		        // Make sure the chest is to the left or right, not in front or behind.
+	// TileEntityConnectable stuff
+	
+	public TileEntityReinforcedChest getMainChest() {
+		return (TileEntityReinforcedChest)getMain();
+	}
+	public TileEntityReinforcedChest getConnectedChest() {
+		return (TileEntityReinforcedChest)getConnected();
+	}
+	
+	private static ForgeDirection[] neighbors = {
+		ForgeDirection.EAST, ForgeDirection.NORTH,
+		ForgeDirection.WEST, ForgeDirection.SOUTH };
+	@Override
+	public ForgeDirection[] getPossibleNeighbors() { return neighbors; }
+	
+	@Override
+	public boolean canConnect(TileEntityConnectable connectable) {
+		if (!(connectable instanceof TileEntityReinforcedChest)) return false;
+		TileEntityReinforcedChest chest = (TileEntityReinforcedChest)connectable;
+		return (super.canConnect(connectable) &&
 		        ((xCoord != chest.xCoord && (orientation == ForgeDirection.EAST || orientation == ForgeDirection.WEST)) ||
 		         (zCoord != chest.zCoord && (orientation == ForgeDirection.SOUTH || orientation == ForgeDirection.NORTH))) &&
-		        // Make sure the chests are not already large or locked.
-		        !isLarge() && !chest.isLarge() && !isLocked() && !chest.isLocked());
+		        !isLocked() && !chest.isLocked());
 	}
 	
-	/** Disconnects chests, for example when they're destroyed. */
-	public void disconnectChests() {
-		if (connected == ForgeDirection.UNKNOWN) return;
-		TileEntityReinforcedChest chest = getConnectedChest();
-		connected = ForgeDirection.UNKNOWN;
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-		if (chest != null) {
-			chest.connected = ForgeDirection.UNKNOWN;
-			worldObj.markBlockForUpdate(chest.xCoord, chest.yCoord, chest.zCoord);
-		} else BetterStorage.log("Warning: getConnectedChest returned null.");
-	}
-	
-	// Tile entity synchronization
+	// TileEntity synchronization
 	
 	@Override
 	public Packet getDescriptionPacket() {
-		NBTTagCompound compound = new NBTTagCompound();
-		compound.setByte("orientation", (byte)orientation.ordinal());
-		compound.setByte("connected", (byte)connected.ordinal());
+		Packet132TileEntityData packet =
+				(Packet132TileEntityData)super.getDescriptionPacket();
+		NBTTagCompound compound = packet.customParam1;
 		if (lock != null) {
 			NBTTagCompound lockCompound = new NBTTagCompound();
 			lock.writeToNBT(lockCompound);
 			compound.setCompoundTag("lock", lockCompound);
 		}
-        return new Packet132TileEntityData(xCoord, yCoord, zCoord, 0, compound);
+        return packet;
 	}
 	
 	@Override
 	public void onDataPacket(INetworkManager net, Packet132TileEntityData packet) {
+		super.onDataPacket(net, packet);
 		NBTTagCompound compound = packet.customParam1;
-		orientation = ForgeDirection.getOrientation(compound.getByte("orientation"));
-		connected = ForgeDirection.getOrientation(compound.getByte("connected"));
 		if (!compound.hasKey("lock")) lock = null;
 		else lock = ItemStack.loadItemStackFromNBT(compound.getCompoundTag("lock"));
 	}
 	
-	// Begin chest stuff
+	// Reading from / writing to NBT
+	
+	@Override
+	public void readFromNBT(NBTTagCompound compound) {
+		super.readFromNBT(compound);
+		NBTTagList items = compound.getTagList("Items");
+		contents = NbtUtils.readItems(compound, contents.length);
+		wrapper = new InventoryWrapper(contents, this);
+		if (compound.hasKey("lock"))
+			lock = ItemStack.loadItemStackFromNBT(compound.getCompoundTag("lock"));
+	}
+	
+	@Override
+	public void writeToNBT(NBTTagCompound compound) {
+		super.writeToNBT(compound);
+		NbtUtils.writeItems(compound, contents);
+		if (lock != null)
+			compound.setCompoundTag("lock", lock.writeToNBT(new NBTTagCompound("")));
+	}
+	
+	// IInventory stuff
 	
 	public int getNumColumns() { return (Config.normalSizedChests ? 9 : 13); }
 	public int getNumRows() { return 3; }
@@ -166,9 +148,12 @@ public class TileEntityReinforcedChest extends TileEntity implements IInventory,
 	
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) {
-		return (worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) == this &&
-		        player.getDistanceSq(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5) <= 64.0);
+		return WorldUtils.isTileEntityUsableByPlayer(this, player);
 	}
+	@Override
+	public boolean isInvNameLocalized() { return false; }
+	@Override
+	public boolean isStackValidForSlot(int i, ItemStack stack) { return true; }
 	
 	@Override
 	public void openChest() {
@@ -181,52 +166,30 @@ public class TileEntityReinforcedChest extends TileEntity implements IInventory,
 		worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType().blockID, 1, numUsingPlayers);
 	}
 	@Override
-	public void receiveClientEvent(int eventId, int val) {
+	public boolean receiveClientEvent(int eventId, int val) {
 		numUsingPlayers = val;
+		return true;
 	}
 	
 	@Override
 	public void updateEntity() {
-		ticksSinceSync++;
-		if (!worldObj.isRemote && numUsingPlayers != 0 &&
-		    (ticksSinceSync + xCoord + yCoord + zCoord) % 200 == 0) {
-			numUsingPlayers = 0;
-			List players = worldObj.getEntitiesWithinAABB(
-					EntityPlayer.class,
-					AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(
-							xCoord - 5, yCoord - 5, zCoord - 5,
-							xCoord + 6, yCoord + 6, zCoord + 6));
-			for (Object p : players) {
-				EntityPlayer player = (EntityPlayer)p;
-				if (player.openContainer instanceof ContainerReinforcedChest) {
-					IInventory inventory = ((ContainerReinforcedChest)player.openContainer).inventory;
-					boolean isUsing = false;
-					if (inventory instanceof InventoryWrapper &&
-					    (InventoryWrapper)inventory == wrapper) isUsing = true;
-					else if (inventory instanceof InventoryCombined)
-						for (InventoryWrapper w : (InventoryCombined<InventoryWrapper>)inventory)
-							if (w == wrapper) isUsing = true;
-					if (isUsing)
-						numUsingPlayers++;
-				}
-			}
-		}
+		numUsingPlayers = WorldUtils.syncPlayersUsing(this, ++ticksSinceSync, numUsingPlayers, wrapper);
 		
 		prevLidAngle = lidAngle;
 		float lidSpeed = 0.1F;
 		double x = xCoord + 0.5;
 		double y = yCoord + 0.5;
 		double z = zCoord + 0.5;
-		if (isLarge()) {
-			TileEntityReinforcedChest connectedChest = getConnectedChest();
-			if (connectedChest != null) {
-				x = (x + connectedChest.xCoord + 0.5) / 2;
-				z = (z + connectedChest.zCoord + 0.5) / 2;
+		if (isConnected()) {
+			TileEntityConnectable connectable = getConnected();
+			if (connectable != null) {
+				x = (x + connectable.xCoord + 0.5) / 2;
+				z = (z + connectable.zCoord + 0.5) / 2;
 			}
 		}
 		
-		// Play sound when opening chest
-		if (numUsingPlayers > 0 && lidAngle == 0.0F && isMainChest())
+		// Play sound when opening
+		if (numUsingPlayers > 0 && lidAngle == 0.0F && isMain())
 			worldObj.playSoundEffect(x, y, z, "random.chestopen", 0.5F,
 			                         worldObj.rand.nextFloat() * 0.1F + 0.9F);
 		
@@ -236,55 +199,18 @@ public class TileEntityReinforcedChest extends TileEntity implements IInventory,
 			if (numUsingPlayers > 0) lidAngle = Math.min(1.0F, lidAngle + lidSpeed);
 			else lidAngle = Math.max(0.0F, lidAngle - lidSpeed);
 			
-			// Play sound when closing chest
-			if (lidAngle < 0.5F && prevLidAngle >= 0.5F && isMainChest())
+			// Play sound when closing
+			if (lidAngle < 0.5F && prevLidAngle >= 0.5F && isMain())
 				worldObj.playSoundEffect(x, y, z, "random.chestclosed", 0.5F,
                         worldObj.rand.nextFloat() * 0.1F + 0.9F);
 		}
 	}
 	
-	@Override
-	public void readFromNBT(NBTTagCompound compound) {
-		super.readFromNBT(compound);
-		orientation = ForgeDirection.getOrientation(compound.getByte("orientation"));
-		connected = ForgeDirection.getOrientation(compound.getByte("connected"));
-		NBTTagList items = compound.getTagList("Items");
-		contents = new ItemStack[contents.length];
-		for (int i = 0; i < items.tagCount(); i++) {
-			NBTTagCompound item = (NBTTagCompound)items.tagAt(i);
-			int slot = item.getByte("Slot") & 255;
-			if (slot >= 0 && slot < contents.length)
-				contents[slot] = ItemStack.loadItemStackFromNBT(item);
-		}
-		if (compound.hasKey("lock"))
-			lock = ItemStack.loadItemStackFromNBT(compound.getCompoundTag("lock"));
-	}
-	@Override
-	public void writeToNBT(NBTTagCompound compound) {
-		super.writeToNBT(compound);
-		compound.setByte("orientation", (byte)orientation.ordinal());
-		compound.setByte("connected", (byte)connected.ordinal());
-		NBTTagList list = new NBTTagList();
-		for (int i = 0; i < contents.length; i++) {
-			if (contents[i] == null) continue;
-			NBTTagCompound item = new NBTTagCompound();
-			item.setByte("Slot", (byte)i);
-			contents[i].writeToNBT(item);
-			list.appendTag(item);
-		}
-		compound.setTag("Items", list);
-		if (lock != null)
-			compound.setCompoundTag("lock", lock.writeToNBT(new NBTTagCompound("")));
-	}
-	
 	// Dropping stuff
 	
 	public void dropContents() {
-		for (int slot = 0; slot < contents.length; slot++) {
-			ItemStack stack = contents[slot];
-			if (stack == null) continue;
+		for (ItemStack stack : contents)
 			WorldUtils.dropStackFromBlock(worldObj, xCoord, yCoord, zCoord, stack);
-		}
 	}
 	public void dropLock() {
 		ItemStack lock = getLock();
@@ -345,14 +271,14 @@ public class TileEntityReinforcedChest extends TileEntity implements IInventory,
 		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord - 1, id);
 		
 		// Notify nearby blocks of adjacent chest
-		if (isLarge() && connected == ForgeDirection.EAST) {
+		if (isConnected() && connected == ForgeDirection.EAST) {
 			worldObj.notifyBlocksOfNeighborChange(xCoord + 2, yCoord, zCoord, id);
 			worldObj.notifyBlocksOfNeighborChange(xCoord + 1, yCoord + 1, zCoord, id);
 			worldObj.notifyBlocksOfNeighborChange(xCoord + 1, yCoord - 1, zCoord, id);
 			worldObj.notifyBlocksOfNeighborChange(xCoord + 1, yCoord, zCoord + 1, id);
 			worldObj.notifyBlocksOfNeighborChange(xCoord + 1, yCoord, zCoord - 1, id);
 		} else worldObj.notifyBlocksOfNeighborChange(xCoord + 1, yCoord, zCoord, id);
-		if (isLarge() && connected == ForgeDirection.SOUTH) {
+		if (isConnected() && connected == ForgeDirection.SOUTH) {
 			worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord + 2, id);
 			worldObj.notifyBlocksOfNeighborChange(xCoord + 1, yCoord, zCoord + 1, id);
 			worldObj.notifyBlocksOfNeighborChange(xCoord - 1, yCoord, zCoord + 1, id);

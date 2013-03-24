@@ -44,7 +44,7 @@ public class StackUtils {
 	}
 	
 	/** Returns if the tag exists in the ItemStack's custom NBT data. Example: <br>
-	 *  <code> if (ItemUtils.has(stack, "display/color")) { ... </code> */
+	 *  <code> if (ItemUtils.has(stack, "display", "color")) ... </code> */
 	public static boolean has(ItemStack stack, String... tags) {
 		if (!stack.hasTagCompound()) return false;
 		String tag = null;
@@ -59,7 +59,8 @@ public class StackUtils {
 	}
 	
 	/** Removes a value from the ItemStack's custom NBT data. <br>
-	 *  Gets rid of any empty parent compounds. */
+	 *  Gets rid of any empty parent compounds. Example: <br>
+	 *  <code> ItemUtils.remove(stack, "display", "code"); </code> */
 	public static void remove(ItemStack stack, String... tags) {
 		if (!stack.hasTagCompound()) return;
 		String tag = null;

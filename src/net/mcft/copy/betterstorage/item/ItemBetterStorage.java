@@ -1,6 +1,5 @@
 package net.mcft.copy.betterstorage.item;
 
-import net.mcft.copy.betterstorage.Constants;
 import net.minecraft.item.Item;
 
 public abstract class ItemBetterStorage extends Item {
@@ -11,8 +10,5 @@ public abstract class ItemBetterStorage extends Item {
 		super(id - 256);
 		setMaxStackSize(1);
 	}
-	
-	@Override
-	public String getTextureFile() { return Constants.items; }
 	
 }

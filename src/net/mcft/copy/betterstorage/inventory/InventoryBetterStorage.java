@@ -19,6 +19,7 @@ public abstract class InventoryBetterStorage implements IInventory {
 	
 	@Override
 	public String getInvName() { return name; }
+	
 	@Override
 	public int getInventoryStackLimit() { return 64; }
 	
@@ -34,5 +35,11 @@ public abstract class InventoryBetterStorage implements IInventory {
 		setInventorySlotContents(slot, null);
 		return stack;
 	}
+	
+	@Override
+	public boolean isInvNameLocalized() { return false; }
+	
+	@Override
+	public boolean isStackValidForSlot(int i, ItemStack stack) { return true; }
 	
 }

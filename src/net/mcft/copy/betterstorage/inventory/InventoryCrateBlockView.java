@@ -1,12 +1,16 @@
 package net.mcft.copy.betterstorage.inventory;
 
-import net.mcft.copy.betterstorage.ItemIdentifier;
-import net.mcft.copy.betterstorage.block.CratePileData;
+import net.mcft.copy.betterstorage.block.crate.CratePileData;
+import net.mcft.copy.betterstorage.misc.ItemIdentifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 /** An inventory interface built for machines accessing crate piles. */
 public class InventoryCrateBlockView extends InventoryBetterStorage {
+	
+	// TODO: Rewrite this, some machines don't like the way this fake inventory works.
+	// Suggestion: Do it similar to InventoryCratePlayerView, update internal
+	//             inventory every tick instead of every access.
 	
 	private CratePileData data;
 	

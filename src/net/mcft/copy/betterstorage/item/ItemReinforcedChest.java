@@ -7,17 +7,17 @@ import net.minecraft.item.ItemStack;
 public class ItemReinforcedChest extends ItemBlock {
 	
 	public ItemReinforcedChest(int id) {
-		super(id - 256);
+		super(id);
+		setHasSubtypes(true);
+		setMaxDamage(0);
 	}
 	
 	@Override
 	public int getMetadata(int damage) { return damage; }
-
+	
 	@Override
-	public String getItemName() { return "reinforcedChest"; }
-	@Override
-	public String getItemNameIS(ItemStack stack) {
-		return getItemName() + "." + ChestMaterial.get(stack.getItemDamage()).name;
+	public String getUnlocalizedName(ItemStack stack) {
+		return getUnlocalizedName() + "." + ChestMaterial.get(stack.getItemDamage()).name;
 	}
 	
 }

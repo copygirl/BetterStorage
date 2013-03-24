@@ -3,6 +3,7 @@ package net.mcft.copy.betterstorage.enchantments;
 import net.mcft.copy.betterstorage.Config;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnumEnchantmentType;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.EnumHelper;
 
 public abstract class EnchantmentBetterStorage extends Enchantment {
@@ -39,6 +40,11 @@ public abstract class EnchantmentBetterStorage extends Enchantment {
 	public EnchantmentBetterStorage(int id, int weight, EnumEnchantmentType type, String name) {
 		super(id, weight, type);
 		setName(name);
+	}
+	
+	@Override
+	public boolean func_92089_a(ItemStack stack) {
+		return canApplyAtEnchantingTable(stack);
 	}
 	
 	@Override

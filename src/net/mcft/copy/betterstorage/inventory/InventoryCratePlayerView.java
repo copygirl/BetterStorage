@@ -1,68 +1,95 @@
 package net.mcft.copy.betterstorage.inventory;
 
-import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
-import java.util.Map.Entry;
-
 import net.mcft.copy.betterstorage.BetterStorage;
-import net.mcft.copy.betterstorage.ItemIdentifier;
-import net.mcft.copy.betterstorage.block.CratePileData;
-import net.mcft.copy.betterstorage.block.TileEntityCrate;
+import net.mcft.copy.betterstorage.block.crate.CratePileData;
+import net.mcft.copy.betterstorage.block.crate.ICrateWatcher;
+import net.mcft.copy.betterstorage.block.crate.TileEntityCrate;
+import net.mcft.copy.betterstorage.misc.ItemIdentifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 /** An inventory interface built for players accessing crate piles. */
-public class InventoryCratePlayerView extends InventoryBetterStorage {
+public class InventoryCratePlayerView extends InventoryBetterStorage implements ICrateWatcher {
 	
 	private static final int inventoryMaxSize = 9 * 6;
+	
+	private static class MapData {
+		public int itemCount = 0;
+	}
+	private static class Entry {
+		public ItemIdentifier item;
+		public int numStacks;
+		public Entry(ItemIdentifier item, int numStacks) {
+			this.item = item;
+			this.numStacks = numStacks;
+		}
+	}
 	
 	public final CratePileData data;
 	public final TileEntityCrate crate;
 	
 	private ItemStack[] tempContents;
-	private Map<ItemIdentifier, Integer> itemCounts = new HashMap<ItemIdentifier, Integer>();
+	private Map<ItemIdentifier, MapData> countData = new HashMap<ItemIdentifier, MapData>();
+	 
+	private boolean ignoreModifiedItems = false;
 	
 	public InventoryCratePlayerView(TileEntityCrate crate) {
 		super("container.crate");
 		this.data = crate.getPileData();
 		this.crate = crate;
 		
-		int count = Math.min(data.getCapacity(), inventoryMaxSize);
-		tempContents = new ItemStack[count];
+		int size = Math.min(data.getCapacity(), inventoryMaxSize);
+		tempContents = new ItemStack[size];
+		
+		// Fill temp contents with some random items from the crate pile.
+		int totalStacks = data.getOccupiedSlots();
+		LinkedList<Entry> stacks = new LinkedList<Entry>();
+		for (ItemStack contentsStack : data) {
+			ItemIdentifier item = new ItemIdentifier(contentsStack);
+			int numStacks = ItemIdentifier.calcNumStacks(contentsStack);
+			stacks.add(new Entry(item, numStacks));
+		}
+		for (int slot = 0; (totalStacks > 0) && (slot < size); slot++) {
+			int randomStack = BetterStorage.random.nextInt(totalStacks--);
+			for (ListIterator<Entry> iter = stacks.listIterator(); iter.hasNext(); ) {
+				Entry entry = iter.next();
+				if (randomStack < entry.numStacks) {
+					ItemStack contentsStack = data.getItemStack(entry.item);
+					MapData data = getMapData(entry.item);
+					int count = Math.min(contentsStack.stackSize - data.itemCount, contentsStack.getMaxStackSize());
+					ItemStack stack = entry.item.createStack(count);
+					data.itemCount += stack.stackSize;
+					tempContents[slot] = stack;
+					if (--entry.numStacks <= 0) iter.remove();
+					break;
+				}
+				randomStack -= entry.numStacks;
+			}
+		}
+		
+		openChest();
 	}
 	
-	private int getItemCount(ItemIdentifier item) {
-		if (item == null) return 0;
-		if (itemCounts.containsKey(item))
-			return itemCounts.get(item);
-		else return 0;
+	// Map data related functions
+	
+	private MapData getMapData(ItemIdentifier item) {
+		MapData data = countData.get(item);
+		if (data != null) return data;
+		data = new MapData();
+		countData.put(item, data);
+		return data;
 	}
-	private int getItemCount(ItemStack item) {
-		if (item == null) return 0;
-		return getItemCount(new ItemIdentifier(item));
+	private MapData getMapData(ItemStack item) {
+		return getMapData(new ItemIdentifier(item));
 	}
 	
-	private void setItemCount(ItemIdentifier item, int count) {
-		if (item == null) return;
-		if (count > 0) itemCounts.put(item, count);
-		else itemCounts.remove(item);
-	}
-	private void setItemCount(ItemStack item, int count) {
-		if (item == null) return;
-		setItemCount(new ItemIdentifier(item), count);
-	}
-	
-	private void setItemCountRelative(ItemIdentifier item, int count) {
-		if (item == null) return;
-		setItemCount(item, getItemCount(item) + count);
-	}
-	private void setItemCountRelative(ItemStack item, int count) {
-		if (item == null) return;
-		setItemCountRelative(new ItemIdentifier(item), count);
-	}
+	// IInventory implementation
 	
 	@Override
 	public int getSizeInventory() { return tempContents.length; }
@@ -70,65 +97,26 @@ public class InventoryCratePlayerView extends InventoryBetterStorage {
 	@Override
 	public ItemStack getStackInSlot(int slot) {
 		if (slot < 0 || slot >= getSizeInventory()) return null;
-		ItemStack stack = tempContents[slot];
-		if (stack != null) {
-			ItemStack oldStack = stack.copy();
-			int difference = data.getItemCount(stack) - getItemCount(stack);
-			difference = Math.min(difference, stack.getMaxStackSize() - stack.stackSize);
-			difference = Math.max(difference, -stack.stackSize);
-			if (difference != 0) {
-				setItemCountRelative(stack, difference);
-				stack.stackSize += difference;
-				if (stack.stackSize <= 0) {
-					tempContents[slot] = null;
-					stack = null;
-				}
-			}
-		} else {
-			int totalStacks = 0;
-			List<Entry<ItemIdentifier, Integer>> stacks =
-					new ArrayList<Entry<ItemIdentifier, Integer>>();
-			for (ItemStack contentsStack : data) {
-				int count = contentsStack.stackSize - getItemCount(contentsStack);
-				if (count <= 0) continue;
-				ItemIdentifier item = new ItemIdentifier(contentsStack);
-				int numStacks = item.calcNumStacks(count);
-				stacks.add(new AbstractMap.SimpleEntry(item, numStacks));
-				totalStacks += numStacks;
-			}
-			for (Entry<ItemIdentifier, Integer> entry : stacks) {
-				ItemIdentifier item = entry.getKey();
-				int numStacks = entry.getValue();
-				if (BetterStorage.random.nextInt(totalStacks) < numStacks) {
-					ItemStack contentsStack = data.getItemStack(item);
-					int count = contentsStack.stackSize - getItemCount(contentsStack);
-					stack = contentsStack.copy();
-					stack.stackSize = Math.min(count, stack.getMaxStackSize());
-					setItemCountRelative(item, stack.stackSize);
-					tempContents[slot] = stack;
-					break;
-				}
-				totalStacks -= numStacks;
-			}
-		}
-		return stack;
+		return tempContents[slot];
 	}
 	
 	@Override
 	public void setInventorySlotContents(int slot, ItemStack stack) {
 		if (slot < 0 || slot >= getSizeInventory()) return;
 		ItemStack oldStack = getStackInSlot(slot);
+		ignoreModifiedItems = true;
 		if (oldStack != null) {
-			setItemCountRelative(oldStack, -oldStack.stackSize);
+			getMapData(oldStack).itemCount -= oldStack.stackSize;
 			data.removeItems(oldStack, oldStack.stackSize);
 		}
 		if (stack != null) {
 			stack.stackSize = Math.min(stack.stackSize, Math.min(data.spaceForItem(stack),
 			                                                     stack.getMaxStackSize()));
 			if (stack.stackSize == 0) return;
-			setItemCountRelative(stack, stack.stackSize);
+			getMapData(stack).itemCount += stack.stackSize;
 			data.addItems(stack);
 		}
+		ignoreModifiedItems = false;
 		tempContents[slot] = ItemStack.copyItemStack(stack);
 	}
 	
@@ -137,11 +125,18 @@ public class InventoryCratePlayerView extends InventoryBetterStorage {
 		ItemStack stack = getStackInSlot(slot);
 		if (stack == null) return null;
 		amount = Math.min(amount, stack.stackSize);
+		
+		ItemIdentifier item = new ItemIdentifier(stack);
+		getMapData(item).itemCount -= amount;
+		
 		stack.stackSize -= amount;
 		if (stack.stackSize <= 0)
 			tempContents[slot] = null;
-		setItemCountRelative(stack, -amount);
-		ItemStack result = data.removeItems(stack, amount);
+		
+		ignoreModifiedItems = true;
+		ItemStack result = data.removeItems(item, amount);
+		ignoreModifiedItems = false;
+		
 		return result;
 	}
 	
@@ -157,9 +152,55 @@ public class InventoryCratePlayerView extends InventoryBetterStorage {
 	
 	@Override
 	public void onInventoryChanged() { }
+	
 	@Override
-	public void openChest() { }
+	public void openChest() { data.addWatcher(this); }
 	@Override
-	public void closeChest() { }
+	public void closeChest() { data.removeWatcher(this); }
+	
+	// ICrateWatcher implementation
+	
+	@Override
+	public void onCrateItemsModified(ItemIdentifier item, int amount) {
+		if (ignoreModifiedItems) return;
+		
+		MapData data = getMapData(item);
+		int totalStacks = 0;
+		List<Integer> emptySlots = null;
+		if (amount > 0) {
+			totalStacks = Math.min(item.calcNumStacks(amount), tempContents.length);
+			emptySlots = new ArrayList<Integer>(totalStacks);
+		}
+		
+		for (int slot = 0; slot < tempContents.length; slot++) {
+			ItemStack stack = tempContents[slot];
+			if (stack == null) {
+				if (emptySlots != null && emptySlots.size() < totalStacks)
+					emptySlots.add(slot);
+				continue;
+			}
+			if (!item.matches(stack)) continue;
+			int delta = modifyItemsInSlot(slot, stack, amount); 
+			data.itemCount += delta;
+			if ((amount -= delta) == 0) return;
+		}
+		
+		if (amount <= 0) return;
+		
+		for (int slot : emptySlots) {
+			int count = Math.min(amount, item.getItem().getItemStackLimit());
+			ItemStack stack = item.createStack(count);
+			tempContents[slot] = stack;
+			data.itemCount += count;
+			if ((amount -= count) <= 0) return;
+		}
+	}
+	
+	private int modifyItemsInSlot(int slot, ItemStack stack, int amount) {
+		int count = Math.max(-stack.stackSize, Math.min(amount, stack.getMaxStackSize() - stack.stackSize));
+		if ((stack.stackSize += count) <= 0)
+			tempContents[slot] = null;
+		return count;
+	}
 	
 }

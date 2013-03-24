@@ -3,7 +3,7 @@ package net.mcft.copy.betterstorage.block;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.mcft.copy.betterstorage.Constants;
+import net.mcft.copy.betterstorage.misc.Constants;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -44,9 +44,9 @@ public class ChestMaterial {
 		materials.add(this);
 	}
 	
-	public ShapedOreRecipe getRecipe(Block block) {
+	public ShapedOreRecipe getRecipe(Block result) {
 		return new ShapedOreRecipe(
-				new ItemStack(block, 1, id),
+				new ItemStack(result, 1, id),
 				"o#o",
 				"#C#",
 				"oOo", 'C', Block.chest,
@@ -56,7 +56,7 @@ public class ChestMaterial {
 	}
 	
 	public String getTexture(boolean large) {
-		return Constants.gfxbase + (large ? "largeReinforced" : "reinforced") + nameCapitalized + "Chest.png";
+		return Constants.gfxbase + "models/chest" + (large ? "_large/" : "/") + name + ".png";
 	}
 	
 }

@@ -1,12 +1,11 @@
 package net.mcft.copy.betterstorage.item;
 
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.mcft.copy.betterstorage.ILockable;
+import net.mcft.copy.betterstorage.api.ILockable;
 import net.mcft.copy.betterstorage.enchantments.EnchantmentBetterStorage;
 import net.mcft.copy.betterstorage.utils.StackUtils;
-import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,21 +13,27 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 
 public class ItemKey extends ItemBetterStorage {
 	
+	private Icon iconGold, iconIron, iconColor;
+	
 	public ItemKey(int id) {
 		super(id);
-		setIconCoord(0, 0);
 		
-		setItemName("key");
-		LanguageRegistry.addName(this, "Key");
-		
-		setCreativeTab(CreativeTabs.tabMisc);
 		// This is needed to make sure the item stays in the crafting
 		// matrix when used to craft a lock or duplicate a key.
 		setContainerItem(this);
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void updateIcons(IconRegister iconRegister) {
+		iconGold = iconIndex = iconRegister.registerIcon("betterstorage:key_gold");
+		iconIron = iconRegister.registerIcon("betterstorage:key_iron");
+		iconColor = iconRegister.registerIcon("betterstorage:key_color");
 	}
 	
 	@Override
@@ -53,14 +58,10 @@ public class ItemKey extends ItemBetterStorage {
 	}
 	
 	@Override
-	public int getIconIndex(ItemStack stack, int renderPass) {
+	public Icon getIcon(ItemStack stack, int renderPass) {
 		boolean colored = StackUtils.has(stack, "display", "color");
 		boolean ironPlated = (StackUtils.get(stack, (byte)0, "display", "ironPlated") == 1);
-		int index = 0;
-		if (renderPass == 0) {
-			if (ironPlated) index += 1;
-		} else index = (colored ? 15 : 14);
-		return (index * 16);
+		return ((renderPass > 0 && colored) ? iconColor : (ironPlated ? iconIron : iconGold));
 	}
 	
 	@Override
@@ -70,7 +71,7 @@ public class ItemKey extends ItemBetterStorage {
 		
 		TileEntity entity = world.getBlockTileEntity(x, y, z);
 		// Return if there is no lockable container.
-		if (entity == null && !(entity instanceof ILockable)) return false;
+		if (entity == null || !(entity instanceof ILockable)) return false;
 		ILockable lockable = (ILockable)entity;
 		// Return if the container isn't locked.
 		if (!lockable.isLocked()) return false;
@@ -96,10 +97,10 @@ public class ItemKey extends ItemBetterStorage {
 		int lockId = lock.getItemDamage();
 		int keyId  = key.getItemDamage();
 		
-		int lockSecurity = EnchantmentHelper.getLevel(EnchantmentBetterStorage.security.effectId, lock);
-		int unlocking    = EnchantmentHelper.getLevel(EnchantmentBetterStorage.unlocking.effectId, key);
-		int lockpicking  = EnchantmentHelper.getLevel(EnchantmentBetterStorage.lockpicking.effectId, key);
-		int morphing     = EnchantmentHelper.getLevel(EnchantmentBetterStorage.morphing.effectId, key);
+		int lockSecurity = EnchantmentHelper.getEnchantmentLevel(EnchantmentBetterStorage.security.effectId, lock);
+		int unlocking    = EnchantmentHelper.getEnchantmentLevel(EnchantmentBetterStorage.unlocking.effectId, key);
+		int lockpicking  = EnchantmentHelper.getEnchantmentLevel(EnchantmentBetterStorage.lockpicking.effectId, key);
+		int morphing     = EnchantmentHelper.getEnchantmentLevel(EnchantmentBetterStorage.morphing.effectId, key);
 		
 		int effectiveUnlocking   = Math.max(0, unlocking - lockSecurity);
 		int effectiveLockpicking = Math.max(0, lockpicking - lockSecurity);

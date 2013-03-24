@@ -10,7 +10,7 @@ public class EnchantmentLock extends EnchantmentBetterStorage {
 	}
 	
 	@Override
-	public boolean func_92037_a(ItemStack stack) {
+	public boolean canApplyAtEnchantingTable(ItemStack stack) {
 		return (stack.getItem() instanceof ItemLock);
 	}
 	
