@@ -56,11 +56,10 @@ public class TileEntityReinforcedChestRenderer extends TileEntitySpecialRenderer
 		model.renderAll();
 		
 		// Render lock
-		// FIXME: This is a stupid way of rendering the lock on the chest.
 		if (chest.isLocked()) {
-	        GL11.glPushMatrix();
-            GL11.glTranslatef((large ? 1.0F : 0.5F), 0.25F + 5 / 32.0F, 1 / 32.0F);
-            GL11.glScalef(0.5F, 0.5F, 1.5F);
+			GL11.glPushMatrix();
+			GL11.glTranslatef((large ? 1.0F : 0.5F), 0.25F + 5 / 32.0F, 1 / 32.0F);
+			GL11.glScalef(0.5F, 0.5F, 1.5F);
 			RenderUtils.renderItemIn3d(chest.getLock());
 			GL11.glPopMatrix();
 		}
