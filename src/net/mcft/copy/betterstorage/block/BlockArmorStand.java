@@ -38,7 +38,7 @@ public class BlockArmorStand extends BlockContainer {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister iconRegister) {
-		blockIcon = iconRegister.registerIcon("betterstorage:armorStand");
+		blockIcon = iconRegister.registerIcon("betterstorage:armorstand");
 	}
 	
 	@Override

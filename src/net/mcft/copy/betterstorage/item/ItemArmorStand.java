@@ -17,12 +17,6 @@ public class ItemArmorStand extends ItemBlock {
 	}
 	
 	@Override
-	@SideOnly(Side.CLIENT)
-	public void updateIcons(IconRegister iconRegister) {
-		iconIndex = iconRegister.registerIcon("betterstorage:armorstand");
-	}
-	
-	@Override
 	public boolean onItemUse(ItemStack stack, EntityPlayer player,
 	                         World world, int x, int y, int z, int side,
 	                         float hitX, float hitY, float hitZ) {
