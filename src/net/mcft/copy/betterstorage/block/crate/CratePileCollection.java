@@ -14,11 +14,13 @@ import net.minecraft.world.World;
 /** Holds all CratePileData objects for one world / dimension. */
 public class CratePileCollection {
 	
+	// FIXME: Forge "detected leaking worlds in memory". Investigate.
+	
 	private static final int maxCount = Short.MAX_VALUE;
 	private static Map<Integer, CratePileCollection> collectionMap = new HashMap<Integer, CratePileCollection>();
 	
-	public final World world;
-	public final int dimension;
+	private final World world;
+	private final int dimension;
 	
 	private int count = BetterStorage.random.nextInt(maxCount);
 	private Map<Integer, CratePileData> pileDataMap = new HashMap<Integer, CratePileData>();
@@ -123,17 +125,22 @@ public class CratePileCollection {
 	public void markDirty(CratePileData pileData) {
 		dirtyPiles.add(pileData);
 	}
-	/** Saves all piles which are marked as dirty. */
-	public void saveAll() {
-		for (CratePileData pileData : dirtyPiles)
-			save(pileData);
-		dirtyPiles.clear();
-	}
+	
 	/** Saves all piles which are marked as dirty. */
 	public static void saveAll(World world) {
 		int dimension = world.getWorldInfo().getDimension();
 		if (!collectionMap.containsKey(dimension)) return;
-		getCollection(world).saveAll();
+		CratePileCollection collection = getCollection(world);
+		for (CratePileData pileData : collection.dirtyPiles)
+			collection.save(pileData);
+		collection.dirtyPiles.clear();
+	}
+	
+	/** Called when the world unloads, removes the
+	 *  crate pile connection from the collection map. */
+	public static void unload(World world) {
+		int dimension = world.getWorldInfo().getDimension();
+		collectionMap.remove(dimension);
 	}
 	
 }

@@ -8,6 +8,7 @@ import net.mcft.copy.betterstorage.block.crate.TileEntityCrate;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.world.WorldEvent.Save;
+import net.minecraftforge.event.world.WorldEvent.Unload;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class CommonProxy {
@@ -27,6 +28,11 @@ public class CommonProxy {
 	@ForgeSubscribe
 	public void onWorldSave(Save event) {
 		CratePileCollection.saveAll(event.world);
+	}
+	
+	@ForgeSubscribe
+	public void onWorldUnload(Unload event) {
+		CratePileCollection.unload(event.world);
 	}
 	
 }
