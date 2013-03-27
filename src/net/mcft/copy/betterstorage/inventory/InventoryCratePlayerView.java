@@ -22,14 +22,6 @@ public class InventoryCratePlayerView extends InventoryBetterStorage implements 
 	private static class MapData {
 		public int itemCount = 0;
 	}
-	private static class Entry {
-		public ItemIdentifier item;
-		public int numStacks;
-		public Entry(ItemIdentifier item, int numStacks) {
-			this.item = item;
-			this.numStacks = numStacks;
-		}
-	}
 	
 	public final CratePileData data;
 	public final TileEntityCrate crate;
@@ -49,27 +41,23 @@ public class InventoryCratePlayerView extends InventoryBetterStorage implements 
 		
 		// Fill temp contents with some random items from the crate pile.
 		int totalStacks = data.getOccupiedSlots();
-		LinkedList<Entry> stacks = new LinkedList<Entry>();
-		for (ItemStack contentsStack : data) {
-			ItemIdentifier item = new ItemIdentifier(contentsStack);
-			int numStacks = ItemIdentifier.calcNumStacks(contentsStack);
-			stacks.add(new Entry(item, numStacks));
-		}
+		LinkedList<ItemStack> stacks = new LinkedList<ItemStack>();
+		for (ItemStack contentsStack : data)
+			stacks.add(contentsStack.copy());
 		for (int slot = 0; (totalStacks > 0) && (slot < size); slot++) {
 			int randomStack = BetterStorage.random.nextInt(totalStacks--);
-			for (ListIterator<Entry> iter = stacks.listIterator(); iter.hasNext(); ) {
-				Entry entry = iter.next();
-				if (randomStack < entry.numStacks) {
-					ItemStack contentsStack = data.getItemStack(entry.item);
-					MapData data = getMapData(entry.item);
-					int count = Math.min(contentsStack.stackSize - data.itemCount, contentsStack.getMaxStackSize());
-					ItemStack stack = entry.item.createStack(count);
-					data.itemCount += stack.stackSize;
+			for (ListIterator<ItemStack> iter = stacks.listIterator(); iter.hasNext(); ) {
+				ItemStack contentsStack = iter.next();
+				int numStacks = ItemIdentifier.calcNumStacks(contentsStack);
+				if (randomStack < numStacks) {
+					ItemStack stack = contentsStack.copy();
+					stack.stackSize = Math.min(stack.stackSize, stack.getMaxStackSize());
+					getMapData(stack).itemCount += stack.stackSize;
 					tempContents[slot] = stack;
-					if (--entry.numStacks <= 0) iter.remove();
+					if ((contentsStack.stackSize -= stack.stackSize) <= 0) iter.remove();
 					break;
 				}
-				randomStack -= entry.numStacks;
+				randomStack -= numStacks;
 			}
 		}
 		
