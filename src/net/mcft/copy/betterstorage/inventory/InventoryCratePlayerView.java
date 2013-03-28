@@ -60,8 +60,6 @@ public class InventoryCratePlayerView extends InventoryBetterStorage implements 
 				randomStack -= numStacks;
 			}
 		}
-		
-		openChest();
 	}
 	
 	// Map data related functions
@@ -95,17 +93,19 @@ public class InventoryCratePlayerView extends InventoryBetterStorage implements 
 		ignoreModifiedItems = true;
 		if (oldStack != null) {
 			getMapData(oldStack).itemCount -= oldStack.stackSize;
-			data.removeItems(oldStack, oldStack.stackSize);
+			data.removeItems(oldStack);
 		}
 		if (stack != null) {
-			stack.stackSize = Math.min(stack.stackSize, Math.min(data.spaceForItem(stack),
-			                                                     stack.getMaxStackSize()));
+			stack = stack.copy();
+			stack.stackSize = Math.min(stack.stackSize,
+			                           Math.min(data.spaceForItem(stack),
+			                                    stack.getMaxStackSize()));
 			if (stack.stackSize == 0) return;
 			getMapData(stack).itemCount += stack.stackSize;
 			data.addItems(stack);
 		}
 		ignoreModifiedItems = false;
-		tempContents[slot] = ItemStack.copyItemStack(stack);
+		tempContents[slot] = stack;
 	}
 	
 	@Override

@@ -3,6 +3,7 @@ package net.mcft.copy.betterstorage.block.container;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.mcft.copy.betterstorage.client.GuiBetterStorage;
+import net.mcft.copy.betterstorage.utils.InventoryUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
@@ -18,7 +19,6 @@ public class ContainerBetterStorage extends Container {
 	
 	public ContainerBetterStorage(EntityPlayer player, IInventory inventory, int columns, int rows) {
 		this.inventory = inventory;
-		inventory.openChest();
 		
 		for (int y = 0; y < rows; y++)
 			for (int x = 0; x < columns; x++)
@@ -33,6 +33,8 @@ public class ContainerBetterStorage extends Container {
 		for (int x = 0; x < 9; x++)
 			addSlotToContainer(new Slot(player.inventory, x,
 					8 + x * 18 + (columns - 9) * 9, rows * 18 + 90));
+		
+		inventory.openChest();
 	}
 	public ContainerBetterStorage(EntityPlayer player, IInventory inventory, int columns, int rows, GuiBetterStorage gui) {
 		this(player, inventory, columns, rows);
@@ -61,6 +63,33 @@ public class ContainerBetterStorage extends Container {
 		}
 		
 		return stack;
+	}
+	
+	@Override
+	public ItemStack slotClick(int slotId, int button, int special, EntityPlayer player) {
+		if ((button == 0 || button == 1) && special == 0 && slotId >= 0) {
+			Slot slot = (Slot)inventorySlots.get(slotId);
+			if (slot != null) {
+				ItemStack slotStack = slot.getStack();
+				ItemStack holding = player.inventory.getItemStack();
+				if (slotStack != null && holding != null &&
+				    slot.canTakeStack(player) && slot.isItemValid(holding) &&
+				    slotStack.itemID == holding.itemID &&
+				    slotStack.getItemDamage() == holding.getItemDamage() &&
+				    ItemStack.areItemStackTagsEqual(slotStack, holding)) {
+					int amount = ((button == 0) ? holding.stackSize : 1);
+					amount = Math.min(amount, slot.getSlotStackLimit() - slotStack.stackSize);
+					amount = Math.min(amount, slotStack.getMaxStackSize() - slotStack.stackSize);
+					if (amount > 0) {
+						if ((holding.stackSize -= amount) <= 0)
+							player.inventory.setItemStack(null);
+						slot.putStack(InventoryUtils.copyStack(slotStack, slotStack.stackSize + amount));
+					}
+					return slotStack;
+				}
+			}
+		}
+		return super.slotClick(slotId, button, special, player);
 	}
 	
 	@Override

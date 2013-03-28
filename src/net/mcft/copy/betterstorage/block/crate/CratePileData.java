@@ -3,9 +3,12 @@ package net.mcft.copy.betterstorage.block.crate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.inventory.InventoryCrateBlockView;
 import net.mcft.copy.betterstorage.misc.ItemIdentifier;
@@ -30,7 +33,7 @@ public class CratePileData implements Iterable<ItemStack> {
 	private boolean destroyed = false;
 	private CratePileMap map;
 	
-	private List<ICrateWatcher> watchers = new ArrayList<ICrateWatcher>();
+	private Set<ICrateWatcher> watchers = new HashSet<ICrateWatcher>();
 	
 	/** An inventory interface built for machines accessing the crate pile. */
 	public final IInventory blockView = new InventoryCrateBlockView(this);

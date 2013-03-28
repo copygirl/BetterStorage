@@ -4,42 +4,25 @@ import net.mcft.copy.betterstorage.block.crate.CratePileData;
 import net.mcft.copy.betterstorage.inventory.InventoryCratePlayerView;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet103SetSlot;
 
-public class ContainerCrate extends Container {
+public class ContainerCrate extends ContainerBetterStorage {
 	
 	private EntityPlayer player;
-	private InventoryCratePlayerView inventory;
-	
-	private int width = 9;
-	private int height;
+	private InventoryCratePlayerView playerView;
 	
 	private int lastFullness = 0;
 	private int fullness = 0;
 	
 	public ContainerCrate(EntityPlayer player, InventoryCratePlayerView inventory) {
+		super(player, inventory, 9, inventory.getSizeInventory() / 9);
+		
 		this.player = player;
-		this.inventory = inventory;
-		
-		int height = inventory.getSizeInventory() / width;
-		
-		for (int y = 0; y < height; y++)
-			for (int x = 0; x < width; x++)
-				addSlotToContainer(new Slot(inventory, x + y * width,
-				                            8 + x * 18, 18 + y * 18));
-		
-		for (int y = 0; y < 3; y++)
-			for (int x = 0; x < 9; x++)
-				addSlotToContainer(new Slot(player.inventory, 9 + x + y * 9,
-				                            8 + x * 18, height * 18 + y * 18 + 32));
-		for (int x = 0; x < 9; x++)
-			addSlotToContainer(new Slot(player.inventory, x,
-			                            8 + x * 18, height * 18 + 90));
+		this.playerView = inventory;
 		
 		CratePileData data = inventory.data;
 		fullness = data.getOccupiedSlots() * 255 / data.getCapacity();
@@ -49,7 +32,7 @@ public class ContainerCrate extends Container {
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
 		
-		CratePileData data = inventory.data;
+		CratePileData data = playerView.data;
 		fullness = data.getOccupiedSlots() * 255 / data.getCapacity();
 		
 		if (lastFullness != fullness)
@@ -57,11 +40,6 @@ public class ContainerCrate extends Container {
 				((ICrafting)c).sendProgressBarUpdate(this, 0, fullness);
 		
 		lastFullness = fullness;
-	}
-	
-	@Override
-	public boolean canInteractWith(EntityPlayer player) {
-		return inventory.isUseableByPlayer(player);
 	}
 	
 	@Override
@@ -73,28 +51,27 @@ public class ContainerCrate extends Container {
 		if (slot != null && slot.getHasStack()) {
 			ItemStack slotStack = slot.getStack();
 			// If slot is in the container inventory, try to transfer the item to the player.
-			if (slotId < inventory.getSizeInventory()) {
+			if (slotId < playerView.getSizeInventory()) {
 				int count = slotStack.stackSize;
-				mergeItemStack(slotStack, inventory.getSizeInventory(), inventorySlots.size(), true);
+				mergeItemStack(slotStack, playerView.getSizeInventory(), inventorySlots.size(), true);
 				int amount = count - slotStack.stackSize;
 				slotStack.stackSize = count;
-				inventory.decrStackSize(slotId, amount);
+				playerView.decrStackSize(slotId, amount);
 			// If slot is in the player inventory, try to transfer the item to the container.
 			} else {
-				ItemStack stack = inventory.data.addItems(slotStack);
-				slot.putStack(stack);
+				ItemStack overflow = playerView.data.addItems(slotStack);
+				slot.putStack(overflow);
 				// Send slot contents to player.
-				Packet packet = new Packet103SetSlot(player.openContainer.windowId, slotId, stack);
+				Packet packet = new Packet103SetSlot(player.openContainer.windowId, slotId, overflow);
 				((EntityPlayerMP)player).playerNetServerHandler.sendPacketToPlayer(packet);
+				// If there's overflow, return null because otherwise, retrySlotClick
+				// will be called and there's going to be an infinite loop.
+				// This kills the game.
+				if (overflow != null)
+					return null;
 			}
 		}
 		return stackBefore;
-	}
-	
-	@Override
-	public void onCraftGuiClosed(EntityPlayer player) {
-		super.onCraftGuiClosed(player);
-		inventory.closeChest();
 	}
 	
 }
