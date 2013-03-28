@@ -6,6 +6,7 @@ import java.util.List;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class InventoryUtils {
 	
@@ -73,6 +74,13 @@ public class InventoryUtils {
 			if (stack != null && stack.getItem() == item) list.add(i);
 		}
 		return list;
+	}
+	
+	public static ItemStack copyStack(ItemStack stack, int stackSize) {
+		ItemStack copy = new ItemStack(stack.itemID, stackSize, stack.getItemDamage());
+		if (stack.stackTagCompound != null)
+			copy.stackTagCompound = (NBTTagCompound)stack.stackTagCompound.copy();
+		return copy;
 	}
 	
 }
