@@ -7,10 +7,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.enchantment.EnchantmentBetterStorage;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentData;
-import net.minecraft.enchantment.EnumEnchantmentType;
-import net.minecraft.item.Item;
 
 public class CreativeTabBetterStorage extends CreativeTabs {
 	
