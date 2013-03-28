@@ -38,8 +38,12 @@ public class BlockArmorStand extends BlockContainer {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister iconRegister) {
-		blockIcon = iconRegister.registerIcon("betterstorage:armorstand");
+		blockIcon = iconRegister.registerIcon("blockIron");
 	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public String func_94327_t_() { return "betterstorage:armorstand"; }
 	
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
