@@ -26,16 +26,19 @@ public class CraftingHandler implements ICraftingHandler {
 			boolean modifyKey = !InventoryUtils.hasItem(craftMatrix, Item.ingotGold);
 			
 			// If a key is being modified, remove it from the crafting matrix.
-			if (modifyKey) craftMatrix.setInventorySlotContents(keyIndex, null);
+			if (modifyKey)
+				craftMatrix.setInventorySlotContents(keyIndex, null);
 			// Otherwise, if a new key is crafted (not duplicated),
 			// set the the damege of the key to a random value.
-			else if (key == null) item.setItemDamage(-32000 + BetterStorage.random.nextInt(64000));
+			else if (key == null)
+				item.setItemDamage(BetterStorage.random.nextInt(32000));
 			
 		}
 		// If item crafted is a lock, copy the damage value from the key.
 		if (item.getItem() instanceof ItemLock)
 			item.setItemDamage(craftMatrix.getStackInSlot(4).getItemDamage());
 	}
+	
 	@Override
 	public void onSmelting(EntityPlayer player, ItemStack item) {  }
 	
