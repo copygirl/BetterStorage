@@ -109,7 +109,7 @@ public class ItemKey extends ItemBetterStorage {
 		if (lockId == keyId) return true;
 		
 		if (effectiveUnlocking > 0) {
-			int div = (int)Math.pow(2, 9 + effectiveUnlocking * 1.5);
+			int div = (int)Math.pow(2, 10 + effectiveUnlocking * 1);
 			if (lockId / div == keyId / div) return true;
 		}
 		if (effectiveLockpicking > 0) {
