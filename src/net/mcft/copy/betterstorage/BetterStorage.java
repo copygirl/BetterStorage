@@ -149,7 +149,7 @@ public class BetterStorage {
 				" o ",
 				"oko",
 				"oio", 'o', Item.ingotGold,
-				       'k', new ItemStack(key, 1, -1),
+				       'k', new ItemStack(key, 1, 32767),
 				       'i', Item.ingotIron);
 		
 	}
