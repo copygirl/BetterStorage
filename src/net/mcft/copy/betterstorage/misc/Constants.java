@@ -2,6 +2,8 @@ package net.mcft.copy.betterstorage.misc;
 
 public class Constants {
 	
+	public final static int anyDamage = Short.MAX_VALUE;
+	
 	public final static String gfxbase = "/mods/betterstorage/textures/";
 
 	public final static String crateContainer = gfxbase + "gui/crate.png";

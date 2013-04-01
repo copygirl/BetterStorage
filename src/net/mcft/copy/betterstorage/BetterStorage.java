@@ -12,6 +12,7 @@ import net.mcft.copy.betterstorage.enchantment.EnchantmentBetterStorage;
 import net.mcft.copy.betterstorage.item.ItemKey;
 import net.mcft.copy.betterstorage.item.ItemLock;
 import net.mcft.copy.betterstorage.item.KeyRecipe;
+import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.misc.CreativeTabBetterStorage;
 import net.mcft.copy.betterstorage.misc.Registry;
 import net.mcft.copy.betterstorage.misc.handlers.CraftingHandler;
@@ -143,13 +144,13 @@ public class BetterStorage {
 				      '.', Item.goldNugget));
 		// Key modify recipe
 		GameRegistry.addRecipe(KeyRecipe.createKeyRecipe(
-				"k", 'k', new ItemStack(key, 1, -1)));
+				"k", 'k', new ItemStack(key, 1, Constants.anyDamage)));
 		// Lock recipe
 		GameRegistry.addRecipe(new ItemStack(lock),
 				" o ",
 				"oko",
 				"oio", 'o', Item.ingotGold,
-				       'k', new ItemStack(key, 1, 32767),
+				       'k', new ItemStack(key, 1, Constants.anyDamage),
 				       'i', Item.ingotIron);
 		
 	}
