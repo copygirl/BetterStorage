@@ -2,11 +2,13 @@ package net.mcft.copy.betterstorage.item;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.api.ILockable;
 import net.mcft.copy.betterstorage.enchantment.EnchantmentBetterStorage;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -45,6 +47,17 @@ public class ItemKey extends ItemBetterStorage {
 	public boolean doesContainerItemLeaveCraftingGrid(ItemStack stack) { return false; }
 	@Override
 	public ItemStack getContainerItemStack(ItemStack stack) { return stack; }
+	
+	@Override
+	public void onCreated(ItemStack stack, World world, EntityPlayer player) {
+		if (world.isRemote) return;
+		ensureHasDamage(stack);
+	}
+	@Override
+	public void onUpdate(ItemStack stack, World world, Entity entity, int slot, boolean isBeingHeld) {
+		if (world.isRemote) return;
+		ensureHasDamage(stack);
+	}
 	
 	@SideOnly(Side.CLIENT)
 	@Override
@@ -85,6 +98,12 @@ public class ItemKey extends ItemBetterStorage {
 		item.delayBeforeCanPickup = 0;
 		
 		return true;
+	}
+	
+	/** Gives the key a random damage value if it doesn't have one already. */
+	public static void ensureHasDamage(ItemStack stack) {
+		if (stack.getItemDamage() == 0)
+			stack.setItemDamage(1 + BetterStorage.random.nextInt(32000));
 	}
 	
 	public static boolean isKey(ItemStack stack) {

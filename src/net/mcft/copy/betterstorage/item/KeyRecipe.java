@@ -70,12 +70,9 @@ public class KeyRecipe extends ComboRecipe {
 		ItemStack key = InventoryUtils.findItem(crafting, BetterStorage.key);
 		boolean ironPlated = InventoryUtils.hasItem(crafting, Item.ingotIron);
 		List<ItemStack> dyes = InventoryUtils.findItems(crafting, Item.dyePowder);
-		ItemStack result;
-		if (!modifyKey) {
-			result = new ItemStack(BetterStorage.key);
-			if (key != null)
-				result.setItemDamage(key.getItemDamage());
-		} else result = key.copy();
+		ItemStack result = (modifyKey ? key.copy() : new ItemStack(BetterStorage.key));
+		if (key != null)
+			result.setItemDamage(key.getItemDamage());
 		if (ironPlated)
 			StackUtils.set(result, (byte)1, "display", "ironPlated");
 		// Apply color

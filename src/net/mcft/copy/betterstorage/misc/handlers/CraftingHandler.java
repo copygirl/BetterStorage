@@ -2,7 +2,6 @@ package net.mcft.copy.betterstorage.misc.handlers;
 
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.item.ItemKey;
-import net.mcft.copy.betterstorage.item.ItemLock;
 import net.mcft.copy.betterstorage.utils.InventoryUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -18,25 +17,16 @@ public class CraftingHandler implements ICraftingHandler {
 		// If item crafted is a key ...
 		if (item.getItem() instanceof ItemKey) {
 			
-			// Get the key used in the crafting recipe, if there was one.
-			int keyIndex = InventoryUtils.findItemSlot(craftMatrix, BetterStorage.key);
-			ItemStack key = ((keyIndex >= 0) ? craftMatrix.getStackInSlot(keyIndex) : null);
-			
 			// See if a key was modified by checking if no gold was used in the recipe.
 			boolean modifyKey = !InventoryUtils.hasItem(craftMatrix, Item.ingotGold);
 			
-			// If a key is being modified, remove it from the crafting matrix.
-			if (modifyKey)
+			// If it is, remove it from the crafting matrix.
+			if (modifyKey) {
+				int keyIndex = InventoryUtils.findItemSlot(craftMatrix, BetterStorage.key);
 				craftMatrix.setInventorySlotContents(keyIndex, null);
-			// Otherwise, if a new key is crafted (not duplicated),
-			// set the the damege of the key to a random value.
-			else if (key == null)
-				item.setItemDamage(BetterStorage.random.nextInt(32000));
+			}
 			
 		}
-		// If item crafted is a lock, copy the damage value from the key.
-		if (item.getItem() instanceof ItemLock)
-			item.setItemDamage(craftMatrix.getStackInSlot(4).getItemDamage());
 	}
 	
 	@Override
