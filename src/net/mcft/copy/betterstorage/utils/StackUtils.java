@@ -22,7 +22,7 @@ public class StackUtils {
 	}
 	
 	/** Sets a value in the ItemStack's custom NBT data. Example: <br>
-	 *  <code> ItemUtils.set(stack, 0xFF0000, "display", "code"); </code> <br>
+	 *  <code> ItemUtils.set(stack, 0xFF0000, "display", "color"); </code> <br>
 	 *  Creates parent compounds if they don't exist. */
 	public static <T> void set(ItemStack stack, T value, String... tags) {
 		String tag = null;
@@ -60,7 +60,7 @@ public class StackUtils {
 	
 	/** Removes a value from the ItemStack's custom NBT data. <br>
 	 *  Gets rid of any empty parent compounds. Example: <br>
-	 *  <code> ItemUtils.remove(stack, "display", "code"); </code> */
+	 *  <code> ItemUtils.remove(stack, "display", "color"); </code> */
 	public static void remove(ItemStack stack, String... tags) {
 		if (!stack.hasTagCompound()) return;
 		String tag = null;
