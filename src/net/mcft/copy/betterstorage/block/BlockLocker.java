@@ -50,7 +50,8 @@ public class BlockLocker extends BlockContainer {
 		TileEntityLocker locker = WorldUtils.getLocker(world, x, y, z);
 		locker.orientation = DirectionUtils.getOrientation(player).getOpposite();
 		double angle = DirectionUtils.getRotation(locker.orientation.getOpposite());
-		locker.mirror = (DirectionUtils.angleDifference(angle, player.rotationYaw) < 0);
+		double yaw = ((player.rotationYaw % 360) + 360) % 360;
+		locker.mirror = (DirectionUtils.angleDifference(angle, yaw) > 0);
 		locker.checkForConnections();
 	}
 	
