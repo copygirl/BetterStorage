@@ -6,9 +6,9 @@ import net.minecraft.item.ItemStack;
 
 /** Wraps around an ItemStack array (and optionally base inventory). */
 public class InventoryWrapper extends InventoryBetterStorage {
-
-	private ItemStack[] contents;
-	private IInventory base;
+	
+	private final IInventory base;
+	protected final ItemStack[] contents;
 	
 	public InventoryWrapper(String name, ItemStack[] contents, IInventory base) {
 		super(name);
@@ -21,7 +21,7 @@ public class InventoryWrapper extends InventoryBetterStorage {
 	public InventoryWrapper(ItemStack[] contents) {
 		this(contents, null);
 	}
-
+	
 	@Override
 	public String getInvName() {
 		return ((base != null) ? base.getInvName() : super.getInvName());
@@ -46,5 +46,5 @@ public class InventoryWrapper extends InventoryBetterStorage {
 	public void openChest() { if (base != null) base.openChest(); }
 	@Override
 	public void closeChest() { if (base != null) base.closeChest(); }
-
+	
 }

@@ -1,4 +1,4 @@
-package net.mcft.copy.betterstorage.block.container;
+package net.mcft.copy.betterstorage.container;
 
 import net.mcft.copy.betterstorage.block.crate.CratePileData;
 import net.mcft.copy.betterstorage.inventory.InventoryCratePlayerView;

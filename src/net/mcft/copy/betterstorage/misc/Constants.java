@@ -21,4 +21,6 @@ public class Constants {
 	public final static int lockerSmallGuiId = 30;
 	public final static int lockerLargeGuiId = 31;
 	
+	public final static int keyringGuiId = 50;
+	
 }

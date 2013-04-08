@@ -16,7 +16,7 @@ public class GuiReinforcedChest extends GuiBetterStorage {
 	
 	@Override
 	protected String getTexture() {
-		if (getNumColumns() <= 9) return "/gui/container.png";
+		if (columns <= 9) return "/gui/container.png";
 		else return Constants.reinforcedChestContainer;
 	}
 	

@@ -3,12 +3,13 @@ package net.mcft.copy.betterstorage.misc.handlers;
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.block.TileEntityLocker;
 import net.mcft.copy.betterstorage.block.TileEntityReinforcedChest;
-import net.mcft.copy.betterstorage.block.container.ContainerBetterStorage;
-import net.mcft.copy.betterstorage.block.container.ContainerCrate;
 import net.mcft.copy.betterstorage.block.crate.TileEntityCrate;
 import net.mcft.copy.betterstorage.client.GuiBetterStorage;
 import net.mcft.copy.betterstorage.client.GuiCrate;
 import net.mcft.copy.betterstorage.client.GuiReinforcedChest;
+import net.mcft.copy.betterstorage.container.ContainerBetterStorage;
+import net.mcft.copy.betterstorage.container.ContainerCrate;
+import net.mcft.copy.betterstorage.container.ContainerKeyring;
 import net.mcft.copy.betterstorage.inventory.InventoryCombined;
 import net.mcft.copy.betterstorage.inventory.InventoryCratePlayerView;
 import net.mcft.copy.betterstorage.misc.Constants;
@@ -59,6 +60,8 @@ public class GuiHandler implements IGuiHandler {
 				IInventory sideInventory = (locker.isMain() ? locker.getConnectedLocker() : locker);
 				inventory = new InventoryCombined("container.lockerLarge", mainInventory, sideInventory);
 				return new ContainerBetterStorage(player, inventory, 9, 6);
+			case Constants.keyringGuiId:
+				return new ContainerKeyring(player);
 			default:
 				if (id >= Constants.chestSmallGuiId &&
 				    id <  Constants.chestLargeGuiId + 10) {
@@ -88,6 +91,8 @@ public class GuiHandler implements IGuiHandler {
 				return new GuiBetterStorage(player, 9, 3, "container.locker");
 			case Constants.lockerLargeGuiId:
 				return new GuiBetterStorage(player, 9, 6, "container.lockerLarge");
+			case Constants.keyringGuiId:
+				return new GuiBetterStorage(new ContainerKeyring(player));
 			default:
 				if (id >= Constants.chestSmallGuiId &&
 				    id <  Constants.chestLargeGuiId + 10) {

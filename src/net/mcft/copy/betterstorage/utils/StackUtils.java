@@ -74,4 +74,19 @@ public class StackUtils {
 		compound.removeTag(tag);
 	}
 	
+	public static ItemStack[] getStackContents(ItemStack stack, int size) {
+		if (stack.hasTagCompound() && StackUtils.has(stack, "Items"))
+			return NbtUtils.readItems(stack.getTagCompound(), size);
+		else return new ItemStack[size];
+	}
+	
+	public static void setStackContents(ItemStack stack, ItemStack[] contents) {
+		NBTTagCompound compound = stack.getTagCompound();
+		if (compound == null) {
+			compound = new NBTTagCompound("");
+			stack.setTagCompound(compound);
+		}
+		NbtUtils.writeItems(compound, contents);
+	}
+	
 }

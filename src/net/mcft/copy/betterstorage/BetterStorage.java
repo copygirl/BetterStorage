@@ -10,6 +10,7 @@ import net.mcft.copy.betterstorage.block.ChestMaterial;
 import net.mcft.copy.betterstorage.block.crate.BlockCrate;
 import net.mcft.copy.betterstorage.enchantment.EnchantmentBetterStorage;
 import net.mcft.copy.betterstorage.item.ItemKey;
+import net.mcft.copy.betterstorage.item.ItemKeyring;
 import net.mcft.copy.betterstorage.item.ItemLock;
 import net.mcft.copy.betterstorage.item.KeyRecipe;
 import net.mcft.copy.betterstorage.item.LockRecipe;
@@ -61,6 +62,7 @@ public class BetterStorage {
 	// Items
 	public static ItemKey key;
 	public static ItemLock lock;
+	public static ItemKeyring keyring;
 	
 	
 	public static CreativeTabs creativeTab;
@@ -97,8 +99,9 @@ public class BetterStorage {
 		locker = new BlockLocker(Config.lockerId);
 		armorStand = new BlockArmorStand(Config.armorStandId);
 		
-		key  = new ItemKey(Config.keyId);
+		key = new ItemKey(Config.keyId);
 		lock = new ItemLock(Config.lockId);
+		keyring = new ItemKeyring(Config.keyringId);
 		
 		Registry.doYourThing();
 		
@@ -162,6 +165,7 @@ public class BetterStorage {
 		lang.addStringLocalization("container.reinforcedChestLarge", "Large Reinforced Chest");
 		lang.addStringLocalization("container.locker", "Locker");
 		lang.addStringLocalization("container.lockerLarge", "Large Locker");
+		lang.addStringLocalization("container.keyring", "Keyring");
 		
 		lang.addStringLocalization("enchantment.key.unlocking", "Unlocking");
 		lang.addStringLocalization("enchantment.key.lockpicking", "Lockpicking");

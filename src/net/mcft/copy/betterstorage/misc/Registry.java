@@ -28,6 +28,7 @@ public class Registry {
 	public static void registerItems() {
 		register(BetterStorage.key, "key", "Key");
 		register(BetterStorage.lock, "lock", "Lock");
+		register(BetterStorage.keyring, "keyring", "Keyring");
 	}
 	
 	public static void register(Block block, String name, String fullName, Class<? extends ItemBlock> itemBlockClass) {
