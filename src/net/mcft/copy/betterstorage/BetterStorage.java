@@ -19,6 +19,7 @@ import net.mcft.copy.betterstorage.misc.CreativeTabBetterStorage;
 import net.mcft.copy.betterstorage.misc.Registry;
 import net.mcft.copy.betterstorage.misc.handlers.CraftingHandler;
 import net.mcft.copy.betterstorage.misc.handlers.GuiHandler;
+import net.mcft.copy.betterstorage.proxy.CommonProxy;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -46,8 +47,8 @@ public class BetterStorage {
 	@Instance("BetterStorage")
 	public static BetterStorage instance;
 	
-	@SidedProxy(clientSide="net.mcft.copy.betterstorage.client.ClientProxy",
-	            serverSide="net.mcft.copy.betterstorage.CommonProxy")
+	@SidedProxy(clientSide="net.mcft.copy.betterstorage.proxy.ClientProxy",
+	            serverSide="net.mcft.copy.betterstorage.proxy.CommonProxy")
 	public static CommonProxy proxy;
 	
 	public static Logger log;

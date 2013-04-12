@@ -1,4 +1,4 @@
-package net.mcft.copy.betterstorage.client;
+package net.mcft.copy.betterstorage.client.gui;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

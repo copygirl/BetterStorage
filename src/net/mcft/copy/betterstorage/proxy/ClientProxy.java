@@ -1,4 +1,4 @@
-package net.mcft.copy.betterstorage.client;
+package net.mcft.copy.betterstorage.proxy;
 
 import org.lwjgl.opengl.GL11;
 
@@ -6,12 +6,15 @@ import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.mcft.copy.betterstorage.CommonProxy;
 import net.mcft.copy.betterstorage.block.BlockArmorStand;
 import net.mcft.copy.betterstorage.block.ChestMaterial;
 import net.mcft.copy.betterstorage.block.TileEntityArmorStand;
 import net.mcft.copy.betterstorage.block.TileEntityLocker;
 import net.mcft.copy.betterstorage.block.TileEntityReinforcedChest;
+import net.mcft.copy.betterstorage.client.renderer.BetterStorageRenderingHandler;
+import net.mcft.copy.betterstorage.client.renderer.TileEntityArmorStandRenderer;
+import net.mcft.copy.betterstorage.client.renderer.TileEntityLockerRenderer;
+import net.mcft.copy.betterstorage.client.renderer.TileEntityReinforcedChestRenderer;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;

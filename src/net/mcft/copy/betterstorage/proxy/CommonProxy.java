@@ -1,4 +1,4 @@
-package net.mcft.copy.betterstorage;
+package net.mcft.copy.betterstorage.proxy;
 
 import net.mcft.copy.betterstorage.block.TileEntityArmorStand;
 import net.mcft.copy.betterstorage.block.TileEntityLocker;

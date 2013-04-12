@@ -1,4 +1,4 @@
-package net.mcft.copy.betterstorage.client;
+package net.mcft.copy.betterstorage.client.renderer;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
