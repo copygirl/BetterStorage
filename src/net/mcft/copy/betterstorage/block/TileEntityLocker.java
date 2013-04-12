@@ -3,6 +3,7 @@ package net.mcft.copy.betterstorage.block;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.mcft.copy.betterstorage.utils.InventoryUtils;
+import net.mcft.copy.betterstorage.utils.NbtUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -17,7 +18,7 @@ import net.minecraftforge.common.ForgeDirection;
 
 public class TileEntityLocker extends TileEntityConnectable implements IInventory {
 	
-	private ItemStack contents[];
+	private ItemStack[] contents;
 
 	private int numUsingPlayers = 0;
 	private int ticksSinceSync;
@@ -84,13 +85,7 @@ public class TileEntityLocker extends TileEntityConnectable implements IInventor
 		orientation = ForgeDirection.getOrientation(compound.getByte("orientation"));
 		mirror = compound.getBoolean("mirror");
 		NBTTagList items = compound.getTagList("Items");
-		contents = new ItemStack[contents.length];
-		for (int i = 0; i < items.tagCount(); i++) {
-			NBTTagCompound item = (NBTTagCompound)items.tagAt(i);
-			int slot = item.getByte("Slot") & 255;
-			if (slot >= 0 && slot < contents.length)
-				contents[slot] = ItemStack.loadItemStackFromNBT(item);
-		}
+		contents = NbtUtils.readItems(items, contents.length);
 	}
 	
 	@Override
@@ -98,15 +93,7 @@ public class TileEntityLocker extends TileEntityConnectable implements IInventor
 		super.writeToNBT(compound);
 		compound.setByte("orientation", (byte)orientation.ordinal());
 		compound.setBoolean("mirror", mirror);
-		NBTTagList list = new NBTTagList();
-		for (int i = 0; i < contents.length; i++) {
-			if (contents[i] == null) continue;
-			NBTTagCompound item = new NBTTagCompound();
-			item.setByte("Slot", (byte)i);
-			contents[i].writeToNBT(item);
-			list.appendTag(item);
-		}
-		compound.setTag("Items", list);
+		compound.setTag("Items", NbtUtils.writeItems(contents));
 	}
 	
 	// IInventory stuff
