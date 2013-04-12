@@ -3,9 +3,12 @@ package net.mcft.copy.betterstorage.item;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.mcft.copy.betterstorage.BetterStorage;
+import net.mcft.copy.betterstorage.api.IKey;
+import net.mcft.copy.betterstorage.api.ILock;
 import net.mcft.copy.betterstorage.api.ILockable;
 import net.mcft.copy.betterstorage.enchantment.EnchantmentBetterStorage;
 import net.mcft.copy.betterstorage.utils.StackUtils;
+import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -14,11 +17,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 
-public class ItemKey extends ItemBetterStorage {
+public class ItemKey extends ItemBetterStorage implements IKey {
 	
 	private Icon iconGold, iconIron, iconColor;
 	
@@ -82,15 +84,22 @@ public class ItemKey extends ItemBetterStorage {
 	                         int x, int y, int z, int side, float subX, float subY, float subZ) {
 		if (world.isRemote) return false;
 		
-		TileEntity entity = world.getBlockTileEntity(x, y, z);
-		// Return if there is no lockable container.
-		if (entity == null || !(entity instanceof ILockable)) return false;
-		ILockable lockable = (ILockable)entity;
-		// Return if the container isn't locked.
-		if (!lockable.isLocked()) return false;
+		// This function is only called when the container doesn't handle
+		// the right click, so basically only when sneaking.
+		// This tries to remove the lock from the container.
+		
+		ILockable lockable = WorldUtils.getLockable(world, x, y, z);
+		// If there is no lockable container or it isn't locked, return false;
+		if (lockable == null || lockable.getLock() == null) return false;
+		
+		ItemStack key = player.getCurrentEquippedItem();
 		ItemStack lock = lockable.getLock();
+		ILock lockType = (ILock)lock.getItem();
+		
 		// Try to unlock the container, return if unsuccessful.
-		if (!ItemLock.lockTryUnlock(lock, player, player.getHeldItem())) return false;
+		boolean success = unlock(key, lock, true);
+		lockType.onUnlock(lock, key, lockable, player, success);
+		if (!success) return true;
 		
 		// Remove and drop the lock on the player.
 		lockable.setLock(null);
@@ -106,11 +115,24 @@ public class ItemKey extends ItemBetterStorage {
 			stack.setItemDamage(1 + BetterStorage.random.nextInt(32000));
 	}
 	
-	public static boolean tryKeyOpenLock(ItemStack lock, ItemStack key) {
-		if (!ItemKey.isKey(key)) return false;
+	// IKey implementation
+	
+	@Override
+	public boolean isNormalKey() { return true; }
+	
+	@Override
+	public boolean unlock(ItemStack key, ItemStack lock, boolean useAbility) {
+		
+		ILock lockType = (ILock)lock.getItem();
+		// If the lock type isn't normal, the key can't unlock it.
+		if (lockType.getLockType() != "normal")
+			return false;
 		
 		int lockId = lock.getItemDamage();
 		int keyId  = key.getItemDamage();
+		
+		// If the lock and key IDs match, return true.
+		if (lockId == keyId) return true;
 		
 		int lockSecurity = EnchantmentHelper.getEnchantmentLevel(EnchantmentBetterStorage.security.effectId, lock);
 		int unlocking    = EnchantmentHelper.getEnchantmentLevel(EnchantmentBetterStorage.unlocking.effectId, key);
@@ -121,13 +143,11 @@ public class ItemKey extends ItemBetterStorage {
 		int effectiveLockpicking = Math.max(0, lockpicking - lockSecurity);
 		int effectiveMorphing    = Math.max(0, morphing - lockSecurity);
 		
-		if (lockId == keyId) return true;
-		
 		if (effectiveUnlocking > 0) {
 			int div = (int)Math.pow(2, 10 + effectiveUnlocking * 1);
 			if (lockId / div == keyId / div) return true;
 		}
-		if (effectiveLockpicking > 0) {
+		if (useAbility && effectiveLockpicking > 0) {
 			NBTTagList list = key.getEnchantmentTagList();
 			for (int i = 0; i < list.tagCount(); i++) {
 				NBTTagCompound compound = (NBTTagCompound)list.tagAt(i);
@@ -142,7 +162,7 @@ public class ItemKey extends ItemBetterStorage {
 			}
 			return true;
 		}
-		if (effectiveMorphing > 0) {
+		if (useAbility && effectiveMorphing > 0) {
 			key.setItemDamage(lockId);
 			NBTTagList list = key.getEnchantmentTagList();
 			for (int i = 0; i < list.tagCount(); i++) {
@@ -157,6 +177,7 @@ public class ItemKey extends ItemBetterStorage {
 		}
 		
 		return false;
+		
 	}
 	
 }

@@ -1,5 +1,7 @@
 package net.mcft.copy.betterstorage.utils;
 
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagByte;
@@ -44,8 +46,7 @@ public class NbtUtils {
 		return null;
 	}
 	
-	public static ItemStack[] readItems(NBTTagCompound compound, int size) {
-		NBTTagList items = compound.getTagList("Items");
+	public static ItemStack[] readItems(NBTTagList items, int size) {
 		ItemStack[] contents = new ItemStack[size];
 		for (int i = 0; i < items.tagCount(); i++) {
 			NBTTagCompound item = (NBTTagCompound)items.tagAt(i);
@@ -55,17 +56,21 @@ public class NbtUtils {
 		}
 		return contents;
 	}
+	public static void readItems(NBTTagList items, List<ItemStack> list) {
+		for (int i = 0; i < items.tagCount(); i++)
+			list.add(ItemStack.loadItemStackFromNBT((NBTTagCompound)items.tagAt(i)));
+	}
 	
-	public static void writeItems(NBTTagCompound compound, ItemStack[] contents) {
-		NBTTagList list = new NBTTagList();
+	public static NBTTagList writeItems(ItemStack[] contents) {
+		NBTTagList items = new NBTTagList();
 		for (int i = 0; i < contents.length; i++) {
 			if (contents[i] == null) continue;
 			NBTTagCompound item = new NBTTagCompound();
 			item.setByte("Slot", (byte)i);
 			contents[i].writeToNBT(item);
-			list.appendTag(item);
+			items.appendTag(item);
 		}
-		compound.setTag("Items", list);
+		return items;
 	}
 	
 }

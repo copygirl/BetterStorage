@@ -1,7 +1,10 @@
 package net.mcft.copy.betterstorage.utils;
 
-import net.mcft.copy.betterstorage.item.ItemKey;
-import net.mcft.copy.betterstorage.item.ItemLock;
+import java.util.ArrayList;
+import java.util.List;
+
+import net.mcft.copy.betterstorage.api.IKey;
+import net.mcft.copy.betterstorage.api.ILock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -77,26 +80,35 @@ public class StackUtils {
 	}
 	
 	public static boolean isKey(ItemStack stack) {
-		return (stack != null && stack.getItem() instanceof ItemKey);
+		return (stack != null && stack.getItem() instanceof IKey);
 	}
 	
 	public static boolean isLock(ItemStack stack) {
-		return (stack != null && stack.getItem() instanceof ItemLock);
+		return (stack != null && stack.getItem() instanceof ILock);
+	}
+	
+	public static List<ItemStack> getStackContents(ItemStack stack) {
+		List<ItemStack> list = new ArrayList<ItemStack>();
+		NBTTagCompound compound = stack.getTagCompound();
+		if (compound != null && compound.hasKey("Items"))
+			NbtUtils.readItems(compound.getTagList("Items"), list);
+		return list;
 	}
 	
 	public static ItemStack[] getStackContents(ItemStack stack, int size) {
-		if (stack.hasTagCompound() && StackUtils.has(stack, "Items"))
-			return NbtUtils.readItems(stack.getTagCompound(), size);
+		NBTTagCompound compound = stack.getTagCompound();
+		if (compound != null && compound.hasKey("Items"))
+			return NbtUtils.readItems(compound.getTagList("Items"), size);
 		else return new ItemStack[size];
 	}
 	
 	public static void setStackContents(ItemStack stack, ItemStack[] contents) {
 		NBTTagCompound compound = stack.getTagCompound();
 		if (compound == null) {
-			compound = new NBTTagCompound("");
+			compound = new NBTTagCompound();
 			stack.setTagCompound(compound);
 		}
-		NbtUtils.writeItems(compound, contents);
+		compound.setTag("Items", NbtUtils.writeItems(contents));
 	}
 	
 }

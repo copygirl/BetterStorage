@@ -1,7 +1,11 @@
 package net.mcft.copy.betterstorage.item;
 
+import java.util.List;
+
 import net.mcft.copy.betterstorage.BetterStorage;
+import net.mcft.copy.betterstorage.api.IKey;
 import net.mcft.copy.betterstorage.misc.Constants;
+import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -10,7 +14,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemKeyring extends ItemBetterStorage {
+public class ItemKeyring extends ItemBetterStorage implements IKey {
 	
 	private Icon[] icons = new Icon[4];
 	
@@ -38,6 +42,28 @@ public class ItemKeyring extends ItemBetterStorage {
 		player.openGui(BetterStorage.instance, Constants.keyringGuiId,
 		               player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
 		return stack;
+	}
+	
+	// IKey implementation
+	
+	@Override
+	public boolean isNormalKey() { return false; }
+	
+	@Override
+	public boolean unlock(ItemStack keyring, ItemStack lock, boolean useAbility) {
+		
+		// Goes through all the keys in the keyring,
+		// returns if any of the keys fit in the lock.
+		
+		List<ItemStack> keys = StackUtils.getStackContents(keyring);
+		for (ItemStack key : keys) {
+			IKey keyType = (IKey)key.getItem();
+			if (keyType.unlock(key, lock, false))
+				return true;
+		}
+		
+		return false;
+		
 	}
 	
 }

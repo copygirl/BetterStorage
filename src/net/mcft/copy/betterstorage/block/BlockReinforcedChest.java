@@ -5,11 +5,13 @@ import java.util.Random;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.mcft.copy.betterstorage.BetterStorage;
+import net.mcft.copy.betterstorage.api.IKey;
+import net.mcft.copy.betterstorage.api.ILock;
 import net.mcft.copy.betterstorage.client.ClientProxy;
 import net.mcft.copy.betterstorage.enchantment.EnchantmentBetterStorage;
-import net.mcft.copy.betterstorage.item.ItemLock;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.DirectionUtils;
+import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -68,7 +70,7 @@ public class BlockReinforcedChest extends BlockContainer {
 	public float getBlockHardness(World world, int x, int y, int z) {
 		TileEntityReinforcedChest chest = WorldUtils.getChest(world, x, y, z);
 		float hardness = blockHardness;
-		if (chest != null && chest.isLocked()) {
+		if (chest != null && chest.getLock() != null) {
 			hardness *= 15.0F;
 			int persistance = EnchantmentHelper.getEnchantmentLevel(EnchantmentBetterStorage.persistance.effectId, chest.getLock());
 			if (persistance > 0) hardness *= persistance + 2;
@@ -131,29 +133,25 @@ public class BlockReinforcedChest extends BlockContainer {
 		
 		TileEntityReinforcedChest chest = WorldUtils.getChest(world, x, y, z);
 		ItemStack holding = player.getHeldItem();
+
+		ItemStack lock = chest.getLock();
+		ItemStack key = (StackUtils.isKey(holding) ? holding : null);
+		IKey keyType = ((key != null) ? (IKey)key.getItem() : null);
 		
-		// Use item if it's a lock and the chest is not locked.
-		if (ItemLock.isLock(holding) && !chest.isLocked())
+		// If the chest isn't locked and item held is a lock, use it.
+		if (lock == null && StackUtils.isLock(holding))
 			return false;
 		
 		// Only continue if the chest can be opened.
-		ItemStack lock = chest.getLock();
-		if (!chest.canUse(player) &&
-		    !ItemLock.lockTryOpen(lock, player, holding)) {
-			applyTrigger(world, x, y, z, lock);
+		if (chest.getLock() != null && !chest.canUse(player) &&
+		    (key == null || !keyType.unlock(key, lock, true)))
 			return true;
-		}
 		
 		int guiID = (chest.isConnected() ? Constants.chestLargeGuiId : Constants.chestSmallGuiId);
 		guiID += chest.getNumColumns() - 9;
 		player.openGui(BetterStorage.instance, guiID, world, x, y, z);
+		
 		return true;
-	}
-	
-	public void applyTrigger(World world, int x, int y, int z, ItemStack lock) {
-		if (!ItemLock.isLock(lock)) return;
-		int trigger = EnchantmentHelper.getEnchantmentLevel(EnchantmentBetterStorage.trigger.effectId, lock);
-		if (trigger > 0) WorldUtils.getChest(world, x, y, z).setPowered(true);
 	}
 	
 	@Override
@@ -161,8 +159,9 @@ public class BlockReinforcedChest extends BlockContainer {
 		if (world.isRemote) return;
 		TileEntityReinforcedChest chest = WorldUtils.getChest(world, x, y, z);
 		ItemStack lock = chest.getLock();
-		ItemLock.lockApplyEffects(lock, player, 2);
-		applyTrigger(world, x, y, z, lock);
+		if (lock == null) return;
+		ILock lockType = (ILock)lock.getItem();
+		lockType.applyEffects(lock, chest, player, 3);
 	}
 	
 	// Trigger enchantment related
@@ -174,7 +173,6 @@ public class BlockReinforcedChest extends BlockContainer {
 	public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int side) {
 		return (WorldUtils.getChest(world, x, y, z).isPowered() ? 15 : 0);
 	}
-	
 	@Override
 	public int isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int side) {
 		return isProvidingWeakPower(world, x, y, z, side);

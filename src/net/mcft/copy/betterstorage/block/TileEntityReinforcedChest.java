@@ -5,9 +5,9 @@ import java.security.InvalidParameterException;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.mcft.copy.betterstorage.Config;
+import net.mcft.copy.betterstorage.api.ILock;
 import net.mcft.copy.betterstorage.api.ILockable;
 import net.mcft.copy.betterstorage.inventory.InventoryWrapper;
-import net.mcft.copy.betterstorage.item.ItemLock;
 import net.mcft.copy.betterstorage.utils.NbtUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.entity.player.EntityPlayer;
@@ -72,7 +72,7 @@ public class TileEntityReinforcedChest extends TileEntityConnectable implements 
 		return (super.canConnect(connectable) &&
 		        ((xCoord != chest.xCoord && (orientation == ForgeDirection.EAST || orientation == ForgeDirection.WEST)) ||
 		         (zCoord != chest.zCoord && (orientation == ForgeDirection.SOUTH || orientation == ForgeDirection.NORTH))) &&
-		        !isLocked() && !chest.isLocked());
+		        getLock() == null && chest.getLock() == null);
 	}
 	
 	// TileEntity synchronization
@@ -104,7 +104,7 @@ public class TileEntityReinforcedChest extends TileEntityConnectable implements 
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
 		NBTTagList items = compound.getTagList("Items");
-		contents = NbtUtils.readItems(compound, contents.length);
+		contents = NbtUtils.readItems(items, contents.length);
 		wrapper = new InventoryWrapper(contents, this);
 		if (compound.hasKey("lock"))
 			lock = ItemStack.loadItemStackFromNBT(compound.getCompoundTag("lock"));
@@ -113,7 +113,7 @@ public class TileEntityReinforcedChest extends TileEntityConnectable implements 
 	@Override
 	public void writeToNBT(NBTTagCompound compound) {
 		super.writeToNBT(compound);
-		NbtUtils.writeItems(compound, contents);
+		compound.setTag("Items", NbtUtils.writeItems(contents));
 		if (lock != null)
 			compound.setCompoundTag("lock", lock.writeToNBT(new NBTTagCompound("")));
 	}
@@ -129,21 +129,21 @@ public class TileEntityReinforcedChest extends TileEntityConnectable implements 
 	public int getInventoryStackLimit() { return 64; }
 	
 	@Override
-	public int getSizeInventory() { return (!isLocked() ? wrapper.getSizeInventory() : 0); }
+	public int getSizeInventory() { return ((getLock() == null) ? wrapper.getSizeInventory() : 0); }
 	
 	@Override
-	public ItemStack getStackInSlot(int slot) { return (!isLocked() ? wrapper.getStackInSlot(slot) : null); }
+	public ItemStack getStackInSlot(int slot) { return ((getLock() == null) ? wrapper.getStackInSlot(slot) : null); }
 	@Override
 	public void setInventorySlotContents(int slot, ItemStack stack) {
-		if (!isLocked()) wrapper.setInventorySlotContents(slot, stack);
+		if (getLock() == null) wrapper.setInventorySlotContents(slot, stack);
 	}
 	@Override
 	public ItemStack decrStackSize(int slot, int amount) {
-		return (!isLocked() ? wrapper.decrStackSize(slot, amount) : null);
+		return ((getLock() == null) ? wrapper.decrStackSize(slot, amount) : null);
 	}
 	@Override
 	public ItemStack getStackInSlotOnClosing(int slot) {
-		return ((!isLocked()) ? wrapper.getStackInSlotOnClosing(slot) : null);
+		return ((getLock() == null) ? wrapper.getStackInSlotOnClosing(slot) : null);
 	}
 	
 	@Override
@@ -223,10 +223,14 @@ public class TileEntityReinforcedChest extends TileEntityConnectable implements 
 	
 	@Override
 	public ItemStack getLock() { return getMainChest().lock; }
+	
+	@Override
+	public boolean isLockValid(ItemStack lock) { return (lock.getItem() instanceof ILock); }
+	
 	@Override
 	public void setLock(ItemStack lock) {
-		if (lock != null && !ItemLock.isLock(lock))
-			throw new InvalidParameterException("lock is not an ItemStack of ItemLock.");
+		if (lock != null && !isLockValid(lock))
+			throw new InvalidParameterException("Can't set lock to " + lock + ".");
 		TileEntityReinforcedChest chest = getMainChest();
 		chest.lock = lock;
 		// Mark the block for an update, sends description packet to players.
@@ -234,16 +238,10 @@ public class TileEntityReinforcedChest extends TileEntityConnectable implements 
 	}
 	
 	@Override
-	public boolean isLocked() { return (getLock() != null); }
+	public boolean canUse(EntityPlayer player) { return (numUsingPlayers > 0); }
+	
 	@Override
-	public boolean canLock(ItemStack lock) {
-		if (!ItemLock.isLock(lock)) return false;
-		return !isLocked();
-	}
-	@Override
-	public boolean canUse(EntityPlayer player) {
-		return (!isLocked() || numUsingPlayers > 0);
-	}
+	public void applyTrigger() { setPowered(true); }
 	
 	// Trigger enchantment related
 	
@@ -251,9 +249,11 @@ public class TileEntityReinforcedChest extends TileEntityConnectable implements 
 	public boolean isPowered() {
 		return getMainChest().powered;
 	}
+	
 	/** Sets if the chest is emitting redstone.
 	 *  Updates all nearby blocks to make sure they notice it. */
 	public void setPowered(boolean powered) {
+		
 		TileEntityReinforcedChest chest = getMainChest();
 		if (chest != this) { chest.setPowered(powered); return; }
 		
@@ -285,7 +285,7 @@ public class TileEntityReinforcedChest extends TileEntityConnectable implements 
 			worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord + 1, zCoord + 1, id);
 			worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord - 1, zCoord + 1, id);
 		} else worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord + 1, id);
-			
+		
 	}
 	
 }
