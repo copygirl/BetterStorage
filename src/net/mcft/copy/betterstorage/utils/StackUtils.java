@@ -1,5 +1,7 @@
 package net.mcft.copy.betterstorage.utils;
 
+import net.mcft.copy.betterstorage.item.ItemKey;
+import net.mcft.copy.betterstorage.item.ItemLock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -72,6 +74,14 @@ public class StackUtils {
 			compound = compound.getCompoundTag(tag);
 		}
 		compound.removeTag(tag);
+	}
+	
+	public static boolean isKey(ItemStack stack) {
+		return (stack != null && stack.getItem() instanceof ItemKey);
+	}
+	
+	public static boolean isLock(ItemStack stack) {
+		return (stack != null && stack.getItem() instanceof ItemLock);
 	}
 	
 	public static ItemStack[] getStackContents(ItemStack stack, int size) {

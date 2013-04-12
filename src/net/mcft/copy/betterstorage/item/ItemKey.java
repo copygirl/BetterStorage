@@ -106,10 +106,6 @@ public class ItemKey extends ItemBetterStorage {
 			stack.setItemDamage(1 + BetterStorage.random.nextInt(32000));
 	}
 	
-	public static boolean isKey(ItemStack stack) {
-		return (stack != null && stack.getItem() instanceof ItemKey);
-	}
-	
 	public static boolean tryKeyOpenLock(ItemStack lock, ItemStack key) {
 		if (!ItemKey.isKey(key)) return false;
 		

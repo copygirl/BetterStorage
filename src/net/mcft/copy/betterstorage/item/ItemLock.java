@@ -44,10 +44,6 @@ public class ItemLock extends ItemBetterStorage {
 		} else return false;
 	}
 	
-	public static boolean isLock(ItemStack stack) {
-		return (stack != null && stack.getItem() instanceof ItemLock);
-	}
-	
 	/** Gets called when a player tries to open a locked container. <br>
 	 *  Returns if the container can be opened. */
 	public boolean tryOpen(ItemStack lock, EntityPlayer player, ItemStack key) {
