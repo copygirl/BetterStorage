@@ -30,6 +30,7 @@ public class Registry {
 		register(BetterStorage.key, "key", "Key");
 		register(BetterStorage.lock, "lock", "Lock");
 		register(BetterStorage.keyring, "keyring", "Keyring");
+		register(BetterStorage.backpackItem, "backpack", "Backpack");
 	}
 	
 	public static void register(Block block, String name, String fullName, Class<? extends ItemBlock> itemBlockClass) {

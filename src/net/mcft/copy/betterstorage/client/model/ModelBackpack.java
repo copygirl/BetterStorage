@@ -3,16 +3,17 @@ package net.mcft.copy.betterstorage.client.model;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 
 @SideOnly(Side.CLIENT)
 public class ModelBackpack extends ModelBase {
 	
-	ModelRenderer main;
-	ModelRenderer top;
-	ModelRenderer front;
-	ModelRenderer right;
-	ModelRenderer left;
+	private ModelRenderer main;
+	private ModelRenderer top;
+	private ModelRenderer front;
+	private ModelRenderer right;
+	private ModelRenderer left;
 	
 	public ModelBackpack() {
 		
@@ -39,12 +40,6 @@ public class ModelBackpack extends ModelBase {
 		left.addBox(0F, 0F, -1F, 1, 8, 1);
 		left.setRotationPoint(3F, 13F, -3F);
 		
-	}
-	
-	protected void setRotation(ModelRenderer model, float x, float y, float z) {
-		model.rotateAngleX = x;
-		model.rotateAngleY = y;
-		model.rotateAngleZ = z;
 	}
 	
 	public void renderAll() {
