@@ -37,7 +37,7 @@ public class InventoryWrapper extends InventoryBetterStorage {
 	
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) {
-		return ((base != null) ? base.isUseableByPlayer(player) : false);
+		return ((base != null) ? base.isUseableByPlayer(player) : true);
 	}
 	
 	@Override

@@ -4,6 +4,7 @@ import java.util.Random;
 import java.util.logging.Logger;
 
 import net.mcft.copy.betterstorage.block.BlockArmorStand;
+import net.mcft.copy.betterstorage.block.BlockBackpack;
 import net.mcft.copy.betterstorage.block.BlockLocker;
 import net.mcft.copy.betterstorage.block.BlockReinforcedChest;
 import net.mcft.copy.betterstorage.block.ChestMaterial;
@@ -59,6 +60,7 @@ public class BetterStorage {
 	public static BlockReinforcedChest reinforcedChest;
 	public static BlockLocker locker;
 	public static BlockArmorStand armorStand;
+	public static BlockBackpack backpack;
 	
 	// Items
 	public static ItemKey key;
@@ -95,13 +97,14 @@ public class BetterStorage {
 	
 	private void initializeItems() {
 		
-		crate = new BlockCrate(Config.crateId);
+		crate           = new BlockCrate(Config.crateId);
 		reinforcedChest = new BlockReinforcedChest(Config.chestId);
-		locker = new BlockLocker(Config.lockerId);
-		armorStand = new BlockArmorStand(Config.armorStandId);
+		locker          = new BlockLocker(Config.lockerId);
+		armorStand      = new BlockArmorStand(Config.armorStandId);
+		backpack        = new BlockBackpack(Config.backpackId);
 		
-		key = new ItemKey(Config.keyId);
-		lock = new ItemLock(Config.lockId);
+		key     = new ItemKey(Config.keyId);
+		lock    = new ItemLock(Config.lockId);
 		keyring = new ItemKeyring(Config.keyringId);
 		
 		Registry.doYourThing();
@@ -166,6 +169,8 @@ public class BetterStorage {
 		lang.addStringLocalization("container.reinforcedChestLarge", "Large Reinforced Chest");
 		lang.addStringLocalization("container.locker", "Locker");
 		lang.addStringLocalization("container.lockerLarge", "Large Locker");
+		lang.addStringLocalization("container.backpack", "Backpack");
+		
 		lang.addStringLocalization("container.keyring", "Keyring");
 		
 		lang.addStringLocalization("enchantment.key.unlocking", "Unlocking");

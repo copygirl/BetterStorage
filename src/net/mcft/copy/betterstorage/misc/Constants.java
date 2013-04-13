@@ -12,6 +12,7 @@ public class Constants {
 	public final static String lockerTexture = gfxbase + "models/locker.png";
 	public final static String largeLockerTexture = gfxbase + "models/locker_large.png";
 	public final static String armorStandTexture = gfxbase + "models/armorstand.png";
+	public final static String backpackTexture = gfxbase + "models/backpack.png";
 	
 	public final static int crateSmallGuiId  = 0;
 	public final static int crateMediumGuiId = 1;

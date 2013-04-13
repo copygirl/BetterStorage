@@ -9,10 +9,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.mcft.copy.betterstorage.block.BlockArmorStand;
 import net.mcft.copy.betterstorage.block.ChestMaterial;
 import net.mcft.copy.betterstorage.block.TileEntityArmorStand;
+import net.mcft.copy.betterstorage.block.TileEntityBackpack;
 import net.mcft.copy.betterstorage.block.TileEntityLocker;
 import net.mcft.copy.betterstorage.block.TileEntityReinforcedChest;
 import net.mcft.copy.betterstorage.client.renderer.BetterStorageRenderingHandler;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityArmorStandRenderer;
+import net.mcft.copy.betterstorage.client.renderer.TileEntityBackpackRenderer;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityLockerRenderer;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityReinforcedChestRenderer;
 import net.mcft.copy.betterstorage.misc.Constants;
@@ -37,6 +39,7 @@ public class ClientProxy extends CommonProxy {
 	public static int reinforcedChestRenderId;
 	public static int lockerRenderId;
 	public static int armorStandRenderId;
+	public static int backpackRenderId;
 	
 	@Override
 	public void init() {
@@ -50,6 +53,7 @@ public class ClientProxy extends CommonProxy {
 		reinforcedChestRenderId = registerTileEntityRenderer(TileEntityReinforcedChest.class, new TileEntityReinforcedChestRenderer());
 		lockerRenderId = registerTileEntityRenderer(TileEntityLocker.class, new TileEntityLockerRenderer());
 		armorStandRenderId = registerTileEntityRenderer(TileEntityArmorStand.class, new TileEntityArmorStandRenderer(), false);
+		backpackRenderId = registerTileEntityRenderer(TileEntityBackpack.class, new TileEntityBackpackRenderer(), false);
 	}
 	
 	private int registerTileEntityRenderer(Class<? extends TileEntity> tileEntityClass,
@@ -73,6 +77,7 @@ public class ClientProxy extends CommonProxy {
 		MinecraftForgeClient.preloadTexture(Constants.lockerTexture);
 		MinecraftForgeClient.preloadTexture(Constants.largeLockerTexture);
 		MinecraftForgeClient.preloadTexture(Constants.armorStandTexture);
+		MinecraftForgeClient.preloadTexture(Constants.backpackTexture);
 	}
 	
 	private void preloadChestTextures(ChestMaterial material) {

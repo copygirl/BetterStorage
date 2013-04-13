@@ -1,6 +1,7 @@
 package net.mcft.copy.betterstorage.proxy;
 
 import net.mcft.copy.betterstorage.block.TileEntityArmorStand;
+import net.mcft.copy.betterstorage.block.TileEntityBackpack;
 import net.mcft.copy.betterstorage.block.TileEntityLocker;
 import net.mcft.copy.betterstorage.block.TileEntityReinforcedChest;
 import net.mcft.copy.betterstorage.block.crate.CratePileCollection;
@@ -23,6 +24,7 @@ public class CommonProxy {
 		GameRegistry.registerTileEntity(TileEntityReinforcedChest.class, "container.reinforcedChest");
 		GameRegistry.registerTileEntity(TileEntityLocker.class, "container.locker");
 		GameRegistry.registerTileEntity(TileEntityArmorStand.class, "container.armorStand");
+		GameRegistry.registerTileEntity(TileEntityBackpack.class, "container.backpack");
 	}
 	
 	@ForgeSubscribe

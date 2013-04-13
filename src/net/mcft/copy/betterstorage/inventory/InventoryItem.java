@@ -25,9 +25,6 @@ public class InventoryItem extends InventoryWrapper {
 	public String getInvName() { return title; }
 	
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer player) { return true; }
-	
-	@Override
 	public void closeChest() {
 		updateStack();
 	}

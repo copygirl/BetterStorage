@@ -12,6 +12,7 @@ public class Config {
 	public static int chestId      = 2831;
 	public static int lockerId     = 2832;
 	public static int armorStandId = 2833;
+	public static int backpackId   = 2834;
 	
 	public static int keyId        = 28540;
 	public static int lockId       = 28541;
@@ -33,6 +34,7 @@ public class Config {
 		chestId      = config.getBlock("chest", chestId).getInt();
 		lockerId     = config.getBlock("locker", lockerId).getInt();
 		armorStandId = config.getBlock("armorStand", armorStandId).getInt();
+		backpackId   = config.getBlock("backpack", backpackId).getInt();
 		
 		keyId        = config.getItem("key", keyId).getInt();
 		lockId       = config.getItem("lock", lockId).getInt();

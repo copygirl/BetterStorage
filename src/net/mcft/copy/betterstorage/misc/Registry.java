@@ -23,6 +23,7 @@ public class Registry {
 		register(BetterStorage.reinforcedChest, "reinforcedChest", null, ItemReinforcedChest.class);
 		register(BetterStorage.locker, "locker", "Locker");
 		register(BetterStorage.armorStand, "armorStand", "Armor Stand", ItemArmorStand.class);
+		register(BetterStorage.backpack, "backpack", "Backpack");
 	}
 	
 	public static void registerItems() {

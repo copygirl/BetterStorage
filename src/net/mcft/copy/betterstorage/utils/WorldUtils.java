@@ -6,6 +6,7 @@ import java.util.Random;
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.api.ILockable;
 import net.mcft.copy.betterstorage.block.TileEntityArmorStand;
+import net.mcft.copy.betterstorage.block.TileEntityBackpack;
 import net.mcft.copy.betterstorage.block.TileEntityLocker;
 import net.mcft.copy.betterstorage.block.TileEntityReinforcedChest;
 import net.mcft.copy.betterstorage.block.crate.CratePileData;
@@ -103,6 +104,11 @@ public class WorldUtils {
 	/** Returns the TileEntityArmorStand at a position, null if there's none. */
 	public static TileEntityArmorStand getArmorStand(World world, int x, int y, int z) {
 		return get(world, x, y, z, TileEntityArmorStand.class);
+	}
+	
+	/** Returns the TileEntityArmorStand at a position, null if there's none. */
+	public static TileEntityBackpack getBackpack(World world, int x, int y, int z) {
+		return get(world, x, y, z, TileEntityBackpack.class);
 	}
 	
 	/** Returns the ILockable at a position, null if there's none. */
