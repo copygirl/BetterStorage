@@ -15,7 +15,7 @@ public class ChestMaterial {
 	public static List<ChestMaterial> materials = new ArrayList<ChestMaterial>();
 	
 	// Vanilla materials
-	public static ChestMaterial iron    = new ChestMaterial(0, "iron", Item.ingotIron, Block.blockSteel);
+	public static ChestMaterial iron    = new ChestMaterial(0, "iron", Item.ingotIron, Block.blockIron);
 	public static ChestMaterial gold    = new ChestMaterial(1, "gold", Item.ingotGold, Block.blockGold);
 	public static ChestMaterial diamond = new ChestMaterial(2, "diamond", Item.diamond, Block.blockDiamond);
 	public static ChestMaterial emerald = new ChestMaterial(3, "emerald", Item.emerald, Block.blockEmerald);

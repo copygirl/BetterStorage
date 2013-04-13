@@ -34,8 +34,8 @@ public class ItemKey extends ItemBetterStorage implements IKey {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void updateIcons(IconRegister iconRegister) {
-		iconGold = iconIndex = iconRegister.registerIcon("betterstorage:key_gold");
+	public void registerIcons(IconRegister iconRegister) {
+		iconGold = itemIcon = iconRegister.registerIcon("betterstorage:key_gold");
 		iconIron = iconRegister.registerIcon("betterstorage:key_iron");
 		iconColor = iconRegister.registerIcon("betterstorage:key_color");
 	}

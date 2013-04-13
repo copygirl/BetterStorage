@@ -21,8 +21,8 @@ public class ItemLock extends ItemBetterStorage implements ILock {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void updateIcons(IconRegister iconRegister) {
-		iconIndex = iconRegister.registerIcon("betterstorage:lock");
+	public void registerIcons(IconRegister iconRegister) {
+		itemIcon = iconRegister.registerIcon("betterstorage:lock");
 	}
 	
 	@Override

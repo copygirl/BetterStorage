@@ -43,7 +43,7 @@ public class BlockArmorStand extends BlockContainer {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public String func_94327_t_() { return "betterstorage:armorstand"; }
+	public String getItemIconName() { return "betterstorage:armorstand"; }
 	
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {

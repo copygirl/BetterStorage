@@ -24,10 +24,10 @@ public class ItemKeyring extends ItemBetterStorage implements IKey {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void updateIcons(IconRegister iconRegister) {
+	public void registerIcons(IconRegister iconRegister) {
 		for (int i = 0; i < icons.length; i++)
 			icons[i] = iconRegister.registerIcon("betterstorage:keyring_" + i);
-		iconIndex = icons[0];
+		itemIcon = icons[0];
 	}
 	
 	@Override
