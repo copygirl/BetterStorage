@@ -2,16 +2,15 @@ package net.mcft.copy.betterstorage.client.model;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.mcft.copy.betterstorage.BetterStorage;
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.util.MathHelper;
 
 @SideOnly(Side.CLIENT)
 public class ModelBackpackArmor extends ModelBiped {
+	
+	public static final ModelBackpackArmor instance = new ModelBackpackArmor();
 	
 	private ModelRenderer main;
 	private ModelRenderer top;

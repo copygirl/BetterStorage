@@ -7,7 +7,6 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.mcft.copy.betterstorage.block.BlockArmorStand;
-import net.mcft.copy.betterstorage.block.ChestMaterial;
 import net.mcft.copy.betterstorage.block.TileEntityArmorStand;
 import net.mcft.copy.betterstorage.block.TileEntityBackpack;
 import net.mcft.copy.betterstorage.block.TileEntityLocker;
@@ -17,19 +16,16 @@ import net.mcft.copy.betterstorage.client.renderer.TileEntityArmorStandRenderer;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityBackpackRenderer;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityLockerRenderer;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityReinforcedChestRenderer;
-import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumMovingObjectType;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
-import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.event.ForgeSubscribe;
 
@@ -42,47 +38,24 @@ public class ClientProxy extends CommonProxy {
 	public static int backpackRenderId;
 	
 	@Override
-	public void init() {
-		super.init();
-		preloadTextures();
-	}
-	
-	@Override
 	public void registerTileEntites() {
 		super.registerTileEntites();
 		reinforcedChestRenderId = registerTileEntityRenderer(TileEntityReinforcedChest.class, new TileEntityReinforcedChestRenderer());
 		lockerRenderId = registerTileEntityRenderer(TileEntityLocker.class, new TileEntityLockerRenderer());
-		armorStandRenderId = registerTileEntityRenderer(TileEntityArmorStand.class, new TileEntityArmorStandRenderer(), false);
-		backpackRenderId = registerTileEntityRenderer(TileEntityBackpack.class, new TileEntityBackpackRenderer(), false);
+		armorStandRenderId = registerTileEntityRenderer(TileEntityArmorStand.class, new TileEntityArmorStandRenderer(), false, 0, 1, 0);
+		backpackRenderId = registerTileEntityRenderer(TileEntityBackpack.class, new TileEntityBackpackRenderer(), true, -160, 1.5F, 0.14F);
 	}
 	
-	private int registerTileEntityRenderer(Class<? extends TileEntity> tileEntityClass,
-	                                       TileEntitySpecialRenderer renderer,
-	                                       boolean render3dInInventory) {
+	private int registerTileEntityRenderer(Class<? extends TileEntity> tileEntityClass, TileEntitySpecialRenderer renderer,
+	                                       boolean render3dInInventory, float rotation, float scale, float yOffset) {
 		ClientRegistry.bindTileEntitySpecialRenderer(tileEntityClass, renderer);
 		BetterStorageRenderingHandler renderingHandler =
-			new BetterStorageRenderingHandler(tileEntityClass, renderer, render3dInInventory);
+			new BetterStorageRenderingHandler(tileEntityClass, renderer, render3dInInventory, rotation, scale, yOffset);
 		RenderingRegistry.registerBlockHandler(renderingHandler);
 		return renderingHandler.getRenderId();
 	}
 	private int registerTileEntityRenderer(Class<? extends TileEntity> tileEntityClass, TileEntitySpecialRenderer renderer) {
-		return registerTileEntityRenderer(tileEntityClass, renderer, true);
-	}
-	
-	public void preloadTextures() {
-		MinecraftForgeClient.preloadTexture(Constants.crateContainer);
-		MinecraftForgeClient.preloadTexture(Constants.reinforcedChestContainer);
-		for (ChestMaterial material : ChestMaterial.materials)
-			preloadChestTextures(material);
-		MinecraftForgeClient.preloadTexture(Constants.lockerTexture);
-		MinecraftForgeClient.preloadTexture(Constants.largeLockerTexture);
-		MinecraftForgeClient.preloadTexture(Constants.armorStandTexture);
-		MinecraftForgeClient.preloadTexture(Constants.backpackTexture);
-	}
-	
-	private void preloadChestTextures(ChestMaterial material) {
-		MinecraftForgeClient.preloadTexture(material.getTexture(false));
-		MinecraftForgeClient.preloadTexture(material.getTexture(true));
+		return registerTileEntityRenderer(tileEntityClass, renderer, true, 90, 1, 0);
 	}
 	
 	@ForgeSubscribe
@@ -109,13 +82,13 @@ public class ClientProxy extends CommonProxy {
 		
 		ItemStack item = armorStand.armor[slot];
 		ItemStack holding = player.getCurrentEquippedItem();
+		ItemStack armor = player.inventory.armorInventory[slot];
 		
 		if (player.isSneaking()) {
-			if (holding != null || (item == null &&
-			    player.inventory.armorInventory[slot] == null)) return;
+			if (holding != null || (item == null && armor == null) ||
+			    (armor != null && !armor.getItem().isValidArmor(armor, 3 - slot))) return;
 		} else if (!(item != null && holding == null) &&
-		           !(holding != null && holding.getItem() instanceof ItemArmor &&
-		             ((ItemArmor)holding.getItem()).armorType == 3 - slot)) return;
+		           !(holding != null && holding.getItem().isValidArmor(holding, 3 - slot))) return;
 		
         double xOff = player.lastTickPosX + (player.posX - player.lastTickPosX) * event.partialTicks;
         double yOff = player.lastTickPosY + (player.posY - player.lastTickPosY) * event.partialTicks;

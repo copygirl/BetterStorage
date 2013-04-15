@@ -1,34 +1,29 @@
 package net.mcft.copy.betterstorage.block;
 
+import java.util.Random;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.mcft.copy.betterstorage.BetterStorage;
-import net.mcft.copy.betterstorage.api.IKey;
-import net.mcft.copy.betterstorage.inventory.InventoryWrapper;
-import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.proxy.ClientProxy;
-import net.mcft.copy.betterstorage.utils.DirectionUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.common.MinecraftForge;
 
 public class BlockBackpack extends BlockContainer {
 	
 	public BlockBackpack(int id) {
 		super(id, Material.cloth);
 		
-		setHardness(1.5f);
+		setHardness(0.7f);
 		setStepSound(Block.soundClothFootstep);
 		setBlockBounds(3 / 16.0F, 0.0F, 3 / 16.0F, 13 / 16.0F, 13 / 16.0F, 13 / 16.0F);
 	}
@@ -36,7 +31,7 @@ public class BlockBackpack extends BlockContainer {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister iconRegister) {
-		blockIcon = iconRegister.registerIcon("cloth_0");
+		blockIcon = iconRegister.registerIcon("cloth_12");
 	}
 	
 	@Override
@@ -48,7 +43,7 @@ public class BlockBackpack extends BlockContainer {
 			setBlockBounds(2 / 16.0F, 0.0F, 3 / 16.0F, 14 / 16.0F, 13 / 16.0F, 13 / 16.0F);
 		else setBlockBounds(3 / 16.0F, 0.0F, 3 / 16.0F, 13 / 16.0F, 13 / 16.0F, 13 / 16.0F);
 	}
-
+	
 	@Override
 	public boolean isOpaqueCube() { return false; }
 	@Override
@@ -57,16 +52,41 @@ public class BlockBackpack extends BlockContainer {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public int getRenderType() { return ClientProxy.backpackRenderId; }
-	
 	@Override
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving player, ItemStack stack) {
-		ForgeDirection orientation = DirectionUtils.getOrientation(player).getOpposite();
-		world.setBlockMetadataWithNotify(x, y, z, orientation.ordinal(), 3);
-	}
+	public int quantityDropped(int meta, int fortune, Random random) { return 0; }
 	
 	@Override
 	public TileEntity createNewTileEntity(World world) {
 		return new TileEntityBackpack();
+	}
+	
+	@Override
+	public void breakBlock(World world, int x, int y, int z, int id, int meta) {
+		TileEntityBackpack backpack = WorldUtils.getBackpack(world, x, y, z);
+		super.breakBlock(world, x, y, z, id, meta);
+		if (backpack != null && !backpack.equipped) {
+			ItemStack stack = new ItemStack(this, 1, backpack.damage);
+			WorldUtils.dropStackFromBlock(world, x, y, z, stack);
+			backpack.dropContents();
+		}
+	}
+	
+	@Override
+	public boolean removeBlockByPlayer(World world, EntityPlayer player, int x, int y, int z) {
+		if (world.isRemote || !player.isSneaking() ||
+		    player.inventory.armorInventory[2] != null)
+			return world.setBlockToAir(x, y, z);
+		
+		TileEntityBackpack backpack = WorldUtils.getBackpack(world, x, y, z);
+		backpack.equipped = true;
+		
+		if (!world.setBlockToAir(x, y, z)) return false;
+		
+		ItemStack backpackItem = new ItemStack(this, 1, backpack.damage);
+		StackUtils.setStackContents(backpackItem, backpack.getContents());
+		player.inventory.armorInventory[2] = backpackItem;
+		
+		return true;
 	}
 	
 	@Override

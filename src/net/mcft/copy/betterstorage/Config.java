@@ -14,10 +14,9 @@ public class Config {
 	public static int armorStandId = 2833;
 	public static int backpackId   = 2834;
 	
-	public static int keyId          = 28540;
-	public static int lockId         = 28541;
-	public static int keyringId      = 28542;
-	public static int backpackItemId = 28543;
+	public static int keyId     = 28540;
+	public static int lockId    = 28541;
+	public static int keyringId = 28542;
 	
 	// Uses 180 - 182 and 185 - 188 (or w/e the base id is).
 	public static int enchantmentBaseId = 180;
@@ -40,7 +39,6 @@ public class Config {
 		keyId          = config.getItem("key", keyId).getInt();
 		lockId         = config.getItem("lock", lockId).getInt();
 		keyringId      = config.getItem("keyring", keyringId).getInt();
-		backpackItemId = config.getItem("backpackItem", backpackItemId).getInt();
 		
 		enchantmentBaseId = config.get(Configuration.CATEGORY_GENERAL, "enchantmentBaseId", enchantmentBaseId).getInt();
 		

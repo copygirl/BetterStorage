@@ -10,7 +10,6 @@ import net.mcft.copy.betterstorage.block.BlockReinforcedChest;
 import net.mcft.copy.betterstorage.block.ChestMaterial;
 import net.mcft.copy.betterstorage.block.crate.BlockCrate;
 import net.mcft.copy.betterstorage.enchantment.EnchantmentBetterStorage;
-import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.item.ItemKey;
 import net.mcft.copy.betterstorage.item.ItemKeyring;
 import net.mcft.copy.betterstorage.item.ItemLock;
@@ -67,7 +66,6 @@ public class BetterStorage {
 	public static ItemKey key;
 	public static ItemLock lock;
 	public static ItemKeyring keyring;
-	public static ItemBackpack backpackItem;
 	
 	
 	public static CreativeTabs creativeTab;
@@ -105,10 +103,9 @@ public class BetterStorage {
 		armorStand      = new BlockArmorStand(Config.armorStandId);
 		backpack        = new BlockBackpack(Config.backpackId);
 		
-		key           = new ItemKey(Config.keyId);
-		lock         = new ItemLock(Config.lockId);
-		keyring      = new ItemKeyring(Config.keyringId);
-		backpackItem = new ItemBackpack(Config.backpackItemId);
+		key     = new ItemKey(Config.keyId);
+		lock    = new ItemLock(Config.lockId);
+		keyring = new ItemKeyring(Config.keyringId);
 		
 		Registry.doYourThing();
 		

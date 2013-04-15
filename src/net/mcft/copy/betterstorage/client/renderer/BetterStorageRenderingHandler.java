@@ -20,15 +20,22 @@ public class BetterStorageRenderingHandler implements ISimpleBlockRenderingHandl
 	private TileEntity tileEntity;
 	private TileEntitySpecialRenderer tileEntityRenderer;
 	
-	public int renderId;
-	public boolean render3dInInventory;
+	public final int renderId;
+	public final boolean render3dInInventory;
+	public final float rotation;
+	public final float scale;
+	public final float yOffset;
 	
 	public BetterStorageRenderingHandler(Class<? extends TileEntity> tileEntityClass,
 	                                     TileEntitySpecialRenderer tileEntityRenderer,
-	                                     boolean render3dInInventory) {
+	                                     boolean render3dInInventory, float rotation,
+	                                     float scale, float yOffset) {
 		try { tileEntity = tileEntityClass.newInstance(); } catch (Exception e) {  }
 		this.tileEntityRenderer = tileEntityRenderer;
 		this.render3dInInventory = render3dInInventory;
+		this.rotation = rotation;
+		this.scale = scale;
+		this.yOffset = yOffset;
 		
 		tileEntityRenderer.setTileEntityRenderer(TileEntityRenderer.instance);
 		renderId = RenderingRegistry.getNextAvailableRenderId();
@@ -38,6 +45,9 @@ public class BetterStorageRenderingHandler implements ISimpleBlockRenderingHandl
 	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
 		tileEntity.blockType = block;
 		tileEntity.blockMetadata = metadata;
+		GL11.glTranslatef(0, yOffset, 0);
+		GL11.glRotatef(rotation, 0.0F, 1.0F, 0.0F);
+		GL11.glScalef(scale, scale, scale);
 		tileEntityRenderer.renderTileEntityAt(tileEntity, -0.5, -0.5, -0.5, 0);
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 	}

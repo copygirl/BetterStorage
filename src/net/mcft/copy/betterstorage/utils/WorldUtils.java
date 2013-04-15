@@ -14,12 +14,14 @@ import net.mcft.copy.betterstorage.block.crate.TileEntityCrate;
 import net.mcft.copy.betterstorage.container.ContainerBetterStorage;
 import net.mcft.copy.betterstorage.inventory.InventoryCombined;
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -38,14 +40,14 @@ public class WorldUtils {
 	}
 	
 	/** Spawns an ItemStack in the world. */
-	public static EntityItem spawnItem(World world, float x, float y, float z, ItemStack stack) {
+	public static EntityItem spawnItem(World world, double x, double y, double z, ItemStack stack) {
 		if (stack == null) return null;
 		EntityItem item = new EntityItem(world, x, y, z, stack);
 		world.spawnEntityInWorld(item);
 		return item;
 	}
 	/** Spawns an ItemStack in the world with random motion. */
-	public static EntityItem spawnItemWithMotion(World world, float x, float y, float z, ItemStack stack) {
+	public static EntityItem spawnItemWithMotion(World world, double x, double y, double z, ItemStack stack) {
 		EntityItem item = spawnItem(world, x, y, z, stack);
 		if (item != null) {
 			item.motionX = random.nextGaussian() * 0.05F;
@@ -60,6 +62,21 @@ public class WorldUtils {
 		float itemY = y + random.nextFloat() * 0.8F + 0.1F;
 		float itemZ = z + random.nextFloat() * 0.8F + 0.1F;
 		return spawnItemWithMotion(world, itemX, itemY, itemZ, stack);
+	}
+	/** Spawns an ItemStack as if it was dropped from an entity on death. */
+	public static EntityItem dropStackFromEntity(Entity entity, ItemStack stack) {
+		EntityPlayer player = ((entity instanceof EntityPlayer) ? (EntityPlayer)entity : null);
+		if (player == null) {
+			double y = entity.posY + entity.getEyeHeight() - 0.3;
+			EntityItem item = spawnItem(entity.worldObj, entity.posX, y, entity.posZ, stack);
+			item.delayBeforeCanPickup = 40;
+			float f1 = random.nextFloat() * 0.5F;
+			float f2 = random.nextFloat() * (float)Math.PI * 2.0F;
+			item.motionX = -MathHelper.sin(f2) * f1;
+			item.motionY = 0.2;
+			item.motionZ =  MathHelper.cos(f2) * f1;
+			return item;
+		} else return player.dropPlayerItemWithRandomChoice(stack, true);
 	}
 	
 	/** Returns whether the Block at the position has this id. */

@@ -13,7 +13,6 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet103SetSlot;
@@ -116,8 +115,10 @@ public class BlockArmorStand extends BlockContainer {
 		
 		ItemStack item = armorStand.armor[slot];
 		ItemStack holding = player.getCurrentEquippedItem();
+		ItemStack armor = player.inventory.armorInventory[slot];
 		if (player.isSneaking()) {
-			if (item != null || player.inventory.armorInventory[slot] != null) {
+			if ((item != null || armor != null) &&
+			    (armor == null || armor.getItem().isValidArmor(armor, 3 - slot))) {
 				armorStand.armor[slot] = player.inventory.armorInventory[slot];
 				player.inventory.armorInventory[slot] = item;
 				Packet packet = new Packet103SetSlot(0, 8 - slot, item);
@@ -125,8 +126,7 @@ public class BlockArmorStand extends BlockContainer {
 				world.markBlockForUpdate(x, y, z);
 			}
 		} else if ((item != null && holding == null) ||
-		           (holding != null && holding.getItem() instanceof ItemArmor &&
-		            ((ItemArmor)holding.getItem()).armorType == 3 - slot)) {
+		           (holding != null && holding.getItem().isValidArmor(holding, 3 - slot))) {
 			armorStand.armor[slot] = holding;
 			player.inventory.mainInventory[player.inventory.currentItem] = item;
 			world.markBlockForUpdate(x, y, z);

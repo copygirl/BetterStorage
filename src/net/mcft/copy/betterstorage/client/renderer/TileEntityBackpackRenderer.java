@@ -7,10 +7,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import net.mcft.copy.betterstorage.block.TileEntityBackpack;
-import net.mcft.copy.betterstorage.block.TileEntityLocker;
 import net.mcft.copy.betterstorage.client.model.ModelBackpack;
-import net.mcft.copy.betterstorage.client.model.ModelLargeLocker;
-import net.mcft.copy.betterstorage.client.model.ModelLocker;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.DirectionUtils;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -40,7 +37,7 @@ public class TileEntityBackpackRenderer extends TileEntitySpecialRenderer {
 		float angle = backpack.prevLidAngle + (backpack.lidAngle - backpack.prevLidAngle) * par8;
 		angle = 1.0F - angle;
 		angle = 1.0F - angle * angle * angle;
-		backpackModel.setLidRotation((float)(angle * Math.PI / 2.0));
+		backpackModel.setLidRotation((float)(angle * Math.PI / 4.0));
 		backpackModel.renderAll();
 		
 		GL11.glDisable(GL12.GL_RESCALE_NORMAL);

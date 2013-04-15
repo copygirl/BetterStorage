@@ -95,6 +95,10 @@ public class StackUtils {
 		return list;
 	}
 	
+	public static boolean hasStackItems(ItemStack stack) {
+		return (getStackContents(stack).size() > 0);
+	}
+	
 	public static ItemStack[] getStackContents(ItemStack stack, int size) {
 		NBTTagCompound compound = stack.getTagCompound();
 		if (compound != null && compound.hasKey("Items"))
