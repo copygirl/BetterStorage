@@ -4,6 +4,8 @@ import java.util.Random;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.mcft.copy.betterstorage.BetterStorage;
+import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.proxy.ClientProxy;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
@@ -93,7 +95,7 @@ public class BlockBackpack extends BlockContainer {
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
 		if (world.isRemote) return true;
 		TileEntityBackpack backpack = WorldUtils.getBackpack(world, x, y, z);
-		player.displayGUIChest(backpack.getWrapper());
+		player.openGui(BetterStorage.instance, Constants.backpackGuiId, world, x, y, z);
 		return true;
 	}
 	

@@ -1,6 +1,7 @@
 package net.mcft.copy.betterstorage.misc.handlers;
 
 import net.mcft.copy.betterstorage.BetterStorage;
+import net.mcft.copy.betterstorage.block.TileEntityBackpack;
 import net.mcft.copy.betterstorage.block.TileEntityLocker;
 import net.mcft.copy.betterstorage.block.TileEntityReinforcedChest;
 import net.mcft.copy.betterstorage.block.crate.TileEntityCrate;
@@ -60,6 +61,9 @@ public class GuiHandler implements IGuiHandler {
 				IInventory sideInventory = (locker.isMain() ? locker.getConnectedLocker() : locker);
 				inventory = new InventoryCombined("container.lockerLarge", mainInventory, sideInventory);
 				return new ContainerBetterStorage(player, inventory, 9, 6);
+			case Constants.backpackGuiId:
+				TileEntityBackpack backpack = WorldUtils.getBackpack(world, x, y, z);
+				return new ContainerBetterStorage(player, backpack.getWrapper(), 9, 3);
 			case Constants.keyringGuiId:
 				return new ContainerKeyring(player);
 			default:
@@ -91,6 +95,8 @@ public class GuiHandler implements IGuiHandler {
 				return new GuiBetterStorage(player, 9, 3, "container.locker");
 			case Constants.lockerLargeGuiId:
 				return new GuiBetterStorage(player, 9, 6, "container.lockerLarge");
+			case Constants.backpackGuiId:
+				return new GuiBetterStorage(player, 9, 3, "container.backpack");
 			case Constants.keyringGuiId:
 				return new GuiBetterStorage(new ContainerKeyring(player));
 			default:

@@ -2,26 +2,30 @@ package net.mcft.copy.betterstorage.misc;
 
 public class Constants {
 	
-	public final static int anyDamage = Short.MAX_VALUE;
+	public static final int anyDamage = Short.MAX_VALUE;
 	
-	public final static String gfxbase = "/mods/betterstorage/textures/";
+	public static final String gfxbase = "/mods/betterstorage/textures/";
 
-	public final static String crateContainer = gfxbase + "gui/crate.png";
-	public final static String reinforcedChestContainer = gfxbase + "gui/reinforced_chest.png";
+	public static final String crateContainer = gfxbase + "gui/crate.png";
+	public static final String reinforcedChestContainer = gfxbase + "gui/reinforced_chest.png";
 	
-	public final static String lockerTexture = gfxbase + "models/locker.png";
-	public final static String largeLockerTexture = gfxbase + "models/locker_large.png";
-	public final static String armorStandTexture = gfxbase + "models/armorstand.png";
-	public final static String backpackTexture = gfxbase + "models/backpack.png";
+	public static final String lockerTexture = gfxbase + "models/locker.png";
+	public static final String largeLockerTexture = gfxbase + "models/locker_large.png";
+	public static final String armorStandTexture = gfxbase + "models/armorstand.png";
+	public static final String backpackTexture = gfxbase + "models/backpack.png";
 	
-	public final static int crateSmallGuiId  = 0;
-	public final static int crateMediumGuiId = 1;
-	public final static int crateLargeGuiId  = 2;
-	public final static int chestSmallGuiId  = 10;
-	public final static int chestLargeGuiId  = 20;
-	public final static int lockerSmallGuiId = 30;
-	public final static int lockerLargeGuiId = 31;
+	public static final int crateSmallGuiId  = 0;
+	public static final int crateMediumGuiId = 1;
+	public static final int crateLargeGuiId  = 2;
 	
-	public final static int keyringGuiId = 50;
+	public static final int chestSmallGuiId  = 10;
+	public static final int chestLargeGuiId  = 20;
+	
+	public static final int lockerSmallGuiId = 30;
+	public static final int lockerLargeGuiId = 31;
+	
+	public static final int backpackGuiId    = 40;
+	
+	public static final int keyringGuiId     = 50;
 	
 }
