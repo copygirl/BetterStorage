@@ -144,6 +144,14 @@ public class BetterStorage {
 				       'i', Item.ingotIron,
 				       '/', Item.stick);
 		
+		// Backpack recipe
+		GameRegistry.addRecipe(new ItemStack(backpack),
+				"###",
+				"#O#",
+				"#i#", '#', Item.leather,
+				       'O', Block.cloth,
+				       'i', Item.ingotGold);
+		
 		// Key recipe
 		GameRegistry.addRecipe(KeyRecipe.createKeyRecipe(
 				".o",
@@ -153,8 +161,15 @@ public class BetterStorage {
 		// Key modify recipe
 		GameRegistry.addRecipe(KeyRecipe.createKeyRecipe(
 				"k", 'k', new ItemStack(key, 1, Constants.anyDamage)));
+		
 		// Lock recipe
 		GameRegistry.addRecipe(LockRecipe.createLockRecipe());
+		
+		// Keyring recipe
+		GameRegistry.addRecipe(new ItemStack(keyring),
+				"...",
+				". .",
+				"...", '.', Item.goldNugget);
 		
 	}
 	
