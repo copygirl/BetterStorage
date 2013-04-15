@@ -108,6 +108,8 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 		Block blockBackpack = BetterStorage.backpack;
 		Block blockClicked = Block.blocksList[world.getBlockId(x, y, z)];
 		
+		boolean isSolidOnTop = (blockClicked != null && blockClicked.isBlockSolidOnSide(world, x, y, z, ForgeDirection.UP));
+		
 		ForgeDirection orientation = DirectionUtils.getOrientation(player).getOpposite();
 		
 		// If the block clicked is air or snow,
@@ -129,6 +131,9 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 				case 5: x++; break;
 			}
 		}
+		
+		// Return false if not placed on top of a solid block.
+		if (side != 1 || !isSolidOnTop) return false;
 		
 		// Return false if there's not enough world height left.
 		if (y >= world.getHeight() - 1) return false;
@@ -174,12 +179,11 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 	@Override
 	public ArmorProperties getProperties(EntityLiving player, ItemStack armor,
 			DamageSource source, double damage, int slot) {
-		return new ArmorProperties(0, damageReduceAmount / 25.0,
-		                           armor.getMaxDamage() + 1 - armor.getItemDamage());
+		return new ArmorProperties(0, 2 / 25.0, armor.getMaxDamage() + 1 - armor.getItemDamage());
 	}
 	
 	@Override
-	public int getArmorDisplay(EntityPlayer player, ItemStack armor, int slot) { return 3; }
+	public int getArmorDisplay(EntityPlayer player, ItemStack armor, int slot) { return 2; }
 	
 	@Override
 	public void damageArmor(EntityLiving entity, ItemStack stack,
