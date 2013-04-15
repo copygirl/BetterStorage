@@ -5,7 +5,6 @@ import java.util.Random;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.mcft.copy.betterstorage.proxy.ClientProxy;
-import net.mcft.copy.betterstorage.utils.DirectionUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -22,8 +21,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
 public class BlockArmorStand extends BlockContainer {
-	
-	// TODO: Increase possible orientations (currently only 4).
 	
 	public BlockArmorStand(int id) {
 		super(id, Material.rock);
@@ -68,7 +65,7 @@ public class BlockArmorStand extends BlockContainer {
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving player, ItemStack stack) {
 		TileEntityArmorStand locker = WorldUtils.getArmorStand(world, x, y, z);
-		locker.orientation = DirectionUtils.getOrientation(player).getOpposite();
+		locker.rotation = Math.round((player.rotationYawHead + 180) * 16 / 360);
 		world.setBlock(x, y + 1, z, blockID, 1, 3);
 	}
 	

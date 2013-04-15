@@ -11,12 +11,11 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraftforge.common.ForgeDirection;
 
 public class TileEntityArmorStand extends TileEntity {
 
 	public ItemStack[] armor = new ItemStack[4];
-	public ForgeDirection orientation = ForgeDirection.UNKNOWN;
+	public int rotation = 0;
 	
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -48,7 +47,7 @@ public class TileEntityArmorStand extends TileEntity {
 	}
 	
 	public void read(NBTTagCompound compound) {
-		orientation = ForgeDirection.getOrientation(compound.getByte("orientation"));
+		rotation = compound.getByte("rotation");
 		NBTTagList items = compound.getTagList("Items");
 		armor = new ItemStack[armor.length];
 		for (int i = 0; i < items.tagCount(); i++) {
@@ -59,7 +58,7 @@ public class TileEntityArmorStand extends TileEntity {
 		}
 	}
 	public void write(NBTTagCompound compound) {
-		compound.setByte("orientation", (byte)orientation.ordinal());
+		compound.setByte("rotation", (byte)rotation);
 		NBTTagList list = new NBTTagList();
 		for (int i = 0; i < armor.length; i++) {
 			if (armor[i] == null) continue;

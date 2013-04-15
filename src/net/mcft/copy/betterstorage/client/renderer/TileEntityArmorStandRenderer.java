@@ -10,7 +10,6 @@ import net.mcft.copy.betterstorage.block.TileEntityArmorStand;
 import net.mcft.copy.betterstorage.client.model.ModelArmorStand;
 import net.mcft.copy.betterstorage.client.model.ModelLocker;
 import net.mcft.copy.betterstorage.misc.Constants;
-import net.mcft.copy.betterstorage.utils.DirectionUtils;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.player.EntityPlayer;
@@ -27,7 +26,7 @@ public class TileEntityArmorStandRenderer extends TileEntitySpecialRenderer {
 	
 	public void renderTileEntityAt(TileEntityArmorStand locker, double x, double y, double z, float par8) {
 		
-		int rotation = DirectionUtils.getRotation(locker.orientation);
+		int rotation = locker.rotation * 360 / 16;
 		
 		ModelArmorStand model = armorStandModel;
 		bindTextureByName(Constants.armorStandTexture);
@@ -38,8 +37,8 @@ public class TileEntityArmorStandRenderer extends TileEntitySpecialRenderer {
 		GL11.glTranslated(x, y + 2.0, z + 1.0);
 		GL11.glScalef(1.0F, -1.0F, -1.0F);
 		GL11.glTranslated(0.5F, 0.5F, 0.5F);
-		GL11.glRotatef(rotation, 0.0F, 1.0F, 0.0F);
 		
+		model.setRotation(rotation);
 		model.renderAll();
 		
 		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
