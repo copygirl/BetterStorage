@@ -56,6 +56,7 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 	
 	/** Connects the container to any other containers nearby, if possible. */
 	public void checkForConnections() {
+		if (worldObj.isRemote) return;
 		TileEntityConnectable connectableFound = null;
 		ForgeDirection dirFound = ForgeDirection.UNKNOWN;
 		for (ForgeDirection dir : getPossibleNeighbors()) {
@@ -101,7 +102,8 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 	public InventoryTileEntity getPlayerInventory() {
 		if (isConnected()) {
 			TileEntityConnectable main = getMain();
-			return new InventoryTileEntity(main, main.contents, main.getConnected().contents);
+			TileEntityConnectable connected = ((main == this) ? getConnected() : this);
+			return new InventoryTileEntity(this, main, connected);
 		} else return super.getPlayerInventory();
 	}
 	
@@ -116,17 +118,17 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 	public void updateEntity() {
 		super.updateEntity();
 		
-		if (!isMain()) return;
-		
 		double x = xCoord + 0.5;
 		double y = yCoord + 0.5;
 		double z = zCoord + 0.5;
 		
 		if (isConnected()) {
+			if (!isMain()) return;
 			TileEntityConnectable connectable = getConnected();
 			if (connectable != null) {
 				x = (x + connectable.xCoord + 0.5) / 2;
 				z = (z + connectable.zCoord + 0.5) / 2;
+				lidAngle = Math.max(lidAngle, connectable.lidAngle);
 			}
 		}
 		

@@ -111,7 +111,7 @@ public class WorldUtils {
 					IInventory inventory = ((ContainerBetterStorage)player.openContainer).inventory;
 					if (inventory == playerInventory) playersUsing++;
 					else if (inventory instanceof InventoryTileEntity)
-						if (((InventoryTileEntity)inventory).tileEntity == te) playersUsing++;
+						if (((InventoryTileEntity)inventory).mainTileEntity == te) playersUsing++;
 				}
 			}
 		}
