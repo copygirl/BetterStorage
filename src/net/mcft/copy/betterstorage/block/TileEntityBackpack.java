@@ -1,5 +1,6 @@
 package net.mcft.copy.betterstorage.block;
 
+import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.Config;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.item.ItemStack;
@@ -28,7 +29,7 @@ public class TileEntityBackpack extends TileEntityContainer {
 	
 	/** Creates an item from this backpack, to be dropped or equipped. */
 	public ItemStack toItem() {
-		ItemStack stack = new ItemStack(getBlockType().blockID, 1, damage);
+		ItemStack stack = new ItemStack(BetterStorage.backpack, 1, damage);
 		if (hasCustomTitle()) StackUtils.set(stack, getCustomTitle(), "display", "CustomName");
 		if (equipped) StackUtils.setStackContents(stack, contents);
 		return stack;
