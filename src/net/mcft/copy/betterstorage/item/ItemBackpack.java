@@ -20,7 +20,6 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.EnumArmorMaterial;
 import net.minecraft.item.ItemArmor;
@@ -155,14 +154,8 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 		blockBackpack.onBlockPlacedBy(world, x, y, z, player, stack);
 		blockBackpack.onPostBlockPlaced(world, x, y, z, orientation.ordinal());
 		
-		// Get the backpack tile entity
-		TileEntityBackpack backpack = WorldUtils.getBackpack(world, x, y, z);
-		// Set its damage to the item's damage
-		backpack.damage = stack.getItemDamage();
-		// Put the items from the backpack item into the tile entity
-		IInventory inventory = backpack.getWrapper(); int i = 0;
-		for (ItemStack s : StackUtils.getStackContents(stack, 3 * 9))
-			inventory.setInventorySlotContents(i++, s);
+		TileEntityBackpack backpack = WorldUtils.get(world, x, y, z, TileEntityBackpack.class);
+		backpack.fromItem(stack);
 		
 		String sound = blockBackpack.stepSound.getPlaceSound();
 		float volume = (blockBackpack.stepSound.getVolume() + 1.0F) / 2.0F;

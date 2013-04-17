@@ -35,7 +35,7 @@ public class ItemLock extends ItemBetterStorage implements ILock {
 	                         int x, int y, int z, int side, float subX, float subY, float subZ) {
 		if (world.isRemote) return false;
 		
-		ILockable lockable = WorldUtils.getLockable(world, x, y, z);
+		ILockable lockable = WorldUtils.get(world, x, y, z, ILockable.class);
 		// If there is no lockable container, it is already locked,
 		// or the lock can't be applied, return false;
 		if (lockable == null || lockable.getLock() != null ||

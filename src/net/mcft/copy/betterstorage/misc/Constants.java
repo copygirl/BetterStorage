@@ -14,18 +14,6 @@ public class Constants {
 	public static final String armorStandTexture = gfxbase + "models/armorstand.png";
 	public static final String backpackTexture = gfxbase + "models/backpack.png";
 	
-	public static final int crateSmallGuiId  = 0;
-	public static final int crateMediumGuiId = 1;
-	public static final int crateLargeGuiId  = 2;
-	
-	public static final int chestSmallGuiId  = 10;
-	public static final int chestLargeGuiId  = 20;
-	
-	public static final int lockerSmallGuiId = 30;
-	public static final int lockerLargeGuiId = 31;
-	
-	public static final int backpackGuiId    = 40;
-	
-	public static final int keyringGuiId     = 50;
+	public static final int keyringGuiId = 100;
 	
 }

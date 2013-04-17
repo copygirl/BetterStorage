@@ -4,17 +4,13 @@ import java.util.Random;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.mcft.copy.betterstorage.BetterStorage;
-import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.proxy.ClientProxy;
-import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -64,11 +60,10 @@ public class BlockBackpack extends BlockContainer {
 	
 	@Override
 	public void breakBlock(World world, int x, int y, int z, int id, int meta) {
-		TileEntityBackpack backpack = WorldUtils.getBackpack(world, x, y, z);
+		TileEntityBackpack backpack = WorldUtils.get(world, x, y, z, TileEntityBackpack.class);
 		super.breakBlock(world, x, y, z, id, meta);
 		if (backpack != null && !backpack.equipped) {
-			ItemStack stack = new ItemStack(this, 1, backpack.damage);
-			WorldUtils.dropStackFromBlock(world, x, y, z, stack);
+			WorldUtils.dropStackFromBlock(world, x, y, z, backpack.toItem());
 			backpack.dropContents();
 		}
 	}
@@ -78,24 +73,17 @@ public class BlockBackpack extends BlockContainer {
 		if (world.isRemote || !player.isSneaking() ||
 		    player.inventory.armorInventory[2] != null)
 			return world.setBlockToAir(x, y, z);
-		
-		TileEntityBackpack backpack = WorldUtils.getBackpack(world, x, y, z);
+		TileEntityBackpack backpack = WorldUtils.get(world, x, y, z, TileEntityBackpack.class);
 		backpack.equipped = true;
-		
 		if (!world.setBlockToAir(x, y, z)) return false;
-		
-		ItemStack backpackItem = new ItemStack(this, 1, backpack.damage);
-		StackUtils.setStackContents(backpackItem, backpack.getContents());
-		player.inventory.armorInventory[2] = backpackItem;
-		
+		player.inventory.armorInventory[2] = backpack.toItem();
 		return true;
 	}
 	
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
 		if (world.isRemote) return true;
-		TileEntityBackpack backpack = WorldUtils.getBackpack(world, x, y, z);
-		player.openGui(BetterStorage.instance, Constants.backpackGuiId, world, x, y, z);
+		WorldUtils.get(world, x, y, z, TileEntityBackpack.class).openGui(player);
 		return true;
 	}
 	

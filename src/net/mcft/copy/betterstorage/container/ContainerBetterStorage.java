@@ -3,6 +3,7 @@ package net.mcft.copy.betterstorage.container;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.mcft.copy.betterstorage.client.gui.GuiBetterStorage;
+import net.mcft.copy.betterstorage.inventory.InventoryTileEntity;
 import net.mcft.copy.betterstorage.utils.InventoryUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -32,6 +33,12 @@ public class ContainerBetterStorage extends Container {
 		setupInventoryPlayer();
 		inventory.openChest();
 	}
+	
+	public ContainerBetterStorage(EntityPlayer player, InventoryTileEntity inventory) {
+		this(player, inventory, inventory.columns, inventory.rows);
+	}
+	
+	@SideOnly(Side.CLIENT)
 	public ContainerBetterStorage(EntityPlayer player, IInventory inventory, int columns, int rows, GuiBetterStorage gui) {
 		this(player, inventory, columns, rows);
 		setUpdateGui(gui);

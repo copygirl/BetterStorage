@@ -4,11 +4,9 @@ import java.util.List;
 import java.util.Random;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.api.IKey;
 import net.mcft.copy.betterstorage.api.ILock;
 import net.mcft.copy.betterstorage.enchantment.EnchantmentBetterStorage;
-import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.proxy.ClientProxy;
 import net.mcft.copy.betterstorage.utils.DirectionUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
@@ -68,7 +66,7 @@ public class BlockReinforcedChest extends BlockContainer {
 	
 	@Override
 	public float getBlockHardness(World world, int x, int y, int z) {
-		TileEntityReinforcedChest chest = WorldUtils.getChest(world, x, y, z);
+		TileEntityReinforcedChest chest = WorldUtils.get(world, x, y, z, TileEntityReinforcedChest.class);
 		float hardness = blockHardness;
 		if (chest != null && chest.getLock() != null) {
 			hardness *= 15.0F;
@@ -81,7 +79,7 @@ public class BlockReinforcedChest extends BlockContainer {
 	@Override
 	public float getExplosionResistance(Entity entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ) {
 		float modifier = 1.0F;
-		TileEntityReinforcedChest chest = WorldUtils.getChest(world, x, y, z);
+		TileEntityReinforcedChest chest = WorldUtils.get(world, x, y, z, TileEntityReinforcedChest.class);
 		if (chest != null) {
 			int persistance = EnchantmentHelper.getEnchantmentLevel(EnchantmentBetterStorage.persistance.effectId, chest.getLock());
 			if (persistance > 0) modifier += Math.pow(2, persistance);
@@ -91,7 +89,7 @@ public class BlockReinforcedChest extends BlockContainer {
 	
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
-		TileEntityReinforcedChest chest = WorldUtils.getChest(world, x, y, z);
+		TileEntityReinforcedChest chest = WorldUtils.get(world, x, y, z, TileEntityReinforcedChest.class);
 		if (chest.isConnected()) {
 			if (chest.connected == ForgeDirection.NORTH)
 				setBlockBounds(0.0625F, 0.0F, 0.0F, 0.9375F, 0.875F, 0.9375F);
@@ -106,18 +104,17 @@ public class BlockReinforcedChest extends BlockContainer {
 	
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving player, ItemStack stack) {
-		TileEntityReinforcedChest chest = WorldUtils.getChest(world, x, y, z);
+		TileEntityReinforcedChest chest = WorldUtils.get(world, x, y, z, TileEntityReinforcedChest.class);
 		chest.orientation = DirectionUtils.getOrientation(player).getOpposite();
 		chest.checkForConnections();
 	}
 	
 	@Override
 	public void breakBlock(World world, int x, int y, int z, int id, int meta) {
-		TileEntityReinforcedChest chest = WorldUtils.getChest(world, x, y, z);
+		TileEntityReinforcedChest chest = WorldUtils.get(world, x, y, z, TileEntityReinforcedChest.class);
 		super.breakBlock(world, x, y, z, id, meta);
 		if (chest != null) {
 			chest.dropContents();
-			chest.dropLock();
 			chest.disconnect();
 		}
 	}
@@ -131,7 +128,7 @@ public class BlockReinforcedChest extends BlockContainer {
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {
 		if (world.isRemote) return true;
 		
-		TileEntityReinforcedChest chest = WorldUtils.getChest(world, x, y, z);
+		TileEntityReinforcedChest chest = WorldUtils.get(world, x, y, z, TileEntityReinforcedChest.class);
 		ItemStack holding = player.getHeldItem();
 
 		ItemStack lock = chest.getLock();
@@ -147,9 +144,7 @@ public class BlockReinforcedChest extends BlockContainer {
 		    (key == null || !keyType.unlock(key, lock, true)))
 			return true;
 		
-		int guiID = (chest.isConnected() ? Constants.chestLargeGuiId : Constants.chestSmallGuiId);
-		guiID += chest.getNumColumns() - 9;
-		player.openGui(BetterStorage.instance, guiID, world, x, y, z);
+		chest.openGui(player);
 		
 		return true;
 	}
@@ -157,7 +152,7 @@ public class BlockReinforcedChest extends BlockContainer {
 	@Override
 	public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player) {
 		if (world.isRemote) return;
-		TileEntityReinforcedChest chest = WorldUtils.getChest(world, x, y, z);
+		TileEntityReinforcedChest chest = WorldUtils.get(world, x, y, z, TileEntityReinforcedChest.class);
 		ItemStack lock = chest.getLock();
 		if (lock == null) return;
 		ILock lockType = (ILock)lock.getItem();
@@ -171,7 +166,7 @@ public class BlockReinforcedChest extends BlockContainer {
 	
 	@Override
 	public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int side) {
-		return (WorldUtils.getChest(world, x, y, z).isPowered() ? 15 : 0);
+		return (WorldUtils.get(world, x, y, z, TileEntityReinforcedChest.class).isPowered() ? 15 : 0);
 	}
 	@Override
 	public int isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int side) {
@@ -180,7 +175,7 @@ public class BlockReinforcedChest extends BlockContainer {
 	
 	@Override
 	public void updateTick(World world, int x, int y, int z, Random random) {
-		WorldUtils.getChest(world, x, y, z).setPowered(false);
+		WorldUtils.get(world, x, y, z, TileEntityReinforcedChest.class).setPowered(false);
 	}
 	
 }

@@ -91,7 +91,7 @@ public class StackUtils {
 		List<ItemStack> list = new ArrayList<ItemStack>();
 		NBTTagCompound compound = stack.getTagCompound();
 		if (compound != null && compound.hasKey("Items"))
-			NbtUtils.readItems(compound.getTagList("Items"), list);
+			NbtUtils.readItems(list, compound.getTagList("Items"));
 		return list;
 	}
 	
@@ -100,10 +100,11 @@ public class StackUtils {
 	}
 	
 	public static ItemStack[] getStackContents(ItemStack stack, int size) {
+		ItemStack[] contents = new ItemStack[size];
 		NBTTagCompound compound = stack.getTagCompound();
 		if (compound != null && compound.hasKey("Items"))
-			return NbtUtils.readItems(compound.getTagList("Items"), size);
-		else return new ItemStack[size];
+			NbtUtils.readItems(contents, compound.getTagList("Items"));
+		return contents;
 	}
 	
 	public static void setStackContents(ItemStack stack, ItemStack[] contents) {

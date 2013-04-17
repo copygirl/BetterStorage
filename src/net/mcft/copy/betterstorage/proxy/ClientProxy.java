@@ -76,7 +76,7 @@ public class ClientProxy extends CommonProxy {
 		int metadata = world.getBlockMetadata(x, y, z);
 		if (metadata > 0) y -= 1;
 		
-		TileEntityArmorStand armorStand = WorldUtils.getArmorStand(world, x, y, z);
+		TileEntityArmorStand armorStand = WorldUtils.get(world, x, y, z, TileEntityArmorStand.class);
 		if (armorStand == null) return;
 		int slot = Math.min(3, (int)((target.hitVec.yCoord - y) * 2));
 		

@@ -88,7 +88,7 @@ public class ItemKey extends ItemBetterStorage implements IKey {
 		// the right click, so basically only when sneaking.
 		// This tries to remove the lock from the container.
 		
-		ILockable lockable = WorldUtils.getLockable(world, x, y, z);
+		ILockable lockable = WorldUtils.get(world, x, y, z, ILockable.class);
 		// If there is no lockable container or it isn't locked, return false;
 		if (lockable == null || lockable.getLock() == null) return false;
 		

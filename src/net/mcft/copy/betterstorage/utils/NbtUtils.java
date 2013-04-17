@@ -46,17 +46,17 @@ public class NbtUtils {
 		return null;
 	}
 	
-	public static ItemStack[] readItems(NBTTagList items, int size) {
-		ItemStack[] contents = new ItemStack[size];
+	public static void readItems(ItemStack[] contents, NBTTagList items) {
+		for (int i = 0; i < contents.length; i++)
+			contents[i] = null;
 		for (int i = 0; i < items.tagCount(); i++) {
 			NBTTagCompound item = (NBTTagCompound)items.tagAt(i);
 			int slot = item.getByte("Slot") & 255;
 			if (slot >= 0 && slot < contents.length)
 				contents[slot] = ItemStack.loadItemStackFromNBT(item);
 		}
-		return contents;
 	}
-	public static void readItems(NBTTagList items, List<ItemStack> list) {
+	public static void readItems(List<ItemStack> list, NBTTagList items) {
 		for (int i = 0; i < items.tagCount(); i++)
 			list.add(ItemStack.loadItemStackFromNBT((NBTTagCompound)items.tagAt(i)));
 	}

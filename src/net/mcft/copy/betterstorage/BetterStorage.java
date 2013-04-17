@@ -77,7 +77,6 @@ public class BetterStorage {
 		log = event.getModLog();
 		
 		Config.load(event.getSuggestedConfigurationFile());
-		Config.save();
 		
 	}
 	

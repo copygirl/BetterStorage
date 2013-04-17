@@ -25,12 +25,15 @@ public class InventoryItem extends InventoryWrapper {
 	public String getInvName() { return title; }
 	
 	@Override
+	public boolean isUseableByPlayer(EntityPlayer player) { return true; }
+	
+	@Override
 	public void closeChest() {
 		updateStack();
 	}
 	
 	protected void updateStack() {
-		StackUtils.setStackContents(stack, contents);
+		StackUtils.setStackContents(stack, allContents[0]);
 		player.inventory.setInventorySlotContents(slot, stack);
 	}
 	

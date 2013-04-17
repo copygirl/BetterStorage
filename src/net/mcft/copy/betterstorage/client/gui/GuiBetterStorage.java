@@ -6,6 +6,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import net.mcft.copy.betterstorage.container.ContainerBetterStorage;
+import net.mcft.copy.betterstorage.misc.Constants;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -41,7 +42,10 @@ public class GuiBetterStorage extends GuiContainer {
 		this(player, columns, rows, new InventoryBasic(name, false, columns * rows));
 	}
 	
-	protected String getTexture() { return "/gui/container.png"; }
+	protected String getTexture() {
+		if (columns <= 9) return "/gui/container.png";
+		else return Constants.reinforcedChestContainer;
+	}
 	
 	public void update(int par1, int par2) {  }
 	

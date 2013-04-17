@@ -1,88 +1,46 @@
 package net.mcft.copy.betterstorage.block;
 
-import net.mcft.copy.betterstorage.inventory.InventoryWrapper;
-import net.mcft.copy.betterstorage.utils.NbtUtils;
-import net.mcft.copy.betterstorage.utils.WorldUtils;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
+import net.mcft.copy.betterstorage.Config;
+import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
 
-public class TileEntityBackpack extends TileEntity {
+public class TileEntityBackpack extends TileEntityContainer {
 	
-	private ItemStack[] contents;
-	private IInventory wrapper;
-	
-	private int numUsingPlayers = 0;
-	private int ticksSinceSync;
-	
-	public int damage;
+	/** Stores the damage of the backpack as an item. */
+	private int damage;
+	/** Affects if items drop when the backpack is destroyed. */
 	public boolean equipped = false;
 	
-	public float lidAngle = 0;
-	public float prevLidAngle = 0;
+	@Override
+	public String getName() { return "container.backpack"; }
 	
-	private IInventory openAndClose = new IInventory() {
-		
-		@Override public void setInventorySlotContents(int i, ItemStack istack) {  }
-		@Override public void onInventoryChanged() {  }
-		@Override public boolean isStackValidForSlot(int i, ItemStack stack) { return true; }
-		@Override public boolean isInvNameLocalized() { return false; }
-		@Override public ItemStack getStackInSlotOnClosing(int i) { return null; }
-		@Override public ItemStack getStackInSlot(int i) { return null; }
-		@Override public int getSizeInventory() { return 0; }
-		@Override public int getInventoryStackLimit() { return 0; }
-		@Override public String getInvName() { return "container.backpack"; }
-		@Override public ItemStack decrStackSize(int i, int j) { return null; }
+	// TileEntityContainer stuff
 
-		@Override
-		public boolean isUseableByPlayer(EntityPlayer player) {
-			return WorldUtils.isTileEntityUsableByPlayer(TileEntityBackpack.this, player);
-		}
-		@Override
-		public void openChest() {
-			numUsingPlayers++;
-			worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType().blockID, 1, numUsingPlayers);
-		}
-		@Override
-		public void closeChest() {
-			numUsingPlayers--;
-			worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType().blockID, 1, numUsingPlayers);
-		}
-		
-	};
+	@Override
+	public int getRows() { return Config.backpackRows; }
+	@Override
+	public int getGuiId() { return getRows() - 1; }
+	@Override
+	protected int getGuiRows(int guiId) { return guiId + 1; }
 	
-	public ItemStack[] getContents() { return contents; }
-	public IInventory getWrapper() { return wrapper; }
+	// From and to ItemStack
 	
-	public TileEntityBackpack() {
-		contents = new ItemStack[3 * 9];
-		wrapper = new InventoryWrapper(contents, openAndClose);
+	/** Creates an item from this backpack, to be dropped or equipped. */
+	public ItemStack toItem() {
+		ItemStack stack = new ItemStack(getBlockType().blockID, 1, damage);
+		if (hasCustomTitle()) StackUtils.set(stack, getCustomTitle(), "display", "CustomName");
+		if (equipped) StackUtils.setStackContents(stack, contents);
+		return stack;
 	}
 	
-	@Override
-	public boolean receiveClientEvent(int eventId, int val) {
-		numUsingPlayers = val;
-		return true;
-	}
-	
-	@Override
-	public void updateEntity() {
-		numUsingPlayers = WorldUtils.syncPlayersUsing(this, ++ticksSinceSync, numUsingPlayers, wrapper);
-		
-		prevLidAngle = lidAngle;
-		float lidSpeed = 0.1F;
-		double x = xCoord + 0.5;
-		double y = yCoord + 0.5;
-		double z = zCoord + 0.5;
-		
-		if ((numUsingPlayers == 0 && lidAngle > 0.0F) ||
-		    (numUsingPlayers >  0 && lidAngle < 1.0F)) {
-			if (numUsingPlayers > 0) lidAngle = Math.min(1.0F, lidAngle + lidSpeed);
-			else lidAngle = Math.max(0.0F, lidAngle - lidSpeed);
-		}
+	/** Fills the data of this backpack from the ItemStack. */
+	public void fromItem(ItemStack stack) {
+		damage = stack.getItemDamage();
+		setCustomTitle(StackUtils.get(stack, (String)null, "display", "CustomName"));
+		ItemStack[] itemContents = StackUtils.getStackContents(stack, contents.length);
+		for (int i = 0; i < contents.length; i++)
+			contents[i] = itemContents[i];
 	}
 	
 	// Reading from / writing to NBT
@@ -91,23 +49,11 @@ public class TileEntityBackpack extends TileEntity {
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
 		damage = compound.getInteger("damage");
-		NBTTagList items = compound.getTagList("Items");
-		contents = NbtUtils.readItems(items, contents.length);
-		wrapper = new InventoryWrapper("container.backpack", contents, null);
 	}
-	
 	@Override
 	public void writeToNBT(NBTTagCompound compound) {
 		super.writeToNBT(compound);
 		compound.setInteger("damage", damage);
-		compound.setTag("Items", NbtUtils.writeItems(contents));
-	}
-	
-	// Dropping stuff
-	
-	public void dropContents() {
-		for (ItemStack stack : contents)
-			WorldUtils.dropStackFromBlock(worldObj, xCoord, yCoord, zCoord, stack);
 	}
 	
 }

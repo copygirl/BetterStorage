@@ -4,15 +4,9 @@ import java.util.List;
 import java.util.Random;
 
 import net.mcft.copy.betterstorage.BetterStorage;
-import net.mcft.copy.betterstorage.api.ILockable;
-import net.mcft.copy.betterstorage.block.TileEntityArmorStand;
-import net.mcft.copy.betterstorage.block.TileEntityBackpack;
-import net.mcft.copy.betterstorage.block.TileEntityLocker;
-import net.mcft.copy.betterstorage.block.TileEntityReinforcedChest;
-import net.mcft.copy.betterstorage.block.crate.CratePileData;
-import net.mcft.copy.betterstorage.block.crate.TileEntityCrate;
+import net.mcft.copy.betterstorage.block.TileEntityContainer;
 import net.mcft.copy.betterstorage.container.ContainerBetterStorage;
-import net.mcft.copy.betterstorage.inventory.InventoryCombined;
+import net.mcft.copy.betterstorage.inventory.InventoryTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -89,51 +83,13 @@ public class WorldUtils {
 	}
 	
 	/** Returns whether the TileEntity at the position is an instance of tileClass. */
-	public static <T extends TileEntity> boolean is(IBlockAccess world, int x, int y, int z, Class<T> tileClass) {
+	public static <T> boolean is(IBlockAccess world, int x, int y, int z, Class<T> tileClass) {
 		return tileClass.isInstance(world.getBlockTileEntity(x, y, z));
 	}
 	/** Returns the TileEntity at the position if it's an instance of tileClass, null if not. */
-	public static <T extends TileEntity> T get(IBlockAccess world, int x, int y, int z, Class<T> tileClass) {
+	public static <T> T get(IBlockAccess world, int x, int y, int z, Class<T> tileClass) {
 		TileEntity t = world.getBlockTileEntity(x, y, z);
 		return (tileClass.isInstance(t) ? (T)t : null);
-	}
-	
-	/** Returns the TileEntityCrate at a position, null if there's none. */
-	public static TileEntityCrate getCrate(IBlockAccess world, int x, int y, int z) {
-		return get(world, x, y, z, TileEntityCrate.class);
-	}
-	/** Returns the pile data of a crate at a position, null if there's none */
-	public static CratePileData getCratePileData(IBlockAccess world, int x, int y, int z) {
-		TileEntityCrate crate = getCrate(world, x, y, z);
-		return ((crate != null) ? crate.getPileData() : null);
-	}
-	
-	/** Returns the TileEntityReinforcedChest at a position, null if there's none. */
-	public static TileEntityReinforcedChest getChest(IBlockAccess world, int x, int y, int z) {
-		return get(world, x, y, z, TileEntityReinforcedChest.class);
-	}
-	
-	/** Returns the TileEntityLocker at a position, null if there's none. */
-	public static TileEntityLocker getLocker(IBlockAccess world, int x, int y, int z) {
-		return get(world, x, y, z, TileEntityLocker.class);
-	}
-	
-	/** Returns the TileEntityArmorStand at a position, null if there's none. */
-	public static TileEntityArmorStand getArmorStand(World world, int x, int y, int z) {
-		return get(world, x, y, z, TileEntityArmorStand.class);
-	}
-	
-	/** Returns the TileEntityArmorStand at a position, null if there's none. */
-	public static TileEntityBackpack getBackpack(World world, int x, int y, int z) {
-		return get(world, x, y, z, TileEntityBackpack.class);
-	}
-	
-	/** Returns the ILockable at a position, null if there's none. */
-	public static ILockable getLockable(World world, int x, int y, int z) {
-		TileEntity entity = world.getBlockTileEntity(x, y, z);
-		if (entity instanceof ILockable)
-			return (ILockable)entity;
-		else return null;
 	}
 	
 	/** Returns if the TileEntity can be used by this player. */
@@ -143,31 +99,27 @@ public class WorldUtils {
 	}
 	
 	/** Counts and returns the number of players who're accessing a tile entity. */
-	public static int syncPlayersUsing(TileEntity entity, int ticksSinceSync, int numUsingPlayers, IInventory playerInventory) {
-		World world = entity.worldObj;
-		int x = entity.xCoord;
-		int y = entity.yCoord;
-		int z = entity.zCoord;
-		if (!world.isRemote && numUsingPlayers != 0 &&
-		    (ticksSinceSync + x + y + z) % 200 == 0) {
-			numUsingPlayers = 0;
-			List players = world.getEntitiesWithinAABB(EntityPlayer.class, getAABB(entity, 5));
+	public static int syncPlayersUsing(TileEntity te, int ticksSinceSync, int playersUsing, IInventory playerInventory) {
+		World world = te.worldObj;
+		ticksSinceSync += te.xCoord + te.yCoord + te.zCoord;
+		if (!world.isRemote && (playersUsing != 0) && (ticksSinceSync % 200 == 0)) {
+			playersUsing = 0;
+			List players = world.getEntitiesWithinAABB(EntityPlayer.class, getAABB(te, 5));
 			for (Object p : players) {
 				EntityPlayer player = (EntityPlayer)p;
 				if (player.openContainer instanceof ContainerBetterStorage) {
 					IInventory inventory = ((ContainerBetterStorage)player.openContainer).inventory;
-					if (inventory == playerInventory) numUsingPlayers++;
-					else if (inventory instanceof InventoryCombined)
-						for (IInventory inv : (InventoryCombined<IInventory>)inventory)
-							if (inv == playerInventory) numUsingPlayers++;
+					if (inventory == playerInventory) playersUsing++;
+					else if (inventory instanceof InventoryTileEntity)
+						if (((InventoryTileEntity)inventory).tileEntity == te) playersUsing++;
 				}
 			}
 		}
-		return numUsingPlayers;
+		return playersUsing;
 	}
 	/** Counts and returns the number of players who're accessing a tile entity. */
-	public static int syncPlayersUsing(TileEntity entity, int ticksSinceSync, int numUsingPlayers) {
-		return syncPlayersUsing(entity, ticksSinceSync, numUsingPlayers, (IInventory)entity);
+	public static int syncPlayersUsing(TileEntityContainer te, int ticksSinceSync, int numUsingPlayers) {
+		return syncPlayersUsing(te, ticksSinceSync, numUsingPlayers, te.getPlayerInventory());
 	}
 	
 }

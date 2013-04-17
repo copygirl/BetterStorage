@@ -3,16 +3,24 @@ package net.mcft.copy.betterstorage.block.crate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.mcft.copy.betterstorage.BetterStorage;
+import net.mcft.copy.betterstorage.block.TileEntityContainer;
+import net.mcft.copy.betterstorage.client.gui.GuiBetterStorage;
+import net.mcft.copy.betterstorage.client.gui.GuiCrate;
+import net.mcft.copy.betterstorage.container.ContainerBetterStorage;
+import net.mcft.copy.betterstorage.container.ContainerCrate;
+import net.mcft.copy.betterstorage.inventory.InventoryCratePlayerView;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 
-public class TileEntityCrate extends TileEntity implements IInventory {
+public class TileEntityCrate extends TileEntityContainer implements IInventory {
 	
 	private static final ForgeDirection[] sideDirections = {
 		ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.WEST, ForgeDirection.EAST
@@ -53,7 +61,7 @@ public class TileEntityCrate extends TileEntity implements IInventory {
 		int y = yCoord;
 		int z = zCoord;
 		// Destroy all crates above.
-		TileEntityCrate crateAbove = WorldUtils.getCrate(worldObj, x, y + 1, z);
+		TileEntityCrate crateAbove = WorldUtils.get(worldObj, x, y + 1, z, TileEntityCrate.class);
 		if (crateAbove != null && crateAbove.data == data)
 			crateAbove.destroyCrate();
 		// If there's still some crates left and this is a
@@ -67,7 +75,7 @@ public class TileEntityCrate extends TileEntity implements IInventory {
 				int nx = x + dir.offsetX;
 				int nz = z + dir.offsetZ;
 				// Continue if this neighbor block is not a crate.
-				TileEntityCrate neighborCrate = WorldUtils.getCrate(worldObj, nx, y, nz);
+				TileEntityCrate neighborCrate = WorldUtils.get(worldObj, nx, y, nz, TileEntityCrate.class);
 				if (neighborCrate == null) continue;
 				// See if the neighbor crate is already in a crate set,
 				// in that case continue with the next neighbor block.
@@ -96,7 +104,7 @@ public class TileEntityCrate extends TileEntity implements IInventory {
 						newPileCrate.setPileData(newPileData, true);
 						// Add all crates above the base crate.
 						while (true) {
-							newPileCrate = WorldUtils.getCrate(worldObj, newPileCrate.xCoord, newPileCrate.yCoord + 1, newPileCrate.zCoord);
+							newPileCrate = WorldUtils.get(worldObj, newPileCrate.xCoord, newPileCrate.yCoord + 1, newPileCrate.zCoord, TileEntityCrate.class);
 							if (newPileCrate == null) break;
 							newPileCrate.setPileData(newPileData, true);
 							numCrates++;
@@ -115,7 +123,7 @@ public class TileEntityCrate extends TileEntity implements IInventory {
 		}
 	}
 	private void checkConnections(int x, int y, int z, HashSet<TileEntityCrate> set) {
-		TileEntityCrate crate = WorldUtils.getCrate(worldObj, x, y, z);
+		TileEntityCrate crate = WorldUtils.get(worldObj, x, y, z, TileEntityCrate.class);
 		if (crate == null || set.contains(crate)) return;
 		set.add(crate);
 		for (ForgeDirection ndir : sideDirections)
@@ -146,7 +154,8 @@ public class TileEntityCrate extends TileEntity implements IInventory {
 			int x = xCoord + dir.offsetX;
 			int y = yCoord + dir.offsetY;
 			int z = zCoord + dir.offsetZ;
-			CratePileData checkedPileData = WorldUtils.getCratePileData(worldObj, x, y, z);
+			TileEntityCrate checkedCrate = WorldUtils.get(worldObj, x, y, z, TileEntityCrate.class);
+			CratePileData checkedPileData = ((checkedCrate != null) ? checkedCrate.getPileData() : null);
 			if (checkedPileData == null) continue;
 			if ((pileData != null && checkedPileData.id != pileData.id) ||
 			    (dir != ForgeDirection.DOWN && !crateBelow &&
@@ -169,17 +178,6 @@ public class TileEntityCrate extends TileEntity implements IInventory {
 		dropItem(new ItemStack(BetterStorage.crate));
 	}
 	
-	@Override
-	public void readFromNBT(NBTTagCompound compound) {
-		super.readFromNBT(compound);
-		id = compound.getInteger("crateId");
-	}
-	@Override
-	public void writeToNBT(NBTTagCompound compound) {
-		super.writeToNBT(compound);
-		compound.setInteger("crateId", id);
-	}
-	
 	/** Drops a single item from the (destroyed) crate. */
 	private void dropItem(ItemStack stack) {
 		WorldUtils.dropStackFromBlock(worldObj, xCoord, yCoord, zCoord, stack);
@@ -196,10 +194,32 @@ public class TileEntityCrate extends TileEntity implements IInventory {
 		dropItems(data.pickAndRemoveItemStacks(amount));
 	}
 	
+	// TileEntityContainer stuff
+	
+	@Override
+	protected int getSizeContents() { return 0; }
+	@Override
+	public String getName() { return "container.crate"; }
+	
+	@Override
+	public int getGuiId() { return Math.min(getPileData().getNumCrates(), 3) - 1; }
+	@Override
+	protected int getGuiRows(int guiId) { return (guiId + 1) * 2; }
+	
+	@Override
+	public ContainerBetterStorage createContainer(EntityPlayer player, int id) {
+		return new ContainerCrate(player, new InventoryCratePlayerView(this));
+	}
+	@Override
+	@SideOnly(Side.CLIENT)
+	public GuiBetterStorage createGui(EntityPlayer player, int id) {
+		return new GuiCrate(player, getGuiRows(id));
+	}
+	
 	// IInventory implementation
 
 	@Override
-	public String getInvName() { return "container.crate"; }
+	public String getInvName() { return getName(); }
 	@Override
 	public int getInventoryStackLimit() { return 64; }
 	
@@ -237,5 +257,18 @@ public class TileEntityCrate extends TileEntity implements IInventory {
 	public void openChest() { getPileData().blockView.openChest(); }
 	@Override
 	public void closeChest() { getPileData().blockView.closeChest(); }
+	
+	// Reading from / writing to NBT
+	
+	@Override
+	public void readFromNBT(NBTTagCompound compound) {
+		super.readFromNBT(compound);
+		id = compound.getInteger("crateId");
+	}
+	@Override
+	public void writeToNBT(NBTTagCompound compound) {
+		super.writeToNBT(compound);
+		compound.setInteger("crateId", id);
+	}
 	
 }

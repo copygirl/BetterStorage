@@ -64,7 +64,7 @@ public class BlockArmorStand extends BlockContainer {
 	
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving player, ItemStack stack) {
-		TileEntityArmorStand locker = WorldUtils.getArmorStand(world, x, y, z);
+		TileEntityArmorStand locker = WorldUtils.get(world, x, y, z, TileEntityArmorStand.class);
 		locker.rotation = Math.round((player.rotationYawHead + 180) * 16 / 360);
 		world.setBlock(x, y + 1, z, blockID, 1, 3);
 	}
@@ -72,7 +72,7 @@ public class BlockArmorStand extends BlockContainer {
 	@Override
 	public void breakBlock(World world, int x, int y, int z, int id, int meta) {
 		if (meta > 0) return;
-		TileEntityArmorStand armorStand = WorldUtils.getArmorStand(world, x, y, z);
+		TileEntityArmorStand armorStand = WorldUtils.get(world, x, y, z, TileEntityArmorStand.class);
 		super.breakBlock(world, x, y, z, id, meta);
 		if (armorStand != null)
 		    armorStand.dropContents();
@@ -107,7 +107,7 @@ public class BlockArmorStand extends BlockContainer {
 		if (world.getBlockMetadata(x, y, z) > 0)
 			return onBlockActivated(world, x, y - 1, z, player, side, hitX, hitY + 1, hitZ);
 		
-		TileEntityArmorStand armorStand = WorldUtils.getArmorStand(world, x, y, z);
+		TileEntityArmorStand armorStand = WorldUtils.get(world, x, y, z, TileEntityArmorStand.class);
 		int slot = Math.min(3, (int)(hitY * 2));
 		
 		ItemStack item = armorStand.armor[slot];

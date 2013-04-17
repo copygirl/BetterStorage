@@ -2,8 +2,7 @@ package net.mcft.copy.betterstorage.block.crate;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.mcft.copy.betterstorage.BetterStorage;
-import net.mcft.copy.betterstorage.misc.Constants;
+import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -40,10 +39,7 @@ public class BlockCrate extends BlockContainer {
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {
 		if (world.isRemote) return true;
-		TileEntityCrate crate = (TileEntityCrate)world.getBlockTileEntity(x, y, z);
-		int crates = crate.getPileData().getNumCrates();
-		int id = Constants.crateSmallGuiId + Math.min(crates, 3) - 1;
-		player.openGui(BetterStorage.instance, id, world, x, y, z);
+		WorldUtils.get(world, x, y, z, TileEntityCrate.class).openGui(player);
 		return true;
 	}
 	

@@ -17,7 +17,7 @@ public class InventoryKeyring extends InventoryItem {
 	@Override
 	protected void updateStack() {
 		int count = 0;
-		for (ItemStack stack : contents)
+		for (ItemStack stack : allContents[0])
 			if (stack != null) count++;
 		stack.setItemDamage(count);
 		super.updateStack();
