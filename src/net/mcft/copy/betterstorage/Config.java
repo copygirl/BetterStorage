@@ -6,6 +6,8 @@ import net.minecraftforge.common.Configuration;
 
 public class Config {
 	
+	private static final String categorySettings = "settings";
+	
 	// The following IDs are also used as default values.
 	
 	public static int crateId      = 2830;
@@ -44,10 +46,10 @@ public class Config {
 		
 		enchantmentBaseId = config.get(Configuration.CATEGORY_GENERAL, "enchantmentBaseId", enchantmentBaseId).getInt();
 		
-		reinforcedChestColumns = config.get(Configuration.CATEGORY_GENERAL, "reinforcedChestColumns", reinforcedChestColumns,
+		reinforcedChestColumns = config.get(categorySettings, "reinforcedChestColumns", reinforcedChestColumns,
 		                                   "Number of colums in reinforced chests. Valid values are 9, 11 and 13.").getInt(reinforcedChestColumns);
 		
-		backpackRows = config.get(Configuration.CATEGORY_GENERAL, "backpackRows",backpackRows,
+		backpackRows = config.get(categorySettings, "backpackRows",backpackRows,
 		                          "Number of rows in backpacks. Valid values are 1 to 6.").getInt(backpackRows);
 		
 		config.save();
