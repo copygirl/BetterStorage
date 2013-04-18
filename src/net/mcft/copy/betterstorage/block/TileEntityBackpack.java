@@ -3,6 +3,7 @@ package net.mcft.copy.betterstorage.block;
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.Config;
 import net.mcft.copy.betterstorage.utils.StackUtils;
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -24,6 +25,28 @@ public class TileEntityBackpack extends TileEntityContainer {
 	public int getGuiId() { return getRows() - 1; }
 	@Override
 	protected int getGuiRows(int guiId) { return guiId + 1; }
+	
+	// Update entity
+	
+	@Override
+	protected float getLidSpeed() { return 0.2F; }
+	
+	@Override
+	public void updateEntity() {
+		super.updateEntity();
+		
+		double x = xCoord + 0.5;
+		double y = yCoord + 0.5;
+		double z = zCoord + 0.5;
+		
+		String sound = Block.soundSnowFootstep.getStepSound();
+		// Play sound when opening
+		if (lidAngle > 0.0F && prevLidAngle <= 0.0F)
+			worldObj.playSoundEffect(x, y, z, sound, 0.6F, 0.5F);
+		// Play sound when closing
+		if (lidAngle < 0.2F && prevLidAngle >= 0.2F)
+			worldObj.playSoundEffect(x, y, z, sound, 0.4F, 0.3F);
+	}
 	
 	// From and to ItemStack
 	

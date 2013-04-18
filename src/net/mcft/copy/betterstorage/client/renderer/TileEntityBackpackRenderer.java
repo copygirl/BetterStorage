@@ -36,7 +36,7 @@ public class TileEntityBackpackRenderer extends TileEntitySpecialRenderer {
 		
 		float angle = backpack.prevLidAngle + (backpack.lidAngle - backpack.prevLidAngle) * par8;
 		angle = 1.0F - angle;
-		angle = 1.0F - angle * angle * angle;
+		angle = 1.0F - angle * angle;
 		backpackModel.setLidRotation((float)(angle * Math.PI / 4.0));
 		backpackModel.renderAll();
 		

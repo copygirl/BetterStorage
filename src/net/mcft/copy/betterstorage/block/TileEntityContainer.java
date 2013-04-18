@@ -126,13 +126,15 @@ public abstract class TileEntityContainer extends TileEntity {
 	
 	// Update entity
 	
+	protected float getLidSpeed() { return 0.1F; }
+	
 	@Override
 	public void updateEntity() {
 		if (!worldObj.isRemote && syncPlayersUsing())
 			playersUsing = WorldUtils.syncPlayersUsing(this, ++ticksSinceSync, playersUsing);
 		
 		prevLidAngle = lidAngle;
-		float lidSpeed = 0.1F;
+		float lidSpeed = getLidSpeed();
 		if (playersUsing > 0) lidAngle = Math.min(1.0F, lidAngle + lidSpeed);
 		else lidAngle = Math.max(0.0F, lidAngle - lidSpeed);
 	}
