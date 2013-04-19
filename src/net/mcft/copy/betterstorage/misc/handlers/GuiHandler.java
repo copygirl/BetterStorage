@@ -41,7 +41,6 @@ public class GuiHandler implements IGuiHandler {
 		if (id < 100) {
 			TileEntityContainer tileEntity = WorldUtils.get(world, x, y, z, TileEntityContainer.class);
 			if (tileEntity != null) {
-				if (!tileEntity.canPlayerUseContainer(player)) return null;
 				gui = tileEntity.createGui(player, id);
 				if (gui == null)
 					BetterStorage.log.warning(String.format("Couldn't create client GUI element from ID %d for %s at %d,%d,%d.", id, tileEntity.getClass().getSimpleName(), x, y, z));
