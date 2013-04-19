@@ -78,7 +78,7 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 	@Override
 	public void onArmorTickUpdate(World world, EntityPlayer player, ItemStack itemStack) {
 		// Get rid of the player's cloak if he has one.
-		if (player.cloakUrl != null) {
+		if (world.isRemote && player.cloakUrl != null) {
 			PlayerUtils.getOrCreateProperties(player, PropertiesHiddenCloak.class).cloakUrl = player.cloakUrl;
 			player.cloakUrl = null;
 		}
@@ -92,6 +92,7 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 		SlotArmorBackpack slot = new SlotArmorBackpack(player.inventory, slotIndex, 8, 8 + armorType * 18);
 		slot.slotNumber = index;
 		player.inventoryContainer.inventorySlots.set(index, slot);
+		
 	}
 	
 	@Override

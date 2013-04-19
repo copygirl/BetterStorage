@@ -66,7 +66,7 @@ public class CommonProxy {
 		player.inventory.armorInventory[2] = null;
 		player.swingItem();
 		// If the player had a cloak, make it visible again.
-		if (player.cloakUrl == null) {
+		if (player.worldObj.isRemote && player.cloakUrl == null) {
 			PropertiesHiddenCloak hiddenCloak = PlayerUtils.getProperties(player, PropertiesHiddenCloak.class);
 			if (hiddenCloak != null)
 				player.cloakUrl = hiddenCloak.cloakUrl;
