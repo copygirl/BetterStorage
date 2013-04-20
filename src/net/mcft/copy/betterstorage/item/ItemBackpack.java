@@ -9,9 +9,7 @@ import net.mcft.copy.betterstorage.block.TileEntityBackpack;
 import net.mcft.copy.betterstorage.client.model.ModelBackpackArmor;
 import net.mcft.copy.betterstorage.container.SlotArmorBackpack;
 import net.mcft.copy.betterstorage.misc.Constants;
-import net.mcft.copy.betterstorage.misc.PropertiesHiddenCloak;
 import net.mcft.copy.betterstorage.utils.DirectionUtils;
-import net.mcft.copy.betterstorage.utils.PlayerUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
@@ -77,12 +75,6 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 	
 	@Override
 	public void onArmorTickUpdate(World world, EntityPlayer player, ItemStack itemStack) {
-		// Get rid of the player's cloak if he has one.
-		if (world.isRemote && player.cloakUrl != null) {
-			PlayerUtils.getOrCreateProperties(player, PropertiesHiddenCloak.class).cloakUrl = player.cloakUrl;
-			player.cloakUrl = null;
-		}
-		
 		// Replace the armor slot with a custom one, so the player
 		// can't unequip the backpack when there's items inside.
 		int index = 5 + armorType;
@@ -92,7 +84,6 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 		SlotArmorBackpack slot = new SlotArmorBackpack(player.inventory, slotIndex, 8, 8 + armorType * 18);
 		slot.slotNumber = index;
 		player.inventoryContainer.inventorySlots.set(index, slot);
-		
 	}
 	
 	@Override

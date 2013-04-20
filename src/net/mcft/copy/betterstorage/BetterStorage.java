@@ -20,6 +20,7 @@ import net.mcft.copy.betterstorage.misc.CreativeTabBetterStorage;
 import net.mcft.copy.betterstorage.misc.Registry;
 import net.mcft.copy.betterstorage.misc.handlers.CraftingHandler;
 import net.mcft.copy.betterstorage.misc.handlers.GuiHandler;
+import net.mcft.copy.betterstorage.misc.handlers.TickHandler;
 import net.mcft.copy.betterstorage.proxy.CommonProxy;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
@@ -37,6 +38,8 @@ import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.common.registry.TickRegistry;
+import cpw.mods.fml.relauncher.Side;
 
 
 @Mod(modid="BetterStorage", version="@VERSION@", useMetadata=true)
@@ -90,6 +93,7 @@ public class BetterStorage {
 		addLocalizations();
 		GameRegistry.registerCraftingHandler(new CraftingHandler());
 		NetworkRegistry.instance().registerGuiHandler(this, new GuiHandler());
+		TickRegistry.registerTickHandler(new TickHandler(), Side.CLIENT);
 		proxy.init();
 		
 	}

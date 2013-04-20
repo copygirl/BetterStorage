@@ -7,8 +7,6 @@ import net.mcft.copy.betterstorage.block.TileEntityReinforcedChest;
 import net.mcft.copy.betterstorage.block.crate.CratePileCollection;
 import net.mcft.copy.betterstorage.block.crate.TileEntityCrate;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
-import net.mcft.copy.betterstorage.misc.PropertiesHiddenCloak;
-import net.mcft.copy.betterstorage.utils.PlayerUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.entity.player.EntityPlayer;
@@ -65,12 +63,6 @@ public class CommonProxy {
 		if (backpack.stackSize > 0) return;
 		player.inventory.armorInventory[2] = null;
 		player.swingItem();
-		// If the player had a cloak, make it visible again.
-		if (player.worldObj.isRemote && player.cloakUrl == null) {
-			PropertiesHiddenCloak hiddenCloak = PlayerUtils.getProperties(player, PropertiesHiddenCloak.class);
-			if (hiddenCloak != null)
-				player.cloakUrl = hiddenCloak.cloakUrl;
-		}
 		event.useBlock = Result.DENY;
 		
 	}
