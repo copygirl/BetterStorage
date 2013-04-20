@@ -42,8 +42,8 @@ public class TileEntityReinforcedChest extends TileEntityConnectable implements 
 		if (!(connectable instanceof TileEntityReinforcedChest)) return false;
 		TileEntityReinforcedChest chest = (TileEntityReinforcedChest)connectable;
 		return (super.canConnect(connectable) &&
-		        ((xCoord != chest.xCoord && (orientation == ForgeDirection.EAST || orientation == ForgeDirection.WEST)) ||
-		         (zCoord != chest.zCoord && (orientation == ForgeDirection.SOUTH || orientation == ForgeDirection.NORTH))) &&
+		        ((xCoord != chest.xCoord && (orientation == ForgeDirection.SOUTH || orientation == ForgeDirection.NORTH)) ||
+		         (zCoord != chest.zCoord && (orientation == ForgeDirection.EAST || orientation == ForgeDirection.WEST))) &&
 		        getLock() == null && chest.getLock() == null);
 	}
 	

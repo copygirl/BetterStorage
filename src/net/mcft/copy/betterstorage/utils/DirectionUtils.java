@@ -10,18 +10,18 @@ public class DirectionUtils {
 	public static ForgeDirection getOrientation(Entity entity) {
 		int dir = MathHelper.floor_double(entity.rotationYaw * 4.0 / 360.0 + 0.5) & 3;
 		switch (dir) {
-			case 1: return ForgeDirection.NORTH;
-			case 2: return ForgeDirection.EAST;
-			case 3: return ForgeDirection.SOUTH;
-			default: return ForgeDirection.WEST;
+			case 1: return ForgeDirection.WEST;
+			case 2: return ForgeDirection.NORTH;
+			case 3: return ForgeDirection.EAST;
+			default: return ForgeDirection.SOUTH;
 		}
 	}
 	
 	/** Gets the direction from a ForgeDirection in degrees. */
 	public static int getRotation(ForgeDirection dir) {
-		if (dir == ForgeDirection.NORTH) return 90;
-		else if (dir == ForgeDirection.EAST) return 180;
-		else if (dir == ForgeDirection.SOUTH) return 270;
+		if (dir == ForgeDirection.WEST) return 90;
+		else if (dir == ForgeDirection.NORTH) return 180;
+		else if (dir == ForgeDirection.EAST) return 270;
 		else return 0;
 	}
 	
@@ -35,10 +35,10 @@ public class DirectionUtils {
 		switch (side) {
 			case 0: return ForgeDirection.DOWN;
 			case 1: return ForgeDirection.UP;
-			case 2: return ForgeDirection.EAST;
-			case 3: return ForgeDirection.WEST;
-			case 4: return ForgeDirection.NORTH;
-			case 5: return ForgeDirection.SOUTH;
+			case 2: return ForgeDirection.NORTH;
+			case 3: return ForgeDirection.SOUTH;
+			case 4: return ForgeDirection.WEST;
+			case 5: return ForgeDirection.EAST;
 			default: return ForgeDirection.UNKNOWN;
 		}
 	}

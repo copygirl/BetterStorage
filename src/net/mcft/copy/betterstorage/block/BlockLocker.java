@@ -40,6 +40,12 @@ public class BlockLocker extends BlockContainer {
 	public boolean renderAsNormalBlock() { return false; }
 	
 	@Override
+	public boolean isBlockSolidOnSide(World world, int x, int y, int z, ForgeDirection side) {
+		TileEntityLocker locker = WorldUtils.get(world, x, y, z, TileEntityLocker.class);
+		return (locker.orientation != side);
+	}
+	
+	@Override
 	@SideOnly(Side.CLIENT)
 	public int getRenderType() { return ClientProxy.lockerRenderId; }
 	
