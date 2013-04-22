@@ -1,4 +1,4 @@
-package net.mcft.copy.betterstorage.enchantment;
+package net.mcft.copy.betterstorage.item;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -65,7 +65,7 @@ public class EnchantmentBetterStorage extends Enchantment {
 	public EnchantmentBetterStorage(String name, EnumEnchantmentType type, int id, int weight, int maxLevel,
 	                                int minBase, int minScaling, int maxBase, int maxScaling) {
 		super(id, weight, type);
-		setName(name);
+		setName(type.toString() + ". " + name);
 		this.maxLevel     = maxLevel;
 		this.minBase      = minBase;
 		this.minScaling   = minScaling;
