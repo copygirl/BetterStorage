@@ -1,16 +1,19 @@
 package net.mcft.copy.betterstorage.block;
 
-import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.Config;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.INetworkManager;
+import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.Packet132TileEntityData;
 
 public class TileEntityBackpack extends TileEntityContainer {
 	
-	/** Stores the damage of the backpack as an item. */
-	private int damage;
+	/** Stores the item while the backpack is a tile entity. */
+	private ItemStack stack;
+	
 	/** Affects if items drop when the backpack is destroyed. */
 	public boolean equipped = false;
 	
@@ -25,6 +28,11 @@ public class TileEntityBackpack extends TileEntityContainer {
 	public int getGuiId() { return getRows() - 1; }
 	@Override
 	protected int getGuiRows(int guiId) { return guiId + 1; }
+	
+	@Override
+	public String getCustomTitle() {
+		return ((stack != null) ? StackUtils.get(stack, (String)null, "display", "Name") : super.getCustomTitle());
+	}
 	
 	// Update entity
 	
@@ -52,19 +60,32 @@ public class TileEntityBackpack extends TileEntityContainer {
 	
 	/** Creates an item from this backpack, to be dropped or equipped. */
 	public ItemStack toItem() {
-		ItemStack stack = new ItemStack(BetterStorage.backpack, 1, damage);
-		if (hasCustomTitle()) StackUtils.set(stack, getCustomTitle(), "display", "CustomName");
 		if (equipped) StackUtils.setStackContents(stack, contents);
+		else StackUtils.remove(stack, "Items");
 		return stack;
 	}
 	
 	/** Fills the data of this backpack from the ItemStack. */
 	public void fromItem(ItemStack stack) {
-		damage = stack.getItemDamage();
-		setCustomTitle(StackUtils.get(stack, (String)null, "display", "CustomName"));
+		this.stack = stack.copy();
 		ItemStack[] itemContents = StackUtils.getStackContents(stack, contents.length);
 		for (int i = 0; i < contents.length; i++)
 			contents[i] = itemContents[i];
+	}
+	
+	// Tile entity synchronization
+	
+	@Override
+	public Packet getDescriptionPacket() {
+		if (!hasCustomTitle()) return null;
+		NBTTagCompound compound = new NBTTagCompound();
+		compound.setString("customName", getCustomTitle());
+        return new Packet132TileEntityData(xCoord, yCoord, zCoord, 0, compound);
+	}
+	@Override
+	public void onDataPacket(INetworkManager net, Packet132TileEntityData packet) {
+		NBTTagCompound compound = packet.customParam1;
+		setCustomTitle(compound.getString("customName"));
 	}
 	
 	// Reading from / writing to NBT
@@ -72,12 +93,12 @@ public class TileEntityBackpack extends TileEntityContainer {
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
-		damage = compound.getInteger("damage");
+		stack = ItemStack.loadItemStackFromNBT(compound.getCompoundTag("stack"));
 	}
 	@Override
 	public void writeToNBT(NBTTagCompound compound) {
 		super.writeToNBT(compound);
-		compound.setInteger("damage", damage);
+		compound.setCompoundTag("stack", stack.writeToNBT(new NBTTagCompound()));
 	}
 	
 }
