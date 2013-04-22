@@ -58,7 +58,7 @@ public abstract class TileEntityContainer extends TileEntity {
 	// Container title related
 	
 	/** Returns the title of the container. */
-	public String getContainerTitle() { return (hasCustomTitle() ? customTitle : getName()); }
+	public String getContainerTitle() { return (hasCustomTitle() ? getCustomTitle() : getName()); }
 	
 	/** Returns the custom title of this container. */
 	public String getCustomTitle() { return customTitle; }
