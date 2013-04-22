@@ -3,14 +3,14 @@ package net.mcft.copy.betterstorage.item;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.mcft.copy.betterstorage.BetterStorage;
+import net.mcft.copy.betterstorage.api.BetterStorageEnchantment;
 import net.mcft.copy.betterstorage.api.IKey;
 import net.mcft.copy.betterstorage.api.ILock;
 import net.mcft.copy.betterstorage.api.ILockable;
-import net.mcft.copy.betterstorage.enchantment.EnchantmentBetterStorage;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -134,10 +134,10 @@ public class ItemKey extends ItemBetterStorage implements IKey {
 		// If the lock and key IDs match, return true.
 		if (lockId == keyId) return true;
 		
-		int lockSecurity = EnchantmentHelper.getEnchantmentLevel(EnchantmentBetterStorage.security.effectId, lock);
-		int unlocking    = EnchantmentHelper.getEnchantmentLevel(EnchantmentBetterStorage.unlocking.effectId, key);
-		int lockpicking  = EnchantmentHelper.getEnchantmentLevel(EnchantmentBetterStorage.lockpicking.effectId, key);
-		int morphing     = EnchantmentHelper.getEnchantmentLevel(EnchantmentBetterStorage.morphing.effectId, key);
+		int lockSecurity = BetterStorageEnchantment.getLevel(lock, "security");
+		int unlocking    = BetterStorageEnchantment.getLevel(key, "unlocking");
+		int lockpicking  = BetterStorageEnchantment.getLevel(key, "lockpicking");
+		int morphing     = BetterStorageEnchantment.getLevel(key, "morphing");
 		
 		int effectiveUnlocking   = Math.max(0, unlocking - lockSecurity);
 		int effectiveLockpicking = Math.max(0, lockpicking - lockSecurity);
@@ -151,7 +151,7 @@ public class ItemKey extends ItemBetterStorage implements IKey {
 			NBTTagList list = key.getEnchantmentTagList();
 			for (int i = 0; i < list.tagCount(); i++) {
 				NBTTagCompound compound = (NBTTagCompound)list.tagAt(i);
-				if (compound.getShort("id") != EnchantmentBetterStorage.lockpicking.effectId) continue;
+				if (compound.getShort("id") != BetterStorageEnchantment.get("lockpicking").effectId) continue;
 				int level = compound.getShort("lvl") - 1;
 				if (level == 0) {
 					list.removeTag(i);
@@ -167,7 +167,7 @@ public class ItemKey extends ItemBetterStorage implements IKey {
 			NBTTagList list = key.getEnchantmentTagList();
 			for (int i = 0; i < list.tagCount(); i++) {
 				NBTTagCompound compound = (NBTTagCompound)list.tagAt(i);
-				if (compound.getShort("id") != EnchantmentBetterStorage.morphing.effectId) continue;
+				if (compound.getShort("id") != BetterStorageEnchantment.get("morphing").effectId) continue;
 				list.removeTag(i);
 				// Morphed keys keep their enchanted look, it looks sweet.
 				// if (list.tagCount() == 0)
@@ -179,5 +179,8 @@ public class ItemKey extends ItemBetterStorage implements IKey {
 		return false;
 		
 	}
+	
+	@Override
+	public boolean canApplyEnchantment(ItemStack key, Enchantment enchantment) { return true; }
 	
 }

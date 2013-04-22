@@ -1,5 +1,6 @@
 package net.mcft.copy.betterstorage.api;
 
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
@@ -19,5 +20,8 @@ public interface ILock {
 	 *  the player is trying to break the container. */
 	public void applyEffects(ItemStack lock, ILockable lockable,
 	                         EntityPlayer player, int power);
+	
+	/** Returns if the lock can be enchanted with this lock enchantment. */
+	public boolean canApplyEnchantment(ItemStack lock, Enchantment enchantment);
 	
 }

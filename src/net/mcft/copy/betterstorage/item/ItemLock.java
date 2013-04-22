@@ -2,12 +2,12 @@ package net.mcft.copy.betterstorage.item;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.mcft.copy.betterstorage.api.BetterStorageEnchantment;
 import net.mcft.copy.betterstorage.api.ILock;
 import net.mcft.copy.betterstorage.api.ILockable;
-import net.mcft.copy.betterstorage.enchantment.EnchantmentBetterStorage;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
@@ -65,8 +65,8 @@ public class ItemLock extends ItemBetterStorage implements ILock {
 	@Override
 	public void applyEffects(ItemStack lock, ILockable lockable, EntityPlayer player, int power) {
 		
-		int shock   = EnchantmentHelper.getEnchantmentLevel(EnchantmentBetterStorage.shock.effectId, lock);
-		int trigger = EnchantmentHelper.getEnchantmentLevel(EnchantmentBetterStorage.trigger.effectId, lock);
+		int shock   = BetterStorageEnchantment.getLevel(lock, "shock");
+		int trigger = BetterStorageEnchantment.getLevel(lock, "trigger");
 		
 		if (shock > 0) {
 			// Damage the player, and sets em on fire if shock is level 3.
@@ -77,5 +77,8 @@ public class ItemLock extends ItemBetterStorage implements ILock {
 		if (trigger > 0) lockable.applyTrigger();
 		
 	}
+	
+	@Override
+	public boolean canApplyEnchantment(ItemStack key, Enchantment enchantment) { return true; }
 	
 }

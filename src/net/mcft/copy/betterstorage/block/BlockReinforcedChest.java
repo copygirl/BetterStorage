@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Random;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.mcft.copy.betterstorage.api.BetterStorageEnchantment;
 import net.mcft.copy.betterstorage.api.IKey;
 import net.mcft.copy.betterstorage.api.ILock;
-import net.mcft.copy.betterstorage.enchantment.EnchantmentBetterStorage;
 import net.mcft.copy.betterstorage.proxy.ClientProxy;
 import net.mcft.copy.betterstorage.utils.DirectionUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
@@ -16,7 +16,6 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
@@ -70,7 +69,7 @@ public class BlockReinforcedChest extends BlockContainer {
 		float hardness = blockHardness;
 		if (chest != null && chest.getLock() != null) {
 			hardness *= 15.0F;
-			int persistance = EnchantmentHelper.getEnchantmentLevel(EnchantmentBetterStorage.persistance.effectId, chest.getLock());
+			int persistance = BetterStorageEnchantment.getLevel(chest.getLock(), "persistance");
 			if (persistance > 0) hardness *= persistance + 2;
 		}
 		return hardness;
@@ -81,7 +80,7 @@ public class BlockReinforcedChest extends BlockContainer {
 		float modifier = 1.0F;
 		TileEntityReinforcedChest chest = WorldUtils.get(world, x, y, z, TileEntityReinforcedChest.class);
 		if (chest != null) {
-			int persistance = EnchantmentHelper.getEnchantmentLevel(EnchantmentBetterStorage.persistance.effectId, chest.getLock());
+			int persistance = BetterStorageEnchantment.getLevel(chest.getLock(), "persistance");
 			if (persistance > 0) modifier += Math.pow(2, persistance);
 		}
 		return super.getExplosionResistance(entity) * modifier;

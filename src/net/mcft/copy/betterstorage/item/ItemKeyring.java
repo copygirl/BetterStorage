@@ -7,6 +7,7 @@ import net.mcft.copy.betterstorage.api.IKey;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
@@ -65,5 +66,8 @@ public class ItemKeyring extends ItemBetterStorage implements IKey {
 		return false;
 		
 	}
+	
+	@Override
+	public boolean canApplyEnchantment(ItemStack key, Enchantment enchantment) { return false; }
 	
 }
