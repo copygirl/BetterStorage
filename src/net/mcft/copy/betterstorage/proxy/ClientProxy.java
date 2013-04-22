@@ -4,6 +4,7 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.mcft.copy.betterstorage.block.BlockArmorStand;
@@ -16,6 +17,7 @@ import net.mcft.copy.betterstorage.client.renderer.TileEntityArmorStandRenderer;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityBackpackRenderer;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityLockerRenderer;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityReinforcedChestRenderer;
+import net.mcft.copy.betterstorage.misc.handlers.TickHandler;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.Tessellator;
@@ -36,6 +38,12 @@ public class ClientProxy extends CommonProxy {
 	public static int lockerRenderId;
 	public static int armorStandRenderId;
 	public static int backpackRenderId;
+	
+	@Override
+	public void init() {
+		super.init();
+		TickRegistry.registerTickHandler(new TickHandler(), Side.CLIENT);
+	}
 	
 	@Override
 	public void registerTileEntites() {
