@@ -111,9 +111,12 @@ public class TileEntityReinforcedChest extends TileEntityConnectable implements 
 		if (powered) worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, id, 10);
 		
 		// Notify nearby blocks
+		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, id);
+		worldObj.notifyBlocksOfNeighborChange(xCoord + 1, yCoord, zCoord, id);
 		worldObj.notifyBlocksOfNeighborChange(xCoord - 1, yCoord, zCoord, id);
 		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord + 1, zCoord, id);
 		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord - 1, zCoord, id);
+		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord + 1, id);
 		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord - 1, id);
 		
 		// Notify nearby blocks of adjacent chest
@@ -123,14 +126,14 @@ public class TileEntityReinforcedChest extends TileEntityConnectable implements 
 			worldObj.notifyBlocksOfNeighborChange(xCoord + 1, yCoord - 1, zCoord, id);
 			worldObj.notifyBlocksOfNeighborChange(xCoord + 1, yCoord, zCoord + 1, id);
 			worldObj.notifyBlocksOfNeighborChange(xCoord + 1, yCoord, zCoord - 1, id);
-		} else worldObj.notifyBlocksOfNeighborChange(xCoord + 1, yCoord, zCoord, id);
+		}
 		if (isConnected() && connected == ForgeDirection.SOUTH) {
 			worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord + 2, id);
 			worldObj.notifyBlocksOfNeighborChange(xCoord + 1, yCoord, zCoord + 1, id);
 			worldObj.notifyBlocksOfNeighborChange(xCoord - 1, yCoord, zCoord + 1, id);
 			worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord + 1, zCoord + 1, id);
 			worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord - 1, zCoord + 1, id);
-		} else worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord + 1, id);
+		}
 		
 	}
 	
