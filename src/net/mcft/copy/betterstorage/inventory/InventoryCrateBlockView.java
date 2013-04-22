@@ -1,7 +1,6 @@
 package net.mcft.copy.betterstorage.inventory;
 
 import net.mcft.copy.betterstorage.block.crate.CratePileData;
-import net.mcft.copy.betterstorage.misc.ItemIdentifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
