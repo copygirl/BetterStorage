@@ -68,9 +68,11 @@ public class ItemLock extends ItemBetterStorage implements ILock {
 		int shock   = EnchantmentHelper.getEnchantmentLevel(EnchantmentBetterStorage.shock.effectId, lock);
 		int trigger = EnchantmentHelper.getEnchantmentLevel(EnchantmentBetterStorage.trigger.effectId, lock);
 		
-		// Damage the player, and set em on fire if shock is level 3.
-		player.attackEntityFrom(DamageSource.magic, shock * Math.min(power, 2) * 5 / 2);
-		if (shock >= 3) player.setFire(shock * 2 * power);
+		if (shock > 0) {
+			// Damage the player, and sets em on fire if shock is level 3.
+			player.attackEntityFrom(DamageSource.magic, shock * Math.min(power, 2) * 5 / 2);
+			if (shock >= 3) player.setFire(shock * 2 * power);
+		}
 		
 		if (trigger > 0) lockable.applyTrigger();
 		

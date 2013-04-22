@@ -133,18 +133,18 @@ public class BlockReinforcedChest extends BlockContainer {
 
 		ItemStack lock = chest.getLock();
 		ItemStack key = (StackUtils.isKey(holding) ? holding : null);
+		ILock lockType = ((lock != null) ? (ILock)lock.getItem() : null);
 		IKey keyType = ((key != null) ? (IKey)key.getItem() : null);
 		
-		// If the chest isn't locked and item held is a lock, use it.
+		// If the chest isn't locked and item held is
+		// a lock, use it instead of opening the chest.
 		if (lock == null && StackUtils.isLock(holding))
 			return false;
 		
-		// Only continue if the chest can be opened.
-		if (chest.getLock() != null && !chest.canUse(player) &&
-		    (key == null || !keyType.unlock(key, lock, true)))
-			return true;
-		
-		chest.openGui(player);
+		boolean success = (lock == null || chest.canUse(player) ||
+		                   (key != null && keyType.unlock(key, lock, true)));
+		lockType.onUnlock(lock, key, chest, player, success);
+		if (success) chest.openGui(player);
 		
 		return true;
 	}
