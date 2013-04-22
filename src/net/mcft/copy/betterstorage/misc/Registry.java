@@ -15,6 +15,7 @@ public class Registry {
 	
 	public static void doYourThing() {
 		// Yes, ma'am!
+		BetterStorage.log.info("BetterStorage will overwrite some of its own items. Don't worry, this is normal.");
 		registerBlocks();
 		registerItems();
 	}
