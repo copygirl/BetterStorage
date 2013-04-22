@@ -22,7 +22,7 @@ public class Registry {
 	
 	public static void registerBlocks() {
 		register(BetterStorage.crate, "crate", "Storage Crate");
-		register(BetterStorage.reinforcedChest, "reinforcedChest", null, ItemReinforcedChest.class);
+		register(BetterStorage.reinforcedChest, "reinforcedChest", "Reinforced Chest", ItemReinforcedChest.class);
 		register(BetterStorage.locker, "locker", "Locker");
 		register(BetterStorage.armorStand, "armorStand", "Armor Stand", ItemArmorStand.class);
 		registerHacky(BetterStorage.backpack, "backpack", "Backpack", ItemBackpack.class);
