@@ -8,10 +8,6 @@ import net.minecraft.item.ItemStack;
 /** An inventory interface built for machines accessing crate piles. */
 public class InventoryCrateBlockView extends InventoryBetterStorage {
 	
-	// TODO: Rewrite this, some machines don't like the way this fake inventory works.
-	// Suggestion: Do it similar to InventoryCratePlayerView, update internal
-	//             inventory every tick instead of every access.
-	
 	private CratePileData data;
 	
 	public InventoryCrateBlockView(CratePileData data) {
@@ -20,46 +16,20 @@ public class InventoryCrateBlockView extends InventoryBetterStorage {
 	}
 	
 	@Override
-	public int getSizeInventory() {
-		// Return lower inventory size so machines don't look at all the
-		// empty slots, looking for specific item or stacks to merge with.
-		return Math.min(data.getOccupiedSlots() + 10, data.getCapacity());
-	}
+	public int getSizeInventory() { return (data.getNumItems() + 1); }
 	
 	@Override
 	public ItemStack getStackInSlot(int slot) {
-		if (slot < 0 || slot >= getSizeInventory()) return null;
-		// If there's space in the inventory, make the first slot be empty.
-		// That way machines will easily find a slot to put items in.
-		if (data.getFreeSlots() > 0 && --slot == -1) return null;
-		if (slot >= data.getOccupiedSlots()) return null;
-		ItemStack stack;
-		int stackSize;
-		int numItems = data.getNumItems();
-		if (slot < numItems) {
-			stack = data.getItemStack(slot);
-			int stackLimit = stack.getItem().getItemStackLimit();
-			stackSize = (stack.stackSize - 1) % stackLimit + 1;
-		} else {
-			slot -= numItems;
-			int index = 0;
-			do {
-				stack = data.getItemStack(index);
-				int numStacks = ItemIdentifier.calcNumStacks(stack) - 1;
-				if (slot < numStacks) break;
-				slot -= numStacks;
-			} while (++index < data.getNumItems());
-			stackSize = stack.getItem().getItemStackLimit();
-		}
-		stack = stack.copy();
-		stack.stackSize = stackSize;
+		if (slot <= 0 || slot >= getSizeInventory()) return null;
+		ItemStack stack = data.getItemStack(slot - 1).copy();
+		stack.stackSize = Math.min(stack.stackSize, stack.getMaxStackSize());
 		return stack;
 	}
 	
 	@Override
 	public void setInventorySlotContents(int slot, ItemStack stack) {
 		if (slot < 0 || slot >= getSizeInventory()) return;
-		ItemStack oldStack = getStackInSlot(slot);
+		ItemStack oldStack = getStackInSlot(slot - 1);
 		if (oldStack != null) data.removeItems(oldStack);
 		data.addItems(stack);
 	}
@@ -70,6 +40,11 @@ public class InventoryCrateBlockView extends InventoryBetterStorage {
 		if (stack == null) return null;
 		amount = Math.min(amount, stack.stackSize);
 		return data.removeItems(stack, amount);
+	}
+	
+	@Override
+	public boolean isStackValidForSlot(int slot, ItemStack stack) {
+		return (slot != 0 || data.getFreeSlots() > 0);
 	}
 	
 	@Override
