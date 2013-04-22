@@ -17,10 +17,10 @@ public class TileEntityBackpack extends TileEntityContainer {
 	/** Affects if items drop when the backpack is destroyed. */
 	public boolean equipped = false;
 	
+	// TileEntityContainer stuff
+	
 	@Override
 	public String getName() { return "container.backpack"; }
-	
-	// TileEntityContainer stuff
 
 	@Override
 	public int getRows() { return Config.backpackRows; }
@@ -31,7 +31,7 @@ public class TileEntityBackpack extends TileEntityContainer {
 	
 	@Override
 	public String getCustomTitle() {
-		return ((stack != null) ? StackUtils.get(stack, (String)null, "display", "Name") : super.getCustomTitle());
+		return StackUtils.get(stack, (String)null, "display", "Name");
 	}
 	
 	// Update entity
@@ -60,8 +60,8 @@ public class TileEntityBackpack extends TileEntityContainer {
 	
 	/** Creates an item from this backpack, to be dropped or equipped. */
 	public ItemStack toItem() {
-		if (equipped) StackUtils.setStackContents(stack, contents);
-		else StackUtils.remove(stack, "Items");
+		if (equipped)
+			StackUtils.setStackContents(stack, contents);
 		return stack;
 	}
 	
@@ -71,21 +71,21 @@ public class TileEntityBackpack extends TileEntityContainer {
 		ItemStack[] itemContents = StackUtils.getStackContents(stack, contents.length);
 		for (int i = 0; i < contents.length; i++)
 			contents[i] = itemContents[i];
+		StackUtils.remove(stack, "Items");
 	}
 	
 	// Tile entity synchronization
 	
 	@Override
 	public Packet getDescriptionPacket() {
-		if (!hasCustomTitle()) return null;
 		NBTTagCompound compound = new NBTTagCompound();
-		compound.setString("customName", getCustomTitle());
+		compound.setCompoundTag("stack", stack.writeToNBT(new NBTTagCompound()));
         return new Packet132TileEntityData(xCoord, yCoord, zCoord, 0, compound);
 	}
 	@Override
 	public void onDataPacket(INetworkManager net, Packet132TileEntityData packet) {
 		NBTTagCompound compound = packet.customParam1;
-		setCustomTitle(compound.getString("customName"));
+		stack = ItemStack.loadItemStackFromNBT(compound.getCompoundTag("stack"));
 	}
 	
 	// Reading from / writing to NBT
