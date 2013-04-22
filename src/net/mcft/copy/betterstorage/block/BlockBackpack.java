@@ -36,9 +36,9 @@ public class BlockBackpack extends BlockContainer {
 	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
 		ForgeDirection orientation = ForgeDirection.getOrientation(world.getBlockMetadata(x, y, z));
 		if (orientation == ForgeDirection.NORTH || orientation == ForgeDirection.SOUTH)
-			setBlockBounds(3 / 16.0F, 0.0F, 2 / 16.0F, 13 / 16.0F, 13 / 16.0F, 14 / 16.0F);
-		else if (orientation == ForgeDirection.WEST || orientation == ForgeDirection.EAST)
 			setBlockBounds(2 / 16.0F, 0.0F, 3 / 16.0F, 14 / 16.0F, 13 / 16.0F, 13 / 16.0F);
+		else if (orientation == ForgeDirection.WEST || orientation == ForgeDirection.EAST)
+			setBlockBounds(3 / 16.0F, 0.0F, 2 / 16.0F, 13 / 16.0F, 13 / 16.0F, 14 / 16.0F);
 		else setBlockBounds(3 / 16.0F, 0.0F, 3 / 16.0F, 13 / 16.0F, 13 / 16.0F, 13 / 16.0F);
 	}
 	
