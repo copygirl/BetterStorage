@@ -6,6 +6,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.Queue;
+
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.block.crate.CratePileData;
 import net.mcft.copy.betterstorage.block.crate.ICrateWatcher;
@@ -106,6 +108,8 @@ public class InventoryCratePlayerView extends InventoryBetterStorage implements 
 		}
 		ignoreModifiedItems = false;
 		tempContents[slot] = stack;
+		if (stack == null)
+			onSlotEmptied(slot);
 	}
 	
 	@Override
@@ -124,6 +128,9 @@ public class InventoryCratePlayerView extends InventoryBetterStorage implements 
 		ignoreModifiedItems = true;
 		ItemStack result = data.removeItems(item, amount);
 		ignoreModifiedItems = false;
+		
+		if (tempContents[slot] == null)
+			onSlotEmptied(slot);
 		
 		return result;
 	}
@@ -152,43 +159,65 @@ public class InventoryCratePlayerView extends InventoryBetterStorage implements 
 	public void onCrateItemsModified(ItemIdentifier item, int amount) {
 		if (ignoreModifiedItems) return;
 		
-		MapData data = getMapData(item);
-		int totalStacks = 0;
-		List<Integer> emptySlots = null;
-		if (amount > 0) {
-			totalStacks = Math.min(item.calcNumStacks(amount), tempContents.length);
-			emptySlots = new ArrayList<Integer>(totalStacks);
-		}
+		MapData itemData = getMapData(item);
+		Queue<Integer> emptySlots = new LinkedList<Integer>();
 		
 		for (int slot = 0; slot < tempContents.length; slot++) {
 			ItemStack stack = tempContents[slot];
-			if (stack == null) {
-				if (emptySlots != null && emptySlots.size() < totalStacks)
-					emptySlots.add(slot);
-				continue;
-			}
+			if (stack == null) { emptySlots.add(slot); continue; }
 			if (!item.matches(stack)) continue;
-			int delta = modifyItemsInSlot(slot, stack, amount); 
-			data.itemCount += delta;
-			if ((amount -= delta) == 0) return;
+			amount -= modifyItemsInSlot(slot, stack, itemData, amount);
+			if (amount == 0) return;
 		}
 		
-		if (amount <= 0) return;
-		
-		for (int slot : emptySlots) {
-			int count = Math.min(amount, item.getItem().getItemStackLimit());
-			ItemStack stack = item.createStack(count);
-			tempContents[slot] = stack;
-			data.itemCount += count;
-			if ((amount -= count) <= 0) return;
-		}
+		while (amount > 0 && emptySlots.size() > 0)
+			amount -= setItemsInSlot(emptySlots.poll(), item, itemData, amount);
 	}
 	
-	private int modifyItemsInSlot(int slot, ItemStack stack, int amount) {
+	// Misc functions
+	
+	private void onSlotEmptied(int slot) {
+		int emptySlots = 0;
+		for (int s = 0; s < tempContents.length; s++)
+			if (tempContents[s] == null) emptySlots++;
+		
+		if (emptySlots <= data.getFreeSlots()) return;
+		
+		int size = data.getNumItems();
+		List<Integer> randomIndexList = new ArrayList<Integer>(size);
+		for (int i = 0; i < size; i++) randomIndexList.add(i);
+		
+		while (emptySlots > data.getFreeSlots() && randomIndexList.size() > 0) {
+			
+			int randomIndex = BetterStorage.random.nextInt(randomIndexList.size());
+			int index = randomIndexList.get(randomIndex);
+			
+			ItemStack stack = data.getItemStack(index);
+			ItemIdentifier item = new ItemIdentifier(stack);
+			MapData itemData = getMapData(item);
+			
+			int count = (stack.stackSize - itemData.itemCount);
+			if (count <= 0) continue;
+			setItemsInSlot(slot, item, itemData, count);
+			break;
+			
+		}
+		
+	}
+	
+	private int modifyItemsInSlot(int slot, ItemStack stack, MapData itemData, int amount) {
 		int count = Math.max(-stack.stackSize, Math.min(amount, stack.getMaxStackSize() - stack.stackSize));
 		if ((stack.stackSize += count) <= 0)
 			tempContents[slot] = null;
+		itemData.itemCount += count;
 		return count;
+	}
+	
+	private int setItemsInSlot(int slot, ItemIdentifier item, MapData itemData, int maxAmount) {
+		int size = Math.min(maxAmount, item.getItem().getItemStackLimit());
+		tempContents[slot] = item.createStack(size);
+		itemData.itemCount += size;
+		return size;
 	}
 	
 }
