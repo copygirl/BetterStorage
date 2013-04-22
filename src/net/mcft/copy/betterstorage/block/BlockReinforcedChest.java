@@ -142,7 +142,8 @@ public class BlockReinforcedChest extends BlockContainer {
 		
 		boolean success = (lock == null || chest.canUse(player) ||
 		                   (key != null && keyType.unlock(key, lock, true)));
-		lockType.onUnlock(lock, key, chest, player, success);
+		if (lockType != null)
+			lockType.onUnlock(lock, key, chest, player, success);
 		if (success) chest.openGui(player);
 		
 		return true;
