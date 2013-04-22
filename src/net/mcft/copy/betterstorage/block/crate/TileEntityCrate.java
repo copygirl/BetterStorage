@@ -7,6 +7,8 @@ import java.util.List;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.mcft.copy.betterstorage.BetterStorage;
+import net.mcft.copy.betterstorage.api.ICrateStorage;
+import net.mcft.copy.betterstorage.api.ICrateWatcher;
 import net.mcft.copy.betterstorage.block.TileEntityContainer;
 import net.mcft.copy.betterstorage.client.gui.GuiBetterStorage;
 import net.mcft.copy.betterstorage.client.gui.GuiCrate;
@@ -20,7 +22,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.ForgeDirection;
 
-public class TileEntityCrate extends TileEntityContainer implements IInventory {
+public class TileEntityCrate extends TileEntityContainer implements IInventory, ICrateStorage {
 	
 	private static final ForgeDirection[] sideDirections = {
 		ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.WEST, ForgeDirection.EAST
@@ -257,6 +259,25 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory {
 	public void openChest() { getPileData().blockView.openChest(); }
 	@Override
 	public void closeChest() { getPileData().blockView.closeChest(); }
+	
+	// ICrateStorage implementation
+	
+	@Override
+	public Object getInventoryIdentifier(ForgeDirection side) { return data; }
+	@Override
+	public List<ItemStack> getContents(ForgeDirection side) { return data.getContents(); }
+	@Override
+	public int getItemCount(ForgeDirection side, ItemStack identifier) { return data.getItemCount(identifier); }
+	@Override
+	public int spaceForItem(ForgeDirection side, ItemStack identifier) { return data.spaceForItem(identifier); }
+	@Override
+	public ItemStack insertItems(ForgeDirection side, ItemStack stack) { return data.addItems(stack); }
+	@Override
+	public ItemStack extractItems(ForgeDirection side, ItemStack stack) { return data.removeItems(stack); }
+	@Override
+	public void registerCrateWatcher(ICrateWatcher watcher) { data.addWatcher(watcher); }
+	@Override
+	public void unregisterCrateWatcher(ICrateWatcher watcher) { data.removeWatcher(watcher); }
 	
 	// Reading from / writing to NBT
 	

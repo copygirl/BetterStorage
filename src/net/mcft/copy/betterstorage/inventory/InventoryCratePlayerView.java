@@ -9,8 +9,8 @@ import java.util.Map;
 import java.util.Queue;
 
 import net.mcft.copy.betterstorage.BetterStorage;
+import net.mcft.copy.betterstorage.api.ICrateWatcher;
 import net.mcft.copy.betterstorage.block.crate.CratePileData;
-import net.mcft.copy.betterstorage.block.crate.ICrateWatcher;
 import net.mcft.copy.betterstorage.block.crate.TileEntityCrate;
 import net.mcft.copy.betterstorage.misc.ItemIdentifier;
 import net.minecraft.entity.player.EntityPlayer;
@@ -156,8 +156,11 @@ public class InventoryCratePlayerView extends InventoryBetterStorage implements 
 	// ICrateWatcher implementation
 	
 	@Override
-	public void onCrateItemsModified(ItemIdentifier item, int amount) {
+	public void onCrateItemsModified(ItemStack changed) {
 		if (ignoreModifiedItems) return;
+		
+		ItemIdentifier item = new ItemIdentifier(changed);
+		int amount = changed.stackSize;
 		
 		MapData itemData = getMapData(item);
 		Queue<Integer> emptySlots = new LinkedList<Integer>();

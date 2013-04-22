@@ -1,6 +1,7 @@
 package net.mcft.copy.betterstorage.block.crate;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -10,6 +11,7 @@ import java.util.Map;
 import java.util.Set;
 
 import net.mcft.copy.betterstorage.BetterStorage;
+import net.mcft.copy.betterstorage.api.ICrateWatcher;
 import net.mcft.copy.betterstorage.inventory.InventoryCrateBlockView;
 import net.mcft.copy.betterstorage.misc.ItemIdentifier;
 import net.minecraft.inventory.IInventory;
@@ -41,6 +43,8 @@ public class CratePileData implements Iterable<ItemStack> {
 	/** Returns the number of crates attached. */
 	public int getNumCrates() { return numCrates; }
 	
+	/** Returns the items in this crate pile as a list. */
+	public List<ItemStack> getContents() { return Arrays.asList(contentsArray); }
 	/** Returns the maximum number of slots. */
 	public int getCapacity() { return numCrates * TileEntityCrate.slotsPerCrate; }
 	/** Returns the number of unique items. */
@@ -190,7 +194,7 @@ public class CratePileData implements Iterable<ItemStack> {
 			numSlots += (stacksAfter - stacksBefore);
 			
 			for (ICrateWatcher watcher : watchers)
-				watcher.onCrateItemsModified(item, stack.stackSize);
+				watcher.onCrateItemsModified(stack);
 			
 		} else overflow = stack;
 		
@@ -235,8 +239,10 @@ public class CratePileData implements Iterable<ItemStack> {
 		
 		numSlots -= (stacksBefore - stacksAfter);
 		
+		ItemStack removedStack = stack.copy();
+		removedStack.stackSize = -stack.stackSize;
 		for (ICrateWatcher watcher : watchers)
-			watcher.onCrateItemsModified(item, -stack.stackSize);
+			watcher.onCrateItemsModified(removedStack);
 		
 		markDirty();
 		return stack;
