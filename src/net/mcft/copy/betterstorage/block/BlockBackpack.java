@@ -9,6 +9,7 @@ import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -82,7 +83,10 @@ public class BlockBackpack extends BlockContainer {
 	
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
-		if (world.isRemote) return true;
+		if (world.isRemote) {
+			Minecraft.getMinecraft().playerController.resetBlockRemoving();
+			return true;
+		}
 		WorldUtils.get(world, x, y, z, TileEntityBackpack.class).openGui(player);
 		return true;
 	}
