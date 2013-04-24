@@ -67,7 +67,8 @@ public class TileEntityBackpack extends TileEntityContainer {
 	
 	/** Fills the data of this backpack from the ItemStack. */
 	public void fromItem(ItemStack stack) {
-		this.stack = stack.copy();
+		stack = stack.copy();
+		this.stack = stack;
 		ItemStack[] itemContents = StackUtils.getStackContents(stack, contents.length);
 		for (int i = 0; i < contents.length; i++)
 			contents[i] = itemContents[i];
