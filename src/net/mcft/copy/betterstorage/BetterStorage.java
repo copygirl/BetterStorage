@@ -1,8 +1,8 @@
 package net.mcft.copy.betterstorage;
 
-import java.util.Random;
 import java.util.logging.Logger;
 
+import net.mcft.copy.betterstorage.addon.Addon;
 import net.mcft.copy.betterstorage.block.BlockArmorStand;
 import net.mcft.copy.betterstorage.block.BlockBackpack;
 import net.mcft.copy.betterstorage.block.BlockLocker;
@@ -29,21 +29,21 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
+import cpw.mods.fml.common.Mod.PostInit;
 import cpw.mods.fml.common.Mod.PreInit;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-
-@Mod(modid="BetterStorage", version="@VERSION@", useMetadata=true)
+@Mod(modid="BetterStorage", version="@VERSION@", useMetadata=true,
+     dependencies="after:Thaumcraft")
 @NetworkMod(clientSideRequired=true, serverSideRequired=false)
 public class BetterStorage {
-	
-	public final static Random random = new Random();
 	
 	@Instance("BetterStorage")
 	public static BetterStorage instance;
@@ -75,7 +75,7 @@ public class BetterStorage {
 	public void preInit(FMLPreInitializationEvent event) {
 		
 		log = event.getModLog();
-		
+		Addon.initAll();
 		Config.load(event.getSuggestedConfigurationFile());
 		
 	}
@@ -94,6 +94,11 @@ public class BetterStorage {
 		
 	}
 	
+	@PostInit
+	public void postInit(FMLPostInitializationEvent event) {
+		Addon.postInitAll();
+	}
+	
 	private void initializeItems() {
 		
 		crate           = new BlockCrate(Config.crateId);
@@ -105,6 +110,8 @@ public class BetterStorage {
 		key     = new ItemKey(Config.keyId);
 		lock    = new ItemLock(Config.lockId);
 		keyring = new ItemKeyring(Config.keyringId);
+		
+		Addon.initializeAllItems();
 		
 		Registry.doYourThing();
 		
@@ -170,6 +177,8 @@ public class BetterStorage {
 				". .",
 				"...", '.', Item.goldNugget);
 		
+		Addon.addAllRecipes();
+		
 	}
 	
 	private void addLocalizations() {
@@ -198,6 +207,8 @@ public class BetterStorage {
 		
 		for (ChestMaterial material : ChestMaterial.materials)
 			lang.addStringLocalization("tile.reinforcedChest." + material.name + ".name", "Reinforced " + material.nameCapitalized + " Chest");
+		
+		Addon.addAllLocalizations(lang);
 		
 	}
 	

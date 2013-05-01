@@ -4,6 +4,7 @@ import java.util.Random;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.proxy.ClientProxy;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
@@ -64,7 +65,7 @@ public class BlockBackpack extends BlockContainer {
 		TileEntityBackpack backpack = WorldUtils.get(world, x, y, z, TileEntityBackpack.class);
 		super.breakBlock(world, x, y, z, id, meta);
 		if (backpack != null && !backpack.equipped) {
-			WorldUtils.dropStackFromBlock(world, x, y, z, backpack.toItem());
+			WorldUtils.dropStackFromBlock(world, x, y, z, backpack.stack);
 			backpack.dropContents();
 		}
 	}
@@ -72,13 +73,10 @@ public class BlockBackpack extends BlockContainer {
 	@Override
 	public boolean removeBlockByPlayer(World world, EntityPlayer player, int x, int y, int z) {
 		if (world.isRemote || !player.isSneaking() ||
-		    player.inventory.armorInventory[2] != null)
+		    (ItemBackpack.getBackpack(player) != null))
 			return world.setBlockToAir(x, y, z);
 		TileEntityBackpack backpack = WorldUtils.get(world, x, y, z, TileEntityBackpack.class);
-		backpack.equipped = true;
-		if (!world.setBlockToAir(x, y, z)) return false;
-		player.inventory.armorInventory[2] = backpack.toItem();
-		return true;
+		return backpack.equip(player);
 	}
 	
 	@Override

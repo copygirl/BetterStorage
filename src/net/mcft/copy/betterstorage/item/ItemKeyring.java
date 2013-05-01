@@ -1,7 +1,5 @@
 package net.mcft.copy.betterstorage.item;
 
-import java.util.List;
-
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.api.IKey;
 import net.mcft.copy.betterstorage.misc.Constants;
@@ -56,8 +54,9 @@ public class ItemKeyring extends ItemBetterStorage implements IKey {
 		// Goes through all the keys in the keyring,
 		// returns if any of the keys fit in the lock.
 		
-		List<ItemStack> keys = StackUtils.getStackContents(keyring);
-		for (ItemStack key : keys) {
+		ItemStack[] items = StackUtils.getStackContents(keyring, 9);
+		for (ItemStack key : items) {
+			if (key == null) continue;
 			IKey keyType = (IKey)key.getItem();
 			if (keyType.unlock(key, lock, false))
 				return true;

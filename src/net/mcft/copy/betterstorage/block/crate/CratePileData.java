@@ -10,10 +10,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.api.ICrateWatcher;
 import net.mcft.copy.betterstorage.inventory.InventoryCrateBlockView;
 import net.mcft.copy.betterstorage.misc.ItemIdentifier;
+import net.mcft.copy.betterstorage.utils.RandomUtils;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -305,7 +305,7 @@ public class CratePileData implements Iterable<ItemStack> {
 		}
 		List<ItemStack> resultStacks = new ArrayList<ItemStack>();
 		for (int i = 0; i < amount; i++)
-			resultStacks.add(stacks.remove(BetterStorage.random.nextInt(stacks.size())));
+			resultStacks.add(stacks.remove(RandomUtils.getInt(stacks.size())));
 		return resultStacks;
 	}
 	/** Picks and removes random items from the pile. <br>

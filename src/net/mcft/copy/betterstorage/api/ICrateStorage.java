@@ -16,10 +16,9 @@ public interface ICrateStorage {
 	 *  The returned list may contain null values and
 	 *  ItemStacks with stack sizes above their usual limit.
 	 *  <p>
-	 *  Do not directly modify the items in the list returned.
-	 *  <p>
-	 *  Note that if the inventory is modified, the list may
-	 *  or may not change as well. */
+	 *  Do not directly modify the items in the list returned
+	 *  and note that if the inventory is modified, the list
+	 *  may or may not change as well. */
 	public List<ItemStack> getContents(ForgeDirection side);
 	
 	/** Returns the number of items of a specific type (damage
@@ -32,18 +31,13 @@ public interface ICrateStorage {
 	 *  be able to insert them using insertItems(). */
 	public int spaceForItem(ForgeDirection side, ItemStack identifier);
 	
-	/** Tries to insert items to the inventory, returns how
-	 *  many items couldn't be added. The stack may have a
-	 *  size above its usual limit.
-	 *  <p>
-	 *  The implementation mustn't modify or keep a reference
-	 *  to the supplied stack, so the caller can still use it. */
+	/** Tries to insert items to the inventory, returns the
+	 *  items that couldn't be added. The stack may have a
+	 *  size above its usual limit. */
 	public ItemStack insertItems(ForgeDirection side, ItemStack stack);
 	
-	/**
-	 * Tries to extract items from the inventory, returns the
-	 * the items that are actually extracted, null if none.
-	 */
+	/** Tries to extract items from the inventory, returns the
+	 *  the items that are actually extracted, null if none. */
 	public ItemStack extractItems(ForgeDirection side, ItemStack stack);
 	
 	/** Registers a crate watcher on the inventory. It will

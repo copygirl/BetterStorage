@@ -4,12 +4,14 @@ import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.mcft.copy.betterstorage.BetterStorage;
+import net.mcft.copy.betterstorage.Config;
 import net.mcft.copy.betterstorage.block.TileEntityBackpack;
 import net.mcft.copy.betterstorage.client.model.ModelBackpackArmor;
 import net.mcft.copy.betterstorage.container.SlotArmorBackpack;
 import net.mcft.copy.betterstorage.misc.Constants;
+import net.mcft.copy.betterstorage.misc.PropertiesBackpackItems;
 import net.mcft.copy.betterstorage.utils.DirectionUtils;
+import net.mcft.copy.betterstorage.utils.EntityUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
@@ -34,6 +36,11 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 		super(id - 256, EnumArmorMaterial.CLOTH, 0, 1);
 		setMaxDamage(240);
 	}
+	
+	/** Returns the number of columns this backpack has. */
+	public int getColumns() { return 9; }
+	/** Returns the number of rows this backpack has. */
+	public int getRows() { return Config.backpackRows; }
 	
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -63,12 +70,14 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 	}
 	
 	@Override
-	public String getArmorTexture(ItemStack stack, Entity entity, int slot, int layer) { return Constants.backpackTexture; }
+	public String getArmorTexture(ItemStack stack, Entity entity, int slot, int layer) {
+		return Constants.backpackTexture;
+	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advancedTooltips) {
-		if (!StackUtils.hasStackItems(stack)) return;
+		if (StackUtils.get(stack, (byte)0, "hasItems") != 1) return;
 		list.add("Contains items. Hold shift and right click");
 		list.add("ground with empty hand to unequip.");
 	}
@@ -96,7 +105,7 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 		
 		if (stack.stackSize == 0) return false;
 		
-		Block blockBackpack = BetterStorage.backpack;
+		Block blockBackpack = Block.blocksList[itemID];
 		Block blockClicked = Block.blocksList[world.getBlockId(x, y, z)];
 		
 		boolean isSolidOnTop = (blockClicked != null && blockClicked.isBlockSolidOnSide(world, x, y, z, ForgeDirection.UP));
@@ -147,7 +156,9 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 		blockBackpack.onPostBlockPlaced(world, x, y, z, orientation.ordinal());
 		
 		TileEntityBackpack backpack = WorldUtils.get(world, x, y, z, TileEntityBackpack.class);
-		backpack.fromItem(stack);
+		backpack.stack = stack.copy();
+		if (ItemBackpack.getBackpack(player) == stack)
+			backpack.unequip(player);
 		
 		String sound = blockBackpack.stepSound.getPlaceSound();
 		float volume = (blockBackpack.stepSound.getVolume() + 1.0F) / 2.0F;
@@ -174,11 +185,43 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 	public void damageArmor(EntityLiving entity, ItemStack stack,
 			DamageSource source, int damage, int slot) {
 		stack.damageItem(damage, entity);
-		if (stack.stackSize <= 0) {
-			for (ItemStack s : StackUtils.getStackContents(stack))
-				WorldUtils.dropStackFromEntity(entity, s);
-			entity.renderBrokenItemStack(stack);
-		}
+		if (stack.stackSize > 0) return;
+		for (ItemStack s : ItemBackpack.getBackpackItems(entity).contents)
+			WorldUtils.dropStackFromEntity(entity, s);
+		entity.renderBrokenItemStack(stack);
+	}
+	
+	// Helper functions
+	
+	public static ItemStack getBackpack(EntityLiving entity) {
+		ItemStack backpack = entity.getCurrentArmor(2);
+		if ((backpack != null) &&
+		    (backpack.getItem() instanceof ItemBackpack)) return backpack;
+		else return null;
+	}
+	public static void setBackpack(EntityLiving entity, ItemStack backpack, ItemStack[] contents) {
+		boolean hasItems = false;
+		for (ItemStack stack : contents)
+			if (stack != null) {
+				hasItems = true;
+				break;
+			}
+		if (hasItems) StackUtils.set(backpack, (byte)1, "hasItems");
+		else StackUtils.remove(backpack, "hasItems");
+		entity.setCurrentItemOrArmor(3, backpack);
+		if (!entity.worldObj.isRemote)
+			getBackpackItems(entity).contents = contents;
+	}
+	public static void removeBackpack(EntityLiving entity, boolean unequip) {
+		ItemStack backpack = entity.getCurrentArmor(2);
+		StackUtils.remove(backpack, "hasItems");
+		if (unequip) entity.setCurrentItemOrArmor(3, null);
+		if (!entity.worldObj.isRemote)
+			getBackpackItems(entity).contents = null;
+	}
+	
+	public static PropertiesBackpackItems getBackpackItems(EntityLiving entity) {
+		return EntityUtils.getProperties(entity, PropertiesBackpackItems.class);
 	}
 	
 }

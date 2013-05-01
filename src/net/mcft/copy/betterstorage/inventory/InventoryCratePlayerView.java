@@ -8,11 +8,11 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.Queue;
 
-import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.api.ICrateWatcher;
 import net.mcft.copy.betterstorage.block.crate.CratePileData;
 import net.mcft.copy.betterstorage.block.crate.TileEntityCrate;
 import net.mcft.copy.betterstorage.misc.ItemIdentifier;
+import net.mcft.copy.betterstorage.utils.RandomUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
@@ -47,7 +47,7 @@ public class InventoryCratePlayerView extends InventoryBetterStorage implements 
 		for (ItemStack contentsStack : data)
 			stacks.add(contentsStack.copy());
 		for (int slot = 0; (totalStacks > 0) && (slot < size); slot++) {
-			int randomStack = BetterStorage.random.nextInt(totalStacks--);
+			int randomStack = RandomUtils.getInt(totalStacks--);
 			for (ListIterator<ItemStack> iter = stacks.listIterator(); iter.hasNext(); ) {
 				ItemStack contentsStack = iter.next();
 				int numStacks = ItemIdentifier.calcNumStacks(contentsStack);
@@ -192,7 +192,7 @@ public class InventoryCratePlayerView extends InventoryBetterStorage implements 
 		
 		while (emptySlots > data.getFreeSlots() && randomIndexList.size() > 0) {
 			
-			int randomIndex = BetterStorage.random.nextInt(randomIndexList.size());
+			int randomIndex = RandomUtils.getInt(randomIndexList.size());
 			int index = randomIndexList.get(randomIndex);
 			
 			ItemStack stack = data.getItemStack(index);

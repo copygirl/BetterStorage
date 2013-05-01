@@ -1,8 +1,11 @@
 package net.mcft.copy.betterstorage.block;
 
 import net.mcft.copy.betterstorage.Config;
+import net.mcft.copy.betterstorage.item.ItemBackpack;
+import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
@@ -11,17 +14,48 @@ import net.minecraft.network.packet.Packet132TileEntityData;
 
 public class TileEntityBackpack extends TileEntityContainer {
 	
-	/** Stores the item while the backpack is a tile entity. */
-	private ItemStack stack;
+	public ItemStack stack;
 	
 	/** Affects if items drop when the backpack is destroyed. */
 	public boolean equipped = false;
+	
+	public String getTexture() {
+		if (stack == null) return Constants.backpackTexture;
+		return ((ItemBackpack)stack.getItem()).getArmorTexture(stack, null, 0, 0);
+	}
+	
+	// Equipping / unequipping
+	
+	public boolean equip(EntityPlayer player) {
+		equipped = true;
+		equipped = worldObj.setBlockToAir(xCoord, yCoord, zCoord);
+		if (equipped) ItemBackpack.setBackpack(player, stack, contents);
+		return equipped;
+	}
+	
+	public void unequip(EntityPlayer player) {
+		StackUtils.remove(stack, "hasItems");
+		if (!worldObj.isRemote) {
+			ItemStack[] backpackItems = ItemBackpack.getBackpackItems(player).contents;
+			
+			// For compatibility with previous versions:
+			// If the stack still has the items tag,
+			// use its items instead and remove the tag.
+			if (StackUtils.has(stack, "Items")) {
+				backpackItems = StackUtils.getStackContents(stack, contents.length);
+				StackUtils.remove(stack, "Items");
+			}
+			
+			if (backpackItems != null)
+				System.arraycopy(backpackItems, 0, contents, 0, backpackItems.length);
+		}
+		ItemBackpack.removeBackpack(player, true);
+	}
 	
 	// TileEntityContainer stuff
 	
 	@Override
 	public String getName() { return "container.backpack"; }
-
 	@Override
 	public int getRows() { return Config.backpackRows; }
 	@Override
@@ -31,7 +65,7 @@ public class TileEntityBackpack extends TileEntityContainer {
 	
 	@Override
 	public String getCustomTitle() {
-		return StackUtils.get(stack, (String)null, "display", "Name");
+		return ((stack != null) ? StackUtils.get(stack, (String)null, "display", "Name") : null);
 	}
 	
 	// Update entity
@@ -54,25 +88,6 @@ public class TileEntityBackpack extends TileEntityContainer {
 		// Play sound when closing
 		if (lidAngle < 0.2F && prevLidAngle >= 0.2F)
 			worldObj.playSoundEffect(x, y, z, sound, 0.4F, 0.3F);
-	}
-	
-	// From and to ItemStack
-	
-	/** Creates an item from this backpack, to be dropped or equipped. */
-	public ItemStack toItem() {
-		if (equipped)
-			StackUtils.setStackContents(stack, contents);
-		return stack;
-	}
-	
-	/** Fills the data of this backpack from the ItemStack. */
-	public void fromItem(ItemStack stack) {
-		stack = stack.copy();
-		this.stack = stack;
-		ItemStack[] itemContents = StackUtils.getStackContents(stack, contents.length);
-		for (int i = 0; i < contents.length; i++)
-			contents[i] = itemContents[i];
-		StackUtils.remove(stack, "Items");
 	}
 	
 	// Tile entity synchronization

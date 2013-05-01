@@ -5,7 +5,7 @@ import java.util.List;
 
 import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.misc.PropertiesHiddenCloak;
-import net.mcft.copy.betterstorage.utils.PlayerUtils;
+import net.mcft.copy.betterstorage.utils.EntityUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -34,13 +34,13 @@ public class TickHandler implements ITickHandler {
 			// If player has a cloak and a backpack, hide
 			// the cloak, and save it to restore later.
 			if (hasBackpack && (player.cloakUrl != null)) {
-				PropertiesHiddenCloak hiddenCloak = PlayerUtils.getOrCreateProperties(player, PropertiesHiddenCloak.class);
+				PropertiesHiddenCloak hiddenCloak = EntityUtils.getOrCreateProperties(player, PropertiesHiddenCloak.class);
 				hiddenCloak.cloakUrl = player.cloakUrl;
 				player.cloakUrl = null;
 			// If the player has no backpack and no cloak,
 			// see if there's one saved away and restore it.
 			} else if (!hasBackpack && (player.cloakUrl == null)) {
-				PropertiesHiddenCloak hiddenCloak = PlayerUtils.getProperties(player, PropertiesHiddenCloak.class);
+				PropertiesHiddenCloak hiddenCloak = EntityUtils.getProperties(player, PropertiesHiddenCloak.class);
 				if ((hiddenCloak != null) && (hiddenCloak.cloakUrl != null)) {
 					player.cloakUrl = hiddenCloak.cloakUrl;
 					hiddenCloak.cloakUrl = null;

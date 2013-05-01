@@ -30,7 +30,8 @@ public class BetterStorageRenderingHandler implements ISimpleBlockRenderingHandl
 	                                     TileEntitySpecialRenderer tileEntityRenderer,
 	                                     boolean render3dInInventory, float rotation,
 	                                     float scale, float yOffset) {
-		try { tileEntity = tileEntityClass.newInstance(); } catch (Exception e) {  }
+		try { tileEntity = tileEntityClass.newInstance(); }
+		catch (Exception e) { throw new RuntimeException(e); }
 		this.tileEntityRenderer = tileEntityRenderer;
 		this.render3dInInventory = render3dInInventory;
 		this.rotation = rotation;

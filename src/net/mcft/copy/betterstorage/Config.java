@@ -2,6 +2,7 @@ package net.mcft.copy.betterstorage;
 
 import java.io.File;
 
+import net.mcft.copy.betterstorage.addon.Addon;
 import net.minecraftforge.common.Configuration;
 
 public class Config {
@@ -27,11 +28,9 @@ public class Config {
 	public static int reinforcedChestColumns = 13;
 	public static int backpackRows = 3;
 	
-	private static Configuration config;
-	
 	public static void load(File file) {
 		
-		config = new Configuration(file);
+		Configuration config = new Configuration(file);
 		config.load();
 		
 		crateId      = config.getBlock("crate", crateId).getInt();
@@ -40,9 +39,9 @@ public class Config {
 		armorStandId = config.getBlock("armorStand", armorStandId).getInt();
 		backpackId   = config.getBlock("backpack", backpackId).getInt();
 		
-		keyId          = config.getItem("key", keyId).getInt();
-		lockId         = config.getItem("lock", lockId).getInt();
-		keyringId      = config.getItem("keyring", keyringId).getInt();
+		keyId     = config.getItem("key", keyId).getInt();
+		lockId    = config.getItem("lock", lockId).getInt();
+		keyringId = config.getItem("keyring", keyringId).getInt();
 		
 		enchantmentBaseId = config.get(Configuration.CATEGORY_GENERAL, "enchantmentBaseId", enchantmentBaseId).getInt();
 		
@@ -51,6 +50,10 @@ public class Config {
 		
 		backpackRows = config.get(categorySettings, "backpackRows",backpackRows,
 		                          "Number of rows in backpacks. Valid values are 1 to 6.").getInt(backpackRows);
+		
+		validate();
+		
+		Addon.loadAllConfigs(config);
 		
 		config.save();
 		
@@ -63,13 +66,13 @@ public class Config {
 		
 	}
 	
-	private static int validateRange(int value, String name, int minValue, int maxValue) {
+	public static int validateRange(int value, String name, int minValue, int maxValue) {
 		if (value >= minValue && value <= maxValue) return value;
 		BetterStorage.log.warning("Config value '" + name + "' is not valid, must be " + minValue + " min and " + maxValue + " max.");
 		return Math.max(minValue, Math.min(maxValue, value));
 	}
 	
-	private static int validateColumnAmount(int columns, String name, int defaultValue) {
+	public static int validateColumnAmount(int columns, String name, int defaultValue) {
 		if (columns == 9 || columns == 11 || columns == 13) return columns;
 		BetterStorage.log.warning("Config value '" + name + "' is not valid, must be 9, 11 or 13.");
 		return defaultValue;

@@ -1,9 +1,6 @@
 package net.mcft.copy.betterstorage.utils;
 
 import java.util.List;
-import java.util.Random;
-
-import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.block.TileEntityContainer;
 import net.mcft.copy.betterstorage.container.ContainerBetterStorage;
 import net.mcft.copy.betterstorage.inventory.InventoryTileEntity;
@@ -20,8 +17,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class WorldUtils {
-	
-	public static Random random = BetterStorage.random;
 	
 	public static AxisAlignedBB getAABB(TileEntity entity, double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {
 		double x = entity.xCoord;
@@ -44,28 +39,29 @@ public class WorldUtils {
 	public static EntityItem spawnItemWithMotion(World world, double x, double y, double z, ItemStack stack) {
 		EntityItem item = spawnItem(world, x, y, z, stack);
 		if (item != null) {
-			item.motionX = random.nextGaussian() * 0.05F;
-			item.motionY = random.nextGaussian() * 0.05F + 0.2F;
-			item.motionZ = random.nextGaussian() * 0.05F;
+			item.motionX = RandomUtils.getGaussian() * 0.05F;
+			item.motionY = RandomUtils.getGaussian() * 0.05F + 0.2F;
+			item.motionZ = RandomUtils.getGaussian() * 0.05F;
 		}
 		return item;
 	}
 	/** Spawn an ItemStack dropping from a destroyed block. */
 	public static EntityItem dropStackFromBlock(World world, int x, int y, int z, ItemStack stack) {
-		float itemX = x + random.nextFloat() * 0.8F + 0.1F;
-		float itemY = y + random.nextFloat() * 0.8F + 0.1F;
-		float itemZ = z + random.nextFloat() * 0.8F + 0.1F;
+		float itemX = x + RandomUtils.getFloat(0.1F, 0.9F);
+		float itemY = y + RandomUtils.getFloat(0.1F, 0.9F);
+		float itemZ = z + RandomUtils.getFloat(0.1F, 0.9F);
 		return spawnItemWithMotion(world, itemX, itemY, itemZ, stack);
 	}
 	/** Spawns an ItemStack as if it was dropped from an entity on death. */
 	public static EntityItem dropStackFromEntity(Entity entity, ItemStack stack) {
+		if (stack == null) return null;
 		EntityPlayer player = ((entity instanceof EntityPlayer) ? (EntityPlayer)entity : null);
 		if (player == null) {
 			double y = entity.posY + entity.getEyeHeight() - 0.3;
 			EntityItem item = spawnItem(entity.worldObj, entity.posX, y, entity.posZ, stack);
 			item.delayBeforeCanPickup = 40;
-			float f1 = random.nextFloat() * 0.5F;
-			float f2 = random.nextFloat() * (float)Math.PI * 2.0F;
+			float f1 = RandomUtils.getFloat(0.5F);
+			float f2 = RandomUtils.getFloat((float)Math.PI * 2.0F);
 			item.motionX = -MathHelper.sin(f2) * f1;
 			item.motionY = 0.2;
 			item.motionZ =  MathHelper.cos(f2) * f1;

@@ -2,11 +2,11 @@ package net.mcft.copy.betterstorage.item;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.api.BetterStorageEnchantment;
 import net.mcft.copy.betterstorage.api.IKey;
 import net.mcft.copy.betterstorage.api.ILock;
 import net.mcft.copy.betterstorage.api.ILockable;
+import net.mcft.copy.betterstorage.utils.RandomUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -112,7 +112,7 @@ public class ItemKey extends ItemBetterStorage implements IKey {
 	/** Gives the key a random damage value if it doesn't have one already. */
 	public static void ensureHasDamage(ItemStack stack) {
 		if (stack.getItemDamage() == 0)
-			stack.setItemDamage(1 + BetterStorage.random.nextInt(32000));
+			stack.setItemDamage(RandomUtils.getInt(1, 32000));
 	}
 	
 	// IKey implementation

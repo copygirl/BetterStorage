@@ -8,20 +8,22 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 import net.mcft.copy.betterstorage.block.TileEntityBackpack;
 import net.mcft.copy.betterstorage.client.model.ModelBackpack;
-import net.mcft.copy.betterstorage.misc.Constants;
+import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.utils.DirectionUtils;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 
 @SideOnly(Side.CLIENT)
 public class TileEntityBackpackRenderer extends TileEntitySpecialRenderer {
 	
-	private ModelBackpack backpackModel = new ModelBackpack();
+	private final ModelBackpack backpackModel = new ModelBackpack();
 	
 	public void renderTileEntityAt(TileEntityBackpack backpack, double x, double y, double z, float par8) {
 		
-		bindTextureByName(Constants.backpackTexture);
+		Item item = Item.itemsList[backpack.getBlockType().blockID];
+		bindTextureByName(((ItemBackpack)item).getArmorTexture(null, null, 0, 0));
 		
 		GL11.glPushMatrix();
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);

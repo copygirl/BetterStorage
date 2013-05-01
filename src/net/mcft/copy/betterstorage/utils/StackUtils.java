@@ -1,8 +1,5 @@
 package net.mcft.copy.betterstorage.utils;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.mcft.copy.betterstorage.api.IKey;
 import net.mcft.copy.betterstorage.api.ILock;
 import net.minecraft.item.ItemStack;
@@ -33,7 +30,7 @@ public class StackUtils {
 		String tag = null;
 		NBTTagCompound compound;
 		if (!stack.hasTagCompound()) {
-			compound = new NBTTagCompound("");
+			compound = new NBTTagCompound();
 			stack.setTagCompound(compound);
 		} else compound = stack.getTagCompound();
 		for (int i = 0; i < tags.length; i++) {
@@ -85,18 +82,6 @@ public class StackUtils {
 	
 	public static boolean isLock(ItemStack stack) {
 		return (stack != null && stack.getItem() instanceof ILock);
-	}
-	
-	public static List<ItemStack> getStackContents(ItemStack stack) {
-		List<ItemStack> list = new ArrayList<ItemStack>();
-		NBTTagCompound compound = stack.getTagCompound();
-		if (compound != null && compound.hasKey("Items"))
-			NbtUtils.readItems(list, compound.getTagList("Items"));
-		return list;
-	}
-	
-	public static boolean hasStackItems(ItemStack stack) {
-		return (getStackContents(stack).size() > 0);
 	}
 	
 	public static ItemStack[] getStackContents(ItemStack stack, int size) {

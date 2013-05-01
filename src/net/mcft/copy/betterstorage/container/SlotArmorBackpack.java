@@ -36,10 +36,11 @@ public class SlotArmorBackpack extends Slot {
 	
 	@Override
 	public boolean canTakeStack(EntityPlayer player) {
-		ItemStack stack = getStack();
-		return !((stack != null) &&
-		         (stack.getItem() instanceof ItemBackpack) &&
-		         StackUtils.hasStackItems(stack));
+		if (ItemBackpack.getBackpack(player) == null) return true;
+		// For compatibility with previous versions:
+		// Do not allow backpacks that still have the items tag to be taken from the slot.
+		return (!StackUtils.has(getStack(), "Items") &&
+				(StackUtils.get(getStack(), (byte)0, "hasItems") != 1));
 	}
 	
 }

@@ -3,6 +3,7 @@ package net.mcft.copy.betterstorage.misc;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import net.mcft.copy.betterstorage.BetterStorage;
+import net.mcft.copy.betterstorage.addon.Addon;
 import net.mcft.copy.betterstorage.item.ItemArmorStand;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.item.ItemReinforcedChest;
@@ -18,6 +19,7 @@ public class Registry {
 		BetterStorage.log.info("BetterStorage will overwrite some of its own items. Don't worry, this is normal.");
 		registerBlocks();
 		registerItems();
+		Addon.registerAllItems();
 	}
 	
 	public static void registerBlocks() {
@@ -50,7 +52,7 @@ public class Registry {
 			item.setUnlocalizedName(name);
 			LanguageRegistry.addName(item, fullName);
 			item.setCreativeTab(BetterStorage.creativeTab);
-		} catch (Exception e) { e.printStackTrace(); }
+		} catch (Exception e) { throw new RuntimeException(e); }
 	}
 	public static void register(Block block, String name, String fullName) {
 		register(block, name, fullName, ItemBlock.class);

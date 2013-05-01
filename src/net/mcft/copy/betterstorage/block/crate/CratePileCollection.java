@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import net.mcft.copy.betterstorage.BetterStorage;
+import net.mcft.copy.betterstorage.utils.RandomUtils;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -22,7 +22,7 @@ public class CratePileCollection {
 	private final World world;
 	private final int dimension;
 	
-	private int count = BetterStorage.random.nextInt(maxCount);
+	private int count = RandomUtils.getInt(maxCount);
 	private Map<Integer, CratePileData> pileDataMap = new HashMap<Integer, CratePileData>();
 	private Set<CratePileData> dirtyPiles = new HashSet<CratePileData>();
 	
