@@ -3,6 +3,7 @@ package net.mcft.copy.betterstorage.item;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.mcft.copy.betterstorage.misc.Constants;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -61,7 +62,7 @@ public abstract class ComboRecipe implements IRecipe {
 						shapelessItems.add(craftingStack);
 					else {
 						if (recipeStack.itemID != craftingStack.itemID) return false;
-						if (recipeStack.getItemDamage() != -1 &&
+						if (recipeStack.getItemDamage() != Constants.anyDamage &&
 						    recipeStack.getItemDamage() != craftingStack.getItemDamage()) return false;
 					}
 				}
