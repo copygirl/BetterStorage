@@ -29,7 +29,7 @@ public class CratePileData implements Iterable<ItemStack> {
 	public final int id;
 	
 	private Map<ItemIdentifier, ItemStack> contents = new HashMap<ItemIdentifier, ItemStack>();
-	private ItemStack[] contentsArray;
+	private ItemStack[] contentsArray = new ItemStack[0];
 	private int numCrates = 0;
 	private int numSlots = 0;
 	private boolean destroyed = false;
