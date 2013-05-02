@@ -263,21 +263,21 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 	// ICrateStorage implementation
 	
 	@Override
-	public Object getInventoryIdentifier(ForgeDirection side) { return data; }
+	public Object getInventoryIdentifier(ForgeDirection side) { return getPileData(); }
 	@Override
-	public List<ItemStack> getContents(ForgeDirection side) { return data.getContents(); }
+	public List<ItemStack> getContents(ForgeDirection side) { return getPileData().getContents(); }
 	@Override
-	public int getItemCount(ForgeDirection side, ItemStack identifier) { return data.getItemCount(identifier); }
+	public int getItemCount(ForgeDirection side, ItemStack identifier) { return getPileData().getItemCount(identifier); }
 	@Override
-	public int spaceForItem(ForgeDirection side, ItemStack identifier) { return data.spaceForItem(identifier); }
+	public int spaceForItem(ForgeDirection side, ItemStack identifier) { return getPileData().spaceForItem(identifier); }
 	@Override
-	public ItemStack insertItems(ForgeDirection side, ItemStack stack) { return data.addItems(stack); }
+	public ItemStack insertItems(ForgeDirection side, ItemStack stack) { return getPileData().addItems(stack); }
 	@Override
-	public ItemStack extractItems(ForgeDirection side, ItemStack stack) { return data.removeItems(stack); }
+	public ItemStack extractItems(ForgeDirection side, ItemStack stack) { return getPileData().removeItems(stack); }
 	@Override
-	public void registerCrateWatcher(ICrateWatcher watcher) { data.addWatcher(watcher); }
+	public void registerCrateWatcher(ICrateWatcher watcher) { getPileData().addWatcher(watcher); }
 	@Override
-	public void unregisterCrateWatcher(ICrateWatcher watcher) { data.removeWatcher(watcher); }
+	public void unregisterCrateWatcher(ICrateWatcher watcher) { getPileData().removeWatcher(watcher); }
 	
 	// Reading from / writing to NBT
 	
