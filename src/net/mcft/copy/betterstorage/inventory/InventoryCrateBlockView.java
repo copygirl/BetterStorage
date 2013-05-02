@@ -28,7 +28,7 @@ public class InventoryCrateBlockView extends InventoryBetterStorage {
 	@Override
 	public void setInventorySlotContents(int slot, ItemStack stack) {
 		if (slot < 0 || slot >= getSizeInventory()) return;
-		ItemStack oldStack = getStackInSlot(slot - 1);
+		ItemStack oldStack = getStackInSlot(slot);
 		if (oldStack != null) data.removeItems(oldStack);
 		data.addItems(stack);
 	}
