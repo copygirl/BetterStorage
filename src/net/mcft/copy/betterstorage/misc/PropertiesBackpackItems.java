@@ -19,14 +19,18 @@ public class PropertiesBackpackItems implements IExtendedEntityProperties {
 	@Override
 	public void saveNBTData(NBTTagCompound compound) {
 		if (contents == null) return;
-		compound.setTag("BackpackItems", NbtUtils.writeItems(contents));
+		NBTTagCompound backpack = new NBTTagCompound();
+		backpack.setInteger("count", contents.length);
+		backpack.setTag("Items", NbtUtils.writeItems(contents));
+		compound.setTag("Backpack", backpack);
 	}
 	
 	@Override
 	public void loadNBTData(NBTTagCompound compound) {
-		if (!compound.hasKey("BackpackItems")) return;
-		contents = new ItemStack[compound.getInteger("BackpackItemsCount")];
-		NbtUtils.readItems(contents, compound.getTagList("BackpackItems"));
+		if (!compound.hasKey("Backpack")) return;
+		NBTTagCompound backpack = compound.getCompoundTag("Backpack");
+		contents = new ItemStack[backpack.getInteger("count")];
+		NbtUtils.readItems(contents, backpack.getTagList("Items"));
 	}
 	
 }
