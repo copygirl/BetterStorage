@@ -2,6 +2,7 @@ package net.mcft.copy.betterstorage.block;
 
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.inventory.InventoryTileEntity;
+import net.mcft.copy.betterstorage.utils.PlayerUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -97,6 +98,13 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 	
 	@Override
 	public final String getName() { return (getConnectableName() + (isConnected() ? "Large" : "")); }
+	
+	@Override
+	public void openGui(EntityPlayer player) {
+		if (!canPlayerUseContainer(player)) return;
+		PlayerUtils.openGui(player, getName(), getColumns(), (isConnected() ? 2 : 1) * getRows(),
+		                    getContainerTitle(), createContainer(player));
+	}
 	
 	@Override
 	public InventoryTileEntity getPlayerInventory() {
