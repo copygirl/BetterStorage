@@ -1,12 +1,13 @@
 package net.mcft.copy.betterstorage.item;
 
-import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.api.IKey;
-import net.mcft.copy.betterstorage.misc.Constants;
+import net.mcft.copy.betterstorage.container.ContainerKeyring;
+import net.mcft.copy.betterstorage.utils.PlayerUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
@@ -38,8 +39,10 @@ public class ItemKeyring extends ItemBetterStorage implements IKey {
 	@Override
 	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
 		if (world.isRemote || !player.isSneaking()) return stack;
-		player.openGui(BetterStorage.instance, Constants.keyringGuiId,
-		               player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
+		String title = (stack.hasDisplayName() ? stack.getDisplayName() : "");
+		Container container = new ContainerKeyring(player, title);
+		int index = player.inventory.currentItem; // protected slot
+		PlayerUtils.openGui(player, "container.keyring", index, 1, title, container);
 		return stack;
 	}
 	

@@ -39,8 +39,11 @@ public class GuiBetterStorage extends GuiContainer {
 	public GuiBetterStorage(EntityPlayer player, int columns, int rows, IInventory inventory) {
 		this(new ContainerBetterStorage(player, inventory, columns, rows));
 	}
+	public GuiBetterStorage(EntityPlayer player, int columns, int rows, String name, boolean localized) {
+		this(player, columns, rows, new InventoryBasic(name, localized, columns * rows));
+	}
 	public GuiBetterStorage(EntityPlayer player, int columns, int rows, String name) {
-		this(player, columns, rows, new InventoryBasic(name, false, columns * rows));
+		this(player, columns, rows, name, false);
 	}
 	
 	protected String getTexture() {

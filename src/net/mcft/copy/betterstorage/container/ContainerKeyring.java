@@ -9,8 +9,19 @@ import net.minecraft.item.ItemStack;
 
 public class ContainerKeyring extends ContainerBetterStorage {
 	
-	public ContainerKeyring(EntityPlayer player) {
-		super(player, new InventoryKeyring(player), 9, 1);
+	private static int protectedIndex = -1;
+	
+	public ContainerKeyring(EntityPlayer player, String title) {
+		super(player, new InventoryKeyring(player, title), 9, 1);
+	}
+	
+	public static void setProtectedIndex(int index) {
+		protectedIndex = index;
+	}
+	private int getProtectedIndex() {
+		int index = protectedIndex;
+		protectedIndex = -1;
+		return ((index >= 0) ? index : player.inventory.currentItem);
 	}
 	
 	@Override
@@ -34,7 +45,7 @@ public class ContainerKeyring extends ContainerBetterStorage {
 	
 	private void addSlot(IInventory inventory, int slotId, int x, int y) {
 		Slot slot;
-		if (slotId == player.inventory.currentItem)
+		if (slotId == getProtectedIndex())
 			slot = new SlotProtected(inventory, slotId, x, y);
 		else slot = new Slot(inventory, slotId, x, y);
 		addSlotToContainer(slot);

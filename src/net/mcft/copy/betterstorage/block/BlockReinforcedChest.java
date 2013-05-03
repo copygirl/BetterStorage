@@ -14,7 +14,6 @@ import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -103,10 +102,18 @@ public class BlockReinforcedChest extends BlockContainer {
 	}
 	
 	@Override
+	public TileEntity createNewTileEntity(World world) {
+		return new TileEntityReinforcedChest();
+	}
+	
+	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving player, ItemStack stack) {
 		TileEntityReinforcedChest chest = WorldUtils.get(world, x, y, z, TileEntityReinforcedChest.class);
 		chest.orientation = DirectionUtils.getOrientation(player).getOpposite();
 		chest.checkForConnections();
+		
+		if (stack.hasDisplayName())
+			WorldUtils.get(world, x, y, z, TileEntityContainer.class).setCustomTitle(stack.getDisplayName());
 	}
 	
 	@Override
@@ -120,16 +127,8 @@ public class BlockReinforcedChest extends BlockContainer {
 	}
 	
 	@Override
-	public TileEntity createNewTileEntity(World world) {
-		return new TileEntityReinforcedChest();
-	}
-	
-	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {
-		if (world.isRemote) {
-			Minecraft.getMinecraft().playerController.resetBlockRemoving();
-			return true;
-		}
+		if (world.isRemote) return true;
 		
 		TileEntityReinforcedChest chest = WorldUtils.get(world, x, y, z, TileEntityReinforcedChest.class);
 		ItemStack holding = player.getHeldItem();

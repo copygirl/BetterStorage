@@ -4,14 +4,15 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.StatCollector;
 
 @SideOnly(Side.CLIENT)
 public class GuiCrate extends GuiBetterStorage {
 	
 	private int fullness = 0;
 	
-	public GuiCrate(EntityPlayer player, int rows) {
-		super(player, 9, rows, "container.crate");
+	public GuiCrate(EntityPlayer player, int rows, String title, boolean localized) {
+		super(player, 9, rows, (localized ? title : StatCollector.translateToLocal(title)));
 	}
 	
 	@Override

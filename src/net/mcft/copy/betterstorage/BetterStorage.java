@@ -19,7 +19,7 @@ import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.misc.CreativeTabBetterStorage;
 import net.mcft.copy.betterstorage.misc.Registry;
 import net.mcft.copy.betterstorage.misc.handlers.CraftingHandler;
-import net.mcft.copy.betterstorage.misc.handlers.GuiHandler;
+import net.mcft.copy.betterstorage.misc.handlers.PacketHandler;
 import net.mcft.copy.betterstorage.proxy.CommonProxy;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
@@ -36,13 +36,13 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
-import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 @Mod(modid="BetterStorage", version="@VERSION@", useMetadata=true,
      dependencies="after:Thaumcraft")
-@NetworkMod(clientSideRequired=true, serverSideRequired=false)
+@NetworkMod(clientSideRequired=true, serverSideRequired=false,
+            channels={"BetterStorage"}, packetHandler=PacketHandler.class)
 public class BetterStorage {
 	
 	@Instance("BetterStorage")
@@ -89,7 +89,6 @@ public class BetterStorage {
 		addRecipes();
 		addLocalizations();
 		GameRegistry.registerCraftingHandler(new CraftingHandler());
-		NetworkRegistry.instance().registerGuiHandler(this, new GuiHandler());
 		proxy.init();
 		
 	}

@@ -1,12 +1,9 @@
 package net.mcft.copy.betterstorage.block;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.mcft.copy.betterstorage.BetterStorage;
-import net.mcft.copy.betterstorage.client.gui.GuiBetterStorage;
 import net.mcft.copy.betterstorage.container.ContainerBetterStorage;
 import net.mcft.copy.betterstorage.inventory.InventoryTileEntity;
 import net.mcft.copy.betterstorage.utils.NbtUtils;
+import net.mcft.copy.betterstorage.utils.PlayerUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -77,26 +74,16 @@ public abstract class TileEntityContainer extends TileEntity {
 	
 	// Container / GUI
 	
-	/** Gets the GUI id for this container. */
-	public int getGuiId() { return 0; }
-	
 	/** Opens a GUI of the container for the player. */
 	public void openGui(EntityPlayer player) {
 		if (!canPlayerUseContainer(player)) return;
-		player.openGui(BetterStorage.instance, getGuiId(), worldObj, xCoord, yCoord, zCoord);
+		PlayerUtils.openGui(player, getName(), getColumns(), getRows(),
+		                    getContainerTitle(), createContainer(player));
 	}
-	
-	protected int getGuiColumns(int guiId) { return getColumns(); }
-	protected int getGuiRows(int guiId) { return getRows(); }
 	
 	/** Creates and returns a Container for this container. */
-	public ContainerBetterStorage createContainer(EntityPlayer player, int id) {
+	public ContainerBetterStorage createContainer(EntityPlayer player) {
 		return new ContainerBetterStorage(player, getPlayerInventory());
-	}
-	/** Creates and returns a GUI for this container. */
-	@SideOnly(Side.CLIENT)
-	public GuiBetterStorage createGui(EntityPlayer player, int id) {
-		return new GuiBetterStorage(player, getGuiColumns(id), getGuiRows(id), getContainerTitle());
 	}
 	
 	// Players using synchronization

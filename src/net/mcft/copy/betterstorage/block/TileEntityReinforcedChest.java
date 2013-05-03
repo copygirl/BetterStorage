@@ -57,12 +57,6 @@ public class TileEntityReinforcedChest extends TileEntityConnectable implements 
 
 	@Override
 	public int getColumns() { return Config.reinforcedChestColumns; }
-	@Override
-	public int getGuiId() { return (super.getGuiId() + getColumns() - 9); }
-	@Override
-	protected int getGuiColumns(int guiId) { return (guiId & ~1) + 9; }
-	@Override
-	protected int getGuiRows(int guiId) { return super.getGuiRows(guiId & 1); }
 	
 	// ILockable implementation
 	

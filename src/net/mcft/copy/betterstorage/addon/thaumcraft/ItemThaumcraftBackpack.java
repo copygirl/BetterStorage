@@ -10,7 +10,6 @@ import thaumcraft.api.aura.AuraNode;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
-import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.RandomUtils;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;

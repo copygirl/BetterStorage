@@ -13,7 +13,7 @@ public class InventoryItem extends InventoryWrapper {
 	
 	protected final ItemStack stack;
 	
-	public InventoryItem(String title, EntityPlayer player, int size) {
+	public InventoryItem(EntityPlayer player, int size, String title, boolean localized) {
 		super(StackUtils.getStackContents(player.getCurrentEquippedItem(), size));
 		this.title = title;
 		this.player = player;

@@ -10,9 +10,10 @@ import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -61,13 +62,9 @@ public class BlockBackpack extends BlockContainer {
 	}
 	
 	@Override
-	public void breakBlock(World world, int x, int y, int z, int id, int meta) {
-		TileEntityBackpack backpack = WorldUtils.get(world, x, y, z, TileEntityBackpack.class);
-		super.breakBlock(world, x, y, z, id, meta);
-		if (backpack != null && !backpack.equipped) {
-			WorldUtils.dropStackFromBlock(world, x, y, z, backpack.stack);
-			backpack.dropContents();
-		}
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving entity, ItemStack stack) {
+		if (stack.hasDisplayName())
+			WorldUtils.get(world, x, y, z, TileEntityContainer.class).setCustomTitle(stack.getDisplayName());
 	}
 	
 	@Override
@@ -80,12 +77,19 @@ public class BlockBackpack extends BlockContainer {
 	}
 	
 	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
-		if (world.isRemote) {
-			Minecraft.getMinecraft().playerController.resetBlockRemoving();
-			return true;
+	public void breakBlock(World world, int x, int y, int z, int id, int meta) {
+		TileEntityBackpack backpack = WorldUtils.get(world, x, y, z, TileEntityBackpack.class);
+		super.breakBlock(world, x, y, z, id, meta);
+		if (backpack != null && !backpack.equipped) {
+			WorldUtils.dropStackFromBlock(world, x, y, z, backpack.stack);
+			backpack.dropContents();
 		}
-		WorldUtils.get(world, x, y, z, TileEntityBackpack.class).openGui(player);
+	}
+	
+	@Override
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
+		if (!world.isRemote)
+			WorldUtils.get(world, x, y, z, TileEntityBackpack.class).openGui(player);
 		return true;
 	}
 	

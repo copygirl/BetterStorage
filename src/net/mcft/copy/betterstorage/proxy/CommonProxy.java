@@ -7,18 +7,25 @@ import net.mcft.copy.betterstorage.block.TileEntityLocker;
 import net.mcft.copy.betterstorage.block.TileEntityReinforcedChest;
 import net.mcft.copy.betterstorage.block.crate.CratePileCollection;
 import net.mcft.copy.betterstorage.block.crate.TileEntityCrate;
+import net.mcft.copy.betterstorage.container.ContainerBetterStorage;
+import net.mcft.copy.betterstorage.inventory.InventoryBackpackEquipped;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.misc.PropertiesBackpackItems;
 import net.mcft.copy.betterstorage.utils.EntityUtils;
+import net.mcft.copy.betterstorage.utils.PlayerUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.Event.Result;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.player.EntityInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import net.minecraftforge.event.world.WorldEvent.Save;
@@ -68,6 +75,42 @@ public class CommonProxy {
 		if (backpack.stackSize > 0) return;
 		player.swingItem();
 		event.useBlock = Result.DENY;
+		
+	}
+	
+	@ForgeSubscribe
+	public void onEntityInteract(EntityInteractEvent event) {
+		
+		// Right clicking the back of another player will
+		// open the GUI for that backpack.
+		
+		if (event.entity.worldObj.isRemote) return;
+		EntityPlayerMP player = (EntityPlayerMP)event.entity;
+		if (!(event.target instanceof EntityLiving)) return;
+		EntityLiving target = (EntityLiving)event.target;
+		
+		ItemStack backpack = ItemBackpack.getBackpack(target);
+		if (backpack == null) return;
+		ItemBackpack backpackType = (ItemBackpack)backpack.getItem();
+		
+		int columns = backpackType.getColumns();
+		int rows = backpackType.getRows();
+		
+		PropertiesBackpackItems backpackItems =
+				EntityUtils.getProperties(target, PropertiesBackpackItems.class);
+		if (backpackItems.contents == null)
+			backpackItems.contents = new ItemStack[columns * rows];
+		
+		// TODO: Make this cleaner by turning it into a utility function.
+		
+		IInventory inventory = new InventoryBackpackEquipped(player, target);
+		if (!inventory.isUseableByPlayer(player)) return;
+		Container container = new ContainerBetterStorage(player, inventory, columns, rows);
+		
+		String title = (backpack.hasDisplayName() ? backpack.getDisplayName() : "");
+		PlayerUtils.openGui(player, "container.backpack", columns, rows, title, container);
+		
+		player.swingItem();
 		
 	}
 	

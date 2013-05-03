@@ -58,15 +58,6 @@ public class TileEntityBackpack extends TileEntityContainer {
 	public String getName() { return "container.backpack"; }
 	@Override
 	public int getRows() { return Config.backpackRows; }
-	@Override
-	public int getGuiId() { return getRows() - 1; }
-	@Override
-	protected int getGuiRows(int guiId) { return guiId + 1; }
-	
-	@Override
-	public String getCustomTitle() {
-		return ((stack != null) ? StackUtils.get(stack, (String)null, "display", "Name") : null);
-	}
 	
 	// Update entity
 	

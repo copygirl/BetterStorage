@@ -8,7 +8,6 @@ import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
@@ -51,6 +50,11 @@ public class BlockLocker extends BlockContainer {
 	public int getRenderType() { return ClientProxy.lockerRenderId; }
 	
 	@Override
+	public TileEntity createNewTileEntity(World world) {
+		return new TileEntityLocker();
+	}
+	
+	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving player, ItemStack stack) {
 		TileEntityLocker locker = WorldUtils.get(world, x, y, z, TileEntityLocker.class);
 		locker.orientation = DirectionUtils.getOrientation(player).getOpposite();
@@ -58,6 +62,9 @@ public class BlockLocker extends BlockContainer {
 		double yaw = ((player.rotationYaw % 360) + 360) % 360;
 		locker.mirror = (DirectionUtils.angleDifference(angle, yaw) > 0);
 		locker.checkForConnections();
+		
+		if (stack.hasDisplayName())
+			locker.setCustomTitle(stack.getDisplayName());
 	}
 	
 	@Override
@@ -71,16 +78,8 @@ public class BlockLocker extends BlockContainer {
 	}
 	
 	@Override
-	public TileEntity createNewTileEntity(World world) {
-		return new TileEntityLocker();
-	}
-	
-	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
-		if (world.isRemote) {
-			Minecraft.getMinecraft().playerController.resetBlockRemoving();
-			return true;
-		}
+		if (world.isRemote) return true;
 		
 		TileEntityLocker locker = WorldUtils.get(world, x, y, z, TileEntityLocker.class);
 		ForgeDirection sideDirection = DirectionUtils.getDirectionFromSide(side);

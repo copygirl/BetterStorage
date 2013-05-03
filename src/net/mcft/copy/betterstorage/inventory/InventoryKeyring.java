@@ -5,8 +5,8 @@ import net.minecraft.item.ItemStack;
 
 public class InventoryKeyring extends InventoryItem {
 	
-	public InventoryKeyring(EntityPlayer player) {
-		super("container.keyring", player, 9);
+	public InventoryKeyring(EntityPlayer player, String title) {
+		super(player, 9, (title.isEmpty() ? "container.keyring" : title), !title.isEmpty());
 	}
 	
 	@Override

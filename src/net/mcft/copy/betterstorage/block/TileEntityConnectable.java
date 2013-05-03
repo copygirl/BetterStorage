@@ -107,11 +107,6 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 		} else return super.getPlayerInventory();
 	}
 	
-	@Override
-	public int getGuiId() { return (isConnected() ? 1 : 0); }
-	@Override
-	protected int getGuiRows(int guiId) { return (guiId + 1) * getRows(); }
-	
 	// Update entity
 	
 	@Override

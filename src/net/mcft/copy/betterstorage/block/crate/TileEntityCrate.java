@@ -4,17 +4,14 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.api.ICrateStorage;
 import net.mcft.copy.betterstorage.api.ICrateWatcher;
 import net.mcft.copy.betterstorage.block.TileEntityContainer;
-import net.mcft.copy.betterstorage.client.gui.GuiBetterStorage;
-import net.mcft.copy.betterstorage.client.gui.GuiCrate;
 import net.mcft.copy.betterstorage.container.ContainerBetterStorage;
 import net.mcft.copy.betterstorage.container.ContainerCrate;
 import net.mcft.copy.betterstorage.inventory.InventoryCratePlayerView;
+import net.mcft.copy.betterstorage.utils.PlayerUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -204,18 +201,15 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 	public String getName() { return "container.crate"; }
 	
 	@Override
-	public int getGuiId() { return Math.min(getPileData().getNumCrates(), 3) - 1; }
-	@Override
-	protected int getGuiRows(int guiId) { return (guiId + 1) * 2; }
+	public void openGui(EntityPlayer player) {
+		if (!canPlayerUseContainer(player)) return;
+		PlayerUtils.openGui(player, getName(), getColumns(), 2 * Math.min(data.getNumCrates(), 3),
+		                    getContainerTitle(), createContainer(player));
+	}
 	
 	@Override
-	public ContainerBetterStorage createContainer(EntityPlayer player, int id) {
+	public ContainerBetterStorage createContainer(EntityPlayer player) {
 		return new ContainerCrate(player, new InventoryCratePlayerView(this));
-	}
-	@Override
-	@SideOnly(Side.CLIENT)
-	public GuiBetterStorage createGui(EntityPlayer player, int id) {
-		return new GuiCrate(player, getGuiRows(id));
 	}
 	
 	// IInventory implementation
