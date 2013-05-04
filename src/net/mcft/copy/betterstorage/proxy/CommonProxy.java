@@ -13,6 +13,7 @@ import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.misc.PropertiesBackpackItems;
 import net.mcft.copy.betterstorage.utils.EntityUtils;
 import net.mcft.copy.betterstorage.utils.PlayerUtils;
+import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
@@ -107,7 +108,7 @@ public class CommonProxy {
 		if (!inventory.isUseableByPlayer(player)) return;
 		Container container = new ContainerBetterStorage(player, inventory, columns, rows);
 		
-		String title = (backpack.hasDisplayName() ? backpack.getDisplayName() : "");
+		String title = StackUtils.get(backpack, "", "display", "Name");
 		PlayerUtils.openGui(player, "container.backpack", columns, rows, title, container);
 		
 		player.swingItem();

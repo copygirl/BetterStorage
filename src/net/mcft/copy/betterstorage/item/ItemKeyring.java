@@ -39,7 +39,7 @@ public class ItemKeyring extends ItemBetterStorage implements IKey {
 	@Override
 	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
 		if (world.isRemote || !player.isSneaking()) return stack;
-		String title = (stack.hasDisplayName() ? stack.getDisplayName() : "");
+		String title = StackUtils.get(stack, "", "display", "Name");
 		Container container = new ContainerKeyring(player, title);
 		int index = player.inventory.currentItem; // protected slot
 		PlayerUtils.openGui(player, "container.keyring", index, 1, title, container);

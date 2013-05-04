@@ -103,7 +103,7 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 	public void openGui(EntityPlayer player) {
 		if (!canPlayerUseContainer(player)) return;
 		PlayerUtils.openGui(player, getName(), getColumns(), (isConnected() ? 2 : 1) * getRows(),
-		                    getContainerTitle(), createContainer(player));
+		                    getCustomTitle(), createContainer(player));
 	}
 	
 	@Override

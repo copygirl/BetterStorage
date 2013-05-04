@@ -78,7 +78,7 @@ public abstract class TileEntityContainer extends TileEntity {
 	public void openGui(EntityPlayer player) {
 		if (!canPlayerUseContainer(player)) return;
 		PlayerUtils.openGui(player, getName(), getColumns(), getRows(),
-		                    getContainerTitle(), createContainer(player));
+		                    getCustomTitle(), createContainer(player));
 	}
 	
 	/** Creates and returns a Container for this container. */
