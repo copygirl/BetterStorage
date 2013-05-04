@@ -12,6 +12,7 @@ import net.mcft.copy.betterstorage.inventory.InventoryBackpackEquipped;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.misc.PropertiesBackpackItems;
 import net.mcft.copy.betterstorage.utils.EntityUtils;
+import net.mcft.copy.betterstorage.utils.NbtUtils;
 import net.mcft.copy.betterstorage.utils.PlayerUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
@@ -21,6 +22,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.Event.Result;
 import net.minecraftforge.event.ForgeSubscribe;
@@ -32,13 +34,15 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import net.minecraftforge.event.world.WorldEvent.Save;
 import net.minecraftforge.event.world.WorldEvent.Unload;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.IPlayerTracker;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 
-public class CommonProxy {
+public class CommonProxy implements IPlayerTracker {
 	
 	public void init() {
 		MinecraftForge.EVENT_BUS.register(this);
+		GameRegistry.registerPlayerTracker(this);
 		registerTileEntites();
 	}
 	
@@ -131,10 +135,66 @@ public class CommonProxy {
 		if (entity.worldObj.isRemote) return;
 		ItemStack backpack = ItemBackpack.getBackpack(entity);
 		if (backpack == null) return;
-		PropertiesBackpackItems backpackItems = ItemBackpack.getBackpackItems(entity); 
-		for (ItemStack stack : backpackItems.contents)
-			WorldUtils.dropStackFromEntity(entity, stack);
-		ItemBackpack.removeBackpack(entity, false);
+		PropertiesBackpackItems backpackItems = ItemBackpack.getBackpackItems(entity);
+		
+		boolean keepInventory = entity.worldObj.getGameRules().getGameRuleBooleanValue("keepInventory");
+		if ((entity instanceof EntityPlayer) && keepInventory) {
+			
+			// If keep inventory is on, instead temporarily save the contents
+			// to the persistent NBT tag and get them back when the player respawns.
+			
+			EntityPlayer player = (EntityPlayer)entity;
+			NBTTagCompound compound = player.getEntityData();
+			NBTTagCompound persistent;
+			if (!compound.hasKey(EntityPlayer.PERSISTED_NBT_TAG)) {
+				persistent = new NBTTagCompound();
+				compound.setTag(EntityPlayer.PERSISTED_NBT_TAG, persistent);
+			} else persistent = compound.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG);;
+			
+			NBTTagCompound backpackCompound = new NBTTagCompound();
+			backpackCompound.setInteger("count", backpackItems.contents.length);
+			backpackCompound.setTag("Items", NbtUtils.writeItems(backpackItems.contents));
+			persistent.setTag("Backpack", backpackCompound);
+			
+		} else {
+			
+			for (ItemStack stack : backpackItems.contents)
+				WorldUtils.dropStackFromEntity(entity, stack);
+			ItemBackpack.removeBackpack(entity, false);
+			
+		}
+		
+	}
+	
+	// IPlayerTracker implementation
+	
+	@Override
+	public void onPlayerLogin(EntityPlayer player) {  }
+	@Override
+	public void onPlayerLogout(EntityPlayer player) {  }
+	@Override
+	public void onPlayerChangedDimension(EntityPlayer player) {  }
+	@Override
+	public void onPlayerRespawn(EntityPlayer player) {
+		
+		// If the player dies when when keepInventory is on and respawns,
+		// retrieve the backpack items from the eir persistent NBT tag.
+		
+		NBTTagCompound compound = player.getEntityData();
+		if (!compound.hasKey(EntityPlayer.PERSISTED_NBT_TAG)) return;
+		NBTTagCompound persistent = compound.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG);
+		if (!persistent.hasKey("Backpack")) return;
+		NBTTagCompound backpack = persistent.getCompoundTag("Backpack");
+		
+		int size = backpack.getInteger("count");
+		ItemStack[] contents = new ItemStack[size];
+		NbtUtils.readItems(contents, backpack.getTagList("Items"));
+		
+		ItemBackpack.getBackpackItems(player).contents = contents;
+		
+		persistent.removeTag("Backpack");
+		if (persistent.hasNoTags())
+			compound.removeTag(EntityPlayer.PERSISTED_NBT_TAG);
 		
 	}
 	
