@@ -55,7 +55,7 @@ public class TileEntityArmorStandRenderer extends TileEntitySpecialRenderer {
 				@Override public boolean canCommandSenderUseCommand(int var1, String var2) { return false; }
 			};
 			// Actually makes the player invisible (same as potion, armor still visible).
-			playerDummy.setHasActivePotion(true);
+			playerDummy.setInvisible(true);
 		}
 		playerDummy.inventory.armorInventory = locker.armor;
 		playerDummy.worldObj = locker.worldObj;

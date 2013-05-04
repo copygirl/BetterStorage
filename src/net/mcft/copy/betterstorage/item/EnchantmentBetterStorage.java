@@ -100,7 +100,7 @@ public class EnchantmentBetterStorage extends Enchantment {
 	}
 	
 	@Override
-	public boolean func_92089_a(ItemStack stack) {
+	public boolean canApply(ItemStack stack) {
 		return canApplyAtEnchantingTable(stack);
 	}
 	
