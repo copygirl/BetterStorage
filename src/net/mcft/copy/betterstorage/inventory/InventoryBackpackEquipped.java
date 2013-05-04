@@ -18,10 +18,12 @@ public class InventoryBackpackEquipped extends InventoryWrapper {
 	
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) {
-		if (!carrier.isEntityAlive() || player.getDistanceToEntity(carrier) > 1.5) return false;
-		double direction = DirectionUtils.angleBetween(carrier, player);
-		direction = DirectionUtils.angleDifference(carrier.renderYawOffset + 90.0F, direction);
-		return (Math.abs(direction) > 135);
+		boolean carriesBackpack = (ItemBackpack.getBackpackItems(carrier).contents == allContents[0]); 
+		double distance = player.getDistanceToEntity(carrier);
+		double direction = DirectionUtils.angleDifference(carrier.renderYawOffset + 90.0F,
+		                                                  DirectionUtils.angleBetween(carrier, player));
+		return (carrier.isEntityAlive() && carriesBackpack &&
+		        (distance < 1.5) && (Math.abs(direction) > 135));
 	}
 	
 }
