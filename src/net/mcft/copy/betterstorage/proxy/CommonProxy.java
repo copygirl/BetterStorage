@@ -31,7 +31,9 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import net.minecraftforge.event.world.WorldEvent.Save;
 import net.minecraftforge.event.world.WorldEvent.Unload;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
 
 public class CommonProxy {
 	
@@ -102,8 +104,6 @@ public class CommonProxy {
 		if (backpackItems.contents == null)
 			backpackItems.contents = new ItemStack[columns * rows];
 		
-		// TODO: Make this cleaner by turning it into a utility function.
-		
 		IInventory inventory = new InventoryBackpackEquipped(player, target);
 		if (!inventory.isUseableByPlayer(player)) return;
 		Container container = new ContainerBetterStorage(player, inventory, columns, rows);
@@ -117,8 +117,9 @@ public class CommonProxy {
 	
 	@ForgeSubscribe
 	public void onEntityConstruction(EntityConstructing event) {
-		if (!event.entity.worldObj.isRemote && (event.entity instanceof EntityLiving))
-			EntityUtils.createProperties(event.entity, PropertiesBackpackItems.class);
+		if ((FMLCommonHandler.instance().getEffectiveSide() != Side.SERVER) ||
+		    !(event.entity instanceof EntityLiving)) return;
+		EntityUtils.createProperties(event.entity, PropertiesBackpackItems.class);
 	}
 	
 	@ForgeSubscribe
