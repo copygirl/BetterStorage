@@ -3,6 +3,9 @@ package net.mcft.copy.betterstorage.utils;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 import net.mcft.copy.betterstorage.client.gui.GuiBetterStorage;
 import net.mcft.copy.betterstorage.client.gui.GuiCrate;
 import net.mcft.copy.betterstorage.container.ContainerKeyring;
@@ -46,6 +49,7 @@ public class PlayerUtils {
 		
 	}
 	
+	@SideOnly(Side.CLIENT)
 	public static void openGui(EntityPlayer player, String name, int columns, int rows, String title) {
 		
 		GuiScreen gui = createGuiFromName(player, name, columns, rows, title);
@@ -53,6 +57,7 @@ public class PlayerUtils {
 		
 	}
 	
+	@SideOnly(Side.CLIENT)
 	private static GuiScreen createGuiFromName(EntityPlayer player, String name, int columns, int rows, String title) {
 		
 		boolean localized = !title.isEmpty();
