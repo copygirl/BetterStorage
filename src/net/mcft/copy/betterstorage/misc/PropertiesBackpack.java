@@ -7,11 +7,16 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
 
-public class PropertiesBackpackItems implements IExtendedEntityProperties {
+public class PropertiesBackpack implements IExtendedEntityProperties {
 	
-	public static final String identifier = "BetterStorage.BackpackItems";
+	public static final String identifier = "BetterStorage.Backpack";
 	
 	public ItemStack[] contents = null;
+	
+	public int playersUsing = 0;
+	
+	public float lidAngle = 0;
+	public float prevLidAngle = 0;
 	
 	@Override
 	public void init(Entity entity, World world) {  }

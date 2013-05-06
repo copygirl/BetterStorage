@@ -9,7 +9,7 @@ import net.mcft.copy.betterstorage.block.TileEntityBackpack;
 import net.mcft.copy.betterstorage.client.model.ModelBackpackArmor;
 import net.mcft.copy.betterstorage.container.SlotArmorBackpack;
 import net.mcft.copy.betterstorage.misc.Constants;
-import net.mcft.copy.betterstorage.misc.PropertiesBackpackItems;
+import net.mcft.copy.betterstorage.misc.PropertiesBackpack;
 import net.mcft.copy.betterstorage.utils.DirectionUtils;
 import net.mcft.copy.betterstorage.utils.EntityUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
@@ -84,8 +84,10 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 	
 	@Override
 	public void onArmorTickUpdate(World world, EntityPlayer player, ItemStack itemStack) {
+		
 		// Replace the armor slot with a custom one, so the player
 		// can't unequip the backpack when there's items inside.
+		
 		int index = 5 + armorType;
 		Slot slotBefore = player.inventoryContainer.getSlot(index);
 		if (slotBefore instanceof SlotArmorBackpack) return;
@@ -93,6 +95,7 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 		SlotArmorBackpack slot = new SlotArmorBackpack(player.inventory, slotIndex, 8, 8 + armorType * 18);
 		slot.slotNumber = index;
 		player.inventoryContainer.inventorySlots.set(index, slot);
+		
 	}
 	
 	@Override
@@ -186,7 +189,7 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 			DamageSource source, int damage, int slot) {
 		stack.damageItem(damage, entity);
 		if (stack.stackSize > 0) return;
-		for (ItemStack s : ItemBackpack.getBackpackItems(entity).contents)
+		for (ItemStack s : ItemBackpack.getBackpackData(entity).contents)
 			WorldUtils.dropStackFromEntity(entity, s);
 		entity.renderBrokenItemStack(stack);
 	}
@@ -210,18 +213,31 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 		else StackUtils.remove(backpack, "hasItems");
 		entity.setCurrentItemOrArmor(3, backpack);
 		if (!entity.worldObj.isRemote)
-			getBackpackItems(entity).contents = contents;
+			getBackpackData(entity).contents = contents;
 	}
-	public static void removeBackpack(EntityLiving entity, boolean unequip) {
-		ItemStack backpack = entity.getCurrentArmor(2);
-		StackUtils.remove(backpack, "hasItems");
-		if (unequip) entity.setCurrentItemOrArmor(3, null);
-		if (!entity.worldObj.isRemote)
-			getBackpackItems(entity).contents = null;
+	public static void removeBackpack(EntityLiving entity) {
+		removeBackpackData(entity);
+		entity.setCurrentItemOrArmor(3, null);
 	}
 	
-	public static PropertiesBackpackItems getBackpackItems(EntityLiving entity) {
-		return EntityUtils.getProperties(entity, PropertiesBackpackItems.class);
+	public static PropertiesBackpack getBackpackData(EntityLiving entity) {
+		return EntityUtils.getOrCreateProperties(entity, PropertiesBackpack.class);
+	}
+	public static void removeBackpackData(EntityLiving entity) {
+		ItemStack backpack = entity.getCurrentArmor(2);
+		StackUtils.remove(backpack, "hasItems");
+		if (!entity.worldObj.isRemote)
+			getBackpackData(entity).contents = null;
+	}
+	
+	public static void initBackpackOpen(EntityLiving entity) {
+		entity.getDataWatcher().addObject(Constants.isBackpackOpen, (byte)0);
+	}
+	public static void setBackpackOpen(EntityLiving entity, boolean isOpen) {
+		entity.getDataWatcher().updateObject(Constants.isBackpackOpen, (byte)(isOpen ? 1 : 0));
+	}
+	public static boolean isBackpackOpen(EntityLiving entity) {
+		return (entity.getDataWatcher().getWatchableObjectByte(Constants.isBackpackOpen) != 0);
 	}
 	
 }

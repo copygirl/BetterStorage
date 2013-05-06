@@ -11,19 +11,30 @@ public class InventoryBackpackEquipped extends InventoryWrapper {
 	public final EntityLiving carrier;
 	
 	public InventoryBackpackEquipped(EntityPlayer player, EntityLiving carrier) {
-		super(ItemBackpack.getBackpackItems(carrier).contents);
+		super(ItemBackpack.getBackpackData(carrier).contents);
 		this.player = player;
 		this.carrier = carrier;
 	}
 	
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) {
-		boolean carriesBackpack = (ItemBackpack.getBackpackItems(carrier).contents == allContents[0]); 
+		boolean carriesBackpack = (ItemBackpack.getBackpackData(carrier).contents == allContents[0]); 
 		double distance = player.getDistanceToEntity(carrier);
 		double direction = DirectionUtils.angleDifference(carrier.renderYawOffset + 90.0F,
 		                                                  DirectionUtils.angleBetween(carrier, player));
 		return (carrier.isEntityAlive() && carriesBackpack &&
 		        (distance < 1.5) && (Math.abs(direction) > 135));
+	}
+	
+	@Override
+	public void openChest() {
+		int playersUsing = ++ItemBackpack.getBackpackData(carrier).playersUsing;
+		ItemBackpack.setBackpackOpen(carrier, (playersUsing > 0));
+	}
+	@Override
+	public void closeChest() {
+		int playersUsing = --ItemBackpack.getBackpackData(carrier).playersUsing;
+		ItemBackpack.setBackpackOpen(carrier, (playersUsing > 0));
 	}
 	
 }

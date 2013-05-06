@@ -14,6 +14,6 @@ public class Constants {
 	public static final String armorStandTexture = gfxbase + "models/armorstand.png";
 	public static final String backpackTexture = gfxbase + "models/backpack.png";
 	
-	public static final int keyringGuiId = 100;
+	public static final int isBackpackOpen = 27;
 	
 }

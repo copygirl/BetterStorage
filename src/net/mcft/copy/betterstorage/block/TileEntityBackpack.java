@@ -36,20 +36,20 @@ public class TileEntityBackpack extends TileEntityContainer {
 	public void unequip(EntityPlayer player) {
 		StackUtils.remove(stack, "hasItems");
 		if (!worldObj.isRemote) {
-			ItemStack[] backpackItems = ItemBackpack.getBackpackItems(player).contents;
+			ItemStack[] backpackData = ItemBackpack.getBackpackData(player).contents;
 			
 			// For compatibility with previous versions:
 			// If the stack still has the items tag,
 			// use its items instead and remove the tag.
 			if (StackUtils.has(stack, "Items")) {
-				backpackItems = StackUtils.getStackContents(stack, contents.length);
+				backpackData = StackUtils.getStackContents(stack, contents.length);
 				StackUtils.remove(stack, "Items");
 			}
 			
-			if (backpackItems != null)
-				System.arraycopy(backpackItems, 0, contents, 0, backpackItems.length);
+			if (backpackData != null)
+				System.arraycopy(backpackData, 0, contents, 0, backpackData.length);
 		}
-		ItemBackpack.removeBackpack(player, true);
+		ItemBackpack.removeBackpack(player);
 	}
 	
 	// TileEntityContainer stuff
@@ -75,10 +75,10 @@ public class TileEntityBackpack extends TileEntityContainer {
 		String sound = Block.soundSnowFootstep.getStepSound();
 		// Play sound when opening
 		if (lidAngle > 0.0F && prevLidAngle <= 0.0F)
-			worldObj.playSoundEffect(x, y, z, sound, 0.6F, 0.5F);
+			worldObj.playSoundEffect(x, y, z, sound, 1.0F, 0.5F);
 		// Play sound when closing
 		if (lidAngle < 0.2F && prevLidAngle >= 0.2F)
-			worldObj.playSoundEffect(x, y, z, sound, 0.4F, 0.3F);
+			worldObj.playSoundEffect(x, y, z, sound, 0.8F, 0.3F);
 	}
 	
 	// Tile entity synchronization

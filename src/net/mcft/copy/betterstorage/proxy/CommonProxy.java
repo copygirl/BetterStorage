@@ -10,12 +10,12 @@ import net.mcft.copy.betterstorage.block.crate.TileEntityCrate;
 import net.mcft.copy.betterstorage.container.ContainerBetterStorage;
 import net.mcft.copy.betterstorage.inventory.InventoryBackpackEquipped;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
-import net.mcft.copy.betterstorage.misc.PropertiesBackpackItems;
-import net.mcft.copy.betterstorage.utils.EntityUtils;
+import net.mcft.copy.betterstorage.misc.PropertiesBackpack;
 import net.mcft.copy.betterstorage.utils.NbtUtils;
 import net.mcft.copy.betterstorage.utils.PlayerUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
+import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -28,15 +28,14 @@ import net.minecraftforge.event.Event.Result;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.player.EntityInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import net.minecraftforge.event.world.WorldEvent.Save;
 import net.minecraftforge.event.world.WorldEvent.Unload;
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.IPlayerTracker;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
 
 public class CommonProxy implements IPlayerTracker {
 	
@@ -88,8 +87,8 @@ public class CommonProxy implements IPlayerTracker {
 	@ForgeSubscribe
 	public void onEntityInteract(EntityInteractEvent event) {
 		
-		// Right clicking the back of another player will
-		// open the GUI for that backpack.
+		// Right clicking the back of another player
+		// will open the GUI for that backpack.
 		
 		if (event.entity.worldObj.isRemote) return;
 		EntityPlayerMP player = (EntityPlayerMP)event.entity;
@@ -103,10 +102,9 @@ public class CommonProxy implements IPlayerTracker {
 		int columns = backpackType.getColumns();
 		int rows = backpackType.getRows();
 		
-		PropertiesBackpackItems backpackItems =
-				EntityUtils.getProperties(target, PropertiesBackpackItems.class);
-		if (backpackItems.contents == null)
-			backpackItems.contents = new ItemStack[columns * rows];
+		PropertiesBackpack backpackData = ItemBackpack.getBackpackData(target);
+		if (backpackData.contents == null)
+			backpackData.contents = new ItemStack[columns * rows];
 		
 		IInventory inventory = new InventoryBackpackEquipped(player, target);
 		if (!inventory.isUseableByPlayer(player)) return;
@@ -120,10 +118,35 @@ public class CommonProxy implements IPlayerTracker {
 	}
 	
 	@ForgeSubscribe
-	public void onEntityConstruction(EntityConstructing event) {
-		if ((FMLCommonHandler.instance().getEffectiveSide() != Side.SERVER) ||
-		    !(event.entity instanceof EntityLiving)) return;
-		EntityUtils.createProperties(event.entity, PropertiesBackpackItems.class);
+	public void onEntityConstructing(EntityConstructing event) {
+		if (event.entity instanceof EntityLiving)
+			ItemBackpack.initBackpackOpen((EntityLiving)event.entity);
+	}
+	
+	@ForgeSubscribe
+	public void onLivingUpdate(LivingUpdateEvent event) {
+		
+		// Update backpack animation and play sound when it opens / closes
+		
+		EntityLiving entity = event.entityLiving;
+		ItemStack backpack = ItemBackpack.getBackpack(entity);
+		if (backpack == null) return;
+		PropertiesBackpack backpackData = ItemBackpack.getBackpackData(entity);
+		
+		backpackData.prevLidAngle = backpackData.lidAngle;
+		float lidSpeed = 0.2F;
+		if (ItemBackpack.isBackpackOpen(entity))
+			backpackData.lidAngle = Math.min(1.0F, backpackData.lidAngle + lidSpeed);
+		else backpackData.lidAngle = Math.max(0.0F, backpackData.lidAngle - lidSpeed);
+		
+		String sound = Block.soundSnowFootstep.getStepSound();
+		// Play sound when opening
+		if (backpackData.lidAngle > 0.0F && backpackData.prevLidAngle <= 0.0F)
+			entity.worldObj.playSoundEffect(entity.posX, entity.posY, entity.posZ, sound, 1.0F, 0.5F);
+		// Play sound when closing
+		if (backpackData.lidAngle < 0.2F && backpackData.prevLidAngle >= 0.2F)
+			entity.worldObj.playSoundEffect(entity.posX, entity.posY, entity.posZ, sound, 0.8F, 0.3F);
+		
 	}
 	
 	@ForgeSubscribe
@@ -135,7 +158,7 @@ public class CommonProxy implements IPlayerTracker {
 		if (entity.worldObj.isRemote) return;
 		ItemStack backpack = ItemBackpack.getBackpack(entity);
 		if (backpack == null) return;
-		PropertiesBackpackItems backpackItems = ItemBackpack.getBackpackItems(entity);
+		PropertiesBackpack backpackData = ItemBackpack.getBackpackData(entity);
 		
 		boolean keepInventory = entity.worldObj.getGameRules().getGameRuleBooleanValue("keepInventory");
 		if ((entity instanceof EntityPlayer) && keepInventory) {
@@ -152,15 +175,15 @@ public class CommonProxy implements IPlayerTracker {
 			} else persistent = compound.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG);;
 			
 			NBTTagCompound backpackCompound = new NBTTagCompound();
-			backpackCompound.setInteger("count", backpackItems.contents.length);
-			backpackCompound.setTag("Items", NbtUtils.writeItems(backpackItems.contents));
+			backpackCompound.setInteger("count", backpackData.contents.length);
+			backpackCompound.setTag("Items", NbtUtils.writeItems(backpackData.contents));
 			persistent.setTag("Backpack", backpackCompound);
 			
 		} else {
 			
-			for (ItemStack stack : backpackItems.contents)
+			for (ItemStack stack : backpackData.contents)
 				WorldUtils.dropStackFromEntity(entity, stack);
-			ItemBackpack.removeBackpack(entity, false);
+			ItemBackpack.removeBackpackData(entity);
 			
 		}
 		
@@ -190,7 +213,7 @@ public class CommonProxy implements IPlayerTracker {
 		ItemStack[] contents = new ItemStack[size];
 		NbtUtils.readItems(contents, backpack.getTagList("Items"));
 		
-		ItemBackpack.getBackpackItems(player).contents = contents;
+		ItemBackpack.getBackpackData(player).contents = contents;
 		
 		persistent.removeTag("Backpack");
 		if (persistent.hasNoTags())
