@@ -4,7 +4,7 @@ import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
-public class InventoryItem extends InventoryWrapper {
+public class InventoryItem extends InventoryStacks {
 	
 	private final String title;
 	

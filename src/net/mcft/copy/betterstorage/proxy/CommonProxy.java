@@ -99,19 +99,16 @@ public class CommonProxy implements IPlayerTracker {
 		if (backpack == null) return;
 		ItemBackpack backpackType = (ItemBackpack)backpack.getItem();
 		
+		IInventory inventory = ItemBackpack.getBackpackItems(target, player);
+		inventory = new InventoryBackpackEquipped(target, player, inventory);
+		if (!inventory.isUseableByPlayer(player)) return;
+		
 		int columns = backpackType.getColumns();
 		int rows = backpackType.getRows();
-		
-		PropertiesBackpack backpackData = ItemBackpack.getBackpackData(target);
-		if (backpackData.contents == null)
-			backpackData.contents = new ItemStack[columns * rows];
-		
-		IInventory inventory = new InventoryBackpackEquipped(player, target);
-		if (!inventory.isUseableByPlayer(player)) return;
 		Container container = new ContainerBetterStorage(player, inventory, columns, rows);
 		
 		String title = StackUtils.get(backpack, "", "display", "Name");
-		PlayerUtils.openGui(player, "container.backpack", columns, rows, title, container);
+		PlayerUtils.openGui(player, inventory.getInvName(), columns, rows, title, container);
 		
 		player.swingItem();
 		
@@ -159,6 +156,7 @@ public class CommonProxy implements IPlayerTracker {
 		ItemStack backpack = ItemBackpack.getBackpack(entity);
 		if (backpack == null) return;
 		PropertiesBackpack backpackData = ItemBackpack.getBackpackData(entity);
+		if (backpackData.contents == null) return;
 		
 		boolean keepInventory = entity.worldObj.getGameRules().getGameRuleBooleanValue("keepInventory");
 		if ((entity instanceof EntityPlayer) && keepInventory) {
@@ -183,7 +181,6 @@ public class CommonProxy implements IPlayerTracker {
 			
 			for (ItemStack stack : backpackData.contents)
 				WorldUtils.dropStackFromEntity(entity, stack);
-			ItemBackpack.removeBackpackData(entity);
 			
 		}
 		

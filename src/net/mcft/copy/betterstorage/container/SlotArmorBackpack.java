@@ -3,7 +3,6 @@ package net.mcft.copy.betterstorage.container;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
-import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
@@ -35,12 +34,11 @@ public class SlotArmorBackpack extends Slot {
 	}
 	
 	@Override
-	public boolean canTakeStack(EntityPlayer player) {
-		if (ItemBackpack.getBackpack(player) == null) return true;
-		// For compatibility with previous versions:
-		// Do not allow backpacks that still have the items tag to be taken from the slot.
-		return (!StackUtils.has(getStack(), "Items") &&
-				(StackUtils.get(getStack(), (byte)0, "hasItems") != 1));
+	public boolean canTakeStack(EntityPlayer player) { 
+		ItemStack backpack = getStack();
+		if ((backpack == null) ||
+		    !(backpack.getItem() instanceof ItemBackpack)) return true;
+		return ((ItemBackpack)backpack.getItem()).canUnequip(player, backpack);
 	}
 	
 }

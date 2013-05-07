@@ -1,58 +1,51 @@
 package net.mcft.copy.betterstorage.inventory;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 
-/** An inventory that wraps around one or more ItemStack arrays. */
-public class InventoryWrapper extends InventoryBetterStorage {
+public class InventoryWrapper implements IInventory {
 	
-	protected final ItemStack[][] allContents;
+	public final IInventory base;
 	
-	private int totalSize = 0;
-	
-	public InventoryWrapper(String name, ItemStack[]... allContents) {
-		super(name);
-		this.allContents = allContents;
-		
-		for (ItemStack[] contents : allContents)
-			totalSize += contents.length;
-	}
-	public InventoryWrapper(ItemStack[]... allContents) {
-		this("", allContents);
+	public InventoryWrapper(IInventory base) {
+		this.base = base;
 	}
 	
 	@Override
-	public int getSizeInventory() { return totalSize; }
+	public String getInvName() { return base.getInvName(); }
+	@Override
+	public boolean isInvNameLocalized() { return base.isInvNameLocalized(); }
 	
-	// Really hacky way to make good looking (?) code.
-	private int tempSlot;
-	private ItemStack[] getContentsAndSlot(int slot) {
-		if (slot < 0 || slot >= totalSize)
-			throw new IndexOutOfBoundsException("slot");
-		tempSlot = slot;
-		for (int i = 0; ; i++) {
-			ItemStack[] contents = allContents[i];
-			if (tempSlot < contents.length) return contents;
-			tempSlot -= contents.length;
-		}
+	@Override
+	public int getSizeInventory() { return base.getSizeInventory(); }
+	@Override
+	public ItemStack getStackInSlot(int slot) { return base.getStackInSlot(slot); }
+	@Override
+	public ItemStack decrStackSize(int slot, int amount) { return base.decrStackSize(slot, amount); }
+	@Override
+	public void setInventorySlotContents(int slot, ItemStack stack) { base.setInventorySlotContents(slot, stack); }
+	@Override
+	public ItemStack getStackInSlotOnClosing(int slot) { return base.getStackInSlotOnClosing(slot); }
+	@Override
+	public int getInventoryStackLimit() { return base.getInventoryStackLimit(); }
+
+	@Override
+	public boolean isUseableByPlayer(EntityPlayer player) { return base.isUseableByPlayer(player); }
+	@Override
+	public boolean isStackValidForSlot(int slot, ItemStack stack) { return base.isStackValidForSlot(slot, stack); }
+	
+	@Override
+	public void onInventoryChanged() { base.onInventoryChanged(); }
+	@Override
+	public void openChest() { base.openChest(); }
+	@Override
+	public void closeChest() { base.closeChest(); }
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof InventoryWrapper)) return false;
+		InventoryWrapper inv = (InventoryWrapper)obj;
+		return (base.equals(inv.base));
 	}
-	
-	@Override
-	public ItemStack getStackInSlot(int slot) {
-		return getContentsAndSlot(slot)[tempSlot];
-	}
-	@Override
-	public void setInventorySlotContents(int slot, ItemStack stack) {
-		getContentsAndSlot(slot)[tempSlot] = stack;
-	}
-	
-	@Override
-	public boolean isUseableByPlayer(EntityPlayer player) { return false; }
-	@Override
-	public void onInventoryChanged() {  }
-	@Override
-	public void openChest() {  }
-	@Override
-	public void closeChest() {  }
-	
 }

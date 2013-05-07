@@ -26,6 +26,9 @@ public class ItemThaumcraftBackpack extends ItemBackpack implements IVisRepairab
 	}
 	
 	@Override
+	public String getName() { return "container.thaumcraftBackpack"; }
+	
+	@Override
 	public int getColumns() { return 13; }
 	
 	@Override

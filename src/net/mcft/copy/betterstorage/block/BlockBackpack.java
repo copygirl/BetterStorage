@@ -53,6 +53,7 @@ public class BlockBackpack extends BlockContainer {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public int getRenderType() { return ClientProxy.backpackRenderId; }
+	
 	@Override
 	public int quantityDropped(int meta, int fortune, Random random) { return 0; }
 	

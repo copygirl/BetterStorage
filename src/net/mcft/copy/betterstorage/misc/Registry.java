@@ -6,6 +6,7 @@ import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.addon.Addon;
 import net.mcft.copy.betterstorage.item.ItemArmorStand;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
+import net.mcft.copy.betterstorage.item.ItemEnderBackpack;
 import net.mcft.copy.betterstorage.item.ItemReinforcedChest;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -28,6 +29,7 @@ public class Registry {
 		register(BetterStorage.locker, "locker", "Locker");
 		register(BetterStorage.armorStand, "armorStand", "Armor Stand", ItemArmorStand.class);
 		registerHacky(BetterStorage.backpack, "backpack", "Backpack", ItemBackpack.class);
+		registerHacky(BetterStorage.enderBackpack, "enderBackpack", "Ender Backpack", ItemEnderBackpack.class);
 	}
 	
 	public static void registerItems() {

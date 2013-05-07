@@ -22,10 +22,10 @@ public class InventoryTileEntity extends InventoryBetterStorage {
 		rows = inventory.getSizeInventory() / columns;
 	}
 	public InventoryTileEntity(TileEntityContainer mainTileEntity, TileEntityContainer... tileEntities) {
-		this(mainTileEntity, tileEntities, new InventoryWrapper(getAllContents(tileEntities)));
+		this(mainTileEntity, tileEntities, new InventoryStacks(getAllContents(tileEntities)));
 	}
 	public InventoryTileEntity(TileEntityContainer tileEntity) {
-		this(tileEntity, new TileEntityContainer[]{ tileEntity }, new InventoryWrapper(tileEntity.contents));
+		this(tileEntity, new TileEntityContainer[]{ tileEntity }, new InventoryStacks(tileEntity.contents));
 	}
 	
 	private static ItemStack[][] getAllContents(TileEntityContainer... tileEntities) {

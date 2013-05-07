@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 import net.mcft.copy.betterstorage.addon.Addon;
 import net.mcft.copy.betterstorage.block.BlockArmorStand;
 import net.mcft.copy.betterstorage.block.BlockBackpack;
+import net.mcft.copy.betterstorage.block.BlockEnderBackpack;
 import net.mcft.copy.betterstorage.block.BlockLocker;
 import net.mcft.copy.betterstorage.block.BlockReinforcedChest;
 import net.mcft.copy.betterstorage.block.ChestMaterial;
@@ -61,6 +62,7 @@ public class BetterStorage {
 	public static BlockLocker locker;
 	public static BlockArmorStand armorStand;
 	public static BlockBackpack backpack;
+	public static BlockEnderBackpack enderBackpack;
 	
 	// Items
 	public static ItemKey key;
@@ -105,6 +107,7 @@ public class BetterStorage {
 		locker          = new BlockLocker(Config.lockerId);
 		armorStand      = new BlockArmorStand(Config.armorStandId);
 		backpack        = new BlockBackpack(Config.backpackId);
+		enderBackpack   = new BlockEnderBackpack(Config.enderBackpackId);
 		
 		key     = new ItemKey(Config.keyId);
 		lock    = new ItemLock(Config.lockId);
@@ -192,6 +195,7 @@ public class BetterStorage {
 		lang.addStringLocalization("container.locker", "Locker");
 		lang.addStringLocalization("container.lockerLarge", "Large Locker");
 		lang.addStringLocalization("container.backpack", "Backpack");
+		lang.addStringLocalization("container.enderBackpack", "Ender Backpack");
 		
 		lang.addStringLocalization("container.keyring", "Keyring");
 		

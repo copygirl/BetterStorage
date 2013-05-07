@@ -34,20 +34,19 @@ public class TileEntityBackpack extends TileEntityContainer {
 	}
 	
 	public void unequip(EntityPlayer player) {
-		StackUtils.remove(stack, "hasItems");
 		if (!worldObj.isRemote) {
-			ItemStack[] backpackData = ItemBackpack.getBackpackData(player).contents;
+			ItemStack[] items = ItemBackpack.getBackpackData(player).contents;
 			
 			// For compatibility with previous versions:
 			// If the stack still has the items tag,
 			// use its items instead and remove the tag.
 			if (StackUtils.has(stack, "Items")) {
-				backpackData = StackUtils.getStackContents(stack, contents.length);
+				items = StackUtils.getStackContents(stack, contents.length);
 				StackUtils.remove(stack, "Items");
 			}
 			
-			if (backpackData != null)
-				System.arraycopy(backpackData, 0, contents, 0, backpackData.length);
+			if (items != null)
+				System.arraycopy(items, 0, contents, 0, items.length);
 		}
 		ItemBackpack.removeBackpack(player);
 	}
