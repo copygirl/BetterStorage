@@ -22,7 +22,7 @@ public class ItemThaumcraftBackpack extends ItemBackpack implements IVisRepairab
 	
 	public ItemThaumcraftBackpack(int id) {
 		super(id);
-		setMaxDamage(280);
+		setMaxDamage(290);
 	}
 	
 	@Override
@@ -42,10 +42,13 @@ public class ItemThaumcraftBackpack extends ItemBackpack implements IVisRepairab
 		return ThaumcraftAddon.thaumcraftBackpackTexture;
 	}
 	
+	@Override
+	public int getItemEnchantability() { return 25; }
+	
 	private void fluxEffects(EntityPlayer player, ItemStack itemStack) {
 		
-		if (player.worldObj.isRemote || itemStack.stackSize == 0 ||
-		    player.ticksExisted % 2000 != 0) return;
+		if (player.worldObj.isRemote || (itemStack.stackSize == 0) ||
+		    (player.ticksExisted % 2000 != 0)) return;
 		
 		// Get closest aura node.
 		int auraId = ThaumcraftApi.getClosestAuraWithinRange(player.worldObj, player.posX, player.posY, player.posZ, 640);

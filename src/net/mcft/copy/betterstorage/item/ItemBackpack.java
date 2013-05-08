@@ -29,14 +29,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
+import net.minecraftforge.common.EnumHelper;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISpecialArmor;
 
 public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 	
+	public static final EnumArmorMaterial material = EnumHelper.addArmorMaterial(
+			"backpack", 240, new int[]{ Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE }, 15);
+	
 	public ItemBackpack(int id) {
-		super(id - 256, EnumArmorMaterial.CLOTH, 0, 1);
-		setMaxDamage(240);
+		super(id - 256, material, 0, 1);
 	}
 	
 	public String getName() { return "container.backpack"; }
@@ -199,7 +202,7 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 	
 	@Override
 	public ArmorProperties getProperties(EntityLiving player, ItemStack armor,
-			DamageSource source, double damage, int slot) {
+	                                     DamageSource source, double damage, int slot) {
 		return new ArmorProperties(0, 2 / 25.0, armor.getMaxDamage() + 1 - armor.getItemDamage());
 	}
 	
@@ -208,7 +211,7 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 	
 	@Override
 	public void damageArmor(EntityLiving entity, ItemStack stack,
-			DamageSource source, int damage, int slot) {
+	                        DamageSource source, int damage, int slot) {
 		stack.damageItem(damage, entity);
 		if (stack.stackSize > 0) return;
 		PropertiesBackpack backpackData = ItemBackpack.getBackpackData(entity);
