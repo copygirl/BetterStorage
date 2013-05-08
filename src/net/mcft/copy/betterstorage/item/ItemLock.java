@@ -38,7 +38,7 @@ public class ItemLock extends ItemBetterStorage implements ILock {
 		ILockable lockable = WorldUtils.get(world, x, y, z, ILockable.class);
 		// If there is no lockable container, it is already locked,
 		// or the lock can't be applied, return false;
-		if (lockable == null || lockable.getLock() != null ||
+		if ((lockable == null) || lockable.getLock() != null ||
 		    !lockable.isLockValid(stack)) return false;
 		
 		lockable.setLock(stack);

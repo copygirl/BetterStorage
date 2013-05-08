@@ -136,19 +136,19 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 		Block blockBackpack = Block.blocksList[itemID];
 		Block blockClicked = Block.blocksList[world.getBlockId(x, y, z)];
 		
-		boolean isSolidOnTop = (blockClicked != null && blockClicked.isBlockSolidOnSide(world, x, y, z, ForgeDirection.UP));
+		boolean isSolidOnTop = ((blockClicked != null) && blockClicked.isBlockSolidOnSide(world, x, y, z, ForgeDirection.UP));
 		
 		ForgeDirection orientation = DirectionUtils.getOrientation(player).getOpposite();
 		
 		// If the block clicked is air or snow,
 		// don't change the target coordinates, but set the side to 1 (top).
-		if (blockClicked == null ||
-		    blockClicked == Block.snow) side = 1;
+		if ((blockClicked == null) ||
+		    (blockClicked == Block.snow)) side = 1;
 		// If the block clicked is not replaceable,
 		// adjust the coordinates depending on the side clicked.
-		else if (blockClicked != Block.vine &&
-		         blockClicked != Block.tallGrass &&
-		         blockClicked != Block.deadBush &&
+		else if ((blockClicked != Block.vine) &&
+		         (blockClicked != Block.tallGrass) &&
+		         (blockClicked != Block.deadBush) &&
 		         !blockClicked.isBlockReplaceable(world, x, y, z)) {
 			switch (side) {
 				case 0: y--; break;
@@ -161,7 +161,7 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 		}
 		
 		// Return false if not placed on top of a solid block.
-		if (side != 1 || !isSolidOnTop) return false;
+		if ((side != 1) || !isSolidOnTop) return false;
 		
 		// Return false if there's not enough world height left.
 		if (y >= world.getHeight() - 1) return false;

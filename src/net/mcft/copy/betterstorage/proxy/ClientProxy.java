@@ -93,10 +93,10 @@ public class ClientProxy extends CommonProxy {
 		ItemStack armor = player.inventory.armorInventory[slot];
 		
 		if (player.isSneaking()) {
-			if (holding != null || (item == null && armor == null) ||
-			    (armor != null && !armor.getItem().isValidArmor(armor, 3 - slot))) return;
-		} else if (!(item != null && holding == null) &&
-		           !(holding != null && holding.getItem().isValidArmor(holding, 3 - slot))) return;
+			if ((holding != null) || ((item == null) && (armor == null)) ||
+			    ((armor != null) && !armor.getItem().isValidArmor(armor, 3 - slot))) return;
+		} else if (!((item != null) && (holding == null)) &&
+		           !((holding != null) && holding.getItem().isValidArmor(holding, 3 - slot))) return;
 		
         double xOff = player.lastTickPosX + (player.posX - player.lastTickPosX) * event.partialTicks;
         double yOff = player.lastTickPosY + (player.posY - player.lastTickPosY) * event.partialTicks;

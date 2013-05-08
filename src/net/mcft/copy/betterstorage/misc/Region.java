@@ -47,8 +47,8 @@ public class Region {
 	}
 	
 	public boolean contains(int x, int y, int z) {
-		return (x >= minX && y >= minY && z >= minZ &&
-		        x <= maxX && y <= maxY && z <= maxZ);
+		return ((x >= minX) && (y >= minY) && (z >= minZ) &&
+		        (x <= maxX) && (y <= maxY) && (z <= maxZ));
 	}
 	public boolean contains(TileEntity entity) {
 		return contains(entity.xCoord, entity.yCoord, entity.zCoord);

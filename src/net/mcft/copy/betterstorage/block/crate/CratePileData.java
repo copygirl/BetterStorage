@@ -221,7 +221,7 @@ public class CratePileData implements Iterable<ItemStack> {
 	 *  not enough, or null if there's none at all. */
 	public ItemStack removeItems(ItemIdentifier item, int amount) {
 		ItemStack stack = getItemStack(item, false);
-		if (stack == null || amount <= 0) return null;
+		if ((stack == null) || (amount <= 0)) return null;
 		
 		int stacksBefore = calcNumStacks(stack);
 		int stacksAfter;

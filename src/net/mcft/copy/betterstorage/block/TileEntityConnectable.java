@@ -47,10 +47,10 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 	
 	/** Returns if the container can connect to the other container. */
 	public boolean canConnect(TileEntityConnectable connectable) {
-		return (connectable != null &&                                  // check for null
-		        getBlockType() == connectable.getBlockType() &&         // check for same block tpye
-		        getBlockMetadata() == connectable.getBlockMetadata() && // check for same material
-		        orientation == connectable.orientation &&               // check for same orientation
+		return ((connectable != null) &&                                  // check for null
+		        (getBlockType() == connectable.getBlockType()) &&         // check for same block tpye
+		        (getBlockMetadata() == connectable.getBlockMetadata()) && // check for same material
+		        (orientation == connectable.orientation) &&               // check for same orientation
 		        // Make sure the containers are not already connected.
 		        !isConnected() && !connectable.isConnected());
 	}
@@ -138,10 +138,10 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 		float pitch = worldObj.rand.nextFloat() * 0.1F + 0.9F;
 		
 		// Play sound when opening
-		if (lidAngle > 0.0F && prevLidAngle == 0.0F)
+		if ((lidAngle > 0.0F) && (prevLidAngle == 0.0F))
 			worldObj.playSoundEffect(x, y, z, "random.chestopen", 0.5F, pitch);
 		// Play sound when closing
-		if (lidAngle < 0.5F && prevLidAngle >= 0.5F)
+		if ((lidAngle < 0.5F) && (prevLidAngle >= 0.5F))
 			worldObj.playSoundEffect(x, y, z, "random.chestclosed", 0.5F, pitch);
 	}
 	

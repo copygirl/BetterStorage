@@ -48,7 +48,7 @@ public class ContainerCrate extends ContainerBetterStorage {
 		ItemStack stackBefore = slot.getStack();
 		if (stackBefore != null) stackBefore.copy();
 		// If slot isn't empty and item can be stacked.
-		if (slot != null && slot.getHasStack()) {
+		if ((slot != null) && slot.getHasStack()) {
 			ItemStack slotStack = slot.getStack();
 			// If slot is in the container inventory, try to transfer the item to the player.
 			if (slotId < playerView.getSizeInventory()) {

@@ -73,10 +73,10 @@ public class TileEntityBackpack extends TileEntityContainer {
 		
 		String sound = Block.soundSnowFootstep.getStepSound();
 		// Play sound when opening
-		if (lidAngle > 0.0F && prevLidAngle <= 0.0F)
+		if ((lidAngle > 0.0F) && (prevLidAngle <= 0.0F))
 			worldObj.playSoundEffect(x, y, z, sound, 1.0F, 0.5F);
 		// Play sound when closing
-		if (lidAngle < 0.2F && prevLidAngle >= 0.2F)
+		if ((lidAngle < 0.2F) && (prevLidAngle >= 0.2F))
 			worldObj.playSoundEffect(x, y, z, sound, 0.8F, 0.3F);
 	}
 	

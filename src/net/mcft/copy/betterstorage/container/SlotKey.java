@@ -13,7 +13,7 @@ public class SlotKey extends Slot {
 	
 	@Override
 	public boolean isItemValid(ItemStack stack) {
-		return (stack != null && (stack.getItem() instanceof IKey) &&
+		return ((stack != null) && (stack.getItem() instanceof IKey) &&
 		        ((IKey)stack.getItem()).isNormalKey());
 	}
 	

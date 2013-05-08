@@ -92,12 +92,12 @@ public class CratePileMap {
 			if (!value) {
 				int minX = region.minX, minY = region.minY, minZ = region.minZ;
 				int maxX = region.maxX, maxY = region.maxY, maxZ = region.maxZ;
-				if (x == minX && checkCuboid(minX, minY, minZ, minX, maxY, maxZ)) region.minX += 1;
-				if (y == minY && checkCuboid(minX, minY, minZ, maxX, minY, maxZ)) region.minY += 1;
-				if (z == minZ && checkCuboid(minX, minY, minZ, maxX, maxY, minZ)) region.minZ += 1;
-				if (x == maxX && checkCuboid(maxX, minY, minZ, maxX, maxY, maxZ)) region.maxX -= 1;
-				if (y == maxY && checkCuboid(minX, maxY, minZ, maxX, maxY, maxZ)) region.maxY -= 1;
-				if (z == maxZ && checkCuboid(minX, minY, maxZ, maxX, maxY, maxZ)) region.maxZ -= 1;
+				if ((x == minX) && checkCuboid(minX, minY, minZ, minX, maxY, maxZ)) region.minX += 1;
+				if ((y == minY) && checkCuboid(minX, minY, minZ, maxX, minY, maxZ)) region.minY += 1;
+				if ((z == minZ) && checkCuboid(minX, minY, minZ, maxX, maxY, minZ)) region.minZ += 1;
+				if ((x == maxX) && checkCuboid(maxX, minY, minZ, maxX, maxY, maxZ)) region.maxX -= 1;
+				if ((y == maxY) && checkCuboid(minX, maxY, minZ, maxX, maxY, maxZ)) region.maxY -= 1;
+				if ((z == maxZ) && checkCuboid(minX, minY, maxZ, maxX, maxY, maxZ)) region.maxZ -= 1;
 				if (region.minX - mapRegion.minX > 4 || mapRegion.maxX - region.maxX > 4 ||
 				    region.minY / 8 - mapRegion.minY > 2 || mapRegion.maxY / 8 - region.maxY > 2 ||
 				    region.minZ - mapRegion.minZ > 4 || mapRegion.maxZ - region.maxZ > 4)

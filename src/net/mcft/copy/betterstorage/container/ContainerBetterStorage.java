@@ -72,7 +72,7 @@ public class ContainerBetterStorage extends Container {
 		Slot slot = (Slot)inventorySlots.get(slotId);
 		
 		// If slot isn't empty and item can be stacked.
-		if (slot != null && slot.getHasStack()) {
+		if ((slot != null) && slot.getHasStack()) {
 			ItemStack slotStack = slot.getStack();
 			stack = slotStack.copy();
 			// If slot is in the container inventory, try to transfer the item to the player.
@@ -93,17 +93,17 @@ public class ContainerBetterStorage extends Container {
 	@Override
 	public ItemStack slotClick(int slotId, int button, int special, EntityPlayer player) {
 		Slot slot = null;
-		if (slotId >= 0 && slotId < inventorySlots.size())
+		if ((slotId >= 0) && (slotId < inventorySlots.size()))
 			slot = (Slot)inventorySlots.get(slotId);
 		if (slot != null) {
 			if (special == 0) {
-				if (button == 0 || button == 1) {
+				if ((button == 0) || (button == 1)) {
 					ItemStack slotStack = slot.getStack();
 					ItemStack holding = player.inventory.getItemStack();
-					if (slotStack != null && holding != null &&
+					if ((slotStack != null) && (holding != null) &&
 					    slot.canTakeStack(player) && slot.isItemValid(holding) &&
-					    slotStack.itemID == holding.itemID &&
-					    slotStack.getItemDamage() == holding.getItemDamage() &&
+					    (slotStack.itemID == holding.itemID) &&
+					    (slotStack.getItemDamage() == holding.getItemDamage()) &&
 					    ItemStack.areItemStackTagsEqual(slotStack, holding)) {
 						int amount = ((button == 0) ? holding.stackSize : 1);
 						amount = Math.min(amount, slot.getSlotStackLimit() - slotStack.stackSize);
@@ -116,12 +116,12 @@ public class ContainerBetterStorage extends Container {
 						return slotStack;
 					}
 				}
-			} else if (special == 2 && button >= 0 && button < 9) {
+			} else if ((special == 2) && (button >= 0) && (button < 9)) {
 				if (startHotbar < 0) return null;
 				Slot slot2 = (Slot)inventorySlots.get(startHotbar + button);
 				ItemStack stack = slot.getStack();
 				if (!slot2.canTakeStack(player) ||
-				    (stack != null && !slot2.isItemValid(stack)))
+				    ((stack != null) && !slot2.isItemValid(stack)))
 					return null;
 			}
 		}

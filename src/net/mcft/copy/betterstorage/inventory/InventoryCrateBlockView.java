@@ -15,11 +15,11 @@ public class InventoryCrateBlockView extends InventoryBetterStorage {
 	}
 	
 	@Override
-	public int getSizeInventory() { return (data.getNumItems() + 1); }
+	public int getSizeInventory() { return data.getNumItems() + 1; }
 	
 	@Override
 	public ItemStack getStackInSlot(int slot) {
-		if (slot <= 0 || slot >= getSizeInventory()) return null;
+		if ((slot <= 0) || (slot >= getSizeInventory())) return null;
 		ItemStack stack = data.getItemStack(slot - 1).copy();
 		stack.stackSize = Math.min(stack.stackSize, stack.getMaxStackSize());
 		return stack;
@@ -27,7 +27,7 @@ public class InventoryCrateBlockView extends InventoryBetterStorage {
 	
 	@Override
 	public void setInventorySlotContents(int slot, ItemStack stack) {
-		if (slot < 0 || slot >= getSizeInventory()) return;
+		if ((slot < 0) || (slot >= getSizeInventory())) return;
 		ItemStack oldStack = getStackInSlot(slot);
 		if (oldStack != null) data.removeItems(oldStack);
 		data.addItems(stack);
@@ -43,7 +43,7 @@ public class InventoryCrateBlockView extends InventoryBetterStorage {
 	
 	@Override
 	public boolean isStackValidForSlot(int slot, ItemStack stack) {
-		return (slot != 0 || data.getFreeSlots() > 0);
+		return ((slot != 0) || (data.getFreeSlots() > 0));
 	}
 	
 	@Override

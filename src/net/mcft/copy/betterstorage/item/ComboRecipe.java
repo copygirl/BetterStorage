@@ -51,23 +51,23 @@ public abstract class ComboRecipe implements IRecipe {
 				int recipeX = x - startX;
 				int recipeY = y - startY;
 				ItemStack recipeStack = null;
-				if (recipeX >= 0 && recipeY >= 0 && recipeX < width && recipeY < height) {
+				if ((recipeX >= 0) && (recipeY >= 0) && (recipeX < width) && (recipeY < height)) {
 					if (mirror) recipeStack = recipe[width - recipeX - 1 + recipeY * width];
 					else recipeStack = recipe[recipeX + recipeY * width];
 				}
 				ItemStack craftingStack = crafting.getStackInRowAndColumn(x, y);
-				if (craftingStack != null || recipeStack != null) {
-					if (recipeStack != null && craftingStack == null) return false;
-					if (recipeStack == null && craftingStack != null)
+				if ((craftingStack != null) || (recipeStack != null)) {
+					if ((recipeStack != null) && (craftingStack == null)) return false;
+					if ((recipeStack == null) && (craftingStack != null))
 						shapelessItems.add(craftingStack);
 					else {
 						if (recipeStack.itemID != craftingStack.itemID) return false;
-						if (recipeStack.getItemDamage() != Constants.anyDamage &&
-						    recipeStack.getItemDamage() != craftingStack.getItemDamage()) return false;
+						if ((recipeStack.getItemDamage() != Constants.anyDamage) &&
+						    (recipeStack.getItemDamage() != craftingStack.getItemDamage())) return false;
 					}
 				}
 			}
-		if (shapelessItems.size() > 0 &&
+		if ((shapelessItems.size() > 0) &&
 		    !checkShapelessItems(crafting, shapelessItems)) return false;
 		return true;
 	}

@@ -138,10 +138,10 @@ public class CommonProxy implements IPlayerTracker {
 		
 		String sound = Block.soundSnowFootstep.getStepSound();
 		// Play sound when opening
-		if (backpackData.lidAngle > 0.0F && backpackData.prevLidAngle <= 0.0F)
+		if ((backpackData.lidAngle > 0.0F) && (backpackData.prevLidAngle <= 0.0F))
 			entity.worldObj.playSoundEffect(entity.posX, entity.posY, entity.posZ, sound, 1.0F, 0.5F);
 		// Play sound when closing
-		if (backpackData.lidAngle < 0.2F && backpackData.prevLidAngle >= 0.2F)
+		if ((backpackData.lidAngle < 0.2F) && (backpackData.prevLidAngle >= 0.2F))
 			entity.worldObj.playSoundEffect(entity.posX, entity.posY, entity.posZ, sound, 0.8F, 0.3F);
 		
 	}

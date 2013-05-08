@@ -24,13 +24,13 @@ public class ItemArmorStand extends ItemBlock {
 		
 		// If the block clicked is air or snow,
 		// don't change the target coordinates, but set the side to 1 (top).
-		if (blockClicked == null ||
-		    blockClicked == Block.snow) side = 1;
+		if ((blockClicked == null) ||
+		    (blockClicked == Block.snow)) side = 1;
 		// If the block clicked is not replaceable,
 		// adjust the coordinates depending on the side clicked.
-		else if (blockClicked != Block.vine &&
-		         blockClicked != Block.tallGrass &&
-		         blockClicked != Block.deadBush &&
+		else if ((blockClicked != Block.vine) &&
+		         (blockClicked != Block.tallGrass) &&
+		         (blockClicked != Block.deadBush) &&
 		         !blockClicked.isBlockReplaceable(world, x, y, z)) {
 			switch (side) {
 				case 0: y--; break;
@@ -48,7 +48,7 @@ public class ItemArmorStand extends ItemBlock {
 		Block blockTop = Block.blocksList[world.getBlockId(x, y + 1, z)];
 		
 		// Return false if the block above isn't replaceable.
-		if (blockTop != null && blockTop != Block.vine &&
+		if ((blockTop != null) && (blockTop != Block.vine) &&
 		    !blockTop.isBlockReplaceable(world, x, y + 1, z)) return false;
 		
 		// Return false if the player can't edit any of the

@@ -47,9 +47,9 @@ public class ItemIdentifier {
 	
 	/** Returns if this item identifier matches the id, damage and data. */
 	public boolean matches(int id, int damage, NBTTagCompound data) {
-		return (this.id == id && this.damage == damage &&
-		        ((this.data == null && data == null) ||
-		         (this.data != null && this.data.equals(data))));
+		return ((this.id == id) && (this.damage == damage) &&
+		        (((this.data == null) && (data == null)) ||
+		         ((this.data != null) && this.data.equals(data))));
 	}
 	/** Returns if this item identifier matches the ItemStack. */
 	public boolean matches(ItemStack stack) {

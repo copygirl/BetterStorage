@@ -38,9 +38,9 @@ public class BlockBackpack extends BlockContainer {
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
 		ForgeDirection orientation = ForgeDirection.getOrientation(world.getBlockMetadata(x, y, z));
-		if (orientation == ForgeDirection.NORTH || orientation == ForgeDirection.SOUTH)
+		if ((orientation == ForgeDirection.NORTH) || (orientation == ForgeDirection.SOUTH))
 			setBlockBounds(2 / 16.0F, 0.0F, 3 / 16.0F, 14 / 16.0F, 13 / 16.0F, 13 / 16.0F);
-		else if (orientation == ForgeDirection.WEST || orientation == ForgeDirection.EAST)
+		else if ((orientation == ForgeDirection.WEST) || (orientation == ForgeDirection.EAST))
 			setBlockBounds(3 / 16.0F, 0.0F, 2 / 16.0F, 13 / 16.0F, 13 / 16.0F, 14 / 16.0F);
 		else setBlockBounds(3 / 16.0F, 0.0F, 3 / 16.0F, 13 / 16.0F, 13 / 16.0F, 13 / 16.0F);
 	}
@@ -81,10 +81,9 @@ public class BlockBackpack extends BlockContainer {
 	public void breakBlock(World world, int x, int y, int z, int id, int meta) {
 		TileEntityBackpack backpack = WorldUtils.get(world, x, y, z, TileEntityBackpack.class);
 		super.breakBlock(world, x, y, z, id, meta);
-		if (backpack != null && !backpack.equipped) {
-			WorldUtils.dropStackFromBlock(world, x, y, z, backpack.stack);
-			backpack.dropContents();
-		}
+		if ((backpack == null) || backpack.equipped) return;
+		WorldUtils.dropStackFromBlock(world, x, y, z, backpack.stack);
+		backpack.dropContents();
 	}
 	
 	@Override

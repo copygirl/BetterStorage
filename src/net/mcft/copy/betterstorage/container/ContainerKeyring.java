@@ -55,7 +55,7 @@ public class ContainerKeyring extends ContainerBetterStorage {
 	public ItemStack transferStackInSlot(EntityPlayer player, int slotId) {
 		ItemStack stack = null;
 		Slot slot = (Slot)inventorySlots.get(slotId);
-		if (slot != null && slot.getHasStack()) {
+		if ((slot != null) && slot.getHasStack()) {
 			stack = slot.getStack();
 			if (!(stack.getItem() instanceof ItemKey))
 				return null;

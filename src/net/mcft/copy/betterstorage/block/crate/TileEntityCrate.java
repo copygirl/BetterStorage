@@ -61,11 +61,11 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 		int z = zCoord;
 		// Destroy all crates above.
 		TileEntityCrate crateAbove = WorldUtils.get(worldObj, x, y + 1, z, TileEntityCrate.class);
-		if (crateAbove != null && crateAbove.data == data)
+		if ((crateAbove != null) && (crateAbove.data == data))
 			crateAbove.destroyCrate();
 		// If there's still some crates left and this is a
 		// base crate, see which crates are still connected.
-		if (data.getNumCrates() > 0 && !WorldUtils.is(worldObj, x, y - 1, z, BetterStorage.crate)) {
+		if ((data.getNumCrates() > 0) && !WorldUtils.is(worldObj, x, y - 1, z, BetterStorage.crate)) {
 			List<HashSet<TileEntityCrate>> crateSets =
 					new ArrayList<HashSet<TileEntityCrate>>();
 			int checkedChecks = 0;
@@ -123,7 +123,7 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 	}
 	private void checkConnections(int x, int y, int z, HashSet<TileEntityCrate> set) {
 		TileEntityCrate crate = WorldUtils.get(worldObj, x, y, z, TileEntityCrate.class);
-		if (crate == null || set.contains(crate)) return;
+		if ((crate == null) || set.contains(crate)) return;
 		set.add(crate);
 		for (ForgeDirection ndir : sideDirections)
 			checkConnections(x + ndir.offsetX, y, z + ndir.offsetZ, set);
@@ -131,8 +131,8 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 	
 	@Override
 	public void updateEntity() {
-		if (worldObj.isRemote || data != null ||
-		    (id == -1 && findNeighborCratePile())) return;
+		if (worldObj.isRemote || (data != null) ||
+		    ((id == -1) && findNeighborCratePile())) return;
 		if (!isInvalid()) getPileData();
 	}
 	
@@ -156,10 +156,10 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 			TileEntityCrate checkedCrate = WorldUtils.get(worldObj, x, y, z, TileEntityCrate.class);
 			CratePileData checkedPileData = ((checkedCrate != null) ? checkedCrate.getPileData() : null);
 			if (checkedPileData == null) continue;
-			if ((pileData != null && checkedPileData.id != pileData.id) ||
-			    (dir != ForgeDirection.DOWN && !crateBelow &&
+			if (((pileData != null) && (checkedPileData.id != pileData.id)) ||
+			    ((dir != ForgeDirection.DOWN) && !crateBelow &&
 			     WorldUtils.is(worldObj, x, y - 1, z, BetterStorage.crate)) ||
-			    dir == ForgeDirection.UP || !checkedPileData.canAdd(this)) {
+			    (dir == ForgeDirection.UP) || !checkedPileData.canAdd(this)) {
 				destroyCrate();
 				return false;
 			}

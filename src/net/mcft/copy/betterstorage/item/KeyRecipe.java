@@ -49,16 +49,16 @@ public class KeyRecipe extends ComboRecipe {
 		// Not a valid recipe if there's more than one iron.
 		if (numIron > 1) return false;
 		// Not a valid recipe if the modified key is already iron plated.
-		if (modifyKey && numIron > 0 &&
+		if (modifyKey && (numIron > 0) &&
 		    (StackUtils.get(key, (byte)0, "display", "ironPlated") == 1))
 			return false;
 		// Not a valid recipe if any shapeless item
 		// other than a key, iron or dye is used.
 		for (ItemStack stack : shapelessItems) {
 			Item item = stack.getItem();
-			if (item != BetterStorage.key &&
-			    item != Item.ingotIron &&
-			    item != Item.dyePowder) return false;
+			if ((item != BetterStorage.key) &&
+			    (item != Item.ingotIron) &&
+			    (item != Item.dyePowder)) return false;
 		}
 		return true;
 	}

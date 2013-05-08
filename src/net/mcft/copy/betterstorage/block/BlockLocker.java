@@ -83,7 +83,7 @@ public class BlockLocker extends BlockContainer {
 		
 		TileEntityLocker locker = WorldUtils.get(world, x, y, z, TileEntityLocker.class);
 		ForgeDirection sideDirection = DirectionUtils.getDirectionFromSide(side);
-		if (world.isRemote || locker == null || locker.orientation != sideDirection) return true;
+		if (world.isRemote || (locker == null) || (locker.orientation != sideDirection)) return true;
 		
 		locker.openGui(player);
 		return true;

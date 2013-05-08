@@ -69,13 +69,13 @@ public class Config {
 	}
 	
 	public static int validateRange(int value, String name, int minValue, int maxValue) {
-		if (value >= minValue && value <= maxValue) return value;
+		if ((value >= minValue) && (value <= maxValue)) return value;
 		BetterStorage.log.warning("Config value '" + name + "' is not valid, must be " + minValue + " min and " + maxValue + " max.");
 		return Math.max(minValue, Math.min(maxValue, value));
 	}
 	
 	public static int validateColumnAmount(int columns, String name, int defaultValue) {
-		if (columns == 9 || columns == 11 || columns == 13) return columns;
+		if ((columns == 9) || (columns == 11) || (columns == 13)) return columns;
 		BetterStorage.log.warning("Config value '" + name + "' is not valid, must be 9, 11 or 13.");
 		return defaultValue;
 	}

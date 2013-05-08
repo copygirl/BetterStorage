@@ -42,9 +42,11 @@ public class TileEntityReinforcedChest extends TileEntityConnectable implements 
 		if (!(connectable instanceof TileEntityReinforcedChest)) return false;
 		TileEntityReinforcedChest chest = (TileEntityReinforcedChest)connectable;
 		return (super.canConnect(connectable) &&
-		        ((xCoord != chest.xCoord && (orientation == ForgeDirection.SOUTH || orientation == ForgeDirection.NORTH)) ||
-		         (zCoord != chest.zCoord && (orientation == ForgeDirection.EAST || orientation == ForgeDirection.WEST))) &&
-		        getLock() == null && chest.getLock() == null);
+		        (((xCoord != chest.xCoord) && ((orientation == ForgeDirection.SOUTH) ||
+		                                       (orientation == ForgeDirection.NORTH))) ||
+		         ((zCoord != chest.zCoord) && ((orientation == ForgeDirection.EAST) ||
+		                                       (orientation == ForgeDirection.WEST)))) &&
+		        (getLock() == null) && (chest.getLock() == null));
 	}
 	
 	@Override
@@ -68,7 +70,7 @@ public class TileEntityReinforcedChest extends TileEntityConnectable implements 
 	
 	@Override
 	public void setLock(ItemStack lock) {
-		if (lock != null && !isLockValid(lock))
+		if ((lock != null) && !isLockValid(lock))
 			throw new InvalidParameterException("Can't set lock to " + lock + ".");
 		if (isMain()) {
 			this.lock = lock;
@@ -114,14 +116,14 @@ public class TileEntityReinforcedChest extends TileEntityConnectable implements 
 		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord - 1, id);
 		
 		// Notify nearby blocks of adjacent chest
-		if (isConnected() && connected == ForgeDirection.EAST) {
+		if (isConnected() && (connected == ForgeDirection.EAST)) {
 			worldObj.notifyBlocksOfNeighborChange(xCoord + 2, yCoord, zCoord, id);
 			worldObj.notifyBlocksOfNeighborChange(xCoord + 1, yCoord + 1, zCoord, id);
 			worldObj.notifyBlocksOfNeighborChange(xCoord + 1, yCoord - 1, zCoord, id);
 			worldObj.notifyBlocksOfNeighborChange(xCoord + 1, yCoord, zCoord + 1, id);
 			worldObj.notifyBlocksOfNeighborChange(xCoord + 1, yCoord, zCoord - 1, id);
 		}
-		if (isConnected() && connected == ForgeDirection.SOUTH) {
+		if (isConnected() && (connected == ForgeDirection.SOUTH)) {
 			worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord + 2, id);
 			worldObj.notifyBlocksOfNeighborChange(xCoord + 1, yCoord, zCoord + 1, id);
 			worldObj.notifyBlocksOfNeighborChange(xCoord - 1, yCoord, zCoord + 1, id);

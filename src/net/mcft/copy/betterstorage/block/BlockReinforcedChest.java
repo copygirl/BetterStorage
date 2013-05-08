@@ -67,7 +67,7 @@ public class BlockReinforcedChest extends BlockContainer {
 	public float getBlockHardness(World world, int x, int y, int z) {
 		TileEntityReinforcedChest chest = WorldUtils.get(world, x, y, z, TileEntityReinforcedChest.class);
 		float hardness = blockHardness;
-		if (chest != null && chest.getLock() != null) {
+		if ((chest != null) && (chest.getLock() != null)) {
 			hardness *= 15.0F;
 			int persistance = BetterStorageEnchantment.getLevel(chest.getLock(), "persistance");
 			if (persistance > 0) hardness *= persistance + 2;
@@ -143,8 +143,8 @@ public class BlockReinforcedChest extends BlockContainer {
 		if (lock == null && StackUtils.isLock(holding))
 			return false;
 		
-		boolean success = (lock == null || chest.canUse(player) ||
-		                   (key != null && keyType.unlock(key, lock, true)));
+		boolean success = ((lock == null) || chest.canUse(player) ||
+		                   ((key != null) && keyType.unlock(key, lock, true)));
 		if (lockType != null)
 			lockType.onUnlock(lock, key, chest, player, success);
 		if (success) chest.openGui(player);

@@ -84,13 +84,13 @@ public class InventoryCratePlayerView extends InventoryBetterStorage implements 
 	
 	@Override
 	public ItemStack getStackInSlot(int slot) {
-		if (slot < 0 || slot >= getSizeInventory()) return null;
+		if ((slot < 0) || (slot >= getSizeInventory())) return null;
 		return tempContents[slot];
 	}
 	
 	@Override
 	public void setInventorySlotContents(int slot, ItemStack stack) {
-		if (slot < 0 || slot >= getSizeInventory()) return;
+		if ((slot < 0) || (slot >= getSizeInventory())) return;
 		ItemStack oldStack = getStackInSlot(slot);
 		ignoreModifiedItems = true;
 		if (oldStack != null) {
@@ -140,9 +140,9 @@ public class InventoryCratePlayerView extends InventoryBetterStorage implements 
 		int x = crate.xCoord;
 		int y = crate.yCoord;
 		int z = crate.zCoord;
-		return (player.worldObj.getBlockTileEntity(x, y, z) == crate &&
-				player.getDistanceSq(x + 0.5, y + 0.5, z + 0.5) < 64.0 &&
-				getSizeInventory() <= data.getCapacity());
+		return ((player.worldObj.getBlockTileEntity(x, y, z) == crate) &&
+				(player.getDistanceSq(x + 0.5, y + 0.5, z + 0.5) < 64.0) &&
+				(getSizeInventory() <= data.getCapacity()));
 	}
 	
 	@Override
@@ -173,7 +173,7 @@ public class InventoryCratePlayerView extends InventoryBetterStorage implements 
 			if (amount == 0) return;
 		}
 		
-		while (amount > 0 && emptySlots.size() > 0)
+		while ((amount > 0) && (emptySlots.size() > 0))
 			amount -= setItemsInSlot(emptySlots.poll(), item, itemData, amount);
 	}
 	
@@ -190,7 +190,7 @@ public class InventoryCratePlayerView extends InventoryBetterStorage implements 
 		List<Integer> randomIndexList = new ArrayList<Integer>(size);
 		for (int i = 0; i < size; i++) randomIndexList.add(i);
 		
-		while (emptySlots > data.getFreeSlots() && randomIndexList.size() > 0) {
+		while ((emptySlots > data.getFreeSlots()) && (randomIndexList.size() > 0)) {
 			
 			int randomIndex = RandomUtils.getInt(randomIndexList.size());
 			int index = randomIndexList.get(randomIndex);

@@ -76,7 +76,7 @@ public class ItemKey extends ItemBetterStorage implements IKey {
 	public Icon getIcon(ItemStack stack, int renderPass) {
 		boolean colored = StackUtils.has(stack, "display", "color");
 		boolean ironPlated = (StackUtils.get(stack, (byte)0, "display", "ironPlated") == 1);
-		return ((renderPass > 0 && colored) ? iconColor : (ironPlated ? iconIron : iconGold));
+		return (((renderPass > 0) && colored) ? iconColor : (ironPlated ? iconIron : iconGold));
 	}
 	
 	@Override
@@ -90,7 +90,7 @@ public class ItemKey extends ItemBetterStorage implements IKey {
 		
 		ILockable lockable = WorldUtils.get(world, x, y, z, ILockable.class);
 		// If there is no lockable container or it isn't locked, return false;
-		if (lockable == null || lockable.getLock() == null) return false;
+		if ((lockable == null) || (lockable.getLock() == null)) return false;
 		
 		ItemStack key = player.getCurrentEquippedItem();
 		ItemStack lock = lockable.getLock();
@@ -147,7 +147,7 @@ public class ItemKey extends ItemBetterStorage implements IKey {
 			int div = (int)Math.pow(2, 10 + effectiveUnlocking * 1);
 			if (lockId / div == keyId / div) return true;
 		}
-		if (useAbility && effectiveLockpicking > 0) {
+		if (useAbility && (effectiveLockpicking > 0)) {
 			NBTTagList list = key.getEnchantmentTagList();
 			for (int i = 0; i < list.tagCount(); i++) {
 				NBTTagCompound compound = (NBTTagCompound)list.tagAt(i);
@@ -162,7 +162,7 @@ public class ItemKey extends ItemBetterStorage implements IKey {
 			}
 			return true;
 		}
-		if (useAbility && effectiveMorphing > 0) {
+		if (useAbility && (effectiveMorphing > 0)) {
 			key.setItemDamage(lockId);
 			NBTTagList list = key.getEnchantmentTagList();
 			for (int i = 0; i < list.tagCount(); i++) {
