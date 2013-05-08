@@ -22,6 +22,7 @@ public class TileEntityBackpackRenderer extends TileEntitySpecialRenderer {
 	
 	public void renderTileEntityAt(TileEntityBackpack backpack, double x, double y, double z, float par8) {
 		
+		if ((backpack.worldObj == null) && (backpack.blockType == null)) return;
 		Item item = Item.itemsList[backpack.getBlockType().blockID];
 		bindTextureByName(((ItemBackpack)item).getArmorTexture(null, null, 0, 0));
 		
