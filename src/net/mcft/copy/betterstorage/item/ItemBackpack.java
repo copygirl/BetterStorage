@@ -36,7 +36,7 @@ import net.minecraftforge.common.ISpecialArmor;
 public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 	
 	public static final EnumArmorMaterial material = EnumHelper.addArmorMaterial(
-			"backpack", 240, new int[]{ Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE }, 15);
+			"backpack", 240, new int[]{ 0, 2, 0, 0 }, 15);
 	
 	public ItemBackpack(int id) {
 		super(id - 256, material, 0, 1);

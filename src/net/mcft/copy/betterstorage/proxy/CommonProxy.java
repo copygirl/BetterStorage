@@ -1,6 +1,7 @@
 package net.mcft.copy.betterstorage.proxy;
 
 import net.mcft.copy.betterstorage.addon.Addon;
+import net.mcft.copy.betterstorage.block.BlockEnderBackpack;
 import net.mcft.copy.betterstorage.block.TileEntityArmorStand;
 import net.mcft.copy.betterstorage.block.TileEntityBackpack;
 import net.mcft.copy.betterstorage.block.TileEntityLocker;
@@ -10,13 +11,16 @@ import net.mcft.copy.betterstorage.block.crate.TileEntityCrate;
 import net.mcft.copy.betterstorage.container.ContainerBetterStorage;
 import net.mcft.copy.betterstorage.inventory.InventoryBackpackEquipped;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
+import net.mcft.copy.betterstorage.item.ItemEnderBackpack;
 import net.mcft.copy.betterstorage.misc.PropertiesBackpack;
+import net.mcft.copy.betterstorage.utils.EntityUtils;
 import net.mcft.copy.betterstorage.utils.NbtUtils;
 import net.mcft.copy.betterstorage.utils.PlayerUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
@@ -26,6 +30,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.Event.Result;
 import net.minecraftforge.event.ForgeSubscribe;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
@@ -121,14 +126,36 @@ public class CommonProxy implements IPlayerTracker {
 	}
 	
 	@ForgeSubscribe
+	public void onEntityJoinWorldEvent(EntityJoinWorldEvent event) {
+		if (!(event.entity instanceof EntityItem)) return;
+		EntityItem entity = (EntityItem)event.entity;
+		ItemStack stack = entity.getDataWatcher().getWatchableObjectItemStack(10);
+		if ((stack == null) || !(stack.getItem() instanceof ItemEnderBackpack)) return;
+		event.setCanceled(true);
+		for (int i = 0; i < 64; i++)
+			if (BlockEnderBackpack.teleportRandomly(entity.worldObj, entity.posX, entity.posY, entity.posZ, (i > 48), stack))
+				break;
+	}
+	
+	@ForgeSubscribe
 	public void onLivingUpdate(LivingUpdateEvent event) {
 		
 		// Update backpack animation and play sound when it opens / closes
 		
 		EntityLiving entity = event.entityLiving;
 		ItemStack backpack = ItemBackpack.getBackpack(entity);
-		if (backpack == null) return;
-		PropertiesBackpack backpackData = ItemBackpack.getBackpackData(entity);
+		PropertiesBackpack backpackData;
+		if (backpack == null) {
+			backpackData = EntityUtils.getProperties(entity, PropertiesBackpack.class);
+			// If the entity doesn't have a backpack equipped,
+			// but still has some backpack data, drop the items.
+			if ((backpackData != null) && (backpackData.contents != null)) {
+				for (ItemStack stack : backpackData.contents)
+					WorldUtils.dropStackFromEntity(entity, stack);
+				backpackData.contents = null;
+			}
+			return;
+		} else backpackData = ItemBackpack.getBackpackData(entity);
 		
 		backpackData.prevLidAngle = backpackData.lidAngle;
 		float lidSpeed = 0.2F;
@@ -181,6 +208,7 @@ public class CommonProxy implements IPlayerTracker {
 			
 			for (ItemStack stack : backpackData.contents)
 				WorldUtils.dropStackFromEntity(entity, stack);
+			backpackData.contents = null;
 			
 		}
 		

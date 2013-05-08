@@ -42,9 +42,9 @@ public class PacketHandler implements IPacketHandler {
 				case backpackTeleport:
 					if (side == Side.SERVER)
 						throw new Exception("Received BetterStorage packet for ID " + id + " on invalid side " + side + ".");
-					int sourceX = stream.readInt();
-					int sourceY = stream.readInt();
-					int sourceZ = stream.readInt();
+					double sourceX = stream.readDouble();
+					double sourceY = stream.readDouble();
+					double sourceZ = stream.readDouble();
 					int x = stream.readInt();
 					int y = stream.readInt();
 					int z = stream.readInt();

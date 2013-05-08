@@ -11,6 +11,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
@@ -42,19 +43,15 @@ public class BlockEnderBackpack extends BlockBackpack {
 		world.removeBlockTileEntity(x, y, z);
 		if (world.isRemote || (backpack == null) || backpack.equipped) return;
 		for (int i = 0; i < 64; i++)
-			if (teleportRandomly(backpack, world, x, y, z, (i > 48)))
+			if (teleportRandomly(world, x, y, z, (i > 48), backpack.stack))
 				break;
 	}
 	
-	public boolean teleportRandomly(TileEntityBackpack backpack, World world, int x, int y, int z, boolean canFloat) {
+	public static boolean teleportRandomly(World world, double sourceX, double sourceY, double sourceZ, boolean canFloat, ItemStack stack) {
 		
-		int sourceX = x;
-		int sourceY = y;
-		int sourceZ = z;
-		
-		x += RandomUtils.getInt(-12, 12 + 1);
-		y += RandomUtils.getInt(-8, 8 + 1);
-		z += RandomUtils.getInt(-12, 12 + 1);
+		int x = (int)sourceX + RandomUtils.getInt(-12, 12 + 1);
+		int y = (int)sourceY + RandomUtils.getInt(-8, 8 + 1);
+		int z = (int)sourceZ + RandomUtils.getInt(-12, 12 + 1);
 		y = Math.max(1, Math.min(world.getHeight() - 1, y));
 		
 		if (!world.blockExists(x, y, z)) return false;
@@ -77,9 +74,9 @@ public class BlockEnderBackpack extends BlockBackpack {
 		world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5,
 		                      "mob.endermen.portal", 1.0F, 1.0F);
 		
-		world.setBlock(x, y, z, blockID, RandomUtils.getInt(2, 6), 3);
+		world.setBlock(x, y, z, stack.itemID, RandomUtils.getInt(2, 6), 3);
 		TileEntityBackpack newBackpack = WorldUtils.get(world, x, y, z, TileEntityBackpack.class);
-		newBackpack.stack = backpack.stack;
+		newBackpack.stack = stack;
 		
 		return true;
 		
