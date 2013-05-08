@@ -1,8 +1,5 @@
 package net.mcft.copy.betterstorage.utils;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -15,8 +12,6 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet250CustomPayload;
 
 public class PlayerUtils {
 	
@@ -28,20 +23,9 @@ public class PlayerUtils {
 		player.closeInventory();
 		player.incrementWindowID();
 		
-		ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-		DataOutputStream dataStream = new DataOutputStream(byteStream);
-		
-		try {
-			dataStream.writeByte(PacketHandler.openGui);
-			dataStream.writeInt(player.currentWindowId);
-			dataStream.writeUTF(name);
-			dataStream.writeByte(columns);
-			dataStream.writeByte(rows);
-			dataStream.writeUTF(title);
-		} catch (Exception e) { throw new RuntimeException(e); }
-		
-		Packet packet = new Packet250CustomPayload("BetterStorage", byteStream.toByteArray());
-		player.playerNetServerHandler.sendPacketToPlayer(packet);
+		PacketUtils.sendPacket(player,
+				(byte)PacketHandler.openGui, player.currentWindowId,
+				name, (byte)columns, (byte)rows, title);
 		
 		player.openContainer = container;
 		player.openContainer.windowId = player.currentWindowId;
