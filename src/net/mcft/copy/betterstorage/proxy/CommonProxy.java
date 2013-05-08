@@ -120,12 +120,6 @@ public class CommonProxy implements IPlayerTracker {
 	}
 	
 	@ForgeSubscribe
-	public void onEntityConstructing(EntityConstructing event) {
-		if (event.entity instanceof EntityLiving)
-			ItemBackpack.initBackpackOpen((EntityLiving)event.entity);
-	}
-	
-	@ForgeSubscribe
 	public void onEntityJoinWorldEvent(EntityJoinWorldEvent event) {
 		if (!(event.entity instanceof EntityItem)) return;
 		EntityItem entity = (EntityItem)event.entity;

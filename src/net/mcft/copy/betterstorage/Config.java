@@ -24,6 +24,8 @@ public class Config {
 	
 	public static int enchantmentBaseId = 180;
 	
+	public static int backpackOpenDataWatcherId = 27;
+	
 	// More settings ...
 	public static int reinforcedChestColumns = 13;
 	public static int backpackRows = 3;
@@ -46,6 +48,8 @@ public class Config {
 		
 		enchantmentBaseId = config.get(Configuration.CATEGORY_GENERAL, "enchantmentBaseId", enchantmentBaseId,
 		                               "Uses up about 10 IDs starting from this ID.").getInt();
+		
+		backpackOpenDataWatcherId = config.get(Configuration.CATEGORY_GENERAL, "backpackOpenDataWatcherId", backpackOpenDataWatcherId).getInt();
 		
 		reinforcedChestColumns = config.get(categorySettings, "reinforcedChestColumns", reinforcedChestColumns,
 		                                   "Number of colums in reinforced chests. Valid values are 9, 11 and 13.").getInt(reinforcedChestColumns);

@@ -241,17 +241,22 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 	}
 	
 	public static PropertiesBackpack getBackpackData(EntityLiving entity) {
-		return EntityUtils.getOrCreateProperties(entity, PropertiesBackpack.class);
+		PropertiesBackpack backpackData = EntityUtils.getProperties(entity, PropertiesBackpack.class);
+		if (backpackData == null) {
+			backpackData = EntityUtils.createProperties(entity, PropertiesBackpack.class);
+			ItemBackpack.initBackpackOpen(entity);
+		}
+		return backpackData;
 	}
 	
 	public static void initBackpackOpen(EntityLiving entity) {
-		entity.getDataWatcher().addObject(Constants.isBackpackOpen, (byte)0);
+		entity.getDataWatcher().addObject(Config.backpackOpenDataWatcherId, (byte)0);
 	}
 	public static void setBackpackOpen(EntityLiving entity, boolean isOpen) {
-		entity.getDataWatcher().updateObject(Constants.isBackpackOpen, (byte)(isOpen ? 1 : 0));
+		entity.getDataWatcher().updateObject(Config.backpackOpenDataWatcherId, (byte)(isOpen ? 1 : 0));
 	}
 	public static boolean isBackpackOpen(EntityLiving entity) {
-		return (entity.getDataWatcher().getWatchableObjectByte(Constants.isBackpackOpen) != 0);
+		return (entity.getDataWatcher().getWatchableObjectByte(Config.backpackOpenDataWatcherId) != 0);
 	}
 	
 }
