@@ -136,35 +136,26 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 		Block blockBackpack = Block.blocksList[itemID];
 		Block blockClicked = Block.blocksList[world.getBlockId(x, y, z)];
 		
-		boolean isSolidOnTop = ((blockClicked != null) && blockClicked.isBlockSolidOnSide(world, x, y, z, ForgeDirection.UP));
-		
 		ForgeDirection orientation = DirectionUtils.getOrientation(player).getOpposite();
 		
-		// If the block clicked is air or snow,
-		// don't change the target coordinates, but set the side to 1 (top).
-		if ((blockClicked == null) ||
-		    (blockClicked == Block.snow)) side = 1;
-		// If the block clicked is not replaceable,
-		// adjust the coordinates depending on the side clicked.
-		else if ((blockClicked != Block.vine) &&
-		         (blockClicked != Block.tallGrass) &&
-		         (blockClicked != Block.deadBush) &&
-		         !blockClicked.isBlockReplaceable(world, x, y, z)) {
-			switch (side) {
-				case 0: y--; break;
-				case 1: y++; break;
-				case 2: z--; break;
-				case 3: z++; break;
-				case 4: x--; break;
-				case 5: x++; break;
-			}
+		// If a replacable block was clicked, move on.
+		// Otherwise, check if the top side was clicked and adjust the position.
+		if ((blockClicked != null) &&
+		    (blockClicked != Block.snow) &&
+		    (blockClicked != Block.vine) &&
+		    (blockClicked != Block.tallGrass) &&
+		    (blockClicked != Block.deadBush) &&
+		    !blockClicked.isBlockReplaceable(world, x, y, z)) {
+			if (side != 1) return false;
+			y++;
 		}
 		
-		// Return false if not placed on top of a solid block.
-		if ((side != 1) || !isSolidOnTop) return false;
+		// Return false if there's block is too low or too high.
+		if ((y <= 0) || (y >= world.getHeight() - 1)) return false;
 		
-		// Return false if there's not enough world height left.
-		if (y >= world.getHeight() - 1) return false;
+		// Return false if not placed on top of a solid block.	
+		Block blockBelow = Block.blocksList[world.getBlockId(x, y - 1, z)];
+		if ((blockBelow == null) || !blockBelow.isBlockSolidOnSide(world, x, y, z, ForgeDirection.UP)) return false;
 		
 		// Return false if the player can't edit the block.
 		if (!player.canPlayerEdit(x, y, z, side, stack)) return false;
