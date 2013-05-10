@@ -92,10 +92,10 @@ public class EnchantmentBetterStorage extends Enchantment {
 	public boolean canApplyAtEnchantingTable(ItemStack stack) {
 		if (type == BetterStorageEnchantment.getType("key")) {
 			IKey key = (stack.getItem() instanceof IKey ? (IKey)stack.getItem() : null);
-			return (key != null && key.canApplyEnchantment(stack, this));
+			return ((key != null) && key.canApplyEnchantment(stack, this));
 		} else if (type == BetterStorageEnchantment.getType("lock")) {
 			ILock lock = (stack.getItem() instanceof ILock ? (ILock)stack.getItem() : null);
-			return (lock != null && lock.canApplyEnchantment(stack, this));
+			return ((lock != null) && lock.canApplyEnchantment(stack, this));
 		} else return false;
 	}
 	
