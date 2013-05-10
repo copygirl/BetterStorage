@@ -45,9 +45,16 @@ public class ItemThaumcraftBackpack extends ItemBackpack implements IVisRepairab
 	@Override
 	public int getItemEnchantability() { return 25; }
 	
-	private void fluxEffects(EntityPlayer player, ItemStack itemStack) {
+	@Override
+	public void onArmorTickUpdate(World world, EntityPlayer player, ItemStack itemStack) {
+		super.onArmorTickUpdate(world, player, itemStack);
+		fluxEffects(player, itemStack);
+		repairItems(player, itemStack);
+	}
+	
+	private void fluxEffects(EntityPlayer player, ItemStack backpack) {
 		
-		if (player.worldObj.isRemote || (itemStack.stackSize == 0) ||
+		if (player.worldObj.isRemote || (backpack.stackSize == 0) ||
 		    (player.ticksExisted % 2000 != 0)) return;
 		
 		// Get closest aura node.
@@ -90,17 +97,15 @@ public class ItemThaumcraftBackpack extends ItemBackpack implements IVisRepairab
 			for (BackpackFluxEffect e : BackpackFluxEffect.effects.values())
 				if (i++ == index) effect = e;
 		}
-		effect.apply(player, itemStack);
+		effect.apply(player, backpack);
 		
 		// Remove some flux from the aura.
 		ThaumcraftApi.queueNodeChanges(auraId, 0, 0, false, fluxReduce, 0, 0, 0);
 		
 	}
 	
-	@Override
-	public void onArmorTickUpdate(World world, EntityPlayer player, ItemStack itemStack) {
-		super.onArmorTickUpdate(world, player, itemStack);
-		fluxEffects(player, itemStack);
+	public void repairItems(EntityPlayer player, ItemStack backpack) {
+		// TODO 
 	}
 	
 	// Thaumcraft implementations
