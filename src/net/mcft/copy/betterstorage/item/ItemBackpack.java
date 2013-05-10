@@ -111,21 +111,13 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 		
 	}
 	
-	private int getChestSlotOffset(EntityPlayer player)
-	{
+	// For compatibility with Galacticraft,
+	private int getChestSlotOffset(EntityPlayer player) {
 		return isExact(player.inventory, "micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryPlayer") ? 6 : 1;
 	}
-	
-	private static boolean isExact(Object paramObject, String paramString)
-	{
-		try
-		{
-			return paramObject.getClass().getName().equals(paramString); 
-		} 
-		catch (Exception localException) 
-		{
-			return false;
-		}
+	private static boolean isExact(Object obj, String str) {
+		try { return obj.getClass().getName().equals(str); } 
+		catch (Exception e) { return false; }
 	}
 	
 	@Override
