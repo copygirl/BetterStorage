@@ -17,17 +17,16 @@ import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.EnumArmorMaterial;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumHelper;
 import net.minecraftforge.common.ForgeDirection;
@@ -37,9 +36,14 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 	
 	public static final EnumArmorMaterial material = EnumHelper.addArmorMaterial(
 			"backpack", 240, new int[]{ 0, 2, 0, 0 }, 15);
+	static { material.customCraftingMaterial = Item.leather; }
 	
-	public ItemBackpack(int id) {
+	protected ItemBackpack(int id, EnumArmorMaterial material) {
 		super(id - 256, material, 0, 1);
+		setMaxDamage(240);
+	}
+	public ItemBackpack(int id) {
+		this(id, EnumArmorMaterial.CLOTH);
 	}
 	
 	public String getName() { return "container.backpack"; }
@@ -66,43 +70,27 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 	}
 	
 	// Item stuff
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister iconRegister) {
-		itemIcon = iconRegister.registerIcon("betterstorage:backpack");
-	}
 	@Override
 	@SideOnly(Side.CLIENT)
 	public int getSpriteNumber() { return 0; }
 	
 	@Override
-	@SideOnly(Side.CLIENT)
-	public boolean requiresMultipleRenderPasses() { return false; }
-	@Override
-	public boolean hasColor(ItemStack stack) { return false; }
-	@Override
 	public boolean isValidArmor(ItemStack stack, int armorType) { return false; }
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public Icon getIconFromDamageForRenderPass(int damage, int pass) { return itemIcon; }
 	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public ModelBiped getArmorModel(EntityLiving entity, ItemStack stack, int slot) {
 		return ModelBackpackArmor.instance;
 	}
-	
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, int slot, int layer) {
-		return Constants.backpackTexture;
+		return String.format(Constants.backpackTexture, layer - 1);
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advancedTooltips) {
-		if ((getBackpack(player) != stack) || !canUnequip(player, stack)) return;
+		if ((getBackpack(player) != stack) || canUnequip(player, stack)) return;
 		list.add("Contains items. Hold shift and right click");
 		list.add("ground with empty hand to unequip.");
 	}

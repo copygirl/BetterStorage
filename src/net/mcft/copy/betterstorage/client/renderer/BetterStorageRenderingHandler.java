@@ -17,8 +17,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class BetterStorageRenderingHandler implements ISimpleBlockRenderingHandler {
 	
-	private TileEntity tileEntity;
-	private TileEntitySpecialRenderer tileEntityRenderer;
+	public TileEntity tileEntity;
+	public TileEntitySpecialRenderer tileEntityRenderer;
 	
 	public final int renderId;
 	public final boolean render3dInInventory;

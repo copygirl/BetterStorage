@@ -12,7 +12,7 @@ public class Constants {
 	public static final String lockerTexture = gfxbase + "models/locker.png";
 	public static final String largeLockerTexture = gfxbase + "models/locker_large.png";
 	public static final String armorStandTexture = gfxbase + "models/armorstand.png";
-	public static final String backpackTexture = gfxbase + "models/backpack.png";
+	public static final String backpackTexture = gfxbase + "models/backpack_%d.png";
 	public static final String enderBackpackTexture = gfxbase + "models/enderBackpack.png";
 	
 }

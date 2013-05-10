@@ -1,5 +1,8 @@
 package net.mcft.copy.betterstorage.proxy;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
@@ -7,12 +10,14 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.block.BlockArmorStand;
 import net.mcft.copy.betterstorage.block.TileEntityArmorStand;
 import net.mcft.copy.betterstorage.block.TileEntityBackpack;
 import net.mcft.copy.betterstorage.block.TileEntityLocker;
 import net.mcft.copy.betterstorage.block.TileEntityReinforcedChest;
 import net.mcft.copy.betterstorage.client.renderer.BetterStorageRenderingHandler;
+import net.mcft.copy.betterstorage.client.renderer.ItemRendererBackpack;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityArmorStandRenderer;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityBackpackRenderer;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityLockerRenderer;
@@ -28,6 +33,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumMovingObjectType;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.event.ForgeSubscribe;
 
@@ -39,10 +45,14 @@ public class ClientProxy extends CommonProxy {
 	public static int armorStandRenderId;
 	public static int backpackRenderId;
 	
+	public static final Map<Class<? extends TileEntity>, BetterStorageRenderingHandler> renderingHandlers =
+			new HashMap<Class<? extends TileEntity>, BetterStorageRenderingHandler>();
+	
 	@Override
 	public void init() {
 		super.init();
 		TickRegistry.registerTickHandler(new TickHandler(), Side.CLIENT);
+		MinecraftForgeClient.registerItemRenderer(BetterStorage.backpack.blockID, new ItemRendererBackpack());
 	}
 	
 	@Override
@@ -60,6 +70,7 @@ public class ClientProxy extends CommonProxy {
 		BetterStorageRenderingHandler renderingHandler =
 			new BetterStorageRenderingHandler(tileEntityClass, renderer, render3dInInventory, rotation, scale, yOffset);
 		RenderingRegistry.registerBlockHandler(renderingHandler);
+		renderingHandlers.put(tileEntityClass, renderingHandler);
 		return renderingHandler.getRenderId();
 	}
 	private int registerTileEntityRenderer(Class<? extends TileEntity> tileEntityClass, TileEntitySpecialRenderer renderer) {

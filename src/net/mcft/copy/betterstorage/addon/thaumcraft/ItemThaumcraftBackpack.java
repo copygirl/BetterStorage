@@ -21,7 +21,7 @@ import net.minecraft.world.World;
 public class ItemThaumcraftBackpack extends ItemBackpack implements IVisRepairable, IVisDiscounter {
 	
 	public ItemThaumcraftBackpack(int id) {
-		super(id);
+		super(id, material);
 		setMaxDamage(290);
 	}
 	

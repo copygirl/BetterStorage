@@ -16,7 +16,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ItemEnderBackpack extends ItemBackpack {
 	
 	public ItemEnderBackpack(int id) {
-		super(id);
+		super(id, material);
 		setMaxDamage(280);
 	}
 	

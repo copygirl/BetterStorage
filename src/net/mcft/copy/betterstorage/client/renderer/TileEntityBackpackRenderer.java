@@ -10,8 +10,10 @@ import net.mcft.copy.betterstorage.block.TileEntityBackpack;
 import net.mcft.copy.betterstorage.client.model.ModelBackpack;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.utils.DirectionUtils;
+import net.mcft.copy.betterstorage.utils.RenderUtils;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 
@@ -24,11 +26,9 @@ public class TileEntityBackpackRenderer extends TileEntitySpecialRenderer {
 		
 		if ((backpack.worldObj == null) && (backpack.blockType == null)) return;
 		Item item = Item.itemsList[backpack.getBlockType().blockID];
-		bindTextureByName(((ItemBackpack)item).getArmorTexture(null, null, 0, 0));
 		
 		GL11.glPushMatrix();
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glTranslated(x, y + 2.0, z + 1.0);
 		GL11.glScalef(1.0F, -1.0F, -1.0F);
 		GL11.glTranslated(0.5F, 0.5F, 0.5F);
@@ -41,7 +41,15 @@ public class TileEntityBackpackRenderer extends TileEntitySpecialRenderer {
 		angle = 1.0F - angle;
 		angle = 1.0F - angle * angle;
 		backpackModel.setLidRotation((float)(angle * Math.PI / 4.0));
-		backpackModel.renderAll();
+		
+		int renderPasses = item.getRenderPasses(0);
+		for (int pass = 1; pass < renderPasses + 1; pass++) {
+			String texture = ((ItemBackpack)item).getArmorTexture(null, null, 0, pass);
+			ItemStack stack = ((backpack.stack != null) ? backpack.stack : new ItemStack(item));
+			RenderUtils.setColorFromInt(item.getColorFromItemStack(stack, pass - 1));
+			bindTextureByName(texture);
+			backpackModel.renderAll();
+		}
 		
 		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 		GL11.glPopMatrix();

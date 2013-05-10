@@ -2,7 +2,6 @@ package net.mcft.copy.betterstorage.block;
 
 import net.mcft.copy.betterstorage.Config;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
-import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,11 +17,6 @@ public class TileEntityBackpack extends TileEntityContainer {
 	
 	/** Affects if items drop when the backpack is destroyed. */
 	public boolean equipped = false;
-	
-	public String getTexture() {
-		if (stack == null) return Constants.backpackTexture;
-		return ((ItemBackpack)stack.getItem()).getArmorTexture(stack, null, 0, 0);
-	}
 	
 	// Equipping / unequipping
 	
