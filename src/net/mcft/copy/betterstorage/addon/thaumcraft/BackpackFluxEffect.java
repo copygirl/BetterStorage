@@ -5,14 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.mcft.copy.betterstorage.Config;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.utils.RandomUtils;
-import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet28EntityVelocity;
@@ -49,18 +48,19 @@ public abstract class BackpackFluxEffect {
 			player.worldObj.playSoundAtEntity(player, "random.breath", 0.75F, 0.5F);
 		} };
 		new BackpackFluxEffect(EnumTag.VOID) { @Override public void apply(EntityPlayer player, ItemStack backpack) {
-			int size = Config.backpackRows * ((ItemBackpack)backpack.getItem()).getColumns();
-			ItemStack[] contents = StackUtils.getStackContents(backpack, size);
+			ItemBackpack backpackType = (ItemBackpack)backpack.getItem();
+			int size = backpackType.getRows() * backpackType.getColumns();
+			IInventory inventory = ItemBackpack.getBackpackItems(player);
 			List<Integer> indices = new ArrayList<Integer>();
-			for (int i = 0; i < contents.length; i++)
-				if (contents[i] != null) indices.add(i);
+			for (int i = 0; i < inventory.getSizeInventory(); i++)
+				if (inventory.getStackInSlot(i) != null) indices.add(i);
 			if (indices.size() <= 0) return;
 			int index = indices.get(RandomUtils.getInt(indices.size()));
-			ItemStack item = contents[index].splitStack(1);
-			WorldUtils.dropStackFromEntity(player, item).delayBeforeCanPickup = 8;
-			if (contents[index].stackSize <= 0)
-				contents[index] = null;
-			StackUtils.setStackContents(backpack, contents);
+			ItemStack item = inventory.getStackInSlot(index).copy();
+			ItemStack drop = item.splitStack(1);
+			WorldUtils.dropStackFromEntity(player, drop).delayBeforeCanPickup = 8;
+			if (item.stackSize <= 0) item = null;
+			inventory.setInventorySlotContents(index, item);
 			player.worldObj.playSoundAtEntity(player, "random.pop", 0.75F, 0.5F);
 		} };
 		new BackpackFluxEffect(EnumTag.VISION) { @Override public void apply(EntityPlayer player, ItemStack backpack) {
