@@ -104,11 +104,28 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 		int index = 5 + armorType;
 		Slot slotBefore = player.inventoryContainer.getSlot(index);
 		if (slotBefore instanceof SlotArmorBackpack) return;
-		int slotIndex = player.inventory.getSizeInventory() - 1 - armorType;
+		int slotIndex = player.inventory.getSizeInventory() - getChestSlotOffset(player) - armorType;
 		SlotArmorBackpack slot = new SlotArmorBackpack(player.inventory, slotIndex, 8, 8 + armorType * 18);
 		slot.slotNumber = index;
 		player.inventoryContainer.inventorySlots.set(index, slot);
 		
+	}
+	
+	private int getChestSlotOffset(EntityPlayer player)
+	{
+		return isExact(player.inventory, "micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryPlayer") ? 6 : 1;
+	}
+	
+	private static boolean isExact(Object paramObject, String paramString)
+	{
+		try
+		{
+			return paramObject.getClass().getName().equals(paramString); 
+		} 
+		catch (Exception localException) 
+		{
+			return false;
+		}
 	}
 	
 	@Override
