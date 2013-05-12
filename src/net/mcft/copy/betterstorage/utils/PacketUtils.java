@@ -9,15 +9,18 @@ import net.minecraft.network.packet.Packet250CustomPayload;
 
 public class PacketUtils {
 	
+	public static void sendPacket(EntityPlayer player, Packet packet) {
+		((EntityPlayerMP)player).playerNetServerHandler.sendPacketToPlayer(packet);
+	}
+	public static void sendPacket(EntityPlayer player, Object... args) {
+		sendPacket(player, makePacket(args));
+	}
+	
 	public static Packet makePacket(Object... args) {
 		ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
 		DataOutputStream dataStream = new DataOutputStream(byteStream);
 		for (Object obj : args) writeObject(dataStream, obj);
 		return new Packet250CustomPayload("BetterStorage", byteStream.toByteArray());
-	}
-	
-	public static void sendPacket(EntityPlayer player, Object... args) {
-		((EntityPlayerMP)player).playerNetServerHandler.sendPacketToPlayer(makePacket(args));
 	}
 	
 	private static void writeObject(DataOutputStream stream, Object object) {

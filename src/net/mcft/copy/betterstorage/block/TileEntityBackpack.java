@@ -28,6 +28,7 @@ public class TileEntityBackpack extends TileEntityContainer {
 	}
 	
 	public void unequip(EntityPlayer player) {
+		
 		if (!worldObj.isRemote) {
 			ItemStack[] items = ItemBackpack.getBackpackData(player).contents;
 			
@@ -38,11 +39,12 @@ public class TileEntityBackpack extends TileEntityContainer {
 				items = StackUtils.getStackContents(stack, contents.length);
 				StackUtils.remove(stack, "Items");
 			}
-			
+			// Move items from the player backpack data to this tile entity.
 			if (items != null)
 				System.arraycopy(items, 0, contents, 0, items.length);
 		}
 		ItemBackpack.removeBackpack(player);
+		
 	}
 	
 	// TileEntityContainer stuff

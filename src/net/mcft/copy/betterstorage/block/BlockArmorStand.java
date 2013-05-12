@@ -5,15 +5,14 @@ import java.util.Random;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.mcft.copy.betterstorage.proxy.ClientProxy;
+import net.mcft.copy.betterstorage.utils.PacketUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet103SetSlot;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
@@ -118,8 +117,7 @@ public class BlockArmorStand extends BlockContainer {
 			    ((armor == null) || armor.getItem().isValidArmor(armor, 3 - slot))) {
 				armorStand.armor[slot] = player.inventory.armorInventory[slot];
 				player.inventory.armorInventory[slot] = item;
-				Packet packet = new Packet103SetSlot(0, 8 - slot, item);
-				((EntityPlayerMP)player).playerNetServerHandler.sendPacketToPlayer(packet);
+				PacketUtils.sendPacket(player, new Packet103SetSlot(0, 8 - slot, item));
 				world.markBlockForUpdate(x, y, z);
 			}
 		} else if (((item != null) && (holding == null)) ||

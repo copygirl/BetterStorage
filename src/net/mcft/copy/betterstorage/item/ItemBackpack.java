@@ -111,7 +111,7 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 		
 	}
 	
-	// For compatibility with Galacticraft,
+	// For compatibility with Galacticraft.
 	private int getChestSlotOffset(EntityPlayer player) {
 		return isExact(player.inventory, "micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryPlayer") ? 6 : 1;
 	}
@@ -219,13 +219,10 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 	}
 	public static void setBackpack(EntityLiving entity, ItemStack backpack, ItemStack[] contents) {
 		entity.setCurrentItemOrArmor(3, backpack);
-		if (!entity.worldObj.isRemote)
-			getBackpackData(entity).contents = contents;
+		getBackpackData(entity).contents = contents;
 	}
 	public static void removeBackpack(EntityLiving entity) {
-		if (!entity.worldObj.isRemote)
-			getBackpackData(entity).contents = null;
-		entity.setCurrentItemOrArmor(3, null);
+		setBackpack(entity, null, null);
 	}
 	
 	public static IInventory getBackpackItems(EntityLiving carrier, EntityPlayer player) {

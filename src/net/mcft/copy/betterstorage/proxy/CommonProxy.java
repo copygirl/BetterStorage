@@ -15,6 +15,7 @@ import net.mcft.copy.betterstorage.item.ItemEnderBackpack;
 import net.mcft.copy.betterstorage.misc.PropertiesBackpack;
 import net.mcft.copy.betterstorage.utils.EntityUtils;
 import net.mcft.copy.betterstorage.utils.NbtUtils;
+import net.mcft.copy.betterstorage.utils.PacketUtils;
 import net.mcft.copy.betterstorage.utils.PlayerUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
@@ -27,6 +28,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.packet.Packet103SetSlot;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.Event.Result;
 import net.minecraftforge.event.ForgeSubscribe;
@@ -79,10 +81,23 @@ public class CommonProxy implements IPlayerTracker {
 		if (player.getCurrentEquippedItem() != null || !player.isSneaking()) return;
 		ItemStack backpack = ItemBackpack.getBackpack(player);
 		if (backpack == null) return;
+		
 		// Try to place the backpack as if it was being held and used by the player.
-		backpack.getItem().onItemUse(backpack, player, player.worldObj, event.x, event.y, event.z, event.face, 0, 0, 0);
-		// Only continue if the backpack was places successfully.
-		if (backpack.stackSize > 0) return;
+		backpack.getItem().onItemUse(backpack, player, player.worldObj,
+		                             event.x, event.y, event.z, event.face, 0, 0, 0);
+		
+		if (backpack.stackSize <= 0) backpack = null;
+		
+		// Send set slot packet to for the chest slot to make
+		// sure the client has the same information as the server.
+		// This is especially important when there's a large delay, the
+		// client might think e placed the backpack, but server disagrees.
+		if (!player.worldObj.isRemote)
+			PacketUtils.sendPacket(player, new Packet103SetSlot(0, 6, backpack));
+		
+		// Only continue if the backpack was placed successfully.
+		if (backpack != null) return;
+		
 		player.swingItem();
 		event.useBlock = Result.DENY;
 		
@@ -91,8 +106,8 @@ public class CommonProxy implements IPlayerTracker {
 	@ForgeSubscribe
 	public void onEntityInteract(EntityInteractEvent event) {
 		
-		// Right clicking the back of another player
-		// will open the GUI for that backpack.
+		// Right clicking the back equipped by another
+		// entity will open a GUI for that backpack.
 		
 		if (event.entity.worldObj.isRemote) return;
 		EntityPlayerMP player = (EntityPlayerMP)event.entity;
@@ -219,7 +234,7 @@ public class CommonProxy implements IPlayerTracker {
 	public void onPlayerRespawn(EntityPlayer player) {
 		
 		// If the player dies when when keepInventory is on and respawns,
-		// retrieve the backpack items from the eir persistent NBT tag.
+		// retrieve the backpack items from eir persistent NBT tag.
 		
 		NBTTagCompound compound = player.getEntityData();
 		if (!compound.hasKey(EntityPlayer.PERSISTED_NBT_TAG)) return;

@@ -73,8 +73,10 @@ public class BlockBackpack extends BlockContainer {
 		if (world.isRemote || !player.isSneaking() ||
 		    (ItemBackpack.getBackpack(player) != null))
 			return world.setBlockToAir(x, y, z);
-		TileEntityBackpack backpack = WorldUtils.get(world, x, y, z, TileEntityBackpack.class);
-		return backpack.equip(player);
+		// This currently only runs on the server. Would be nice if it worked on
+		// the client, but if the client thinks e's equipped the backpack, and it's
+		// already gone on the server e doesn't have a way to tell the client.
+		return WorldUtils.get(world, x, y, z, TileEntityBackpack.class).equip(player);
 	}
 	
 	@Override
