@@ -13,6 +13,8 @@ import net.minecraftforge.client.IItemRenderer;
 @SideOnly(Side.CLIENT)
 public class ItemRendererBackpack implements IItemRenderer {
 	
+	public static final ItemRendererBackpack instance = new ItemRendererBackpack();
+	
 	@Override
 	public boolean handleRenderType(ItemStack item, ItemRenderType type) { return true; }
 	@Override

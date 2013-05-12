@@ -11,6 +11,7 @@ import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.mcft.copy.betterstorage.BetterStorage;
+import net.mcft.copy.betterstorage.addon.Addon;
 import net.mcft.copy.betterstorage.block.BlockArmorStand;
 import net.mcft.copy.betterstorage.block.TileEntityArmorStand;
 import net.mcft.copy.betterstorage.block.TileEntityBackpack;
@@ -52,7 +53,9 @@ public class ClientProxy extends CommonProxy {
 	public void init() {
 		super.init();
 		TickRegistry.registerTickHandler(new TickHandler(), Side.CLIENT);
-		MinecraftForgeClient.registerItemRenderer(BetterStorage.backpack.blockID, new ItemRendererBackpack());
+		MinecraftForgeClient.registerItemRenderer(BetterStorage.backpack.blockID, ItemRendererBackpack.instance);
+		MinecraftForgeClient.registerItemRenderer(BetterStorage.enderBackpack.blockID, ItemRendererBackpack.instance);
+		Addon.postClientInitAll();
 	}
 	
 	@Override

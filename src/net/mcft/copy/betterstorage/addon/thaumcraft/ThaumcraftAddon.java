@@ -10,9 +10,11 @@ import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.addon.Addon;
 import net.mcft.copy.betterstorage.block.BlockBackpack;
 import net.mcft.copy.betterstorage.block.ChestMaterial;
+import net.mcft.copy.betterstorage.client.renderer.ItemRendererBackpack;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.misc.Registry;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.Configuration;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
@@ -117,6 +119,11 @@ public class ThaumcraftAddon extends Addon {
 	@Override
 	public void registerTileEntites() {
 		GameRegistry.registerTileEntity(TileEntityThaumcraftBackpack.class, "container.thaumcraftBackpack");
+	}
+	
+	@Override
+	public void postClientInit() {
+		MinecraftForgeClient.registerItemRenderer(thaumcraftBackpackId, ItemRendererBackpack.instance);
 	}
 	
 	@Override

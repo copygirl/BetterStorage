@@ -41,6 +41,9 @@ public abstract class Addon {
 	public static void registerAllTileEntites() {
 		for (Addon addon : addons) addon.registerTileEntites();
 	}
+	public static void postClientInitAll() {
+		for (Addon addon : addons) addon.postClientInit();
+	}
 	public static void postInitAll() {
 		for (Addon addon : addons) addon.postInit();
 	}
@@ -64,6 +67,8 @@ public abstract class Addon {
 	public abstract void addLocalizations(LanguageRegistry lang);
 	
 	public abstract void registerTileEntites();
+	
+	public abstract void postClientInit();
 	
 	public abstract void postInit();
 	
