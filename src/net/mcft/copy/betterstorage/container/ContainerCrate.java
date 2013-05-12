@@ -33,6 +33,9 @@ public class ContainerCrate extends ContainerBetterStorage {
 		super.detectAndSendChanges();
 		
 		CratePileData data = playerView.data;
+		// detectAndSendChanges gets called after a crate gets broken.
+		// So to prevent a division by zero, just return.
+		if (data.getNumCrates() <= 0) return;
 		fullness = data.getOccupiedSlots() * 255 / data.getCapacity();
 		
 		if (lastFullness != fullness)
