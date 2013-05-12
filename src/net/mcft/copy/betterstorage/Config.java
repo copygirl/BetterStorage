@@ -49,7 +49,8 @@ public class Config {
 		enchantmentBaseId = config.get(Configuration.CATEGORY_GENERAL, "enchantmentBaseId", enchantmentBaseId,
 		                               "Uses up about 10 IDs starting from this ID.").getInt();
 		
-		backpackOpenDataWatcherId = config.get(Configuration.CATEGORY_GENERAL, "backpackOpenDataWatcherId", backpackOpenDataWatcherId).getInt();
+		backpackOpenDataWatcherId = config.get(Configuration.CATEGORY_GENERAL, "backpackOpenDataWatcherId", backpackOpenDataWatcherId,
+		                                       "Valid values are 0 to 31, though some are already occupied.").getInt();
 		
 		reinforcedChestColumns = config.get(categorySettings, "reinforcedChestColumns", reinforcedChestColumns,
 		                                   "Number of colums in reinforced chests. Valid values are 9, 11 and 13.").getInt(reinforcedChestColumns);
@@ -69,6 +70,7 @@ public class Config {
 		
 		reinforcedChestColumns = validateColumnAmount(reinforcedChestColumns, "reinforcedChestColumns", 13);
 		backpackRows = validateRange(backpackRows, "backpackRows", 1, 6);
+		backpackOpenDataWatcherId = validateRange(backpackOpenDataWatcherId, "backpackOpenDataWatcherId", 0, 31);
 		
 	}
 	
