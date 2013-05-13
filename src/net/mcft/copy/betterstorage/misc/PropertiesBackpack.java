@@ -2,7 +2,6 @@ package net.mcft.copy.betterstorage.misc;
 
 import net.mcft.copy.betterstorage.utils.NbtUtils;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -12,19 +11,26 @@ public class PropertiesBackpack implements IExtendedEntityProperties {
 	
 	public static final String identifier = "BetterStorage.Backpack";
 	
-	public EntityLiving entity;
+	// public EntityLiving entity;
 	public ItemStack[] contents = null;
-
+	
+	/** If the backpack has been initialized for the entity yet. */
 	public boolean initialized = false;;
+	/** How many players are using the backpack (server only). */
 	public int playersUsing = 0;
+	/** If the backpack contains any items (wearer only),
+	 *  because the client doesn't have the contents. */
 	public boolean hasItems = false;
+	/** If the player has a cloak, it is hidden
+	 *  for as long as e has a backpack equipped. */
+	public String hiddenCloak = null;
 	
 	public float lidAngle = 0;
 	public float prevLidAngle = 0;
 	
 	@Override
 	public void init(Entity entity, World world) {
-		this.entity = (EntityLiving)entity;
+		// this.entity = (EntityLiving)entity;
 	}
 	
 	@Override

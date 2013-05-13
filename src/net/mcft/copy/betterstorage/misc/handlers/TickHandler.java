@@ -4,11 +4,9 @@ import java.util.EnumSet;
 import java.util.List;
 
 import net.mcft.copy.betterstorage.item.ItemBackpack;
-import net.mcft.copy.betterstorage.misc.PropertiesHiddenCloak;
-import net.mcft.copy.betterstorage.utils.EntityUtils;
+import net.mcft.copy.betterstorage.misc.PropertiesBackpack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.ITickHandler;
@@ -29,22 +27,19 @@ public class TickHandler implements ITickHandler {
 		World world = Minecraft.getMinecraft().theWorld;
 		if (world == null) return;
 		for (EntityPlayer player : (List<EntityPlayer>)world.playerEntities) {
-			ItemStack chestArmor = player.getCurrentArmor(2);
-			boolean hasBackpack = ((chestArmor != null) && (chestArmor.getItem() instanceof ItemBackpack));
+			boolean hasBackpack = (ItemBackpack.getBackpack(player) != null);
+			PropertiesBackpack backpackData = ItemBackpack.getBackpackData(player);
 			// If player has a cloak and a backpack, hide
 			// the cloak, and save it to restore later.
 			if (hasBackpack && (player.cloakUrl != null)) {
-				PropertiesHiddenCloak hiddenCloak = EntityUtils.getOrCreateProperties(player, PropertiesHiddenCloak.class);
-				hiddenCloak.cloakUrl = player.cloakUrl;
+				backpackData.hiddenCloak = player.cloakUrl;
 				player.cloakUrl = null;
 			// If the player has no backpack and no cloak,
 			// see if there's one saved away and restore it.
-			} else if (!hasBackpack && (player.cloakUrl == null)) {
-				PropertiesHiddenCloak hiddenCloak = EntityUtils.getProperties(player, PropertiesHiddenCloak.class);
-				if ((hiddenCloak != null) && (hiddenCloak.cloakUrl != null)) {
-					player.cloakUrl = hiddenCloak.cloakUrl;
-					hiddenCloak.cloakUrl = null;
-				}
+			} else if (!hasBackpack && (player.cloakUrl == null) &&
+			           (backpackData.hiddenCloak != null)) {
+				player.cloakUrl = backpackData.hiddenCloak;
+				backpackData.hiddenCloak = null;
 			}
 		}
 	}
