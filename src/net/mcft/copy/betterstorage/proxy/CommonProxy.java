@@ -92,9 +92,9 @@ public class CommonProxy implements IPlayerTracker {
 	public void onSpecialSpawn(SpecialSpawn event) {
 		
 		double probability = 0.0;
-		if (event.entityLiving instanceof EntityPigZombie) probability = 0.0004;
-		else if (event.entityLiving instanceof EntityZombie) probability = 0.001;
-		else if (event.entityLiving instanceof EntitySkeleton) probability = 0.00025;
+		if (event.entityLiving instanceof EntityPigZombie) probability = 1.0 / 2000;
+		else if (event.entityLiving instanceof EntityZombie) probability = 1.0 / 1000;
+		else if (event.entityLiving instanceof EntitySkeleton) probability = 1.0 / 2500;
 		if (RandomUtils.getDouble() >= probability) return;
 		ItemBackpack.getBackpackData(event.entityLiving).spawnsWithBackpack = true;
 		
