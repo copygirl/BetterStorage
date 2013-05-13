@@ -64,7 +64,7 @@ public class BlockEnderBackpack extends BlockBackpack {
 		}
 		
 		Packet packet = PacketUtils.makePacket(
-				(byte)PacketHandler.backpackTeleport,
+				PacketHandler.backpackTeleport,
 				sourceX, sourceY, sourceZ, x, y, z);
 		MinecraftServer.getServer().getConfigurationManager().sendToAllNear(
 				sourceX, sourceY, sourceZ, 512.0, world.getWorldInfo().getDimension(), packet);
@@ -106,6 +106,8 @@ public class BlockEnderBackpack extends BlockBackpack {
 		public boolean isUseableByPlayer(EntityPlayer player) {
 			return WorldUtils.isTileEntityUsableByPlayer(backpack, player);
 		}
+		@Override
+		public void onInventoryChanged() {  }
 		@Override
 		public void openChest() { backpack.onContainerOpened(); }
 		@Override

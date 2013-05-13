@@ -11,8 +11,10 @@ import net.mcft.copy.betterstorage.container.SlotArmorBackpack;
 import net.mcft.copy.betterstorage.inventory.InventoryStacks;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.misc.PropertiesBackpack;
+import net.mcft.copy.betterstorage.misc.handlers.PacketHandler;
 import net.mcft.copy.betterstorage.utils.DirectionUtils;
 import net.mcft.copy.betterstorage.utils.EntityUtils;
+import net.mcft.copy.betterstorage.utils.PacketUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
@@ -60,16 +62,19 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 		return new InventoryStacks(getName(), backpackData.contents);
 	}
 	
-	public boolean canUnequip(EntityPlayer player, ItemStack backpack) {
-		// For compatibility with previous versions:
-		// Do not allow backpacks that still have the items tag to be taken from the slot.
-		PropertiesBackpack backpackData = getBackpackData(player);
-		return (!StackUtils.has(backpack, "Items") &&
-				((backpackData.contents == null) ||
-		         StackUtils.isEmpty(backpackData.contents)));
+	public boolean containsItems(PropertiesBackpack backpackData, ItemStack backpack) {
+		return (backpackData.hasItems || stackHasItems(backpack) ||
+		        ((backpackData.contents != null) && !StackUtils.isEmpty(backpackData.contents)));
+	}
+	// For compatibility with previous versions.
+	public boolean stackHasItems(ItemStack backpack) {
+		int size = getColumns() * getRows();
+		return (StackUtils.has(backpack, "Items") &&
+		        !StackUtils.isEmpty(StackUtils.getStackContents(backpack, size)));
 	}
 	
 	// Item stuff
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public int getSpriteNumber() { return 0; }
@@ -90,9 +95,17 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advancedTooltips) {
-		if ((getBackpack(player) != stack) || canUnequip(player, stack)) return;
-		list.add("Contains items. Hold shift and right click");
-		list.add("ground with empty hand to unequip.");
+		if (getBackpack(player) != stack) return;
+		PropertiesBackpack backpackData = getBackpackData(player);
+		boolean containsItems = containsItems(backpackData, stack);
+		if (ItemBackpack.isBackpackOpen(player)) {
+			if (containsItems)
+				list.add("Contains items.");
+			list.add("Currently being used by a player.");
+		} else if (containsItems) {
+			list.add("Contains items. Hold shift and right click");
+			list.add("ground with empty hand to unequip.");
+		}
 	}
 	
 	@Override
@@ -210,7 +223,6 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 	}
 	
 	// Helper functions
-	
 	public static ItemStack getBackpack(EntityLiving entity) {
 		ItemStack backpack = entity.getCurrentArmor(2);
 		if ((backpack != null) &&
@@ -219,7 +231,9 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 	}
 	public static void setBackpack(EntityLiving entity, ItemStack backpack, ItemStack[] contents) {
 		entity.setCurrentItemOrArmor(3, backpack);
-		getBackpackData(entity).contents = contents;
+		PropertiesBackpack backpackData = getBackpackData(entity);
+		backpackData.contents = contents;
+		ItemBackpack.updateHasItems(entity, backpackData);
 	}
 	public static void removeBackpack(EntityLiving entity) {
 		setBackpack(entity, null, null);
@@ -233,14 +247,28 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 	public static IInventory getBackpackItems(EntityLiving carrier) {
 		return getBackpackItems(carrier, null);
 	}
+
 	
+	public static void initBackpackData(EntityLiving entity) {
+		EntityUtils.createProperties(entity, PropertiesBackpack.class);
+	}
 	public static PropertiesBackpack getBackpackData(EntityLiving entity) {
 		PropertiesBackpack backpackData = EntityUtils.getProperties(entity, PropertiesBackpack.class);
-		if (backpackData == null) {
-			backpackData = EntityUtils.createProperties(entity, PropertiesBackpack.class);
+		if (!backpackData.initialized) {
 			ItemBackpack.initBackpackOpen(entity);
+			updateHasItems(entity, backpackData);
+			backpackData.initialized = true;
 		}
 		return backpackData;
+	}
+	
+	public static void updateHasItems(EntityLiving entity, PropertiesBackpack backpackData) {
+		if (entity.worldObj.isRemote || !(entity instanceof EntityPlayer)) return;
+		EntityPlayer player = (EntityPlayer)entity;
+		boolean hasItems = ((backpackData.contents != null) && !StackUtils.isEmpty(backpackData.contents));
+		if (backpackData.hasItems == hasItems) return;
+		PacketUtils.sendPacket(player, PacketHandler.backpackHasItems, hasItems);
+		backpackData.hasItems = hasItems;
 	}
 	
 	public static void initBackpackOpen(EntityLiving entity) {

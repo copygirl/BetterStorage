@@ -36,9 +36,11 @@ public class SlotArmorBackpack extends Slot {
 	@Override
 	public boolean canTakeStack(EntityPlayer player) { 
 		ItemStack backpack = getStack();
-		if ((backpack == null) ||
-		    !(backpack.getItem() instanceof ItemBackpack)) return true;
-		return ((ItemBackpack)backpack.getItem()).canUnequip(player, backpack);
+		if ((backpack == null) || !(backpack.getItem() instanceof ItemBackpack)) return true;
+		ItemBackpack backpackType = (ItemBackpack)backpack.getItem();
+		
+		return (!ItemBackpack.isBackpackOpen(player) &&
+				!backpackType.containsItems(ItemBackpack.getBackpackData(player), backpack));
 	}
 	
 }

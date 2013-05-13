@@ -2,6 +2,7 @@ package net.mcft.copy.betterstorage.misc;
 
 import net.mcft.copy.betterstorage.utils.NbtUtils;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -11,15 +12,20 @@ public class PropertiesBackpack implements IExtendedEntityProperties {
 	
 	public static final String identifier = "BetterStorage.Backpack";
 	
+	public EntityLiving entity;
 	public ItemStack[] contents = null;
-	
+
+	public boolean initialized = false;;
 	public int playersUsing = 0;
+	public boolean hasItems = false;
 	
 	public float lidAngle = 0;
 	public float prevLidAngle = 0;
 	
 	@Override
-	public void init(Entity entity, World world) {  }
+	public void init(Entity entity, World world) {
+		this.entity = (EntityLiving)entity;
+	}
 	
 	@Override
 	public void saveNBTData(NBTTagCompound compound) {

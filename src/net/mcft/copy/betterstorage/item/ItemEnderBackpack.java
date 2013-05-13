@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.mcft.copy.betterstorage.inventory.InventoryWrapper;
 import net.mcft.copy.betterstorage.misc.Constants;
+import net.mcft.copy.betterstorage.misc.PropertiesBackpack;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -29,7 +30,7 @@ public class ItemEnderBackpack extends ItemBackpack {
 	}
 	
 	@Override
-	public boolean canUnequip(EntityPlayer player, ItemStack backpack) { return false; }
+	public boolean containsItems(PropertiesBackpack backpackData, ItemStack backpack) { return false; }
 	
 	// Item stuff
 	
@@ -48,8 +49,14 @@ public class ItemEnderBackpack extends ItemBackpack {
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advancedTooltips) {
 		if (getBackpack(player) != stack) return;
-		list.add("Bound backpack. Hold shift and right click");
-		list.add("ground with empty hand to unequip.");
+		PropertiesBackpack backpackData = getBackpackData(player);
+		if (ItemBackpack.isBackpackOpen(player)) {
+			list.add("Bound backpack.");
+			list.add("Currently being used by a player.");
+		} else {
+			list.add("Bound backpack. Hold shift and right click");
+			list.add("ground with empty hand to unequip.");
+		}
 	}
 	
 	class InventoryEnderBackpackEquipped extends InventoryWrapper {

@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 
+import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.utils.PlayerUtils;
 import net.mcft.copy.betterstorage.utils.RandomUtils;
 import net.minecraft.client.Minecraft;
@@ -19,8 +20,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class PacketHandler implements IPacketHandler {
 	
-	public static final int openGui = 0;
-	public static final int backpackTeleport = 1;
+	public static final byte openGui = 0;
+	public static final byte backpackTeleport = 1;
+	public static final byte backpackHasItems = 2;
 	
 	@Override
 	public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player pl) {
@@ -37,6 +39,10 @@ public class PacketHandler implements IPacketHandler {
 				case backpackTeleport:
 					checkSide(id, side, Side.CLIENT);
 					handleBackpackTeleport(player, stream);
+					break;
+				case backpackHasItems:
+					checkSide(id, side, Side.CLIENT);
+					handleBackpackHasItems(player, stream);
 					break;
 				default:
 					throw new Exception("Received BetterStorage packet for unhandled ID " + id + " on side " + side + ".");
@@ -82,6 +88,12 @@ public class PacketHandler implements IPacketHandler {
 			double pZ = sourceZ + (z - sourceZ) * a + RandomUtils.getDouble(0.3, 0.7);
 			world.spawnParticle("portal", pX, pY, pZ, vX, vY, vZ);
 		}
+	}
+	
+	@SideOnly(Side.CLIENT)
+	private void handleBackpackHasItems(EntityPlayer player, DataInputStream stream) throws IOException {
+		boolean hasItems = stream.readBoolean();
+		ItemBackpack.getBackpackData(player).hasItems = hasItems;
 	}
 	
 }

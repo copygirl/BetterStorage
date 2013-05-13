@@ -24,7 +24,7 @@ public class PlayerUtils {
 		player.incrementWindowID();
 		
 		PacketUtils.sendPacket(player,
-				(byte)PacketHandler.openGui, player.currentWindowId,
+				PacketHandler.openGui, player.currentWindowId,
 				name, (byte)columns, (byte)rows, title);
 		
 		player.openContainer = container;

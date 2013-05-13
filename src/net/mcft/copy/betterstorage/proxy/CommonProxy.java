@@ -33,6 +33,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.Event.Result;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.player.EntityInteractEvent;
@@ -71,6 +72,12 @@ public class CommonProxy implements IPlayerTracker {
 	}
 	
 	@ForgeSubscribe
+	public void onEntityConstructing(EntityConstructing event) {
+		if (!(event.entity instanceof EntityLiving)) return;
+		ItemBackpack.initBackpackData((EntityLiving)event.entity);
+	}
+	
+	@ForgeSubscribe
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		
 		// Places an equipped backpack when the player right clicks
@@ -82,11 +89,13 @@ public class CommonProxy implements IPlayerTracker {
 		ItemStack backpack = ItemBackpack.getBackpack(player);
 		if (backpack == null) return;
 		
-		// Try to place the backpack as if it was being held and used by the player.
-		backpack.getItem().onItemUse(backpack, player, player.worldObj,
-		                             event.x, event.y, event.z, event.face, 0, 0, 0);
-		
-		if (backpack.stackSize <= 0) backpack = null;
+		if (!ItemBackpack.isBackpackOpen(player)) {
+			// Try to place the backpack as if it was being held and used by the player.
+			backpack.getItem().onItemUse(backpack, player, player.worldObj,
+			                             event.x, event.y, event.z, event.face, 0, 0, 0);
+			
+			if (backpack.stackSize <= 0) backpack = null;
+		}
 		
 		// Send set slot packet to for the chest slot to make
 		// sure the client has the same information as the server.
@@ -157,7 +166,7 @@ public class CommonProxy implements IPlayerTracker {
 			backpackData = EntityUtils.getProperties(entity, PropertiesBackpack.class);
 			// If the entity doesn't have a backpack equipped,
 			// but still has some backpack data, drop the items.
-			if ((backpackData != null) && (backpackData.contents != null)) {
+			if (backpackData.contents != null) {
 				for (ItemStack stack : backpackData.contents)
 					WorldUtils.dropStackFromEntity(entity, stack);
 				backpackData.contents = null;
