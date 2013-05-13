@@ -15,14 +15,18 @@ public class PropertiesBackpack implements IExtendedEntityProperties {
 	public ItemStack[] contents = null;
 	
 	/** If the backpack has been initialized for the entity yet. */
-	public boolean initialized = false;;
+	public boolean initialized = false;
+	/** When certain mobs spawn, they have a chance to
+	 *  spawn with a backpack that contains some items. */
+	public boolean spawnsWithBackpack = false;
+	
 	/** How many players are using the backpack (server only). */
 	public int playersUsing = 0;
 	/** If the backpack contains any items (wearer only),
 	 *  because the client doesn't have the contents. */
 	public boolean hasItems = false;
-	/** If the player has a cloak, it is hidden
-	 *  for as long as e has a backpack equipped. */
+	/** If the player has a cloak, it is hidden for as
+	 *  long as e has a backpack equipped (client only). */
 	public String hiddenCloak = null;
 	
 	public float lidAngle = 0;
