@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
@@ -48,14 +49,38 @@ public class ItemThaumcraftBackpack extends ItemBackpack implements IVisRepairab
 	@Override
 	public void onArmorTickUpdate(World world, EntityPlayer player, ItemStack itemStack) {
 		super.onArmorTickUpdate(world, player, itemStack);
+		if (player.worldObj.isRemote || (itemStack.stackSize == 0)) return;
+		createFlux(player, itemStack);
 		fluxEffects(player, itemStack);
 		repairItems(player, itemStack);
 	}
 	
+	private void createFlux(EntityPlayer player, ItemStack backpack) {
+		
+		// Every 5 seconds.
+		if (player.ticksExisted % 100 != 0) return;
+		
+		// Count items over normal backpack capacity.
+		IInventory inventory = ItemBackpack.getBackpackItems(player);
+		int count = -(getRows() * 9);
+		for (int i = 0; i < inventory.getSizeInventory(); i++)
+			if (inventory.getStackInSlot(i) != null) count++;
+		
+		// When count <= 0, return.
+		// When count = 1, chance is ~4%.
+		// When count = 12, chance is 50%.
+		if (RandomUtils.getInt(24) > count) return;
+		
+		int auraId = ThaumcraftApi.getClosestAuraWithinRange(player.worldObj, player.posX, player.posY, player.posZ, 640);
+		if (auraId == -1) return;
+		ThaumcraftApi.queueNodeChanges(auraId, 0, 0, false, (new ObjectTags()).add(EnumTag.VOID, 1), 0, 0, 0);
+		
+	}
+	
 	private void fluxEffects(EntityPlayer player, ItemStack backpack) {
 		
-		if (player.worldObj.isRemote || (backpack.stackSize == 0) ||
-		    (player.ticksExisted % 2000 != 0)) return;
+		// Every 10 seconds.
+		if (player.ticksExisted % 200 != 0) return;
 		
 		// Get closest aura node.
 		int auraId = ThaumcraftApi.getClosestAuraWithinRange(player.worldObj, player.posX, player.posY, player.posZ, 640);
@@ -104,8 +129,10 @@ public class ItemThaumcraftBackpack extends ItemBackpack implements IVisRepairab
 		
 	}
 	
-	public void repairItems(EntityPlayer player, ItemStack backpack) {
-		// TODO 
+	private void repairItems(EntityPlayer player, ItemStack backpack) {
+		
+		// TODO
+		
 	}
 	
 	// Thaumcraft implementations

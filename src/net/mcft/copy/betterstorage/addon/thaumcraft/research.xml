@@ -5,9 +5,8 @@
 <name>Magical Storage</name>
 <popupText>Enchanting your containers</popupText>
 <longText></longText>
-<page type="text">Enchanting a backpack with some fabric and a thaumium ingot will make it able to store more items. It will also make sure items inside with the repair enchantment can still repair themselves as if they were in your inventory.
-Due to its magic nature, it will generate small amounts of flux if it's too full.
-Since it is linked to the aura, it probably isn't a good idea to wear this while the flux in the environment is high.</page>
+<page type="text">Enchanting a backpack with magic and materials of magical nature will increase its storage capacity.
+The result, a Thaumaturge's backpack, is closely linked to the aura. Using the gained extra storage will create flux, and too much of it might have negative effects on the backpack and wearer.</page>
 <page type="infusioncrafting">BACKPACK</page>
 </project>  
 
