@@ -218,7 +218,7 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 		PropertiesBackpack backpackData = ItemBackpack.getBackpackData(entity);
 		if (backpackData.contents != null)
 			for (ItemStack s : backpackData.contents)
-				WorldUtils.dropStackFromEntity(entity, s);
+				WorldUtils.dropStackFromEntity(entity, s, 2.0F);
 		entity.renderBrokenItemStack(stack);
 	}
 	

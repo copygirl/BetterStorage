@@ -53,12 +53,13 @@ public class WorldUtils {
 		return spawnItemWithMotion(world, itemX, itemY, itemZ, stack);
 	}
 	/** Spawns an ItemStack as if it was dropped from an entity on death. */
-	public static EntityItem dropStackFromEntity(Entity entity, ItemStack stack) {
+	public static EntityItem dropStackFromEntity(Entity entity, ItemStack stack, float speed) {
 		if (stack == null) return null;
 		EntityPlayer player = ((entity instanceof EntityPlayer) ? (EntityPlayer)entity : null);
+		EntityItem item;
 		if (player == null) {
 			double y = entity.posY + entity.getEyeHeight() - 0.3;
-			EntityItem item = spawnItem(entity.worldObj, entity.posX, y, entity.posZ, stack);
+			item = spawnItem(entity.worldObj, entity.posX, y, entity.posZ, stack);
 			item.delayBeforeCanPickup = 40;
 			float f1 = RandomUtils.getFloat(0.5F);
 			float f2 = RandomUtils.getFloat((float)Math.PI * 2.0F);
@@ -66,7 +67,10 @@ public class WorldUtils {
 			item.motionY = 0.2;
 			item.motionZ =  MathHelper.cos(f2) * f1;
 			return item;
-		} else return player.dropPlayerItemWithRandomChoice(stack, true);
+		} else item = player.dropPlayerItemWithRandomChoice(stack, true);
+		item.motionX *= speed / 4;
+		item.motionZ *= speed / 4;
+		return item;
 	}
 	
 	/** Returns whether the Block at the position has this id. */

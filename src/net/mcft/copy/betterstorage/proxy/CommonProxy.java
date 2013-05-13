@@ -144,6 +144,10 @@ public class CommonProxy implements IPlayerTracker {
 	
 	@ForgeSubscribe
 	public void onEntityJoinWorldEvent(EntityJoinWorldEvent event) {
+		
+		// If an ender backpack ever drops as an item,
+		// instead teleport it somewhere as a block.
+		
 		if (!(event.entity instanceof EntityItem)) return;
 		EntityItem entity = (EntityItem)event.entity;
 		ItemStack stack = entity.getDataWatcher().getWatchableObjectItemStack(10);
@@ -152,6 +156,7 @@ public class CommonProxy implements IPlayerTracker {
 		for (int i = 0; i < 64; i++)
 			if (BlockEnderBackpack.teleportRandomly(entity.worldObj, entity.posX, entity.posY, entity.posZ, (i > 48), stack))
 				break;
+		
 	}
 	
 	@ForgeSubscribe
@@ -168,7 +173,7 @@ public class CommonProxy implements IPlayerTracker {
 			// but still has some backpack data, drop the items.
 			if (backpackData.contents != null) {
 				for (ItemStack stack : backpackData.contents)
-					WorldUtils.dropStackFromEntity(entity, stack);
+					WorldUtils.dropStackFromEntity(entity, stack, 1.5F);
 				backpackData.contents = null;
 			}
 			return;
@@ -224,7 +229,7 @@ public class CommonProxy implements IPlayerTracker {
 		} else {
 			
 			for (ItemStack stack : backpackData.contents)
-				WorldUtils.dropStackFromEntity(entity, stack);
+				WorldUtils.dropStackFromEntity(entity, stack, 4.0F);
 			backpackData.contents = null;
 			
 		}

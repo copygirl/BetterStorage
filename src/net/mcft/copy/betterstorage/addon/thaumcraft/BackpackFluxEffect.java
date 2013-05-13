@@ -58,7 +58,7 @@ public abstract class BackpackFluxEffect {
 			int index = indices.get(RandomUtils.getInt(indices.size()));
 			ItemStack item = inventory.getStackInSlot(index).copy();
 			ItemStack drop = item.splitStack(1);
-			WorldUtils.dropStackFromEntity(player, drop).delayBeforeCanPickup = 8;
+			WorldUtils.dropStackFromEntity(player, drop, 1.0F).delayBeforeCanPickup = 8;
 			if (item.stackSize <= 0) item = null;
 			inventory.setInventorySlotContents(index, item);
 			player.worldObj.playSoundAtEntity(player, "random.pop", 0.75F, 0.5F);
