@@ -108,12 +108,12 @@ public class ItemThaumcraftBackpack extends ItemBackpack implements IVisRepairab
 				// use the specific effect for it.
 				effect = BackpackFluxEffect.effects.get(aspect);
 				if (effect != null) {
-					fluxReduce = (new ObjectTags()).add(aspect, -10);
+					fluxReduce = (new ObjectTags()).add(aspect, -6);
 					break;
 				}
 			}
 			fluxReduce.add(aspect, -1);
-			if (fluxReduce.tags.size() >= 10) break;
+			if (fluxReduce.tags.size() >= 6) break;
 		}
 		
 		// If we don't have an effect yet, pick a random one.
