@@ -17,6 +17,8 @@ public class RandomUtils {
 	public static double getDouble(double max) { return getDouble() * max; }
 	public static double getDouble(double min, double max) { return min + getDouble(max - min); }
 	
+	public static boolean getBoolean(double probability) { return (getDouble() < probability); }
+	
 	public static double getGaussian() { return random.nextGaussian(); }
 	
 }

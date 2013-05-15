@@ -10,6 +10,7 @@ import net.mcft.copy.betterstorage.block.TileEntityReinforcedChest;
 import net.mcft.copy.betterstorage.block.crate.CratePileCollection;
 import net.mcft.copy.betterstorage.block.crate.TileEntityCrate;
 import net.mcft.copy.betterstorage.container.ContainerBetterStorage;
+import net.mcft.copy.betterstorage.entity.EntityFrienderman;
 import net.mcft.copy.betterstorage.inventory.InventoryBackpackEquipped;
 import net.mcft.copy.betterstorage.inventory.InventoryStacks;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
@@ -23,8 +24,10 @@ import net.mcft.copy.betterstorage.utils.RandomUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityZombie;
@@ -52,7 +55,9 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import net.minecraftforge.event.world.WorldEvent.Save;
 import net.minecraftforge.event.world.WorldEvent.Unload;
 import cpw.mods.fml.common.IPlayerTracker;
+import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class CommonProxy implements IPlayerTracker {
 	
@@ -60,6 +65,13 @@ public class CommonProxy implements IPlayerTracker {
 		MinecraftForge.EVENT_BUS.register(this);
 		GameRegistry.registerPlayerTracker(this);
 		registerTileEntites();
+		registerEntities();
+	}
+	
+	public void registerEntities() {
+		EntityRegistry.registerModEntity(EntityFrienderman.class, "Frienderman", 1, BetterStorage.instance, 64, 1, true);
+		EntityList.IDtoClassMapping.put(580, EntityFrienderman.class);
+		LanguageRegistry.instance().addStringLocalization("entity.BetterStorage.Frienderman.name", "Enderman");
 	}
 	
 	public void registerTileEntites() {
@@ -91,10 +103,18 @@ public class CommonProxy implements IPlayerTracker {
 	@ForgeSubscribe
 	public void onSpecialSpawn(SpecialSpawn event) {
 		
+		EntityLiving entity = event.entityLiving;
 		double probability = 0.0;
-		if (event.entityLiving instanceof EntityPigZombie) probability = 1.0 / 2000;
-		else if (event.entityLiving instanceof EntityZombie) probability = 1.0 / 1000;
-		else if (event.entityLiving instanceof EntitySkeleton) probability = 1.0 / 2500;
+		if (entity instanceof EntityPigZombie) probability = 1.0 / 2000;
+		else if (entity instanceof EntityZombie) probability = 1.0 / 1000;
+		else if (entity instanceof EntitySkeleton) probability = 1.0 / 2500;
+		else if ((entity instanceof EntityEnderman) && RandomUtils.getBoolean(0.01)) {
+			EntityFrienderman frienderman = new EntityFrienderman(entity.worldObj);
+			frienderman.setPositionAndRotation(entity.posX, entity.posY, entity.posZ, entity.rotationYaw, 0);
+			entity.worldObj.spawnEntityInWorld(frienderman);
+			ItemBackpack.getBackpackData(frienderman).spawnsWithBackpack = true;
+			event.setCanceled(true);
+		}
 		if (RandomUtils.getDouble() >= probability) return;
 		ItemBackpack.getBackpackData(event.entityLiving).spawnsWithBackpack = true;
 		
@@ -168,6 +188,10 @@ public class CommonProxy implements IPlayerTracker {
 	@ForgeSubscribe
 	public void onEntityJoinWorldEvent(EntityJoinWorldEvent event) {
 		
+		// If the entity is already destroyed,
+		// cancel it being added to the world.
+		if (event.entity.isDead) event.setCanceled(true);
+		
 		// If an ender backpack ever drops as an item,
 		// instead teleport it somewhere as a block.
 		
@@ -190,21 +214,22 @@ public class CommonProxy implements IPlayerTracker {
 		new WeightedRandomChestContent(Block.wood.blockID, 0, 1, 8, 40),
 		new WeightedRandomChestContent(Block.cobblestone.blockID, 0, 6, 16, 80),
 		
-		new WeightedRandomChestContent(Item.pickaxeWood.itemID, 20, 1, 1, 10),
 		new WeightedRandomChestContent(Item.pickaxeWood.itemID, 50, 1, 1, 35),
-		new WeightedRandomChestContent(Item.pickaxeStone.itemID, 80, 1, 1, 5),
+		new WeightedRandomChestContent(Item.pickaxeWood.itemID, 20, 1, 1, 10),
 		new WeightedRandomChestContent(Item.pickaxeStone.itemID, 120, 1, 1, 10),
+		new WeightedRandomChestContent(Item.pickaxeStone.itemID, 80, 1, 1, 5),
 		new WeightedRandomChestContent(Item.pickaxeIron.itemID, 220, 1, 1, 2),
 		
 		new WeightedRandomChestContent(Item.swordWood.itemID, 40, 1, 1, 30),
 		new WeightedRandomChestContent(Item.swordStone.itemID, 60, 1, 1, 5),
 		
-		new WeightedRandomChestContent(Item.bow.itemID, 50, 1, 1, 3),
 		new WeightedRandomChestContent(Item.bow.itemID, 200, 1, 1, 10),
+		new WeightedRandomChestContent(Item.bow.itemID, 50, 1, 1, 3),
 		new WeightedRandomChestContent(Item.fishingRod.itemID, 20, 1, 1, 4),
 		new WeightedRandomChestContent(Item.compass.itemID, 0, 1, 1, 6),
 		new WeightedRandomChestContent(Item.pocketSundial.itemID, 0, 1, 1, 5),
 		
+		new WeightedRandomChestContent(Block.torchWood.blockID, 0, 6, 24, 30),
 		new WeightedRandomChestContent(Item.arrow.itemID, 0, 2, 12, 10),
 		new WeightedRandomChestContent(Item.rottenFlesh.itemID, 0, 3, 6, 15),
 		new WeightedRandomChestContent(Item.bone.itemID, 0, 2, 5, 20),
@@ -247,8 +272,16 @@ public class CommonProxy implements IPlayerTracker {
 			// a backpack, equip it with one.
 			if (backpackData.spawnsWithBackpack) {
 				
-				backpack = new ItemStack(BetterStorage.backpack);
-				ItemBackpack backpackType = (ItemBackpack)Item.itemsList[backpack.itemID];
+				ItemStack[] contents = null;
+				if (entity instanceof EntityFrienderman) {
+					backpack = new ItemStack(BetterStorage.enderBackpack);
+					entity.func_96120_a(3, 0.0F); // Remove equipment drop chance.
+				} else {
+					backpack = new ItemStack(BetterStorage.backpack, 1, RandomUtils.getInt(180, 230));
+					ItemBackpack backpackType = (ItemBackpack)Item.itemsList[backpack.itemID];
+					contents = new ItemStack[backpackType.getColumns() * backpackType.getRows()];
+					entity.func_96120_a(3, 1.0F); // Set equipment drop chance to 100%.
+				}
 				
 				// If the entity spawned with enchanted armor,
 				// move the enchantments over to the backpack.
@@ -259,17 +292,19 @@ public class CommonProxy implements IPlayerTracker {
 					backpack.setTagCompound(compound);
 				}
 				
-				// Add random items to the backpack.
-				ItemStack[] contents = new ItemStack[backpackType.getColumns() * backpackType.getRows()];
-				InventoryStacks inventory = new InventoryStacks(contents);
-				// Add normal random backpack loot
-				WeightedRandomChestContent.generateChestContents(
-						RandomUtils.random, randomBackpackItems, inventory, 20);
-				// With a chance of 10%, add some random dungeon loot
-				if (RandomUtils.getDouble() < 0.1) {
-					ChestGenHooks info = ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST);
+				if (contents != null) {
+					// Add random items to the backpack.
+					InventoryStacks inventory = new InventoryStacks(contents);
+					// Add normal random backpack loot
 					WeightedRandomChestContent.generateChestContents(
-							RandomUtils.random, info.getItems(RandomUtils.random), inventory, 5);
+							RandomUtils.random, randomBackpackItems, inventory, 20);
+					// With a chance of 10%, add some random dungeon loot
+					if (RandomUtils.getDouble() < 0.1) {
+						ChestGenHooks info = ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST);
+						WeightedRandomChestContent.generateChestContents(
+								RandomUtils.random, info.getItems(RandomUtils.random), inventory, 5);
+					}
+					
 				}
 				
 				ItemBackpack.setBackpack(entity, backpack, contents);

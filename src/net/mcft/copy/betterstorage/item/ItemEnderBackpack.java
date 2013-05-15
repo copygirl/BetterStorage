@@ -5,6 +5,7 @@ import java.util.List;
 import net.mcft.copy.betterstorage.inventory.InventoryWrapper;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.misc.PropertiesBackpack;
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -18,7 +19,7 @@ public class ItemEnderBackpack extends ItemBackpack {
 	
 	public ItemEnderBackpack(int id) {
 		super(id, material);
-		setMaxDamage(280);
+		setMaxDamage(340);
 	}
 	
 	@Override
@@ -57,6 +58,11 @@ public class ItemEnderBackpack extends ItemBackpack {
 			list.add("Bound backpack. Hold shift and right click");
 			list.add("ground with empty hand to unequip.");
 		}
+	}
+	
+	@Override
+	public boolean getIsRepairable(ItemStack stack, ItemStack repairMaterial) {
+		return (repairMaterial.itemID == Block.obsidian.blockID);
 	}
 	
 	class InventoryEnderBackpackEquipped extends InventoryWrapper {

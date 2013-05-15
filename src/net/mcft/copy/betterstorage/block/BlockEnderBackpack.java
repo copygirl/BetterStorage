@@ -67,7 +67,7 @@ public class BlockEnderBackpack extends BlockBackpack {
 				PacketHandler.backpackTeleport,
 				sourceX, sourceY, sourceZ, x, y, z);
 		MinecraftServer.getServer().getConfigurationManager().sendToAllNear(
-				sourceX, sourceY, sourceZ, 512.0, world.getWorldInfo().getDimension(), packet);
+				sourceX + 0.5, sourceY + 0.5, sourceZ + 0.5, 512.0, world.getWorldInfo().getDimension(), packet);
 		
 		world.playSoundEffect(sourceX + 0.5, sourceY + 0.5, sourceZ + 0.5,
 		                      "mob.endermen.portal", 1.0F, 1.0F);

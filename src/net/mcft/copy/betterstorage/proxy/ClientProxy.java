@@ -19,10 +19,12 @@ import net.mcft.copy.betterstorage.block.TileEntityLocker;
 import net.mcft.copy.betterstorage.block.TileEntityReinforcedChest;
 import net.mcft.copy.betterstorage.client.renderer.BetterStorageRenderingHandler;
 import net.mcft.copy.betterstorage.client.renderer.ItemRendererBackpack;
+import net.mcft.copy.betterstorage.client.renderer.RenderFrienderman;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityArmorStandRenderer;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityBackpackRenderer;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityLockerRenderer;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityReinforcedChestRenderer;
+import net.mcft.copy.betterstorage.entity.EntityFrienderman;
 import net.mcft.copy.betterstorage.misc.handlers.TickHandler;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
@@ -56,6 +58,12 @@ public class ClientProxy extends CommonProxy {
 		MinecraftForgeClient.registerItemRenderer(BetterStorage.backpack.blockID, ItemRendererBackpack.instance);
 		MinecraftForgeClient.registerItemRenderer(BetterStorage.enderBackpack.blockID, ItemRendererBackpack.instance);
 		Addon.postClientInitAll();
+	}
+	
+	@Override
+	public void registerEntities() {
+		super.registerEntities();
+		RenderingRegistry.registerEntityRenderingHandler(EntityFrienderman.class, new RenderFrienderman());
 	}
 	
 	@Override

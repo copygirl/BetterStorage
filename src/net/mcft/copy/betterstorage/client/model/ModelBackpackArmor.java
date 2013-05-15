@@ -2,6 +2,7 @@ package net.mcft.copy.betterstorage.client.model;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.mcft.copy.betterstorage.entity.EntityFrienderman;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.misc.PropertiesBackpack;
 import net.minecraft.client.model.ModelBiped;
@@ -52,8 +53,12 @@ public class ModelBackpackArmor extends ModelBiped {
 	@Override
 	public void render(Entity entity, float v1, float v2, float v3, float v4, float v5, float v6) {
 		setRotationAngles(v1, v2, v3, v4, v5, v6, entity);
-		float foo = 1 / 20.0F;
-		bipedBody.render(foo);
+		if (entity instanceof EntityFrienderman) {
+			float y = bipedBody.rotationPointY;
+			bipedBody.rotationPointY -= 18.0F;
+			bipedBody.render(1 / 20.0F);
+			bipedBody.rotationPointY = y;
+		} else bipedBody.render(1 / 20.0F);
 	}
 	
 	@Override

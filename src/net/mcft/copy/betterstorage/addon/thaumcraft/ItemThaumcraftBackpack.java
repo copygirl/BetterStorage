@@ -3,6 +3,7 @@ package net.mcft.copy.betterstorage.addon.thaumcraft;
 import thaumcraft.api.EnumTag;
 import thaumcraft.api.IVisDiscounter;
 import thaumcraft.api.IVisRepairable;
+import thaumcraft.api.ItemApi;
 import thaumcraft.api.ObjectTags;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aura.AuraNode;
@@ -21,9 +22,11 @@ import net.minecraft.world.World;
 
 public class ItemThaumcraftBackpack extends ItemBackpack implements IVisRepairable, IVisDiscounter {
 	
+	private static int thaumcraftFabricId = -1;
+	
 	public ItemThaumcraftBackpack(int id) {
 		super(id, material);
-		setMaxDamage(290);
+		setMaxDamage(300);
 	}
 	
 	@Override
@@ -45,6 +48,12 @@ public class ItemThaumcraftBackpack extends ItemBackpack implements IVisRepairab
 	
 	@Override
 	public int getItemEnchantability() { return 25; }
+	
+	@Override
+	public boolean getIsRepairable(ItemStack stack, ItemStack repairMaterial) {
+		if (thaumcraftFabricId < 0) thaumcraftFabricId = ItemApi.getItem("itemResource", 7).itemID;
+		return (repairMaterial.itemID == thaumcraftFabricId);
+	}
 	
 	@Override
 	public void onArmorTickUpdate(World world, EntityPlayer player, ItemStack itemStack) {

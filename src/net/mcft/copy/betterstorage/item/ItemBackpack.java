@@ -25,7 +25,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.EnumArmorMaterial;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
@@ -38,7 +37,6 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 	
 	public static final EnumArmorMaterial material = EnumHelper.addArmorMaterial(
 			"backpack", 240, new int[]{ 0, 2, 0, 0 }, 15);
-	static { material.customCraftingMaterial = Item.leather; }
 	
 	protected ItemBackpack(int id, EnumArmorMaterial material) {
 		super(id - 256, material, 0, 1);
