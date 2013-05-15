@@ -163,7 +163,7 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 		
 		// Return false if not placed on top of a solid block.	
 		Block blockBelow = Block.blocksList[world.getBlockId(x, y - 1, z)];
-		if ((blockBelow == null) || !blockBelow.isBlockSolidOnSide(world, x, y, z, ForgeDirection.UP)) return false;
+		if ((blockBelow == null) || !blockBelow.isBlockSolidOnSide(world, x, y - 1, z, ForgeDirection.UP)) return false;
 		
 		// Return false if the player can't edit the block.
 		if (!player.canPlayerEdit(x, y, z, side, stack)) return false;
