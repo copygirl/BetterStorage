@@ -59,6 +59,7 @@ public class ContainerCrate extends ContainerBetterStorage {
 				int amount = count - slotStack.stackSize;
 				slotStack.stackSize = count;
 				playerView.decrStackSize(slotId, amount);
+				return null;
 			// If slot is in the player inventory, try to transfer the item to the container.
 			} else {
 				ItemStack overflow = playerView.data.addItems(slotStack);
