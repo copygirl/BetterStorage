@@ -40,7 +40,7 @@ public class DirectionUtils {
 	
 	/** Returns the difference between the two angles in degrees (-180 to 180). */
 	public static double angleDifference(double angle1, double angle2) {
-		return (angle2 - angle1 + 540) % 360 - 180;
+		return ((angle2 - angle1) % 360 + 540) % 360 - 180;
 	}
 	
 	/** Returns the angle between two points on a plane (-180 to 180). */
