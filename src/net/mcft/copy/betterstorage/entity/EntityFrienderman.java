@@ -100,7 +100,7 @@ public class EntityFrienderman extends EntityEnderman {
 		if (ruleChanged)
 			rules.setOrCreateGameRule("mobGriefing", ruleBefore);
 		
-		if (!hadEnderChest && (getCarried() == Block.enderChest.blockID)) {
+		if (!worldObj.isRemote && !hadEnderChest && (getCarried() == Block.enderChest.blockID)) {
 			setCurrentItemOrArmor(3, null);
 			worldObj.setBlock(x, y, z, BetterStorage.enderBackpack.blockID, RandomUtils.getInt(2, 6), 3);
 			WorldUtils.get(worldObj, x, y, z, TileEntityBackpack.class).stack =
