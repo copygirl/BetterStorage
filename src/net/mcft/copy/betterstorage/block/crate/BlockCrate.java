@@ -2,7 +2,6 @@ package net.mcft.copy.betterstorage.block.crate;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.mcft.copy.betterstorage.block.TileEntityContainer;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -41,8 +40,11 @@ public class BlockCrate extends BlockContainer {
 	
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving entity, ItemStack stack) {
+		TileEntityCrate crate = WorldUtils.get(world, x, y, z, TileEntityCrate.class);
 		if (stack.hasDisplayName())
-			WorldUtils.get(world, x, y, z, TileEntityContainer.class).setCustomTitle(stack.getDisplayName());
+			crate.setCustomTitle(stack.getDisplayName());
+		// This will result in the crate ID being initialized.
+		crate.updateEntity();
 	}
 	
 	@Override

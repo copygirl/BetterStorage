@@ -154,8 +154,8 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 			int y = yCoord + dir.offsetY;
 			int z = zCoord + dir.offsetZ;
 			TileEntityCrate checkedCrate = WorldUtils.get(worldObj, x, y, z, TileEntityCrate.class);
-			CratePileData checkedPileData = ((checkedCrate != null) ? checkedCrate.getPileData() : null);
-			if (checkedPileData == null) continue;
+			if (checkedCrate == null) continue;
+			CratePileData checkedPileData = checkedCrate.getPileData();
 			if (((pileData != null) && (checkedPileData.id != pileData.id)) ||
 			    ((dir != ForgeDirection.DOWN) && !crateBelow &&
 			     WorldUtils.is(worldObj, x, y - 1, z, BetterStorage.crate)) ||
