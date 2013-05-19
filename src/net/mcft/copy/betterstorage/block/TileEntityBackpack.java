@@ -18,6 +18,8 @@ public class TileEntityBackpack extends TileEntityContainer {
 	/** Affects if items drop when the backpack is destroyed. */
 	public boolean equipped = false;
 	
+	public boolean brokenInCreative = false;
+	
 	// Equipping / unequipping
 	
 	public boolean equip(EntityPlayer player) {

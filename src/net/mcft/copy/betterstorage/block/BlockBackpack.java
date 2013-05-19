@@ -4,7 +4,6 @@ import java.util.Random;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.proxy.ClientProxy;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
@@ -15,6 +14,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
@@ -58,6 +58,11 @@ public class BlockBackpack extends BlockContainer {
 	public int quantityDropped(int meta, int fortune, Random random) { return 0; }
 	
 	@Override
+	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
+		return WorldUtils.get(world, x, y, z, TileEntityBackpack.class).stack.copy();
+	}
+	
+	@Override
 	public TileEntity createNewTileEntity(World world) {
 		return new TileEntityBackpack();
 	}
@@ -70,13 +75,15 @@ public class BlockBackpack extends BlockContainer {
 	
 	@Override
 	public boolean removeBlockByPlayer(World world, EntityPlayer player, int x, int y, int z) {
-		if (world.isRemote || !player.isSneaking() ||
-		    (ItemBackpack.getBackpack(player) != null))
-			return world.setBlockToAir(x, y, z);
+		TileEntityBackpack backpack = WorldUtils.get(world, x, y, z, TileEntityBackpack.class);
+		if (player.capabilities.isCreativeMode)
+			backpack.brokenInCreative = true;
 		// This currently only runs on the server. Would be nice if it worked on
 		// the client, but if the client thinks e's equipped the backpack, and it's
 		// already gone on the server e doesn't have a way to tell the client.
-		return WorldUtils.get(world, x, y, z, TileEntityBackpack.class).equip(player);
+		if (!world.isRemote && player.isSneaking() && (player.getCurrentArmor(2) == null))
+			return backpack.equip(player);
+		else return world.setBlockToAir(x, y, z);
 	}
 	
 	@Override
@@ -84,7 +91,8 @@ public class BlockBackpack extends BlockContainer {
 		TileEntityBackpack backpack = WorldUtils.get(world, x, y, z, TileEntityBackpack.class);
 		super.breakBlock(world, x, y, z, id, meta);
 		if ((backpack == null) || backpack.equipped) return;
-		WorldUtils.dropStackFromBlock(world, x, y, z, backpack.stack);
+		if (!backpack.brokenInCreative)
+			WorldUtils.dropStackFromBlock(world, x, y, z, backpack.stack);
 		backpack.dropContents();
 	}
 	
