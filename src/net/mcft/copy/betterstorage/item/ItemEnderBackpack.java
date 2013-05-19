@@ -19,7 +19,7 @@ public class ItemEnderBackpack extends ItemBackpack {
 	
 	public ItemEnderBackpack(int id) {
 		super(id, material);
-		setMaxDamage(340);
+		setMaxDamage(380);
 	}
 	
 	@Override
