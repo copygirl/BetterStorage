@@ -1,6 +1,7 @@
 package net.mcft.copy.betterstorage.inventory;
 
 import net.mcft.copy.betterstorage.block.crate.CratePileData;
+import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
@@ -29,7 +30,23 @@ public class InventoryCrateBlockView extends InventoryBetterStorage {
 	public void setInventorySlotContents(int slot, ItemStack stack) {
 		if ((slot < 0) || (slot >= getSizeInventory())) return;
 		ItemStack oldStack = getStackInSlot(slot);
-		if (oldStack != null) data.removeItems(oldStack);
+		if (oldStack != null) {
+			// If the two stacks match, just add/remove the difference.
+			if (StackUtils.matches(oldStack, stack)) {
+				int count = stack.stackSize - oldStack.stackSize;
+				if (count > 0) {
+					ItemStack add = stack.copy();
+					add.stackSize = count;
+					data.addItems(add);
+				} else if (count < 0) {
+					ItemStack remove = stack.copy();
+					remove.stackSize = -count;
+					data.removeItems(remove);
+				}
+				return;
+			}
+			data.removeItems(oldStack);
+		}
 		data.addItems(stack);
 	}
 	

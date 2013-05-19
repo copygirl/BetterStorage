@@ -76,12 +76,15 @@ public class StackUtils {
 		compound.removeTag(tag);
 	}
 	
-	public static boolean isKey(ItemStack stack) {
-		return (stack != null && stack.getItem() instanceof IKey);
+	public static boolean matches(int id1, int damage1, NBTTagCompound data1, 
+	                              int id2, int damage2, NBTTagCompound data2) {
+		return ((id1 == id2) && (damage1 == damage2) &&
+		        ((data1 == null) && (data2 == null)) ||
+		         ((data1 != null) && data1.equals(data2)));
 	}
-	
-	public static boolean isLock(ItemStack stack) {
-		return (stack != null && stack.getItem() instanceof ILock);
+	public static boolean matches(ItemStack stack1, ItemStack stack2) {
+		return matches(stack1.itemID, stack1.getItemDamage(), stack1.getTagCompound(),
+		               stack2.itemID, stack2.getItemDamage(), stack2.getTagCompound());
 	}
 	
 	public static ItemStack[] getStackContents(ItemStack stack, int size) {
@@ -105,6 +108,13 @@ public class StackUtils {
 		for (int i = 0; i < items.length; i++)
 			if (items[i] != null) return false;
 		return true;
+	}
+	
+	public static boolean isKey(ItemStack stack) {
+		return (stack != null && stack.getItem() instanceof IKey);
+	}
+	public static boolean isLock(ItemStack stack) {
+		return (stack != null && stack.getItem() instanceof ILock);
 	}
 	
 }

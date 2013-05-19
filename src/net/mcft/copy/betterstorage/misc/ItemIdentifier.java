@@ -1,5 +1,6 @@
 package net.mcft.copy.betterstorage.misc;
 
+import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -47,9 +48,7 @@ public class ItemIdentifier {
 	
 	/** Returns if this item identifier matches the id, damage and data. */
 	public boolean matches(int id, int damage, NBTTagCompound data) {
-		return ((this.id == id) && (this.damage == damage) &&
-		        (((this.data == null) && (data == null)) ||
-		         ((this.data != null) && this.data.equals(data))));
+		return StackUtils.matches(this.id, this.damage, this.data, id, damage, data);
 	}
 	/** Returns if this item identifier matches the ItemStack. */
 	public boolean matches(ItemStack stack) {
@@ -57,9 +56,7 @@ public class ItemIdentifier {
 	}
 	
 	@Override
-	public int hashCode() {
-		return (id << 16 ^ damage);
-	}
+	public int hashCode() { return (id << 16 ^ damage); }
 	
 	@Override
 	public boolean equals(Object obj) {
