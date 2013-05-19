@@ -60,6 +60,11 @@ public class TileEntityReinforcedChest extends TileEntityConnectable implements 
 	@Override
 	public int getColumns() { return Config.reinforcedChestColumns; }
 	
+	// TileEntityConnactable stuff
+	
+	@Override
+	protected boolean isAccessible() { return (getLock() == null); }
+	
 	// ILockable implementation
 	
 	@Override
