@@ -154,9 +154,9 @@ public class BetterStorage {
 		
 		// Backpack recipe
 		GameRegistry.addRecipe(new ItemStack(backpack),
-				"###",
+				"#i#",
 				"#O#",
-				"#i#", '#', Item.leather,
+				"###", '#', Item.leather,
 				       'O', Block.cloth,
 				       'i', Item.ingotGold);
 		

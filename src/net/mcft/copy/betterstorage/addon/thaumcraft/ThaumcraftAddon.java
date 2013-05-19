@@ -58,9 +58,9 @@ public class ThaumcraftAddon extends Addon {
 				                  .add(EnumTag.MAGIC, 6);
 		ThaumcraftApi.addInfusionCraftingRecipe("MAGICSTORAGE", "BACKPACK",
 				60, thaumcraftBackpackAspects, new ItemStack(thaumcraftBackpack),
-				"###",
+				"#i#",
 				"#O#",
-				"#i#", '#', fabric,
+				"###", '#', fabric,
 				       'O', BetterStorage.backpack,
 				       'i', thaumium);
 		
