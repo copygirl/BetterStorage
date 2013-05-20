@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import net.mcft.copy.betterstorage.BetterStorage;
+import net.mcft.copy.betterstorage.Config;
 import net.mcft.copy.betterstorage.api.ICrateStorage;
 import net.mcft.copy.betterstorage.api.ICrateWatcher;
 import net.mcft.copy.betterstorage.block.TileEntityContainer;
@@ -221,24 +222,29 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 	
 	@Override
 	public int getSizeInventory() {
+		if (!Config.enableCrateInventoryInterface) return 0;
 		if (worldObj.isRemote) return 1;
 		return getPileData().blockView.getSizeInventory();
 	}
 	
 	@Override
 	public ItemStack getStackInSlot(int slot) {
+		if (!Config.enableCrateInventoryInterface) return null;
 		return getPileData().blockView.getStackInSlot(slot);
 	}
 	@Override
 	public void setInventorySlotContents(int slot, ItemStack stack) {
-		getPileData().blockView.setInventorySlotContents(slot, stack);
+		if (Config.enableCrateInventoryInterface)
+			getPileData().blockView.setInventorySlotContents(slot, stack);
 	}
 	@Override
 	public ItemStack getStackInSlotOnClosing(int slot) {
-		return getPileData().blockView.getStackInSlotOnClosing(slot);
+		if (!Config.enableCrateInventoryInterface) return null;
+			return getPileData().blockView.getStackInSlotOnClosing(slot);
 	}
 	@Override
 	public ItemStack decrStackSize(int slot, int amount) {
+		if (!Config.enableCrateInventoryInterface) return null;
 		return getPileData().blockView.decrStackSize(slot, amount);
 	}
 	

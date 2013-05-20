@@ -29,6 +29,7 @@ public class Config {
 	// More settings ...
 	public static int reinforcedChestColumns = 13;
 	public static int backpackRows = 3;
+	public static boolean enableCrateInventoryInterface = false;
 	
 	public static void load(File file) {
 		
@@ -57,6 +58,9 @@ public class Config {
 		
 		backpackRows = config.get(categorySettings, "backpackRows", backpackRows,
 		                          "Number of rows in backpacks. Valid values are 1 to 6.").getInt(backpackRows);
+		
+		enableCrateInventoryInterface = config.get(categorySettings, "enableCrateInventoryInterface", enableCrateInventoryInterface,
+		                                           "Whether most machines can interact with crates (disabled because of dupe issues).").getBoolean(enableCrateInventoryInterface);
 		
 		validate();
 		
