@@ -82,9 +82,12 @@ public class StackUtils {
 		        ((data1 == null) && (data2 == null)) ||
 		         ((data1 != null) && data1.equals(data2)));
 	}
+	/** Returns if the two item stacks match. <br>
+	 *  True when they're both null or their ID, damage and NBT data match. */
 	public static boolean matches(ItemStack stack1, ItemStack stack2) {
-		return matches(stack1.itemID, stack1.getItemDamage(), stack1.getTagCompound(),
-		               stack2.itemID, stack2.getItemDamage(), stack2.getTagCompound());
+		return ((stack1 == null) ? (stack2 == null) : ((stack2 != null) &&
+				matches(stack1.itemID, stack1.getItemDamage(), stack1.getTagCompound(),
+				        stack2.itemID, stack2.getItemDamage(), stack2.getTagCompound())));
 	}
 	
 	public static ItemStack[] getStackContents(ItemStack stack, int size) {
