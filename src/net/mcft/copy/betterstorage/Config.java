@@ -22,6 +22,8 @@ public class Config {
 	public static int lockId    = 28541;
 	public static int keyringId = 28542;
 	
+	public static int entityEndermanId = 580;
+	
 	public static int enchantmentBaseId = 180;
 	
 	public static int backpackOpenDataWatcherId = 27;
@@ -47,6 +49,8 @@ public class Config {
 		lockId    = config.getItem("lock", lockId).getInt();
 		keyringId = config.getItem("keyring", keyringId).getInt();
 		
+		entityEndermanId = config.get(Configuration.CATEGORY_GENERAL, "entityEndermanId", entityEndermanId).getInt();
+		
 		enchantmentBaseId = config.get(Configuration.CATEGORY_GENERAL, "enchantmentBaseId", enchantmentBaseId,
 		                               "Uses up about 10 IDs starting from this ID.").getInt();
 		
@@ -54,10 +58,10 @@ public class Config {
 		                                       "Valid values are 0 to 31, though some are already occupied.").getInt();
 		
 		reinforcedChestColumns = config.get(categorySettings, "reinforcedChestColumns", reinforcedChestColumns,
-		                                   "Number of colums in reinforced chests. Valid values are 9, 11 and 13.").getInt(reinforcedChestColumns);
+		                                   "Number of colums in reinforced chests. Valid values are 9, 11 and 13.").getInt();
 		
 		backpackRows = config.get(categorySettings, "backpackRows", backpackRows,
-		                          "Number of rows in backpacks. Valid values are 1 to 6.").getInt(backpackRows);
+		                          "Number of rows in backpacks. Valid values are 1 to 6.").getInt();
 		
 		enableCrateInventoryInterface = config.get(categorySettings, "enableCrateInventoryInterface", enableCrateInventoryInterface,
 		                                           "Whether most machines can interact with crates (disabled because of dupe issues).").getBoolean(enableCrateInventoryInterface);
@@ -72,9 +76,9 @@ public class Config {
 	
 	private static void validate() {
 		
+		backpackOpenDataWatcherId = validateRange(backpackOpenDataWatcherId, "backpackOpenDataWatcherId", 0, 31);
 		reinforcedChestColumns = validateColumnAmount(reinforcedChestColumns, "reinforcedChestColumns", 13);
 		backpackRows = validateRange(backpackRows, "backpackRows", 1, 6);
-		backpackOpenDataWatcherId = validateRange(backpackOpenDataWatcherId, "backpackOpenDataWatcherId", 0, 31);
 		
 	}
 	

@@ -1,6 +1,7 @@
 package net.mcft.copy.betterstorage.proxy;
 
 import net.mcft.copy.betterstorage.BetterStorage;
+import net.mcft.copy.betterstorage.Config;
 import net.mcft.copy.betterstorage.addon.Addon;
 import net.mcft.copy.betterstorage.block.BlockEnderBackpack;
 import net.mcft.copy.betterstorage.block.TileEntityArmorStand;
@@ -70,7 +71,7 @@ public class CommonProxy implements IPlayerTracker {
 	
 	public void registerEntities() {
 		EntityRegistry.registerModEntity(EntityFrienderman.class, "Frienderman", 1, BetterStorage.instance, 64, 1, true);
-		EntityList.IDtoClassMapping.put(580, EntityFrienderman.class);
+		EntityList.addMapping(EntityFrienderman.class, "Frienderman", Config.entityEndermanId);
 		LanguageRegistry.instance().addStringLocalization("entity.BetterStorage.Frienderman.name", "Enderman");
 	}
 	
@@ -95,9 +96,8 @@ public class CommonProxy implements IPlayerTracker {
 	
 	@ForgeSubscribe
 	public void onEntityConstructing(EntityConstructing event) {
-		
-		if (!(event.entity instanceof EntityLiving)) return;
-		ItemBackpack.initBackpackData((EntityLiving)event.entity);
+		if (event.entity instanceof EntityLiving)
+			ItemBackpack.initBackpackData((EntityLiving)event.entity);
 	}
 	
 	@ForgeSubscribe
