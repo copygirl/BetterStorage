@@ -18,6 +18,14 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 
+// Note to anyone reading this:
+//   First of all, this is more or less a "secret" feature
+// in BetterStorage. If you found this, please don't ruin
+// the surprise for others by telling them about it.
+//   Second, if you do talk about it, please don't call
+// the mob "Frienderman", it's just the name of the class.
+// It's just a friendly enderman with a backpack.
+
 public class EntityFrienderman extends EntityEnderman {
 	
 	private static final boolean[] friendermanCarriable = new boolean[4096];
@@ -34,7 +42,7 @@ public class EntityFrienderman extends EntityEnderman {
 	protected Entity findPlayerToAttack() { return null; }
 	
 	@Override
-	public void setScreaming(boolean screaming) { /* Friendermen don't scream. */ }
+	public void setScreaming(boolean screaming) { /* Friendly endermen don't scream. */ }
 	
 	@Override
 	public int getCarried() {
@@ -57,10 +65,11 @@ public class EntityFrienderman extends EntityEnderman {
 	
 	@Override
 	protected void despawnEntity() {
-		EntityPlayer player = worldObj.getClosestPlayerToEntity( this, -1.0D);
-		if (player == null) return;
-		double distance = player.getDistanceToEntity(player);
-		if (distance < 16) entityAge = 0;
+		EntityPlayer player = worldObj.getClosestPlayerToEntity(this, -1.0D);
+		double distance = ((player != null) ? getDistanceToEntity(player) : 64000);
+		if (entityAge < 0) {  } // Do nothing, in case I want to add a feature
+		                        // that'll make friendly endermen stay around longer.
+		else if (distance < 16) entityAge = 0;
 		else if (distance < 32) entityAge = Math.max(0, entityAge - 2);
 		else if (distance < 48) entityAge = Math.max(0, entityAge - 1);
 		else if ((distance > 64) && (entityAge > 20 * 60 * 5) &&
