@@ -277,12 +277,20 @@ public class CommonProxy implements IPlayerTracker {
 				ItemStack[] contents = null;
 				if (entity instanceof EntityFrienderman) {
 					backpack = new ItemStack(BetterStorage.enderBackpack);
-					entity.func_96120_a(3, 0.0F); // Remove equipment drop chance.
+					entity.func_96120_a(3, 0.0F); // Remove drop chance for the backpack.
 				} else {
-					backpack = new ItemStack(BetterStorage.backpack, 1, RandomUtils.getInt(180, 230));
+					backpack = new ItemStack(BetterStorage.backpack, 1, RandomUtils.getInt(120, 240));
 					ItemBackpack backpackType = (ItemBackpack)Item.itemsList[backpack.itemID];
+					if (RandomUtils.getBoolean(0.15)) {
+						// Give the backpack a random color.
+						int r = RandomUtils.getInt(32, 224);
+						int g = RandomUtils.getInt(32, 224);
+						int b = RandomUtils.getInt(32, 224);
+						int color = (r << 16) | (g << 8) | b;
+						backpackType.func_82813_b(backpack, color);
+					}
 					contents = new ItemStack[backpackType.getColumns() * backpackType.getRows()];
-					entity.func_96120_a(3, 1.0F); // Set equipment drop chance to 100%.
+					entity.func_96120_a(3, 1.0F); // Set drop chance for the backpack to 100%.
 				}
 				
 				// If the entity spawned with enchanted armor,
