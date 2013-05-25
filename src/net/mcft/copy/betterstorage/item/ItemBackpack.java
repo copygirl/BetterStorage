@@ -15,10 +15,13 @@ import net.mcft.copy.betterstorage.misc.handlers.PacketHandler;
 import net.mcft.copy.betterstorage.utils.DirectionUtils;
 import net.mcft.copy.betterstorage.utils.EntityUtils;
 import net.mcft.copy.betterstorage.utils.PacketUtils;
+import net.mcft.copy.betterstorage.utils.RandomUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.client.model.ModelBiped;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
@@ -211,6 +214,7 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 	@Override
 	public void damageArmor(EntityLiving entity, ItemStack stack,
 	                        DamageSource source, int damage, int slot) {
+		if (!takesDamage(stack, source)) return;
 		stack.damageItem(damage, entity);
 		if (stack.stackSize > 0) return;
 		PropertiesBackpack backpackData = ItemBackpack.getBackpackData(entity);
@@ -220,7 +224,31 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 		entity.renderBrokenItemStack(stack);
 	}
 	
+	private static final String[] immuneToDamageType = {
+		"inWall", "drown", "starve", "catcus", "fall", "outOfWorld",
+		"generic", "wither", "anvil", "fallingBlock", "thrown"
+	};
+	protected boolean takesDamage(ItemStack stack, DamageSource source) {
+		// Backpacks don't get damaged from certain
+		// damage types (see above) and magic damage.
+		if (source.isMagicDamage()) return false;
+		for (String immune : immuneToDamageType)
+			if (immune == source.getDamageType()) return false;
+		// Protection enchantments protect the backpack
+		// from taking damage from that damage type.
+		return (!enchantmentProtection(stack, Enchantment.protection, 0.3, 0.35, 0.4, 0.45) &&
+		        !(source.isProjectile() && enchantmentProtection(stack, Enchantment.projectileProtection, 0.4, 0.5, 0.6, 0.7)) &&
+		        !(source.isFireDamage() && enchantmentProtection(stack, Enchantment.fireProtection, 0.55, 0.65, 0.75, 0.85)) &&
+		        !(source.isExplosion() && enchantmentProtection(stack, Enchantment.blastProtection, 0.65, 0.75, 0.85, 0.95)));
+	}
+	private boolean enchantmentProtection(ItemStack stack, Enchantment ench, double... chance) {
+		int level = EnchantmentHelper.getEnchantmentLevel(ench.effectId, stack);
+		level = Math.min(level - 1, chance.length);
+		return ((level >= 0) && RandomUtils.getBoolean(chance[level]));
+	}
+	
 	// Helper functions
+	
 	public static ItemStack getBackpack(EntityLiving entity) {
 		ItemStack backpack = entity.getCurrentArmor(2);
 		if ((backpack != null) &&
@@ -245,7 +273,6 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 	public static IInventory getBackpackItems(EntityLiving carrier) {
 		return getBackpackItems(carrier, null);
 	}
-
 	
 	public static void initBackpackData(EntityLiving entity) {
 		EntityUtils.createProperties(entity, PropertiesBackpack.class);
