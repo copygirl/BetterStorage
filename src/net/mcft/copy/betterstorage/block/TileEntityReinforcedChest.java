@@ -37,6 +37,11 @@ public class TileEntityReinforcedChest extends TileEntityConnectable implements 
 	@Override
 	protected String getConnectableName() { return "container.reinforcedChest"; }
 	
+	@SideOnly(Side.CLIENT)
+	public String getTexture() {
+		return ChestMaterial.get(getBlockMetadata()).getTexture(isConnected());
+	}
+	
 	@Override
 	public boolean canConnect(TileEntityConnectable connectable) {
 		if (!(connectable instanceof TileEntityReinforcedChest)) return false;

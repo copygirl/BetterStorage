@@ -11,21 +11,33 @@ import net.mcft.copy.betterstorage.addon.Addon;
 import net.mcft.copy.betterstorage.block.BlockBackpack;
 import net.mcft.copy.betterstorage.block.ChestMaterial;
 import net.mcft.copy.betterstorage.client.renderer.ItemRendererBackpack;
+import net.mcft.copy.betterstorage.client.renderer.TileEntityReinforcedChestRenderer;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.misc.Registry;
+import net.mcft.copy.betterstorage.proxy.ClientProxy;
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.Configuration;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class ThaumcraftAddon extends Addon {
+
+	public static final String thaumiumChestContainer = Constants.gfxbase + "gui/thaumium_chest.png";
 	
 	public static final String thaumcraftBackpackTexture = Constants.gfxbase + "models/thaumcraftBackpack.png";
+	public static final String thaumiumChestTexture = Constants.gfxbase + "models/thaumiumChest.png";
 	
 	public static int thaumcraftBackpackId = 2880;
+	public static int thaumiumChestId = 2881;
 	
 	public static BlockBackpack thaumcraftBackpack;
+	public static BlockThaumiumChest thaumiumChest;
+	
+	public static int thaumiumChestRenderId;
 	
 	public ThaumcraftAddon() {
 		super("Thaumcraft");
@@ -34,16 +46,19 @@ public class ThaumcraftAddon extends Addon {
 	@Override
 	public void loadConfig(Configuration config) {
 		thaumcraftBackpackId = config.getBlock("thaumcraftBackpack", thaumcraftBackpackId).getInt();
+		thaumiumChestId = config.getBlock("thaumiumChest", thaumiumChestId).getInt();
 	}
 	
 	@Override
 	public void initializeItems() {
 		thaumcraftBackpack = new BlockThaumcraftBackpack(thaumcraftBackpackId);
+		thaumiumChest = new BlockThaumiumChest(thaumiumChestId);
 	}
 	
 	@Override
 	public void registerItems() {
 		Registry.registerHacky(thaumcraftBackpack, "thaumcraftBackpack", "Thaumaturge's Backpack", ItemThaumcraftBackpack.class);
+		Registry.register(thaumiumChest, "thaumiumChest", "Thaumium Chest");
 	}
 	
 	@Override
@@ -53,9 +68,9 @@ public class ThaumcraftAddon extends Addon {
 		ItemStack fabric = ItemApi.getItem("itemResource", 7);
 		
 		ObjectTags thaumcraftBackpackAspects =
-				(new ObjectTags()).add(EnumTag.VOID, 12)
-				                  .add(EnumTag.EXCHANGE, 8)
-				                  .add(EnumTag.MAGIC, 6);
+				(new ObjectTags()).add(EnumTag.VOID, 16)
+				                  .add(EnumTag.EXCHANGE, 12)
+				                  .add(EnumTag.MAGIC, 10);
 		ThaumcraftApi.addInfusionCraftingRecipe("MAGICSTORAGE", "BACKPACK",
 				60, thaumcraftBackpackAspects, new ItemStack(thaumcraftBackpack),
 				"#i#",
@@ -63,6 +78,18 @@ public class ThaumcraftAddon extends Addon {
 				"###", '#', fabric,
 				       'O', BetterStorage.backpack,
 				       'i', thaumium);
+		
+		ObjectTags thaumiumChestAspects =
+				(new ObjectTags()).add(EnumTag.METAL, 64)
+				                  .add(EnumTag.VOID, 20)
+				                  .add(EnumTag.MAGIC, 16);
+		ThaumcraftApi.addInfusionCraftingRecipe("MAGICSTORAGE", "THAUMCHEST",
+				60, thaumiumChestAspects, new ItemStack(thaumiumChest),
+				"ooo",
+				"oCo",
+				"oOo", 'C', BetterStorage.reinforcedChest,
+				       'o', thaumium,
+				       'O', Block.blockIron);
 		
 		addAspects();
 		
@@ -96,6 +123,7 @@ public class ThaumcraftAddon extends Addon {
 		addAspectsFor(BetterStorage.locker.blockID, -1, EnumTag.VOID, 4, EnumTag.WOOD, 2);
 		addAspectsFor(BetterStorage.armorStand.blockID, -1, EnumTag.METAL, 14);
 		addAspectsFor(BetterStorage.backpack.blockID, -1, EnumTag.VOID, 8, EnumTag.BEAST, 8, EnumTag.CLOTH, 8, EnumTag.ARMOR, 6);
+		addAspectsFor(BetterStorage.enderBackpack.blockID, -1, EnumTag.MAGIC, 12, EnumTag.ELDRITCH, 14, EnumTag.DARK, 10, EnumTag.ARMOR, 8);
 		
 		addAspectsFor(BetterStorage.key.itemID, -1, EnumTag.METAL, 14, EnumTag.VALUABLE, 10, EnumTag.CONTROL, 2);
 		addAspectsFor(BetterStorage.lock.itemID, -1, EnumTag.METAL, 20, EnumTag.VALUABLE, 12, EnumTag.ARMOR, 6, EnumTag.MECHANISM, 4);
@@ -114,25 +142,30 @@ public class ThaumcraftAddon extends Addon {
 	@Override
 	public void addLocalizations(LanguageRegistry lang) {
 		lang.addStringLocalization("container.thaumcraftBackpack", "Thaumaturge's Backpack");
+		lang.addStringLocalization("container.thaumiumChest", "Thaumium Chest");
+		lang.addStringLocalization("container.thaumiumChestLarge", "Large Thaumium Chest");
 	}
 	
 	@Override
 	public void registerTileEntites() {
 		GameRegistry.registerTileEntity(TileEntityThaumcraftBackpack.class, "container.thaumcraftBackpack");
+		GameRegistry.registerTileEntity(TileEntityThaumiumChest.class, "container.thaumiumChest");
 	}
 	
+	@SideOnly(Side.CLIENT)
 	@Override
 	public void postClientInit() {
 		MinecraftForgeClient.registerItemRenderer(thaumcraftBackpackId, ItemRendererBackpack.instance);
+		thaumiumChestRenderId = ClientProxy.registerTileEntityRenderer(TileEntityThaumiumChest.class, new TileEntityReinforcedChestRenderer());
 	}
 	
 	@Override
 	public void postInit() {
 		
-		ObjectTags researchAspects = (new ObjectTags()).add(EnumTag.VOID, 20).
-		                                                add(EnumTag.MAGIC, 12).
-		                                                add(EnumTag.EXCHANGE, 6).
-		                                                add(EnumTag.KNOWLEDGE, 6);
+		ObjectTags researchAspects = (new ObjectTags()).add(EnumTag.VOID, 20)
+		                                               .add(EnumTag.MAGIC, 12)
+		                                               .add(EnumTag.EXCHANGE, 6)
+		                                               .add(EnumTag.KNOWLEDGE, 6);
 		ResearchItem research = new ResearchItem("MAGICSTORAGE", researchAspects, -5, 4, thaumcraftBackpack);
 		research.setParents(ResearchList.getResearch("UTFT"));
 		research.longText = "Studying the Vacuos element and how it interacts with other elements, " +

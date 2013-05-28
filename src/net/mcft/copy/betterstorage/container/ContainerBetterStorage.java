@@ -17,23 +17,27 @@ public class ContainerBetterStorage extends Container {
 	public final IInventory inventory;
 	public final int columns;
 	public final int rows;
+	public final int separation; 
 	
 	private int startHotbar = -1;
 	
 	@SideOnly(Side.CLIENT)
 	public GuiBetterStorage updateGui;
 	
-	public ContainerBetterStorage(EntityPlayer player, IInventory inventory, int columns, int rows) {
+	public ContainerBetterStorage(EntityPlayer player, IInventory inventory, int columns, int rows, int seperation) {
 		this.player = player;
 		this.inventory = inventory;
 		this.columns = columns;
 		this.rows = rows;
+		this.separation = seperation;
 		
 		setupInventoryContainer();
 		setupInventoryPlayer();
 		inventory.openChest();
 	}
-	
+	public ContainerBetterStorage(EntityPlayer player, IInventory inventory, int columns, int rows) {
+		this(player, inventory, columns, rows, 14);
+	}
 	public ContainerBetterStorage(EntityPlayer player, InventoryTileEntity inventory) {
 		this(player, inventory, inventory.columns, inventory.rows);
 	}
@@ -55,11 +59,11 @@ public class ContainerBetterStorage extends Container {
 		for (int y = 0; y < 3; y++)
 			for (int x = 0; x < 9; x++)
 				addSlotToContainer(new Slot(player.inventory, 9 + x + y * 9,
-						8 + x * 18 + (columns - 9) * 9, rows * 18 + y * 18 + 32));
+						8 + x * 18 + (columns - 9) * 9, rows * 18 + y * 18 + 18 + separation));
 		setHotbarStart();
 		for (int x = 0; x < 9; x++)
 			addSlotToContainer(new Slot(player.inventory, x,
-					8 + x * 18 + (columns - 9) * 9, rows * 18 + 90));
+					8 + x * 18 + (columns - 9) * 9, rows * 18 + 76 + separation));
 	}
 	
 	protected void setHotbarStart() {

@@ -75,7 +75,7 @@ public class ClientProxy extends CommonProxy {
 		backpackRenderId = registerTileEntityRenderer(TileEntityBackpack.class, new TileEntityBackpackRenderer(), true, -160, 1.5F, 0.14F);
 	}
 	
-	private int registerTileEntityRenderer(Class<? extends TileEntity> tileEntityClass, TileEntitySpecialRenderer renderer,
+	public static int registerTileEntityRenderer(Class<? extends TileEntity> tileEntityClass, TileEntitySpecialRenderer renderer,
 	                                       boolean render3dInInventory, float rotation, float scale, float yOffset) {
 		ClientRegistry.bindTileEntitySpecialRenderer(tileEntityClass, renderer);
 		BetterStorageRenderingHandler renderingHandler =
@@ -84,7 +84,7 @@ public class ClientProxy extends CommonProxy {
 		renderingHandlers.put(tileEntityClass, renderingHandler);
 		return renderingHandler.getRenderId();
 	}
-	private int registerTileEntityRenderer(Class<? extends TileEntity> tileEntityClass, TileEntitySpecialRenderer renderer) {
+	public static int registerTileEntityRenderer(Class<? extends TileEntity> tileEntityClass, TileEntitySpecialRenderer renderer) {
 		return registerTileEntityRenderer(tileEntityClass, renderer, true, 90, 1, 0);
 	}
 	

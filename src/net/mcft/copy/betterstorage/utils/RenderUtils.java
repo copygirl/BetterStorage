@@ -79,4 +79,17 @@ public class RenderUtils {
 		GL11.glColor4f(r, g, b, 1.0F);
 	}
 	
+	public static void drawTexturedModalRect(int x, int y, int u, int v, int width, int height,
+	                                         float zLevel, int textureWidth, int textureHeight) {
+		float xScale = 1.0F / textureWidth;
+		float yScale = 1.0F / textureHeight;
+		Tessellator tess = Tessellator.instance;
+		tess.startDrawingQuads();
+		tess.addVertexWithUV(x +     0, y + height, zLevel, (u +     0) * xScale, (v + height) * yScale);
+		tess.addVertexWithUV(x + width, y + height, zLevel, (u + width) * xScale, (v + height) * yScale);
+		tess.addVertexWithUV(x + width, y +      0, zLevel, (u + width) * xScale, (v +      0) * yScale);
+		tess.addVertexWithUV(x +     0, y +      0, zLevel, (u +     0) * xScale, (v +      0) * yScale);
+		tess.draw();
+	}
+	
 }

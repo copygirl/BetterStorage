@@ -7,6 +7,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 import net.mcft.copy.betterstorage.container.ContainerBetterStorage;
 import net.mcft.copy.betterstorage.misc.Constants;
+import net.mcft.copy.betterstorage.utils.RenderUtils;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -16,11 +17,11 @@ import net.minecraft.util.StatCollector;
 @SideOnly(Side.CLIENT)
 public class GuiBetterStorage extends GuiContainer {
 	
-	private final ContainerBetterStorage container;
-	private final String title;
+	public final ContainerBetterStorage container;
+	public final String title;
 	
-	protected final int columns;
-	protected final int rows;
+	public final int columns;
+	public final int rows;
 	
 	public GuiBetterStorage(ContainerBetterStorage container) {
 		super(container);
@@ -32,7 +33,7 @@ public class GuiBetterStorage extends GuiContainer {
 		rows = container.rows;
 		
 		xSize = 14 + columns * 18;
-		ySize = 114 + rows * 18;
+		ySize = 98 + rows * 18 + container.separation;
 		
 		container.setUpdateGui(this);
 	}
@@ -51,12 +52,15 @@ public class GuiBetterStorage extends GuiContainer {
 		else return Constants.reinforcedChestContainer;
 	}
 	
+	protected int getTextureWidth() { return 256; }
+	protected int getTextureHeight() { return 256; }
+	
 	public void update(int par1, int par2) {  }
 	
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
 		fontRenderer.drawString(title, 8, 6, 0x404040);
-		fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8 + (xSize - 176) / 2, ySize - 94, 0x404040);
+		fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8 + (xSize - 176) / 2, ySize - 92, 0x404040);
 	}
 	
 	@Override
@@ -65,8 +69,11 @@ public class GuiBetterStorage extends GuiContainer {
 		mc.renderEngine.bindTexture(getTexture());
 		int x = (width - xSize) / 2;
 		int y = (height - ySize) / 2;
-		drawTexturedModalRect(x, y, 0, 0, xSize, ySize - 107);
-		drawTexturedModalRect(x, y + ySize - 107, 0, 115, xSize, 107);
+		int w = getTextureWidth();
+		int h = getTextureHeight();
+		int m = 91 + container.separation;
+		RenderUtils.drawTexturedModalRect(x, y, 0, 0, xSize, ySize - m, zLevel, w, h);
+		RenderUtils.drawTexturedModalRect(x, y + ySize - m, 0, 115, xSize, m, zLevel, w, h);
 	}
 	
 }

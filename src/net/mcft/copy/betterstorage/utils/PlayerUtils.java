@@ -3,6 +3,7 @@ package net.mcft.copy.betterstorage.utils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+import net.mcft.copy.betterstorage.addon.thaumcraft.GuiThaumiumChest;
 import net.mcft.copy.betterstorage.client.gui.GuiBetterStorage;
 import net.mcft.copy.betterstorage.client.gui.GuiCrate;
 import net.mcft.copy.betterstorage.container.ContainerKeyring;
@@ -52,7 +53,10 @@ public class PlayerUtils {
 		if (name.equals("container.keyring")) {
 			ContainerKeyring.setProtectedIndex(columns);
 			return new GuiBetterStorage(new ContainerKeyring(player, title));
-		} else return new GuiBetterStorage(player, columns, rows, title, localized);
+		}
+		if (name.startsWith("container.thaumiumChest"))
+			return new GuiThaumiumChest(player, columns, rows, title, localized);
+		return new GuiBetterStorage(player, columns, rows, title, localized);
 		
 	}
 	

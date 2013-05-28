@@ -7,7 +7,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import net.mcft.copy.betterstorage.BetterStorage;
-import net.mcft.copy.betterstorage.block.ChestMaterial;
 import net.mcft.copy.betterstorage.block.TileEntityReinforcedChest;
 import net.mcft.copy.betterstorage.utils.DirectionUtils;
 import net.mcft.copy.betterstorage.utils.RenderUtils;
@@ -22,17 +21,16 @@ public class TileEntityReinforcedChestRenderer extends TileEntitySpecialRenderer
 	
 	private ModelChest chestModel = new ModelChest();
 	private ModelChest largeChestModel = new ModelLargeChest();
-
+	
 	private ItemStack lock = new ItemStack(BetterStorage.lock);
 	
 	public void renderTileEntityAt(TileEntityReinforcedChest chest, double x, double y, double z, float par8) {
 		
-		ChestMaterial material = ChestMaterial.get(chest.getBlockMetadata());
 		boolean large = chest.isConnected();
 		if (large && !chest.isMain()) return;
 		
 		ModelChest model = (large ? largeChestModel : chestModel);
-		bindTextureByName(material.getTexture(large));
+		bindTextureByName(chest.getTexture());
 		
 		GL11.glPushMatrix();
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);

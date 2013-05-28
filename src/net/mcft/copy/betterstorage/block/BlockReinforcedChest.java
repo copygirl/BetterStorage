@@ -28,8 +28,8 @@ import net.minecraftforge.common.MinecraftForge;
 
 public class BlockReinforcedChest extends BlockContainer {
 	
-	public BlockReinforcedChest(int id) {
-		super(id, Material.wood);
+	public BlockReinforcedChest(int id, Material material) {
+		super(id, material);
 		
 		setHardness(8.0f);
 		setResistance(20.0f);
@@ -37,6 +37,9 @@ public class BlockReinforcedChest extends BlockContainer {
 		setBlockBounds(0.0625F, 0.0F, 0.0625F, 0.9375F, 0.875F, 0.9375F);
 		
 		MinecraftForge.setBlockHarvestLevel(this, "axe", 2);
+	}
+	public BlockReinforcedChest(int id) {
+		this(id, Material.wood);
 	}
 	
 	@Override
