@@ -66,6 +66,7 @@ public class ThaumcraftAddon extends Addon {
 		
 		ItemStack thaumium = ItemApi.getItem("itemResource", 2);
 		ItemStack fabric = ItemApi.getItem("itemResource", 7);
+		ItemStack arcaneWood = ItemApi.getItem("blockWooden", 0);
 		
 		ObjectTags thaumcraftBackpackAspects =
 				(new ObjectTags()).add(EnumTag.VOID, 16)
@@ -84,10 +85,11 @@ public class ThaumcraftAddon extends Addon {
 				                  .add(EnumTag.VOID, 20)
 				                  .add(EnumTag.MAGIC, 16);
 		ThaumcraftApi.addInfusionCraftingRecipe("MAGICSTORAGE", "THAUMCHEST",
-				60, thaumiumChestAspects, new ItemStack(thaumiumChest),
-				"ooo",
-				"oCo",
+				55, thaumiumChestAspects, new ItemStack(thaumiumChest),
+				"o#o",
+				"#C#",
 				"oOo", 'C', BetterStorage.reinforcedChest,
+				       '#', arcaneWood,
 				       'o', thaumium,
 				       'O', Block.blockIron);
 		
