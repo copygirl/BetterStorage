@@ -110,7 +110,7 @@ public class CommonProxy implements IPlayerTracker {
 		else if (entity instanceof EntitySkeleton) probability = 1.0 / 2500;
 		else if ((entity.getClass() == EntityEnderman.class) &&
 		         (entity.worldObj.getWorldInfo().getDimension() != 1) &&
-		         RandomUtils.getBoolean(1.0 / 150)) {
+		         RandomUtils.getBoolean(1.0 / 100)) {
 			EntityFrienderman frienderman = new EntityFrienderman(entity.worldObj);
 			frienderman.setPositionAndRotation(entity.posX, entity.posY, entity.posZ, entity.rotationYaw, 0);
 			entity.worldObj.spawnEntityInWorld(frienderman);
