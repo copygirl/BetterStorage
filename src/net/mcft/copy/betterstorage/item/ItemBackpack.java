@@ -63,6 +63,8 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 		return new InventoryStacks(getName(), backpackData.contents);
 	}
 	
+	public boolean canTake(PropertiesBackpack backpackData, ItemStack backpack) { return true; }
+	
 	public boolean containsItems(PropertiesBackpack backpackData, ItemStack backpack) {
 		return (backpackData.hasItems || stackHasItems(backpack) ||
 		        ((backpackData.contents != null) && !StackUtils.isEmpty(backpackData.contents)));

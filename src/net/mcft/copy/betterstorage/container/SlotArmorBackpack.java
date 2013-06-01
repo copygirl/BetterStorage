@@ -3,6 +3,7 @@ package net.mcft.copy.betterstorage.container;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
+import net.mcft.copy.betterstorage.misc.PropertiesBackpack;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
@@ -39,8 +40,10 @@ public class SlotArmorBackpack extends Slot {
 		if ((backpack == null) || !(backpack.getItem() instanceof ItemBackpack)) return true;
 		ItemBackpack backpackType = (ItemBackpack)backpack.getItem();
 		
+		PropertiesBackpack data = ItemBackpack.getBackpackData(player);
 		return (!ItemBackpack.isBackpackOpen(player) &&
-				!backpackType.containsItems(ItemBackpack.getBackpackData(player), backpack));
+				backpackType.canTake(data, backpack) &&
+				!backpackType.containsItems(data, backpack));
 	}
 	
 }
