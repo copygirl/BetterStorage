@@ -106,7 +106,7 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 				list.add("Contains items.");
 			list.add("Currently being used by a player.");
 		} else if (containsItems) {
-			list.add("Contains items. Hold shift and right click");
+			list.add("Contains items. Sneak and right click");
 			list.add("ground with empty hand to unequip.");
 		}
 	}

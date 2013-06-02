@@ -57,7 +57,7 @@ public class ItemEnderBackpack extends ItemBackpack {
 			list.add("Bound backpack.");
 			list.add("Currently being used by a player.");
 		} else {
-			list.add("Bound backpack. Hold shift and right click");
+			list.add("Bound backpack. Sneak and right click");
 			list.add("ground with empty hand to unequip.");
 		}
 	}
