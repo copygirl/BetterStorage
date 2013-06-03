@@ -1,7 +1,6 @@
 package net.mcft.copy.betterstorage.proxy;
 
 import net.mcft.copy.betterstorage.BetterStorage;
-import net.mcft.copy.betterstorage.Config;
 import net.mcft.copy.betterstorage.addon.Addon;
 import net.mcft.copy.betterstorage.block.BlockEnderBackpack;
 import net.mcft.copy.betterstorage.block.TileEntityArmorStand;
@@ -25,7 +24,6 @@ import net.mcft.copy.betterstorage.utils.RandomUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityEnderman;
@@ -70,8 +68,7 @@ public class CommonProxy implements IPlayerTracker {
 	}
 	
 	public void registerEntities() {
-		EntityRegistry.registerModEntity(EntityFrienderman.class, "Frienderman", 1, BetterStorage.instance, 64, 1, true);
-		EntityList.addMapping(EntityFrienderman.class, "Frienderman", Config.entityEndermanId);
+		EntityRegistry.registerModEntity(EntityFrienderman.class, "Frienderman", 1, BetterStorage.instance, 64, 4, true);
 		LanguageRegistry.instance().addStringLocalization("entity.BetterStorage.Frienderman.name", "Enderman");
 	}
 	
@@ -105,17 +102,17 @@ public class CommonProxy implements IPlayerTracker {
 		
 		EntityLiving entity = event.entityLiving;
 		double probability = 0.0;
-		if (entity instanceof EntityPigZombie) probability = 1.0 / 2000;
-		else if (entity instanceof EntityZombie) probability = 1.0 / 1000;
-		else if (entity instanceof EntitySkeleton) probability = 1.0 / 2500;
+		if (entity.getClass() == EntityZombie.class) probability = 1.0 / 800;
+		else if (entity.getClass() == EntityPigZombie.class) probability = 1.0 / 1000;
+		else if (entity.getClass() == EntitySkeleton.class) probability = 1.0 / 1200;
 		else if ((entity.getClass() == EntityEnderman.class) &&
 		         (entity.worldObj.getWorldInfo().getDimension() != 1) &&
-		         RandomUtils.getBoolean(1.0 / 100)) {
+		         RandomUtils.getBoolean(1.0 / 80)) {
 			EntityFrienderman frienderman = new EntityFrienderman(entity.worldObj);
 			frienderman.setPositionAndRotation(entity.posX, entity.posY, entity.posZ, entity.rotationYaw, 0);
 			entity.worldObj.spawnEntityInWorld(frienderman);
 			ItemBackpack.getBackpackData(frienderman).spawnsWithBackpack = true;
-			event.setCanceled(true);
+			entity.setDead();
 		}
 		if (RandomUtils.getDouble() >= probability) return;
 		ItemBackpack.getBackpackData(event.entityLiving).spawnsWithBackpack = true;
@@ -190,8 +187,8 @@ public class CommonProxy implements IPlayerTracker {
 	@ForgeSubscribe
 	public void onEntityJoinWorldEvent(EntityJoinWorldEvent event) {
 		
-		// If the entity is already destroyed,
-		// cancel it being added to the world.
+		// If an entity is already dead / destroyed when
+		// it's added to the world, cancel it being added.
 		if (event.entity.isDead) event.setCanceled(true);
 		
 		// If an ender backpack ever drops as an item,
