@@ -39,6 +39,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet103SetSlot;
 import net.minecraft.util.WeightedRandomChestContent;
+import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.Event.Result;
@@ -105,9 +106,8 @@ public class CommonProxy implements IPlayerTracker {
 		if (entity.getClass() == EntityZombie.class) probability = 1.0 / 800;
 		else if (entity.getClass() == EntityPigZombie.class) probability = 1.0 / 1000;
 		else if (entity.getClass() == EntitySkeleton.class) probability = 1.0 / 1200;
-		else if ((entity.getClass() == EntityEnderman.class) &&
-		         (entity.worldObj.getWorldInfo().getDimension() != 1) &&
-		         RandomUtils.getBoolean(1.0 / 80)) {
+		else if ((entity.getClass() == EntityEnderman.class) && RandomUtils.getBoolean(1.0 / 80) &&
+		         (entity.worldObj.getBiomeGenForCoords((int)entity.posX, (int)entity.posZ) != BiomeGenBase.sky)) {
 			EntityFrienderman frienderman = new EntityFrienderman(entity.worldObj);
 			frienderman.setPositionAndRotation(entity.posX, entity.posY, entity.posZ, entity.rotationYaw, 0);
 			entity.worldObj.spawnEntityInWorld(frienderman);
