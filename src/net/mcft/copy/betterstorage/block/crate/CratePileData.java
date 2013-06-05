@@ -163,9 +163,15 @@ public class CratePileData implements Iterable<ItemStack> {
 	
 	// Adding items
 	
+	/** Runs the method addItems(stack, true) and makes the inventory being saved later.
+	 * This is needed to not let every crate gets dirty when loaded (through fromCompound) */
+	public ItemStack addItems(ItemStack stack) {
+		return addItems(stack, true);
+	}
+
 	/** Tries to add a stack to the contents. <br>
 	 *  Returns what could not be added, null if there was no overflow. */
-	public ItemStack addItems(ItemStack stack) {
+	public ItemStack addItems(ItemStack stack, boolean dirty) {
 		if (stack == null) return null;
 		ItemStack overflow = null;
 		
@@ -198,7 +204,9 @@ public class CratePileData implements Iterable<ItemStack> {
 			
 		} else overflow = stack;
 		
-		markDirty();
+		if(dirty)
+			markDirty();
+		
 		return overflow;
 	}
 	
@@ -381,7 +389,7 @@ public class CratePileData implements Iterable<ItemStack> {
 			if (stackCompound.hasKey("tag"))
 				stack.stackTagCompound = stackCompound.getCompoundTag("tag");
 			if (stack.getItem() != null)
-				pileData.addItems(stack);
+				pileData.addItems(stack, false);
 		}
 		if (compound.hasKey("map"))
 			pileData.map = CratePileMap.fromCompound(compound.getCompoundTag("map"));

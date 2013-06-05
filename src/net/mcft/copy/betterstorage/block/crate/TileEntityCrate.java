@@ -290,6 +290,12 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 	public void writeToNBT(NBTTagCompound compound) {
 		super.writeToNBT(compound);
 		compound.setInteger("crateId", id);
+		
+		// Save the pile data on chunk unload if dirty and pops it from the dirty list
+		CratePileCollection worldPileCollection = CratePileCollection.getCollection(worldObj);
+		if(worldPileCollection.getDirtyPiles().remove(getPileData())) {
+			worldPileCollection.save(getPileData());
+		}
 	}
 	
 }

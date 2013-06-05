@@ -10,6 +10,7 @@ import net.mcft.copy.betterstorage.utils.RandomUtils;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import net.minecraftforge.common.DimensionManager;
 
 /** Holds all CratePileData objects for one world / dimension. */
 public class CratePileCollection {
@@ -56,6 +57,11 @@ public class CratePileCollection {
 			pileDataMap.put(id, pileData);
 		} else pileData = pileDataMap.get(id);
 		return pileData;
+	}
+	
+	/** Hands out the set of dirty piles */
+	public Set<CratePileData> getDirtyPiles() {
+		return dirtyPiles;
 	}
 	
 	/** Creates and adds a new crate pile to this collection. */
@@ -110,7 +116,14 @@ public class CratePileCollection {
 	}
 	
 	private File getSaveDirectory() {
-		return new File(world.getSaveHandler().getMapFileFromName("crates").getParentFile(), "crates");
+		String worldSaveFolder = world.provider.getSaveFolder();
+		File saveFolder = null;
+		if(worldSaveFolder == null) {
+			saveFolder = DimensionManager.getCurrentSaveRootDirectory();
+		} else {
+			saveFolder = new File(DimensionManager.getCurrentSaveRootDirectory(), worldSaveFolder);
+		}
+		return new File(saveFolder, "data" + File.separator + "crates");
 	}
 	private File getSaveFile(int id) {
 		return new File(getSaveDirectory(), id + ".dat");
@@ -137,8 +150,9 @@ public class CratePileCollection {
 	/** Called when the world unloads, removes the
 	 *  crate pile connection from the collection map. */
 	public static void unload(World world) {
-		int dimension = world.provider.dimensionId;
-		collectionMap.remove(dimension);
+		// Unload is before save. This breaks saving. Disabling this until there is something better isn't too bad
+		//int dimension = world.provider.dimensionId;
+		//collectionMap.remove(dimension);
 	}
 	
 }
