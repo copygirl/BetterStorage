@@ -25,6 +25,9 @@ public class CratePileCollection {
 	private Map<Integer, CratePileData> pileDataMap = new HashMap<Integer, CratePileData>();
 	private Set<CratePileData> dirtyPiles = new HashSet<CratePileData>();
 	
+	/** Hands out the set of dirty piles */
+	public Set<CratePileData> getDirtyPiles() { return dirtyPiles; }
+	
 	public CratePileCollection(World world) {
 		this.world = world;
 		this.dimension = world.provider.dimensionId;
@@ -57,11 +60,6 @@ public class CratePileCollection {
 			pileDataMap.put(id, pileData);
 		} else pileData = pileDataMap.get(id);
 		return pileData;
-	}
-	
-	/** Hands out the set of dirty piles */
-	public Set<CratePileData> getDirtyPiles() {
-		return dirtyPiles;
 	}
 	
 	/** Creates and adds a new crate pile to this collection. */
@@ -116,13 +114,10 @@ public class CratePileCollection {
 	}
 	
 	private File getSaveDirectory() {
-		String worldSaveFolder = world.provider.getSaveFolder();
-		File saveFolder = null;
-		if(worldSaveFolder == null) {
-			saveFolder = DimensionManager.getCurrentSaveRootDirectory();
-		} else {
-			saveFolder = new File(DimensionManager.getCurrentSaveRootDirectory(), worldSaveFolder);
-		}
+		File saveFolder = DimensionManager.getCurrentSaveRootDirectory();
+		String dimensionFolderName = world.provider.getSaveFolder();
+		if (dimensionFolderName != null)
+			saveFolder = new File(DimensionManager.getCurrentSaveRootDirectory(), dimensionFolderName);
 		return new File(saveFolder, "data" + File.separator + "crates");
 	}
 	private File getSaveFile(int id) {
@@ -150,7 +145,8 @@ public class CratePileCollection {
 	/** Called when the world unloads, removes the
 	 *  crate pile connection from the collection map. */
 	public static void unload(World world) {
-		// Unload is before save. This breaks saving. Disabling this until there is something better isn't too bad
+		// Unload is called before save. This breaks saving.
+		// Disabling this until there is something better isn't too bad.
 		//int dimension = world.provider.dimensionId;
 		//collectionMap.remove(dimension);
 	}

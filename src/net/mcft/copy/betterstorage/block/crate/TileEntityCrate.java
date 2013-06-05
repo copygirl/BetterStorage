@@ -292,10 +292,10 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 		compound.setInteger("crateId", id);
 		
 		// Save the pile data on chunk unload if dirty and pops it from the dirty list
-		CratePileCollection worldPileCollection = CratePileCollection.getCollection(worldObj);
-		if(worldPileCollection.getDirtyPiles().remove(getPileData())) {
-			worldPileCollection.save(getPileData());
-		}
+		CratePileData data = getPileData();
+		CratePileCollection collection = CratePileCollection.getCollection(worldObj);
+		if (collection.getDirtyPiles().remove(data))
+			collection.save(data);
 	}
 	
 }

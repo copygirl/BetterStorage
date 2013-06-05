@@ -163,15 +163,11 @@ public class CratePileData implements Iterable<ItemStack> {
 	
 	// Adding items
 	
-	/** Runs the method addItems(stack, true) and makes the inventory being saved later.
-	 * This is needed to not let every crate gets dirty when loaded (through fromCompound) */
-	public ItemStack addItems(ItemStack stack) {
-		return addItems(stack, true);
-	}
-
 	/** Tries to add a stack to the contents. <br>
-	 *  Returns what could not be added, null if there was no overflow. */
-	public ItemStack addItems(ItemStack stack, boolean dirty) {
+	 *  Returns what could not be added, null if there was no overflow. <br>
+	 *  If dirty is false, doesn't mark the crate pile as dirty so
+	 *  it doesn't get saved (useful for adding items when loading). */
+	private ItemStack addItems(ItemStack stack, boolean dirty) {
 		if (stack == null) return null;
 		ItemStack overflow = null;
 		
@@ -204,10 +200,14 @@ public class CratePileData implements Iterable<ItemStack> {
 			
 		} else overflow = stack;
 		
-		if(dirty)
-			markDirty();
+		if (dirty) markDirty();
 		
 		return overflow;
+	}
+	/** Tries to add a stack to the contents. <br>
+	 *  Returns what could not be added, null if there was no overflow. */
+	public ItemStack addItems(ItemStack stack) {
+		return addItems(stack, true);
 	}
 	
 	/** Tries to add some stacks to the contents. <br>
