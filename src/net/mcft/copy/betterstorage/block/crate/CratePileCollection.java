@@ -58,6 +58,11 @@ public class CratePileCollection {
 		return pileData;
 	}
 	
+	/** Hands out the set of dirty piles */
+	public Set<CratePileData> getDirtyPiles() {
+		return dirtyPiles;
+	}
+	
 	/** Creates and adds a new crate pile to this collection. */
 	public CratePileData createCratePile() {
 		int id = count;
@@ -137,8 +142,9 @@ public class CratePileCollection {
 	/** Called when the world unloads, removes the
 	 *  crate pile connection from the collection map. */
 	public static void unload(World world) {
-		int dimension = world.provider.dimensionId;
-		collectionMap.remove(dimension);
+		// Unload is before save. This breaks saving. Disabling this until there is something better isn't too bad
+		//int dimension = world.provider.dimensionId;
+		//collectionMap.remove(dimension);
 	}
 	
 }
