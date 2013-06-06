@@ -291,7 +291,8 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 		super.writeToNBT(compound);
 		compound.setInteger("crateId", id);
 		
-		// Save the pile data on chunk unload if dirty and pops it from the dirty list
+		// Save the pile data on chunk unload if
+		// dirty and pops it from the dirty list.
 		CratePileData data = getPileData();
 		CratePileCollection collection = CratePileCollection.getCollection(worldObj);
 		if (collection.getDirtyPiles().remove(data))

@@ -17,37 +17,37 @@ import net.minecraft.tileentity.TileEntity;
 @SideOnly(Side.CLIENT)
 public class TileEntityLockerRenderer extends TileEntitySpecialRenderer {
 	
-	private ModelLocker[] lockerModels = { new ModelLocker(false), new ModelLocker(true) };
-	private ModelLocker[] largeLockerModels = { new ModelLargeLocker(false), new ModelLargeLocker(true) };
+	private ModelLocker lockerModel = new ModelLocker();
+	private ModelLocker largeLockerModel = new ModelLargeLocker();
 	
-	public void renderTileEntityAt(TileEntityLocker locker, double x, double y, double z, float par8) {
+	public void renderTileEntityAt(TileEntityLocker locker, double x, double y, double z, float partialTicks) {
+		
+		float scale = 1.0F / 16;
 		
 		boolean large = locker.isConnected();
 		if (large && !locker.isMain()) return;
 		
 		int index = (locker.mirror ? 1 : 0);
-		ModelLocker model = (large ? largeLockerModels : lockerModels)[index];
+		ModelLocker model = (large ? largeLockerModel : lockerModel);
 		bindTextureByName((large ? Constants.largeLockerTexture : Constants.lockerTexture));
 		
 		GL11.glPushMatrix();
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		GL11.glTranslated(x, y + 2.0, z + 1.0);
-		GL11.glScalef(1.0F, -1.0F, -1.0F);
-		GL11.glTranslated(0.5F, 0.5F, 0.5F);
+		
+		GL11.glTranslated(x + 0.5, y + 0.5, z + 0.5);
+		GL11.glScalef(scale, scale, scale);
 		
 		int rotation = DirectionUtils.getRotation(locker.orientation);
-		GL11.glRotatef(rotation, 0.0F, 1.0F, 0.0F);
+		GL11.glRotatef(-rotation, 0.0F, 1.0F, 0.0F);
 		
-		float angle = locker.prevLidAngle + (locker.lidAngle - locker.prevLidAngle) * par8;
+		float angle = locker.prevLidAngle + (locker.lidAngle - locker.prevLidAngle) * partialTicks;
 		angle = 1.0F - angle;
 		angle = 1.0F - angle * angle * angle;
-		model.setDoorRotation((float)(angle * Math.PI / 2.0));
-		model.renderAll();
+		angle = angle * 90;
+		model.renderAll(locker.mirror, angle);
 		
 		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 		GL11.glPopMatrix();
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		
 	}
 	

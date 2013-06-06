@@ -4,6 +4,7 @@ public class Constants {
 	
 	public static final int anyDamage = Short.MAX_VALUE;
 	
+	
 	public static final String gfxbase = "/mods/betterstorage/textures/";
 
 	public static final String crateContainer = gfxbase + "gui/crate.png";
@@ -14,5 +15,11 @@ public class Constants {
 	public static final String armorStandTexture = gfxbase + "models/armorstand.png";
 	public static final String backpackTexture = gfxbase + "models/backpack_%d.png";
 	public static final String enderBackpackTexture = gfxbase + "models/enderBackpack.png";
+	
+	
+	public static final String modelbase = "/mods/betterstorage/models/";
+	
+	public static final String lockerModel = modelbase + "locker.obj";
+	public static final String largeLockerModel = modelbase + "locker_large.obj";
 	
 }
