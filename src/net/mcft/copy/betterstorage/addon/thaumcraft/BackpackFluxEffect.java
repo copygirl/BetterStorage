@@ -21,9 +21,16 @@ import net.minecraft.util.DamageSource;
 
 import thaumcraft.api.EnumTag;
 
-public abstract class BackpackFluxEffect {
+public abstract class BackpackFluxEffect extends FluxEffect {
 	
-	public static Map<EnumTag, BackpackFluxEffect> effects = new HashMap<EnumTag, BackpackFluxEffect>();
+	public BackpackFluxEffect(EnumTag aspect) {
+		super(aspect);
+		effects.put(aspect, this);
+	}
+	
+	public abstract void apply(EntityPlayer player, ItemStack backpack);
+	
+	public static Map<EnumTag, FluxEffect> effects = new HashMap<EnumTag, FluxEffect>();
 	
 	static {
 		new BackpackFluxEffect(EnumTag.WIND) { @Override public void apply(EntityPlayer player, ItemStack backpack) {
@@ -75,7 +82,7 @@ public abstract class BackpackFluxEffect {
 			player.worldObj.playSoundAtEntity(player, "random.levelup", 0.75F, 0.5F);
 		} };
 		new BackpackFluxEffect(EnumTag.DESTRUCTION) { @Override public void apply(EntityPlayer player, ItemStack backpack) {
-			((ItemBackpack)backpack.getItem()).damageArmor(player, backpack, DamageSource.magic, 8, 0);
+			((ItemBackpack)backpack.getItem()).damageArmor(player, backpack, DamageSource.generic, 8, 0);
 			if (backpack.stackSize <= 0)
 				player.inventory.armorInventory[2] = null;
 			player.worldObj.playSoundAtEntity(player, "random.break", 0.75F, 0.5F);
@@ -83,6 +90,7 @@ public abstract class BackpackFluxEffect {
 		new BackpackFluxEffect(EnumTag.POWER) { @Override public void apply(EntityPlayer player, ItemStack backpack) {
 			if (player.worldObj.canLightningStrikeAt((int)player.posX, (int)player.posY, (int)player.posZ))
 				player.worldObj.addWeatherEffect(new EntityLightningBolt(player.worldObj, player.posX, player.posY, player.posZ));
+			else player.attackEntityFrom(DamageSource.magic, RandomUtils.getInt(2, 4));
 		} };
 		new BackpackFluxEffect(EnumTag.ARMOR) { @Override public void apply(EntityPlayer player, ItemStack backpack) {
 			if (RandomUtils.getFloat() < 0.5)
@@ -130,14 +138,5 @@ public abstract class BackpackFluxEffect {
 			player.worldObj.playSoundAtEntity(player, "random.breath", 0.75F, 0.5F);
 		} };
 	}
-	
-	public final EnumTag aspect;
-	
-	public BackpackFluxEffect(EnumTag aspect) {
-		this.aspect = aspect;
-		effects.put(aspect, this);
-	}
-	
-	public abstract void apply(EntityPlayer player, ItemStack backpack);
 	
 }

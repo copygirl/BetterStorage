@@ -8,7 +8,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 import net.mcft.copy.betterstorage.block.TileEntityArmorStand;
 import net.mcft.copy.betterstorage.client.model.ModelArmorStand;
-import net.mcft.copy.betterstorage.client.model.ModelLocker;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;

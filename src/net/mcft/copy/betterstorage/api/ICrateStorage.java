@@ -6,12 +6,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.ForgeDirection;
 
 public interface ICrateStorage {
-
+	
 	/** Returns a unique inventory identifier for that side.
 	 *  When this identifier matches another inventory's or
 	 *  side's identifier, they should be considered the same. */
 	public Object getInventoryIdentifier(ForgeDirection side);
-
+	
 	/** Returns all items in the inventory, accessible or not.
 	 *  The returned list may contain null values and
 	 *  ItemStacks with stack sizes above their usual limit.
