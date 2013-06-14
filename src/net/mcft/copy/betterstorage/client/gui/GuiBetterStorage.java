@@ -29,8 +29,8 @@ public class GuiBetterStorage extends GuiContainer {
 		this.container = container;
 		IInventory inv = container.inventory;
 		title = (inv.isInvNameLocalized() ? inv.getInvName() : StatCollector.translateToLocal(inv.getInvName()));
-		columns = container.columns;
-		rows = container.rows;
+		columns = container.getColumns();
+		rows = container.getRows();
 		
 		xSize = 14 + columns * 18;
 		ySize = 98 + rows * 18 + container.separation;

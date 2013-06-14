@@ -26,9 +26,9 @@ public class ContainerKeyring extends ContainerBetterStorage {
 	
 	@Override
 	protected void setupInventoryContainer() {
-		for (int y = 0; y < rows; y++)
-			for (int x = 0; x < columns; x++)
-				addSlotToContainer(new SlotKey(inventory, x + y * columns,
+		for (int y = 0; y < getRows(); y++)
+			for (int x = 0; x < getColumns(); x++)
+				addSlotToContainer(new SlotKey(inventory, x + y * getColumns(),
 						8 + x * 18, 18 + y * 18));
 	}
 	
@@ -37,10 +37,10 @@ public class ContainerKeyring extends ContainerBetterStorage {
 		for (int y = 0; y < 3; y++)
 			for (int x = 0; x < 9; x++)
 				addSlot(player.inventory, 9 + x + y * 9,
-				        8 + x * 18 + (columns - 9) * 9, rows * 18 + y * 18 + 32);
+				        8 + x * 18 + (getColumns() - 9) * 9, getRows() * 18 + y * 18 + 32);
 		setHotbarStart();
 		for (int x = 0; x < 9; x++)
-			addSlot(player.inventory, x, 8 + x * 18 + (columns - 9) * 9, rows * 18 + 90);
+			addSlot(player.inventory, x, 8 + x * 18 + (getColumns() - 9) * 9, getRows() * 18 + 90);
 	}
 	
 	private void addSlot(IInventory inventory, int slotId, int x, int y) {
