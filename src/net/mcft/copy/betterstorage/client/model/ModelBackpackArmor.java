@@ -43,10 +43,13 @@ public class ModelBackpackArmor extends ModelBiped {
 	
 	@Override
 	public void setLivingAnimations(EntityLiving entity, float par2, float par3, float partialTicks) {
-		PropertiesBackpack backpack = ItemBackpack.getBackpackData(entity);
-		float angle = backpack.prevLidAngle + (backpack.lidAngle - backpack.prevLidAngle) * partialTicks;
-		angle = 1.0F - angle;
-		angle = 1.0F - angle * angle;
+		float angle = 0;
+		if (entity != null) {
+			PropertiesBackpack backpack = ItemBackpack.getBackpackData(entity);
+			angle = backpack.prevLidAngle + (backpack.lidAngle - backpack.prevLidAngle) * partialTicks;
+			angle = 1.0F - angle;
+			angle = 1.0F - angle * angle;
+		}
 		top.rotateAngleX = (float)(angle * Math.PI / 4.0);
 	}
 	
@@ -64,7 +67,7 @@ public class ModelBackpackArmor extends ModelBiped {
 	@Override
 	public void setRotationAngles(float v1, float v2, float v3, float v4, float v5, float v6, Entity entity) {
 		// For some reason this is not properly updated.
-		isSneak = ((EntityLiving)entity).isSneaking();
+		isSneak = ((entity != null) ? ((EntityLiving)entity).isSneaking() : false);
 		super.setRotationAngles(v1, v2, v3, v4, v5, v6, entity);
 	}
 	
