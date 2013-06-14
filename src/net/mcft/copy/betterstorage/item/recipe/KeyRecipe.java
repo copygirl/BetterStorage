@@ -1,4 +1,4 @@
-package net.mcft.copy.betterstorage.item;
+package net.mcft.copy.betterstorage.item.recipe;
 
 import java.util.ArrayList;
 import java.util.HashMap;
