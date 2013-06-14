@@ -1,4 +1,4 @@
-package net.mcft.copy.betterstorage.block;
+package net.mcft.copy.betterstorage.block.tileentity;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

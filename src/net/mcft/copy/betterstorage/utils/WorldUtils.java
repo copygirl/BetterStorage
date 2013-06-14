@@ -1,7 +1,8 @@
 package net.mcft.copy.betterstorage.utils;
 
 import java.util.List;
-import net.mcft.copy.betterstorage.block.TileEntityContainer;
+
+import net.mcft.copy.betterstorage.block.tileentity.TileEntityContainer;
 import net.mcft.copy.betterstorage.container.ContainerBetterStorage;
 import net.mcft.copy.betterstorage.inventory.InventoryTileEntity;
 import net.minecraft.block.Block;

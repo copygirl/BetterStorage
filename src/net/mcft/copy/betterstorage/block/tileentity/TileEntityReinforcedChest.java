@@ -1,4 +1,4 @@
-package net.mcft.copy.betterstorage.block;
+package net.mcft.copy.betterstorage.block.tileentity;
 
 import java.security.InvalidParameterException;
 
@@ -7,6 +7,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.mcft.copy.betterstorage.Config;
 import net.mcft.copy.betterstorage.api.ILock;
 import net.mcft.copy.betterstorage.api.ILockable;
+import net.mcft.copy.betterstorage.block.ChestMaterial;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;

@@ -6,7 +6,7 @@ import org.lwjgl.opengl.GL12;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-import net.mcft.copy.betterstorage.block.TileEntityLocker;
+import net.mcft.copy.betterstorage.block.tileentity.TileEntityLocker;
 import net.mcft.copy.betterstorage.client.model.ModelLargeLocker;
 import net.mcft.copy.betterstorage.client.model.ModelLocker;
 import net.mcft.copy.betterstorage.misc.Constants;

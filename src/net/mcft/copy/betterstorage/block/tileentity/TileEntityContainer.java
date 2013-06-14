@@ -1,4 +1,4 @@
-package net.mcft.copy.betterstorage.block;
+package net.mcft.copy.betterstorage.block.tileentity;
 
 import net.mcft.copy.betterstorage.container.ContainerBetterStorage;
 import net.mcft.copy.betterstorage.inventory.InventoryTileEntity;

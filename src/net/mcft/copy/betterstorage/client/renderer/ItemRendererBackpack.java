@@ -4,7 +4,7 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.mcft.copy.betterstorage.block.TileEntityBackpack;
+import net.mcft.copy.betterstorage.block.tileentity.TileEntityBackpack;
 import net.mcft.copy.betterstorage.proxy.ClientProxy;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;

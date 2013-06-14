@@ -7,7 +7,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import net.mcft.copy.betterstorage.BetterStorage;
-import net.mcft.copy.betterstorage.block.TileEntityReinforcedChest;
+import net.mcft.copy.betterstorage.block.tileentity.TileEntityReinforcedChest;
 import net.mcft.copy.betterstorage.utils.DirectionUtils;
 import net.mcft.copy.betterstorage.utils.RenderUtils;
 import net.minecraft.client.model.ModelChest;

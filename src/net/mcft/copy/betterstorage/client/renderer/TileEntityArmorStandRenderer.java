@@ -6,7 +6,7 @@ import org.lwjgl.opengl.GL12;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-import net.mcft.copy.betterstorage.block.TileEntityArmorStand;
+import net.mcft.copy.betterstorage.block.tileentity.TileEntityArmorStand;
 import net.mcft.copy.betterstorage.client.model.ModelArmorStand;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.minecraft.client.renderer.entity.RenderManager;

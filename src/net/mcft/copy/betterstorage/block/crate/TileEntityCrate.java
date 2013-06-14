@@ -8,7 +8,7 @@ import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.Config;
 import net.mcft.copy.betterstorage.api.ICrateStorage;
 import net.mcft.copy.betterstorage.api.ICrateWatcher;
-import net.mcft.copy.betterstorage.block.TileEntityContainer;
+import net.mcft.copy.betterstorage.block.tileentity.TileEntityContainer;
 import net.mcft.copy.betterstorage.container.ContainerBetterStorage;
 import net.mcft.copy.betterstorage.container.ContainerCrate;
 import net.mcft.copy.betterstorage.inventory.InventoryCratePlayerView;
