@@ -24,7 +24,7 @@ public class InventoryBackpackEquipped extends InventoryWrapper {
 		double direction = DirectionUtils.angleDifference(carrier.renderYawOffset + 90.0F,
 		                                                  DirectionUtils.angleBetween(carrier, player));
 		return (carrier.isEntityAlive() && carriesBackpack &&
-		        (distance < 1.5) && (Math.abs(direction) > 135));
+		        (distance < 2) && (Math.abs(direction) > 135));
 	}
 	
 	@Override
