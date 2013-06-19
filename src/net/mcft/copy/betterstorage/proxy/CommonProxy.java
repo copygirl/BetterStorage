@@ -7,6 +7,7 @@ import net.mcft.copy.betterstorage.block.crate.CratePileCollection;
 import net.mcft.copy.betterstorage.block.crate.TileEntityCrate;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityArmorStand;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityBackpack;
+import net.mcft.copy.betterstorage.block.tileentity.TileEntityCardboardBox;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityLocker;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityReinforcedChest;
 import net.mcft.copy.betterstorage.container.ContainerBetterStorage;
@@ -79,6 +80,7 @@ public class CommonProxy implements IPlayerTracker {
 		GameRegistry.registerTileEntity(TileEntityLocker.class, "container.locker");
 		GameRegistry.registerTileEntity(TileEntityArmorStand.class, "container.armorStand");
 		GameRegistry.registerTileEntity(TileEntityBackpack.class, "container.backpack");
+		GameRegistry.registerTileEntity(TileEntityCardboardBox.class, "container.cardboardbox");
 		Addon.registerAllTileEntites();
 	}
 	

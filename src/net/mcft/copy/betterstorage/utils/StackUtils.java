@@ -1,8 +1,12 @@
 package net.mcft.copy.betterstorage.utils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.mcft.copy.betterstorage.api.IKey;
 import net.mcft.copy.betterstorage.api.ILock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class StackUtils {
@@ -23,10 +27,9 @@ public class StackUtils {
 		return NbtUtils.getTagValue(compound.getTag(tag));
 	}
 	
-	/** Sets a value in the ItemStack's custom NBT data. Example: <br>
-	 *  <code> ItemUtils.set(stack, 0xFF0000, "display", "color"); </code> <br>
+	/** Sets a tag in the ItemStack's custom NBT data. <br>
 	 *  Creates parent compounds if they don't exist. */
-	public static <T> void set(ItemStack stack, T value, String... tags) {
+	public static void set(ItemStack stack, NBTBase nbtTag, String... tags) {
 		String tag = null;
 		NBTTagCompound compound;
 		if (!stack.hasTagCompound()) {
@@ -42,7 +45,13 @@ public class StackUtils {
 				compound = newCompound;
 			} else compound = compound.getCompoundTag(tag);
 		}
-		compound.setTag(tag, NbtUtils.createTag(tag, value));
+		compound.setTag(tag, nbtTag);
+	}
+	/** Sets a value in the ItemStack's custom NBT data. Example: <br>
+	 *  <code> ItemUtils.set(stack, 0xFF0000, "display", "color"); </code> <br>
+	 *  Creates parent compounds if they don't exist. */
+	public static <T> void set(ItemStack stack, T value, String... tags) {
+		set(stack, NbtUtils.createTag(null, value), tags);
 	}
 	
 	/** Returns if the tag exists in the ItemStack's custom NBT data. Example: <br>
@@ -88,6 +97,31 @@ public class StackUtils {
 		return ((stack1 == null) ? (stack2 == null) : ((stack2 != null) &&
 				matches(stack1.itemID, stack1.getItemDamage(), stack1.getTagCompound(),
 				        stack2.itemID, stack2.getItemDamage(), stack2.getTagCompound())));
+	}
+	
+	/** Stacks items from the ItemStack array into the list. <br>
+	 *  Returns the number of stacks processed. */
+	public static int stackItems(ItemStack[] contents, List<ItemStack> items) {
+		int numStacks = 0;
+		outerLoop:
+		for (int i = 0; i < contents.length; i++) {
+			ItemStack contentStack = contents[i];
+			if (contentStack == null) continue;
+			numStacks++;
+			for (ItemStack itemsStack : items)
+				if (StackUtils.matches(contentStack, itemsStack)) {
+					itemsStack.stackSize += contentStack.stackSize;
+					continue outerLoop;
+				}
+			items.add(contentStack);
+		}
+		return numStacks;
+	}
+	/** Returns items from the ItemStack array stacked into a list. */
+	public static List<ItemStack> stackItems(ItemStack[] contents) {
+		List<ItemStack> items = new ArrayList<ItemStack>();
+		stackItems(contents, items);
+		return items;
 	}
 	
 	public static ItemStack[] getStackContents(ItemStack stack, int size) {
