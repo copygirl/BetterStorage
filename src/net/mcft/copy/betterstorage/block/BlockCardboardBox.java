@@ -2,24 +2,44 @@ package net.mcft.copy.betterstorage.block;
 
 import java.util.Random;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityCardboardBox;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 
 public class BlockCardboardBox extends BlockContainer {
+	
+	private Icon sideIcon;
 	
 	public BlockCardboardBox(int id) {
 		super(id, Material.wood);
 		
 		setHardness(0.8f);
 		setBlockBounds(0.0625F, 0.0F, 0.0625F, 0.9375F, 0.875F, 0.9375F);
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister iconRegister) {
+		blockIcon = iconRegister.registerIcon("betterstorage:cardboard_box");
+		sideIcon = iconRegister.registerIcon("betterstorage:cardboard_box_side");
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public Icon getIcon(int side, int meta) {
+		return ((side < 2) ? blockIcon : sideIcon);
 	}
 	
 	@Override

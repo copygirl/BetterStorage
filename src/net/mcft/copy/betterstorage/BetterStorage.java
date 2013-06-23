@@ -12,6 +12,7 @@ import net.mcft.copy.betterstorage.block.BlockReinforcedChest;
 import net.mcft.copy.betterstorage.block.ChestMaterial;
 import net.mcft.copy.betterstorage.block.crate.BlockCrate;
 import net.mcft.copy.betterstorage.item.EnchantmentBetterStorage;
+import net.mcft.copy.betterstorage.item.ItemCardboardSheet;
 import net.mcft.copy.betterstorage.item.ItemKey;
 import net.mcft.copy.betterstorage.item.ItemKeyring;
 import net.mcft.copy.betterstorage.item.ItemLock;
@@ -70,6 +71,7 @@ public class BetterStorage {
 	public static ItemKey key;
 	public static ItemLock lock;
 	public static ItemKeyring keyring;
+	public static ItemCardboardSheet cardboardSheet;
 	
 	
 	public static CreativeTabs creativeTab;
@@ -115,6 +117,7 @@ public class BetterStorage {
 		key     = new ItemKey(Config.keyId);
 		lock    = new ItemLock(Config.lockId);
 		keyring = new ItemKeyring(Config.keyringId);
+		cardboardSheet = new ItemCardboardSheet(Config.cardboardSheetId);
 		
 		Addon.initializeAllItems();
 		
@@ -163,6 +166,12 @@ public class BetterStorage {
 				       'O', Block.cloth,
 				       'i', Item.ingotGold);
 		
+		// Cardboard box recipe
+		GameRegistry.addRecipe(new ItemStack(cardboardBox),
+				"ooo",
+				"o o",
+				"ooo", 'o', cardboardSheet);
+		
 		// Key recipe
 		GameRegistry.addRecipe(KeyRecipe.createKeyRecipe(
 				".o",
@@ -181,6 +190,12 @@ public class BetterStorage {
 				"...",
 				". .",
 				"...", '.', Item.goldNugget);
+		
+		// Cardboard sheet recipe
+		GameRegistry.addRecipe(new ItemStack(cardboardSheet),
+				"ooo",
+				"ooo",
+				"ooo", 'o', Item.paper);
 		
 		Addon.addAllRecipes();
 		

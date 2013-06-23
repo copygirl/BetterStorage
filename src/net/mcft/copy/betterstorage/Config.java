@@ -22,6 +22,7 @@ public class Config {
 	public static int keyId     = 28540;
 	public static int lockId    = 28541;
 	public static int keyringId = 28542;
+	public static int cardboardSheetId = 28543;
 	
 	public static int enchantmentBaseId = 180;
 	
@@ -48,6 +49,7 @@ public class Config {
 		keyId     = config.getItem("key", keyId).getInt();
 		lockId    = config.getItem("lock", lockId).getInt();
 		keyringId = config.getItem("keyring", keyringId).getInt();
+		cardboardSheetId = config.getItem("cardboardSheet", cardboardSheetId).getInt();
 		
 		enchantmentBaseId = config.get(Configuration.CATEGORY_GENERAL, "enchantmentBaseId", enchantmentBaseId,
 		                               "Uses up about 10 IDs starting from this ID.").getInt();
