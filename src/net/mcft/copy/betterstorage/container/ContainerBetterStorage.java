@@ -59,19 +59,21 @@ public class ContainerBetterStorage extends Container {
 	protected void setupInventoryContainer() {
 		for (int y = 0; y < rows; y++)
 			for (int x = 0; x < columns; x++)
-				addSlotToContainer(new Slot(inventory, x + y * columns,
-						8 + x * 18, 18 + y * 18));
+				addSlotToContainer(new SlotBetterStorage(inventory, x + y * columns,
+				                                         8 + x * 18, 18 + y * 18));
 	}
 	
 	protected void setupInventoryPlayer() {
 		for (int y = 0; y < 3; y++)
 			for (int x = 0; x < 9; x++)
-				addSlotToContainer(new Slot(player.inventory, 9 + x + y * 9,
-						8 + x * 18 + (columns - 9) * 9, rows * 18 + y * 18 + 18 + separation));
+				addSlotToContainer(new SlotBetterStorage(player.inventory, 9 + x + y * 9,
+				                                         8 + x * 18 + (columns - 9) * 9,
+				                                         rows * 18 + y * 18 + 18 + separation));
 		setHotbarStart();
 		for (int x = 0; x < 9; x++)
-			addSlotToContainer(new Slot(player.inventory, x,
-					8 + x * 18 + (columns - 9) * 9, rows * 18 + 76 + separation));
+			addSlotToContainer(new SlotBetterStorage(player.inventory, x,
+			                                         8 + x * 18 + (columns - 9) * 9,
+			                                         rows * 18 + 76 + separation));
 	}
 	
 	protected void setHotbarStart() {
