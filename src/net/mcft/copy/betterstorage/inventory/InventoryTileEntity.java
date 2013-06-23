@@ -13,7 +13,7 @@ public class InventoryTileEntity extends InventoryBetterStorage {
 	public final IInventory inventory;
 	public final int columns, rows;
 	
-	private InventoryTileEntity(TileEntityContainer mainTileEntity, TileEntityContainer[] tileEntities, IInventory inventory) {
+	public InventoryTileEntity(TileEntityContainer mainTileEntity, TileEntityContainer[] tileEntities, IInventory inventory) {
 		this.mainTileEntity = mainTileEntity;
 		this.tileEntities = tileEntities;
 		this.inventory = inventory;
@@ -24,8 +24,11 @@ public class InventoryTileEntity extends InventoryBetterStorage {
 	public InventoryTileEntity(TileEntityContainer mainTileEntity, TileEntityContainer... tileEntities) {
 		this(mainTileEntity, tileEntities, new InventoryStacks(getAllContents(tileEntities)));
 	}
+	public InventoryTileEntity(TileEntityContainer tileEntity, IInventory inventory) {
+		this(tileEntity, new TileEntityContainer[]{ tileEntity }, inventory);
+	}
 	public InventoryTileEntity(TileEntityContainer tileEntity) {
-		this(tileEntity, new TileEntityContainer[]{ tileEntity }, new InventoryStacks(tileEntity.contents));
+		this(tileEntity, new InventoryStacks(tileEntity.contents));
 	}
 	
 	private static ItemStack[][] getAllContents(TileEntityContainer... tileEntities) {
