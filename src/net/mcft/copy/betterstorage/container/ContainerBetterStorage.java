@@ -7,6 +7,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.mcft.copy.betterstorage.client.gui.GuiBetterStorage;
 import net.mcft.copy.betterstorage.inventory.InventoryTileEntity;
 import net.mcft.copy.betterstorage.utils.InventoryUtils;
+import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
@@ -102,6 +103,64 @@ public class ContainerBetterStorage extends Container {
 		}
 		
 		return stack;
+	}
+	
+	@Override
+	protected boolean mergeItemStack(ItemStack stack, int start, int end, boolean backwards) {
+		
+		boolean success = false;
+		
+		// Try to put the stack into existing stacks with the same type.
+		if (stack.isStackable()) {
+			for (int i = 0; i < (end - start); i++) {
+				int index = (backwards ? (end - 1 - i) : i);
+				
+				Slot slot = (Slot)this.inventorySlots.get(index);
+				ItemStack slotStack = slot.getStack();
+				int maxStackSize = Math.min(stack.getMaxStackSize(),
+                        slot.inventory.getInventoryStackLimit());
+				
+				if (StackUtils.matches(stack, slotStack) &&
+				    (slotStack.stackSize < maxStackSize)) {
+					ItemStack testStack = stack.copy();
+					testStack.stackSize = Math.min(slotStack.stackSize + stack.stackSize, maxStackSize);
+					if (slot.isItemValid(testStack) &&
+					    slot.inventory.isStackValidForSlot(slot.slotNumber, testStack)) {
+						stack.stackSize -= (testStack.stackSize - slotStack.stackSize);
+						slot.putStack(testStack);
+						success = true;
+					}
+				}
+				
+				if (stack.stackSize <= 0) return success;
+			}
+		}
+		
+		// Try to put the stack into empty slots.
+		for (int i = 0; i < (end - start); i++) {
+			int index = (backwards ? (end - 1 - i) : i);
+			
+			Slot slot = (Slot)this.inventorySlots.get(index);
+			ItemStack slotStack = slot.getStack();
+			
+			if (slotStack == null) {
+				ItemStack testStack = stack.copy();
+				int maxStackSize = Math.min(stack.getMaxStackSize(),
+				                            slot.inventory.getInventoryStackLimit());
+				testStack.stackSize = Math.min(stack.stackSize, maxStackSize);
+				if (slot.isItemValid(testStack) &&
+				    slot.inventory.isStackValidForSlot(slot.slotNumber, testStack)) {
+					stack.stackSize -= testStack.stackSize;
+					slot.putStack(testStack);
+					success = true;
+				}
+			}
+			
+			if (stack.stackSize <= 0) return success;
+		}
+		
+		return success;
+		
 	}
 	
 	@Override
