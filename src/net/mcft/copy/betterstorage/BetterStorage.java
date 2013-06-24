@@ -214,7 +214,7 @@ public class BetterStorage {
 		lang.addStringLocalization("container.lockerLarge", "Large Locker");
 		lang.addStringLocalization("container.backpack", "Backpack");
 		lang.addStringLocalization("container.enderBackpack", "Ender Backpack");
-		lang.addStringLocalization("container.cardboardbox", "Cardboard Box");
+		lang.addStringLocalization("container.cardboardBox", "Cardboard Box");
 		
 		lang.addStringLocalization("container.keyring", "Keyring");
 		

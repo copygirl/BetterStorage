@@ -7,12 +7,15 @@ import net.mcft.copy.betterstorage.addon.thaumcraft.GuiThaumiumChest;
 import net.mcft.copy.betterstorage.client.gui.GuiBetterStorage;
 import net.mcft.copy.betterstorage.client.gui.GuiCrate;
 import net.mcft.copy.betterstorage.container.ContainerKeyring;
+import net.mcft.copy.betterstorage.inventory.InventoryCardboardBox;
+import net.mcft.copy.betterstorage.inventory.InventoryWrapper;
 import net.mcft.copy.betterstorage.misc.handlers.PacketHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
+import net.minecraft.item.ItemStack;
 
 public class PlayerUtils {
 	
@@ -56,6 +59,9 @@ public class PlayerUtils {
 		}
 		if (name.startsWith("container.thaumiumChest"))
 			return new GuiThaumiumChest(player, columns, rows, title, localized);
+
+		if (name.equals("container.cardboardBox"))
+			return new GuiBetterStorage(player, columns, rows, new InventoryWrapper(new InventoryCardboardBox(new ItemStack[9]), title, localized));
 		return new GuiBetterStorage(player, columns, rows, title, localized);
 		
 	}
