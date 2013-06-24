@@ -8,6 +8,7 @@ import java.util.List;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+import net.mcft.copy.betterstorage.api.IContainerItem;
 import net.mcft.copy.betterstorage.block.crate.CratePileData;
 import net.mcft.copy.betterstorage.block.crate.TileEntityCrate;
 import net.mcft.copy.betterstorage.misc.ItemIdentifier;
@@ -19,12 +20,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-public class ItemCardboardBox extends ItemBlock {
+public class ItemCardboardBox extends ItemBlock implements IContainerItem {
 	
 	public ItemCardboardBox(int id) {
 		super(id);
 		setMaxStackSize(1);
 	}
+	
+	// Item stuff
 	
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -65,6 +68,8 @@ public class ItemCardboardBox extends ItemBlock {
 		return ((hasItems) ? putItems(stack, player, tileEntity) :
 		                     takeItems(stack, player, tileEntity));
 	}
+	
+	// Using the cardboard box
 	
 	private boolean putItems(ItemStack stack, EntityPlayer player, TileEntity tileEntity) {
 		
@@ -215,6 +220,20 @@ public class ItemCardboardBox extends ItemBlock {
 			this.stack = stack;
 		}
 		
+	}
+	
+	// IContainerItem implementation
+	
+	@Override
+	public ItemStack[] getContainerItemContents(ItemStack container) {
+		if (StackUtils.has(container, "Items"))
+			return StackUtils.getStackContents(container, 9);
+		else return null;
+	}
+	
+	@Override
+	public boolean canBeStoredInContainerItem(ItemStack item) {
+		return !StackUtils.has(item, "Items");
 	}
 	
 }

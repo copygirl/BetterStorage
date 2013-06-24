@@ -1,5 +1,6 @@
 package net.mcft.copy.betterstorage.item;
 
+import net.mcft.copy.betterstorage.api.IContainerItem;
 import net.mcft.copy.betterstorage.api.IKey;
 import net.mcft.copy.betterstorage.container.ContainerKeyring;
 import net.mcft.copy.betterstorage.utils.PlayerUtils;
@@ -14,7 +15,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemKeyring extends ItemBetterStorage implements IKey {
+public class ItemKeyring extends ItemBetterStorage implements IKey, IContainerItem {
 	
 	private Icon[] icons = new Icon[4];
 	
@@ -71,5 +72,15 @@ public class ItemKeyring extends ItemBetterStorage implements IKey {
 	
 	@Override
 	public boolean canApplyEnchantment(ItemStack key, Enchantment enchantment) { return false; }
+	
+	// IContainerItem implementation
+	
+	@Override
+	public ItemStack[] getContainerItemContents(ItemStack container) {
+		return StackUtils.getStackContents(container, 9);
+	}
+	
+	@Override
+	public boolean canBeStoredInContainerItem(ItemStack item) { return true; }
 	
 }

@@ -3,6 +3,7 @@ package net.mcft.copy.betterstorage.utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.mcft.copy.betterstorage.api.IContainerItem;
 import net.mcft.copy.betterstorage.api.IKey;
 import net.mcft.copy.betterstorage.api.ILock;
 import net.minecraft.item.ItemStack;
@@ -152,6 +153,12 @@ public class StackUtils {
 	}
 	public static boolean isLock(ItemStack stack) {
 		return (stack != null && stack.getItem() instanceof ILock);
+	}
+	
+	public static boolean canBeStoredInContainerItem(ItemStack item) {
+		return (((item != null) && (item.getItem() instanceof IContainerItem))
+				? ((IContainerItem)item.getItem()).canBeStoredInContainerItem(item)
+				: true);
 	}
 	
 }
