@@ -70,4 +70,9 @@ public class InventoryTileEntity extends InventoryBetterStorage {
 		mainTileEntity.onContainerClosed();
 	}
 	
+	@Override
+	public boolean isStackValidForSlot(int slot, ItemStack stack) {
+		return inventory.isStackValidForSlot(slot, stack);
+	}
+	
 }

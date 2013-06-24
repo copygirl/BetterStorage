@@ -1,11 +1,8 @@
 package net.mcft.copy.betterstorage.container;
 
 import net.mcft.copy.betterstorage.inventory.InventoryKeyring;
-import net.mcft.copy.betterstorage.item.ItemKey;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
 
 public class ContainerKeyring extends ContainerBetterStorage {
 	
@@ -22,14 +19,6 @@ public class ContainerKeyring extends ContainerBetterStorage {
 		int index = protectedIndex;
 		protectedIndex = -1;
 		return ((index >= 0) ? index : player.inventory.currentItem);
-	}
-	
-	@Override
-	protected void setupInventoryContainer() {
-		for (int y = 0; y < getRows(); y++)
-			for (int x = 0; x < getColumns(); x++)
-				addSlotToContainer(new SlotKey(inventory, x + y * getColumns(),
-				                               8 + x * 18, 18 + y * 18));
 	}
 	
 	@Override
@@ -50,18 +39,6 @@ public class ContainerKeyring extends ContainerBetterStorage {
 		SlotBetterStorage slot = new SlotBetterStorage(inventory, slotId, x, y);
 		if (slotId == getProtectedIndex()) slot.setProtected();
 		addSlotToContainer(slot);
-	}
-	
-	@Override
-	public ItemStack transferStackInSlot(EntityPlayer player, int slotId) {
-		ItemStack stack = null;
-		Slot slot = (Slot)inventorySlots.get(slotId);
-		if ((slot != null) && slot.getHasStack()) {
-			stack = slot.getStack();
-			if (!(stack.getItem() instanceof ItemKey))
-				return null;
-		}
-		return super.transferStackInSlot(player, slotId);
 	}
 	
 }

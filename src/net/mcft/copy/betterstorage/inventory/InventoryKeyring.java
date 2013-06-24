@@ -1,5 +1,6 @@
 package net.mcft.copy.betterstorage.inventory;
 
+import net.mcft.copy.betterstorage.api.IKey;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
@@ -7,6 +8,12 @@ public class InventoryKeyring extends InventoryItem {
 	
 	public InventoryKeyring(EntityPlayer player, String title) {
 		super(player, 9, (title.isEmpty() ? "container.keyring" : title), !title.isEmpty());
+	}
+	
+	@Override
+	public boolean isStackValidForSlot(int slot, ItemStack stack) {
+		return ((stack != null) && (stack.getItem() instanceof IKey) &&
+		        ((IKey)stack.getItem()).isNormalKey());
 	}
 	
 	@Override
