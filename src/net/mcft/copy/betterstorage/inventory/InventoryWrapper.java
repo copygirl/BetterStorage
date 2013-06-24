@@ -8,14 +8,24 @@ public class InventoryWrapper implements IInventory {
 	
 	public final IInventory base;
 	
+	private boolean overwriteName = false;
+	private String title;
+	private boolean localized;
+	
 	public InventoryWrapper(IInventory base) {
 		this.base = base;
 	}
+	public InventoryWrapper(IInventory base, String title, boolean localized) {
+		this(base);
+		overwriteName = true;
+		this.title = title;
+		this.localized = localized;
+	}
 	
 	@Override
-	public String getInvName() { return base.getInvName(); }
+	public String getInvName() { return (overwriteName ? title : base.getInvName()); }
 	@Override
-	public boolean isInvNameLocalized() { return base.isInvNameLocalized(); }
+	public boolean isInvNameLocalized() { return (overwriteName ? localized : base.isInvNameLocalized()); }
 	
 	@Override
 	public int getSizeInventory() { return base.getSizeInventory(); }
