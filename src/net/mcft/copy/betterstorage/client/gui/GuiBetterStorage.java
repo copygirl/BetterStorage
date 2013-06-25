@@ -1,5 +1,8 @@
 package net.mcft.copy.betterstorage.client.gui;
 
+import invtweaks.api.ContainerGUI;
+import invtweaks.api.ContainerGUI.RowSizeCallback;
+
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
@@ -14,14 +17,19 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.util.StatCollector;
 
+@ContainerGUI
 @SideOnly(Side.CLIENT)
 public class GuiBetterStorage extends GuiContainer {
 	
 	public final ContainerBetterStorage container;
 	public final String title;
 	
-	public final int columns;
-	public final int rows;
+	private final int columns;
+	private final int rows;
+	
+	public int getColumns() { return columns; }
+	@RowSizeCallback
+	public int getRows() { return rows; }
 	
 	public GuiBetterStorage(ContainerBetterStorage container) {
 		super(container);
