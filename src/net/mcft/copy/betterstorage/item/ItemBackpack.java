@@ -83,7 +83,7 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 	public int getSpriteNumber() { return 0; }
 	
 	@Override
-	public boolean isValidArmor(ItemStack stack, int armorType) { return false; }
+	public boolean isValidArmor(ItemStack stack, int armorType, Entity entity) { return false; }
 	
 	@Override
 	@SideOnly(Side.CLIENT)

@@ -116,9 +116,9 @@ public class ClientProxy extends CommonProxy {
 		
 		if (player.isSneaking()) {
 			if ((holding != null) || ((item == null) && (armor == null)) ||
-			    ((armor != null) && !armor.getItem().isValidArmor(armor, 3 - slot))) return;
+			    ((armor != null) && !armor.getItem().isValidArmor(armor, 3 - slot, player))) return;
 		} else if (!((item != null) && (holding == null)) &&
-		           !((holding != null) && holding.getItem().isValidArmor(holding, 3 - slot))) return;
+		           !((holding != null) && holding.getItem().isValidArmor(holding, 3 - slot, player))) return;
 		
         double xOff = player.lastTickPosX + (player.posX - player.lastTickPosX) * event.partialTicks;
         double yOff = player.lastTickPosY + (player.posY - player.lastTickPosY) * event.partialTicks;

@@ -5,6 +5,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.misc.PropertiesBackpack;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemArmor;
@@ -31,7 +32,8 @@ public class SlotArmorBackpack extends Slot {
 	@Override
 	public boolean isItemValid(ItemStack stack) {
 		if (stack == null) return false;
-		return stack.getItem().isValidArmor(stack, armorType);
+		EntityPlayer player = ((InventoryPlayer)inventory).player;
+		return stack.getItem().isValidArmor(stack, armorType, player);
 	}
 	
 	@Override
