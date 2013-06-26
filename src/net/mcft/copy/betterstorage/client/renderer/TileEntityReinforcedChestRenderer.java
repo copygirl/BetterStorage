@@ -39,7 +39,7 @@ public class TileEntityReinforcedChestRenderer extends TileEntitySpecialRenderer
 		GL11.glScalef(1.0F, -1.0F, -1.0F);
 		GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 		
-		int rotation = DirectionUtils.getRotation(chest.orientation);
+		int rotation = DirectionUtils.getRotation(chest.getOrientation());
 		if ((rotation == 180) && large)
 			GL11.glTranslatef(1.0F, 0.0F, 0.0F);
 		if ((rotation == 270) && large)

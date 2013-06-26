@@ -37,7 +37,7 @@ public class TileEntityLockerRenderer extends TileEntitySpecialRenderer {
 		GL11.glTranslated(x + 0.5, y + 0.5, z + 0.5);
 		GL11.glScalef(scale, scale, scale);
 		
-		int rotation = DirectionUtils.getRotation(locker.orientation);
+		int rotation = DirectionUtils.getRotation(locker.getOrientation());
 		GL11.glRotatef(-rotation, 0.0F, 1.0F, 0.0F);
 		
 		float angle = locker.prevLidAngle + (locker.lidAngle - locker.prevLidAngle) * partialTicks;

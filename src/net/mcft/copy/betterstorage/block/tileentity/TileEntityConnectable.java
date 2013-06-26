@@ -15,8 +15,11 @@ import net.minecraftforge.common.ForgeDirection;
 
 public abstract class TileEntityConnectable extends TileEntityContainer implements IInventory {
 	
-	public ForgeDirection orientation = ForgeDirection.UNKNOWN;
+	private ForgeDirection orientation = ForgeDirection.UNKNOWN;
 	public ForgeDirection connected = ForgeDirection.UNKNOWN;
+	
+	public ForgeDirection getOrientation() { return orientation; }
+	public void setOrientation(ForgeDirection orientation) { this.orientation = orientation; }
 	
 	/** Returns the possible directions the container can connect to. */
 	public abstract ForgeDirection[] getPossibleNeighbors();

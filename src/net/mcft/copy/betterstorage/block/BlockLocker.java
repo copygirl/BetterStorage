@@ -43,7 +43,7 @@ public class BlockLocker extends BlockContainer {
 	@Override
 	public boolean isBlockSolidOnSide(World world, int x, int y, int z, ForgeDirection side) {
 		TileEntityLocker locker = WorldUtils.get(world, x, y, z, TileEntityLocker.class);
-		return (locker.orientation != side);
+		return (locker.getOrientation() != side);
 	}
 	
 	@Override
@@ -58,8 +58,8 @@ public class BlockLocker extends BlockContainer {
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving player, ItemStack stack) {
 		TileEntityLocker locker = WorldUtils.get(world, x, y, z, TileEntityLocker.class);
-		locker.orientation = DirectionUtils.getOrientation(player).getOpposite();
-		double angle = DirectionUtils.getRotation(locker.orientation.getOpposite());
+		locker.setOrientation(DirectionUtils.getOrientation(player).getOpposite());
+		double angle = DirectionUtils.getRotation(locker.getOrientation().getOpposite());
 		double yaw = ((player.rotationYaw % 360) + 360) % 360;
 		locker.mirror = (DirectionUtils.angleDifference(angle, yaw) > 0);
 		locker.checkForConnections();
@@ -84,7 +84,7 @@ public class BlockLocker extends BlockContainer {
 		
 		TileEntityLocker locker = WorldUtils.get(world, x, y, z, TileEntityLocker.class);
 		ForgeDirection sideDirection = DirectionUtils.getDirectionFromSide(side);
-		if (world.isRemote || (locker == null) || (locker.orientation != sideDirection)) return true;
+		if (world.isRemote || (locker == null) || (locker.getOrientation() != sideDirection)) return true;
 		
 		locker.openGui(player);
 		return true;

@@ -114,7 +114,7 @@ public class BlockReinforcedChest extends BlockContainer {
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving player, ItemStack stack) {
 		TileEntityReinforcedChest chest = WorldUtils.get(world, x, y, z, TileEntityReinforcedChest.class);
-		chest.orientation = DirectionUtils.getOrientation(player).getOpposite();
+		chest.setOrientation(DirectionUtils.getOrientation(player).getOpposite());
 		chest.checkForConnections();
 		
 		if (stack.hasDisplayName())
