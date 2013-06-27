@@ -19,6 +19,8 @@ public class RenderUtils {
 	public static void renderItemIn3d(ItemStack stack) {
 		
 		RenderEngine renderEngine = RenderManager.instance.renderEngine;
+		// Not sure why but this can be null when the world loads.
+		if (renderEngine == null) return;
 		Icon icon = stack.getIconIndex();
 		
 		GL11.glPushMatrix();

@@ -12,6 +12,9 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.addon.Addon;
+import net.mcft.copy.betterstorage.attachment.AttachmentPoint;
+import net.mcft.copy.betterstorage.attachment.AttachmentPoints;
+import net.mcft.copy.betterstorage.attachment.IHasAttachmentPoints;
 import net.mcft.copy.betterstorage.block.BlockArmorStand;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityArmorStand;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityBackpack;
@@ -33,8 +36,10 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumMovingObjectType;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
@@ -100,36 +105,24 @@ public class ClientProxy extends CommonProxy {
 		int y = target.blockY;
 		int z = target.blockZ;
 		
-		int blockId = world.getBlockId(x, y, z);
-		if (!(Block.blocksList[blockId] instanceof BlockArmorStand)) return;
+		AxisAlignedBB box = null;
+		Block block = Block.blocksList[world.getBlockId(x, y, z)];
+		TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
 		
-		int metadata = world.getBlockMetadata(x, y, z);
-		if (metadata > 0) y -= 1;
+		if (block instanceof BlockArmorStand)
+			box = getArmorStandHighlightBox(player, world, x, y, z, target.hitVec);
+		else if (tileEntity instanceof IHasAttachmentPoints) {
+			AxisAlignedBB boundingBox = block.getSelectedBoundingBoxFromPool(world, x, y, z);
+			double distance = player.getPosition(event.partialTicks).distanceTo(target.hitVec);
+			box = getAttachmentPointsHighlightBox(player, tileEntity, distance, event.partialTicks);
+		}
 		
-		TileEntityArmorStand armorStand = WorldUtils.get(world, x, y, z, TileEntityArmorStand.class);
-		if (armorStand == null) return;
-		int slot = Math.min(3, (int)((target.hitVec.yCoord - y) * 2));
+		if (box == null) return;
 		
-		ItemStack item = armorStand.armor[slot];
-		ItemStack holding = player.getCurrentEquippedItem();
-		ItemStack armor = player.inventory.armorInventory[slot];
-		
-		if (player.isSneaking()) {
-			if ((holding != null) || ((item == null) && (armor == null)) ||
-			    ((armor != null) && !armor.getItem().isValidArmor(armor, 3 - slot, player))) return;
-		} else if (!((item != null) && (holding == null)) &&
-		           !((holding != null) && holding.getItem().isValidArmor(holding, 3 - slot, player))) return;
-		
-        double xOff = player.lastTickPosX + (player.posX - player.lastTickPosX) * event.partialTicks;
-        double yOff = player.lastTickPosY + (player.posY - player.lastTickPosY) * event.partialTicks;
-        double zOff = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * event.partialTicks;
-		
-        double minX = x + 2 / 16.0 - xOff;
-        double minY = y + slot / 2.0 - yOff;
-        double minZ = z + 2 / 16.0 - zOff;
-        double maxX = x + 14 / 16.0 - xOff;
-        double maxY = y + slot / 2.0 + 0.5 - yOff;
-        double maxZ = z + 14 / 16.0 - zOff;
+		double xOff = player.lastTickPosX + (player.posX - player.lastTickPosX) * event.partialTicks;
+		double yOff = player.lastTickPosY + (player.posY - player.lastTickPosY) * event.partialTicks;
+		double zOff = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * event.partialTicks;
+		box.offset(-xOff, -yOff, -zOff);
         
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -140,28 +133,28 @@ public class ClientProxy extends CommonProxy {
 		
 		Tessellator tes = Tessellator.instance;
 		tes.startDrawing(3);
-		tes.addVertex(minX, minY, minZ);
-		tes.addVertex(maxX, minY, minZ);
-		tes.addVertex(maxX, minY, maxZ);
-		tes.addVertex(minX, minY, maxZ);
-		tes.addVertex(minX, minY, minZ);
+		tes.addVertex(box.minX, box.minY, box.minZ);
+		tes.addVertex(box.maxX, box.minY, box.minZ);
+		tes.addVertex(box.maxX, box.minY, box.maxZ);
+		tes.addVertex(box.minX, box.minY, box.maxZ);
+		tes.addVertex(box.minX, box.minY, box.minZ);
 		tes.draw();
 		tes.startDrawing(3);
-		tes.addVertex(minX, maxY, minZ);
-		tes.addVertex(maxX, maxY, minZ);
-		tes.addVertex(maxX, maxY, maxZ);
-		tes.addVertex(minX, maxY, maxZ);
-		tes.addVertex(minX, maxY, minZ);
+		tes.addVertex(box.minX, box.maxY, box.minZ);
+		tes.addVertex(box.maxX, box.maxY, box.minZ);
+		tes.addVertex(box.maxX, box.maxY, box.maxZ);
+		tes.addVertex(box.minX, box.maxY, box.maxZ);
+		tes.addVertex(box.minX, box.maxY, box.minZ);
 		tes.draw();
 		tes.startDrawing(1);
-		tes.addVertex(minX, minY, minZ);
-		tes.addVertex(minX, maxY, minZ);
-		tes.addVertex(maxX, minY, minZ);
-		tes.addVertex(maxX, maxY, minZ);
-		tes.addVertex(maxX, minY, maxZ);
-		tes.addVertex(maxX, maxY, maxZ);
-		tes.addVertex(minX, minY, maxZ);
-		tes.addVertex(minX, maxY, maxZ);
+		tes.addVertex(box.minX, box.minY, box.minZ);
+		tes.addVertex(box.minX, box.maxY, box.minZ);
+		tes.addVertex(box.maxX, box.minY, box.minZ);
+		tes.addVertex(box.maxX, box.maxY, box.minZ);
+		tes.addVertex(box.maxX, box.minY, box.maxZ);
+		tes.addVertex(box.maxX, box.maxY, box.maxZ);
+		tes.addVertex(box.minX, box.minY, box.maxZ);
+		tes.addVertex(box.minX, box.maxY, box.maxZ);
 		tes.draw();
 		
 		GL11.glDepthMask(true);
@@ -169,6 +162,63 @@ public class ClientProxy extends CommonProxy {
 		GL11.glDisable(GL11.GL_BLEND);
 		
 		event.setCanceled(true);
+		
+	}
+	
+	private AxisAlignedBB getArmorStandHighlightBox(EntityPlayer player, World world, int x, int y, int z, Vec3 hitVec) {
+		
+		int metadata = world.getBlockMetadata(x, y, z);
+		if (metadata > 0) y -= 1;
+		
+		TileEntityArmorStand armorStand = WorldUtils.get(world, x, y, z, TileEntityArmorStand.class);
+		if (armorStand == null) return null;
+		int slot = Math.min(3, (int)((hitVec.yCoord - y) * 2));
+		
+		ItemStack item = armorStand.armor[slot];
+		ItemStack holding = player.getCurrentEquippedItem();
+		ItemStack armor = player.inventory.armorInventory[slot];
+		
+		if (player.isSneaking()) {
+			if ((holding != null) ||
+			    ((item == null) && (armor == null)) ||
+			    ((armor != null) && !armor.getItem().isValidArmor(armor, 3 - slot, player)))
+				return null;
+		} else if (!((item != null) && (holding == null)) &&
+		           !((holding != null) && holding.getItem().isValidArmor(holding, 3 - slot, player)))
+			return null;
+		
+		double minX = x + 2 / 16.0;
+		double minY = y + slot / 2.0;
+		double minZ = z + 2 / 16.0;
+		double maxX = x + 14 / 16.0;
+		double maxY = y + slot / 2.0 + 0.5;
+		double maxZ = z + 14 / 16.0;
+		
+		return AxisAlignedBB.getAABBPool().getAABB(minX, minY, minZ, maxX, maxY, maxZ);
+		
+	}
+	
+	private AxisAlignedBB getAttachmentPointsHighlightBox(EntityPlayer player, TileEntity tileEntity,
+	                                                      double distance, float partialTicks) {
+		
+		AxisAlignedBB box = null;
+		Vec3 origin = player.getPosition(partialTicks);
+		Vec3 look = player.getLook(partialTicks);
+		Vec3 reach = origin.addVector(look.xCoord * 8, look.yCoord * 8, look.zCoord * 8);
+		
+		AttachmentPoints points = ((IHasAttachmentPoints)tileEntity).getAttachmentPoints();
+		for (AttachmentPoint point : points.points) {
+			if (!point.boxVisible) continue;
+			AxisAlignedBB pointBox = point.getBox().copy().offset(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord);
+			MovingObjectPosition target = pointBox.calculateIntercept(origin, reach);
+			if (target == null) continue;
+			double pointDistance = origin.distanceTo(target.hitVec);
+			if (pointDistance >= distance) continue;
+			distance = pointDistance;
+			box = pointBox;
+		}
+		
+		return box;
 		
 	}
 	
