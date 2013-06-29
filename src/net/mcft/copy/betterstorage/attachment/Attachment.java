@@ -1,28 +1,92 @@
 package net.mcft.copy.betterstorage.attachment;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import net.mcft.copy.betterstorage.utils.DirectionUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraftforge.common.ForgeDirection;
 
 public abstract class Attachment {
 	
 	public final TileEntity tileEntity;
 	
+	private double x, y, z;
+	private double width, height, depth;
+	private AxisAlignedBB box = AxisAlignedBB.getBoundingBox(0, 0, 0, 0, 0, 0);
+	private ForgeDirection direction = ForgeDirection.NORTH;
+	
+	public double getX() { return x; }
+	public double getY() { return y; }
+	public double getZ() { return z; }
+	
+	public double getWidth()  { return width; }
+	public double getHeight() { return height; }
+	public double getDepth()  { return depth; }
+	
+	public float getRotation() { return DirectionUtils.getRotation(direction); }
+	
+	public AxisAlignedBB getBox() { return box; }
+	
 	public Attachment(TileEntity tileEntity) {
 		this.tileEntity = tileEntity;
 	}
 	
-	@SideOnly(Side.CLIENT)
-	public abstract IAttachmentRenderer getRenderer();
+	public void setBox(double x, double y, double z,
+	                   double width, double height, double depth, double scale) {
+		this.x = x * scale;
+		this.y = y * scale;
+		this.z = z * scale;
+		this.width = width * scale;
+		this.height = height * scale;
+		this.depth = depth * scale;
+		updateBox();
+	}
+	public void setBox(double x, double y, double z,
+	                   double width, double height, double depth) {
+		setBox(x, y, z, width, height, depth, 1 / 16.0F);
+	}
+	
+	public void setDirection(ForgeDirection direction) {
+		this.direction = direction;
+		updateBox();
+	}
+	
+	private void updateBox() {
+		double minX, minY = 1 - (y + height / 2), minZ;
+		double maxX, maxY = 1 - (y - height / 2), maxZ;
+		switch (direction) {
+			case EAST:
+				minX = 1 - (z - depth / 2); minZ = x - width / 2;
+				maxX = 1 - (z + depth / 2); maxZ = x + width / 2;
+				break;
+			case SOUTH:
+				minX = 1 - (x + width / 2); minZ = 1 - (z + depth / 2);
+				maxX = 1 - (x - width / 2); maxZ = 1 - (z - depth / 2);
+				break;
+			case WEST:
+				minX = z - depth / 2; minZ = 1 - (x + width / 2);
+				maxX = z + depth / 2; maxZ = 1 - (x - width / 2);
+				break;
+			default:
+				minX = x - width / 2; minZ = z - depth / 2;
+				maxX = x + width / 2; maxZ = z + depth / 2;
+				break;
+		}
+		box.setBounds(minX, minY, minZ, maxX, maxY, maxZ);
+	}
 	
 	public void update() {  }
 	
-	public boolean interact(EntityPlayer player) { return false; }
-	
-	public void attack(EntityPlayer player) {  }
+	public boolean interact(EntityPlayer player, EnumAttachmentInteraction type) { return false; }
 	
 	public ItemStack pick(EntityPlayer player) { return null; }
+	
+	public boolean boxVisible(EntityPlayer player) { return true; }
+	
+	@SideOnly(Side.CLIENT)
+	public abstract IAttachmentRenderer getRenderer();
 	
 }

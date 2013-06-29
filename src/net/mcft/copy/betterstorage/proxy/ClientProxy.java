@@ -12,9 +12,9 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.addon.Addon;
-import net.mcft.copy.betterstorage.attachment.AttachmentPoint;
-import net.mcft.copy.betterstorage.attachment.AttachmentPoints;
-import net.mcft.copy.betterstorage.attachment.IHasAttachmentPoints;
+import net.mcft.copy.betterstorage.attachment.Attachment;
+import net.mcft.copy.betterstorage.attachment.Attachments;
+import net.mcft.copy.betterstorage.attachment.IHasAttachments;
 import net.mcft.copy.betterstorage.block.BlockArmorStand;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityArmorStand;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityBackpack;
@@ -111,7 +111,7 @@ public class ClientProxy extends CommonProxy {
 		
 		if (block instanceof BlockArmorStand)
 			box = getArmorStandHighlightBox(player, world, x, y, z, target.hitVec);
-		else if (tileEntity instanceof IHasAttachmentPoints) {
+		else if (tileEntity instanceof IHasAttachments) {
 			AxisAlignedBB boundingBox = block.getSelectedBoundingBoxFromPool(world, x, y, z);
 			double distance = player.getPosition(event.partialTicks).distanceTo(target.hitVec);
 			box = getAttachmentPointsHighlightBox(player, tileEntity, distance, event.partialTicks);
@@ -206,10 +206,10 @@ public class ClientProxy extends CommonProxy {
 		Vec3 look = player.getLook(partialTicks);
 		Vec3 reach = origin.addVector(look.xCoord * 8, look.yCoord * 8, look.zCoord * 8);
 		
-		AttachmentPoints points = ((IHasAttachmentPoints)tileEntity).getAttachmentPoints();
-		for (AttachmentPoint point : points.points) {
-			if (!point.boxVisible) continue;
-			AxisAlignedBB pointBox = point.getBox().copy().offset(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord);
+		Attachments attachments = ((IHasAttachments)tileEntity).getAttachments();
+		for (Attachment attachment : attachments) {
+			if (attachment == null) continue;
+			AxisAlignedBB pointBox = attachment.getBox().copy().offset(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord);
 			MovingObjectPosition target = pointBox.calculateIntercept(origin, reach);
 			if (target == null) continue;
 			double pointDistance = origin.distanceTo(target.hitVec);
