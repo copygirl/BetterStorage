@@ -34,7 +34,8 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 	
 	/** Get the pile data for this tile entity. */
 	public CratePileData getPileData() {
-		if (worldObj.isRemote) return null;
+		if (worldObj.isRemote)
+			throw new IllegalStateException("Can't be called client-side.");
 		if (data == null) {
 			CratePileCollection collection = CratePileCollection.getCollection(worldObj);
 			if (id == -1)
