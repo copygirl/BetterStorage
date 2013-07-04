@@ -5,13 +5,12 @@ import java.util.Random;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.mcft.copy.betterstorage.api.BetterStorageEnchantment;
-import net.mcft.copy.betterstorage.api.IKey;
-import net.mcft.copy.betterstorage.api.ILock;
+import net.mcft.copy.betterstorage.attachment.Attachments;
+import net.mcft.copy.betterstorage.attachment.IHasAttachments;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityContainer;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityReinforcedChest;
 import net.mcft.copy.betterstorage.proxy.ClientProxy;
 import net.mcft.copy.betterstorage.utils.DirectionUtils;
-import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -23,6 +22,8 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
@@ -95,15 +96,22 @@ public class BlockReinforcedChest extends BlockContainer {
 	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
 		TileEntityReinforcedChest chest = WorldUtils.get(world, x, y, z, TileEntityReinforcedChest.class);
 		if (chest.isConnected()) {
-			if (chest.connected == ForgeDirection.NORTH)
+			ForgeDirection connected = chest.getConnected();
+			if (connected == ForgeDirection.NORTH)
 				setBlockBounds(0.0625F, 0.0F, 0.0F, 0.9375F, 0.875F, 0.9375F);
-			else if (chest.connected == ForgeDirection.SOUTH)
+			else if (connected == ForgeDirection.SOUTH)
 				setBlockBounds(0.0625F, 0.0F, 0.0625F, 0.9375F, 0.875F, 1.0F);
-			else if (chest.connected == ForgeDirection.WEST)
+			else if (connected == ForgeDirection.WEST)
 				setBlockBounds(0.0F, 0.0F, 0.0625F, 0.9375F, 0.875F, 0.9375F);
-			else if (chest.connected == ForgeDirection.EAST)
+			else if (connected == ForgeDirection.EAST)
 				setBlockBounds(0.0625F, 0.0F, 0.0625F, 1.0F, 0.875F, 0.9375F);
 		} else setBlockBounds(0.0625F, 0.0F, 0.0625F, 0.9375F, 0.875F, 0.9375F);
+	}
+	
+	@Override
+	public MovingObjectPosition collisionRayTrace(World world, int x, int y, int z, Vec3 start, Vec3 end) {
+		Attachments attachments = WorldUtils.get(world, x, y, z, IHasAttachments.class).getAttachments();
+		return attachments.rayTrace(world, x, y, z, start, end);
 	}
 	
 	@Override
@@ -132,39 +140,15 @@ public class BlockReinforcedChest extends BlockContainer {
 	}
 	
 	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {
-		if (world.isRemote) return true;
-		
-		TileEntityReinforcedChest chest = WorldUtils.get(world, x, y, z, TileEntityReinforcedChest.class);
-		ItemStack holding = player.getHeldItem();
-
-		ItemStack lock = chest.getLock();
-		ItemStack key = (StackUtils.isKey(holding) ? holding : null);
-		ILock lockType = ((lock != null) ? (ILock)lock.getItem() : null);
-		IKey keyType = ((key != null) ? (IKey)key.getItem() : null);
-		
-		// If the chest isn't locked and item held is
-		// a lock, use it instead of opening the chest.
-		if (lock == null && StackUtils.isLock(holding))
-			return false;
-		
-		boolean success = ((lock == null) || chest.canUse(player) ||
-		                   ((key != null) && keyType.unlock(key, lock, true)));
-		if (lockType != null)
-			lockType.onUnlock(lock, key, chest, player, success);
-		if (success) chest.openGui(player);
-		
+	public boolean onBlockActivated(World world, int x, int y, int z,
+	                                EntityPlayer player, int side,
+	                                float hitX, float hitY, float hitZ) {
+		if (!world.isRemote) {
+			TileEntityReinforcedChest chest = WorldUtils.get(world, x, y, z, TileEntityReinforcedChest.class);
+			if ((chest.getLock() == null) || chest.canUse(player))
+				chest.openGui(player);
+		}
 		return true;
-	}
-	
-	@Override
-	public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player) {
-		if (world.isRemote) return;
-		TileEntityReinforcedChest chest = WorldUtils.get(world, x, y, z, TileEntityReinforcedChest.class);
-		ItemStack lock = chest.getLock();
-		if (lock == null) return;
-		ILock lockType = (ILock)lock.getItem();
-		lockType.applyEffects(lock, chest, player, 3);
 	}
 	
 	// Trigger enchantment related

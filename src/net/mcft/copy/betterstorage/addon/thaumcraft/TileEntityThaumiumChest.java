@@ -70,7 +70,7 @@ public class TileEntityThaumiumChest extends TileEntityReinforcedChest {
 		double x = xCoord + 0.5;
 		double y = yCoord + 0.5;
 		double z = zCoord + 0.5;
-		TileEntityConnectable connectable = getConnected();
+		TileEntityConnectable connectable = getConnectedTileEntity();
 		if (connectable != null) {
 			x = (x + connectable.xCoord + 0.5) / 2;
 			z = (z + connectable.zCoord + 0.5) / 2;

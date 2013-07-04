@@ -30,6 +30,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.EnumArmorMaterial;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.packet.Packet103SetSlot;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumHelper;
@@ -306,6 +307,33 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 	}
 	public static boolean isBackpackOpen(EntityLiving entity) {
 		return (entity.getDataWatcher().getWatchableObjectByte(Config.backpackOpenDataWatcherId) != 0);
+	}
+	
+	/** Places an equipped backpack when the player right clicks
+	 *  on the ground while sneaking and holding nothing. */
+	public static boolean placeBackpack(EntityPlayer player, int x, int y, int z, int side) {
+		
+		if (player.getCurrentEquippedItem() != null || !player.isSneaking()) return false;
+		ItemStack backpack = ItemBackpack.getBackpack(player);
+		if (backpack == null) return false;
+		
+		if (!ItemBackpack.isBackpackOpen(player)) {
+			// Try to place the backpack as if it was being held and used by the player.
+			backpack.getItem().onItemUse(backpack, player, player.worldObj, x, y, z, side, 0, 0, 0);
+			if (backpack.stackSize <= 0) backpack = null;
+		}
+		
+		// Send set slot packet to for the chest slot to make
+		// sure the client has the same information as the server.
+		// This is especially important when there's a large delay, the
+		// client might think e placed the backpack, but server didn't.
+		if (!player.worldObj.isRemote)
+			PacketUtils.sendPacket(player, new Packet103SetSlot(0, 6, backpack));
+		
+		boolean success = (backpack == null);
+		if (success) player.swingItem();
+		return success;
+		
 	}
 	
 }

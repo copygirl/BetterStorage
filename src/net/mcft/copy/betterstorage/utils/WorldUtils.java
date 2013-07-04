@@ -2,18 +2,23 @@ package net.mcft.copy.betterstorage.utils;
 
 import java.util.List;
 
+import net.mcft.copy.betterstorage.attachment.Attachments;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityContainer;
 import net.mcft.copy.betterstorage.container.ContainerBetterStorage;
 import net.mcft.copy.betterstorage.inventory.InventoryTileEntity;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -121,6 +126,19 @@ public class WorldUtils {
 	/** Counts and returns the number of players who're accessing a tile entity. */
 	public static int syncPlayersUsing(TileEntityContainer te, int ticksSinceSync, int numUsingPlayers) {
 		return syncPlayersUsing(te, ticksSinceSync, numUsingPlayers, te.getPlayerInventory());
+	}
+	
+	public static MovingObjectPosition rayTrace(EntityPlayer player, float partialTicks) {
+		Attachments.playerLocal.set(player);
+		double range = ((player.worldObj.isRemote)
+				? Minecraft.getMinecraft().playerController.getBlockReachDistance()
+				: ((EntityPlayerMP)player).theItemInWorldManager.getBlockReachDistance());
+		Vec3 start = player.getPosition(1.0F).addVector(0, 1.62 - player.yOffset, 0);
+		Vec3 look = player.getLook(1.0F);
+		Vec3 end = start.addVector(look.xCoord * range, look.yCoord * range, look.zCoord * range);
+		MovingObjectPosition target = player.worldObj.rayTraceBlocks(start, end);
+		Attachments.playerLocal.remove();
+		return target;
 	}
 	
 }

@@ -5,14 +5,11 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.mcft.copy.betterstorage.api.BetterStorageEnchantment;
 import net.mcft.copy.betterstorage.api.IKey;
 import net.mcft.copy.betterstorage.api.ILock;
-import net.mcft.copy.betterstorage.api.ILockable;
 import net.mcft.copy.betterstorage.utils.RandomUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
-import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -77,36 +74,6 @@ public class ItemKey extends ItemBetterStorage implements IKey {
 		boolean colored = StackUtils.has(stack, "display", "color");
 		boolean ironPlated = (StackUtils.get(stack, (byte)0, "display", "ironPlated") == 1);
 		return (((renderPass > 0) && colored) ? iconColor : (ironPlated ? iconIron : iconGold));
-	}
-	
-	@Override
-	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world,
-	                         int x, int y, int z, int side, float subX, float subY, float subZ) {
-		if (world.isRemote) return false;
-		
-		// This function is only called when the container doesn't handle
-		// the right click, so basically only when sneaking.
-		// This tries to remove the lock from the container.
-		
-		ILockable lockable = WorldUtils.get(world, x, y, z, ILockable.class);
-		// If there is no lockable container or it isn't locked, return false;
-		if ((lockable == null) || (lockable.getLock() == null)) return false;
-		
-		ItemStack key = player.getCurrentEquippedItem();
-		ItemStack lock = lockable.getLock();
-		ILock lockType = (ILock)lock.getItem();
-		
-		// Try to unlock the container, return if unsuccessful.
-		boolean success = unlock(key, lock, true);
-		lockType.onUnlock(lock, key, lockable, player, success);
-		if (!success) return true;
-		
-		// Remove and drop the lock on the player.
-		lockable.setLock(null);
-		EntityItem item = player.dropPlayerItem(lock);
-		item.delayBeforeCanPickup = 0;
-		
-		return true;
 	}
 	
 	/** Gives the key a random damage value if it doesn't have one already. */

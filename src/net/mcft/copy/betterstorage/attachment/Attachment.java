@@ -12,6 +12,7 @@ import net.minecraftforge.common.ForgeDirection;
 public abstract class Attachment {
 	
 	public final TileEntity tileEntity;
+	public final int subId;
 	
 	private double x, y, z;
 	private double width, height, depth;
@@ -30,8 +31,9 @@ public abstract class Attachment {
 	
 	public AxisAlignedBB getBox() { return box; }
 	
-	public Attachment(TileEntity tileEntity) {
+	public Attachment(TileEntity tileEntity, int subId) {
 		this.tileEntity = tileEntity;
+		this.subId = subId;
 	}
 	
 	public void setBox(double x, double y, double z,
@@ -59,8 +61,8 @@ public abstract class Attachment {
 		double maxX, maxY = 1 - (y - height / 2), maxZ;
 		switch (direction) {
 			case EAST:
-				minX = 1 - (z - depth / 2); minZ = x - width / 2;
-				maxX = 1 - (z + depth / 2); maxZ = x + width / 2;
+				minX = 1 - (z + depth / 2); minZ = x - width / 2;
+				maxX = 1 - (z - depth / 2); maxZ = x + width / 2;
 				break;
 			case SOUTH:
 				minX = 1 - (x + width / 2); minZ = 1 - (z + depth / 2);

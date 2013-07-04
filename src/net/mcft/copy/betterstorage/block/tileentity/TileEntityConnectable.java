@@ -16,32 +16,39 @@ import net.minecraftforge.common.ForgeDirection;
 public abstract class TileEntityConnectable extends TileEntityContainer implements IInventory {
 	
 	private ForgeDirection orientation = ForgeDirection.UNKNOWN;
-	public ForgeDirection connected = ForgeDirection.UNKNOWN;
+	private ForgeDirection connected = ForgeDirection.UNKNOWN;
 	
 	public ForgeDirection getOrientation() { return orientation; }
 	public void setOrientation(ForgeDirection orientation) { this.orientation = orientation; }
+	
+	public ForgeDirection getConnected() { return connected; }
+	public void setConnected(ForgeDirection connected) { this.connected = connected; }
 	
 	/** Returns the possible directions the container can connect to. */
 	public abstract ForgeDirection[] getPossibleNeighbors();
 	
 	/** Returns if this container is connected to another one. */
-	public boolean isConnected() { return (connected != ForgeDirection.UNKNOWN); }
+	public boolean isConnected() { return (getConnected() != ForgeDirection.UNKNOWN); }
 	
 	/** Returns if this container is the main container, or not connected to another container. */
-	public boolean isMain() { return (!isConnected() || connected.offsetX + connected.offsetY + connected.offsetZ > 0); }
+	public boolean isMain() {
+		ForgeDirection connected = getConnected();
+		return (!isConnected() || connected.offsetX + connected.offsetY + connected.offsetZ > 0);
+	}
 	
 	/** Returns the main container. */
 	public TileEntityConnectable getMain() {
 		if (isMain()) return this;
-		TileEntityConnectable connectable = getConnected();
+		TileEntityConnectable connectable = getConnectedTileEntity();
 		if (connectable != null) return connectable;
-		BetterStorage.log.warning("getConnected() returned null.");
+		BetterStorage.log.warning("getConnectedTileEntity() returned null.");
 		return this;
 	}
 	
 	/** Returns the connected container. */
-	public TileEntityConnectable getConnected() {
+	public TileEntityConnectable getConnectedTileEntity() {
 		if (!isConnected()) return null;
+		ForgeDirection connected = getConnected();
 		int x = xCoord + connected.offsetX;
 		int y = yCoord + connected.offsetY;
 		int z = zCoord + connected.offsetZ;
@@ -53,7 +60,7 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 		return ((connectable != null) &&                                  // check for null
 		        (getBlockType() == connectable.getBlockType()) &&         // check for same block tpye
 		        (getBlockMetadata() == connectable.getBlockMetadata()) && // check for same material
-		        (orientation == connectable.orientation) &&               // check for same orientation
+		        (getOrientation() == connectable.orientation) &&               // check for same orientation
 		        // Make sure the containers are not already connected.
 		        !isConnected() && !connectable.isConnected());
 	}
@@ -74,8 +81,8 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 			dirFound = dir;
 		}
 		if (connectableFound == null) return;
-		connected = dirFound;
-		connectableFound.connected = dirFound.getOpposite();
+		setConnected(dirFound);
+		connectableFound.setConnected(dirFound.getOpposite());
 		// Mark the block for an update, sends description packet to players.
 		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 		worldObj.markBlockForUpdate(connectableFound.xCoord, connectableFound.yCoord, connectableFound.zCoord);
@@ -84,13 +91,13 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 	/** Disconnects the container from its connected container, if it has one. */
 	public void disconnect() {
 		if (!isConnected()) return;
-		TileEntityConnectable connectable = getConnected();
-		connected = ForgeDirection.UNKNOWN;
+		TileEntityConnectable connectable = getConnectedTileEntity();
+		setConnected(ForgeDirection.UNKNOWN);
 		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 		if (connectable != null) {
-			connectable.connected = ForgeDirection.UNKNOWN;
+			connectable.setConnected(ForgeDirection.UNKNOWN);
 			worldObj.markBlockForUpdate(connectable.xCoord, connectable.yCoord, connectable.zCoord);
-		} else BetterStorage.log.warning("getConnected() returned null.");
+		} else BetterStorage.log.warning("getConnectedTileEntity() returned null.");
 	}
 	
 	// TileEntityContainer stuff
@@ -113,7 +120,7 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 	public InventoryTileEntity getPlayerInventory() {
 		if (isConnected()) {
 			TileEntityConnectable main = getMain();
-			TileEntityConnectable connected = ((main == this) ? getConnected() : this);
+			TileEntityConnectable connected = ((main == this) ? getConnectedTileEntity() : this);
 			return new InventoryTileEntity(this, main, connected);
 		} else return super.getPlayerInventory();
 	}
@@ -130,7 +137,7 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 		
 		if (isConnected()) {
 			if (!isMain()) return;
-			TileEntityConnectable connectable = getConnected();
+			TileEntityConnectable connectable = getConnectedTileEntity();
 			if (connectable != null) {
 				x = (x + connectable.xCoord + 0.5) / 2;
 				z = (z + connectable.zCoord + 0.5) / 2;
@@ -197,15 +204,15 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 	@Override
 	public Packet getDescriptionPacket() {
 		NBTTagCompound compound = new NBTTagCompound();
-		compound.setByte("orientation", (byte)orientation.ordinal());
-		compound.setByte("connected", (byte)connected.ordinal());
+		compound.setByte("orientation", (byte)getOrientation().ordinal());
+		compound.setByte("connected", (byte)getConnected().ordinal());
         return new Packet132TileEntityData(xCoord, yCoord, zCoord, 0, compound);
 	}
 	@Override
 	public void onDataPacket(INetworkManager net, Packet132TileEntityData packet) {
 		NBTTagCompound compound = packet.customParam1;
-		orientation = ForgeDirection.getOrientation(compound.getByte("orientation"));
-		connected = ForgeDirection.getOrientation(compound.getByte("connected"));
+		setOrientation(ForgeDirection.getOrientation(compound.getByte("orientation")));
+		setConnected(ForgeDirection.getOrientation(compound.getByte("connected")));
 	}
 	
 	// Reading from / writing to NBT
@@ -213,15 +220,15 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
-		orientation = ForgeDirection.getOrientation(compound.getByte("orientation"));
-		connected = ForgeDirection.getOrientation(compound.getByte("connected"));
+		setOrientation(ForgeDirection.getOrientation(compound.getByte("orientation")));
+		setConnected(ForgeDirection.getOrientation(compound.getByte("connected")));
 	}
 	
 	@Override
 	public void writeToNBT(NBTTagCompound compound) {
 		super.writeToNBT(compound);
-		compound.setByte("orientation", (byte)orientation.ordinal());
-		compound.setByte("connected", (byte)connected.ordinal());
+		compound.setByte("orientation", (byte)getOrientation().ordinal());
+		compound.setByte("connected", (byte)getConnected().ordinal());
 	}
 	
 }

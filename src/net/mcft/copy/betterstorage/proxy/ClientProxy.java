@@ -95,12 +95,11 @@ public class ClientProxy extends CommonProxy {
 	
 	@ForgeSubscribe
 	public void drawBlockHighlight(DrawBlockHighlightEvent event) {
-		
-		MovingObjectPosition target = event.target;
-		if (target.typeOfHit != EnumMovingObjectType.TILE) return;
-		
+
 		EntityPlayer player = event.player;
 		World world = player.worldObj;
+		MovingObjectPosition target = WorldUtils.rayTrace(player, event.partialTicks);
+		if ((target == null) || (target.typeOfHit != EnumMovingObjectType.TILE)) return;
 		int x = target.blockX;
 		int y = target.blockY;
 		int z = target.blockZ;
@@ -111,11 +110,8 @@ public class ClientProxy extends CommonProxy {
 		
 		if (block instanceof BlockArmorStand)
 			box = getArmorStandHighlightBox(player, world, x, y, z, target.hitVec);
-		else if (tileEntity instanceof IHasAttachments) {
-			AxisAlignedBB boundingBox = block.getSelectedBoundingBoxFromPool(world, x, y, z);
-			double distance = player.getPosition(event.partialTicks).distanceTo(target.hitVec);
-			box = getAttachmentPointsHighlightBox(player, tileEntity, distance, event.partialTicks);
-		}
+		else if (tileEntity instanceof IHasAttachments)
+			box = getAttachmentPointsHighlightBox(player, tileEntity, target);
 		
 		if (box == null) return;
 		
@@ -199,27 +195,11 @@ public class ClientProxy extends CommonProxy {
 	}
 	
 	private AxisAlignedBB getAttachmentPointsHighlightBox(EntityPlayer player, TileEntity tileEntity,
-	                                                      double distance, float partialTicks) {
-		
-		AxisAlignedBB box = null;
-		Vec3 origin = player.getPosition(partialTicks);
-		Vec3 look = player.getLook(partialTicks);
-		Vec3 reach = origin.addVector(look.xCoord * 8, look.yCoord * 8, look.zCoord * 8);
-		
+	                                                      MovingObjectPosition target) {
 		Attachments attachments = ((IHasAttachments)tileEntity).getAttachments();
-		for (Attachment attachment : attachments) {
-			if (attachment == null) continue;
-			AxisAlignedBB pointBox = attachment.getBox().copy().offset(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord);
-			MovingObjectPosition target = pointBox.calculateIntercept(origin, reach);
-			if (target == null) continue;
-			double pointDistance = origin.distanceTo(target.hitVec);
-			if (pointDistance >= distance) continue;
-			distance = pointDistance;
-			box = pointBox;
-		}
-		
-		return box;
-		
+		Attachment attachment = attachments.get(target.subHit);
+		if (attachment == null) return null;
+		return attachment.getBox().copy().offset(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord);
 	}
 	
 }

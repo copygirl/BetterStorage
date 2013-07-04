@@ -5,13 +5,11 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.mcft.copy.betterstorage.api.BetterStorageEnchantment;
 import net.mcft.copy.betterstorage.api.ILock;
 import net.mcft.copy.betterstorage.api.ILockable;
-import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
-import net.minecraft.world.World;
 
 public class ItemLock extends ItemBetterStorage implements ILock {
 	
@@ -29,24 +27,6 @@ public class ItemLock extends ItemBetterStorage implements ILock {
 	public boolean isItemTool(ItemStack stack) { return true; }
 	@Override
 	public int getItemEnchantability() { return 20; }
-	
-	@Override
-	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world,
-	                         int x, int y, int z, int side, float subX, float subY, float subZ) {
-		if (world.isRemote) return false;
-		
-		ILockable lockable = WorldUtils.get(world, x, y, z, ILockable.class);
-		// If there is no lockable container, it is already locked,
-		// or the lock can't be applied, return false;
-		if ((lockable == null) || lockable.getLock() != null ||
-		    !lockable.isLockValid(stack)) return false;
-		
-		lockable.setLock(stack);
-		// Remove the lock from the player's inventory.
-		player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
-		
-		return true;
-	}
 	
 	// ILock implementation
 	

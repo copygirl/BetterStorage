@@ -19,6 +19,10 @@ public interface ILockable {
 	 *  for example, while the container is being held open by another player. */
 	public boolean canUse(EntityPlayer player);
 	
+	/** Called when a lock gets unlocked and the container should be opened
+	 *  by the player as if it was not locked. */
+	public void useUnlocked(EntityPlayer player);
+	
 	/** Makes the container emit a redstone signal for 10 ticks. */
 	public void applyTrigger();
 	

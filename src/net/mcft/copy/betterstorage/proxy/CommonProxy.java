@@ -2,6 +2,8 @@ package net.mcft.copy.betterstorage.proxy;
 
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.addon.Addon;
+import net.mcft.copy.betterstorage.attachment.EnumAttachmentInteraction;
+import net.mcft.copy.betterstorage.attachment.IHasAttachments;
 import net.mcft.copy.betterstorage.block.BlockEnderBackpack;
 import net.mcft.copy.betterstorage.block.crate.CratePileCollection;
 import net.mcft.copy.betterstorage.block.crate.TileEntityCrate;
@@ -19,7 +21,6 @@ import net.mcft.copy.betterstorage.item.ItemEnderBackpack;
 import net.mcft.copy.betterstorage.misc.PropertiesBackpack;
 import net.mcft.copy.betterstorage.utils.EntityUtils;
 import net.mcft.copy.betterstorage.utils.NbtUtils;
-import net.mcft.copy.betterstorage.utils.PacketUtils;
 import net.mcft.copy.betterstorage.utils.PlayerUtils;
 import net.mcft.copy.betterstorage.utils.RandomUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
@@ -38,12 +39,11 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.packet.Packet103SetSlot;
 import net.minecraft.util.WeightedRandomChestContent;
+import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.Event.Result;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
@@ -124,35 +124,30 @@ public class CommonProxy implements IPlayerTracker {
 	@ForgeSubscribe
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		
-		// Places an equipped backpack when the player right clicks
-		// on the ground while sneaking and holding nothing.
-		
-		if (event.action != Action.RIGHT_CLICK_BLOCK) return;
 		EntityPlayer player = event.entityPlayer;
-		if (player.getCurrentEquippedItem() != null || !player.isSneaking()) return;
-		ItemStack backpack = ItemBackpack.getBackpack(player);
-		if (backpack == null) return;
+		World world = event.entity.worldObj;
+		int x = event.x;
+		int y = event.y;
+		int z = event.z;
 		
-		if (!ItemBackpack.isBackpackOpen(player)) {
-			// Try to place the backpack as if it was being held and used by the player.
-			backpack.getItem().onItemUse(backpack, player, player.worldObj,
-			                             event.x, event.y, event.z, event.face, 0, 0, 0);
-			
-			if (backpack.stackSize <= 0) backpack = null;
+		// Attempt to place equipped backpack.
+		if (event.action == Action.RIGHT_CLICK_BLOCK)
+			if (ItemBackpack.placeBackpack(player, x, y, z, event.face))
+				event.setCanceled(true);
+		
+		// Interact with attachments.
+		if ((event.action == Action.LEFT_CLICK_BLOCK) ||
+		    (event.action == Action.RIGHT_CLICK_BLOCK)) {
+			IHasAttachments hasAttachments = WorldUtils.get(world, x, y, z, IHasAttachments.class);
+			if (hasAttachments != null) {
+				EnumAttachmentInteraction interactionType =
+						((event.action == Action.LEFT_CLICK_BLOCK)
+								? EnumAttachmentInteraction.attack
+								: EnumAttachmentInteraction.use);
+				if (hasAttachments.getAttachments().interact(player, interactionType))
+					event.setCanceled(true);
+			}
 		}
-		
-		// Send set slot packet to for the chest slot to make
-		// sure the client has the same information as the server.
-		// This is especially important when there's a large delay, the
-		// client might think e placed the backpack, but server disagrees.
-		if (!player.worldObj.isRemote)
-			PacketUtils.sendPacket(player, new Packet103SetSlot(0, 6, backpack));
-		
-		// Only continue if the backpack was placed successfully.
-		if (backpack != null) return;
-		
-		player.swingItem();
-		event.useBlock = Result.DENY;
 		
 	}
 	

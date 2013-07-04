@@ -1,7 +1,5 @@
 package net.mcft.copy.betterstorage.attachment;
 
-import net.mcft.copy.betterstorage.utils.StackUtils;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import cpw.mods.fml.relauncher.Side;
@@ -13,8 +11,11 @@ public abstract class ItemAttachment extends Attachment {
 	public float scale = 1.0F;
 	public float scaleDepth = 1.0F;
 	
-	public ItemAttachment(TileEntity tileEntity) {
-		super(tileEntity);
+	public ItemStack getItem() { return item; }
+	public void setItem(ItemStack item) { this.item = item; }
+	
+	public ItemAttachment(TileEntity tileEntity, int subId) {
+		super(tileEntity, subId);
 	}
 	
 	public void setScale(float scale, float scaleDepth) {

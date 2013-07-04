@@ -17,9 +17,12 @@ public class ItemAttachmentRenderer implements IAttachmentRenderer {
 		render((ItemAttachment)attachment);
 	}
 	private void render(ItemAttachment attachment) {
-		ItemStack item = attachment.item;
-		GL11.glScalef(attachment.scale, attachment.scale, attachment.scaleDepth);
-		RenderUtils.renderItemIn3d(item);
+		ItemStack item = attachment.getItem();
+		if (item == null) return;
+		GL11.glPushMatrix();
+			GL11.glScalef(attachment.scale, attachment.scale, attachment.scaleDepth);
+			RenderUtils.renderItemIn3d(item);
+		GL11.glPopMatrix();
 	}
 	
 }
