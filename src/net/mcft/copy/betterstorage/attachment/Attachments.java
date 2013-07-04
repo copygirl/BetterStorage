@@ -81,7 +81,7 @@ public class Attachments implements Iterable<Attachment> {
 	
 	// Called in TileEntityRenderer.renderTileEntityAt.
 	@SideOnly(Side.CLIENT)
-	public void render() {
+	public void render(float partialTicks) {
 		for (Attachment attachment : this) {
 			float rotation = attachment.getRotation();
 			GL11.glPushMatrix();
@@ -89,7 +89,7 @@ public class Attachments implements Iterable<Attachment> {
 				GL11.glPushMatrix();
 					GL11.glRotatef(rotation, 0, 1, 0);
 					GL11.glTranslated(attachment.getX() - 0.5, attachment.getY() - 0.5, attachment.getZ() - 0.5);
-					attachment.getRenderer().render(attachment);
+					attachment.getRenderer().render(attachment, partialTicks);
 				GL11.glPopMatrix();
 			GL11.glPopMatrix();
 		}

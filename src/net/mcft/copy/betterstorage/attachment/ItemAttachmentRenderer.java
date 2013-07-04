@@ -13,10 +13,10 @@ public class ItemAttachmentRenderer implements IAttachmentRenderer {
 	public static final ItemAttachmentRenderer instance = new ItemAttachmentRenderer();
 	
 	@Override
-	public void render(Attachment attachment) {
-		render((ItemAttachment)attachment);
+	public void render(Attachment attachment, float partialTicks) {
+		render((ItemAttachment)attachment, partialTicks);
 	}
-	private void render(ItemAttachment attachment) {
+	private void render(ItemAttachment attachment, float partialTicks) {
 		ItemStack item = attachment.getItem();
 		if (item == null) return;
 		GL11.glPushMatrix();

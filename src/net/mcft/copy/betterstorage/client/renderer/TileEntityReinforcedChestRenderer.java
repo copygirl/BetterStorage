@@ -23,7 +23,7 @@ public class TileEntityReinforcedChestRenderer extends TileEntitySpecialRenderer
 	
 	private ItemStack lock = new ItemStack(BetterStorage.lock);
 	
-	public void renderTileEntityAt(TileEntityReinforcedChest chest, double x, double y, double z, float par8) {
+	public void renderTileEntityAt(TileEntityReinforcedChest chest, double x, double y, double z, float partialTicks) {
 		
 		boolean large = chest.isConnected();
 		if (large && !chest.isMain()) return;
@@ -48,7 +48,7 @@ public class TileEntityReinforcedChestRenderer extends TileEntitySpecialRenderer
 			GL11.glRotatef(rotation, 0.0F, 1.0F, 0.0F);
 			GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 			
-			float angle = chest.prevLidAngle + (chest.lidAngle - chest.prevLidAngle) * par8;
+			float angle = chest.prevLidAngle + (chest.lidAngle - chest.prevLidAngle) * partialTicks;
 			angle = 1.0F - angle;
 			angle = 1.0F - angle * angle * angle;
 			model.chestLid.rotateAngleX = -(float)(angle * Math.PI / 2.0);
@@ -56,7 +56,7 @@ public class TileEntityReinforcedChestRenderer extends TileEntitySpecialRenderer
 			
 			GL11.glPopMatrix();
 		
-		chest.getAttachments().render();
+		chest.getAttachments().render(partialTicks);
 		
 		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 		GL11.glPopMatrix();
@@ -65,8 +65,8 @@ public class TileEntityReinforcedChestRenderer extends TileEntitySpecialRenderer
 	}
 	
 	@Override
-	public void renderTileEntityAt(TileEntity entity, double x, double y, double z, float par8) {
-		renderTileEntityAt((TileEntityReinforcedChest) entity, x, y, z, par8);
+	public void renderTileEntityAt(TileEntity entity, double x, double y, double z, float partialTicks) {
+		renderTileEntityAt((TileEntityReinforcedChest) entity, x, y, z, partialTicks);
 	}
 	
 }
