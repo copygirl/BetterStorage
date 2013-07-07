@@ -1,5 +1,7 @@
 package net.mcft.copy.betterstorage.attachment;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.mcft.copy.betterstorage.api.IKey;
 import net.mcft.copy.betterstorage.api.ILock;
 import net.mcft.copy.betterstorage.api.ILockable;
@@ -12,6 +14,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 
 public class LockAttachment extends ItemAttachment {
+	
+	public float wiggle = 0;
+	public float wiggleStrength = 0.0F;
 	
 	public LockAttachment(TileEntity tileEntity, int subId) {
 		super(tileEntity, subId);
@@ -26,6 +31,16 @@ public class LockAttachment extends ItemAttachment {
 	}
 	
 	@Override
+	@SideOnly(Side.CLIENT)
+	public IAttachmentRenderer getRenderer() { return LockAttachmentRenderer.instance; }
+	
+	@Override
+	public void update() {
+		wiggle++;
+		wiggleStrength = Math.max(0.0F, wiggleStrength * 0.9F - 0.1F);
+	}
+	
+	@Override
 	public boolean interact(EntityPlayer player, EnumAttachmentInteraction type) {
 		ItemStack holding = player.getCurrentEquippedItem();
 		return ((type == EnumAttachmentInteraction.attack)
@@ -34,41 +49,43 @@ public class LockAttachment extends ItemAttachment {
 	}
 	
 	private boolean attack(EntityPlayer player, ItemStack holding) {
+		if (!player.worldObj.isRemote) return true;
+		wiggleStrength = Math.min(20.0F, wiggleStrength + 12.0F);
 		return true;
 	}
 	
 	private boolean use(EntityPlayer player, ItemStack holding) {
+		if (player.worldObj.isRemote) return false;
+		
 		ILockable lockable = (ILockable)tileEntity;
 		ItemStack lock = lockable.getLock();
+		
 		if (lock == null) {
 			if (StackUtils.isLock(holding) && lockable.isLockValid(holding)) {
-				if (!player.worldObj.isRemote) {
-					lockable.setLock(holding);
-					player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
-					return true;
-				}
+				lockable.setLock(holding);
+				player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
+				return true;
 			}
 		} else if (StackUtils.isKey(holding)) {
 			IKey keyType = (IKey)holding.getItem();
 			ILock lockType = (ILock)lock.getItem();
 			
-			if (!player.worldObj.isRemote) {
-				boolean success = keyType.unlock(holding, lock, true);
-				lockType.onUnlock(lock, holding, lockable, player, success);
-				if (!success) return true;
-				
-				if (player.isSneaking()) {
-					lockable.setLock(null);
-					AxisAlignedBB box = getBox();
-					double x = tileEntity.xCoord + (box.minX + box.maxX) / 2;
-					double y = tileEntity.yCoord + (box.minY + box.maxY) / 2;
-					double z = tileEntity.zCoord + (box.minZ + box.maxZ) / 2;
-					EntityItem item = WorldUtils.spawnItem(player.worldObj, x, y, z, lock);
-				} else lockable.useUnlocked(player);
-				
-				return true;
-			}
+			boolean success = keyType.unlock(holding, lock, true);
+			lockType.onUnlock(lock, holding, lockable, player, success);
+			if (!success) return true;
+			
+			if (player.isSneaking()) {
+				lockable.setLock(null);
+				AxisAlignedBB box = getBox();
+				double x = tileEntity.xCoord + (box.minX + box.maxX) / 2;
+				double y = tileEntity.yCoord + (box.minY + box.maxY) / 2;
+				double z = tileEntity.zCoord + (box.minZ + box.maxZ) / 2;
+				EntityItem item = WorldUtils.spawnItem(player.worldObj, x, y, z, lock);
+			} else lockable.useUnlocked(player);
+			
+			return true;
 		}
+		
 		return false;
 	}
 	
