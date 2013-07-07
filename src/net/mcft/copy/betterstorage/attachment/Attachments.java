@@ -33,7 +33,6 @@ public class Attachments implements Iterable<Attachment> {
 
 	// Called in CommonProxy.onPlayerInteract.
 	public boolean interact(EntityPlayer player, EnumAttachmentInteraction interactionType) {
-		if (!player.worldObj.isRemote) System.out.println("interact");
 		MovingObjectPosition target = WorldUtils.rayTrace(player, 1.0F);
 		Attachment attachment = ((target != null) ? get(target.subHit) : null);
 		return ((attachment != null) ? attachment.interact(player, interactionType) : false);
@@ -57,11 +56,6 @@ public class Attachments implements Iterable<Attachment> {
 			distance = attachmentDistance;
 			target = attachmentTarget;
 			target.subHit = attachment.subId;
-		}
-		
-		if (!world.isRemote) {
-			if (target == null) System.out.printf("%d,%d,%d\n", x, y, z);
-			else System.out.printf("%d,%d,%d %d\n", x, y, z, target.sideHit);
 		}
 		
 		if (target != null) {
