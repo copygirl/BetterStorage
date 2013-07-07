@@ -6,6 +6,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.mcft.copy.betterstorage.api.BetterStorageEnchantment;
 import net.mcft.copy.betterstorage.attachment.Attachments;
+import net.mcft.copy.betterstorage.attachment.EnumAttachmentInteraction;
 import net.mcft.copy.betterstorage.attachment.IHasAttachments;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityContainer;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityReinforcedChest;
@@ -137,6 +138,16 @@ public class BlockReinforcedChest extends BlockContainer {
 			chest.dropContents();
 			chest.disconnect();
 		}
+	}
+	
+	@Override
+	public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player) {
+		// TODO: See if we can make a pull request to forge to get
+		// PlayerInteractEvent to fire for left click on client.
+		Attachments attachments = WorldUtils.get(world, x, y, z, IHasAttachments.class).getAttachments();
+		boolean abort = attachments.interact(player, EnumAttachmentInteraction.attack);
+		// TODO: Abort block breaking?
+		// playerController.resetBlockBreaking doesn't seem to do the job.
 	}
 	
 	@Override
