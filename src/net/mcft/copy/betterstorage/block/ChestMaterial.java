@@ -3,10 +3,10 @@ package net.mcft.copy.betterstorage.block;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.mcft.copy.betterstorage.misc.Constants;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class ChestMaterial {
@@ -55,8 +55,8 @@ public class ChestMaterial {
 				       'O', block);
 	}
 	
-	public String getTexture(boolean large) {
-		return Constants.gfxbase + "models/chest" + (large ? "_large/" : "/") + name + ".png";
+	public ResourceLocation getResource(boolean large) {
+		return new ResourceLocation("betterstorage", "textures/models/chest" + (large ? "_large/" : "/") + name + ".png");
 	}
 	
 }

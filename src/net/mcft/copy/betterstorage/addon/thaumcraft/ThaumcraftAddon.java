@@ -1,35 +1,29 @@
 package net.mcft.copy.betterstorage.addon.thaumcraft;
 
-import thaumcraft.api.EnumTag;
-import thaumcraft.api.ItemApi;
-import thaumcraft.api.ObjectTags;
-import thaumcraft.api.ThaumcraftApi;
-import thaumcraft.api.research.ResearchItem;
-import thaumcraft.api.research.ResearchList;
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.addon.Addon;
 import net.mcft.copy.betterstorage.block.BlockBackpack;
 import net.mcft.copy.betterstorage.block.ChestMaterial;
 import net.mcft.copy.betterstorage.client.renderer.ItemRendererBackpack;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityReinforcedChestRenderer;
-import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.misc.Registry;
 import net.mcft.copy.betterstorage.proxy.ClientProxy;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.Configuration;
+import thaumcraft.api.EnumTag;
+import thaumcraft.api.ItemApi;
+import thaumcraft.api.ObjectTags;
+import thaumcraft.api.ThaumcraftApi;
+import thaumcraft.api.research.ResearchItem;
+import thaumcraft.api.research.ResearchList;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class ThaumcraftAddon extends Addon {
-
-	public static final String thaumiumChestContainer = Constants.gfxbase + "gui/thaumium_chest.png";
-	
-	public static final String thaumcraftBackpackTexture = Constants.gfxbase + "models/thaumcraftBackpack.png";
-	public static final String thaumiumChestTexture = Constants.gfxbase + "models/thaumiumChest.png";
 	
 	public static int thaumcraftBackpackId = 2880;
 	public static int thaumiumChestId = 2881;

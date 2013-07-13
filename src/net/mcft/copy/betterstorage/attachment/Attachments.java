@@ -7,8 +7,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.lwjgl.opengl.GL11;
-
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -16,6 +14,8 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+
+import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -82,7 +82,7 @@ public class Attachments implements Iterable<Attachment> {
 				GL11.glTranslated(0.5, 0.5, 0.5);
 				GL11.glPushMatrix();
 					GL11.glRotatef(rotation, 0, 1, 0);
-					GL11.glTranslated(attachment.getX() - 0.5, attachment.getY() - 0.5, attachment.getZ() - 0.5);
+					GL11.glTranslated(0.5 - attachment.getX(), attachment.getY() - 0.5, attachment.getZ() - 0.5);
 					attachment.getRenderer().render(attachment, partialTicks);
 				GL11.glPopMatrix();
 			GL11.glPopMatrix();

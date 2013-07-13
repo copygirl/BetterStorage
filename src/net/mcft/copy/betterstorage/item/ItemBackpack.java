@@ -2,16 +2,15 @@ package net.mcft.copy.betterstorage.item;
 
 import java.util.List;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.mcft.copy.betterstorage.Config;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityBackpack;
 import net.mcft.copy.betterstorage.client.model.ModelBackpackArmor;
 import net.mcft.copy.betterstorage.container.SlotArmorBackpack;
 import net.mcft.copy.betterstorage.inventory.InventoryStacks;
-import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.misc.PropertiesBackpack;
+import net.mcft.copy.betterstorage.misc.Resources;
 import net.mcft.copy.betterstorage.misc.handlers.PacketHandler;
+import net.mcft.copy.betterstorage.utils.CurrentItem;
 import net.mcft.copy.betterstorage.utils.DirectionUtils;
 import net.mcft.copy.betterstorage.utils.EntityUtils;
 import net.mcft.copy.betterstorage.utils.PacketUtils;
@@ -20,10 +19,11 @@ import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
@@ -36,6 +36,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.EnumHelper;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISpecialArmor;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 	
@@ -57,7 +59,7 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 	/** Returns the number of rows this backpack has. */
 	public int getRows() { return Config.backpackRows; }
 	
-	protected IInventory getBackpackItemsInternal(EntityLiving carrier, EntityPlayer player) {
+	protected IInventory getBackpackItemsInternal(EntityLivingBase carrier, EntityPlayer player) {
 		PropertiesBackpack backpackData = getBackpackData(carrier);
 		if (backpackData.contents == null)
 			backpackData.contents = new ItemStack[getColumns() * getRows()];
@@ -84,16 +86,20 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 	public int getSpriteNumber() { return 0; }
 	
 	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister iconRegister) {  }
+	
+	@Override
 	public boolean isValidArmor(ItemStack stack, int armorType, Entity entity) { return false; }
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public ModelBiped getArmorModel(EntityLiving entity, ItemStack stack, int slot) {
+	public ModelBiped getArmorModel(EntityLivingBase entity, ItemStack stack, int slot) {
 		return ModelBackpackArmor.instance;
 	}
 	@Override
-	public String getArmorTexture(ItemStack stack, Entity entity, int slot, int layer) {
-		return String.format(Constants.backpackTexture, layer - 1);
+	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
+		return ((type == "overlay") ? Resources.backpackGoldTexture : Resources.backpackTexture).toString();
 	}
 	
 	@Override
@@ -206,7 +212,7 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 	// ISpecialArmor implementation
 	
 	@Override
-	public ArmorProperties getProperties(EntityLiving player, ItemStack armor,
+	public ArmorProperties getProperties(EntityLivingBase entity, ItemStack armor,
 	                                     DamageSource source, double damage, int slot) {
 		return new ArmorProperties(0, 2 / 25.0, armor.getMaxDamage() + 1 - armor.getItemDamage());
 	}
@@ -215,7 +221,7 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 	public int getArmorDisplay(EntityPlayer player, ItemStack armor, int slot) { return 2; }
 	
 	@Override
-	public void damageArmor(EntityLiving entity, ItemStack stack,
+	public void damageArmor(EntityLivingBase entity, ItemStack stack,
 	                        DamageSource source, int damage, int slot) {
 		if (!takesDamage(stack, source)) return;
 		stack.damageItem(damage, entity);
@@ -252,36 +258,36 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 	
 	// Helper functions
 	
-	public static ItemStack getBackpack(EntityLiving entity) {
-		ItemStack backpack = entity.getCurrentArmor(2);
+	public static ItemStack getBackpack(EntityLivingBase entity) {
+		ItemStack backpack = entity.getCurrentItemOrArmor(CurrentItem.CHEST);
 		if ((backpack != null) &&
 		    (backpack.getItem() instanceof ItemBackpack)) return backpack;
 		else return null;
 	}
-	public static void setBackpack(EntityLiving entity, ItemStack backpack, ItemStack[] contents) {
+	public static void setBackpack(EntityLivingBase entity, ItemStack backpack, ItemStack[] contents) {
 		entity.setCurrentItemOrArmor(3, backpack);
 		PropertiesBackpack backpackData = getBackpackData(entity);
 		backpackData.contents = contents;
 		ItemBackpack.updateHasItems(entity, backpackData);
 	}
-	public static void removeBackpack(EntityLiving entity) {
+	public static void removeBackpack(EntityLivingBase entity) {
 		setBackpack(entity, null, null);
 	}
 	
-	public static IInventory getBackpackItems(EntityLiving carrier, EntityPlayer player) {
+	public static IInventory getBackpackItems(EntityLivingBase carrier, EntityPlayer player) {
 		ItemStack backpack = getBackpack(carrier);
 		if (backpack == null) return null;
 		return ((ItemBackpack)backpack.getItem()).getBackpackItemsInternal(carrier, player);
 	}
-	public static IInventory getBackpackItems(EntityLiving carrier) {
+	public static IInventory getBackpackItems(EntityLivingBase carrier) {
 		return getBackpackItems(carrier, null);
 	}
 	
-	public static void initBackpackData(EntityLiving entity) {
+	public static void initBackpackData(EntityLivingBase entity) {
 		EntityUtils.createProperties(entity, PropertiesBackpack.class);
 	}
-	public static PropertiesBackpack getBackpackData(EntityLiving entity) {
-		PropertiesBackpack backpackData = EntityUtils.getProperties(entity, PropertiesBackpack.class);
+	public static PropertiesBackpack getBackpackData(EntityLivingBase entity) {
+		PropertiesBackpack backpackData = EntityUtils.getOrCreateProperties(entity, PropertiesBackpack.class);
 		if (!backpackData.initialized) {
 			ItemBackpack.initBackpackOpen(entity);
 			updateHasItems(entity, backpackData);
@@ -290,7 +296,7 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 		return backpackData;
 	}
 	
-	public static void updateHasItems(EntityLiving entity, PropertiesBackpack backpackData) {
+	public static void updateHasItems(EntityLivingBase entity, PropertiesBackpack backpackData) {
 		if (entity.worldObj.isRemote || !(entity instanceof EntityPlayer)) return;
 		EntityPlayer player = (EntityPlayer)entity;
 		boolean hasItems = ((backpackData.contents != null) && !StackUtils.isEmpty(backpackData.contents));
@@ -299,13 +305,13 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 		backpackData.hasItems = hasItems;
 	}
 	
-	public static void initBackpackOpen(EntityLiving entity) {
+	public static void initBackpackOpen(EntityLivingBase entity) {
 		entity.getDataWatcher().addObject(Config.backpackOpenDataWatcherId, (byte)0);
 	}
-	public static void setBackpackOpen(EntityLiving entity, boolean isOpen) {
+	public static void setBackpackOpen(EntityLivingBase entity, boolean isOpen) {
 		entity.getDataWatcher().updateObject(Config.backpackOpenDataWatcherId, (byte)(isOpen ? 1 : 0));
 	}
-	public static boolean isBackpackOpen(EntityLiving entity) {
+	public static boolean isBackpackOpen(EntityLivingBase entity) {
 		return (entity.getDataWatcher().getWatchableObjectByte(Config.backpackOpenDataWatcherId) != 0);
 	}
 	

@@ -1,19 +1,21 @@
 package net.mcft.copy.betterstorage.client.renderer;
 
+import net.mcft.copy.betterstorage.block.tileentity.TileEntityArmorStand;
+import net.mcft.copy.betterstorage.client.model.ModelArmorStand;
+import net.mcft.copy.betterstorage.misc.Resources;
+import net.minecraft.client.entity.AbstractClientPlayer;
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatMessageComponent;
+import net.minecraft.util.ChunkCoordinates;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
-import net.mcft.copy.betterstorage.block.tileentity.TileEntityArmorStand;
-import net.mcft.copy.betterstorage.client.model.ModelArmorStand;
-import net.mcft.copy.betterstorage.misc.Constants;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChunkCoordinates;
 
 @SideOnly(Side.CLIENT)
 public class TileEntityArmorStandRenderer extends TileEntitySpecialRenderer {
@@ -27,7 +29,7 @@ public class TileEntityArmorStandRenderer extends TileEntitySpecialRenderer {
 		int rotation = locker.rotation * 360 / 16;
 		
 		ModelArmorStand model = armorStandModel;
-		bindTextureByName(Constants.armorStandTexture);
+		func_110628_a(Resources.armorStandTexture);
 		
 		GL11.glPushMatrix();
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
@@ -46,11 +48,10 @@ public class TileEntityArmorStandRenderer extends TileEntitySpecialRenderer {
 		if (locker.worldObj == null) return;
 		
 		if (playerDummy == null) {
-			playerDummy = new EntityPlayer(locker.worldObj) {
-				{ username = "I AM ERROR"; }
-				@Override public void sendChatToPlayer(String var1) {  }
+			playerDummy = new AbstractClientPlayer(locker.worldObj, "I AM ERROR") {
+				@Override public void sendChatToPlayer(ChatMessageComponent chatmessagecomponent) { }
 				@Override public ChunkCoordinates getPlayerCoordinates() { return null; }
-				@Override public boolean canCommandSenderUseCommand(int var1, String var2) { return false; }
+				@Override public boolean canCommandSenderUseCommand(int i, String s) { return false; }
 			};
 			playerDummy.setInvisible(true);
 		}

@@ -1,7 +1,5 @@
 package net.mcft.copy.betterstorage.misc;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.addon.Addon;
 import net.mcft.copy.betterstorage.item.ItemArmorStand;
@@ -12,6 +10,8 @@ import net.mcft.copy.betterstorage.item.ItemReinforcedChest;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 
 /** Handles the registering and naming of blocks and items. */
 public class Registry {

@@ -2,8 +2,7 @@ package net.mcft.copy.betterstorage.block;
 
 import java.util.List;
 import java.util.Random;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+
 import net.mcft.copy.betterstorage.api.BetterStorageEnchantment;
 import net.mcft.copy.betterstorage.attachment.Attachments;
 import net.mcft.copy.betterstorage.attachment.EnumAttachmentInteraction;
@@ -19,7 +18,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -29,6 +28,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockReinforcedChest extends BlockContainer {
 	
@@ -49,7 +50,7 @@ public class BlockReinforcedChest extends BlockContainer {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister iconRegister) {
-		blockIcon = iconRegister.registerIcon("tree_side");
+		blockIcon = iconRegister.registerIcon("log_oak");
 	}
 	
 	@Override
@@ -121,7 +122,7 @@ public class BlockReinforcedChest extends BlockContainer {
 	}
 	
 	@Override
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving player, ItemStack stack) {
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
 		TileEntityReinforcedChest chest = WorldUtils.get(world, x, y, z, TileEntityReinforcedChest.class);
 		chest.setOrientation(DirectionUtils.getOrientation(player).getOpposite());
 		chest.checkForConnections();
@@ -142,12 +143,10 @@ public class BlockReinforcedChest extends BlockContainer {
 	
 	@Override
 	public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player) {
-		// TODO: See if we can make a pull request to forge to get
-		// PlayerInteractEvent to fire for left click on client.
+		// TODO: See if we can make a pull request to forge to get PlayerInteractEvent to fire for left click on client.
 		Attachments attachments = WorldUtils.get(world, x, y, z, IHasAttachments.class).getAttachments();
 		boolean abort = attachments.interact(player, EnumAttachmentInteraction.attack);
-		// TODO: Abort block breaking?
-		// playerController.resetBlockBreaking doesn't seem to do the job.
+		// TODO: Abort block breaking? playerController.resetBlockBreaking doesn't seem to do the job.
 	}
 	
 	@Override

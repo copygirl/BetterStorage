@@ -1,15 +1,17 @@
 package net.mcft.copy.betterstorage.utils;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemRenderer;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.Icon;
+import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ItemRenderer;
-import net.minecraft.client.renderer.RenderEngine;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -18,30 +20,29 @@ public class RenderUtils {
 	
 	public static void renderItemIn3d(ItemStack stack) {
 		
-		RenderEngine renderEngine = RenderManager.instance.renderEngine;
+		TextureManager textureManager = Minecraft.getMinecraft().func_110434_K();
 		// Not sure why but this can be null when the world loads.
-		if (renderEngine == null) return;
+		if (textureManager == null) return;
 		Icon icon = stack.getIconIndex();
 		
 		GL11.glPushMatrix();
 		
-		String texture = ((stack.getItemSpriteNumber() == 0) ? "/terrain.png" : "/gui/items.png");
-		renderEngine.bindTexture(texture);
+		textureManager.func_110577_a(((stack.getItemSpriteNumber() == 0) ? TextureMap.field_110575_b : TextureMap.field_110576_c));
 		
 		Tessellator tessellator = Tessellator.instance;
-		float f = icon.getMinU();
-		float f1 = icon.getMaxU();
-		float f2 = icon.getMinV();
-		float f3 = icon.getMaxV();
+		float minU = icon.getMinU();
+		float maxU = icon.getMaxU();
+		float minV = icon.getMinV();
+		float maxV = icon.getMaxV();
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
 		GL11.glTranslatef(-0.5F, -0.5F, 1 / 32.0F);
-		ItemRenderer.renderItemIn2D(tessellator, f1, f2, f, f3, icon.getSheetWidth(), icon.getSheetHeight(), 0.0625F);
+		ItemRenderer.renderItemIn2D(tessellator, maxU, minV, minU, maxV, icon.getOriginX(), icon.getOriginY(), 0.0625F);
 		
-		if (stack.hasEffect()) {
+		if (stack.hasEffect(0)) {
 			GL11.glDepthFunc(GL11.GL_EQUAL);
 			GL11.glDisable(GL11.GL_LIGHTING);
-			renderEngine.bindTexture("%blur%/misc/glint.png");
+			textureManager.func_110577_a(new ResourceLocation("textures/misc/enchanted_item_glint.png"));
 			GL11.glEnable(GL11.GL_BLEND);
 			GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE);
 			float f7 = 0.76F;

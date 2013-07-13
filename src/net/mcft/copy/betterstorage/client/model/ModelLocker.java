@@ -1,20 +1,21 @@
 package net.mcft.copy.betterstorage.client.model;
 
+import net.mcft.copy.betterstorage.misc.Resources;
+import net.minecraft.client.model.ModelBase;
+import net.minecraftforge.client.model.AdvancedModelLoader;
+import net.minecraftforge.client.model.IModelCustom;
+
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.mcft.copy.betterstorage.misc.Constants;
-import net.minecraft.client.model.ModelBase;
-import net.minecraftforge.client.model.AdvancedModelLoader;
-import net.minecraftforge.client.model.IModelCustom;
 
 @SideOnly(Side.CLIENT)
 public class ModelLocker extends ModelBase {
 	
 	private IModelCustom model;
 	
-	protected String modelPath() { return Constants.lockerModel; }
+	protected String modelPath() { return Resources.lockerModel; }
 	
 	public ModelLocker() {
 		model = AdvancedModelLoader.loadModel(modelPath());

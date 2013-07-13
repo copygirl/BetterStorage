@@ -1,10 +1,11 @@
 package net.mcft.copy.betterstorage.client.gui;
 
+import net.mcft.copy.betterstorage.misc.Resources;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.mcft.copy.betterstorage.misc.Constants;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.StatCollector;
 
 @SideOnly(Side.CLIENT)
 public class GuiCrate extends GuiBetterStorage {
@@ -16,7 +17,7 @@ public class GuiCrate extends GuiBetterStorage {
 	}
 	
 	@Override
-	protected String getTexture() { return Constants.crateContainer; }
+	protected ResourceLocation getResource() { return Resources.crateContainer; }
 	
 	@Override
 	public void update(int id, int val) {

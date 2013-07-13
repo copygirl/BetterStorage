@@ -1,7 +1,5 @@
 package net.mcft.copy.betterstorage.container;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.misc.PropertiesBackpack;
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,6 +9,8 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class SlotArmorBackpack extends Slot {
 	
@@ -23,7 +23,7 @@ public class SlotArmorBackpack extends Slot {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Icon getBackgroundIconIndex() {
-		return ItemArmor.func_94602_b(1);
+		return ItemArmor.func_94602_b(armorType);
 	}
 	
 	@Override

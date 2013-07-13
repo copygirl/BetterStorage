@@ -1,11 +1,5 @@
 package net.mcft.copy.betterstorage.client.renderer;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityReinforcedChest;
 import net.mcft.copy.betterstorage.utils.DirectionUtils;
@@ -14,6 +8,12 @@ import net.minecraft.client.model.ModelLargeChest;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class TileEntityReinforcedChestRenderer extends TileEntitySpecialRenderer {
@@ -29,7 +29,7 @@ public class TileEntityReinforcedChestRenderer extends TileEntitySpecialRenderer
 		if (large && !chest.isMain()) return;
 		
 		ModelChest model = (large ? largeChestModel : chestModel);
-		bindTextureByName(chest.getTexture());
+		func_110628_a(chest.getResource());
 		
 		GL11.glPushMatrix();
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);

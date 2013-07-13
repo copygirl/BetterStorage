@@ -183,8 +183,8 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 		return (isAccessible() ? getPlayerInventory().decrStackSize(slot, amount) : null);
 	}
 	@Override
-	public boolean isStackValidForSlot(int slot, ItemStack stack) {
-		return (isAccessible() ? getPlayerInventory().isStackValidForSlot(slot, stack) : false);
+	public boolean isItemValidForSlot(int slot, ItemStack stack) {
+		return (isAccessible() ? getPlayerInventory().isItemValidForSlot(slot, stack) : false);
 	}
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) {

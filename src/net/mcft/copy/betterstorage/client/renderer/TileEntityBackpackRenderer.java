@@ -1,21 +1,21 @@
 package net.mcft.copy.betterstorage.client.renderer;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityBackpack;
 import net.mcft.copy.betterstorage.client.model.ModelBackpack;
-import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.utils.DirectionUtils;
 import net.mcft.copy.betterstorage.utils.RenderUtils;
+import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
+
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class TileEntityBackpackRenderer extends TileEntitySpecialRenderer {
@@ -43,11 +43,11 @@ public class TileEntityBackpackRenderer extends TileEntitySpecialRenderer {
 		backpackModel.setLidRotation((float)(angle * Math.PI / 4.0));
 		
 		int renderPasses = item.getRenderPasses(0);
-		for (int pass = 1; pass < renderPasses + 1; pass++) {
-			String texture = ((ItemBackpack)item).getArmorTexture(null, null, 0, pass);
+		for (int pass = 0; pass < renderPasses; pass++) {
 			ItemStack stack = ((backpack.stack != null) ? backpack.stack : new ItemStack(item));
-			RenderUtils.setColorFromInt(item.getColorFromItemStack(stack, pass - 1));
-			bindTextureByName(texture);
+			String type = ((pass == 0) ? null : "overlay");
+			func_110628_a(RenderBiped.getArmorResource(null, stack, 0, type));
+            RenderUtils.setColorFromInt(item.getColorFromItemStack(stack, pass));
 			backpackModel.renderAll();
 		}
 		

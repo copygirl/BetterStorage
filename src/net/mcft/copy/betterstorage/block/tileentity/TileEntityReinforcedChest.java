@@ -1,8 +1,7 @@
 package net.mcft.copy.betterstorage.block.tileentity;
 
 import java.security.InvalidParameterException;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+
 import net.mcft.copy.betterstorage.Config;
 import net.mcft.copy.betterstorage.api.ILock;
 import net.mcft.copy.betterstorage.api.ILockable;
@@ -19,7 +18,10 @@ import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ForgeDirection;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class TileEntityReinforcedChest extends TileEntityConnectable
                                        implements IInventory, ILockable, IHasAttachments {
@@ -45,8 +47,8 @@ public class TileEntityReinforcedChest extends TileEntityConnectable
 	}
 	
 	@SideOnly(Side.CLIENT)
-	public String getTexture() {
-		return ChestMaterial.get(getBlockMetadata()).getTexture(isConnected());
+	public ResourceLocation getResource() {
+		return ChestMaterial.get(getBlockMetadata()).getResource(isConnected());
 	}
 	
 	// Attachment points
@@ -58,6 +60,20 @@ public class TileEntityReinforcedChest extends TileEntityConnectable
 	public void setOrientation(ForgeDirection orientation) {
 		super.setOrientation(orientation);
 		lockAttachment.setDirection(orientation);
+	}
+	@Override
+	public void setConnected(ForgeDirection connected) {
+		super.setConnected(connected);
+		int lockPosition = 0;
+		if (isConnected())
+			switch (getOrientation()) {
+				case EAST: lockPosition = ((connected == ForgeDirection.SOUTH) ? 1 : -1); break;
+				case WEST: lockPosition = ((connected == ForgeDirection.NORTH) ? 1 : -1); break;
+				case SOUTH: lockPosition = ((connected == ForgeDirection.WEST) ? 1 : -1); break;
+				case NORTH: lockPosition = ((connected == ForgeDirection.EAST) ? 1 : -1); break;
+				default: break;
+			}
+		lockAttachment.setBox((lockPosition + 1) * 8, 6.5, 0.5, 7, 7, 1);
 	}
 	
 	@Override
@@ -74,7 +90,8 @@ public class TileEntityReinforcedChest extends TileEntityConnectable
 	@Override
 	public void dropContents() {
 		super.dropContents();
-		WorldUtils.dropStackFromBlock(worldObj, xCoord, yCoord, zCoord, getLockInternal());
+		WorldUtils.dropStackFromBlock(worldObj, xCoord, yCoord, zCoord, getLock());
+		setLock(null);
 	}
 	
 	// TileEntityConnactable stuff

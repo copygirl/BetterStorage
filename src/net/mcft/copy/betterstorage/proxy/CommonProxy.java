@@ -19,6 +19,7 @@ import net.mcft.copy.betterstorage.inventory.InventoryStacks;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.item.ItemEnderBackpack;
 import net.mcft.copy.betterstorage.misc.PropertiesBackpack;
+import net.mcft.copy.betterstorage.utils.CurrentItem;
 import net.mcft.copy.betterstorage.utils.EntityUtils;
 import net.mcft.copy.betterstorage.utils.NbtUtils;
 import net.mcft.copy.betterstorage.utils.PlayerUtils;
@@ -27,6 +28,7 @@ import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.monster.EntityPigZombie;
@@ -44,9 +46,10 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.Event.Result;
 import net.minecraftforge.event.ForgeSubscribe;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent.SpecialSpawn;
@@ -103,7 +106,7 @@ public class CommonProxy implements IPlayerTracker {
 	@ForgeSubscribe
 	public void onSpecialSpawn(SpecialSpawn event) {
 		
-		EntityLiving entity = event.entityLiving;
+		EntityLivingBase entity = event.entityLiving;
 		double probability = 0.0;
 		if (entity.getClass() == EntityZombie.class) probability = 1.0 / 800;
 		else if (entity.getClass() == EntityPigZombie.class) probability = 1.0 / 1000;
@@ -133,7 +136,7 @@ public class CommonProxy implements IPlayerTracker {
 		// Attempt to place equipped backpack.
 		if (event.action == Action.RIGHT_CLICK_BLOCK)
 			if (ItemBackpack.placeBackpack(player, x, y, z, event.face))
-				event.setCanceled(true);
+				event.useBlock = Result.DENY;
 		
 		// Interact with attachments.
 		if ((event.action == Action.LEFT_CLICK_BLOCK) ||
@@ -144,8 +147,10 @@ public class CommonProxy implements IPlayerTracker {
 						((event.action == Action.LEFT_CLICK_BLOCK)
 								? EnumAttachmentInteraction.attack
 								: EnumAttachmentInteraction.use);
-				if (hasAttachments.getAttachments().interact(player, interactionType))
-					event.setCanceled(true);
+				if (hasAttachments.getAttachments().interact(player, interactionType)) {
+					event.useBlock = Result.DENY;
+					event.useItem = Result.DENY;
+				}
 			}
 		}
 		
@@ -254,15 +259,15 @@ public class CommonProxy implements IPlayerTracker {
 		
 		// Update backpack animation and play sound when it opens / closes
 		
-		EntityLiving entity = event.entityLiving;
+		EntityLivingBase entity = event.entityLiving;
+		EntityPlayer player = ((entity instanceof EntityPlayer) ? (EntityPlayer)entity : null);
 		ItemStack backpack = ItemBackpack.getBackpack(entity);
 		
 		PropertiesBackpack backpackData;
 		if (backpack == null) {
 			
-			// Use getProperties instead of getBackpackData
-			// because we don't want to initialize it.
 			backpackData = EntityUtils.getProperties(entity, PropertiesBackpack.class);
+			if (backpackData == null) return;
 			
 			// If the entity is supposed to spawn with
 			// a backpack, equip it with one.
@@ -271,7 +276,7 @@ public class CommonProxy implements IPlayerTracker {
 				ItemStack[] contents = null;
 				if (entity instanceof EntityFrienderman) {
 					backpack = new ItemStack(BetterStorage.enderBackpack);
-					entity.func_96120_a(3, 0.0F); // Remove drop chance for the backpack.
+					((EntityLiving)entity).setEquipmentDropChance(3, 0.0F); // Remove drop chance for the backpack.
 				} else {
 					backpack = new ItemStack(BetterStorage.backpack, 1, RandomUtils.getInt(120, 240));
 					ItemBackpack backpackType = (ItemBackpack)Item.itemsList[backpack.itemID];
@@ -284,12 +289,12 @@ public class CommonProxy implements IPlayerTracker {
 						backpackType.func_82813_b(backpack, color);
 					}
 					contents = new ItemStack[backpackType.getColumns() * backpackType.getRows()];
-					entity.func_96120_a(3, 1.0F); // Set drop chance for the backpack to 100%.
+					((EntityLiving)entity).setEquipmentDropChance(3, 1.0F); // Set drop chance for the backpack to 100%.
 				}
 				
 				// If the entity spawned with enchanted armor,
 				// move the enchantments over to the backpack.
-				ItemStack armor = entity.getCurrentArmor(2);
+				ItemStack armor = entity.getCurrentItemOrArmor(CurrentItem.CHEST);
 				if (armor != null && armor.isItemEnchanted()) {
 					NBTTagCompound compound = new NBTTagCompound();
 					compound.setTag("ench", armor.getTagCompound().getTag("ench"));
@@ -314,15 +319,15 @@ public class CommonProxy implements IPlayerTracker {
 				ItemBackpack.setBackpack(entity, backpack, contents);
 				backpackData.spawnsWithBackpack = false;
 				
-			}
-			
-			// If the entity doesn't have a backpack equipped,
-			// but still has some backpack data, drop the items.
-			else if (backpackData.contents != null) {
+			} else {
 				
-				for (ItemStack stack : backpackData.contents)
-					WorldUtils.dropStackFromEntity(entity, stack, 1.5F);
-				backpackData.contents = null;
+				// If the entity doesn't have a backpack equipped,
+				// but still has some backpack data, drop the items.
+				if (backpackData.contents != null) {
+					for (ItemStack stack : backpackData.contents)
+						WorldUtils.dropStackFromEntity(entity, stack, 1.5F);
+					backpackData.contents = null;
+				}
 				
 			}
 			
@@ -351,7 +356,7 @@ public class CommonProxy implements IPlayerTracker {
 		
 		// Drops the contents from an equipped backpack when the entity dies.
 		
-		EntityLiving entity = event.entityLiving;
+		EntityLivingBase entity = event.entityLiving;
 		if (entity.worldObj.isRemote) return;
 		ItemStack backpack = ItemBackpack.getBackpack(entity);
 		if (backpack == null) return;

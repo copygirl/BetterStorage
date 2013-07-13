@@ -1,11 +1,12 @@
 package net.mcft.copy.betterstorage.attachment;
 
+import net.mcft.copy.betterstorage.utils.RenderUtils;
+import net.minecraft.item.ItemStack;
+
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.mcft.copy.betterstorage.utils.RenderUtils;
-import net.minecraft.item.ItemStack;
 
 @SideOnly(Side.CLIENT)
 public class ItemAttachmentRenderer implements IAttachmentRenderer {

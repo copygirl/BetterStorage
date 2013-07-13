@@ -9,7 +9,7 @@ import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.utils.InventoryUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockCloth;
+import net.minecraft.block.BlockColored;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
@@ -81,7 +81,7 @@ public class KeyRecipe extends ComboRecipe {
 			int[] colors = new int[16];
 			int amount = 0;
 			for (ItemStack dye : dyes) {
-				int colorIndex = BlockCloth.getBlockFromDye(dye.getItemDamage());
+				int colorIndex = BlockColored.getBlockFromDye(dye.getItemDamage());
 				int intensity = colors[colorIndex];
 				float[] color = EntitySheep.fleeceColorTable[colorIndex];
 				float f = (float)Math.pow(2, intensity);

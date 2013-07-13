@@ -133,10 +133,10 @@ public class WorldUtils {
 		double range = ((player.worldObj.isRemote)
 				? Minecraft.getMinecraft().playerController.getBlockReachDistance()
 				: ((EntityPlayerMP)player).theItemInWorldManager.getBlockReachDistance());
-		Vec3 start = player.getPosition(1.0F).addVector(0, 1.62 - player.yOffset, 0);
+		Vec3 start = player.worldObj.getWorldVec3Pool().getVecFromPool(player.posX, player.posY + 1.62 - player.yOffset, player.posZ);
 		Vec3 look = player.getLook(1.0F);
 		Vec3 end = start.addVector(look.xCoord * range, look.yCoord * range, look.zCoord * range);
-		MovingObjectPosition target = player.worldObj.rayTraceBlocks(start, end);
+		MovingObjectPosition target = player.worldObj.clip(start, end);
 		Attachments.playerLocal.remove();
 		return target;
 	}

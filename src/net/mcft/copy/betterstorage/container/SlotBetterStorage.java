@@ -22,14 +22,14 @@ public class SlotBetterStorage extends Slot {
 	
 	@Override
 	public boolean isItemValid(ItemStack stack) {
-		return (!isProtected && inventory.isStackValidForSlot(slotNumber, stack));
+		return (!isProtected && inventory.isItemValidForSlot(slotNumber, stack));
 	}
 	
 	@Override
 	public boolean canTakeStack(EntityPlayer player) {
-		// Not sure if isStackValidForSlot can / should be used to check
+		// Not sure if isItemValidForSlot can / should be used to check
 		// if items can be taken out, but I'll just use it anyway.
-		return (!isProtected && inventory.isStackValidForSlot(slotNumber, null));
+		return (!isProtected && inventory.isItemValidForSlot(slotNumber, null));
 	}
 	
 }

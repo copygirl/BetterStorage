@@ -43,7 +43,7 @@ public class InventoryWrapper implements IInventory {
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) { return base.isUseableByPlayer(player); }
 	@Override
-	public boolean isStackValidForSlot(int slot, ItemStack stack) { return base.isStackValidForSlot(slot, stack); }
+	public boolean isItemValidForSlot(int slot, ItemStack stack) { return base.isItemValidForSlot(slot, stack); }
 	
 	@Override
 	public void onInventoryChanged() { base.onInventoryChanged(); }

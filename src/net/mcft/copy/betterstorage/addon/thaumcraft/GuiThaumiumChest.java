@@ -1,12 +1,13 @@
 package net.mcft.copy.betterstorage.addon.thaumcraft;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.mcft.copy.betterstorage.client.gui.GuiBetterStorage;
 import net.mcft.copy.betterstorage.container.ContainerBetterStorage;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryBasic;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class GuiThaumiumChest extends GuiBetterStorage {
@@ -19,7 +20,7 @@ public class GuiThaumiumChest extends GuiBetterStorage {
 	protected int getTextureWidth() { return 512; }
 	
 	@Override
-	protected String getTexture() { return ThaumcraftAddon.thaumiumChestContainer; }
+	protected ResourceLocation getResource() { return ThaumcraftResources.thaumiumChestContainer; }
 	
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {

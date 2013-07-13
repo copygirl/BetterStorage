@@ -3,13 +3,6 @@ package net.mcft.copy.betterstorage.proxy;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.lwjgl.opengl.GL11;
-
-import cpw.mods.fml.client.registry.ClientRegistry;
-import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.registry.TickRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.addon.Addon;
 import net.mcft.copy.betterstorage.attachment.Attachment;
@@ -28,7 +21,7 @@ import net.mcft.copy.betterstorage.client.renderer.TileEntityBackpackRenderer;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityLockerRenderer;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityReinforcedChestRenderer;
 import net.mcft.copy.betterstorage.entity.EntityFrienderman;
-import net.mcft.copy.betterstorage.misc.handlers.TickHandler;
+import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.Tessellator;
@@ -43,7 +36,15 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
+import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.event.ForgeSubscribe;
+
+import org.lwjgl.opengl.GL11;
+
+import cpw.mods.fml.client.registry.ClientRegistry;
+import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy {
@@ -59,7 +60,6 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void init() {
 		super.init();
-		TickRegistry.registerTickHandler(new TickHandler(), Side.CLIENT);
 		MinecraftForgeClient.registerItemRenderer(BetterStorage.backpack.blockID, ItemRendererBackpack.instance);
 		MinecraftForgeClient.registerItemRenderer(BetterStorage.enderBackpack.blockID, ItemRendererBackpack.instance);
 		Addon.postClientInitAll();
@@ -200,6 +200,12 @@ public class ClientProxy extends CommonProxy {
 		Attachment attachment = attachments.get(target.subHit);
 		if (attachment == null) return null;
 		return attachment.getBox().copy().offset(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord);
+	}
+	
+	@ForgeSubscribe
+	public void onRenderPlayerSpecialsPre(RenderPlayerEvent.Specials.Pre event) {
+		if (ItemBackpack.getBackpack(event.entityPlayer) != null)
+			event.renderCape = false;
 	}
 	
 }

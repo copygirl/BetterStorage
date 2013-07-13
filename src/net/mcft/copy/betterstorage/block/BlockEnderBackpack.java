@@ -9,6 +9,7 @@ import net.mcft.copy.betterstorage.utils.PlayerUtils;
 import net.mcft.copy.betterstorage.utils.RandomUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
@@ -18,12 +19,20 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockEnderBackpack extends BlockBackpack {
 	
 	public BlockEnderBackpack(int id) {
 		super(id);
 		setHardness(1.5f);
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister iconRegister) {
+		blockIcon = iconRegister.registerIcon("obsidian");
 	}
 	
 	@Override
@@ -68,7 +77,7 @@ public class BlockEnderBackpack extends BlockBackpack {
 				PacketHandler.backpackTeleport,
 				sourceX, sourceY, sourceZ, x, y, z);
 		MinecraftServer.getServer().getConfigurationManager().sendToAllNear(
-				sourceX + 0.5, sourceY + 0.5, sourceZ + 0.5, 512.0, world.getWorldInfo().getDimension(), packet);
+				sourceX + 0.5, sourceY + 0.5, sourceZ + 0.5, 512.0, world.provider.dimensionId, packet);
 		
 		world.playSoundEffect(sourceX + 0.5, sourceY + 0.5, sourceZ + 0.5,
 		                      "mob.endermen.portal", 1.0F, 1.0F);

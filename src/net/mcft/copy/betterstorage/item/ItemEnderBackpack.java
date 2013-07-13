@@ -3,12 +3,12 @@ package net.mcft.copy.betterstorage.item;
 import java.util.List;
 
 import net.mcft.copy.betterstorage.inventory.InventoryWrapper;
-import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.misc.PropertiesBackpack;
+import net.mcft.copy.betterstorage.misc.Resources;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -26,7 +26,7 @@ public class ItemEnderBackpack extends ItemBackpack {
 	public String getName() { return "container.enderBackpack"; }
 	
 	@Override
-	protected IInventory getBackpackItemsInternal(EntityLiving carrier, EntityPlayer player) {
+	protected IInventory getBackpackItemsInternal(EntityLivingBase carrier, EntityPlayer player) {
 		return new InventoryEnderBackpackEquipped(player.getInventoryEnderChest());
 	}
 	
@@ -38,14 +38,8 @@ public class ItemEnderBackpack extends ItemBackpack {
 	// Item stuff
 	
 	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister iconRegister) {
-		itemIcon = iconRegister.registerIcon("betterstorage:enderBackpack");
-	}
-	
-	@Override
-	public String getArmorTexture(ItemStack stack, Entity entity, int slot, int layer) {
-		return Constants.enderBackpackTexture;
+	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
+		return Resources.enderBackpackTexture.toString();
 	}
 	
 	@Override

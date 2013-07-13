@@ -11,7 +11,7 @@ public class InventoryKeyring extends InventoryItem {
 	}
 	
 	@Override
-	public boolean isStackValidForSlot(int slot, ItemStack stack) {
+	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 		return ((stack != null) && (stack.getItem() instanceof IKey) &&
 		        ((IKey)stack.getItem()).isNormalKey());
 	}

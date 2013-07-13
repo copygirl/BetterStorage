@@ -2,6 +2,7 @@ package net.mcft.copy.betterstorage.utils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.packet.Packet;

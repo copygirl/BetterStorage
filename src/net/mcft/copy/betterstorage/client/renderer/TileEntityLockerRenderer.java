@@ -1,18 +1,18 @@
 package net.mcft.copy.betterstorage.client.renderer;
 
+import net.mcft.copy.betterstorage.block.tileentity.TileEntityLocker;
+import net.mcft.copy.betterstorage.client.model.ModelLargeLocker;
+import net.mcft.copy.betterstorage.client.model.ModelLocker;
+import net.mcft.copy.betterstorage.misc.Resources;
+import net.mcft.copy.betterstorage.utils.DirectionUtils;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.tileentity.TileEntity;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
-import net.mcft.copy.betterstorage.block.tileentity.TileEntityLocker;
-import net.mcft.copy.betterstorage.client.model.ModelLargeLocker;
-import net.mcft.copy.betterstorage.client.model.ModelLocker;
-import net.mcft.copy.betterstorage.misc.Constants;
-import net.mcft.copy.betterstorage.utils.DirectionUtils;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.tileentity.TileEntity;
 
 @SideOnly(Side.CLIENT)
 public class TileEntityLockerRenderer extends TileEntitySpecialRenderer {
@@ -29,7 +29,7 @@ public class TileEntityLockerRenderer extends TileEntitySpecialRenderer {
 		
 		int index = (locker.mirror ? 1 : 0);
 		ModelLocker model = (large ? largeLockerModel : lockerModel);
-		bindTextureByName((large ? Constants.largeLockerTexture : Constants.lockerTexture));
+		func_110628_a((large ? Resources.largeLockerTexture : Resources.lockerTexture));
 		
 		GL11.glPushMatrix();
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);

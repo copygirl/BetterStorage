@@ -3,20 +3,20 @@ package net.mcft.copy.betterstorage.addon.thaumcraft;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.mcft.copy.betterstorage.Config;
+import net.mcft.copy.betterstorage.block.tileentity.TileEntityConnectable;
+import net.mcft.copy.betterstorage.block.tileentity.TileEntityReinforcedChest;
+import net.mcft.copy.betterstorage.utils.RandomUtils;
+import net.mcft.copy.betterstorage.utils.StackUtils;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import thaumcraft.api.EnumTag;
 import thaumcraft.api.ObjectTags;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aura.AuraNode;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.mcft.copy.betterstorage.Config;
-import net.mcft.copy.betterstorage.block.tileentity.TileEntityConnectable;
-import net.mcft.copy.betterstorage.block.tileentity.TileEntityReinforcedChest;
-import net.mcft.copy.betterstorage.misc.Constants;
-import net.mcft.copy.betterstorage.utils.RandomUtils;
-import net.mcft.copy.betterstorage.utils.StackUtils;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
 
 public class TileEntityThaumiumChest extends TileEntityReinforcedChest {
 	
@@ -27,8 +27,8 @@ public class TileEntityThaumiumChest extends TileEntityReinforcedChest {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public String getTexture() {
-		return Constants.gfxbase + "models/chest" + (isConnected() ? "_large/" : "/") + "thaumium.png";
+	public ResourceLocation getResource() {
+		return new ResourceLocation("betterstorage", "textures/models/chest" + (isConnected() ? "_large/" : "/") + "thaumium.png");
 	}
 	
 	@Override

@@ -40,6 +40,6 @@ public abstract class InventoryBetterStorage implements IInventory {
 	public boolean isInvNameLocalized() { return false; }
 	
 	@Override
-	public boolean isStackValidForSlot(int slot, ItemStack stack) { return true; }
+	public boolean isItemValidForSlot(int slot, ItemStack stack) { return true; }
 	
 }

@@ -3,6 +3,7 @@ package net.mcft.copy.betterstorage.entity;
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityBackpack;
 import net.mcft.copy.betterstorage.misc.handlers.PacketHandler;
+import net.mcft.copy.betterstorage.utils.CurrentItem;
 import net.mcft.copy.betterstorage.utils.PacketUtils;
 import net.mcft.copy.betterstorage.utils.RandomUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
@@ -33,10 +34,8 @@ public class EntityFrienderman extends EntityEnderman {
 	
 	public EntityFrienderman(World world) {
 		super(world);
+		// FIXME: Set maximum health.
 	}
-	
-	@Override
-	public int getMaxHealth() { return 60; }
 	
 	@Override
 	protected Entity findPlayerToAttack() { return null; }
@@ -53,10 +52,10 @@ public class EntityFrienderman extends EntityEnderman {
 	}
 	
 	@Override
-	public boolean attackEntityFrom(DamageSource source, int damage) {
+	public boolean attackEntityFrom(DamageSource source, float damage) {
 		boolean success = super.attackEntityFrom(source, damage);
 		if (entityToAttack != null) {
-			for (int i = 0; i < 40 - getHealth() / 2; i++)
+			for (int i = 0; i < 40 - func_110138_aP() / 2; i++)
 				if (teleportRandomly()) break;
 			entityToAttack = null;
 		}
@@ -90,7 +89,8 @@ public class EntityFrienderman extends EntityEnderman {
 		String ruleBefore = rules.getGameRuleStringValue("mobGriefing");
 		boolean ruleChanged = false;
 		boolean hadEnderChest = (getCarried() == Block.enderChest.blockID);
-		boolean canMoveStuff = ((getCarried() != 0) ^ ((worldObj.getBlockId(x, y, z) == 0) && (getCurrentArmor(2) != null)));
+		boolean hasArmor = (getCurrentItemOrArmor(CurrentItem.CHEST) != null);
+		boolean canMoveStuff = ((getCarried() != 0) ^ ((worldObj.getBlockId(x, y, z) == 0) && hasArmor));
 		
 		if (hadEnderChest || !canMoveStuff) {
 			if (ruleBefore.equalsIgnoreCase("true")) {
@@ -119,7 +119,7 @@ public class EntityFrienderman extends EntityEnderman {
 			double pz = z + 0.5;
 			Packet packet = PacketUtils.makePacket(PacketHandler.backpackTeleport, posX, posY + 1, posZ, x, y, z);
 			MinecraftServer.getServer().getConfigurationManager().sendToAllNear(
-					px, py, pz, 512.0, worldObj.getWorldInfo().getDimension(), packet);
+					px, py, pz, 512.0, worldObj.provider.dimensionId, packet);
 			worldObj.playSoundEffect(px, py, pz, "mob.endermen.portal", 1.0F, 1.0F);
 		}
 		

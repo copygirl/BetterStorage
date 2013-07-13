@@ -2,20 +2,20 @@ package net.mcft.copy.betterstorage.client.gui;
 
 import invtweaks.api.ContainerGUI;
 import invtweaks.api.ContainerGUI.RowSizeCallback;
-
-import org.lwjgl.opengl.GL11;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 import net.mcft.copy.betterstorage.container.ContainerBetterStorage;
-import net.mcft.copy.betterstorage.misc.Constants;
+import net.mcft.copy.betterstorage.misc.Resources;
 import net.mcft.copy.betterstorage.utils.RenderUtils;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+
+import org.lwjgl.opengl.GL11;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @ContainerGUI
 @SideOnly(Side.CLIENT)
@@ -55,9 +55,9 @@ public class GuiBetterStorage extends GuiContainer {
 		this(player, columns, rows, title, false);
 	}
 	
-	protected String getTexture() {
-		if (columns <= 9) return "/gui/container.png";
-		else return Constants.reinforcedChestContainer;
+	protected ResourceLocation getResource() {
+		if (columns <= 9) return new ResourceLocation("textures/gui/container/generic_54.png");
+		else return Resources.reinforcedChestContainer;
 	}
 	
 	protected int getTextureWidth() { return 256; }
@@ -74,7 +74,7 @@ public class GuiBetterStorage extends GuiContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3) {
 		GL11.glColor4f(1, 1, 1, 1);
-		mc.renderEngine.bindTexture(getTexture());
+		mc.renderEngine.func_110577_a(getResource());
 		int x = (width - xSize) / 2;
 		int y = (height - ySize) / 2;
 		int w = getTextureWidth();

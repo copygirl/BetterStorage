@@ -2,8 +2,6 @@ package net.mcft.copy.betterstorage.block;
 
 import java.util.Random;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityArmorStand;
 import net.mcft.copy.betterstorage.proxy.ClientProxy;
 import net.mcft.copy.betterstorage.utils.PacketUtils;
@@ -11,7 +9,7 @@ import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.Packet103SetSlot;
@@ -19,6 +17,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockArmorStand extends BlockContainer {
 	
@@ -34,7 +34,7 @@ public class BlockArmorStand extends BlockContainer {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister iconRegister) {
-		blockIcon = iconRegister.registerIcon("blockIron");
+		blockIcon = iconRegister.registerIcon("stone_slab_top");
 	}
 	
 	@Override
@@ -63,7 +63,7 @@ public class BlockArmorStand extends BlockContainer {
 	}
 	
 	@Override
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving player, ItemStack stack) {
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
 		TileEntityArmorStand locker = WorldUtils.get(world, x, y, z, TileEntityArmorStand.class);
 		locker.rotation = Math.round((player.rotationYawHead + 180) * 16 / 360);
 		world.setBlock(x, y + 1, z, blockID, 1, 3);

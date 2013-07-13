@@ -1,14 +1,14 @@
 package net.mcft.copy.betterstorage.client.model;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.mcft.copy.betterstorage.entity.EntityFrienderman;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.misc.PropertiesBackpack;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class ModelBackpackArmor extends ModelBiped {
@@ -42,7 +42,7 @@ public class ModelBackpackArmor extends ModelBiped {
 	}
 	
 	@Override
-	public void setLivingAnimations(EntityLiving entity, float par2, float par3, float partialTicks) {
+	public void setLivingAnimations(EntityLivingBase entity, float par2, float par3, float partialTicks) {
 		float angle = 0;
 		if (entity != null) {
 			PropertiesBackpack backpack = ItemBackpack.getBackpackData(entity);
@@ -67,7 +67,7 @@ public class ModelBackpackArmor extends ModelBiped {
 	@Override
 	public void setRotationAngles(float v1, float v2, float v3, float v4, float v5, float v6, Entity entity) {
 		// For some reason this is not properly updated.
-		isSneak = ((entity != null) ? ((EntityLiving)entity).isSneaking() : false);
+		isSneak = ((entity != null) ? ((EntityLivingBase)entity).isSneaking() : false);
 		super.setRotationAngles(v1, v2, v3, v4, v5, v6, entity);
 	}
 	

@@ -1,13 +1,5 @@
 package net.mcft.copy.betterstorage.addon.thaumcraft;
 
-import thaumcraft.api.EnumTag;
-import thaumcraft.api.IVisDiscounter;
-import thaumcraft.api.IVisRepairable;
-import thaumcraft.api.ItemApi;
-import thaumcraft.api.ObjectTags;
-import thaumcraft.api.ThaumcraftApi;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.utils.RandomUtils;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -17,6 +9,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import thaumcraft.api.EnumTag;
+import thaumcraft.api.IVisDiscounter;
+import thaumcraft.api.IVisRepairable;
+import thaumcraft.api.ItemApi;
+import thaumcraft.api.ObjectTags;
+import thaumcraft.api.ThaumcraftApi;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemThaumcraftBackpack extends ItemBackpack implements IVisRepairable, IVisDiscounter {
 	
@@ -40,8 +40,8 @@ public class ItemThaumcraftBackpack extends ItemBackpack implements IVisRepairab
 	}
 	
 	@Override
-	public String getArmorTexture(ItemStack stack, Entity entity, int slot, int layer) {
-		return ThaumcraftAddon.thaumcraftBackpackTexture;
+	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
+		return ThaumcraftResources.thaumcraftBackpackTexture.toString();
 	}
 	
 	@Override

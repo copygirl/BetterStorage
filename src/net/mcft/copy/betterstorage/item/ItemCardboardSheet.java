@@ -1,8 +1,8 @@
 package net.mcft.copy.betterstorage.item;
 
+import net.minecraft.client.renderer.texture.IconRegister;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.renderer.texture.IconRegister;
 
 public class ItemCardboardSheet extends ItemBetterStorage {
 	

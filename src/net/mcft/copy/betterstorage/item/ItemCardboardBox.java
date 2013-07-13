@@ -5,8 +5,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 import net.mcft.copy.betterstorage.api.IContainerItem;
 import net.mcft.copy.betterstorage.block.crate.CratePileData;
@@ -19,6 +17,8 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemCardboardBox extends ItemBlock implements IContainerItem {
 	
@@ -131,7 +131,7 @@ public class ItemCardboardBox extends ItemBlock implements IContainerItem {
 						testStack.stackSize = slotStack.stackSize + count;
 					} else continue;
 					
-					if (!inventory.isStackValidForSlot(slot, testStack)) continue;
+					if (!inventory.isItemValidForSlot(slot, testStack)) continue;
 					
 					// Add the slot and test stack to the to-be-modified map.
 					setSlots.add(new SetSlotInfo(slot, testStack));

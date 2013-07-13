@@ -10,7 +10,7 @@ public class InventoryCardboardBox extends InventoryStacks {
 	}
 	
 	@Override
-	public boolean isStackValidForSlot(int slot, ItemStack stack) {
+	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 		return StackUtils.canBeStoredInContainerItem(stack);
 	}
 	

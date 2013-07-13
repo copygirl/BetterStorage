@@ -18,7 +18,6 @@ import net.minecraft.network.packet.Packet28EntityVelocity;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
-
 import thaumcraft.api.EnumTag;
 
 public abstract class BackpackFluxEffect extends FluxEffect {

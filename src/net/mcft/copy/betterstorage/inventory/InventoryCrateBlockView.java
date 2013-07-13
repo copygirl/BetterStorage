@@ -59,7 +59,7 @@ public class InventoryCrateBlockView extends InventoryBetterStorage {
 	}
 	
 	@Override
-	public boolean isStackValidForSlot(int slot, ItemStack stack) {
+	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 		return ((slot != 0) || (data.getFreeSlots() > 0));
 	}
 	

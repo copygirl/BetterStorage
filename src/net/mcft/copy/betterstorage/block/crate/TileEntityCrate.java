@@ -254,7 +254,7 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 	@Override
 	public boolean isInvNameLocalized() { return false; }
 	@Override
-	public boolean isStackValidForSlot(int i, ItemStack stack) { return true; }
+	public boolean isItemValidForSlot(int i, ItemStack stack) { return true; }
 	
 	@Override
 	public void openChest() { getPileData().blockView.openChest(); }

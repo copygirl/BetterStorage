@@ -1,7 +1,5 @@
 package net.mcft.copy.betterstorage.container;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.mcft.copy.betterstorage.client.gui.GuiBetterStorage;
 import net.mcft.copy.betterstorage.inventory.InventoryTileEntity;
 import net.mcft.copy.betterstorage.utils.InventoryUtils;
@@ -11,6 +9,8 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class ContainerBetterStorage extends Container {
 	
@@ -121,7 +121,7 @@ public class ContainerBetterStorage extends Container {
 					ItemStack testStack = stack.copy();
 					testStack.stackSize = Math.min(slotStack.stackSize + stack.stackSize, maxStackSize);
 					if (slot.isItemValid(testStack) &&
-					    slot.inventory.isStackValidForSlot(slot.slotNumber, testStack)) {
+					    slot.inventory.isItemValidForSlot(slot.slotNumber, testStack)) {
 						stack.stackSize -= (testStack.stackSize - slotStack.stackSize);
 						slot.putStack(testStack);
 						success = true;
@@ -145,7 +145,7 @@ public class ContainerBetterStorage extends Container {
 				                            slot.inventory.getInventoryStackLimit());
 				testStack.stackSize = Math.min(stack.stackSize, maxStackSize);
 				if (slot.isItemValid(testStack) &&
-				    slot.inventory.isStackValidForSlot(slot.slotNumber, testStack)) {
+				    slot.inventory.isItemValidForSlot(slot.slotNumber, testStack)) {
 					stack.stackSize -= testStack.stackSize;
 					slot.putStack(testStack);
 					success = true;
@@ -203,8 +203,8 @@ public class ContainerBetterStorage extends Container {
 	}
 	
 	@Override
-	public void onCraftGuiClosed(EntityPlayer player) {
-		super.onCraftGuiClosed(player);
+	public void onContainerClosed(EntityPlayer player) {
+		super.onContainerClosed(player);
 		inventory.closeChest();
 	}
 	

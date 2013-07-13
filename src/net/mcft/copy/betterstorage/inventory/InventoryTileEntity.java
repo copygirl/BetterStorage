@@ -71,8 +71,8 @@ public class InventoryTileEntity extends InventoryBetterStorage {
 	}
 	
 	@Override
-	public boolean isStackValidForSlot(int slot, ItemStack stack) {
-		return inventory.isStackValidForSlot(slot, stack);
+	public boolean isItemValidForSlot(int slot, ItemStack stack) {
+		return inventory.isItemValidForSlot(slot, stack);
 	}
 	
 }
