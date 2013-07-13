@@ -99,7 +99,7 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 	}
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
-		return ((type == "overlay") ? Resources.backpackGoldTexture : Resources.backpackTexture).toString();
+		return ((type == "overlay") ? Resources.backpackOverlayTexture : Resources.backpackTexture).toString();
 	}
 	
 	@Override
