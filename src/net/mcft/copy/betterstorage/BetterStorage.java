@@ -16,6 +16,7 @@ import net.mcft.copy.betterstorage.item.ItemCardboardSheet;
 import net.mcft.copy.betterstorage.item.ItemKey;
 import net.mcft.copy.betterstorage.item.ItemKeyring;
 import net.mcft.copy.betterstorage.item.ItemLock;
+import net.mcft.copy.betterstorage.item.ItemMasterKey;
 import net.mcft.copy.betterstorage.item.recipe.KeyRecipe;
 import net.mcft.copy.betterstorage.item.recipe.LockRecipe;
 import net.mcft.copy.betterstorage.misc.Constants;
@@ -72,6 +73,7 @@ public class BetterStorage {
 	public static ItemLock lock;
 	public static ItemKeyring keyring;
 	public static ItemCardboardSheet cardboardSheet;
+	public static ItemMasterKey masterKey;
 	
 	
 	public static CreativeTabs creativeTab;
@@ -114,10 +116,11 @@ public class BetterStorage {
 		enderBackpack   = new BlockEnderBackpack(Config.enderBackpackId);
 		cardboardBox    = new BlockCardboardBox(Config.cardboardBoxId);
 		
-		key     = new ItemKey(Config.keyId);
-		lock    = new ItemLock(Config.lockId);
-		keyring = new ItemKeyring(Config.keyringId);
+		key            = new ItemKey(Config.keyId);
+		lock           = new ItemLock(Config.lockId);
+		keyring        = new ItemKeyring(Config.keyringId);
 		cardboardSheet = new ItemCardboardSheet(Config.cardboardSheetId);
+		masterKey      = new ItemMasterKey(Config.masterKeyId);
 		
 		Addon.initializeAllItems();
 		

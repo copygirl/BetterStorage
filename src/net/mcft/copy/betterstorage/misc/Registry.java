@@ -32,6 +32,7 @@ public class Registry {
 		registerHacky(BetterStorage.backpack, "backpack", "Backpack", ItemBackpack.class);
 		registerHacky(BetterStorage.enderBackpack, "enderBackpack", "Ender Backpack", ItemEnderBackpack.class);
 		register(BetterStorage.cardboardBox, "cardboardBox", "Cardboard Box", ItemCardboardBox.class);
+		register(BetterStorage.masterKey, "masterKey", "Master Key");
 	}
 	
 	public static void registerItems() {
