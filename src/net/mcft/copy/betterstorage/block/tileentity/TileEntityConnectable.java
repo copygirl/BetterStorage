@@ -37,7 +37,7 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 	}
 	
 	/** Returns the main container. */
-	public TileEntityConnectable getMain() {
+	public TileEntityConnectable getMainTileEntity() {
 		if (isMain()) return this;
 		TileEntityConnectable connectable = getConnectedTileEntity();
 		if (connectable != null) return connectable;
@@ -119,7 +119,7 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 	@Override
 	public InventoryTileEntity getPlayerInventory() {
 		if (isConnected()) {
-			TileEntityConnectable main = getMain();
+			TileEntityConnectable main = getMainTileEntity();
 			TileEntityConnectable connected = ((main == this) ? getConnectedTileEntity() : this);
 			return new InventoryTileEntity(this, main, connected);
 		} else return super.getPlayerInventory();

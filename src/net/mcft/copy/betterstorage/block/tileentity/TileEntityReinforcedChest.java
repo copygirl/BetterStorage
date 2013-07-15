@@ -27,7 +27,7 @@ public class TileEntityReinforcedChest extends TileEntityConnectable
                                        implements IInventory, ILockable, IHasAttachments {
 	
 	private boolean powered;
-
+	
 	private Attachments attachments = new Attachments(this);
 	private LockAttachment lockAttachment;
 	
@@ -83,7 +83,7 @@ public class TileEntityReinforcedChest extends TileEntityConnectable
 	}
 	
 	// TileEntityContainer stuff
-
+	
 	@Override
 	public int getColumns() { return Config.reinforcedChestColumns; }
 	
@@ -120,10 +120,14 @@ public class TileEntityReinforcedChest extends TileEntityConnectable
 		        (getLock() == null) && (chest.getLock() == null));
 	}
 	
+	public TileEntityReinforcedChest getConnectedChest() { return (TileEntityReinforcedChest)getConnectedTileEntity(); }
+	
+	public TileEntityReinforcedChest getMainChest() { return (TileEntityReinforcedChest)getMainTileEntity(); }
+	
 	// ILockable implementation
 	
 	@Override
-	public ItemStack getLock() { return ((TileEntityReinforcedChest)getMain()).getLockInternal(); }
+	public ItemStack getLock() { return getMainChest().getLockInternal(); }
 	
 	@Override
 	public boolean isLockValid(ItemStack lock) { return (lock.getItem() instanceof ILock); }
@@ -134,9 +138,10 @@ public class TileEntityReinforcedChest extends TileEntityConnectable
 			throw new InvalidParameterException("Can't set lock to " + lock + ".");
 		if (isMain()) {
 			setLockInternal(lock);
+			if (isConnected()) getConnectedChest().setLockInternal(lock);
 			// Mark the block for an update, sends description packet to players.
 			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-		} else ((TileEntityReinforcedChest)getMain()).setLock(lock);
+		} else getMainChest().setLock(lock);
 	}
 	
 	@Override
@@ -154,14 +159,14 @@ public class TileEntityReinforcedChest extends TileEntityConnectable
 	
 	/** Returns if the chest is emitting redstone. */
 	public boolean isPowered() {
-		return ((TileEntityReinforcedChest)getMain()).powered;
+		return getMainChest().powered;
 	}
 	
 	/** Sets if the chest is emitting redstone.
 	 *  Updates all nearby blocks to make sure they notice it. */
 	public void setPowered(boolean powered) {
 		
-		TileEntityReinforcedChest chest = (TileEntityReinforcedChest)getMain();
+		TileEntityReinforcedChest chest = getMainChest();
 		if (chest != this) { chest.setPowered(powered); return; }
 		
 		if (this.powered == powered) return;
@@ -213,8 +218,8 @@ public class TileEntityReinforcedChest extends TileEntityConnectable
 	public void onDataPacket(INetworkManager net, Packet132TileEntityData packet) {
 		super.onDataPacket(net, packet);
 		NBTTagCompound compound = packet.customParam1;
-		if (!compound.hasKey("lock")) setLockInternal(null);
-		else setLockInternal(ItemStack.loadItemStackFromNBT(compound.getCompoundTag("lock")));
+		if (!compound.hasKey("lock")) setLock(null);
+		else setLock(ItemStack.loadItemStackFromNBT(compound.getCompoundTag("lock")));
 	}
 	
 	// Reading from / writing to NBT
