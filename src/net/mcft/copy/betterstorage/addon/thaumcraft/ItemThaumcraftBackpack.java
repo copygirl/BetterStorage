@@ -74,9 +74,9 @@ public class ItemThaumcraftBackpack extends ItemBackpack implements IVisRepairab
 			if (inventory.getStackInSlot(i) != null) count++;
 		
 		// When count <= 0, return.
-		// When count = 1, chance is ~4%.
-		// When count = 12, chance is 50%.
-		if (RandomUtils.getInt(24) > count) return;
+		// When count = 1, chance is ~2%.
+		// When count = 12, chance is 25%.
+		if (RandomUtils.getInt(48) > count) return;
 		
 		int auraId = ThaumcraftApi.getClosestAuraWithinRange(player.worldObj, player.posX, player.posY, player.posZ, 640);
 		if (auraId == -1) return;

@@ -41,8 +41,8 @@ public abstract class FluxEffect {
 		for (int i = 0; i < aspects.length; i++) {
 			EnumTag aspect = aspects[i];
 			int amount = aura.flux.tags.get(aspect);
-			// If that flux from that aspect is high enough,
-			// use the specific effect for it.
+			// If the flux from that aspect is high enough,
+			// use the specific effect for it, if there is one.
 			if (RandomUtils.getInt(48, 128) < amount)
 				if ((effect = effects.get(aspect)) != null) {
 					fluxReduce = (new ObjectTags()).add(aspect, -8);
