@@ -203,7 +203,35 @@ public class ClientProxy extends CommonProxy {
 	}
 	
 	@ForgeSubscribe
+	public void onRenderPlayerPre(RenderPlayerEvent.Pre event) {
+		EntityPlayer player = event.entityPlayer;
+		if (!player.getEntityName().equals("koppeh")) return;
+		GL11.glPushMatrix();
+		GL11.glTranslatef(0.0F, 0.45F - player.height, 0.0F);
+		GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
+		player.prevRenderYawOffset *= -1;
+		player.renderYawOffset     *= -1;
+		player.prevRotationYawHead *= -1;
+		player.rotationYawHead     *= -1;
+		player.prevRotationPitch = -player.prevRotationPitch * 0.75F + 22.5F;
+		player.rotationPitch     = -player.rotationPitch * 0.75F + 22.5F;
+	}
+	@ForgeSubscribe
+	public void onRenderPlayerPost(RenderPlayerEvent.Post event) {
+		EntityPlayer player = event.entityPlayer;
+		if (!player.getEntityName().equals("koppeh")) return;
+		GL11.glPopMatrix();
+		player.prevRenderYawOffset *= -1;
+		player.renderYawOffset     *= -1;
+		player.prevRotationYawHead *= -1;
+		player.rotationYawHead     *= -1;
+		player.prevRotationPitch = (player.prevRotationPitch - 22.5F) / -0.75F;
+		player.rotationPitch     = (player.rotationPitch - 22.5F) / -0.75F;
+	}
+	
+	@ForgeSubscribe
 	public void onRenderPlayerSpecialsPre(RenderPlayerEvent.Specials.Pre event) {
+		// If the player has a backpack equipped, don't render the cape.
 		if (ItemBackpack.getBackpack(event.entityPlayer) != null)
 			event.renderCape = false;
 	}
