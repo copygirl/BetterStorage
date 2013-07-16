@@ -5,7 +5,9 @@ import java.util.List;
 import net.mcft.copy.betterstorage.Config;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityBackpack;
 import net.mcft.copy.betterstorage.client.model.ModelBackpackArmor;
+import net.mcft.copy.betterstorage.container.ContainerBetterStorage;
 import net.mcft.copy.betterstorage.container.SlotArmorBackpack;
+import net.mcft.copy.betterstorage.inventory.InventoryBackpackEquipped;
 import net.mcft.copy.betterstorage.inventory.InventoryStacks;
 import net.mcft.copy.betterstorage.misc.PropertiesBackpack;
 import net.mcft.copy.betterstorage.misc.Resources;
@@ -13,7 +15,7 @@ import net.mcft.copy.betterstorage.misc.handlers.PacketHandler;
 import net.mcft.copy.betterstorage.utils.CurrentItem;
 import net.mcft.copy.betterstorage.utils.DirectionUtils;
 import net.mcft.copy.betterstorage.utils.EntityUtils;
-import net.mcft.copy.betterstorage.utils.PacketUtils;
+import net.mcft.copy.betterstorage.utils.PlayerUtils;
 import net.mcft.copy.betterstorage.utils.RandomUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
@@ -25,17 +27,21 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.EnumArmorMaterial;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet103SetSlot;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumHelper;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISpecialArmor;
+import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -301,7 +307,8 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 		EntityPlayer player = (EntityPlayer)entity;
 		boolean hasItems = ((backpackData.contents != null) && !StackUtils.isEmpty(backpackData.contents));
 		if (backpackData.hasItems == hasItems) return;
-		PacketUtils.sendPacket(player, PacketHandler.backpackHasItems, hasItems);
+		Packet packet = PacketHandler.makePacket(PacketHandler.backpackHasItems, hasItems);
+		PacketDispatcher.sendPacketToPlayer(packet, (Player)player);
 		backpackData.hasItems = hasItems;
 	}
 	
@@ -313,6 +320,26 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 	}
 	public static boolean isBackpackOpen(EntityLivingBase entity) {
 		return (entity.getDataWatcher().getWatchableObjectByte(Config.backpackOpenDataWatcherId) != 0);
+	}
+	
+	/** Opens the carrier's equipped backpack for the player. */
+	public static void openBackpack(EntityPlayer player, EntityLivingBase carrier) {
+		
+		ItemStack backpack = ItemBackpack.getBackpack(carrier);
+		if (backpack == null) return;
+		ItemBackpack backpackType = (ItemBackpack)backpack.getItem();
+		
+		IInventory inventory = ItemBackpack.getBackpackItems(carrier, player);
+		inventory = new InventoryBackpackEquipped(carrier, player, inventory);
+		if (!inventory.isUseableByPlayer(player)) return;
+		
+		int columns = backpackType.getColumns();
+		int rows = backpackType.getRows();
+		Container container = new ContainerBetterStorage(player, inventory, columns, rows);
+		
+		String title = StackUtils.get(backpack, "", "display", "Name");
+		PlayerUtils.openGui(player, inventory.getInvName(), columns, rows, title, container);
+		
 	}
 	
 	/** Places an equipped backpack when the player right clicks
@@ -334,7 +361,7 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 		// This is especially important when there's a large delay, the
 		// client might think e placed the backpack, but server didn't.
 		if (!player.worldObj.isRemote)
-			PacketUtils.sendPacket(player, new Packet103SetSlot(0, 6, backpack));
+			PacketDispatcher.sendPacketToPlayer(new Packet103SetSlot(0, 6, backpack), (Player)player);
 		
 		boolean success = (backpack == null);
 		if (success) player.swingItem();

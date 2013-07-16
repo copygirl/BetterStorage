@@ -1,15 +1,19 @@
 package net.mcft.copy.betterstorage.misc.handlers;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 
+import net.mcft.copy.betterstorage.Config;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.utils.PlayerUtils;
 import net.mcft.copy.betterstorage.utils.RandomUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.INetworkManager;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -23,6 +27,27 @@ public class PacketHandler implements IPacketHandler {
 	public static final byte openGui = 0;
 	public static final byte backpackTeleport = 1;
 	public static final byte backpackHasItems = 2;
+	public static final byte backpackOpen = 3;
+	
+	public static Packet makePacket(Object... args) {
+		ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+		DataOutputStream dataStream = new DataOutputStream(byteStream);
+		for (Object obj : args) writeObject(dataStream, obj);
+		return new Packet250CustomPayload("BetterStorage", byteStream.toByteArray());
+	}
+	
+	private static void writeObject(DataOutputStream stream, Object object) {
+		try {
+			if (object instanceof Byte) stream.writeByte((Byte)object);
+			else if (object instanceof Short) stream.writeShort((Short)object);
+			else if (object instanceof Integer) stream.writeInt((Integer)object);
+			else if (object instanceof Float) stream.writeFloat((Float)object);
+			else if (object instanceof Double) stream.writeDouble((Double)object);
+			else if (object instanceof String) stream.writeUTF((String)object);
+			else if (object instanceof Boolean) stream.writeBoolean((Boolean)object);
+			else if (object instanceof byte[]) stream.write((byte[])object);
+		} catch (Exception e) { throw new RuntimeException(e); }
+	}
 	
 	@Override
 	public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player pl) {
@@ -44,6 +69,10 @@ public class PacketHandler implements IPacketHandler {
 					checkSide(id, side, Side.CLIENT);
 					handleBackpackHasItems(player, stream);
 					break;
+				case backpackOpen:
+					checkSide(id, side, Side.SERVER);
+					handleBackpackOpen(player, stream);
+					break;
 				default:
 					throw new Exception("Received BetterStorage packet for unhandled ID " + id + " on side " + side + ".");
 			}
@@ -51,7 +80,6 @@ public class PacketHandler implements IPacketHandler {
 			e.printStackTrace();
 		}
 	}
-	
 	private void checkSide(int id, Side side, Side allowed) throws Exception {
 		if (side == allowed) return;
 		throw new Exception("Received BetterStorage packet for ID " + id + " on invalid side " + side + ".");
@@ -94,6 +122,11 @@ public class PacketHandler implements IPacketHandler {
 	private void handleBackpackHasItems(EntityPlayer player, DataInputStream stream) throws IOException {
 		boolean hasItems = stream.readBoolean();
 		ItemBackpack.getBackpackData(player).hasItems = hasItems;
+	}
+	
+	private void handleBackpackOpen(EntityPlayer player, DataInputStream stream) {
+		if (!Config.enableBackpackOpen || (ItemBackpack.getBackpack(player) == null)) return;
+		ItemBackpack.openBackpack(player, player);
 	}
 	
 }

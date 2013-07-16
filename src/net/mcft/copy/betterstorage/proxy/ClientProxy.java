@@ -22,6 +22,7 @@ import net.mcft.copy.betterstorage.client.renderer.TileEntityLockerRenderer;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityReinforcedChestRenderer;
 import net.mcft.copy.betterstorage.entity.EntityFrienderman;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
+import net.mcft.copy.betterstorage.misc.handlers.KeyBindingHandler;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.Tessellator;
@@ -43,6 +44,7 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -59,10 +61,18 @@ public class ClientProxy extends CommonProxy {
 	
 	@Override
 	public void init() {
+		
 		super.init();
+		
+		// Not using KeyBindingRegistry because I don't
+		// want the key to appear in the controls menu.
+		TickRegistry.registerTickHandler(new KeyBindingHandler(), Side.CLIENT);
+		
 		MinecraftForgeClient.registerItemRenderer(BetterStorage.backpack.blockID, ItemRendererBackpack.instance);
 		MinecraftForgeClient.registerItemRenderer(BetterStorage.enderBackpack.blockID, ItemRendererBackpack.instance);
+		
 		Addon.postClientInitAll();
+		
 	}
 	
 	@Override
@@ -205,7 +215,7 @@ public class ClientProxy extends CommonProxy {
 	@ForgeSubscribe
 	public void onRenderPlayerPre(RenderPlayerEvent.Pre event) {
 		EntityPlayer player = event.entityPlayer;
-		if (!player.getEntityName().equals("koppeh")) return;
+		if (!player.getEntityName().equals("koppeh") || (player.deathTime > 0)) return;
 		GL11.glPushMatrix();
 		GL11.glTranslatef(0.0F, 0.45F - player.height, 0.0F);
 		GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
@@ -219,7 +229,7 @@ public class ClientProxy extends CommonProxy {
 	@ForgeSubscribe
 	public void onRenderPlayerPost(RenderPlayerEvent.Post event) {
 		EntityPlayer player = event.entityPlayer;
-		if (!player.getEntityName().equals("koppeh")) return;
+		if (!player.getEntityName().equals("koppeh") || (player.deathTime > 0)) return;
 		GL11.glPopMatrix();
 		player.prevRenderYawOffset *= -1;
 		player.renderYawOffset     *= -1;

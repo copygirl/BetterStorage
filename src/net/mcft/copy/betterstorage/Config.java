@@ -33,6 +33,8 @@ public class Config {
 	public static int reinforcedChestColumns = 13;
 	public static int backpackRows = 3;
 	public static boolean enableCrateInventoryInterface = false;
+	public static boolean enableBackpackOpen = false;
+	public static int backpackOpenKey = 48;
 	
 	public static void load(File file) {
 		
@@ -57,7 +59,7 @@ public class Config {
 		                               "Uses up about 10 IDs starting from this ID.").getInt();
 		
 		backpackOpenDataWatcherId = config.get(Configuration.CATEGORY_GENERAL, "backpackOpenDataWatcherId", backpackOpenDataWatcherId,
-		                                       "Valid values are 0 to 31, though some are already occupied.").getInt();
+		                                       "Valid values are 0 to 31, though many are already occupied.").getInt();
 		
 		reinforcedChestColumns = config.get(categorySettings, "reinforcedChestColumns", reinforcedChestColumns,
 		                                   "Number of colums in reinforced chests. Valid values are 9, 11 and 13.").getInt();
@@ -67,6 +69,12 @@ public class Config {
 		
 		enableCrateInventoryInterface = config.get(categorySettings, "enableCrateInventoryInterface", enableCrateInventoryInterface,
 		                                           "Whether most machines can interact with crates (disabled because of dupe issues).").getBoolean(enableCrateInventoryInterface);
+		
+		enableBackpackOpen = config.get(categorySettings, "enableBackpackOpen", enableBackpackOpen,
+		                                "Allows backpacks to be opened when equipped by pressing a key.").getBoolean(enableBackpackOpen);
+		
+		backpackOpenKey = config.get(categorySettings, "backpackOpenKey", backpackOpenKey,
+		                             "The key to open a backpack while equipped, if enabled. (Default: B)").getInt();
 		
 		validate();
 		

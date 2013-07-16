@@ -4,7 +4,6 @@ import net.mcft.copy.betterstorage.block.tileentity.TileEntityBackpack;
 import net.mcft.copy.betterstorage.container.ContainerBetterStorage;
 import net.mcft.copy.betterstorage.inventory.InventoryWrapper;
 import net.mcft.copy.betterstorage.misc.handlers.PacketHandler;
-import net.mcft.copy.betterstorage.utils.PacketUtils;
 import net.mcft.copy.betterstorage.utils.PlayerUtils;
 import net.mcft.copy.betterstorage.utils.RandomUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
@@ -15,10 +14,10 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.Packet;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -73,11 +72,10 @@ public class BlockEnderBackpack extends BlockBackpack {
 			if ((blockBelow == null) || !blockBelow.isBlockSolidOnSide(world, x, y - 1, z, ForgeDirection.UP)) return false;
 		}
 		
-		Packet packet = PacketUtils.makePacket(
-				PacketHandler.backpackTeleport,
-				sourceX, sourceY, sourceZ, x, y, z);
-		MinecraftServer.getServer().getConfigurationManager().sendToAllNear(
-				sourceX + 0.5, sourceY + 0.5, sourceZ + 0.5, 512.0, world.provider.dimensionId, packet);
+		Packet packet = PacketHandler.makePacket(PacketHandler.backpackTeleport,
+		                                         sourceX, sourceY, sourceZ, x, y, z);
+		PacketDispatcher.sendPacketToAllAround(sourceX + 0.5, sourceY + 0.5, sourceZ + 0.5, 512.0,
+		                                       world.provider.dimensionId, packet);
 		
 		world.playSoundEffect(sourceX + 0.5, sourceY + 0.5, sourceZ + 0.5,
 		                      "mob.endermen.portal", 1.0F, 1.0F);

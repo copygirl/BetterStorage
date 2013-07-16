@@ -4,7 +4,6 @@ import java.util.Random;
 
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityArmorStand;
 import net.mcft.copy.betterstorage.proxy.ClientProxy;
-import net.mcft.copy.betterstorage.utils.PacketUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -17,6 +16,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -118,7 +119,7 @@ public class BlockArmorStand extends BlockContainer {
 			    ((armor == null) || armor.getItem().isValidArmor(armor, 3 - slot, player))) {
 				armorStand.armor[slot] = player.inventory.armorInventory[slot];
 				player.inventory.armorInventory[slot] = item;
-				PacketUtils.sendPacket(player, new Packet103SetSlot(0, 8 - slot, item));
+				PacketDispatcher.sendPacketToPlayer(new Packet103SetSlot(0, 8 - slot, item), (Player)player);
 				world.markBlockForUpdate(x, y, z);
 			}
 		} else if (((item != null) && (holding == null)) ||

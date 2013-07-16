@@ -4,7 +4,6 @@ import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityBackpack;
 import net.mcft.copy.betterstorage.misc.handlers.PacketHandler;
 import net.mcft.copy.betterstorage.utils.CurrentItem;
-import net.mcft.copy.betterstorage.utils.PacketUtils;
 import net.mcft.copy.betterstorage.utils.RandomUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
@@ -14,10 +13,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
+import cpw.mods.fml.common.network.PacketDispatcher;
 
 // Note to anyone reading this:
 //   First of all, this is more or less a "secret" feature
@@ -117,9 +116,8 @@ public class EntityFrienderman extends EntityEnderman {
 			double px = x + 0.5;
 			double py = y + 0.5;
 			double pz = z + 0.5;
-			Packet packet = PacketUtils.makePacket(PacketHandler.backpackTeleport, posX, posY + 1, posZ, x, y, z);
-			MinecraftServer.getServer().getConfigurationManager().sendToAllNear(
-					px, py, pz, 512.0, worldObj.provider.dimensionId, packet);
+			Packet packet = PacketHandler.makePacket(PacketHandler.backpackTeleport, posX, posY + 1, posZ, x, y, z);
+			PacketDispatcher.sendPacketToAllAround(px, py, pz, 512.0, worldObj.provider.dimensionId, packet);
 			worldObj.playSoundEffect(px, py, pz, "mob.endermen.portal", 1.0F, 1.0F);
 		}
 		

@@ -2,12 +2,13 @@ package net.mcft.copy.betterstorage.container;
 
 import net.mcft.copy.betterstorage.block.crate.CratePileData;
 import net.mcft.copy.betterstorage.inventory.InventoryCratePlayerView;
-import net.mcft.copy.betterstorage.utils.PacketUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.Packet103SetSlot;
+import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.common.network.Player;
 
 public class ContainerCrate extends ContainerBetterStorage {
 	
@@ -65,7 +66,7 @@ public class ContainerCrate extends ContainerBetterStorage {
 				ItemStack overflow = playerView.data.addItems(slotStack);
 				slot.putStack(overflow);
 				// Send slot contents to player.
-				PacketUtils.sendPacket(player, new Packet103SetSlot(player.openContainer.windowId, slotId, overflow));
+				PacketDispatcher.sendPacketToPlayer(new Packet103SetSlot(player.openContainer.windowId, slotId, overflow), (Player)player);
 				// If there's overflow, return null because otherwise, retrySlotClick
 				// will be called and there's going to be an infinite loop.
 				// This kills the game.

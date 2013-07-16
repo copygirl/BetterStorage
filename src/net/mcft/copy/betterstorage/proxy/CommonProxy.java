@@ -12,9 +12,7 @@ import net.mcft.copy.betterstorage.block.tileentity.TileEntityBackpack;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityCardboardBox;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityLocker;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityReinforcedChest;
-import net.mcft.copy.betterstorage.container.ContainerBetterStorage;
 import net.mcft.copy.betterstorage.entity.EntityFrienderman;
-import net.mcft.copy.betterstorage.inventory.InventoryBackpackEquipped;
 import net.mcft.copy.betterstorage.inventory.InventoryStacks;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.item.ItemEnderBackpack;
@@ -22,9 +20,7 @@ import net.mcft.copy.betterstorage.misc.PropertiesBackpack;
 import net.mcft.copy.betterstorage.utils.CurrentItem;
 import net.mcft.copy.betterstorage.utils.EntityUtils;
 import net.mcft.copy.betterstorage.utils.NbtUtils;
-import net.mcft.copy.betterstorage.utils.PlayerUtils;
 import net.mcft.copy.betterstorage.utils.RandomUtils;
-import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLiving;
@@ -36,8 +32,6 @@ import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -164,24 +158,10 @@ public class CommonProxy implements IPlayerTracker {
 		
 		if (event.entity.worldObj.isRemote) return;
 		EntityPlayerMP player = (EntityPlayerMP)event.entity;
-		if (!(event.target instanceof EntityLiving)) return;
-		EntityLiving target = (EntityLiving)event.target;
+		if (!(event.target instanceof EntityLivingBase)) return;
+		EntityLivingBase target = (EntityLivingBase)event.target;
 		
-		ItemStack backpack = ItemBackpack.getBackpack(target);
-		if (backpack == null) return;
-		ItemBackpack backpackType = (ItemBackpack)backpack.getItem();
-		
-		IInventory inventory = ItemBackpack.getBackpackItems(target, player);
-		inventory = new InventoryBackpackEquipped(target, player, inventory);
-		if (!inventory.isUseableByPlayer(player)) return;
-		
-		int columns = backpackType.getColumns();
-		int rows = backpackType.getRows();
-		Container container = new ContainerBetterStorage(player, inventory, columns, rows);
-		
-		String title = StackUtils.get(backpack, "", "display", "Name");
-		PlayerUtils.openGui(player, inventory.getInvName(), columns, rows, title, container);
-		
+		ItemBackpack.openBackpack(player, target);
 		player.swingItem();
 		
 	}

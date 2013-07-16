@@ -14,6 +14,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.packet.Packet;
+import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -27,9 +30,10 @@ public class PlayerUtils {
 		player.closeContainer();
 		player.incrementWindowID();
 		
-		PacketUtils.sendPacket(player,
+		Packet packet = PacketHandler.makePacket(
 				PacketHandler.openGui, player.currentWindowId,
 				name, (byte)columns, (byte)rows, title);
+		PacketDispatcher.sendPacketToPlayer(packet, (Player)player);
 		
 		player.openContainer = container;
 		player.openContainer.windowId = player.currentWindowId;
