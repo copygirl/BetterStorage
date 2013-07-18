@@ -66,13 +66,13 @@ public class ItemKey extends ItemBetterStorage implements IKey {
 	@Override
 	public int getColorFromItemStack(ItemStack stack, int renderPass) {
 		if (renderPass == 0) return 0xFFFFFF;
-		return StackUtils.get(stack, 0xFFFFFF, "display", "color");
+		return StackUtils.get(stack, 0xFFFFFF, "color");
 	}
 	
 	@Override
 	public Icon getIcon(ItemStack stack, int renderPass) {
-		boolean colored = StackUtils.has(stack, "display", "color");
-		boolean ironPlated = (StackUtils.get(stack, (byte)0, "display", "ironPlated") == 1);
+		boolean colored = StackUtils.has(stack, "color");
+		boolean ironPlated = (StackUtils.get(stack, (byte)0, "ironPlated") == 1);
 		return (((renderPass > 0) && colored) ? iconColor : (ironPlated ? iconIron : iconGold));
 	}
 	

@@ -50,7 +50,7 @@ public class KeyRecipe extends ComboRecipe {
 		if (numIron > 1) return false;
 		// Not a valid recipe if the modified key is already iron plated.
 		if (modifyKey && (numIron > 0) &&
-		    (StackUtils.get(key, (byte)0, "display", "ironPlated") == 1))
+		    (StackUtils.get(key, (byte)0, "ironPlated") == 1))
 			return false;
 		// Not a valid recipe if any shapeless item
 		// other than a key, iron or dye is used.
@@ -74,7 +74,7 @@ public class KeyRecipe extends ComboRecipe {
 		if (key != null)
 			result.setItemDamage(key.getItemDamage());
 		if (ironPlated)
-			StackUtils.set(result, (byte)1, "display", "ironPlated");
+			StackUtils.set(result, (byte)1, "ironPlated");
 		// Apply color
 		if (dyes.size() > 0) {
 			float r = 0, g = 0, b = 0;
@@ -98,7 +98,7 @@ public class KeyRecipe extends ComboRecipe {
 			int gg = (int)(Math.min(1, g / amount) * 255);
 			int bb = (int)(Math.min(1, b / amount) * 255);
 			int color = ((rr << 16) | (gg << 8) | bb);
-			StackUtils.set(result, color, "display", "color");
+			StackUtils.set(result, color, "color");
 		}
 		return result;
 	}
