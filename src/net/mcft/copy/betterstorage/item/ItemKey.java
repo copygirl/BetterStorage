@@ -49,13 +49,11 @@ public class ItemKey extends ItemBetterStorage implements IKey {
 	
 	@Override
 	public void onCreated(ItemStack stack, World world, EntityPlayer player) {
-		if (world.isRemote) return;
-		ensureHasDamage(stack);
+		if (!world.isRemote) ensureHasID(stack);
 	}
 	@Override
 	public void onUpdate(ItemStack stack, World world, Entity entity, int slot, boolean isBeingHeld) {
-		if (world.isRemote) return;
-		ensureHasDamage(stack);
+		if (!world.isRemote) ensureHasID(stack);
 	}
 	
 	@SideOnly(Side.CLIENT)
@@ -76,10 +74,10 @@ public class ItemKey extends ItemBetterStorage implements IKey {
 		return (((renderPass > 0) && colored) ? iconColor : (ironPlated ? iconIron : iconGold));
 	}
 	
-	/** Gives the key a random damage value if it doesn't have one already. */
-	public static void ensureHasDamage(ItemStack stack) {
-		if (stack.getItemDamage() == 0)
-			stack.setItemDamage(RandomUtils.getInt(1, 32000));
+	/** Gives the key a random ID if it doesn't have one already. */
+	public static void ensureHasID(ItemStack stack) {
+		if (!StackUtils.has(stack, "id"))
+			StackUtils.set(stack, RandomUtils.getInt(1, 32000), "id");
 	}
 	
 	// IKey implementation
@@ -95,8 +93,8 @@ public class ItemKey extends ItemBetterStorage implements IKey {
 		if (lockType.getLockType() != "normal")
 			return false;
 		
-		int lockId = lock.getItemDamage();
-		int keyId  = key.getItemDamage();
+		int lockId = StackUtils.get(lock, 0, "id");
+		int keyId = StackUtils.get(key, 0, "id");
 		
 		// If the lock and key IDs match, return true.
 		if (lockId == keyId) return true;

@@ -2,6 +2,7 @@ package net.mcft.copy.betterstorage.item.recipe;
 
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.misc.Constants;
+import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -15,8 +16,9 @@ public class LockRecipe extends ShapedRecipes {
 	
 	@Override
 	public ItemStack getCraftingResult(InventoryCrafting crafting) {
+		int id = StackUtils.get(crafting.getStackInSlot(4), 0, "id");
 		ItemStack result = getRecipeOutput().copy();
-		result.setItemDamage(crafting.getStackInSlot(4).getItemDamage());
+		StackUtils.set(result, id, "id");
 		return result;
 	}
 	
