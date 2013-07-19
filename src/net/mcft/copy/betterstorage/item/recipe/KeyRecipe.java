@@ -46,18 +46,11 @@ public class KeyRecipe extends ComboRecipe {
 		if (keys.size() > 1) return false;
 		ItemStack key = ((keys.size() > 0) ? keys.get(0) : null);
 		int numIron = InventoryUtils.countItems(crafting, Item.ingotIron);
-		// Not a valid recipe if there's more than one iron.
-		if (numIron > 1) return false;
-		// Not a valid recipe if the modified key is already iron plated.
-		if (modifyKey && (numIron > 0) &&
-		    (StackUtils.get(key, (byte)0, "ironPlated") == 1))
-			return false;
 		// Not a valid recipe if any shapeless item
-		// other than a key, iron or dye is used.
+		// other than a key or dye is used.
 		for (ItemStack stack : shapelessItems) {
 			Item item = stack.getItem();
 			if ((item != BetterStorage.key) &&
-			    (item != Item.ingotIron) &&
 			    (item != Item.dyePowder)) return false;
 		}
 		return true;
@@ -68,32 +61,24 @@ public class KeyRecipe extends ComboRecipe {
 		// See if this is modifying a key or duplicating it.
 		boolean modifyKey = (getRecipeSize() == 1);
 		ItemStack key = InventoryUtils.findItem(crafting, BetterStorage.key);
-		boolean ironPlated = InventoryUtils.hasItem(crafting, Item.ingotIron);
 		List<ItemStack> dyes = InventoryUtils.findItems(crafting, Item.dyePowder);
 		ItemStack result = (modifyKey ? key.copy() : new ItemStack(BetterStorage.key));
 		if (key != null)
 			result.setItemDamage(key.getItemDamage());
-		if (ironPlated)
-			StackUtils.set(result, (byte)1, "ironPlated");
+		if (dyes.size() >= 8)
+			StackUtils.set(result, (byte)1, "fullColor");
 		// Apply color
 		if (dyes.size() > 0) {
 			float r = 0, g = 0, b = 0;
-			int[] colors = new int[16];
 			int amount = 0;
 			for (ItemStack dye : dyes) {
 				int colorIndex = BlockColored.getBlockFromDye(dye.getItemDamage());
-				int intensity = colors[colorIndex];
 				float[] color = EntitySheep.fleeceColorTable[colorIndex];
-				float f = (float)Math.pow(2, intensity);
-				r += color[0] / f;
-				g += color[1] / f;
-				b += color[2] / f;
-				colors[colorIndex]++;
-				if (intensity <= 0)
-					amount += 1;
+				r += color[0];
+				g += color[1];
+				b += color[2];
+				amount++;
 			}
-			// TBH, I don't quite know what foo and bar do exactly.
-			// This comes directly from the armor coloring code.
 			int rr = (int)(Math.min(1, r / amount) * 255);
 			int gg = (int)(Math.min(1, g / amount) * 255);
 			int bb = (int)(Math.min(1, b / amount) * 255);

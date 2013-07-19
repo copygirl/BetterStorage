@@ -19,7 +19,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemKey extends ItemBetterStorage implements IKey {
 	
-	private Icon iconGold, iconIron, iconColor;
+	private Icon iconColor, iconFullColor;
 	
 	public ItemKey(int id) {
 		super(id);
@@ -32,9 +32,9 @@ public class ItemKey extends ItemBetterStorage implements IKey {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister iconRegister) {
-		iconGold = itemIcon = iconRegister.registerIcon("betterstorage:key_gold");
-		iconIron = iconRegister.registerIcon("betterstorage:key_iron");
+		itemIcon = iconRegister.registerIcon("betterstorage:key");
 		iconColor = iconRegister.registerIcon("betterstorage:key_color");
+		iconFullColor = iconRegister.registerIcon("betterstorage:key_full_color");
 	}
 	
 	@Override
@@ -63,15 +63,15 @@ public class ItemKey extends ItemBetterStorage implements IKey {
 	@SideOnly(Side.CLIENT)
 	@Override
 	public int getColorFromItemStack(ItemStack stack, int renderPass) {
-		if (renderPass == 0) return 0xFFFFFF;
-		return StackUtils.get(stack, 0xFFFFFF, "color");
+		boolean fullColor = (StackUtils.get(stack, (byte)0, "fullColor") == 1);
+		return (((renderPass > 0) || fullColor) ? StackUtils.get(stack, 0xFFFFFF, "color") : 0xFFFFFF);
 	}
 	
 	@Override
 	public Icon getIcon(ItemStack stack, int renderPass) {
 		boolean colored = StackUtils.has(stack, "color");
-		boolean ironPlated = (StackUtils.get(stack, (byte)0, "ironPlated") == 1);
-		return (((renderPass > 0) && colored) ? iconColor : (ironPlated ? iconIron : iconGold));
+		boolean fullColor = (StackUtils.get(stack, (byte)0, "fullColor") == 1);
+		return (((renderPass > 0) && colored) ? iconColor : (fullColor ? iconFullColor : itemIcon));
 	}
 	
 	/** Gives the key a random ID if it doesn't have one already. */
