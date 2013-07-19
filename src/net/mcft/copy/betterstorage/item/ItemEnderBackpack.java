@@ -32,7 +32,7 @@ public class ItemEnderBackpack extends ItemBackpack {
 	@Override
 	public boolean canTake(PropertiesBackpack backpackData, ItemStack backpack) { return false; }
 	@Override
-	public boolean containsItems(PropertiesBackpack backpackData, ItemStack backpack) { return false; }
+	public boolean containsItems(PropertiesBackpack backpackData) { return false; }
 	
 	// Item stuff
 	

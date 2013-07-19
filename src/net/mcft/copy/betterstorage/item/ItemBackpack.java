@@ -74,15 +74,8 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 	
 	public boolean canTake(PropertiesBackpack backpackData, ItemStack backpack) { return true; }
 	
-	public boolean containsItems(PropertiesBackpack backpackData, ItemStack backpack) {
-		return (backpackData.hasItems || stackHasItems(backpack) ||
-		        ((backpackData.contents != null) && !StackUtils.isEmpty(backpackData.contents)));
-	}
-	// For compatibility with previous versions.
-	public boolean stackHasItems(ItemStack backpack) {
-		int size = getColumns() * getRows();
-		return (StackUtils.has(backpack, "Items") &&
-		        !StackUtils.isEmpty(StackUtils.getStackContents(backpack, size)));
+	public boolean containsItems(PropertiesBackpack backpackData) {
+		return (backpackData.hasItems || ((backpackData.contents != null) && !StackUtils.isEmpty(backpackData.contents)));
 	}
 	
 	// Item stuff
@@ -113,7 +106,7 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advancedTooltips) {
 		if (getBackpack(player) != stack) return;
 		PropertiesBackpack backpackData = getBackpackData(player);
-		boolean containsItems = containsItems(backpackData, stack);
+		boolean containsItems = containsItems(backpackData);
 		if (ItemBackpack.isBackpackOpen(player)) {
 			if (containsItems)
 				list.add("Contains items.");

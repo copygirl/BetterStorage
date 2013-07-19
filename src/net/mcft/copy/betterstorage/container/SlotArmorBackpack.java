@@ -45,7 +45,7 @@ public class SlotArmorBackpack extends Slot {
 		PropertiesBackpack data = ItemBackpack.getBackpackData(player);
 		return (!ItemBackpack.isBackpackOpen(player) &&
 				backpackType.canTake(data, backpack) &&
-				!backpackType.containsItems(data, backpack));
+				!backpackType.containsItems(data));
 	}
 	
 }
