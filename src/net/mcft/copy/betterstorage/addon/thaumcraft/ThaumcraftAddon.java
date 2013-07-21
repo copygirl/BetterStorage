@@ -127,10 +127,12 @@ public class ThaumcraftAddon extends Addon {
 		addAspectsFor(BetterStorage.armorStand, -1, EnumTag.METAL, 14);
 		addAspectsFor(BetterStorage.backpack, -1, EnumTag.VOID, 8, EnumTag.BEAST, 8, EnumTag.CLOTH, 8, EnumTag.ARMOR, 6);
 		addAspectsFor(BetterStorage.enderBackpack, -1, EnumTag.MAGIC, 12, EnumTag.ELDRITCH, 14, EnumTag.DARK, 10, EnumTag.ARMOR, 8);
+		addAspectsFor(BetterStorage.cardboardBox, -1, EnumTag.VOID, 3, EnumTag.TOOL, 4);
 		
 		addAspectsFor(BetterStorage.key, -1, EnumTag.METAL, 14, EnumTag.VALUABLE, 10, EnumTag.CONTROL, 2);
 		addAspectsFor(BetterStorage.lock, -1, EnumTag.METAL, 20, EnumTag.VALUABLE, 12, EnumTag.ARMOR, 6, EnumTag.MECHANISM, 4);
 		addAspectsFor(BetterStorage.keyring, -1, EnumTag.METAL, 6, EnumTag.VALUABLE, 2);
+		addAspectsFor(BetterStorage.cardboardSheet, -1, EnumTag.TOOL, 1);
 		
 		addAspectsFor(thaumcraftBackpack, -1, EnumTag.VOID, 18, EnumTag.CLOTH, 16, EnumTag.ARMOR, 6, EnumTag.MAGIC, 18, EnumTag.EXCHANGE, 8);
 		
