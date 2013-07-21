@@ -25,7 +25,7 @@ public class Config {
 	public static int cardboardSheetId = 28543;
 	public static int masterKeyId      = 28544;
 	
-	public static int enchantmentBaseId = 180;
+	public static int enchantmentBaseId = 0;
 	
 	public static int backpackOpenDataWatcherId = 27;
 	
