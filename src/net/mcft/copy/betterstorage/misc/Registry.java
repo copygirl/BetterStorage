@@ -43,6 +43,7 @@ public class Registry {
 	}
 	
 	public static void register(Block block, String name, String fullName, Class<? extends ItemBlock> itemBlockClass) {
+		if (block == null) return;
 		block.setUnlocalizedName(name);
 		GameRegistry.registerBlock(block, itemBlockClass, name, "BetterStorage");
 		if (fullName != null) {
@@ -51,6 +52,7 @@ public class Registry {
 		}
 	}
 	public static void registerHacky(Block block, String name, String fullName, Class<? extends Item> itemClass) {
+		if (block == null) return;
 		register(block, name, null);
 		Item.itemsList[block.blockID] = null;
 		try {
@@ -65,6 +67,7 @@ public class Registry {
 	}
 	
 	public static void register(Item item, String name, String fullName) {
+		if (item == null) return;
 		item.setUnlocalizedName(name);
 		if (fullName != null) {
 			LanguageRegistry.addName(item, fullName);

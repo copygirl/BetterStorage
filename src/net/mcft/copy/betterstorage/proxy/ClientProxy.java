@@ -68,8 +68,10 @@ public class ClientProxy extends CommonProxy {
 		// want the key to appear in the controls menu.
 		TickRegistry.registerTickHandler(new KeyBindingHandler(), Side.CLIENT);
 		
-		MinecraftForgeClient.registerItemRenderer(BetterStorage.backpack.blockID, ItemRendererBackpack.instance);
-		MinecraftForgeClient.registerItemRenderer(BetterStorage.enderBackpack.blockID, ItemRendererBackpack.instance);
+		if (BetterStorage.backpack != null)
+			MinecraftForgeClient.registerItemRenderer(BetterStorage.backpack.blockID, ItemRendererBackpack.instance);
+		if (BetterStorage.enderBackpack != null)
+			MinecraftForgeClient.registerItemRenderer(BetterStorage.enderBackpack.blockID, ItemRendererBackpack.instance);
 		
 		Addon.postClientInitAll();
 		

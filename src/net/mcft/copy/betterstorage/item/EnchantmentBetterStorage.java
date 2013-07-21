@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.Config;
 import net.mcft.copy.betterstorage.api.BetterStorageEnchantment;
 import net.mcft.copy.betterstorage.api.IKey;
@@ -25,40 +26,45 @@ public class EnchantmentBetterStorage extends Enchantment {
 	public static void init() {
 		
 		int baseId = Config.enchantmentBaseId;
-		
-		// Set up types and enchantments
-		
-		EnumEnchantmentType key  = EnumHelper.addEnchantmentType("key");
-		EnumEnchantmentType lock = EnumHelper.addEnchantmentType("lock");
-		
-		EnchantmentBetterStorage unlocking   = new EnchantmentBetterStorage("unlocking",   key,  baseId + 0, 4, 5,  5, 10, 30, 0);
-		EnchantmentBetterStorage lockpicking = new EnchantmentBetterStorage("lockpicking", key,  baseId + 1, 6, 5,  5,  8, 30, 0);
-		EnchantmentBetterStorage morphing    = new EnchantmentBetterStorage("morphing",    key,  baseId + 2, 1, 5, 10, 12, 30, 0);
-		
-		EnchantmentBetterStorage persistance = new EnchantmentBetterStorage("persistance", lock, baseId + 4, 5, 5,  1,  8, 30, 0);
-		EnchantmentBetterStorage security    = new EnchantmentBetterStorage("security",    lock, baseId + 6, 4, 5,  1, 10, 30, 0);
-		EnchantmentBetterStorage shock       = new EnchantmentBetterStorage("shock",       lock, baseId + 7, 3, 3,  5, 10, 30, 0);
-		EnchantmentBetterStorage trigger     = new EnchantmentBetterStorage("trigger",     lock, baseId + 8, 1, 1, 20,  0, 30, 0);
-		
-		lockpicking.setIncompatible(morphing);
-		morphing.setIncompatible(lockpicking);
-		
-		// Add types and enchantments to API
+		if (baseId <= 0) return;
 		
 		Map<String, EnumEnchantmentType> types = BetterStorageEnchantment.enchantmentTypes;
 		Map<String, Enchantment> enchs = BetterStorageEnchantment.enchantments;
 		
-		types.put("key", key);
-		types.put("lock", lock);
+		// Add key enchantments
+		if (BetterStorage.key != null) {
+			EnumEnchantmentType key = EnumHelper.addEnchantmentType("key");
+			
+			EnchantmentBetterStorage unlocking   = new EnchantmentBetterStorage("unlocking",   key,  baseId + 0, 4, 5,  5, 10, 30, 0);
+			EnchantmentBetterStorage lockpicking = new EnchantmentBetterStorage("lockpicking", key,  baseId + 1, 6, 5,  5,  8, 30, 0);
+			EnchantmentBetterStorage morphing    = new EnchantmentBetterStorage("morphing",    key,  baseId + 2, 1, 5, 10, 12, 30, 0);
+			
+			lockpicking.setIncompatible(morphing);
+			morphing.setIncompatible(lockpicking);
+			
+			types.put("key", key);
+			
+			enchs.put("unlocking", unlocking);
+			enchs.put("lockpicking", lockpicking);
+			enchs.put("morphing", morphing);
+		}
 		
-		enchs.put("unlocking", unlocking);
-		enchs.put("lockpicking", lockpicking);
-		enchs.put("morphing", morphing);
-
-		enchs.put("persistance",persistance);
-		enchs.put("security", security);
-		enchs.put("shock", shock);
-		enchs.put("trigger", trigger);
+		// Add lock enchantments
+		if (BetterStorage.lock != null) {
+			EnumEnchantmentType lock = EnumHelper.addEnchantmentType("lock");
+			
+			EnchantmentBetterStorage persistance = new EnchantmentBetterStorage("persistance", lock, baseId + 4, 5, 5,  1,  8, 30, 0);
+			EnchantmentBetterStorage security    = new EnchantmentBetterStorage("security",    lock, baseId + 6, 4, 5,  1, 10, 30, 0);
+			EnchantmentBetterStorage shock       = new EnchantmentBetterStorage("shock",       lock, baseId + 7, 3, 3,  5, 10, 30, 0);
+			EnchantmentBetterStorage trigger     = new EnchantmentBetterStorage("trigger",     lock, baseId + 8, 1, 1, 20,  0, 30, 0);
+			
+			types.put("lock", lock);
+	
+			enchs.put("persistance",persistance);
+			enchs.put("security", security);
+			enchs.put("shock", shock);
+			enchs.put("trigger", trigger);
+		}
 		
 	}
 	

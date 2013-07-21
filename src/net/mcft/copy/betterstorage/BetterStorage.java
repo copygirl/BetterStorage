@@ -31,10 +31,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.Init;
+import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.Mod.PostInit;
-import cpw.mods.fml.common.Mod.PreInit;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -79,7 +77,7 @@ public class BetterStorage {
 	public static CreativeTabs creativeTab;
 	
 	
-	@PreInit
+	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		
 		log = event.getModLog();
@@ -88,7 +86,7 @@ public class BetterStorage {
 		
 	}
 	
-	@Init
+	@EventHandler
 	public void load(FMLInitializationEvent event) {
 		
 		creativeTab = new CreativeTabBetterStorage();
@@ -101,26 +99,26 @@ public class BetterStorage {
 		
 	}
 	
-	@PostInit
+	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
 		Addon.postInitAll();
 	}
 	
 	private void initializeItems() {
 		
-		crate           = new BlockCrate(Config.crateId);
-		reinforcedChest = new BlockReinforcedChest(Config.chestId);
-		locker          = new BlockLocker(Config.lockerId);
-		armorStand      = new BlockArmorStand(Config.armorStandId);
-		backpack        = new BlockBackpack(Config.backpackId);
-		enderBackpack   = new BlockEnderBackpack(Config.enderBackpackId);
-		cardboardBox    = new BlockCardboardBox(Config.cardboardBoxId);
+		crate           = conditionalNew(BlockCrate.class, Config.crateId);
+		reinforcedChest = conditionalNew(BlockReinforcedChest.class, Config.chestId);
+		locker          = conditionalNew(BlockLocker.class, Config.lockerId);
+		armorStand      = conditionalNew(BlockArmorStand.class, Config.armorStandId);
+		backpack        = conditionalNew(BlockBackpack.class, Config.backpackId);
+		enderBackpack   = conditionalNew(BlockEnderBackpack.class, Config.enderBackpackId);
+		cardboardBox    = conditionalNew(BlockCardboardBox.class, Config.cardboardBoxId);
 		
-		key            = new ItemKey(Config.keyId);
-		lock           = new ItemLock(Config.lockId);
-		keyring        = new ItemKeyring(Config.keyringId);
-		cardboardSheet = new ItemCardboardSheet(Config.cardboardSheetId);
-		masterKey      = new ItemMasterKey(Config.masterKeyId);
+		key            = conditionalNew(ItemKey.class, Config.keyId);
+		lock           = conditionalNew(ItemLock.class, Config.lockId);
+		keyring        = conditionalNew(ItemKeyring.class, Config.keyringId);
+		cardboardSheet = conditionalNew(ItemCardboardSheet.class, Config.cardboardSheetId);
+		masterKey      = conditionalNew(ItemMasterKey.class, Config.masterKeyId);
 		
 		Addon.initializeAllItems();
 		
@@ -128,77 +126,97 @@ public class BetterStorage {
 		
 	}
 	
+	public static <T> T conditionalNew(Class<T> theClass, int id, Object... requirements) {
+		if (id <= 0) return null;
+		for (Object obj : requirements)
+			if ((obj == null) || ((obj instanceof Integer) && ((Integer)obj <= 0))) return null;
+		try { return theClass.getConstructor(int.class).newInstance(id); }
+		catch (Exception e) { throw new RuntimeException(e); }
+	}
+	
 	private void addRecipes() {
 		
 		// Crate recipe
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(crate),
-				"o/o",
-				"/ /",
-				"o/o", 'o', "plankWood",
-				       '/', Item.stick));
+		if (crate != null)
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(crate),
+					"o/o",
+					"/ /",
+					"o/o", 'o', "plankWood",
+					       '/', Item.stick));
 		
 		// Reinforced chest recipes
-		for (ChestMaterial material : ChestMaterial.materials)
-			GameRegistry.addRecipe(material.getRecipe(reinforcedChest));
+		if (reinforcedChest != null)
+			for (ChestMaterial material : ChestMaterial.materials)
+				GameRegistry.addRecipe(material.getRecipe(reinforcedChest));
 		
 		// Locker recipe
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(locker),
-				"ooo",
-				"o |",
-				"ooo", 'o', "plankWood",
-				       '|', Block.trapdoor));
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(locker),
-				"ooo",
-				"| o",
-				"ooo", 'o', "plankWood",
-				       '|', Block.trapdoor));
+		if (locker != null) {
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(locker),
+					"ooo",
+					"o |",
+					"ooo", 'o', "plankWood",
+					       '|', Block.trapdoor));
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(locker),
+					"ooo",
+					"| o",
+					"ooo", 'o', "plankWood",
+					       '|', Block.trapdoor));
+		}
 		
 		// Armor stand recipe
-		GameRegistry.addRecipe(new ItemStack(armorStand),
-				" i ",
-				"/i/",
-				" s ", 's', new ItemStack(Block.stoneSingleSlab, 1, 0),
-				       'i', Item.ingotIron,
-				       '/', Item.stick);
+		if (armorStand != null)
+			GameRegistry.addRecipe(new ItemStack(armorStand),
+					" i ",
+					"/i/",
+					" s ", 's', new ItemStack(Block.stoneSingleSlab, 1, 0),
+					       'i', Item.ingotIron,
+					       '/', Item.stick);
 		
 		// Backpack recipe
-		GameRegistry.addRecipe(new ItemStack(backpack),
-				"#i#",
-				"#O#",
-				"###", '#', Item.leather,
-				       'O', Block.cloth,
-				       'i', Item.ingotGold);
+		if (backpack != null)
+			GameRegistry.addRecipe(new ItemStack(backpack),
+					"#i#",
+					"#O#",
+					"###", '#', Item.leather,
+					       'O', Block.cloth,
+					       'i', Item.ingotGold);
 		
 		// Cardboard box recipe
-		GameRegistry.addRecipe(new ItemStack(cardboardBox),
-				"ooo",
-				"o o",
-				"ooo", 'o', cardboardSheet);
+		if ((cardboardBox != null) && (cardboardSheet != null))
+			GameRegistry.addRecipe(new ItemStack(cardboardBox),
+					"ooo",
+					"o o",
+					"ooo", 'o', cardboardSheet);
 		
 		// Key recipe
-		GameRegistry.addRecipe(KeyRecipe.createKeyRecipe(
-				".o",
-				".o",
-				" o", 'o', Item.ingotGold,
-				      '.', Item.goldNugget));
+		if (key != null) {
+			GameRegistry.addRecipe(KeyRecipe.createKeyRecipe(
+					".o",
+					".o",
+					" o", 'o', Item.ingotGold,
+					      '.', Item.goldNugget));
 		// Key modify recipe
-		GameRegistry.addRecipe(KeyRecipe.createKeyRecipe(
-				"k", 'k', new ItemStack(key, 1, Constants.anyDamage)));
+			GameRegistry.addRecipe(KeyRecipe.createKeyRecipe(
+					"k", 'k', new ItemStack(key, 1, Constants.anyDamage)));
+		}
 		
 		// Lock recipe
-		GameRegistry.addRecipe(LockRecipe.createLockRecipe());
+		if ((lock != null) && (key != null))
+			GameRegistry.addRecipe(LockRecipe.createLockRecipe());
 		
 		// Keyring recipe
-		GameRegistry.addRecipe(new ItemStack(keyring),
-				"...",
-				". .",
-				"...", '.', Item.goldNugget);
+		if ((keyring != null))
+			GameRegistry.addRecipe(new ItemStack(keyring),
+					"...",
+					". .",
+					"...", '.', Item.goldNugget);
 		
 		// Cardboard sheet recipe
-		GameRegistry.addRecipe(new ItemStack(cardboardSheet),
-				"ooo",
-				"ooo",
-				"ooo", 'o', Item.paper);
+		if (cardboardSheet != null)
+			GameRegistry.addRecipe(new ItemStack(cardboardSheet),
+					"ooo",
+					"ooo",
+					"ooo", 'o', Item.paper);
 		
 		Addon.addAllRecipes();
 		

@@ -1,12 +1,10 @@
 package net.mcft.copy.betterstorage.client.renderer;
 
-import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityReinforcedChest;
 import net.mcft.copy.betterstorage.utils.DirectionUtils;
 import net.minecraft.client.model.ModelChest;
 import net.minecraft.client.model.ModelLargeChest;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
 import org.lwjgl.opengl.GL11;
@@ -20,8 +18,6 @@ public class TileEntityReinforcedChestRenderer extends TileEntitySpecialRenderer
 	
 	private ModelChest chestModel = new ModelChest();
 	private ModelChest largeChestModel = new ModelLargeChest();
-	
-	private ItemStack lock = new ItemStack(BetterStorage.lock);
 	
 	public void renderTileEntityAt(TileEntityReinforcedChest chest, double x, double y, double z, float partialTicks) {
 		

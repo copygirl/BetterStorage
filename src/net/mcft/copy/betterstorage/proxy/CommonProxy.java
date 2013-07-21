@@ -106,14 +106,15 @@ public class CommonProxy implements IPlayerTracker {
 		else if (entity.getClass() == EntityPigZombie.class) probability = 1.0 / 1000;
 		else if (entity.getClass() == EntitySkeleton.class) probability = 1.0 / 1200;
 		else if ((entity.getClass() == EntityEnderman.class) && RandomUtils.getBoolean(1.0 / 80) &&
-		         (entity.worldObj.getBiomeGenForCoords((int)entity.posX, (int)entity.posZ) != BiomeGenBase.sky)) {
+		         (entity.worldObj.getBiomeGenForCoords((int)entity.posX, (int)entity.posZ) != BiomeGenBase.sky) &&
+		         (BetterStorage.enderBackpack != null)) {
 			EntityFrienderman frienderman = new EntityFrienderman(entity.worldObj);
 			frienderman.setPositionAndRotation(entity.posX, entity.posY, entity.posZ, entity.rotationYaw, 0);
 			entity.worldObj.spawnEntityInWorld(frienderman);
 			ItemBackpack.getBackpackData(frienderman).spawnsWithBackpack = true;
 			entity.setDead();
 		}
-		if (RandomUtils.getDouble() >= probability) return;
+		if (RandomUtils.getDouble() >= probability || (BetterStorage.backpack == null)) return;
 		ItemBackpack.getBackpackData(event.entityLiving).spawnsWithBackpack = true;
 		
 	}

@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.api.BetterStorageEnchantment;
+import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -17,7 +18,9 @@ public class CreativeTabBetterStorage extends CreativeTabs {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public int getTabIconItemIndex() {
-		return BetterStorage.crate.blockID;
+		if (BetterStorage.crate != null) return BetterStorage.crate.blockID;
+		else if (BetterStorage.backpack != null) return BetterStorage.backpack.blockID;
+		else return Block.chest.blockID;
 	}
 	
 	@Override
