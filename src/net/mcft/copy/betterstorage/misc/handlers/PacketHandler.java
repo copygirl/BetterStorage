@@ -28,6 +28,7 @@ public class PacketHandler implements IPacketHandler {
 	public static final byte backpackTeleport = 1;
 	public static final byte backpackHasItems = 2;
 	public static final byte backpackOpen = 3;
+	public static final byte backpackKeyEnabled = 4;
 	
 	public static Packet makePacket(Object... args) {
 		ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
@@ -72,6 +73,10 @@ public class PacketHandler implements IPacketHandler {
 				case backpackOpen:
 					checkSide(id, side, Side.SERVER);
 					handleBackpackOpen(player, stream);
+					break;
+				case backpackKeyEnabled:
+					checkSide(id, side, Side.CLIENT);
+					handleBackpackKeyEnabled(player, stream);
 					break;
 				default:
 					throw new Exception("Received BetterStorage packet for unhandled ID " + id + " on side " + side + ".");
@@ -127,6 +132,11 @@ public class PacketHandler implements IPacketHandler {
 	private void handleBackpackOpen(EntityPlayer player, DataInputStream stream) {
 		if (!Config.enableBackpackOpen || (ItemBackpack.getBackpack(player) == null)) return;
 		ItemBackpack.openBackpack(player, player);
+	}
+	
+	@SideOnly(Side.CLIENT)
+	private void handleBackpackKeyEnabled(EntityPlayer player, DataInputStream stream) throws IOException {
+		KeyBindingHandler.serverBackpackKeyEnabled = stream.readBoolean();
 	}
 	
 }

@@ -1,6 +1,7 @@
 package net.mcft.copy.betterstorage.proxy;
 
 import net.mcft.copy.betterstorage.BetterStorage;
+import net.mcft.copy.betterstorage.Config;
 import net.mcft.copy.betterstorage.addon.Addon;
 import net.mcft.copy.betterstorage.attachment.EnumAttachmentInteraction;
 import net.mcft.copy.betterstorage.attachment.IHasAttachments;
@@ -17,6 +18,7 @@ import net.mcft.copy.betterstorage.inventory.InventoryStacks;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.item.ItemEnderBackpack;
 import net.mcft.copy.betterstorage.misc.PropertiesBackpack;
+import net.mcft.copy.betterstorage.misc.handlers.PacketHandler;
 import net.mcft.copy.betterstorage.utils.CurrentItem;
 import net.mcft.copy.betterstorage.utils.EntityUtils;
 import net.mcft.copy.betterstorage.utils.NbtUtils;
@@ -35,6 +37,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -53,6 +56,8 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import net.minecraftforge.event.world.WorldEvent.Save;
 import net.minecraftforge.event.world.WorldEvent.Unload;
 import cpw.mods.fml.common.IPlayerTracker;
+import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
@@ -376,11 +381,18 @@ public class CommonProxy implements IPlayerTracker {
 	// IPlayerTracker implementation
 	
 	@Override
-	public void onPlayerLogin(EntityPlayer player) {  }
+	public void onPlayerLogin(EntityPlayer player) {
+		// Send player the information if the backpack open key is enabled on this server.
+		Packet packet = PacketHandler.makePacket(PacketHandler.backpackKeyEnabled, Config.enableBackpackOpen);
+		PacketDispatcher.sendPacketToPlayer(packet, (Player)player);
+	}
+	
 	@Override
 	public void onPlayerLogout(EntityPlayer player) {  }
+	
 	@Override
 	public void onPlayerChangedDimension(EntityPlayer player) {  }
+	
 	@Override
 	public void onPlayerRespawn(EntityPlayer player) {
 		
