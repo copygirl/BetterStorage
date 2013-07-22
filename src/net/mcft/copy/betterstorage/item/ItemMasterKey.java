@@ -31,9 +31,13 @@ public class ItemMasterKey extends ItemKey {
 	public void getSubItems(int id, CreativeTabs creativeTab, List list) {
 		ItemStack item = new ItemStack(this, 1, 0);
 		Enchantment ench = BetterStorageEnchantment.get("unlocking");
-		item.addEnchantment(ench, 10);
+		if (ench != null) item.addEnchantment(ench, 10);
 		list.add(item);
 	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public boolean hasEffect(ItemStack stack, int pass) { return true; }
 	
 	@Override
 	public void onCreated(ItemStack stack, World world, EntityPlayer player) {  }
