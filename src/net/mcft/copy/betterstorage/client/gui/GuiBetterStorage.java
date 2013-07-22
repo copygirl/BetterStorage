@@ -41,7 +41,7 @@ public class GuiBetterStorage extends GuiContainer {
 		rows = container.getRows();
 		
 		xSize = 14 + columns * 18;
-		ySize = 98 + rows * 18 + container.separation;
+		ySize = 100 + rows * 18 + container.separation;
 		
 		container.setUpdateGui(this);
 	}
@@ -68,7 +68,7 @@ public class GuiBetterStorage extends GuiContainer {
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
 		fontRenderer.drawString(title, 8, 6, 0x404040);
-		fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8 + (xSize - 176) / 2, ySize - 92, 0x404040);
+		fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8 + (xSize - 176) / 2, ySize - 94, 0x404040);
 	}
 	
 	@Override
@@ -79,7 +79,7 @@ public class GuiBetterStorage extends GuiContainer {
 		int y = (height - ySize) / 2;
 		int w = getTextureWidth();
 		int h = getTextureHeight();
-		int m = 91 + container.separation;
+		int m = 93 + container.separation;
 		RenderUtils.drawTexturedModalRect(x, y, 0, 0, xSize, ySize - m, zLevel, w, h);
 		RenderUtils.drawTexturedModalRect(x, y + ySize - m, 0, 115, xSize, m, zLevel, w, h);
 	}
