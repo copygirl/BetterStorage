@@ -3,13 +3,11 @@ package net.mcft.copy.betterstorage.client.renderer;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityArmorStand;
 import net.mcft.copy.betterstorage.client.model.ModelArmorStand;
 import net.mcft.copy.betterstorage.misc.Resources;
-import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatMessageComponent;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraftforge.common.FakePlayer;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -48,11 +46,7 @@ public class TileEntityArmorStandRenderer extends TileEntitySpecialRenderer {
 		if (locker.worldObj == null) return;
 		
 		if (playerDummy == null) {
-			playerDummy = new AbstractClientPlayer(locker.worldObj, "I AM ERROR") {
-				@Override public void sendChatToPlayer(ChatMessageComponent chatmessagecomponent) { }
-				@Override public ChunkCoordinates getPlayerCoordinates() { return null; }
-				@Override public boolean canCommandSenderUseCommand(int i, String s) { return false; }
-			};
+			playerDummy = new FakePlayer(locker.worldObj, "I AM ERROR");
 			playerDummy.setInvisible(true);
 		}
 		playerDummy.inventory.armorInventory = locker.armor;
