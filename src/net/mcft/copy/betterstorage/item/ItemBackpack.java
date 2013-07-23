@@ -11,6 +11,7 @@ import net.mcft.copy.betterstorage.inventory.InventoryBackpackEquipped;
 import net.mcft.copy.betterstorage.inventory.InventoryStacks;
 import net.mcft.copy.betterstorage.misc.PropertiesBackpack;
 import net.mcft.copy.betterstorage.misc.Resources;
+import net.mcft.copy.betterstorage.misc.handlers.KeyBindingHandler;
 import net.mcft.copy.betterstorage.misc.handlers.PacketHandler;
 import net.mcft.copy.betterstorage.utils.CurrentItem;
 import net.mcft.copy.betterstorage.utils.DirectionUtils;
@@ -20,8 +21,10 @@ import net.mcft.copy.betterstorage.utils.RandomUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.settings.GameSettings;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -104,16 +107,25 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advancedTooltips) {
-		if (getBackpack(player) != stack) return;
-		PropertiesBackpack backpackData = getBackpackData(player);
-		boolean containsItems = containsItems(backpackData);
-		if (ItemBackpack.isBackpackOpen(player)) {
-			if (containsItems)
-				list.add("Contains items.");
-			list.add("Currently being used by a player.");
-		} else if (containsItems) {
-			list.add("Contains items. Sneak and right click");
-			list.add("ground with empty hand to unequip.");
+		if (getBackpack(player) == stack) {
+			PropertiesBackpack backpackData = getBackpackData(player);
+			boolean containsItems = containsItems(backpackData);
+			if (ItemBackpack.isBackpackOpen(player)) {
+				if (containsItems)
+					list.add("Contains items.");
+				list.add("Currently being used by a player.");
+			} else if (containsItems) {
+				list.add("Contains items. Sneak and right click");
+				list.add("ground with empty hand to unequip.");
+			}
+			if (KeyBindingHandler.serverBackpackKeyEnabled) {
+				GameSettings settings = Minecraft.getMinecraft().gameSettings;
+				String str = GameSettings.getKeyDisplayString(Config.backpackOpenKey);
+				list.add("Press " + str + " to open while equipped.");
+			}
+		} else {
+			list.add("Place down and break");
+			list.add("while sneaking to equip.");
 		}
 	}
 	
