@@ -98,8 +98,8 @@ public class CommonProxy implements IPlayerTracker {
 	
 	@ForgeSubscribe
 	public void onEntityConstructing(EntityConstructing event) {
-		if (event.entity instanceof EntityLiving)
-			ItemBackpack.initBackpackData((EntityLiving)event.entity);
+		if (event.entity instanceof EntityLivingBase)
+			ItemBackpack.initBackpackData((EntityLivingBase)event.entity);
 	}
 	
 	@ForgeSubscribe
