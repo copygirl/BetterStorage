@@ -9,6 +9,7 @@ import net.mcft.copy.betterstorage.attachment.Attachments;
 import net.mcft.copy.betterstorage.attachment.IHasAttachments;
 import net.mcft.copy.betterstorage.attachment.LockAttachment;
 import net.mcft.copy.betterstorage.block.ChestMaterial;
+import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -100,7 +101,7 @@ public class TileEntityReinforcedChest extends TileEntityConnectable
 	                                              ForgeDirection.WEST, ForgeDirection.SOUTH };
 	
 	@Override
-	protected String getConnectableName() { return "container.reinforcedChest"; }
+	protected String getConnectableName() { return Constants.containerReinforcedChest; }
 	
 	@Override
 	protected boolean isAccessible() { return (getLock() == null); }

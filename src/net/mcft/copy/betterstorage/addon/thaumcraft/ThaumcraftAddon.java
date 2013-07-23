@@ -6,6 +6,7 @@ import net.mcft.copy.betterstorage.block.BlockBackpack;
 import net.mcft.copy.betterstorage.block.ChestMaterial;
 import net.mcft.copy.betterstorage.client.renderer.ItemRendererBackpack;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityReinforcedChestRenderer;
+import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.misc.Registry;
 import net.mcft.copy.betterstorage.proxy.ClientProxy;
 import net.minecraft.block.Block;
@@ -20,7 +21,6 @@ import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.ResearchList;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -52,8 +52,8 @@ public class ThaumcraftAddon extends Addon {
 	
 	@Override
 	public void registerItems() {
-		Registry.registerHacky(thaumcraftBackpack, "thaumcraftBackpack", "Thaumaturge's Backpack", ItemThaumcraftBackpack.class);
-		Registry.register(thaumiumChest, "thaumiumChest", "Thaumium Chest");
+		Registry.registerHacky(thaumcraftBackpack, "thaumcraftBackpack", ItemThaumcraftBackpack.class);
+		Registry.register(thaumiumChest, "thaumiumChest");
 	}
 	
 	@Override
@@ -151,16 +151,9 @@ public class ThaumcraftAddon extends Addon {
 	}
 	
 	@Override
-	public void addLocalizations(LanguageRegistry lang) {
-		lang.addStringLocalization("container.thaumcraftBackpack", "Thaumaturge's Backpack");
-		lang.addStringLocalization("container.thaumiumChest", "Thaumium Chest");
-		lang.addStringLocalization("container.thaumiumChestLarge", "Large Thaumium Chest");
-	}
-	
-	@Override
 	public void registerTileEntites() {
-		GameRegistry.registerTileEntity(TileEntityThaumcraftBackpack.class, "container.thaumcraftBackpack");
-		GameRegistry.registerTileEntity(TileEntityThaumiumChest.class, "container.thaumiumChest");
+		GameRegistry.registerTileEntity(TileEntityThaumcraftBackpack.class, Constants.containerThaumcraftBackpack);
+		GameRegistry.registerTileEntity(TileEntityThaumiumChest.class, Constants.containerThaumiumChest);
 	}
 	
 	@SideOnly(Side.CLIENT)

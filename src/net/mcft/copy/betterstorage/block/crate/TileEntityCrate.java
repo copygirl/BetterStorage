@@ -12,6 +12,7 @@ import net.mcft.copy.betterstorage.block.tileentity.TileEntityContainer;
 import net.mcft.copy.betterstorage.container.ContainerBetterStorage;
 import net.mcft.copy.betterstorage.container.ContainerCrate;
 import net.mcft.copy.betterstorage.inventory.InventoryCratePlayerView;
+import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.PlayerUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.entity.player.EntityPlayer;
@@ -200,7 +201,7 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 	@Override
 	protected int getSizeContents() { return 0; }
 	@Override
-	public String getName() { return "container.crate"; }
+	public String getName() { return Constants.containerCrate; }
 	
 	@Override
 	public void openGui(EntityPlayer player) {

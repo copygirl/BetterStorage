@@ -4,6 +4,7 @@ import java.util.EnumSet;
 
 import net.mcft.copy.betterstorage.Config;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
+import net.mcft.copy.betterstorage.misc.Constants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,7 +27,7 @@ public class KeyBindingHandler extends KeyHandler {
 	public EnumSet<TickType> ticks() { return EnumSet.of(TickType.CLIENT); }
 	
 	@Override
-	public String getLabel() { return "betterstorage:KeyHandler"; }
+	public String getLabel() { return Constants.modId + ".KeyHandler"; }
 	
 	@Override
 	public void keyDown(EnumSet<TickType> types, KeyBinding kb, boolean tickEnd, boolean isRepeat) {

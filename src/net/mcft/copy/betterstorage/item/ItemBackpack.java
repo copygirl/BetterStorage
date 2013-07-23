@@ -9,6 +9,7 @@ import net.mcft.copy.betterstorage.container.ContainerBetterStorage;
 import net.mcft.copy.betterstorage.container.SlotArmorBackpack;
 import net.mcft.copy.betterstorage.inventory.InventoryBackpackEquipped;
 import net.mcft.copy.betterstorage.inventory.InventoryStacks;
+import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.misc.PropertiesBackpack;
 import net.mcft.copy.betterstorage.misc.Resources;
 import net.mcft.copy.betterstorage.misc.handlers.KeyBindingHandler;
@@ -61,7 +62,7 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 		this(id, EnumArmorMaterial.CLOTH);
 	}
 	
-	public String getName() { return "container.backpack"; }
+	public String getName() { return Constants.containerBackpack; }
 	
 	/** Returns the number of columns this backpack has. */
 	public int getColumns() { return 9; }
@@ -90,6 +91,11 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister iconRegister) {  }
+	
+	@Override
+	public String getUnlocalizedName() { return Block.blocksList[itemID].getUnlocalizedName(); }
+	@Override
+	public String getUnlocalizedName(ItemStack stack) { return getUnlocalizedName(); }
 	
 	@Override
 	public boolean isValidArmor(ItemStack stack, int armorType, Entity entity) { return false; }

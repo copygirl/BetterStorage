@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.utils.RandomUtils;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
@@ -94,7 +95,7 @@ public class CratePileCollection {
 				throw new Exception(file + " could not be deleted.");
 			tempFile.renameTo(file);
 		} catch (Exception e) {
-			System.err.println("[BetterStorage] Error saving CratePileData: " + e);
+			BetterStorage.log.warning("Error saving CratePileData: " + e);
 			e.printStackTrace();
 		}
 	}
@@ -107,7 +108,7 @@ public class CratePileCollection {
 			NBTTagCompound root = CompressedStreamTools.read(file);
 			return CratePileData.fromCompound(this, root.getCompoundTag("data"));
 		} catch (Exception e) {
-			System.err.println("[BetterStorage] Error loading CratePileData: " + e);
+			BetterStorage.log.warning("Error loading CratePileData: " + e);
 			e.printStackTrace();
 			return null;
 		}

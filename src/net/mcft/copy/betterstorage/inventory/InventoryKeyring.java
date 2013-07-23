@@ -1,13 +1,14 @@
 package net.mcft.copy.betterstorage.inventory;
 
 import net.mcft.copy.betterstorage.api.IKey;
+import net.mcft.copy.betterstorage.misc.Constants;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 public class InventoryKeyring extends InventoryItem {
 	
 	public InventoryKeyring(EntityPlayer player, String title) {
-		super(player, 9, (title.isEmpty() ? "container.keyring" : title), !title.isEmpty());
+		super(player, 9, (title.isEmpty() ? Constants.containerKeyring : title), !title.isEmpty());
 	}
 	
 	@Override

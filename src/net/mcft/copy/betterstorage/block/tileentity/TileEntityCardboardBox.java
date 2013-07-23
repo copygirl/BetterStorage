@@ -2,6 +2,7 @@ package net.mcft.copy.betterstorage.block.tileentity;
 
 import net.mcft.copy.betterstorage.inventory.InventoryCardboardBox;
 import net.mcft.copy.betterstorage.inventory.InventoryTileEntity;
+import net.mcft.copy.betterstorage.misc.Constants;
 
 public class TileEntityCardboardBox extends TileEntityContainer {
 	
@@ -14,7 +15,7 @@ public class TileEntityCardboardBox extends TileEntityContainer {
 	// TileEntityContainer stuff
 	
 	@Override
-	public String getName() { return "container.cardboardBox"; }
+	public String getName() { return Constants.containerCardboardBox; }
 	
 	@Override
 	public int getRows() { return 1; }

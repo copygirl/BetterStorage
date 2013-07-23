@@ -9,7 +9,7 @@ import net.minecraftforge.common.IExtendedEntityProperties;
 
 public class PropertiesBackpack implements IExtendedEntityProperties {
 	
-	public static final String identifier = "BetterStorage.Backpack";
+	public static final String identifier = Constants.modName + ".backpack";
 	
 	// public EntityLiving entity;
 	public ItemStack[] contents = null;

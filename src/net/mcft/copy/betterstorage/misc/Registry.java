@@ -11,7 +11,6 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 
 /** Handles the registering and naming of blocks and items. */
 public class Registry {
@@ -25,54 +24,48 @@ public class Registry {
 	}
 	
 	public static void registerBlocks() {
-		register(BetterStorage.crate, "crate", "Storage Crate");
-		register(BetterStorage.reinforcedChest, "reinforcedChest", "Reinforced Chest", ItemReinforcedChest.class);
-		register(BetterStorage.locker, "locker", "Locker");
-		register(BetterStorage.armorStand, "armorStand", "Armor Stand", ItemArmorStand.class);
-		registerHacky(BetterStorage.backpack, "backpack", "Backpack", ItemBackpack.class);
-		registerHacky(BetterStorage.enderBackpack, "enderBackpack", "Ender Backpack", ItemEnderBackpack.class);
-		register(BetterStorage.cardboardBox, "cardboardBox", "Cardboard Box", ItemCardboardBox.class);
+		register(BetterStorage.crate, "crate");
+		register(BetterStorage.reinforcedChest, "reinforcedChest", ItemReinforcedChest.class);
+		register(BetterStorage.locker, "locker");
+		register(BetterStorage.armorStand, "armorStand", ItemArmorStand.class);
+		registerHacky(BetterStorage.backpack, "backpack", ItemBackpack.class);
+		registerHacky(BetterStorage.enderBackpack, "enderBackpack", ItemEnderBackpack.class);
+		register(BetterStorage.cardboardBox, "cardboardBox", ItemCardboardBox.class);
 	}
 	
 	public static void registerItems() {
-		register(BetterStorage.key, "key", "Key");
-		register(BetterStorage.lock, "lock", "Lock");
-		register(BetterStorage.keyring, "keyring", "Keyring");
-		register(BetterStorage.cardboardSheet, "cardboardSheet", "Cardboard Sheet");
-		register(BetterStorage.masterKey, "masterKey", "Master Key");
+		register(BetterStorage.key, "key");
+		register(BetterStorage.lock, "lock");
+		register(BetterStorage.keyring, "keyring");
+		register(BetterStorage.cardboardSheet, "cardboardSheet");
+		register(BetterStorage.masterKey, "masterKey");
 	}
 	
-	public static void register(Block block, String name, String fullName, Class<? extends ItemBlock> itemBlockClass) {
+	public static void register(Block block, String name, Class<? extends ItemBlock> itemBlockClass) {
 		if (block == null) return;
-		block.setUnlocalizedName(name);
-		GameRegistry.registerBlock(block, itemBlockClass, name, "BetterStorage");
-		if (fullName != null) {
-			LanguageRegistry.addName(block, fullName);
-			block.setCreativeTab(BetterStorage.creativeTab);
-		}
+		block.setUnlocalizedName(Constants.modName + "." + name);
+		GameRegistry.registerBlock(block, itemBlockClass, name, Constants.modId);
+		block.setCreativeTab(BetterStorage.creativeTab);
 	}
-	public static void registerHacky(Block block, String name, String fullName, Class<? extends Item> itemClass) {
+	public static void registerHacky(Block block, String name, Class<? extends Item> itemClass) {
 		if (block == null) return;
-		register(block, name, null);
+		block.setUnlocalizedName(Constants.modName + "." + name);
+		GameRegistry.registerBlock(block, ItemBlock.class, name, Constants.modId);
 		Item.itemsList[block.blockID] = null;
 		try {
 			Item item = itemClass.getConstructor(int.class).newInstance(block.blockID);
-			item.setUnlocalizedName(name);
-			LanguageRegistry.addName(item, fullName);
+			item.setUnlocalizedName(Constants.modName + "." + name);
 			item.setCreativeTab(BetterStorage.creativeTab);
 		} catch (Exception e) { throw new RuntimeException(e); }
 	}
-	public static void register(Block block, String name, String fullName) {
-		register(block, name, fullName, ItemBlock.class);
+	public static void register(Block block, String name) {
+		register(block, name, ItemBlock.class);
 	}
 	
-	public static void register(Item item, String name, String fullName) {
+	public static void register(Item item, String name) {
 		if (item == null) return;
-		item.setUnlocalizedName(name);
-		if (fullName != null) {
-			LanguageRegistry.addName(item, fullName);
-			item.setCreativeTab(BetterStorage.creativeTab);
-		}
+		item.setUnlocalizedName(Constants.modName + "." + name);
+		item.setCreativeTab(BetterStorage.creativeTab);
 	}
 	
 }

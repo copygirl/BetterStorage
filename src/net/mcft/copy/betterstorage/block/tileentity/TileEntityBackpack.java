@@ -2,6 +2,7 @@ package net.mcft.copy.betterstorage.block.tileentity;
 
 import net.mcft.copy.betterstorage.Config;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
+import net.mcft.copy.betterstorage.misc.Constants;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -40,7 +41,7 @@ public class TileEntityBackpack extends TileEntityContainer {
 	// TileEntityContainer stuff
 	
 	@Override
-	public String getName() { return "container.backpack"; }
+	public String getName() { return Constants.containerBackpack; }
 	@Override
 	public int getRows() { return Config.backpackRows; }
 	

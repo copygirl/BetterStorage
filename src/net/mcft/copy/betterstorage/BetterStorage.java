@@ -41,17 +41,21 @@ import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-@Mod(modid="BetterStorage", version="@VERSION@", useMetadata=true,
-     dependencies="after:Thaumcraft")
-@NetworkMod(clientSideRequired=true, serverSideRequired=false,
-            channels={"BetterStorage"}, packetHandler=PacketHandler.class)
+@Mod(modid = Constants.modId,
+     version = "@VERSION@",
+     useMetadata = true,
+     dependencies = "after:Thaumcraft")
+@NetworkMod(clientSideRequired = true,
+            serverSideRequired = false,
+            channels = { Constants.modId },
+            packetHandler = PacketHandler.class)
 public class BetterStorage {
 	
-	@Instance("BetterStorage")
+	@Instance(Constants.modId)
 	public static BetterStorage instance;
 	
-	@SidedProxy(clientSide="net.mcft.copy.betterstorage.proxy.ClientProxy",
-	            serverSide="net.mcft.copy.betterstorage.proxy.CommonProxy")
+	@SidedProxy(serverSide = Constants.commonProxy,
+	            clientSide = Constants.clientProxy)
 	public static CommonProxy proxy;
 	
 	public static Logger log;
@@ -81,20 +85,25 @@ public class BetterStorage {
 	public void preInit(FMLPreInitializationEvent event) {
 		
 		log = event.getModLog();
+		creativeTab = new CreativeTabBetterStorage();
+		
 		Addon.initAll();
+		
 		Config.load(event.getSuggestedConfigurationFile());
+		
+		initializeItems();
+		EnchantmentBetterStorage.init();
+		
+		GameRegistry.registerCraftingHandler(new CraftingHandler());
+		
+		LanguageRegistry.instance().loadLocalization("/assets/" + Constants.modName + "/lang/en_US.xml", "en_US", true);
 		
 	}
 	
 	@EventHandler
 	public void load(FMLInitializationEvent event) {
 		
-		creativeTab = new CreativeTabBetterStorage();
-		initializeItems();
-		EnchantmentBetterStorage.init();
 		addRecipes();
-		addLocalizations();
-		GameRegistry.registerCraftingHandler(new CraftingHandler());
 		proxy.init();
 		
 	}
@@ -219,39 +228,6 @@ public class BetterStorage {
 					"ooo", 'o', Item.paper);
 		
 		Addon.addAllRecipes();
-		
-	}
-	
-	private void addLocalizations() {
-		
-		LanguageRegistry lang = LanguageRegistry.instance();
-		
-		lang.addStringLocalization("itemGroup.betterstorage", "BetterStorage");
-		
-		lang.addStringLocalization("container.crate", "Storage Crate");
-		lang.addStringLocalization("container.reinforcedChest", "Reinforced Chest");
-		lang.addStringLocalization("container.reinforcedChestLarge", "Large Reinforced Chest");
-		lang.addStringLocalization("container.locker", "Locker");
-		lang.addStringLocalization("container.lockerLarge", "Large Locker");
-		lang.addStringLocalization("container.backpack", "Backpack");
-		lang.addStringLocalization("container.enderBackpack", "Ender Backpack");
-		lang.addStringLocalization("container.cardboardBox", "Cardboard Box");
-		
-		lang.addStringLocalization("container.keyring", "Keyring");
-		
-		lang.addStringLocalization("enchantment.key.unlocking", "Unlocking");
-		lang.addStringLocalization("enchantment.key.lockpicking", "Lockpicking");
-		lang.addStringLocalization("enchantment.key.morphing", "Morphing");
-		
-		lang.addStringLocalization("enchantment.lock.persistance", "Persistance");
-		lang.addStringLocalization("enchantment.lock.security", "Security");
-		lang.addStringLocalization("enchantment.lock.shock", "Shock");
-		lang.addStringLocalization("enchantment.lock.trigger", "Trigger");
-		
-		for (ChestMaterial material : ChestMaterial.materials)
-			lang.addStringLocalization("tile.reinforcedChest." + material.name + ".name", "Reinforced " + material.nameCapitalized + " Chest");
-		
-		Addon.addAllLocalizations(lang);
 		
 	}
 	

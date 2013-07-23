@@ -3,6 +3,7 @@ package net.mcft.copy.betterstorage.block;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.mcft.copy.betterstorage.misc.BetterStorageResource;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -30,7 +31,6 @@ public class ChestMaterial {
 	
 	public int id;
 	public String name;
-	public String nameCapitalized;
 	
 	private Object ingot, block;
 	
@@ -39,7 +39,6 @@ public class ChestMaterial {
 		this.name = name;
 		this.ingot = ingot;
 		this.block = block;
-		nameCapitalized = name.substring(0, 1).toUpperCase() + name.substring(1);
 		materialLookup[id] = this;
 		materials.add(this);
 	}
@@ -56,7 +55,7 @@ public class ChestMaterial {
 	}
 	
 	public ResourceLocation getResource(boolean large) {
-		return new ResourceLocation("betterstorage", "textures/models/chest" + (large ? "_large/" : "/") + name + ".png");
+		return new BetterStorageResource("textures/models/chest" + (large ? "_large/" : "/") + name + ".png");
 	}
 	
 }

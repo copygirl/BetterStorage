@@ -17,6 +17,7 @@ import net.mcft.copy.betterstorage.entity.EntityFrienderman;
 import net.mcft.copy.betterstorage.inventory.InventoryStacks;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.item.ItemEnderBackpack;
+import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.misc.PropertiesBackpack;
 import net.mcft.copy.betterstorage.misc.handlers.PacketHandler;
 import net.mcft.copy.betterstorage.utils.CurrentItem;
@@ -60,7 +61,6 @@ import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class CommonProxy implements IPlayerTracker {
 	
@@ -73,16 +73,15 @@ public class CommonProxy implements IPlayerTracker {
 	
 	public void registerEntities() {
 		EntityRegistry.registerModEntity(EntityFrienderman.class, "Frienderman", 1, BetterStorage.instance, 64, 4, true);
-		LanguageRegistry.instance().addStringLocalization("entity.BetterStorage.Frienderman.name", "Enderman");
 	}
 	
 	public void registerTileEntites() {
-		GameRegistry.registerTileEntity(TileEntityCrate.class, "container.crate");
-		GameRegistry.registerTileEntity(TileEntityReinforcedChest.class, "container.reinforcedChest");
-		GameRegistry.registerTileEntity(TileEntityLocker.class, "container.locker");
-		GameRegistry.registerTileEntity(TileEntityArmorStand.class, "container.armorStand");
-		GameRegistry.registerTileEntity(TileEntityBackpack.class, "container.backpack");
-		GameRegistry.registerTileEntity(TileEntityCardboardBox.class, "container.cardboardbox");
+		GameRegistry.registerTileEntity(TileEntityCrate.class, Constants.containerCrate);
+		GameRegistry.registerTileEntity(TileEntityReinforcedChest.class, Constants.containerReinforcedChest);
+		GameRegistry.registerTileEntity(TileEntityLocker.class, Constants.containerLocker);
+		GameRegistry.registerTileEntity(TileEntityArmorStand.class, Constants.containerArmorStand);
+		GameRegistry.registerTileEntity(TileEntityBackpack.class, Constants.containerBackpack);
+		GameRegistry.registerTileEntity(TileEntityCardboardBox.class, Constants.containerCardboardBox);
 		Addon.registerAllTileEntites();
 	}
 	

@@ -3,6 +3,7 @@ package net.mcft.copy.betterstorage.block;
 import java.util.Random;
 
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityArmorStand;
+import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.proxy.ClientProxy;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.BlockContainer;
@@ -40,7 +41,7 @@ public class BlockArmorStand extends BlockContainer {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public String getItemIconName() { return "betterstorage:armorstand"; }
+	public String getItemIconName() { return Constants.modName + ":armorstand"; }
 	
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {

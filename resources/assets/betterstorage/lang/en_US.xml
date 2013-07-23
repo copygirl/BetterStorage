@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties version="1.0">
+	<comment>English (en_US) Localization File</comment>
+	<entry key="container.betterstorage.backpack">Backpack</entry>
+	<entry key="container.betterstorage.cardboardBox">Cardboard Box</entry>
+	<entry key="container.betterstorage.crate">Storage Crate</entry>
+	<entry key="container.betterstorage.enderBackpack">Ender Backpack</entry>
+	<entry key="container.betterstorage.keyring">Keyring</entry>
+	<entry key="container.betterstorage.locker">Locker</entry>
+	<entry key="container.betterstorage.lockerLarge">Large Locker</entry>
+	<entry key="container.betterstorage.reinforcedChest">Reinforced Chest</entry>
+	<entry key="container.betterstorage.reinforcedChestLarge">Large Reinforced Chest</entry>
+	<entry key="container.betterstorage.thaumcraftBackpack">Thaumaturge's Backpack</entry>
+	<entry key="container.betterstorage.thaumiumChest">Thaumium Chest</entry>
+	<entry key="container.betterstorage.thaumiumChestLarge">Large Thaumium Chest</entry>
+	<entry key="enchantment.betterstorage.key.lockpicking">Lockpicking</entry>
+	<entry key="enchantment.betterstorage.key.morphing">Morphing</entry>
+	<entry key="enchantment.betterstorage.key.unlocking">Unlocking</entry>
+	<entry key="enchantment.betterstorage.lock.persistance">Persistance</entry>
+	<entry key="enchantment.betterstorage.lock.security">Security</entry>
+	<entry key="enchantment.betterstorage.lock.shock">Shock</entry>
+	<entry key="enchantment.betterstorage.lock.trigger">Trigger</entry>
+	<entry key="entity.BetterStorage.Frienderman">Enderman</entry>
+	<entry key="item.betterstorage.cardboardSheet.name">Cardboard Sheet</entry>
+	<entry key="item.betterstorage.key.name">Key</entry>
+	<entry key="item.betterstorage.keyring.name">Keyring</entry>
+	<entry key="item.betterstorage.lock.name">Lock</entry>
+	<entry key="item.betterstorage.masterKey.name">Master Key</entry>
+	<entry key="itemGroup.betterstorage">BetterStorage</entry>
+	<entry key="material.betterstorage.iron">Iron</entry>
+	<entry key="material.betterstorage.gold">Gold</entry>
+	<entry key="material.betterstorage.diamond">Diamond</entry>
+	<entry key="material.betterstorage.emerald">Emerald</entry>
+	<entry key="material.betterstorage.copper">Copper</entry>
+	<entry key="material.betterstorage.tin">Tin</entry>
+	<entry key="material.betterstorage.silver">Silver</entry>
+	<entry key="material.betterstorage.zinc">Zinc</entry>
+	<entry key="tile.betterstorage.armorStand.name">Armor Stand</entry>
+	<entry key="tile.betterstorage.backpack.name">Backpack</entry>
+	<entry key="tile.betterstorage.cardboardBox.name">Cardboard Box</entry>
+	<entry key="tile.betterstorage.crate.name">Crate</entry>
+	<entry key="tile.betterstorage.enderBackpack.name">Ender Backpack</entry>
+	<entry key="tile.betterstorage.locker.name">Locker</entry>
+	<entry key="tile.betterstorage.reinforcedChest.name">Reinforced Chest</entry>
+	<entry key="tile.betterstorage.reinforcedChest.name.full">Reinforced %MATERIAL% Chest</entry>
+	<entry key="tile.betterstorage.thaumcraftBackpack.name">Thaumaturge's Backpack</entry>
+	<entry key="tile.betterstorage.thaumiumChest.name">Thaumium Chest</entry>
+</properties>

@@ -1,6 +1,7 @@
 package net.mcft.copy.betterstorage.inventory;
 
 import net.mcft.copy.betterstorage.block.crate.CratePileData;
+import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -11,7 +12,7 @@ public class InventoryCrateBlockView extends InventoryBetterStorage {
 	private CratePileData data;
 	
 	public InventoryCrateBlockView(CratePileData data) {
-		super("container.crate");
+		super(Constants.containerCrate);
 		this.data = data;
 	}
 	

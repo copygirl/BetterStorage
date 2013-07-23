@@ -24,7 +24,7 @@ public class BlockLocker extends BlockContainer {
 		super(id, Material.wood);
 		
 		setHardness(2.5f);
-		setStepSound(Block.soundWoodFootstep);
+		setStepSound(soundWoodFootstep);
 		
 		MinecraftForge.setBlockHarvestLevel(this, "axe", 0);
 	}

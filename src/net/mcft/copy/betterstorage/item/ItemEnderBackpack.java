@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.mcft.copy.betterstorage.Config;
 import net.mcft.copy.betterstorage.inventory.InventoryWrapper;
+import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.misc.PropertiesBackpack;
 import net.mcft.copy.betterstorage.misc.Resources;
 import net.mcft.copy.betterstorage.misc.handlers.KeyBindingHandler;
@@ -26,7 +27,7 @@ public class ItemEnderBackpack extends ItemBackpack {
 	}
 	
 	@Override
-	public String getName() { return "container.enderBackpack"; }
+	public String getName() { return Constants.containerEnderBackpack; }
 	
 	@Override
 	protected IInventory getBackpackItemsInternal(EntityLivingBase carrier, EntityPlayer player) {

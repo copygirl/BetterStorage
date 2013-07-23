@@ -6,6 +6,7 @@ import net.mcft.copy.betterstorage.client.gui.GuiCrate;
 import net.mcft.copy.betterstorage.container.ContainerKeyring;
 import net.mcft.copy.betterstorage.inventory.InventoryCardboardBox;
 import net.mcft.copy.betterstorage.inventory.InventoryWrapper;
+import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.misc.handlers.PacketHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
@@ -55,16 +56,16 @@ public class PlayerUtils {
 		boolean localized = !title.isEmpty();
 		if (!localized) title = name;
 		
-		if (name.equals("container.crate"))
+		if (name.equals(Constants.containerCrate))
 			return new GuiCrate(player, rows, title, localized);
-		if (name.equals("container.keyring")) {
+		if (name.equals(Constants.containerKeyring)) {
 			ContainerKeyring.setProtectedIndex(columns);
 			return new GuiBetterStorage(new ContainerKeyring(player, title));
 		}
-		if (name.startsWith("container.thaumiumChest"))
+		if (name.startsWith(Constants.containerThaumiumChest))
 			return new GuiThaumiumChest(player, columns, rows, title, localized);
 
-		if (name.equals("container.cardboardBox"))
+		if (name.equals(Constants.containerCardboardBox))
 			return new GuiBetterStorage(player, columns, rows, new InventoryWrapper(new InventoryCardboardBox(new ItemStack[9]), title, localized));
 		return new GuiBetterStorage(player, columns, rows, title, localized);
 		

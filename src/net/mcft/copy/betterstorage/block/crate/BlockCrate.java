@@ -1,5 +1,6 @@
 package net.mcft.copy.betterstorage.block.crate;
 
+import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -30,7 +31,7 @@ public class BlockCrate extends BlockContainer {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister iconRegister) {
-		blockIcon = iconRegister.registerIcon("betterstorage:crate");
+		blockIcon = iconRegister.registerIcon(Constants.modName + ":crate");
 	}
 	
 	@Override

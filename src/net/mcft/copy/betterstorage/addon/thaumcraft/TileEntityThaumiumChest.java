@@ -6,6 +6,8 @@ import java.util.List;
 import net.mcft.copy.betterstorage.Config;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityConnectable;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityReinforcedChest;
+import net.mcft.copy.betterstorage.misc.BetterStorageResource;
+import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.RandomUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.inventory.IInventory;
@@ -23,12 +25,12 @@ public class TileEntityThaumiumChest extends TileEntityReinforcedChest {
 	private int ticksExisted = 0;
 	
 	@Override
-	protected String getConnectableName() { return "container.thaumiumChest"; }
+	protected String getConnectableName() { return Constants.containerThaumiumChest; }
 	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public ResourceLocation getResource() {
-		return new ResourceLocation("betterstorage", "textures/models/chest" + (isConnected() ? "_large/" : "/") + "thaumium.png");
+		return new BetterStorageResource("textures/models/chest" + (isConnected() ? "_large/" : "/") + "thaumium.png");
 	}
 	
 	@Override

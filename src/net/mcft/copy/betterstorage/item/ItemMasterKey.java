@@ -3,7 +3,6 @@ package net.mcft.copy.betterstorage.item;
 import java.util.List;
 
 import net.mcft.copy.betterstorage.api.BetterStorageEnchantment;
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
@@ -18,12 +17,6 @@ public class ItemMasterKey extends ItemKey {
 	
 	public ItemMasterKey(int id) {
 		super(id);
-	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister iconRegister) {
-		itemIcon = iconRegister.registerIcon("betterstorage:master_key");
 	}
 	
 	@Override

@@ -3,6 +3,7 @@ package net.mcft.copy.betterstorage.item;
 import net.mcft.copy.betterstorage.api.BetterStorageEnchantment;
 import net.mcft.copy.betterstorage.api.IKey;
 import net.mcft.copy.betterstorage.api.ILock;
+import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.RandomUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -32,9 +33,9 @@ public class ItemKey extends ItemBetterStorage implements IKey {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister iconRegister) {
-		itemIcon = iconRegister.registerIcon("betterstorage:key");
-		iconColor = iconRegister.registerIcon("betterstorage:key_color");
-		iconFullColor = iconRegister.registerIcon("betterstorage:key_full_color");
+		super.registerIcons(iconRegister);
+		iconColor = iconRegister.registerIcon(Constants.modName + ":key_color");
+		iconFullColor = iconRegister.registerIcon(Constants.modName + ":key_fullColor");
 	}
 	
 	@Override

@@ -1,8 +1,8 @@
 package net.mcft.copy.betterstorage.addon.thaumcraft;
 
 import net.mcft.copy.betterstorage.item.ItemBackpack;
+import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.RandomUtils;
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,8 +15,6 @@ import thaumcraft.api.IVisRepairable;
 import thaumcraft.api.ItemApi;
 import thaumcraft.api.ObjectTags;
 import thaumcraft.api.ThaumcraftApi;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemThaumcraftBackpack extends ItemBackpack implements IVisRepairable, IVisDiscounter {
 	
@@ -28,16 +26,10 @@ public class ItemThaumcraftBackpack extends ItemBackpack implements IVisRepairab
 	}
 	
 	@Override
-	public String getName() { return "container.thaumcraftBackpack"; }
+	public String getName() { return Constants.containerThaumcraftBackpack; }
 	
 	@Override
 	public int getColumns() { return 13; }
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister iconRegister) {
-		itemIcon = iconRegister.registerIcon("betterstorage:thaumcraftBackpack");
-	}
 	
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {

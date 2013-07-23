@@ -1,5 +1,6 @@
 package net.mcft.copy.betterstorage.block.tileentity;
 
+import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
@@ -25,7 +26,7 @@ public class TileEntityLocker extends TileEntityConnectable {
 	@Override
 	public ForgeDirection[] getPossibleNeighbors() { return neighbors; }
 	@Override
-	protected String getConnectableName() { return "container.locker"; }
+	protected String getConnectableName() { return Constants.containerLocker; }
 	
 	@Override
 	public boolean canConnect(TileEntityConnectable connectable) {

@@ -25,14 +25,15 @@ public class BlockCardboardBox extends BlockContainer {
 		super(id, Material.wood);
 		
 		setHardness(0.8f);
+		setStepSound(soundWoodFootstep);
 		setBlockBounds(0.0625F, 0.0F, 0.0625F, 0.9375F, 0.875F, 0.9375F);
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister iconRegister) {
-		blockIcon = iconRegister.registerIcon("betterstorage:cardboard_box");
-		sideIcon = iconRegister.registerIcon("betterstorage:cardboard_box_side");
+		blockIcon = iconRegister.registerIcon("betterstorage:cardboardBox");
+		sideIcon = iconRegister.registerIcon("betterstorage:cardboardBox_side");
 	}
 	
 	@Override

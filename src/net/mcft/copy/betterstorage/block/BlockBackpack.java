@@ -27,7 +27,7 @@ public class BlockBackpack extends BlockContainer {
 		super(id, Material.cloth);
 		
 		setHardness(0.7f);
-		setStepSound(Block.soundClothFootstep);
+		setStepSound(soundClothFootstep);
 		setBlockBounds(3 / 16.0F, 0.0F, 3 / 16.0F, 13 / 16.0F, 13 / 16.0F, 13 / 16.0F);
 	}
 	

@@ -8,6 +8,7 @@ import java.io.IOException;
 
 import net.mcft.copy.betterstorage.Config;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
+import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.PlayerUtils;
 import net.mcft.copy.betterstorage.utils.RandomUtils;
 import net.minecraft.client.Minecraft;
@@ -34,7 +35,7 @@ public class PacketHandler implements IPacketHandler {
 		ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
 		DataOutputStream dataStream = new DataOutputStream(byteStream);
 		for (Object obj : args) writeObject(dataStream, obj);
-		return new Packet250CustomPayload("BetterStorage", byteStream.toByteArray());
+		return new Packet250CustomPayload(Constants.modId, byteStream.toByteArray());
 	}
 	
 	private static void writeObject(DataOutputStream stream, Object object) {
@@ -79,7 +80,7 @@ public class PacketHandler implements IPacketHandler {
 					handleBackpackKeyEnabled(player, stream);
 					break;
 				default:
-					throw new Exception("Received BetterStorage packet for unhandled ID " + id + " on side " + side + ".");
+					throw new Exception("Received " + Constants.modId + " packet for unhandled ID " + id + " on side " + side + ".");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -87,7 +88,7 @@ public class PacketHandler implements IPacketHandler {
 	}
 	private void checkSide(int id, Side side, Side allowed) throws Exception {
 		if (side == allowed) return;
-		throw new Exception("Received BetterStorage packet for ID " + id + " on invalid side " + side + ".");
+		throw new Exception("Received " + Constants.modId + " packet for ID " + id + " on invalid side " + side + ".");
 	}
 	
 	@SideOnly(Side.CLIENT)

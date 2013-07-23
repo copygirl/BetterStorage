@@ -3,6 +3,7 @@ package net.mcft.copy.betterstorage.item;
 import net.mcft.copy.betterstorage.api.IContainerItem;
 import net.mcft.copy.betterstorage.api.IKey;
 import net.mcft.copy.betterstorage.container.ContainerKeyring;
+import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.PlayerUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -27,7 +28,7 @@ public class ItemKeyring extends ItemBetterStorage implements IKey, IContainerIt
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister iconRegister) {
 		for (int i = 0; i < icons.length; i++)
-			icons[i] = iconRegister.registerIcon("betterstorage:keyring_" + i);
+			icons[i] = iconRegister.registerIcon(Constants.modName + ":keyring_" + i);
 		itemIcon = icons[0];
 	}
 	
@@ -43,7 +44,7 @@ public class ItemKeyring extends ItemBetterStorage implements IKey, IContainerIt
 		String title = StackUtils.get(stack, "", "display", "Name");
 		Container container = new ContainerKeyring(player, title);
 		int index = player.inventory.currentItem; // protected slot
-		PlayerUtils.openGui(player, "container.keyring", index, 1, title, container);
+		PlayerUtils.openGui(player, Constants.containerKeyring, index, 1, title, container);
 		return stack;
 	}
 	

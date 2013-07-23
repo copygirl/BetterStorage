@@ -3,6 +3,7 @@ package net.mcft.copy.betterstorage.block;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityBackpack;
 import net.mcft.copy.betterstorage.container.ContainerBetterStorage;
 import net.mcft.copy.betterstorage.inventory.InventoryWrapper;
+import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.misc.handlers.PacketHandler;
 import net.mcft.copy.betterstorage.utils.PlayerUtils;
 import net.mcft.copy.betterstorage.utils.RandomUtils;
@@ -97,7 +98,7 @@ public class BlockEnderBackpack extends BlockBackpack {
 			TileEntityBackpack backpack = WorldUtils.get(world, x, y, z, TileEntityBackpack.class);
 			IInventory inventory = new InventoryEnderBackpack(player, backpack);
 			Container container = new ContainerBetterStorage(player, inventory, 9, 3);
-			PlayerUtils.openGui(player, "container.enderBackpack", 9, 3, backpack.getCustomTitle(), container);
+			PlayerUtils.openGui(player, backpack.getName(), 9, 3, backpack.getCustomTitle(), container);
 		}
 		return true;
 	}
