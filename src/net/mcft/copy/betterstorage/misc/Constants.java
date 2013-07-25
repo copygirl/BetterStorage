@@ -1,13 +1,5 @@
 package net.mcft.copy.betterstorage.misc;
 
-import net.mcft.copy.betterstorage.block.crate.TileEntityCrate;
-import net.mcft.copy.betterstorage.block.tileentity.TileEntityArmorStand;
-import net.mcft.copy.betterstorage.block.tileentity.TileEntityBackpack;
-import net.mcft.copy.betterstorage.block.tileentity.TileEntityCardboardBox;
-import net.mcft.copy.betterstorage.block.tileentity.TileEntityLocker;
-import net.mcft.copy.betterstorage.block.tileentity.TileEntityReinforcedChest;
-import cpw.mods.fml.common.registry.GameRegistry;
-
 public class Constants {
 	
 	public static final String modId = "BetterStorage";
