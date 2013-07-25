@@ -1,7 +1,5 @@
 package net.mcft.copy.betterstorage.client.gui;
 
-import invtweaks.api.ContainerGUI;
-import invtweaks.api.ContainerGUI.RowSizeCallback;
 import net.mcft.copy.betterstorage.container.ContainerBetterStorage;
 import net.mcft.copy.betterstorage.misc.Resources;
 import net.mcft.copy.betterstorage.utils.RenderUtils;
@@ -17,7 +15,6 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-@ContainerGUI
 @SideOnly(Side.CLIENT)
 public class GuiBetterStorage extends GuiContainer {
 	
@@ -28,7 +25,6 @@ public class GuiBetterStorage extends GuiContainer {
 	private final int rows;
 	
 	public int getColumns() { return columns; }
-	@RowSizeCallback
 	public int getRows() { return rows; }
 	
 	public GuiBetterStorage(ContainerBetterStorage container) {
