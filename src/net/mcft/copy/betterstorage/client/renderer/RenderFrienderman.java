@@ -1,6 +1,6 @@
 package net.mcft.copy.betterstorage.client.renderer;
 
-import net.mcft.copy.betterstorage.utils.CurrentItem;
+import net.mcft.copy.betterstorage.misc.CurrentItem;
 import net.mcft.copy.betterstorage.utils.RenderUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;

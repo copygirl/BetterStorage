@@ -2,8 +2,8 @@ package net.mcft.copy.betterstorage.entity;
 
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityBackpack;
+import net.mcft.copy.betterstorage.misc.CurrentItem;
 import net.mcft.copy.betterstorage.misc.handlers.PacketHandler;
-import net.mcft.copy.betterstorage.utils.CurrentItem;
 import net.mcft.copy.betterstorage.utils.RandomUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;

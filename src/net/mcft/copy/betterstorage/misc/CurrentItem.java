@@ -1,4 +1,4 @@
-package net.mcft.copy.betterstorage.utils;
+package net.mcft.copy.betterstorage.misc;
 
 public class CurrentItem {
 	
