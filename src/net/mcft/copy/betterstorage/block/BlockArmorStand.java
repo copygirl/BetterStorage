@@ -75,9 +75,9 @@ public class BlockArmorStand extends BlockContainer {
 	public void breakBlock(World world, int x, int y, int z, int id, int meta) {
 		if (meta > 0) return;
 		TileEntityArmorStand armorStand = WorldUtils.get(world, x, y, z, TileEntityArmorStand.class);
-		super.breakBlock(world, x, y, z, id, meta);
 		if (armorStand != null)
 		    armorStand.dropContents();
+		super.breakBlock(world, x, y, z, id, meta);
 	}
 	
 	@Override

@@ -50,11 +50,11 @@ public class BlockEnderBackpack extends BlockBackpack {
 	@Override
 	public void breakBlock(World world, int x, int y, int z, int id, int meta) {
 		TileEntityBackpack backpack = WorldUtils.get(world, x, y, z, TileEntityBackpack.class);
+		if (!world.isRemote && (backpack != null) && !backpack.equipped)
+			for (int i = 0; i < 64; i++)
+				if (teleportRandomly(world, x, y, z, (i > 48), backpack.stack))
+					break;
 		world.removeBlockTileEntity(x, y, z);
-		if (world.isRemote || (backpack == null) || backpack.equipped) return;
-		for (int i = 0; i < 64; i++)
-			if (teleportRandomly(world, x, y, z, (i > 48), backpack.stack))
-				break;
 	}
 	
 	public static boolean teleportRandomly(World world, double sourceX, double sourceY, double sourceZ, boolean canFloat, ItemStack stack) {

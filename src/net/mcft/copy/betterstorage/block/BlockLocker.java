@@ -71,11 +71,11 @@ public class BlockLocker extends BlockContainer {
 	@Override
 	public void breakBlock(World world, int x, int y, int z, int id, int meta) {
 		TileEntityLocker locker = WorldUtils.get(world, x, y, z, TileEntityLocker.class);
-		super.breakBlock(world, x, y, z, id, meta);
 		if (locker != null) {
 			locker.dropContents();
 			locker.disconnect();
 		}
+		super.breakBlock(world, x, y, z, id, meta);
 	}
 	
 	@Override

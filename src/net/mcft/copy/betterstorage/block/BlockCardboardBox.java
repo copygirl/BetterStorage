@@ -79,7 +79,6 @@ public class BlockCardboardBox extends BlockContainer {
 	@Override
 	public void breakBlock(World world, int x, int y, int z, int id, int meta) {
 		TileEntityCardboardBox cardboardBox = WorldUtils.get(world, x, y, z, TileEntityCardboardBox.class);
-		super.breakBlock(world, x, y, z, id, meta);
 		if (!cardboardBox.moved) {
 			ItemStack stack = new ItemStack(this);
 			if (!StackUtils.isEmpty(cardboardBox.contents))
@@ -88,6 +87,7 @@ public class BlockCardboardBox extends BlockContainer {
 			else if (cardboardBox.brokenInCreative) return;
 			WorldUtils.dropStackFromBlock(world, x, y, z, stack);
 		} else cardboardBox.dropContents();
+		super.breakBlock(world, x, y, z, id, meta);
 	}
 	
 	@Override

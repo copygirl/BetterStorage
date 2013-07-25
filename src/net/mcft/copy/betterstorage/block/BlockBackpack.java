@@ -91,11 +91,12 @@ public class BlockBackpack extends BlockContainer {
 	@Override
 	public void breakBlock(World world, int x, int y, int z, int id, int meta) {
 		TileEntityBackpack backpack = WorldUtils.get(world, x, y, z, TileEntityBackpack.class);
+		if ((backpack != null) && !backpack.equipped) {
+			if (!backpack.brokenInCreative)
+				WorldUtils.dropStackFromBlock(world, x, y, z, backpack.stack);
+			backpack.dropContents();
+		}
 		super.breakBlock(world, x, y, z, id, meta);
-		if ((backpack == null) || backpack.equipped) return;
-		if (!backpack.brokenInCreative)
-			WorldUtils.dropStackFromBlock(world, x, y, z, backpack.stack);
-		backpack.dropContents();
 	}
 	
 	@Override

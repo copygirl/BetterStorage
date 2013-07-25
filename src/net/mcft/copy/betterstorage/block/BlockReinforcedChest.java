@@ -134,11 +134,11 @@ public class BlockReinforcedChest extends BlockContainer {
 	@Override
 	public void breakBlock(World world, int x, int y, int z, int id, int meta) {
 		TileEntityReinforcedChest chest = WorldUtils.get(world, x, y, z, TileEntityReinforcedChest.class);
-		super.breakBlock(world, x, y, z, id, meta);
 		if (chest != null) {
 			chest.dropContents();
 			chest.disconnect();
 		}
+		super.breakBlock(world, x, y, z, id, meta);
 	}
 	
 	@Override
