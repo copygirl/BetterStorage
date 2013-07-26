@@ -26,6 +26,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.client.settings.GameSettings;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -96,6 +97,10 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 	public String getUnlocalizedName() { return Block.blocksList[itemID].getUnlocalizedName(); }
 	@Override
 	public String getUnlocalizedName(ItemStack stack) { return getUnlocalizedName(); }
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public CreativeTabs getCreativeTab() { return Block.blocksList[itemID].getCreativeTabToDisplayOn(); }
 	
 	@Override
 	public boolean isValidArmor(ItemStack stack, int armorType, Entity entity) { return false; }

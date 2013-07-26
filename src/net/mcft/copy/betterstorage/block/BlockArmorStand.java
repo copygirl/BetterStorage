@@ -3,14 +3,15 @@ package net.mcft.copy.betterstorage.block;
 import java.util.Random;
 
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityArmorStand;
+import net.mcft.copy.betterstorage.item.ItemArmorStand;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.proxy.ClientProxy;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.Packet103SetSlot;
 import net.minecraft.tileentity.TileEntity;
@@ -22,7 +23,7 @@ import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockArmorStand extends BlockContainer {
+public class BlockArmorStand extends BlockContainerBetterStorage {
 	
 	public BlockArmorStand(int id) {
 		super(id, Material.rock);
@@ -32,6 +33,9 @@ public class BlockArmorStand extends BlockContainer {
 		
 		MinecraftForge.setBlockHarvestLevel(this, "pickaxe", 0);
 	}
+	
+	@Override
+	public Class<? extends Item> getItemClass() { return ItemArmorStand.class; }
 	
 	@Override
 	@SideOnly(Side.CLIENT)

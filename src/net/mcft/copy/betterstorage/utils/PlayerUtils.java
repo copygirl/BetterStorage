@@ -23,6 +23,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class PlayerUtils {
 	
+	private PlayerUtils() {  }
+	
 	public static void openGui(EntityPlayer pl, String name, int columns, int rows, String title, Container container) {
 		
 		EntityPlayerMP player = (EntityPlayerMP)pl;

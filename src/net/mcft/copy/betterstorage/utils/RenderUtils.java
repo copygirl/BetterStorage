@@ -18,6 +18,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class RenderUtils {
 	
+	private RenderUtils() {  }
+	
 	public static void renderItemIn3d(ItemStack stack) {
 		
 		TextureManager textureManager = Minecraft.getMinecraft().func_110434_K();

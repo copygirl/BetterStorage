@@ -3,6 +3,7 @@ package net.mcft.copy.betterstorage.block;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityBackpack;
 import net.mcft.copy.betterstorage.container.ContainerBetterStorage;
 import net.mcft.copy.betterstorage.inventory.InventoryWrapper;
+import net.mcft.copy.betterstorage.item.ItemEnderBackpack;
 import net.mcft.copy.betterstorage.misc.handlers.PacketHandler;
 import net.mcft.copy.betterstorage.utils.PlayerUtils;
 import net.mcft.copy.betterstorage.utils.RandomUtils;
@@ -12,6 +13,7 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
@@ -27,6 +29,9 @@ public class BlockEnderBackpack extends BlockBackpack {
 		super(id);
 		setHardness(1.5f);
 	}
+	
+	@Override
+	public Class<? extends Item> getItemClass() { return ItemEnderBackpack.class; }
 	
 	@Override
 	@SideOnly(Side.CLIENT)

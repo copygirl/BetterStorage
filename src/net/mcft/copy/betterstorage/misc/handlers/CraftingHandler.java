@@ -1,6 +1,6 @@
 package net.mcft.copy.betterstorage.misc.handlers;
 
-import net.mcft.copy.betterstorage.BetterStorage;
+import net.mcft.copy.betterstorage.content.Items;
 import net.mcft.copy.betterstorage.item.ItemKey;
 import net.mcft.copy.betterstorage.utils.InventoryUtils;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,7 +22,7 @@ public class CraftingHandler implements ICraftingHandler {
 			
 			// If it is, remove it from the crafting matrix.
 			if (modifyKey) {
-				int keyIndex = InventoryUtils.findItemSlot(craftMatrix, BetterStorage.key);
+				int keyIndex = InventoryUtils.findItemSlot(craftMatrix, Items.key);
 				craftMatrix.setInventorySlotContents(keyIndex, null);
 			}
 			

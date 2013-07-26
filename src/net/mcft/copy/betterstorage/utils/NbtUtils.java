@@ -18,6 +18,8 @@ import net.minecraft.nbt.NBTTagString;
 
 public class NbtUtils {
 	
+	private NbtUtils() {  }
+	
 	/** Returns the value of a tag. The type is determined by the generic type of the function. */
 	public static <T> T getTagValue(NBTBase tag) {
 		if (tag instanceof NBTTagByte)      return (T)(Object)((NBTTagByte)tag).data;

@@ -5,6 +5,8 @@ import net.minecraftforge.common.IExtendedEntityProperties;
 
 public class EntityUtils {
 	
+	private EntityUtils() {  }
+	
 	private static String getIdentifier(Class<? extends IExtendedEntityProperties> propertiesClass) {
 		try { return (String)propertiesClass.getField("identifier").get(null); }
 		catch (Exception e) { throw new RuntimeException(e); }

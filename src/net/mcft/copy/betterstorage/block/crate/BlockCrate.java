@@ -1,12 +1,11 @@
 package net.mcft.copy.betterstorage.block.crate;
 
+import net.mcft.copy.betterstorage.block.BlockContainerBetterStorage;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -16,7 +15,7 @@ import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockCrate extends BlockContainer {
+public class BlockCrate extends BlockContainerBetterStorage {
 	
 	public BlockCrate(int id) {
 		super(id, Material.wood);
@@ -25,7 +24,6 @@ public class BlockCrate extends BlockContainer {
 		setStepSound(Block.soundWoodFootstep);
 		
 		MinecraftForge.setBlockHarvestLevel(this, "axe", 0);
-		setCreativeTab(CreativeTabs.tabDecorations);
 	}
 	
 	@Override

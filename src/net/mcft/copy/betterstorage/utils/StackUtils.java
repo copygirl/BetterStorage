@@ -12,6 +12,8 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class StackUtils {
 	
+	private StackUtils() {  }
+	
 	/** Gets a value from the ItemStack's custom NBT data. Example: <br>
 	 *  <code> int color = ItemUtils.get(stack, -1, "display", "color"); </code> <br>
 	 *  Returns defaultValue if any parent compounds or the value tag don't exist. */

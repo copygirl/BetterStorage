@@ -24,6 +24,8 @@ import net.minecraft.world.World;
 
 public class WorldUtils {
 	
+	private WorldUtils() {  }
+	
 	public static AxisAlignedBB getAABB(TileEntity entity, double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {
 		double x = entity.xCoord;
 		double y = entity.yCoord;

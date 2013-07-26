@@ -10,6 +10,8 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class InventoryUtils {
 	
+	private InventoryUtils() {  }
+	
 	/** Standard decrStackSize which modifies stackSize directly. */
 	public static ItemStack unsafeDecreaseStackSize(IInventory inventory, int slot, int amount) {
 		ItemStack stack = inventory.getStackInSlot(slot);

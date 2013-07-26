@@ -2,6 +2,7 @@ package net.mcft.copy.betterstorage.addon.thaumcraft;
 
 import net.mcft.copy.betterstorage.block.BlockBackpack;
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
@@ -12,6 +13,9 @@ public class BlockThaumcraftBackpack extends BlockBackpack {
 	public BlockThaumcraftBackpack(int id) {
 		super(id);
 	}
+	
+	@Override
+	public Class<? extends Item> getItemClass() { return ItemThaumcraftBackpack.class; }
 	
 	@Override
 	@SideOnly(Side.CLIENT)

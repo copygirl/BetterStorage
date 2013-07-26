@@ -6,6 +6,8 @@ import net.minecraftforge.common.ForgeDirection;
 
 public class DirectionUtils {
 	
+	private DirectionUtils() {  }
+	
 	/** Gets the ForgeDirection from the direction an entity is facing. */
 	public static ForgeDirection getOrientation(Entity entity) {
 		int dir = MathHelper.floor_double(entity.rotationYaw * 4.0 / 360.0 + 0.5) & 3;

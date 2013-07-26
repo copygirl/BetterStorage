@@ -1,23 +1,15 @@
 package net.mcft.copy.betterstorage.proxy;
 
-import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.Config;
-import net.mcft.copy.betterstorage.addon.Addon;
 import net.mcft.copy.betterstorage.attachment.EnumAttachmentInteraction;
 import net.mcft.copy.betterstorage.attachment.IHasAttachments;
 import net.mcft.copy.betterstorage.block.BlockEnderBackpack;
 import net.mcft.copy.betterstorage.block.crate.CratePileCollection;
-import net.mcft.copy.betterstorage.block.crate.TileEntityCrate;
-import net.mcft.copy.betterstorage.block.tileentity.TileEntityArmorStand;
-import net.mcft.copy.betterstorage.block.tileentity.TileEntityBackpack;
-import net.mcft.copy.betterstorage.block.tileentity.TileEntityCardboardBox;
-import net.mcft.copy.betterstorage.block.tileentity.TileEntityLocker;
-import net.mcft.copy.betterstorage.block.tileentity.TileEntityReinforcedChest;
+import net.mcft.copy.betterstorage.content.Blocks;
 import net.mcft.copy.betterstorage.entity.EntityFrienderman;
 import net.mcft.copy.betterstorage.inventory.InventoryStacks;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.item.ItemEnderBackpack;
-import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.misc.CurrentItem;
 import net.mcft.copy.betterstorage.misc.PropertiesBackpack;
 import net.mcft.copy.betterstorage.misc.handlers.PacketHandler;
@@ -59,30 +51,13 @@ import net.minecraftforge.event.world.WorldEvent.Unload;
 import cpw.mods.fml.common.IPlayerTracker;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
-import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class CommonProxy implements IPlayerTracker {
 	
-	public void init() {
+	public void initialize() {
 		MinecraftForge.EVENT_BUS.register(this);
 		GameRegistry.registerPlayerTracker(this);
-		registerTileEntites();
-		registerEntities();
-	}
-	
-	public void registerEntities() {
-		EntityRegistry.registerModEntity(EntityFrienderman.class, "Frienderman", 1, BetterStorage.instance, 64, 4, true);
-	}
-	
-	public void registerTileEntites() {
-		GameRegistry.registerTileEntity(TileEntityCrate.class, Constants.containerCrate);
-		GameRegistry.registerTileEntity(TileEntityReinforcedChest.class, Constants.containerReinforcedChest);
-		GameRegistry.registerTileEntity(TileEntityLocker.class, Constants.containerLocker);
-		GameRegistry.registerTileEntity(TileEntityArmorStand.class, Constants.containerArmorStand);
-		GameRegistry.registerTileEntity(TileEntityBackpack.class, Constants.containerBackpack);
-		GameRegistry.registerTileEntity(TileEntityCardboardBox.class, Constants.containerCardboardBox);
-		Addon.registerAllTileEntites();
 	}
 	
 	@ForgeSubscribe
@@ -111,14 +86,14 @@ public class CommonProxy implements IPlayerTracker {
 		else if (entity.getClass() == EntitySkeleton.class) probability = 1.0 / 1200;
 		else if ((entity.getClass() == EntityEnderman.class) && RandomUtils.getBoolean(1.0 / 80) &&
 		         (entity.worldObj.getBiomeGenForCoords((int)entity.posX, (int)entity.posZ) != BiomeGenBase.sky) &&
-		         (BetterStorage.enderBackpack != null)) {
+		         (Blocks.enderBackpack != null)) {
 			EntityFrienderman frienderman = new EntityFrienderman(entity.worldObj);
 			frienderman.setPositionAndRotation(entity.posX, entity.posY, entity.posZ, entity.rotationYaw, 0);
 			entity.worldObj.spawnEntityInWorld(frienderman);
 			ItemBackpack.getBackpackData(frienderman).spawnsWithBackpack = true;
 			entity.setDead();
 		}
-		if (RandomUtils.getDouble() >= probability || (BetterStorage.backpack == null)) return;
+		if (RandomUtils.getDouble() >= probability || (Blocks.backpack == null)) return;
 		ItemBackpack.getBackpackData(event.entityLiving).spawnsWithBackpack = true;
 		
 	}
@@ -260,10 +235,10 @@ public class CommonProxy implements IPlayerTracker {
 				
 				ItemStack[] contents = null;
 				if (entity instanceof EntityFrienderman) {
-					backpack = new ItemStack(BetterStorage.enderBackpack);
+					backpack = new ItemStack(Blocks.enderBackpack);
 					((EntityLiving)entity).setEquipmentDropChance(3, 0.0F); // Remove drop chance for the backpack.
 				} else {
-					backpack = new ItemStack(BetterStorage.backpack, 1, RandomUtils.getInt(120, 240));
+					backpack = new ItemStack(Blocks.backpack, 1, RandomUtils.getInt(120, 240));
 					ItemBackpack backpackType = (ItemBackpack)Item.itemsList[backpack.itemID];
 					if (RandomUtils.getBoolean(0.15)) {
 						// Give the backpack a random color.

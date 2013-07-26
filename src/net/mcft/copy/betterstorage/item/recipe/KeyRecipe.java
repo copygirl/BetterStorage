@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.mcft.copy.betterstorage.BetterStorage;
+import net.mcft.copy.betterstorage.content.Items;
 import net.mcft.copy.betterstorage.utils.InventoryUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.block.Block;
@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 
 public class KeyRecipe extends ComboRecipe {
 	
-	private static ItemStack dummyResult = new ItemStack(BetterStorage.key);
+	private static ItemStack dummyResult = new ItemStack(Items.key);
 	
 	public KeyRecipe(int width, int height, ItemStack[] recipe) {
 		super(width, height, recipe, dummyResult);
@@ -41,7 +41,7 @@ public class KeyRecipe extends ComboRecipe {
 	public boolean checkShapelessItems(InventoryCrafting crafting, List<ItemStack> shapelessItems) {
 		// See if this is modifying a key or duplicating it.
 		boolean modifyKey = (getRecipeSize() == 1);
-		List<ItemStack> keys = InventoryUtils.findItems(crafting, BetterStorage.key);
+		List<ItemStack> keys = InventoryUtils.findItems(crafting, Items.key);
 		// Not a valid recipe if there's more than one key.
 		if (keys.size() > 1) return false;
 		ItemStack key = ((keys.size() > 0) ? keys.get(0) : null);
@@ -50,7 +50,7 @@ public class KeyRecipe extends ComboRecipe {
 		// other than a key or dye is used.
 		for (ItemStack stack : shapelessItems) {
 			Item item = stack.getItem();
-			if ((item != BetterStorage.key) &&
+			if ((item != Items.key) &&
 			    (item != Item.dyePowder)) return false;
 		}
 		return true;
@@ -60,9 +60,9 @@ public class KeyRecipe extends ComboRecipe {
 	public ItemStack getCraftingResult(InventoryCrafting crafting) {
 		// See if this is modifying a key or duplicating it.
 		boolean modifyKey = (getRecipeSize() == 1);
-		ItemStack key = InventoryUtils.findItem(crafting, BetterStorage.key);
+		ItemStack key = InventoryUtils.findItem(crafting, Items.key);
 		List<ItemStack> dyes = InventoryUtils.findItems(crafting, Item.dyePowder);
-		ItemStack result = (modifyKey ? key.copy() : new ItemStack(BetterStorage.key));
+		ItemStack result = (modifyKey ? key.copy() : new ItemStack(Items.key));
 		if (key != null)
 			result.setItemDamage(key.getItemDamage());
 		if (dyes.size() >= 8)

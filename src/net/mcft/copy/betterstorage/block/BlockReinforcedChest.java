@@ -9,17 +9,18 @@ import net.mcft.copy.betterstorage.attachment.EnumAttachmentInteraction;
 import net.mcft.copy.betterstorage.attachment.IHasAttachments;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityContainer;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityReinforcedChest;
+import net.mcft.copy.betterstorage.item.ItemReinforcedChest;
 import net.mcft.copy.betterstorage.proxy.ClientProxy;
 import net.mcft.copy.betterstorage.utils.DirectionUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
@@ -31,7 +32,7 @@ import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockReinforcedChest extends BlockContainer {
+public class BlockReinforcedChest extends BlockContainerBetterStorage {
 	
 	public BlockReinforcedChest(int id, Material material) {
 		super(id, material);
@@ -46,6 +47,9 @@ public class BlockReinforcedChest extends BlockContainer {
 	public BlockReinforcedChest(int id) {
 		this(id, Material.wood);
 	}
+	
+	@Override
+	public Class<? extends Item> getItemClass() { return ItemReinforcedChest.class; }
 	
 	@Override
 	@SideOnly(Side.CLIENT)

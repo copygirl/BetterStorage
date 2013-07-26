@@ -4,13 +4,14 @@ import java.util.Random;
 
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityBackpack;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityContainer;
+import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.proxy.ClientProxy;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
@@ -20,7 +21,7 @@ import net.minecraftforge.common.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockBackpack extends BlockContainer {
+public class BlockBackpack extends BlockContainerBetterStorage {
 	
 	public BlockBackpack(int id) {
 		super(id, Material.cloth);
@@ -29,6 +30,9 @@ public class BlockBackpack extends BlockContainer {
 		setStepSound(soundClothFootstep);
 		setBlockBounds(3 / 16.0F, 0.0F, 3 / 16.0F, 13 / 16.0F, 13 / 16.0F, 13 / 16.0F);
 	}
+	
+	@Override
+	public Class<? extends Item> getItemClass() { return ItemBackpack.class; }
 	
 	@Override
 	@SideOnly(Side.CLIENT)

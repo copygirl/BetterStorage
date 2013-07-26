@@ -7,14 +7,15 @@ import java.util.ListIterator;
 import net.mcft.copy.betterstorage.addon.thaumcraft.ThaumcraftAddon;
 import net.minecraftforge.common.Configuration;
 import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public abstract class Addon {
 	
 	private static final List<Addon> addons = new ArrayList<Addon>();
 	private static final Addon thaumcraft = new ThaumcraftAddon();
 	
-	/** Initializes addons for other mods, if those are present. */
-	public static void initAll() {
+	public static void initialize() {
 		ListIterator<Addon> iter = addons.listIterator();
 		while (iter.hasNext()) {
 			Addon addon = iter.next();
@@ -23,26 +24,30 @@ public abstract class Addon {
 		}
 	}
 	
-	public static void loadAllConfigs(Configuration config) {
+	public static void loadConfigsAll(Configuration config) {
 		for (Addon addon : addons) addon.loadConfig(config);
 	}
-	public static void initializeAllItems() {
+	public static void initializeBlocksAll() {
+		for (Addon addon : addons) addon.initializeBlocks();
+	}
+	public static void initializeItemsAll() {
 		for (Addon addon : addons) addon.initializeItems();
 	}
-	public static void registerAllItems() {
-		for (Addon addon : addons) addon.registerItems();
-	}
-	public static void addAllRecipes() {
+	public static void addRecipesAll() {
 		for (Addon addon : addons) addon.addRecipes();
 	}
-	public static void registerAllTileEntites() {
-		for (Addon addon : addons) addon.registerTileEntites();
+	public static void registerEntitesAll() {
+		for (Addon addon : addons) addon.registerEntities();
 	}
-	public static void postClientInitAll() {
-		for (Addon addon : addons) addon.postClientInit();
+	public static void registerTileEntitesAll() {
+		for (Addon addon : addons) addon.registerTileEntities();
 	}
-	public static void postInitAll() {
-		for (Addon addon : addons) addon.postInit();
+	@SideOnly(Side.CLIENT)
+	public static void registerRenderersAll() {
+		for (Addon addon : addons) addon.registerRenderers();
+	}
+	public static void postInitializeAll() {
+		for (Addon addon : addons) addon.postInitialize();
 	}
 	
 	
@@ -53,18 +58,21 @@ public abstract class Addon {
 		addons.add(this);
 	}
 	
-	public abstract void loadConfig(Configuration config);
+	public void loadConfig(Configuration config) {  }
 	
-	public abstract void initializeItems();
+	public void initializeItems() {  }
 	
-	public abstract void registerItems();
+	public void initializeBlocks() {  }
 	
-	public abstract void addRecipes();
+	public void addRecipes() {  }
 	
-	public abstract void registerTileEntites();
+	public void registerEntities() {  }
 	
-	public abstract void postClientInit();
+	public void registerTileEntities() {  }
 	
-	public abstract void postInit();
+	@SideOnly(Side.CLIENT)
+	public void registerRenderers() {  }
+	
+	public void postInitialize() {  }
 	
 }

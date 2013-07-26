@@ -1,14 +1,15 @@
 package net.mcft.copy.betterstorage.addon.thaumcraft;
 
-import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.addon.Addon;
 import net.mcft.copy.betterstorage.block.BlockBackpack;
 import net.mcft.copy.betterstorage.block.ChestMaterial;
 import net.mcft.copy.betterstorage.client.renderer.ItemRendererBackpack;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityReinforcedChestRenderer;
+import net.mcft.copy.betterstorage.content.Blocks;
+import net.mcft.copy.betterstorage.content.Items;
 import net.mcft.copy.betterstorage.misc.Constants;
-import net.mcft.copy.betterstorage.misc.Registry;
 import net.mcft.copy.betterstorage.proxy.ClientProxy;
+import net.mcft.copy.betterstorage.utils.MiscUtils;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -45,15 +46,9 @@ public class ThaumcraftAddon extends Addon {
 	}
 	
 	@Override
-	public void initializeItems() {
-		thaumcraftBackpack = BetterStorage.conditionalNew(BlockThaumcraftBackpack.class, thaumcraftBackpackId);
-		thaumiumChest = BetterStorage.conditionalNew(BlockThaumiumChest.class, thaumiumChestId);
-	}
-	
-	@Override
-	public void registerItems() {
-		Registry.registerHacky(thaumcraftBackpack, "thaumcraftBackpack", ItemThaumcraftBackpack.class);
-		Registry.register(thaumiumChest, "thaumiumChest");
+	public void initializeBlocks() {
+		thaumcraftBackpack = MiscUtils.conditionalNew(BlockThaumcraftBackpack.class, thaumcraftBackpackId);
+		thaumiumChest = MiscUtils.conditionalNew(BlockThaumiumChest.class, thaumiumChestId);
 	}
 	
 	@Override
@@ -64,7 +59,7 @@ public class ThaumcraftAddon extends Addon {
 		ItemStack arcaneWood = ItemApi.getItem("blockWooden", 0);
 		
 		// Thaumaturge's backpack recipe
-		if ((thaumcraftBackpack != null) && (BetterStorage.backpack != null)) {
+		if ((thaumcraftBackpack != null) && (Blocks.backpack != null)) {
 			ObjectTags thaumcraftBackpackAspects =
 					(new ObjectTags()).add(EnumTag.VOID, 16)
 					                  .add(EnumTag.EXCHANGE, 12)
@@ -74,12 +69,12 @@ public class ThaumcraftAddon extends Addon {
 					"#i#",
 					"#O#",
 					"###", '#', fabric,
-					       'O', BetterStorage.backpack,
+					       'O', Blocks.backpack,
 					       'i', thaumium);
 		}
 		
 		// Thaumium chest recipe
-		if ((thaumiumChest != null) && (BetterStorage.reinforcedChest != null)) {
+		if ((thaumiumChest != null) && (Blocks.reinforcedChest != null)) {
 			ObjectTags thaumiumChestAspects =
 					(new ObjectTags()).add(EnumTag.METAL, 64)
 					                  .add(EnumTag.VOID, 20)
@@ -88,7 +83,7 @@ public class ThaumcraftAddon extends Addon {
 					55, thaumiumChestAspects, new ItemStack(thaumiumChest),
 					"o#o",
 					"#C#",
-					"oOo", 'C', BetterStorage.reinforcedChest,
+					"oOo", 'C', Blocks.reinforcedChest,
 					       '#', arcaneWood,
 					       'o', thaumium,
 					       'O', Block.blockIron);
@@ -103,36 +98,36 @@ public class ThaumcraftAddon extends Addon {
 	private void addAspects() {
 		
 		// Vanilla materials reinforced chests
-		addAspectsFor(BetterStorage.reinforcedChest, ChestMaterial.iron.id,
+		addAspectsFor(Blocks.reinforcedChest, ChestMaterial.iron.id,
 		              EnumTag.VOID, 6, EnumTag.ARMOR, 12, EnumTag.METAL, 64);
-		addAspectsFor(BetterStorage.reinforcedChest, ChestMaterial.gold.id,
+		addAspectsFor(Blocks.reinforcedChest, ChestMaterial.gold.id,
 		              EnumTag.VOID, 6, EnumTag.ARMOR, 12, EnumTag.METAL, 64, EnumTag.VALUABLE, 30);
-		addAspectsFor(BetterStorage.reinforcedChest, ChestMaterial.diamond.id,
+		addAspectsFor(Blocks.reinforcedChest, ChestMaterial.diamond.id,
 		              EnumTag.VOID, 6, EnumTag.ARMOR, 12, EnumTag.CRYSTAL, 96, EnumTag.VALUABLE, 30, EnumTag.PURE, 30);
-		addAspectsFor(BetterStorage.reinforcedChest, ChestMaterial.emerald.id,
+		addAspectsFor(Blocks.reinforcedChest, ChestMaterial.emerald.id,
 		              EnumTag.VOID, 6, EnumTag.ARMOR, 12, EnumTag.CRYSTAL, 80, EnumTag.VALUABLE, 30, EnumTag.EXCHANGE, 30);
 		
 		// Mod materials reinforced chests
-		addAspectsFor(BetterStorage.reinforcedChest, ChestMaterial.copper.id,
+		addAspectsFor(Blocks.reinforcedChest, ChestMaterial.copper.id,
 		              EnumTag.VOID, 6, EnumTag.ARMOR, 12, EnumTag.METAL, 48, EnumTag.LIFE, 16);
-		addAspectsFor(BetterStorage.reinforcedChest, ChestMaterial.tin.id,
+		addAspectsFor(Blocks.reinforcedChest, ChestMaterial.tin.id,
 		              EnumTag.VOID, 6, EnumTag.ARMOR, 12, EnumTag.METAL, 48, EnumTag.CONTROL, 16);
-		addAspectsFor(BetterStorage.reinforcedChest, ChestMaterial.silver.id,
+		addAspectsFor(Blocks.reinforcedChest, ChestMaterial.silver.id,
 		              EnumTag.VOID, 6, EnumTag.ARMOR, 12, EnumTag.METAL, 48, EnumTag.EXCHANGE, 16);
-		addAspectsFor(BetterStorage.reinforcedChest, ChestMaterial.zinc.id,
+		addAspectsFor(Blocks.reinforcedChest, ChestMaterial.zinc.id,
 		              EnumTag.VOID, 6, EnumTag.ARMOR, 12, EnumTag.METAL, 64);
 		
-		addAspectsFor(BetterStorage.crate, -1, EnumTag.VOID, 4, EnumTag.WOOD, 2);
-		addAspectsFor(BetterStorage.locker, -1, EnumTag.VOID, 4, EnumTag.WOOD, 2);
-		addAspectsFor(BetterStorage.armorStand, -1, EnumTag.METAL, 14);
-		addAspectsFor(BetterStorage.backpack, -1, EnumTag.VOID, 8, EnumTag.BEAST, 8, EnumTag.CLOTH, 8, EnumTag.ARMOR, 6);
-		addAspectsFor(BetterStorage.enderBackpack, -1, EnumTag.MAGIC, 12, EnumTag.ELDRITCH, 14, EnumTag.DARK, 10, EnumTag.ARMOR, 8);
-		addAspectsFor(BetterStorage.cardboardBox, -1, EnumTag.VOID, 3, EnumTag.TOOL, 4);
+		addAspectsFor(Blocks.crate, -1, EnumTag.VOID, 4, EnumTag.WOOD, 2);
+		addAspectsFor(Blocks.locker, -1, EnumTag.VOID, 4, EnumTag.WOOD, 2);
+		addAspectsFor(Blocks.armorStand, -1, EnumTag.METAL, 14);
+		addAspectsFor(Blocks.backpack, -1, EnumTag.VOID, 8, EnumTag.BEAST, 8, EnumTag.CLOTH, 8, EnumTag.ARMOR, 6);
+		addAspectsFor(Blocks.enderBackpack, -1, EnumTag.MAGIC, 12, EnumTag.ELDRITCH, 14, EnumTag.DARK, 10, EnumTag.ARMOR, 8);
+		addAspectsFor(Blocks.cardboardBox, -1, EnumTag.VOID, 3, EnumTag.TOOL, 4);
 		
-		addAspectsFor(BetterStorage.key, -1, EnumTag.METAL, 14, EnumTag.VALUABLE, 10, EnumTag.CONTROL, 2);
-		addAspectsFor(BetterStorage.lock, -1, EnumTag.METAL, 20, EnumTag.VALUABLE, 12, EnumTag.ARMOR, 6, EnumTag.MECHANISM, 4);
-		addAspectsFor(BetterStorage.keyring, -1, EnumTag.METAL, 6, EnumTag.VALUABLE, 2);
-		addAspectsFor(BetterStorage.cardboardSheet, -1, EnumTag.TOOL, 1);
+		addAspectsFor(Items.key, -1, EnumTag.METAL, 14, EnumTag.VALUABLE, 10, EnumTag.CONTROL, 2);
+		addAspectsFor(Items.lock, -1, EnumTag.METAL, 20, EnumTag.VALUABLE, 12, EnumTag.ARMOR, 6, EnumTag.MECHANISM, 4);
+		addAspectsFor(Items.keyring, -1, EnumTag.METAL, 6, EnumTag.VALUABLE, 2);
+		addAspectsFor(Items.cardboardSheet, -1, EnumTag.TOOL, 1);
 		
 		addAspectsFor(thaumcraftBackpack, -1, EnumTag.VOID, 18, EnumTag.CLOTH, 16, EnumTag.ARMOR, 6, EnumTag.MAGIC, 18, EnumTag.EXCHANGE, 8);
 		
@@ -151,20 +146,20 @@ public class ThaumcraftAddon extends Addon {
 	}
 	
 	@Override
-	public void registerTileEntites() {
+	public void registerTileEntities() {
 		GameRegistry.registerTileEntity(TileEntityThaumcraftBackpack.class, Constants.containerThaumcraftBackpack);
 		GameRegistry.registerTileEntity(TileEntityThaumiumChest.class, Constants.containerThaumiumChest);
 	}
 	
-	@SideOnly(Side.CLIENT)
 	@Override
-	public void postClientInit() {
+	@SideOnly(Side.CLIENT)
+	public void registerRenderers() {
 		MinecraftForgeClient.registerItemRenderer(thaumcraftBackpackId, ItemRendererBackpack.instance);
 		thaumiumChestRenderId = ClientProxy.registerTileEntityRenderer(TileEntityThaumiumChest.class, new TileEntityReinforcedChestRenderer());
 	}
 	
 	@Override
-	public void postInit() {
+	public void postInitialize() {
 		
 		ObjectTags researchAspects = (new ObjectTags()).add(EnumTag.VOID, 20)
 		                                               .add(EnumTag.MAGIC, 12)

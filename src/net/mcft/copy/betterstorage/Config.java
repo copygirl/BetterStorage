@@ -78,7 +78,7 @@ public class Config {
 		
 		validate();
 		
-		Addon.loadAllConfigs(config);
+		Addon.loadConfigsAll(config);
 		
 		config.save();
 		

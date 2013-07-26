@@ -3,7 +3,6 @@ package net.mcft.copy.betterstorage.proxy;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.addon.Addon;
 import net.mcft.copy.betterstorage.attachment.Attachment;
 import net.mcft.copy.betterstorage.attachment.Attachments;
@@ -20,6 +19,7 @@ import net.mcft.copy.betterstorage.client.renderer.TileEntityArmorStandRenderer;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityBackpackRenderer;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityLockerRenderer;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityReinforcedChestRenderer;
+import net.mcft.copy.betterstorage.content.Blocks;
 import net.mcft.copy.betterstorage.entity.EntityFrienderman;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.misc.handlers.KeyBindingHandler;
@@ -60,36 +60,34 @@ public class ClientProxy extends CommonProxy {
 			new HashMap<Class<? extends TileEntity>, BetterStorageRenderingHandler>();
 	
 	@Override
-	public void init() {
+	public void initialize() {
 		
-		super.init();
+		super.initialize();
 		
 		// Not using KeyBindingRegistry because I don't
 		// want the key to appear in the controls menu.
 		TickRegistry.registerTickHandler(new KeyBindingHandler(), Side.CLIENT);
 		
-		if (BetterStorage.backpack != null)
-			MinecraftForgeClient.registerItemRenderer(BetterStorage.backpack.blockID, ItemRendererBackpack.instance);
-		if (BetterStorage.enderBackpack != null)
-			MinecraftForgeClient.registerItemRenderer(BetterStorage.enderBackpack.blockID, ItemRendererBackpack.instance);
-		
-		Addon.postClientInitAll();
+		registerRenderers();
 		
 	}
 	
-	@Override
-	public void registerEntities() {
-		super.registerEntities();
+	private void registerRenderers() {
+		
+		if (Blocks.backpack != null)
+			MinecraftForgeClient.registerItemRenderer(Blocks.backpack.blockID, ItemRendererBackpack.instance);
+		if (Blocks.enderBackpack != null)
+			MinecraftForgeClient.registerItemRenderer(Blocks.enderBackpack.blockID, ItemRendererBackpack.instance);
+		
 		RenderingRegistry.registerEntityRenderingHandler(EntityFrienderman.class, new RenderFrienderman());
-	}
-	
-	@Override
-	public void registerTileEntites() {
-		super.registerTileEntites();
+		
 		reinforcedChestRenderId = registerTileEntityRenderer(TileEntityReinforcedChest.class, new TileEntityReinforcedChestRenderer());
 		lockerRenderId = registerTileEntityRenderer(TileEntityLocker.class, new TileEntityLockerRenderer());
 		armorStandRenderId = registerTileEntityRenderer(TileEntityArmorStand.class, new TileEntityArmorStandRenderer(), false, 0, 1, 0);
 		backpackRenderId = registerTileEntityRenderer(TileEntityBackpack.class, new TileEntityBackpackRenderer(), true, -160, 1.5F, 0.14F);
+		
+		Addon.registerRenderersAll();
+		
 	}
 	
 	public static int registerTileEntityRenderer(Class<? extends TileEntity> tileEntityClass, TileEntitySpecialRenderer renderer,

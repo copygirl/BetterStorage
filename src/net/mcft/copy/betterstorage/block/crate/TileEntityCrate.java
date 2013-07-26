@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.Config;
 import net.mcft.copy.betterstorage.api.ICrateStorage;
 import net.mcft.copy.betterstorage.api.ICrateWatcher;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityContainer;
 import net.mcft.copy.betterstorage.container.ContainerBetterStorage;
 import net.mcft.copy.betterstorage.container.ContainerCrate;
+import net.mcft.copy.betterstorage.content.Blocks;
 import net.mcft.copy.betterstorage.inventory.InventoryCratePlayerView;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.PlayerUtils;
@@ -68,7 +68,7 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 			crateAbove.destroyCrate();
 		// If there's still some crates left and this is a
 		// base crate, see which crates are still connected.
-		if ((data.getNumCrates() > 0) && !WorldUtils.is(worldObj, x, y - 1, z, BetterStorage.crate)) {
+		if ((data.getNumCrates() > 0) && !WorldUtils.is(worldObj, x, y - 1, z, Blocks.crate)) {
 			List<HashSet<TileEntityCrate>> crateSets =
 					new ArrayList<HashSet<TileEntityCrate>>();
 			int checkedChecks = 0;
@@ -161,7 +161,7 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 			CratePileData checkedPileData = checkedCrate.getPileData();
 			if (((pileData != null) && (checkedPileData.id != pileData.id)) ||
 			    ((dir != ForgeDirection.DOWN) && !crateBelow &&
-			     WorldUtils.is(worldObj, x, y - 1, z, BetterStorage.crate)) ||
+			     WorldUtils.is(worldObj, x, y - 1, z, Blocks.crate)) ||
 			    (dir == ForgeDirection.UP) || !checkedPileData.canAdd(this)) {
 				destroyCrate();
 				return false;
@@ -177,7 +177,7 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 	/** Destroys the crate when for example the crate's placement is invalid. */
 	private void destroyCrate() {
 		worldObj.setBlockToAir(xCoord, yCoord, zCoord);
-		dropItem(new ItemStack(BetterStorage.crate));
+		dropItem(new ItemStack(Blocks.crate));
 	}
 	
 	/** Drops a single item from the (destroyed) crate. */
