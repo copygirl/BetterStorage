@@ -24,7 +24,7 @@ public class Recipes {
 					"o/o",
 					"/ /",
 					"o/o", 'o', "plankWood",
-					       '/', Item.stick));
+					       '/', "stickWood"));
 		
 		// Reinforced chest recipes
 		if (Blocks.reinforcedChest != null)
