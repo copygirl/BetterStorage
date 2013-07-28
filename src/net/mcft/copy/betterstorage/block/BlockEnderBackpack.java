@@ -103,7 +103,7 @@ public class BlockEnderBackpack extends BlockBackpack {
 			TileEntityBackpack backpack = WorldUtils.get(world, x, y, z, TileEntityBackpack.class);
 			IInventory inventory = new InventoryTileEntity(backpack, player.getInventoryEnderChest());
 			Container container = new ContainerBetterStorage(player, inventory, 9, 3);
-			String name = "container." + Constants.modName + ".enderBackpack";
+			String name = "container." + Constants.modId + ".enderBackpack";
 			PlayerUtils.openGui(player, name, 9, 3, backpack.getCustomTitle(), container);
 		}
 		return true;

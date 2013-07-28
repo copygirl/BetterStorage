@@ -22,7 +22,7 @@ public abstract class ItemBetterStorage extends Item {
 		
 		String name = getClass().getSimpleName();                                    // ItemMyItem
 		name = name.substring(4, 5).toLowerCase(Locale.ENGLISH) + name.substring(5); // 'm' + "yItem"
-		setUnlocalizedName(Constants.modName + "." + name);                          // modname.myItem
+		setUnlocalizedName(Constants.modId + "." + name);                          // modname.myItem
 		
 	}
 	
@@ -31,7 +31,7 @@ public abstract class ItemBetterStorage extends Item {
 	public void registerIcons(IconRegister iconRegister) {
 		String name = getUnlocalizedName();
 		name = name.substring(name.lastIndexOf('.') + 1);
-		itemIcon = iconRegister.registerIcon(Constants.modName + ":" + name);
+		itemIcon = iconRegister.registerIcon(Constants.modId + ":" + name);
 	}
 	
 }

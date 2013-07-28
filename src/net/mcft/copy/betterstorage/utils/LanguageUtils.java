@@ -13,7 +13,7 @@ public class LanguageUtils {
 	public static String translateTooltip(String thing, String... replacements) {
 		if ((replacements.length % 2) != 0)
 			throw new IllegalArgumentException("replacements must contain an even number of elements.");
-		String translated = StatCollector.translateToLocal("tooltip." + Constants.modName + "." + thing);
+		String translated = StatCollector.translateToLocal("tooltip." + Constants.modId + "." + thing);
 		for (int i = 0; i < replacements.length; i += 2)
 			translated = translated.replace(replacements[i], replacements[i + 1]);
 		return translated;

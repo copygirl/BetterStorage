@@ -1,6 +1,6 @@
 [
   {
-    "modid": "BetterStorage",
+    "modid": "betterstorage",
     "name": "BetterStorage",
     "version": "@VERSION@",
     "description": "Adds more storage related blocks and items to the game.",

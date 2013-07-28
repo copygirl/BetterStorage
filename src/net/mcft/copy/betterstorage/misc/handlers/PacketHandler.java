@@ -80,7 +80,7 @@ public class PacketHandler implements IPacketHandler {
 					handleBackpackKeyEnabled(player, stream);
 					break;
 				default:
-					throw new Exception("Received " + Constants.modId + " packet for unhandled ID " + id + " on side " + side + ".");
+					throw new Exception("Received " + Constants.modName + " packet for unhandled ID " + id + " on side " + side + ".");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -88,7 +88,7 @@ public class PacketHandler implements IPacketHandler {
 	}
 	private void checkSide(int id, Side side, Side allowed) throws Exception {
 		if (side == allowed) return;
-		throw new Exception("Received " + Constants.modId + " packet for ID " + id + " on invalid side " + side + ".");
+		throw new Exception("Received " + Constants.modName + " packet for ID " + id + " on invalid side " + side + ".");
 	}
 	
 	@SideOnly(Side.CLIENT)

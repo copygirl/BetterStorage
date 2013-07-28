@@ -57,7 +57,7 @@ public class BetterStorage {
 		
 		Config.load(event.getSuggestedConfigurationFile());
 		
-		BetterStorage.log.info("BetterStorage will overwrite some of its own items. Don't worry, this is normal.");
+		BetterStorage.log.info(Constants.modName + " will overwrite some of its own items. Don't worry, this is normal.");
 		Blocks.initialize();
 		Items.initialize();
 		

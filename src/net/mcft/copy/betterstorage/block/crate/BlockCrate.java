@@ -29,7 +29,7 @@ public class BlockCrate extends BlockContainerBetterStorage {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister iconRegister) {
-		blockIcon = iconRegister.registerIcon(Constants.modName + ":crate");
+		blockIcon = iconRegister.registerIcon(Constants.modId + ":crate");
 	}
 	
 	@Override

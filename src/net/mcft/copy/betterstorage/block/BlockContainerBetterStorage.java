@@ -20,7 +20,7 @@ public abstract class BlockContainerBetterStorage extends BlockContainer {
 		
 		String name = getClass().getSimpleName();                                    // BlockMyBlock
 		name = name.substring(5, 6).toLowerCase(Locale.ENGLISH) + name.substring(6); // 'm' + "yBlock"
-		setUnlocalizedName(Constants.modName + "." + name);                          // modname.myBlock
+		setUnlocalizedName(Constants.modId + "." + name);                            // modname.myBlock
 		
 		registerBlock();
 		

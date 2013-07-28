@@ -12,7 +12,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class CreativeTabBetterStorage extends CreativeTabs {
 	
 	public CreativeTabBetterStorage() {
-		super(Constants.modName);
+		super(Constants.modId);
 	}
 	
 	@Override

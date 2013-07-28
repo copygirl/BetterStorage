@@ -18,7 +18,7 @@ public class Resources {
 	public static final ResourceLocation enderBackpackTexture   = new BetterStorageResource("textures/models/enderBackpack.png");
 	
 	
-	private static final String modelbase = "/assets/" + Constants.modName + "/models/";
+	private static final String modelbase = "/assets/" + Constants.modId + "/models/";
 	
 	public static final String lockerModel      = modelbase + "locker.obj";
 	public static final String largeLockerModel = modelbase + "locker_large.obj";

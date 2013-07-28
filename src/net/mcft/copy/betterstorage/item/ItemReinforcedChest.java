@@ -20,7 +20,7 @@ public class ItemReinforcedChest extends ItemBlock {
 	@Override
 	public String getItemDisplayName(ItemStack stack) {
 		String name = StatCollector.translateToLocal(getLocalizedName(stack) + ".name.full");
-		String material = "material." + Constants.modName + "." + ChestMaterial.get(stack.getItemDamage()).name;
+		String material = "material." + Constants.modId + "." + ChestMaterial.get(stack.getItemDamage()).name;
 		String materialName = StatCollector.translateToLocal(material);
 		return name.replace("%MATERIAL%", materialName);
 	}

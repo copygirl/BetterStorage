@@ -27,7 +27,7 @@ public class KeyBindingHandler extends KeyHandler {
 	public EnumSet<TickType> ticks() { return EnumSet.of(TickType.CLIENT); }
 	
 	@Override
-	public String getLabel() { return Constants.modId + ".KeyHandler"; }
+	public String getLabel() { return Constants.modName + ".KeyHandler"; }
 	
 	@Override
 	public void keyDown(EnumSet<TickType> types, KeyBinding kb, boolean tickEnd, boolean isRepeat) {

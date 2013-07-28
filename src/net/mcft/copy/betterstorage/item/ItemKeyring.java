@@ -28,7 +28,7 @@ public class ItemKeyring extends ItemBetterStorage implements IKey, IContainerIt
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister iconRegister) {
 		for (int i = 0; i < icons.length; i++)
-			icons[i] = iconRegister.registerIcon(Constants.modName + ":keyring_" + i);
+			icons[i] = iconRegister.registerIcon(Constants.modId + ":keyring_" + i);
 		itemIcon = icons[0];
 	}
 	

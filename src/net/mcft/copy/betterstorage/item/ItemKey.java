@@ -34,8 +34,8 @@ public class ItemKey extends ItemBetterStorage implements IKey {
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister iconRegister) {
 		super.registerIcons(iconRegister);
-		iconColor = iconRegister.registerIcon(Constants.modName + ":key_color");
-		iconFullColor = iconRegister.registerIcon(Constants.modName + ":key_fullColor");
+		iconColor = iconRegister.registerIcon(Constants.modId + ":key_color");
+		iconFullColor = iconRegister.registerIcon(Constants.modId + ":key_fullColor");
 	}
 	
 	@Override

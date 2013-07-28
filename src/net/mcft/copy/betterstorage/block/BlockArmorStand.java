@@ -45,7 +45,7 @@ public class BlockArmorStand extends BlockContainerBetterStorage {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public String getItemIconName() { return Constants.modName + ":armorstand"; }
+	public String getItemIconName() { return Constants.modId + ":armorstand"; }
 	
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {

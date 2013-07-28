@@ -5,7 +5,7 @@ import net.minecraft.util.ResourceLocation;
 public class BetterStorageResource extends ResourceLocation {
 	
 	public BetterStorageResource(String location) {
-		super(Constants.modName, location);
+		super(Constants.modId, location);
 	}
 	
 }

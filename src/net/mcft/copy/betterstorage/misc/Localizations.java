@@ -19,7 +19,7 @@ public class Localizations {
 	
 	public static void load() {
 		
-		Pattern pattern = Pattern.compile(".*(assets/" + Constants.modName + "/lang/(.+)\\.(.+))");
+		Pattern pattern = Pattern.compile(".*(assets/" + Constants.modId + "/lang/(.+)\\.(.+))");
 		for (String file : getResources(pattern)) {
 			Matcher matcher = pattern.matcher(file);
 			matcher.find();
