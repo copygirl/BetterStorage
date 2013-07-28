@@ -2,8 +2,9 @@ package net.mcft.copy.betterstorage.block;
 
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityBackpack;
 import net.mcft.copy.betterstorage.container.ContainerBetterStorage;
-import net.mcft.copy.betterstorage.inventory.InventoryWrapper;
+import net.mcft.copy.betterstorage.inventory.InventoryTileEntity;
 import net.mcft.copy.betterstorage.item.ItemEnderBackpack;
+import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.misc.handlers.PacketHandler;
 import net.mcft.copy.betterstorage.utils.PlayerUtils;
 import net.mcft.copy.betterstorage.utils.RandomUtils;
@@ -100,32 +101,12 @@ public class BlockEnderBackpack extends BlockBackpack {
 	                                int side, float hitX, float hitY, float hitZ) {
 		if (!world.isRemote) {
 			TileEntityBackpack backpack = WorldUtils.get(world, x, y, z, TileEntityBackpack.class);
-			IInventory inventory = new InventoryEnderBackpack(player, backpack);
+			IInventory inventory = new InventoryTileEntity(backpack, player.getInventoryEnderChest());
 			Container container = new ContainerBetterStorage(player, inventory, 9, 3);
-			PlayerUtils.openGui(player, backpack.getName(), 9, 3, backpack.getCustomTitle(), container);
+			String name = "container." + Constants.modName + ".enderBackpack";
+			PlayerUtils.openGui(player, name, 9, 3, backpack.getCustomTitle(), container);
 		}
 		return true;
-	}
-	
-	static class InventoryEnderBackpack extends InventoryWrapper {
-		
-		public final TileEntityBackpack backpack;
-		
-		public InventoryEnderBackpack(EntityPlayer player, TileEntityBackpack backpack) {
-			super(player.getInventoryEnderChest());
-			this.backpack = backpack;
-		}
-		@Override
-		public boolean isUseableByPlayer(EntityPlayer player) {
-			return WorldUtils.isTileEntityUsableByPlayer(backpack, player);
-		}
-		@Override
-		public void onInventoryChanged() {  }
-		@Override
-		public void openChest() { backpack.onContainerOpened(); }
-		@Override
-		public void closeChest() { backpack.onContainerClosed(); }
-		
 	}
 	
 }
