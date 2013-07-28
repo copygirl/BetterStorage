@@ -17,6 +17,7 @@ import net.mcft.copy.betterstorage.misc.handlers.KeyBindingHandler;
 import net.mcft.copy.betterstorage.misc.handlers.PacketHandler;
 import net.mcft.copy.betterstorage.utils.DirectionUtils;
 import net.mcft.copy.betterstorage.utils.EntityUtils;
+import net.mcft.copy.betterstorage.utils.LanguageUtils;
 import net.mcft.copy.betterstorage.utils.PlayerUtils;
 import net.mcft.copy.betterstorage.utils.RandomUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
@@ -121,23 +122,18 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 		if (getBackpack(player) == stack) {
 			PropertiesBackpack backpackData = getBackpackData(player);
 			boolean containsItems = containsItems(backpackData);
+			String reason = LanguageUtils.translateTooltip("backpack.containsItems");
 			if (ItemBackpack.isBackpackOpen(player)) {
-				if (containsItems)
-					list.add("Contains items.");
-				list.add("Currently being used by a player.");
-			} else if (containsItems) {
-				list.add("Contains items. Sneak and right click");
-				list.add("ground with empty hand to unequip.");
-			}
+				if (containsItems) list.add(reason);
+				LanguageUtils.translateTooltip(list, "backpack.used");
+			} else if (containsItems)
+				LanguageUtils.translateTooltip(list, "backpack.unequipHint", "%REASON%", reason);
 			if (KeyBindingHandler.serverBackpackKeyEnabled) {
 				GameSettings settings = Minecraft.getMinecraft().gameSettings;
 				String str = GameSettings.getKeyDisplayString(Config.backpackOpenKey);
-				list.add("Press " + str + " to open while equipped.");
+				LanguageUtils.translateTooltip(list, "backpack.openHint", "%KEY%", str);
 			}
-		} else {
-			list.add("Place down and break");
-			list.add("while sneaking to equip.");
-		}
+		} else LanguageUtils.translateTooltip(list, "backpack.equipHint");
 	}
 	
 	@Override

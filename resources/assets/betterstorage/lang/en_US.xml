@@ -46,4 +46,10 @@
 	<entry key="tile.betterstorage.reinforcedChest.name.full">Reinforced %MATERIAL% Chest</entry>
 	<entry key="tile.betterstorage.thaumcraftBackpack.name">Thaumaturge's Backpack</entry>
 	<entry key="tile.betterstorage.thaumiumChest.name">Thaumium Chest</entry>
+	<entry key="tooltip.betterstorage.backpack.bound">Bound backpack.</entry>
+	<entry key="tooltip.betterstorage.backpack.containsItems">Contains Items.</entry>
+	<entry key="tooltip.betterstorage.backpack.equipHint">Place down and break#while sneaking to equip.</entry>
+	<entry key="tooltip.betterstorage.backpack.openHint">Press %KEY% to open while equipped.</entry>
+	<entry key="tooltip.betterstorage.backpack.unequipHint">%REASON% Sneak and right click#ground with empty hand to unequip.</entry>
+	<entry key="tooltip.betterstorage.backpack.used">Currently being used by a player.</entry>
 </properties>

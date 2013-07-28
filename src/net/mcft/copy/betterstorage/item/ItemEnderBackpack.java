@@ -8,6 +8,7 @@ import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.misc.PropertiesBackpack;
 import net.mcft.copy.betterstorage.misc.Resources;
 import net.mcft.copy.betterstorage.misc.handlers.KeyBindingHandler;
+import net.mcft.copy.betterstorage.utils.LanguageUtils;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.GameSettings;
@@ -51,22 +52,17 @@ public class ItemEnderBackpack extends ItemBackpack {
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advancedTooltips) {
 		if (getBackpack(player) == stack) {
 			PropertiesBackpack backpackData = getBackpackData(player);
+			String reason = LanguageUtils.translateTooltip("backpack.bound");
 			if (ItemBackpack.isBackpackOpen(player)) {
-				list.add("Bound backpack.");
-				list.add("Currently being used by a player.");
-			} else {
-				list.add("Bound backpack. Sneak and right click");
-				list.add("ground with empty hand to unequip.");
-			}
+				list.add(reason);
+				LanguageUtils.translateTooltip(list, "backpack.used");
+			} else LanguageUtils.translateTooltip(list, "backpack.unequipHint", "%REASON%", reason);
 			if (KeyBindingHandler.serverBackpackKeyEnabled) {
 				GameSettings settings = Minecraft.getMinecraft().gameSettings;
 				String str = GameSettings.getKeyDisplayString(Config.backpackOpenKey);
-				list.add("Press " + str + " to open while equipped.");
+				LanguageUtils.translateTooltip(list, "backpack.openHint", "%KEY%", str);
 			}
-		} else {
-			list.add("Place down and break");
-			list.add("while sneaking to equip.");
-		}
+		} else LanguageUtils.translateTooltip(list, "backpack.equipHint");
 	}
 	
 	@Override
