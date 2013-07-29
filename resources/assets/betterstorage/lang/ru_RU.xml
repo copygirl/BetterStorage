@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties version="1.0">
-  <comment>Russian (ru_RU) Localization File</comment>
+	<comment>Russian (ru_RU) Localization File</comment>
 	<entry key="container.betterstorage.backpack">Рюкзак</entry>
 	<entry key="container.betterstorage.cardboardBox">Картонная коробка</entry>
 	<entry key="container.betterstorage.crate">Ящик для хранения</entry>
@@ -48,8 +48,8 @@
 	<entry key="tile.betterstorage.thaumiumChest.name">Таумиум сундук</entry>
 	<entry key="tooltip.betterstorage.backpack.bound">Связанный рюкзак.</entry>
 	<entry key="tooltip.betterstorage.backpack.containsItems">Содержит предметы.</entry>
-	<entry key="tooltip.betterstorage.backpack.equipHint">Place down and break#while sneaking to equip.</entry>
-	<entry key="tooltip.betterstorage.backpack.openHint">Нажмите %KEY%,чтобы открыть, когда одет.</entry>
-	<entry key="tooltip.betterstorage.backpack.unequipHint">%REASON% Sneak and right click#ground with empty hand to unequip.</entry>
+	<entry key="tooltip.betterstorage.backpack.equipHint">Поставьте на пол и ударьте#присев, чтобы одеть.</entry>
+	<entry key="tooltip.betterstorage.backpack.openHint">Нажмите %KEY%, чтобы открыть, когда одет.</entry>
+	<entry key="tooltip.betterstorage.backpack.unequipHint">%REASON% Присев кликните правой#кнопкой по полу с пустыми руками, чтобы снять.</entry>
 	<entry key="tooltip.betterstorage.backpack.used">В настоящее время используется игроком.</entry>
 </properties>
