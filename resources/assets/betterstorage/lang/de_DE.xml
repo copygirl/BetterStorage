@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties version="1.0">
+	<comment>German (de_DE) Localization File</comment>
+	<entry key="container.betterstorage.backpack">Rucksack</entry>
+	<entry key="container.betterstorage.cardboardBox">Pappkarton</entry>
+	<entry key="container.betterstorage.crate">Lagerkiste</entry>
+	<entry key="container.betterstorage.enderBackpack">Ender-Rucksack</entry>
+	<entry key="container.betterstorage.keyring">Schlüsselbund</entry>
+	<entry key="container.betterstorage.locker">Schließfach</entry>
+	<entry key="container.betterstorage.lockerLarge">Großes Schließfach</entry>
+	<entry key="container.betterstorage.reinforcedChest">Verstärkte Truhe</entry>
+	<entry key="container.betterstorage.reinforcedChestLarge">Große Verstärkte Truhe</entry>
+	<entry key="container.betterstorage.thaumcraftBackpack">Rucksack des Thaumaturgen</entry>
+	<entry key="container.betterstorage.thaumiumChest">Thaumium-Truhe</entry>
+	<entry key="container.betterstorage.thaumiumChestLarge">Große Thaumium-Truhe</entry>
+	<entry key="enchantment.betterstorage.key.lockpicking">Schlossknacken</entry>
+	<entry key="enchantment.betterstorage.key.morphing">Verwandlung</entry>
+	<entry key="enchantment.betterstorage.key.unlocking">Aufschließen</entry>
+	<entry key="enchantment.betterstorage.lock.persistance">Beharrlichkeit</entry>
+	<entry key="enchantment.betterstorage.lock.security">Sicherheit</entry>
+	<entry key="enchantment.betterstorage.lock.shock">Schock</entry>
+	<entry key="enchantment.betterstorage.lock.trigger">Auslösen</entry>
+	<entry key="entity.BetterStorage.Frienderman">Enderman</entry>
+	<entry key="item.betterstorage.cardboardSheet.name">Pappbogen</entry>
+	<entry key="item.betterstorage.key.name">Schlüssel</entry>
+	<entry key="item.betterstorage.keyring.name">Schlüsselbund</entry>
+	<entry key="item.betterstorage.lock.name">Schloss</entry>
+	<entry key="item.betterstorage.masterKey.name">Master-Schlüssel</entry>
+	<entry key="itemGroup.betterstorage">BetterStorage</entry>
+	<entry key="material.betterstorage.iron">Eisen</entry>
+	<entry key="material.betterstorage.gold">Gold</entry>
+	<entry key="material.betterstorage.diamond">Diamant</entry>
+	<entry key="material.betterstorage.emerald">Smaragd</entry>
+	<entry key="material.betterstorage.copper">Kupfer</entry>
+	<entry key="material.betterstorage.tin">Zinn</entry>
+	<entry key="material.betterstorage.silver">Silber</entry>
+	<entry key="material.betterstorage.zinc">Zink</entry>
+	<entry key="tile.betterstorage.armorStand.name">Rüstungsstand</entry>
+	<entry key="tile.betterstorage.backpack.name">Rucksack</entry>
+	<entry key="tile.betterstorage.cardboardBox.name">Pappkarton</entry>
+	<entry key="tile.betterstorage.crate.name">Lagerkiste</entry>
+	<entry key="tile.betterstorage.enderBackpack.name">Ender-Rucksack</entry>
+	<entry key="tile.betterstorage.locker.name">Schließfach</entry>
+	<entry key="tile.betterstorage.reinforcedChest.name">Verstärkte Truhe</entry>
+	<entry key="tile.betterstorage.reinforcedChest.name.full">Verstärkte %MATERIAL%-Truhe</entry>
+	<entry key="tile.betterstorage.thaumcraftBackpack.name">Rucksack des Thaumaturgen</entry>
+	<entry key="tile.betterstorage.thaumiumChest.name">Thaumium-Truhe</entry>
+	<entry key="tooltip.betterstorage.backpack.bound">Gebundener Rucksack.</entry>
+	<entry key="tooltip.betterstorage.backpack.containsItems">Enthält Gegenstände.</entry>
+	<entry key="tooltip.betterstorage.backpack.equipHint">Platziere und bau ab, während du#schleichst, um ihn auszurüsten.</entry>
+	<entry key="tooltip.betterstorage.backpack.openHint">Drücke %KEY%, um ihn zu öffnen,#während er ausgerüstet ist.</entry>
+	<entry key="tooltip.betterstorage.backpack.unequipHint">%REASON% Schleiche und#rechtsklicke Boden mit leerer#Hand, um ihn abzurüsten.</entry>
+	<entry key="tooltip.betterstorage.backpack.used">Wird aktuell von einem Spieler genutzt.</entry>
+</properties>
