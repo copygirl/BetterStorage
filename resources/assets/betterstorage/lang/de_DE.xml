@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties version="1.0">
-  <comment>German (de_DE) Localization File</comment>
+	<comment>German (de_DE) Localization File</comment>
 	<entry key="container.betterstorage.backpack">Rucksack</entry>
 	<entry key="container.betterstorage.cardboardBox">Pappkarton</entry>
 	<entry key="container.betterstorage.crate">Lagerkiste</entry>
@@ -46,10 +46,10 @@
 	<entry key="tile.betterstorage.reinforcedChest.name.full">Verstärkte %MATERIAL%-Truhe</entry>
 	<entry key="tile.betterstorage.thaumcraftBackpack.name">Rucksack des Thaumaturgen</entry>
 	<entry key="tile.betterstorage.thaumiumChest.name">Thaumium-Truhe</entry>
-	<entry key="tooltip.betterstorage.backpack.bound">Gebundener Rucksack.</entry>
-	<entry key="tooltip.betterstorage.backpack.containsItems">Enthält Gegenstände.</entry>
-	<entry key="tooltip.betterstorage.backpack.equipHint">Platziere und bau ab, während du#schleichst, um ihn auszurüsten.</entry>
-	<entry key="tooltip.betterstorage.backpack.openHint">Drücke %KEY%, um ihn zu öffnen, während er ausgerüstet ist.</entry>
-	<entry key="tooltip.betterstorage.backpack.unequipHint">%REASON% Schleiche und#rechtsklicke Boden mit leerer#Hand, um ihn abzurüsten.</entry>
-	<entry key="tooltip.betterstorage.backpack.used">Wird aktuell von einem Spieler genutzt.</entry>
+	<entry key="tooltip.betterstorage.backpack.bound">Gebunden.</entry>
+	<entry key="tooltip.betterstorage.backpack.containsItems">Nicht leer.</entry>
+	<entry key="tooltip.betterstorage.backpack.equipHint">Platziere und bau ab, während#du schleichst, um auszurüsten.</entry>
+	<entry key="tooltip.betterstorage.backpack.openHint">Drücke %KEY%, um Rucksack zu öffnen.</entry>
+	<entry key="tooltip.betterstorage.backpack.unequipHint">%REASON% Schleiche und rechtsklicke#Boden mit leerer Hand, um abzusetzen.</entry>
+	<entry key="tooltip.betterstorage.backpack.used">Wird gerade von einem Spieler benutzt.</entry>
 </properties>
