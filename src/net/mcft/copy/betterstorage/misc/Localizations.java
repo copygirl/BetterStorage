@@ -11,6 +11,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
+import net.mcft.copy.betterstorage.BetterStorage;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class Localizations {
@@ -19,30 +21,22 @@ public class Localizations {
 	
 	public static void load() {
 		
+		File source = Loader.instance().getReversedModObjectList().get(BetterStorage.instance).getSource();
 		Pattern pattern = Pattern.compile(".*(assets/" + Constants.modId + "/lang/(.+)\\.(.+))");
-		for (String file : getResources(pattern)) {
+		for (String file : getResources(source, pattern)) {
 			Matcher matcher = pattern.matcher(file);
 			matcher.find();
 			String resource = "/" + matcher.group(1);
 			String lang = matcher.group(2);
 			boolean isXML = matcher.group(3).equalsIgnoreCase("xml");
 			LanguageRegistry.instance().loadLocalization(resource, lang, isXML);
+			BetterStorage.log.info("Loaded localization file for '" + lang + "'.");
 		}
 		
 	}
 	
-	private static Collection<String> getResources(Pattern pattern) {
+	private static Collection<String> getResources(File file, Pattern pattern) {
 		ArrayList<String> retval = new ArrayList<String>();
-		String classPath = System.getProperty("java.class.path", ".");
-		String[] classPathElements = classPath.split(File.pathSeparator);
-		for (String element : classPathElements)
-			retval.addAll(getResources(element, pattern));
-		return retval;
-	}
-	
-	private static Collection<String> getResources(String element, Pattern pattern) {
-		ArrayList<String> retval = new ArrayList<String>();
-		File file = new File(element);
 		if (file.isDirectory())
 			retval.addAll(getResourcesFromDirectory(file, pattern));
 		else retval.addAll(getResourcesFromJarFile(file, pattern));
