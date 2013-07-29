@@ -39,7 +39,7 @@
 	<entry key="tile.betterstorage.armorStand.name">Armor Stand</entry>
 	<entry key="tile.betterstorage.backpack.name">Backpack</entry>
 	<entry key="tile.betterstorage.cardboardBox.name">Cardboard Box</entry>
-	<entry key="tile.betterstorage.crate.name">Crate</entry>
+	<entry key="tile.betterstorage.crate.name">Storage Crate</entry>
 	<entry key="tile.betterstorage.enderBackpack.name">Ender Backpack</entry>
 	<entry key="tile.betterstorage.locker.name">Locker</entry>
 	<entry key="tile.betterstorage.reinforcedChest.name">Reinforced Chest</entry>
