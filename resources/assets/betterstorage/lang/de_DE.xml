@@ -49,7 +49,7 @@
 	<entry key="tooltip.betterstorage.backpack.bound">Gebundener Rucksack.</entry>
 	<entry key="tooltip.betterstorage.backpack.containsItems">Enthält Gegenstände.</entry>
 	<entry key="tooltip.betterstorage.backpack.equipHint">Platziere und bau ab, während du#schleichst, um ihn auszurüsten.</entry>
-	<entry key="tooltip.betterstorage.backpack.openHint">Drücke %KEY%, um ihn zu öffnen, während er ausgerüstet ist.</entry>
+	<entry key="tooltip.betterstorage.backpack.openHint">Drücke %KEY%, um ihn zu öffnen,#während er ausgerüstet ist.</entry>
 	<entry key="tooltip.betterstorage.backpack.unequipHint">%REASON% Schleiche und#rechtsklicke Boden mit leerer#Hand, um ihn abzurüsten.</entry>
 	<entry key="tooltip.betterstorage.backpack.used">Wird aktuell von einem Spieler genutzt.</entry>
 </properties>
