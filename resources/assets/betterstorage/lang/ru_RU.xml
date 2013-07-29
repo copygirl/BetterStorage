@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties version="1.0">
+  <comment>Russian (ru_RU) Localization File</comment>
+	<entry key="container.betterstorage.backpack">Рюкзак</entry>
+	<entry key="container.betterstorage.cardboardBox">Картонная коробка</entry>
+	<entry key="container.betterstorage.crate">Ящик для хранения</entry>
+	<entry key="container.betterstorage.enderBackpack">Эндер рюкзак</entry>
+	<entry key="container.betterstorage.keyring">Связка ключей</entry>
+	<entry key="container.betterstorage.locker">Шкаф</entry>
+	<entry key="container.betterstorage.lockerLarge">Большой шкаф</entry>
+	<entry key="container.betterstorage.reinforcedChest">Укреплённый сундук</entry>
+	<entry key="container.betterstorage.reinforcedChestLarge">Большой укреплённый сундук</entry>
+	<entry key="container.betterstorage.thaumcraftBackpack">Рюкзак тауматурга</entry>
+	<entry key="container.betterstorage.thaumiumChest">Таумиум рюкзак</entry>
+	<entry key="container.betterstorage.thaumiumChestLarge">Большой таумиум рюкзак</entry>
+	<entry key="enchantment.betterstorage.key.lockpicking">Взлом</entry>
+	<entry key="enchantment.betterstorage.key.morphing">Морфинг</entry>
+	<entry key="enchantment.betterstorage.key.unlocking">Отпирание</entry>
+	<entry key="enchantment.betterstorage.lock.persistance">Устойчивость</entry>
+	<entry key="enchantment.betterstorage.lock.security">Безопасность</entry>
+	<entry key="enchantment.betterstorage.lock.shock">Шок</entry>
+	<entry key="enchantment.betterstorage.lock.trigger">Импульс</entry>
+	<entry key="entity.BetterStorage.Frienderman">Эндермен</entry>
+	<entry key="item.betterstorage.cardboardSheet.name">Картонный лист</entry>
+	<entry key="item.betterstorage.key.name">Ключ</entry>
+	<entry key="item.betterstorage.keyring.name">Связка ключей</entry>
+	<entry key="item.betterstorage.lock.name">Замок</entry>
+	<entry key="item.betterstorage.masterKey.name">Отмычка</entry>
+	<entry key="itemGroup.betterstorage">BetterStorage</entry>
+	<entry key="material.betterstorage.iron">Железный</entry>
+	<entry key="material.betterstorage.gold">Золотой</entry>
+	<entry key="material.betterstorage.diamond">Алмазный</entry>
+	<entry key="material.betterstorage.emerald">Изумрудный</entry>
+	<entry key="material.betterstorage.copper">Медный</entry>
+	<entry key="material.betterstorage.tin">Оловянный</entry>
+	<entry key="material.betterstorage.silver">Серебряный</entry>
+	<entry key="material.betterstorage.zinc">Цинковый</entry>
+	<entry key="tile.betterstorage.armorStand.name">Стойка для брони</entry>
+	<entry key="tile.betterstorage.backpack.name">Рюкзак</entry>
+	<entry key="tile.betterstorage.cardboardBox.name">Картонная коробка</entry>
+	<entry key="tile.betterstorage.crate.name">Ящик для хранения</entry>
+	<entry key="tile.betterstorage.enderBackpack.name">Эндер рюкзак</entry>
+	<entry key="tile.betterstorage.locker.name">Шкаф</entry>
+	<entry key="tile.betterstorage.reinforcedChest.name">Укреплённый сундук</entry>
+	<entry key="tile.betterstorage.reinforcedChest.name.full">Укреплённый %MATERIAL% сундук</entry>
+	<entry key="tile.betterstorage.thaumcraftBackpack.name">Рюкзак тауматурга</entry>
+	<entry key="tile.betterstorage.thaumiumChest.name">Таумиум сундук</entry>
+	<entry key="tooltip.betterstorage.backpack.bound">Связанный рюкзак.</entry>
+	<entry key="tooltip.betterstorage.backpack.containsItems">Содержит предметы.</entry>
+	<entry key="tooltip.betterstorage.backpack.equipHint">Place down and break#while sneaking to equip.</entry>
+	<entry key="tooltip.betterstorage.backpack.openHint">Нажмите %KEY%,чтобы открыть, когда одет.</entry>
+	<entry key="tooltip.betterstorage.backpack.unequipHint">%REASON% Sneak and right click#ground with empty hand to unequip.</entry>
+	<entry key="tooltip.betterstorage.backpack.used">В настоящее время используется игроком.</entry>
+</properties>
