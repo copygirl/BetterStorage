@@ -46,10 +46,10 @@
 	<entry key="tile.betterstorage.reinforcedChest.name.full">强化%MATERIAL%箱子</entry>
 	<entry key="tile.betterstorage.thaumcraftBackpack.name">神秘使背包</entry>
 	<entry key="tile.betterstorage.thaumiumChest.name">神秘箱子</entry>
-	<entry key="tooltip.betterstorage.backpack.bound">绑定背包.</entry>
-	<entry key="tooltip.betterstorage.backpack.containsItems">容纳物品.</entry>
-	<entry key="tooltip.betterstorage.backpack.equipHint">放置状态下按住潜行然后打掉就能装备上.</entry>
+	<entry key="tooltip.betterstorage.backpack.bound">用以绑定背包.</entry>
+	<entry key="tooltip.betterstorage.backpack.containsItems">用以容纳物品.</entry>
+	<entry key="tooltip.betterstorage.backpack.equipHint">放置状态下按住潜行#然后打掉就能装备上.</entry>
 	<entry key="tooltip.betterstorage.backpack.openHint">装备时按住%KEY%打开背包界面.</entry>
-	<entry key="tooltip.betterstorage.backpack.unequipHint">%REASON%空手情况下对着空地按住潜行并右击地面来卸下背包.</entry>
+	<entry key="tooltip.betterstorage.backpack.unequipHint">%REASON%空手情况下对着空地按住潜行#并右击地面来卸下背包.</entry>
 	<entry key="tooltip.betterstorage.backpack.used">背包当前正在被玩家翻开.</entry>
 </properties>
