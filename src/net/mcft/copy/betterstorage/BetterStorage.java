@@ -27,6 +27,7 @@ import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(modid = Constants.modId,
+     name = Constants.modName,
      version = "@VERSION@",
      useMetadata = true,
      dependencies = "after:Thaumcraft")
