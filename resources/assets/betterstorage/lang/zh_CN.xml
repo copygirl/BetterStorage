@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties version="1.0">
+  <comment>Simplified Chinese (zh_CN) Localization File</comment>
+	<entry key="container.betterstorage.backpack">背包</entry>
+	<entry key="container.betterstorage.cardboardBox">纸箱</entry>
+	<entry key="container.betterstorage.crate">仓储货箱</entry>
+	<entry key="container.betterstorage.enderBackpack">末影背包</entry>
+	<entry key="container.betterstorage.keyring">钥匙链</entry>
+	<entry key="container.betterstorage.locker">柜子</entry>
+	<entry key="container.betterstorage.lockerLarge">大型柜子</entry>
+	<entry key="container.betterstorage.reinforcedChest">强化箱子</entry>
+	<entry key="container.betterstorage.reinforcedChestLarge">大型强化箱子</entry>
+	<entry key="container.betterstorage.thaumcraftBackpack">神秘使背包</entry>
+	<entry key="container.betterstorage.thaumiumChest">神秘箱子</entry>
+	<entry key="container.betterstorage.thaumiumChestLarge">大型神秘箱子</entry>
+	<entry key="enchantment.betterstorage.key.lockpicking">撬锁钥匙</entry>
+	<entry key="enchantment.betterstorage.key.morphing">匙齿变形</entry>
+	<entry key="enchantment.betterstorage.key.unlocking">解锁钥匙</entry>
+	<entry key="enchantment.betterstorage.lock.persistance">防爆锁</entry>
+	<entry key="enchantment.betterstorage.lock.security">安全锁</entry>
+	<entry key="enchantment.betterstorage.lock.shock">电击锁</entry>
+	<entry key="enchantment.betterstorage.lock.trigger">报信锁</entry>
+	<entry key="entity.BetterStorage.Frienderman">末影人</entry>
+	<entry key="item.betterstorage.cardboardSheet.name">纸箱板</entry>
+	<entry key="item.betterstorage.key.name">钥匙</entry>
+	<entry key="item.betterstorage.keyring.name">钥匙链</entry>
+	<entry key="item.betterstorage.lock.name">锁</entry>
+	<entry key="item.betterstorage.masterKey.name">万能钥匙</entry>
+	<entry key="itemGroup.betterstorage">更好存储</entry>
+	<entry key="material.betterstorage.iron">铁</entry>
+	<entry key="material.betterstorage.gold">金</entry>
+	<entry key="material.betterstorage.diamond">钻石</entry>
+	<entry key="material.betterstorage.emerald">绿宝石</entry>
+	<entry key="material.betterstorage.copper">铜</entry>
+	<entry key="material.betterstorage.tin">锡</entry>
+	<entry key="material.betterstorage.silver">银</entry>
+	<entry key="material.betterstorage.zinc">锌</entry>
+	<entry key="tile.betterstorage.armorStand.name">装备架</entry>
+	<entry key="tile.betterstorage.backpack.name">背包</entry>
+	<entry key="tile.betterstorage.cardboardBox.name">纸箱</entry>
+	<entry key="tile.betterstorage.crate.name">货箱</entry>
+	<entry key="tile.betterstorage.enderBackpack.name">末影背包</entry>
+	<entry key="tile.betterstorage.locker.name">柜子</entry>
+	<entry key="tile.betterstorage.reinforcedChest.name">强化箱子</entry>
+	<entry key="tile.betterstorage.reinforcedChest.name.full">强化%MATERIAL%箱子</entry>
+	<entry key="tile.betterstorage.thaumcraftBackpack.name">神秘使背包</entry>
+	<entry key="tile.betterstorage.thaumiumChest.name">神秘箱子</entry>
+	<entry key="tooltip.betterstorage.backpack.bound">用以绑定背包.</entry>
+	<entry key="tooltip.betterstorage.backpack.containsItems">用以容纳物品.</entry>
+	<entry key="tooltip.betterstorage.backpack.equipHint">放置状态下按住潜行#然后打掉就能装备上.</entry>
+	<entry key="tooltip.betterstorage.backpack.openHint">装备时按住%KEY%打开背包界面.</entry>
+	<entry key="tooltip.betterstorage.backpack.unequipHint">%REASON%空手情况下对着空地按住潜行#并右击地面来卸下背包.</entry>
+	<entry key="tooltip.betterstorage.backpack.used">背包当前正在被玩家翻开.</entry>
+</properties>
