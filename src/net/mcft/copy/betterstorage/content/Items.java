@@ -9,7 +9,7 @@ import net.mcft.copy.betterstorage.item.ItemLock;
 import net.mcft.copy.betterstorage.item.ItemMasterKey;
 import net.mcft.copy.betterstorage.utils.MiscUtils;
 
-public class Items {
+public final class Items {
 	
 	public static ItemKey key;
 	public static ItemLock lock;

@@ -11,7 +11,7 @@ import net.mcft.copy.betterstorage.block.BlockReinforcedChest;
 import net.mcft.copy.betterstorage.block.crate.BlockCrate;
 import net.mcft.copy.betterstorage.utils.MiscUtils;
 
-public class Blocks {
+public final class Blocks {
 	
 	public static BlockCrate crate;
 	public static BlockReinforcedChest reinforcedChest;

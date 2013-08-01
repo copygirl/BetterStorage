@@ -8,7 +8,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class InventoryUtils {
+public final class InventoryUtils {
 	
 	private InventoryUtils() {  }
 	

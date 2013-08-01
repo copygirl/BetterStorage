@@ -1,6 +1,6 @@
 package net.mcft.copy.betterstorage.utils;
 
-public class MiscUtils {
+public final class MiscUtils {
 	
 	private MiscUtils() {  }
 	

@@ -5,7 +5,7 @@ import net.mcft.copy.betterstorage.addon.Addon;
 import net.mcft.copy.betterstorage.entity.EntityFrienderman;
 import cpw.mods.fml.common.registry.EntityRegistry;
 
-public class Entities {
+public final class Entities {
 	
 	private Entities() {  }
 	

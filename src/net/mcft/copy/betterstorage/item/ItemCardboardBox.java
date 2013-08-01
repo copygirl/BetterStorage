@@ -32,11 +32,12 @@ public class ItemCardboardBox extends ItemBlock implements IContainerItem {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advancedTooltips) {
+		
 		// Show the contents in the cardboard box as tooltip.
 		if (!StackUtils.has(stack, "Items")) return;
 		
 		ItemStack[] contents = StackUtils.getStackContents(stack, 9);
-		int limit = (advancedTooltips ? 3 : 9);
+		int limit = (advancedTooltips ? 9 : 3);
 		
 		List<ItemStack> items = StackUtils.stackItems(contents);
 		Collections.sort(items, new Comparator<ItemStack>() {

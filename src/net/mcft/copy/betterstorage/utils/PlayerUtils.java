@@ -21,7 +21,7 @@ import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class PlayerUtils {
+public final class PlayerUtils {
 	
 	private PlayerUtils() {  }
 	

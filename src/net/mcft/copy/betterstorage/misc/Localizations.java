@@ -15,7 +15,7 @@ import net.mcft.copy.betterstorage.BetterStorage;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-public class Localizations {
+public final class Localizations {
 	
 	private Localizations() {  }
 	

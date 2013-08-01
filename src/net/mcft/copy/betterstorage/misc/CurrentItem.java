@@ -1,6 +1,8 @@
 package net.mcft.copy.betterstorage.misc;
 
-public class CurrentItem {
+public final class CurrentItem {
+	
+	private CurrentItem() {  }
 	
 	public static final int HELD = 0;
 	

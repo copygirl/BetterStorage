@@ -22,7 +22,7 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class WorldUtils {
+public final class WorldUtils {
 	
 	private WorldUtils() {  }
 	

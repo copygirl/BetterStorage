@@ -10,7 +10,7 @@ import net.mcft.copy.betterstorage.block.tileentity.TileEntityReinforcedChest;
 import net.mcft.copy.betterstorage.misc.Constants;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-public class TileEntities {
+public final class TileEntities {
 	
 	private TileEntities() {  }
 	

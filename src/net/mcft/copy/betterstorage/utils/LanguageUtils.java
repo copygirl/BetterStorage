@@ -6,7 +6,7 @@ import java.util.List;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.minecraft.util.StatCollector;
 
-public class LanguageUtils {
+public final class LanguageUtils {
 	
 	private LanguageUtils() {  }
 	

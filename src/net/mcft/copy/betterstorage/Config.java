@@ -5,7 +5,7 @@ import java.io.File;
 import net.mcft.copy.betterstorage.addon.Addon;
 import net.minecraftforge.common.Configuration;
 
-public class Config {
+public final class Config {
 	
 	private static final String categorySettings = "settings";
 	
@@ -35,6 +35,9 @@ public class Config {
 	public static boolean enableCrateInventoryInterface = false;
 	public static boolean enableBackpackOpen = false;
 	public static int backpackOpenKey = 48;
+	
+	
+	private Config() {  }
 	
 	public static void load(File file) {
 		

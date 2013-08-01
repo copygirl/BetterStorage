@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class StackUtils {
+public final class StackUtils {
 	
 	private StackUtils() {  }
 	

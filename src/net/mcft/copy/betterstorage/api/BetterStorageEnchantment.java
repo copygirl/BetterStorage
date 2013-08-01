@@ -8,10 +8,12 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.item.ItemStack;
 
-public class BetterStorageEnchantment {
+public final class BetterStorageEnchantment {
 	
 	public static Map<String, EnumEnchantmentType> enchantmentTypes = new HashMap<String, EnumEnchantmentType>();
 	public static Map<String, Enchantment> enchantments = new HashMap<String, Enchantment>();
+	
+	private BetterStorageEnchantment() {  }
 	
 	/** Returns a BetterStorage enchantment type with that name. <br>
 	 *  <b>Types:</b> key, lock */

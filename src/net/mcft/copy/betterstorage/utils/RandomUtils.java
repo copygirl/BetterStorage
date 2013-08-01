@@ -2,7 +2,7 @@ package net.mcft.copy.betterstorage.utils;
 
 import java.util.Random;
 
-public class RandomUtils {
+public final class RandomUtils {
 	
 	private RandomUtils() {  }
 	

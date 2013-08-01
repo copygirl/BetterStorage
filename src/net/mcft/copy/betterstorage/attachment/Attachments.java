@@ -22,7 +22,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class Attachments implements Iterable<Attachment> {
 	
-	public static ThreadLocal<EntityPlayer> playerLocal = new ThreadLocal<EntityPlayer>();
+	public static final ThreadLocal<EntityPlayer> playerLocal = new ThreadLocal<EntityPlayer>();
 	
 	public final TileEntity tileEntity;
 	private Map<Integer, Attachment> attachments = new HashMap<Integer, Attachment>();

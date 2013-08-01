@@ -3,7 +3,7 @@ package net.mcft.copy.betterstorage.utils;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.common.IExtendedEntityProperties;
 
-public class EntityUtils {
+public final class EntityUtils {
 	
 	private EntityUtils() {  }
 	

@@ -16,7 +16,7 @@ import net.minecraft.nbt.NBTTagLong;
 import net.minecraft.nbt.NBTTagShort;
 import net.minecraft.nbt.NBTTagString;
 
-public class NbtUtils {
+public final class NbtUtils {
 	
 	private NbtUtils() {  }
 	

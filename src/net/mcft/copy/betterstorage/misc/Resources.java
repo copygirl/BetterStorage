@@ -5,7 +5,9 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class Resources {
+public final class Resources {
+	
+	private Resources() {  }
 	
 	public static final ResourceLocation crateContainer           = new BetterStorageResource("textures/gui/crate.png");
 	public static final ResourceLocation reinforcedChestContainer = new BetterStorageResource("textures/gui/reinforcedChest.png");

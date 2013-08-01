@@ -1,6 +1,8 @@
 package net.mcft.copy.betterstorage.misc;
 
-public class Constants {
+public final class Constants {
+	
+	private Constants() {  }
 	
 	public static final String modId = "betterstorage";
 	public static final String modName = "BetterStorage";
