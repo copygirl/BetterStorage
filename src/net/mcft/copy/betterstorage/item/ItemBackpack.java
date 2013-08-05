@@ -168,63 +168,8 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 	public boolean onItemUse(ItemStack stack, EntityPlayer player,
 	                         World world, int x, int y, int z, int side,
 	                         float hitX, float hitY, float hitZ) {
-		
-		if (stack.stackSize == 0) return false;
-		
-		Block blockBackpack = Block.blocksList[itemID];
-		Block blockClicked = Block.blocksList[world.getBlockId(x, y, z)];
-		
 		ForgeDirection orientation = DirectionUtils.getOrientation(player).getOpposite();
-		
-		// If a replacable block was clicked, move on.
-		// Otherwise, check if the top side was clicked and adjust the position.
-		if ((blockClicked != null) &&
-		    (blockClicked != Block.snow) &&
-		    (blockClicked != Block.vine) &&
-		    (blockClicked != Block.tallGrass) &&
-		    (blockClicked != Block.deadBush) &&
-		    !blockClicked.isBlockReplaceable(world, x, y, z)) {
-			if (side != 1) return false;
-			y++;
-		}
-		
-		// Return false if there's block is too low or too high.
-		if ((y <= 0) || (y >= world.getHeight() - 1)) return false;
-		
-		// Return false if not placed on top of a solid block.	
-		Block blockBelow = Block.blocksList[world.getBlockId(x, y - 1, z)];
-		if ((blockBelow == null) || !blockBelow.isBlockSolidOnSide(world, x, y - 1, z, ForgeDirection.UP)) return false;
-		
-		// Return false if the player can't edit the block.
-		if (!player.canPlayerEdit(x, y, z, side, stack)) return false;
-		
-		// Return false if there's an entity blocking the placement.
-		if (!world.canPlaceEntityOnSide(blockBackpack.blockID, x, y, z, false, side, player, stack)) return false;
-		
-		// Actually place the block in the world,
-		// play place sound and decrease stack size if successful.
-		if (!world.setBlock(x, y, z, blockBackpack.blockID, orientation.ordinal(), 3))
-			return false;
-		
-		if (world.getBlockId(x, y, z) != blockBackpack.blockID)
-			return false;
-		
-		blockBackpack.onBlockPlacedBy(world, x, y, z, player, stack);
-		blockBackpack.onPostBlockPlaced(world, x, y, z, orientation.ordinal());
-		
-		TileEntityBackpack backpack = WorldUtils.get(world, x, y, z, TileEntityBackpack.class);
-		backpack.stack = stack.copy();
-		if (ItemBackpack.getBackpack(player) == stack)
-			backpack.unequip(player);
-		
-		String sound = blockBackpack.stepSound.getPlaceSound();
-		float volume = (blockBackpack.stepSound.getVolume() + 1.0F) / 2.0F;
-		float pitch = blockBackpack.stepSound.getPitch() * 0.8F;
-		world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5F, sound, volume, pitch);
-		stack.stackSize--;
-		
-		return true;
-		
+		return placeBackpack(player, player, stack, x, y, z, side, orientation);
 	}
 	
 	// ISpecialArmor implementation
@@ -356,7 +301,7 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 	
 	/** Places an equipped backpack when the player right clicks
 	 *  on the ground while sneaking and holding nothing. */
-	public static boolean placeBackpack(EntityPlayer player, int x, int y, int z, int side) {
+	public static boolean onPlaceBackpack(EntityPlayer player, int x, int y, int z, int side) {
 		
 		if (player.getCurrentEquippedItem() != null || !player.isSneaking()) return false;
 		ItemStack backpack = ItemBackpack.getBackpack(player);
@@ -378,6 +323,61 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 		boolean success = (backpack == null);
 		if (success) player.swingItem();
 		return success;
+		
+	}
+	
+	public static boolean placeBackpack(EntityLivingBase carrier, EntityPlayer player, ItemStack backpack, int x, int y, int z, int side, ForgeDirection orientation) {
+		
+		if (backpack.stackSize == 0) return false;
+		
+		World world = carrier.worldObj;
+		Block blockBackpack = Block.blocksList[backpack.itemID];
+		
+		// If a replacable block was clicked, move on.
+		// Otherwise, check if the top side was clicked and adjust the position.
+		if (!WorldUtils.isBlockReplacable(world, x, y, z)) {
+			if (side != 1) return false;
+			y++;
+		}
+		
+		// Return false if there's block is too low or too high.
+		if ((y <= 0) || (y >= world.getHeight() - 1)) return false;
+		
+		// Return false if not placed on top of a solid block.	
+		Block blockBelow = Block.blocksList[world.getBlockId(x, y - 1, z)];
+		if ((blockBelow == null) || !blockBelow.isBlockSolidOnSide(world, x, y - 1, z, ForgeDirection.UP)) return false;
+		
+		// Return false if the player can't edit the block.
+		if ((player != null) && !player.canPlayerEdit(x, y, z, side, backpack)) return false;
+		
+		// Return false if there's an entity blocking the placement.
+		if (!world.canPlaceEntityOnSide(blockBackpack.blockID, x, y, z, false, side, carrier, backpack)) return false;
+		
+		// Actually place the block in the world,
+		// play place sound and decrease stack size if successful.
+		
+		if (!world.setBlock(x, y, z, blockBackpack.blockID, orientation.ordinal(), 3))
+			return false;
+		
+		if (world.getBlockId(x, y, z) != blockBackpack.blockID)
+			return false;
+		
+		blockBackpack.onBlockPlacedBy(world, x, y, z, carrier, backpack);
+		blockBackpack.onPostBlockPlaced(world, x, y, z, orientation.ordinal());
+		
+		TileEntityBackpack te = WorldUtils.get(world, x, y, z, TileEntityBackpack.class);
+		te.stack = backpack.copy();
+		if (ItemBackpack.getBackpack(carrier) == backpack)
+			te.unequip(carrier);
+		
+		String sound = blockBackpack.stepSound.getPlaceSound();
+		float volume = (blockBackpack.stepSound.getVolume() + 1.0F) / 2.0F;
+		float pitch = blockBackpack.stepSound.getPitch() * 0.8F;
+		world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5F, sound, volume, pitch);
+		
+		backpack.stackSize--;
+		
+		return true;
 		
 	}
 	

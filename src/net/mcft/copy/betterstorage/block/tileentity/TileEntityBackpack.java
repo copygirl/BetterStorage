@@ -4,7 +4,7 @@ import net.mcft.copy.betterstorage.Config;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
@@ -22,20 +22,20 @@ public class TileEntityBackpack extends TileEntityContainer {
 	
 	// Equipping / unequipping
 	
-	public boolean equip(EntityPlayer player) {
+	public boolean equip(EntityLivingBase carrier) {
 		equipped = true;
 		equipped = worldObj.setBlockToAir(xCoord, yCoord, zCoord);
-		if (equipped) ItemBackpack.setBackpack(player, stack, contents);
+		if (equipped) ItemBackpack.setBackpack(carrier, stack, contents);
 		return equipped;
 	}
 	
-	public void unequip(EntityPlayer player) {
+	public void unequip(EntityLivingBase carrier) {
 		if (!worldObj.isRemote) {
-			ItemStack[] items = ItemBackpack.getBackpackData(player).contents;
+			ItemStack[] items = ItemBackpack.getBackpackData(carrier).contents;
 			// Move items from the player backpack data to this tile entity.
 			if (items != null) System.arraycopy(items, 0, contents, 0, items.length);
 		}
-		ItemBackpack.removeBackpack(player);
+		ItemBackpack.removeBackpack(carrier);
 	}
 	
 	// TileEntityContainer stuff

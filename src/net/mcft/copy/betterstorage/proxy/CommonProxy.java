@@ -1,5 +1,10 @@
 package net.mcft.copy.betterstorage.proxy;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 import net.mcft.copy.betterstorage.Config;
 import net.mcft.copy.betterstorage.attachment.EnumAttachmentInteraction;
 import net.mcft.copy.betterstorage.attachment.IHasAttachments;
@@ -13,6 +18,7 @@ import net.mcft.copy.betterstorage.item.ItemEnderBackpack;
 import net.mcft.copy.betterstorage.misc.CurrentItem;
 import net.mcft.copy.betterstorage.misc.PropertiesBackpack;
 import net.mcft.copy.betterstorage.misc.handlers.PacketHandler;
+import net.mcft.copy.betterstorage.utils.DirectionUtils;
 import net.mcft.copy.betterstorage.utils.EntityUtils;
 import net.mcft.copy.betterstorage.utils.NbtUtils;
 import net.mcft.copy.betterstorage.utils.RandomUtils;
@@ -35,6 +41,7 @@ import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.ChestGenHooks;
+import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.Event.Result;
 import net.minecraftforge.event.ForgeSubscribe;
@@ -109,7 +116,7 @@ public class CommonProxy implements IPlayerTracker {
 		
 		// Attempt to place equipped backpack.
 		if (event.action == Action.RIGHT_CLICK_BLOCK)
-			if (ItemBackpack.placeBackpack(player, x, y, z, event.face))
+			if (ItemBackpack.onPlaceBackpack(player, x, y, z, event.face))
 				event.useBlock = Result.DENY;
 		
 		// Interact with attachments.
@@ -314,7 +321,8 @@ public class CommonProxy implements IPlayerTracker {
 	@ForgeSubscribe
 	public void onLivingDeath(LivingDeathEvent event) {
 		
-		// Drops the contents from an equipped backpack when the entity dies.
+		// If an entity wearing a backpack dies,
+		// tries to place it, or drops the items.
 		
 		EntityLivingBase entity = event.entityLiving;
 		if (entity.worldObj.isRemote) return;
@@ -344,12 +352,48 @@ public class CommonProxy implements IPlayerTracker {
 			
 		} else {
 			
+			// Attempt to place the backpack as a block instead of dropping the items.
+			if (Config.dropBackpackOnDeath) {
+				
+				List<BlockCoordinate> coords = new ArrayList<BlockCoordinate>();
+				for (int x = -2; x <= 2; x++)
+					for (int y = -2; y <= 2; y++)
+						for (int z = -2; z <= 2; z++)
+							coords.add(new BlockCoordinate(entity.posX, entity.posY, entity.posZ, x, y, z));
+				Collections.sort(coords, new Comparator<BlockCoordinate>() {
+					@Override public int compare(BlockCoordinate o1, BlockCoordinate o2) {
+						if (o1.distance < o2.distance) return -1;
+						else if (o1.distance > o2.distance) return 1;
+						else return 0;
+					}
+				});
+				
+				ForgeDirection orientation = DirectionUtils.getOrientation(entity);
+				for (BlockCoordinate coord : coords)
+					if (ItemBackpack.placeBackpack(entity, null, backpack, coord.x, coord.y, coord.z, 1, orientation))
+						return;
+				
+			}
+			
 			for (ItemStack stack : backpackData.contents)
 				WorldUtils.dropStackFromEntity(entity, stack, 4.0F);
 			backpackData.contents = null;
 			
 		}
 		
+	}
+	
+	private static class BlockCoordinate {
+		public final int x, y, z;
+		public final double distance;
+		public BlockCoordinate(double ex, double ey, double ez, int x, int y, int z) {
+			this.x = (int)ex + x;
+			this.y = (int)ey + y;
+			this.z = (int)ez + z;
+			distance = Math.sqrt(Math.pow(this.x + 0.5 - ex, 2) +
+			                     Math.pow(this.y + 0.5 - ey, 2) +
+			                     Math.pow(this.z + 0.5 - ez, 2));
+		}
 	}
 	
 	// IPlayerTracker implementation

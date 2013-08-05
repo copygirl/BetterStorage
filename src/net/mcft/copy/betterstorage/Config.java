@@ -35,6 +35,7 @@ public final class Config {
 	public static boolean enableCrateInventoryInterface = false;
 	public static boolean enableBackpackOpen = false;
 	public static int backpackOpenKey = 48;
+	public static boolean dropBackpackOnDeath = true;
 	
 	
 	private Config() {  }
@@ -78,6 +79,9 @@ public final class Config {
 		
 		backpackOpenKey = config.get(categorySettings, "backpackOpenKey", backpackOpenKey,
 		                             "The key to open a backpack while equipped, if enabled. (Default: B)").getInt();
+		
+		dropBackpackOnDeath = config.get(categorySettings, "dropBackpackOnDeath", dropBackpackOnDeath,
+		                                 "On death, drops backpacks as block instead of spilling the items around.").getBoolean(dropBackpackOnDeath);
 		
 		validate();
 		

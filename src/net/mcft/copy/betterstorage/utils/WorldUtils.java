@@ -143,4 +143,14 @@ public final class WorldUtils {
 		return target;
 	}
 	
+	public static boolean isBlockReplacable(Block block, World world, int x, int y, int z) {
+		return ((block == null) || (block == Block.snow) || (block == Block.vine) ||
+			    (block == Block.tallGrass) || (block == Block.deadBush) ||
+			    block.isBlockReplaceable(world, x, y, z));
+	}
+	public static boolean isBlockReplacable(World world, int x, int y, int z) {
+		Block block = Block.blocksList[world.getBlockId(x, y, z)];
+		return isBlockReplacable(block, world, x, y, z);
+	}
+	
 }
