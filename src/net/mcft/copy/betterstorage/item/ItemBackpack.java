@@ -58,7 +58,6 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 	
 	protected ItemBackpack(int id, EnumArmorMaterial material) {
 		super(id - 256, material, 0, 1);
-		setMaxDamage(240);
 	}
 	public ItemBackpack(int id) {
 		this(id, EnumArmorMaterial.CLOTH);
@@ -129,7 +128,6 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 			} else if (containsItems)
 				LanguageUtils.translateTooltip(list, "backpack.unequipHint", "%REASON%", reason);
 			if (KeyBindingHandler.serverBackpackKeyEnabled) {
-				GameSettings settings = Minecraft.getMinecraft().gameSettings;
 				String str = GameSettings.getKeyDisplayString(Config.backpackOpenKey);
 				LanguageUtils.translateTooltip(list, "backpack.openHint", "%KEY%", str);
 			}
@@ -215,7 +213,7 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 	}
 	private boolean enchantmentProtection(ItemStack stack, Enchantment ench, double... chance) {
 		int level = EnchantmentHelper.getEnchantmentLevel(ench.effectId, stack);
-		level = Math.min(level - 1, chance.length);
+		level = Math.min(level - 1, chance.length - 1);
 		return ((level >= 0) && RandomUtils.getBoolean(chance[level]));
 	}
 	
