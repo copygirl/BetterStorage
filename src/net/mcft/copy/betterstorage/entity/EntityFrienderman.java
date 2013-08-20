@@ -11,7 +11,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.GameRules;
@@ -123,11 +122,6 @@ public class EntityFrienderman extends EntityEnderman {
 		
 		carriableBlocks = carriable;
 		
-	}
-	
-	@Override
-	public void readEntityFromNBT(NBTTagCompound compound) {
-		super.readEntityFromNBT(compound);
 	}
 	
 }

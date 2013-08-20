@@ -136,12 +136,7 @@ public final class StackUtils {
 	}
 	
 	public static void setStackContents(ItemStack stack, ItemStack[] contents) {
-		NBTTagCompound compound = stack.getTagCompound();
-		if (compound == null) {
-			compound = new NBTTagCompound();
-			stack.setTagCompound(compound);
-		}
-		compound.setTag("Items", NbtUtils.writeItems(contents));
+		set(stack, NbtUtils.writeItems(contents), "Items");
 	}
 	
 	public static boolean isEmpty(ItemStack[] items) {

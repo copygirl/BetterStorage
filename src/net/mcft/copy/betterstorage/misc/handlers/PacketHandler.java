@@ -8,6 +8,7 @@ import java.io.IOException;
 
 import net.mcft.copy.betterstorage.Config;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
+import net.mcft.copy.betterstorage.item.ItemDrinkingHelmet;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.PlayerUtils;
 import net.mcft.copy.betterstorage.utils.RandomUtils;
@@ -30,6 +31,7 @@ public class PacketHandler implements IPacketHandler {
 	public static final byte backpackHasItems = 2;
 	public static final byte backpackOpen = 3;
 	public static final byte backpackKeyEnabled = 4;
+	public static final byte drinkingHelmet = 5;
 	
 	public static Packet makePacket(Object... args) {
 		ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
@@ -79,6 +81,10 @@ public class PacketHandler implements IPacketHandler {
 					checkSide(id, side, Side.CLIENT);
 					handleBackpackKeyEnabled(player, stream);
 					break;
+				case drinkingHelmet:
+					checkSide(id, side, Side.SERVER);
+					handleDrinkingHelmet(player, stream);
+					break;
 				default:
 					throw new Exception("Received " + Constants.modName + " packet for unhandled ID " + id + " on side " + side + ".");
 			}
@@ -86,6 +92,7 @@ public class PacketHandler implements IPacketHandler {
 			e.printStackTrace();
 		}
 	}
+	
 	private void checkSide(int id, Side side, Side allowed) throws Exception {
 		if (side == allowed) return;
 		throw new Exception("Received " + Constants.modName + " packet for ID " + id + " on invalid side " + side + ".");
@@ -131,13 +138,17 @@ public class PacketHandler implements IPacketHandler {
 	}
 	
 	private void handleBackpackOpen(EntityPlayer player, DataInputStream stream) {
-		if (!Config.enableBackpackOpen || (ItemBackpack.getBackpack(player) == null)) return;
-		ItemBackpack.openBackpack(player, player);
+		if (Config.enableBackpackOpen)
+			ItemBackpack.openBackpack(player, player);
 	}
 	
 	@SideOnly(Side.CLIENT)
 	private void handleBackpackKeyEnabled(EntityPlayer player, DataInputStream stream) throws IOException {
 		KeyBindingHandler.serverBackpackKeyEnabled = stream.readBoolean();
+	}
+	
+	private void handleDrinkingHelmet(EntityPlayer player, DataInputStream stream) {
+		ItemDrinkingHelmet.use(player);
 	}
 	
 }

@@ -4,6 +4,7 @@ import net.mcft.copy.betterstorage.addon.Addon;
 import net.mcft.copy.betterstorage.block.ChestMaterial;
 import net.mcft.copy.betterstorage.content.Blocks;
 import net.mcft.copy.betterstorage.content.Items;
+import net.mcft.copy.betterstorage.item.recipe.DrinkingHelmetRecipe;
 import net.mcft.copy.betterstorage.item.recipe.KeyRecipe;
 import net.mcft.copy.betterstorage.item.recipe.LockRecipe;
 import net.minecraft.block.Block;
@@ -99,6 +100,10 @@ public final class Recipes {
 					"ooo",
 					"ooo",
 					"ooo", 'o', Item.paper);
+
+		// Drinking helmet recipe
+		if (Items.drinkingHelmet != null)
+			GameRegistry.addRecipe(new DrinkingHelmetRecipe(Items.drinkingHelmet));
 		
 		Addon.addRecipesAll();
 		

@@ -3,6 +3,7 @@ package net.mcft.copy.betterstorage.content;
 import net.mcft.copy.betterstorage.Config;
 import net.mcft.copy.betterstorage.addon.Addon;
 import net.mcft.copy.betterstorage.item.ItemCardboardSheet;
+import net.mcft.copy.betterstorage.item.ItemDrinkingHelmet;
 import net.mcft.copy.betterstorage.item.ItemKey;
 import net.mcft.copy.betterstorage.item.ItemKeyring;
 import net.mcft.copy.betterstorage.item.ItemLock;
@@ -16,6 +17,7 @@ public final class Items {
 	public static ItemKeyring keyring;
 	public static ItemCardboardSheet cardboardSheet;
 	public static ItemMasterKey masterKey;
+	public static ItemDrinkingHelmet drinkingHelmet;
 	
 	private Items() {  }
 	
@@ -26,6 +28,7 @@ public final class Items {
 		keyring        = MiscUtils.conditionalNew(ItemKeyring.class, Config.keyringId);
 		cardboardSheet = MiscUtils.conditionalNew(ItemCardboardSheet.class, Config.cardboardSheetId);
 		masterKey      = MiscUtils.conditionalNew(ItemMasterKey.class, Config.masterKeyId);
+		drinkingHelmet = MiscUtils.conditionalNew(ItemDrinkingHelmet.class, Config.drinkingHelmetId);
 		
 		Addon.initializeItemsAll();
 		

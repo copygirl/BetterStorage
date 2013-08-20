@@ -24,6 +24,7 @@ public final class Config {
 	public static int keyringId        = 28542;
 	public static int cardboardSheetId = 28543;
 	public static int masterKeyId      = 28544;
+	public static int drinkingHelmetId = 28545;
 	
 	public static int enchantmentBaseId = 0;
 	
@@ -34,8 +35,10 @@ public final class Config {
 	public static int backpackRows = 3;
 	public static boolean enableCrateInventoryInterface = false;
 	public static boolean enableBackpackOpen = false;
-	public static int backpackOpenKey = 48;
 	public static boolean dropBackpackOnDeath = true;
+	
+	public static int backpackOpenKey = 48;
+	public static int drinkingHelmetKey = 33;
 	
 	
 	private Config() {  }
@@ -58,6 +61,7 @@ public final class Config {
 		keyringId        = config.getItem("keyring", keyringId).getInt();
 		cardboardSheetId = config.getItem("cardboardSheet", cardboardSheetId).getInt();
 		masterKeyId      = config.getItem("masterKey", masterKeyId).getInt();
+		drinkingHelmetId = config.getItem("drinkingHelmet", drinkingHelmetId).getInt();
 		
 		enchantmentBaseId = config.get(Configuration.CATEGORY_GENERAL, "enchantmentBaseId", enchantmentBaseId,
 		                               "Uses up about 10 IDs starting from this ID.").getInt();
@@ -77,11 +81,14 @@ public final class Config {
 		enableBackpackOpen = config.get(categorySettings, "enableBackpackOpen", enableBackpackOpen,
 		                                "Allows backpacks to be opened when equipped by pressing a key.").getBoolean(enableBackpackOpen);
 		
+		dropBackpackOnDeath = config.get(categorySettings, "dropBackpackOnDeath", dropBackpackOnDeath,
+		                                 "If enabled, drops backpacks as block instead of spilling the items around.").getBoolean(dropBackpackOnDeath);
+		
 		backpackOpenKey = config.get(categorySettings, "backpackOpenKey", backpackOpenKey,
 		                             "The key to open a backpack while equipped, if enabled. (Default: B)").getInt();
 		
-		dropBackpackOnDeath = config.get(categorySettings, "dropBackpackOnDeath", dropBackpackOnDeath,
-		                                 "On death, drops backpacks as block instead of spilling the items around.").getBoolean(dropBackpackOnDeath);
+		drinkingHelmetKey = config.get(categorySettings, "drinkingHelmetKey", drinkingHelmetKey,
+		                               "The key to use a drinking helmet when equipped. (Default: F)").getInt();
 		
 		validate();
 		

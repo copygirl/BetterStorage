@@ -5,6 +5,7 @@ import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.util.ResourceLocation;
@@ -25,21 +26,26 @@ public final class RenderUtils {
 		TextureManager textureManager = Minecraft.getMinecraft().func_110434_K();
 		// Not sure why but this can be null when the world loads.
 		if (textureManager == null) return;
-		Icon icon = stack.getIconIndex();
+		Item item = stack.getItem();
 		
 		GL11.glPushMatrix();
 		
-		textureManager.func_110577_a(((stack.getItemSpriteNumber() == 0) ? TextureMap.field_110575_b : TextureMap.field_110576_c));
-		
 		Tessellator tessellator = Tessellator.instance;
-		float minU = icon.getMinU();
-		float maxU = icon.getMaxU();
-		float minV = icon.getMinV();
-		float maxV = icon.getMaxV();
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
 		GL11.glTranslatef(-0.5F, -0.5F, 1 / 32.0F);
-		ItemRenderer.renderItemIn2D(tessellator, maxU, minV, minU, maxV, icon.getOriginX(), icon.getOriginY(), 0.0625F);
+		
+		int passes = item.getRenderPasses(stack.getItemDamage());
+		for (int pass = 0; pass < passes; pass++) {
+			textureManager.func_110577_a(((stack.getItemSpriteNumber() == 0) ? TextureMap.field_110575_b : TextureMap.field_110576_c));
+			Icon icon = item.getIcon(stack, pass);
+			float minU = icon.getMinU();
+			float maxU = icon.getMaxU();
+			float minV = icon.getMinV();
+			float maxV = icon.getMaxV();
+			RenderUtils.setColorFromInt(item.getColorFromItemStack(stack, pass));
+			ItemRenderer.renderItemIn2D(tessellator, maxU, minV, minU, maxV, icon.getOriginX(), icon.getOriginY(), 0.0625F);
+		}
 		
 		if (stack.hasEffect(0)) {
 			GL11.glDepthFunc(GL11.GL_EQUAL);

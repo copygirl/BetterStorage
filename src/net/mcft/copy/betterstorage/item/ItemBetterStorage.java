@@ -22,7 +22,7 @@ public abstract class ItemBetterStorage extends Item {
 		
 		String name = getClass().getSimpleName();                                    // ItemMyItem
 		name = name.substring(4, 5).toLowerCase(Locale.ENGLISH) + name.substring(5); // 'm' + "yItem"
-		setUnlocalizedName(Constants.modId + "." + name);                          // modname.myItem
+		setUnlocalizedName(Constants.modId + "." + name);                            // modname.myItem
 		
 	}
 	

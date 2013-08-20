@@ -18,6 +18,7 @@ public final class Resources {
 	public static final ResourceLocation backpackTexture        = new BetterStorageResource("textures/models/backpack.png");
 	public static final ResourceLocation backpackOverlayTexture = new BetterStorageResource("textures/models/backpack_overlay.png");
 	public static final ResourceLocation enderBackpackTexture   = new BetterStorageResource("textures/models/enderBackpack.png");
+	public static final ResourceLocation drinkingHelmetTexture  = new BetterStorageResource("textures/models/drinkingHelmet.png");
 	
 	
 	private static final String modelbase = "/assets/" + Constants.modId + "/models/";

@@ -23,6 +23,7 @@
 	<entry key="enchantment.betterstorage.lock.trigger">Trigger</entry>
 	<entry key="entity.BetterStorage.Frienderman">Enderman</entry>
 	<entry key="item.betterstorage.cardboardSheet.name">Cardboard Sheet</entry>
+	<entry key="item.betterstorage.drinkingHelmet.name">Drinking Helmet</entry>
 	<entry key="item.betterstorage.key.name">Key</entry>
 	<entry key="item.betterstorage.keyring.name">Keyring</entry>
 	<entry key="item.betterstorage.lock.name">Lock</entry>
@@ -52,4 +53,6 @@
 	<entry key="tooltip.betterstorage.backpack.openHint">Press %KEY% to open while equipped.</entry>
 	<entry key="tooltip.betterstorage.backpack.unequipHint">%REASON% Sneak and right click#ground with empty hand to unequip.</entry>
 	<entry key="tooltip.betterstorage.backpack.used">Currently being used by a player.</entry>
+	<entry key="tooltip.betterstorage.drinkingHelmet.useHint">Press %KEY% to take a sip.</entry>
+	<entry key="tooltip.betterstorage.drinkingHelmet.uses">Remaining uses: %USES%</entry>
 </properties>

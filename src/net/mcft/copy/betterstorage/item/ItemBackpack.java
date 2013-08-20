@@ -23,7 +23,6 @@ import net.mcft.copy.betterstorage.utils.RandomUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.client.settings.GameSettings;
@@ -314,7 +313,7 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 		// Send set slot packet to for the chest slot to make
 		// sure the client has the same information as the server.
 		// This is especially important when there's a large delay, the
-		// client might think e placed the backpack, but server didn't.
+		// client might think it placed the backpack, but server didn't.
 		if (!player.worldObj.isRemote)
 			PacketDispatcher.sendPacketToPlayer(new Packet103SetSlot(0, 6, backpack), (Player)player);
 		
