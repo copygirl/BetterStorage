@@ -23,6 +23,7 @@
 	<entry key="enchantment.betterstorage.lock.trigger">Auslösen</entry>
 	<entry key="entity.BetterStorage.Frienderman">Enderman</entry>
 	<entry key="item.betterstorage.cardboardSheet.name">Pappbogen</entry>
+	<entry key="item.betterstorage.drinkingHelmet.name">Trinkhelm</entry>
 	<entry key="item.betterstorage.key.name">Schlüssel</entry>
 	<entry key="item.betterstorage.keyring.name">Schlüsselbund</entry>
 	<entry key="item.betterstorage.lock.name">Schloss</entry>
@@ -52,4 +53,6 @@
 	<entry key="tooltip.betterstorage.backpack.openHint">Drücke %KEY%, um Rucksack zu öffnen.</entry>
 	<entry key="tooltip.betterstorage.backpack.unequipHint">%REASON% Schleiche und rechtsklicke#Boden mit leerer Hand, um abzusetzen.</entry>
 	<entry key="tooltip.betterstorage.backpack.used">Wird gerade von einem Spieler benutzt.</entry>
+	<entry key="tooltip.betterstorage.drinkingHelmet.useHint">Drücke %KEY%, um ein Schlückchen zu trinken.</entry>
+	<entry key="tooltip.betterstorage.drinkingHelmet.uses">Verbleibende Nutzungen: %USES%</entry>
 </properties>
