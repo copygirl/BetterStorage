@@ -10,6 +10,7 @@ import net.mcft.copy.betterstorage.content.TileEntities;
 import net.mcft.copy.betterstorage.item.EnchantmentBetterStorage;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.misc.CreativeTabBetterStorage;
+import net.mcft.copy.betterstorage.misc.DungeonLoot;
 import net.mcft.copy.betterstorage.misc.Localizations;
 import net.mcft.copy.betterstorage.misc.Recipes;
 import net.mcft.copy.betterstorage.misc.handlers.CraftingHandler;
@@ -66,6 +67,7 @@ public class BetterStorage {
 		
 		TileEntities.register();
 		Entities.register();
+		DungeonLoot.add();
 		
 		proxy.initialize();
 		

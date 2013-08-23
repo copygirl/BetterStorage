@@ -7,6 +7,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
@@ -27,6 +28,10 @@ public class ItemMasterKey extends ItemKey {
 		if (ench != null) item.addEnchantment(ench, 10);
 		list.add(item);
 	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public EnumRarity getRarity(ItemStack stack) { return EnumRarity.rare; }
 	
 	@Override
 	@SideOnly(Side.CLIENT)

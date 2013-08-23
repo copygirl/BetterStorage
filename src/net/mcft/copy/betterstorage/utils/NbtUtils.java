@@ -48,6 +48,13 @@ public final class NbtUtils {
 		return null;
 	}
 	
+	public static NBTTagList createList(String name, Object... values) {
+		NBTTagList list = new NBTTagList(name);
+		for (Object value : values)
+			list.appendTag(createTag(null, value));
+		return list;
+	}
+	
 	public static void readItems(ItemStack[] contents, NBTTagList items) {
 		for (int i = 0; i < contents.length; i++)
 			contents[i] = null;
