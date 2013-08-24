@@ -131,18 +131,23 @@ public class TileEntityReinforcedChest extends TileEntityConnectable
 	public ItemStack getLock() { return getMainChest().getLockInternal(); }
 	
 	@Override
-	public boolean isLockValid(ItemStack lock) { return (lock.getItem() instanceof ILock); }
+	public boolean isLockValid(ItemStack lock) {
+		return ((lock == null) || (lock.getItem() instanceof ILock));
+	}
 	
 	@Override
 	public void setLock(ItemStack lock) {
-		if ((lock != null) && !isLockValid(lock))
+		if (!isLockValid(lock))
 			throw new InvalidParameterException("Can't set lock to " + lock + ".");
-		if (isMain()) {
-			setLockInternal(lock);
-			if (isConnected()) getConnectedChest().setLockInternal(lock);
-			// Mark the block for an update, sends description packet to players.
-			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-		} else getMainChest().setLock(lock);
+		
+		setLockInternal(lock);
+		markForUpdate();
+		
+		TileEntityReinforcedChest connected = getConnectedChest();
+		if (connected != null) {
+			connected.setLockInternal(lock);
+			connected.markForUpdate();
+		}
 	}
 	
 	@Override
@@ -211,16 +216,15 @@ public class TileEntityReinforcedChest extends TileEntityConnectable
 		Packet132TileEntityData packet = (Packet132TileEntityData)super.getDescriptionPacket();
 		NBTTagCompound compound = packet.customParam1;
 		ItemStack lock = getLockInternal();
-		if (lock != null)
-			compound.setCompoundTag("lock", lock.writeToNBT(new NBTTagCompound()));
+		if (lock != null) compound.setCompoundTag("lock", lock.writeToNBT(new NBTTagCompound()));
         return packet;
 	}
 	@Override
 	public void onDataPacket(INetworkManager net, Packet132TileEntityData packet) {
 		super.onDataPacket(net, packet);
 		NBTTagCompound compound = packet.customParam1;
-		if (!compound.hasKey("lock")) setLock(null);
-		else setLock(ItemStack.loadItemStackFromNBT(compound.getCompoundTag("lock")));
+		if (!compound.hasKey("lock")) setLockInternal(null);
+		else setLockInternal(ItemStack.loadItemStackFromNBT(compound.getCompoundTag("lock")));
 	}
 	
 	// Reading from / writing to NBT

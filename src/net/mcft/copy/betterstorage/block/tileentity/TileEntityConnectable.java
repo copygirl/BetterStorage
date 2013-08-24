@@ -58,9 +58,9 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 	/** Returns if the container can connect to the other container. */
 	public boolean canConnect(TileEntityConnectable connectable) {
 		return ((connectable != null) &&                                  // check for null
-		        (getBlockType() == connectable.getBlockType()) &&         // check for same block tpye
+		        (getBlockType() == connectable.getBlockType()) &&         // check for same block type
 		        (getBlockMetadata() == connectable.getBlockMetadata()) && // check for same material
-		        (getOrientation() == connectable.orientation) &&               // check for same orientation
+		        (getOrientation() == connectable.orientation) &&          // check for same orientation
 		        // Make sure the containers are not already connected.
 		        !isConnected() && !connectable.isConnected());
 	}
@@ -84,8 +84,8 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 		setConnected(dirFound);
 		connectableFound.setConnected(dirFound.getOpposite());
 		// Mark the block for an update, sends description packet to players.
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-		worldObj.markBlockForUpdate(connectableFound.xCoord, connectableFound.yCoord, connectableFound.zCoord);
+		markForUpdate();
+		connectableFound.markForUpdate();
 	}
 	
 	/** Disconnects the container from its connected container, if it has one. */
@@ -93,10 +93,10 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 		if (!isConnected()) return;
 		TileEntityConnectable connectable = getConnectedTileEntity();
 		setConnected(ForgeDirection.UNKNOWN);
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		markForUpdate();
 		if (connectable != null) {
 			connectable.setConnected(ForgeDirection.UNKNOWN);
-			worldObj.markBlockForUpdate(connectable.xCoord, connectable.yCoord, connectable.zCoord);
+			connectable.markForUpdate();
 		} else BetterStorage.log.warning("getConnectedTileEntity() returned null.");
 	}
 	

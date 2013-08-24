@@ -156,4 +156,12 @@ public abstract class TileEntityContainer extends TileEntity {
 			compound.setTag("Items", NbtUtils.writeItems(contents));
 	}
 	
+	// Utility functions
+	
+	/** Marks the block for an update, which will cause
+	 *  a description packet to be send to players. */
+	public void markForUpdate() {
+		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+	}
+	
 }
