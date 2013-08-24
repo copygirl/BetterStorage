@@ -23,6 +23,7 @@
 	<entry key="enchantment.betterstorage.lock.trigger">Импульс</entry>
 	<entry key="entity.BetterStorage.Frienderman">Эндермен</entry>
 	<entry key="item.betterstorage.cardboardSheet.name">Картонный лист</entry>
+	<entry key="item.betterstorage.drinkingHelmet.name">Питьевой шлем</entry>
 	<entry key="item.betterstorage.key.name">Ключ</entry>
 	<entry key="item.betterstorage.keyring.name">Связка ключей</entry>
 	<entry key="item.betterstorage.lock.name">Замок</entry>
@@ -52,4 +53,6 @@
 	<entry key="tooltip.betterstorage.backpack.openHint">Нажмите %KEY%, чтобы открыть, когда одет.</entry>
 	<entry key="tooltip.betterstorage.backpack.unequipHint">%REASON% Присев кликните правой#кнопкой по полу с пустыми руками, чтобы снять.</entry>
 	<entry key="tooltip.betterstorage.backpack.used">В настоящее время используется игроком.</entry>
+	<entry key="tooltip.betterstorage.drinkingHelmet.useHint">Нажмите %KEY%, чтобы сделать глоток.</entry>
+	<entry key="tooltip.betterstorage.drinkingHelmet.uses">Осталось глотков: %USES%</entry>
 </properties>
