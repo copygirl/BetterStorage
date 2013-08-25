@@ -9,7 +9,6 @@ import net.mcft.copy.betterstorage.misc.PropertiesBackpack;
 import net.mcft.copy.betterstorage.misc.Resources;
 import net.mcft.copy.betterstorage.misc.handlers.KeyBindingHandler;
 import net.mcft.copy.betterstorage.utils.LanguageUtils;
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.Entity;
@@ -24,7 +23,7 @@ public class ItemEnderBackpack extends ItemBackpack {
 	
 	public ItemEnderBackpack(int id) {
 		super(id, material);
-		setMaxDamage(380);
+		setMaxDamage(0);
 	}
 	
 	@Override
@@ -63,11 +62,6 @@ public class ItemEnderBackpack extends ItemBackpack {
 				LanguageUtils.translateTooltip(list, "backpack.openHint", "%KEY%", str);
 			}
 		} else LanguageUtils.translateTooltip(list, "backpack.equipHint");
-	}
-	
-	@Override
-	public boolean getIsRepairable(ItemStack stack, ItemStack repairMaterial) {
-		return (repairMaterial.itemID == Block.obsidian.blockID);
 	}
 	
 	class InventoryEnderBackpackEquipped extends InventoryWrapper {
