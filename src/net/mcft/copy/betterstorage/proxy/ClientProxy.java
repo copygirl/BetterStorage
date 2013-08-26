@@ -209,7 +209,7 @@ public class ClientProxy extends CommonProxy {
 		Attachments attachments = ((IHasAttachments)tileEntity).getAttachments();
 		Attachment attachment = attachments.get(target.subHit);
 		if (attachment == null) return null;
-		return attachment.getBox().copy().offset(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord);
+		return attachment.getHighlightBox();
 	}
 	
 	@ForgeSubscribe

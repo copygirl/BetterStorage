@@ -55,7 +55,7 @@ public class TileEntityReinforcedChest extends TileEntityConnectable
 	// Attachment points
 	
 	@Override
-	public Attachments getAttachments() { return attachments; }
+	public Attachments getAttachments() { return getMainChest().attachments; }
 	
 	@Override
 	public void setOrientation(ForgeDirection orientation) {

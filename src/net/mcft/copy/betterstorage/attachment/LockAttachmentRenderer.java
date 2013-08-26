@@ -16,8 +16,10 @@ public class LockAttachmentRenderer extends ItemAttachmentRenderer {
 	}
 	private void render(LockAttachment attachment, float partialTicks) {
 		GL11.glPushMatrix();
+		float hit = (float)Math.sin(Math.max(0, attachment.hit - partialTicks - 4) / 6 * Math.PI) * -20;
 		float wiggle = (float)Math.sin(attachment.wiggle + partialTicks) * attachment.wiggleStrength;
 		GL11.glTranslated(0.0, -0.05, 0.0);
+		GL11.glRotatef(hit, 1.0F, 0.0F, 0.0F);
 		GL11.glRotatef(wiggle, 0.0F, 0.0F, 1.0F);
 		GL11.glTranslated(0.0, 0.05, 0.0);
 		super.render(attachment, partialTicks);

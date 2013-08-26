@@ -29,7 +29,9 @@ public abstract class Attachment {
 	
 	public float getRotation() { return DirectionUtils.getRotation(direction); }
 	
-	public AxisAlignedBB getBox() { return box; }
+	public AxisAlignedBB getHighlightBox() {
+		return box.copy().offset(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord);
+	}
 	
 	public Attachment(TileEntity tileEntity, int subId) {
 		this.tileEntity = tileEntity;

@@ -7,7 +7,11 @@ import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemAxe;
+import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import cpw.mods.fml.relauncher.Side;
@@ -15,7 +19,11 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class LockAttachment extends ItemAttachment {
 	
+	public int hit = 0;
+	
+	@SideOnly(Side.CLIENT)
 	public float wiggle = 0;
+	@SideOnly(Side.CLIENT)
 	public float wiggleStrength = 0.0F;
 	
 	public LockAttachment(TileEntity tileEntity, int subId) {
@@ -36,8 +44,11 @@ public class LockAttachment extends ItemAttachment {
 	
 	@Override
 	public void update() {
-		wiggle++;
-		wiggleStrength = Math.max(0.0F, wiggleStrength * 0.9F - 0.1F);
+		hit = Math.max(0, hit - 1);
+		if (tileEntity.worldObj.isRemote) {
+			wiggle++;
+			wiggleStrength = Math.max(0.0F, wiggleStrength * 0.9F - 0.1F);
+		}
 	}
 	
 	@Override
@@ -49,8 +60,17 @@ public class LockAttachment extends ItemAttachment {
 	}
 	
 	private boolean attack(EntityPlayer player, ItemStack holding) {
-		if (!player.worldObj.isRemote) return true;
-		wiggleStrength = Math.min(20.0F, wiggleStrength + 12.0F);
+		if (((ILockable)tileEntity).getLock() == null) return false;
+		
+		if (player.worldObj.isRemote)
+			wiggleStrength = Math.min(20.0F, wiggleStrength + 12.0F);
+		
+		if ((hit <= 0) && canHurtLock(holding)) {
+			hit = 10;
+			tileEntity.worldObj.playSound(
+					tileEntity.xCoord + 0.5, tileEntity.yCoord + 0.5, tileEntity.zCoord + 0.5,
+					"random.break", 0.2F, 2.5F, false);
+		}
 		return true;
 	}
 	
@@ -76,10 +96,10 @@ public class LockAttachment extends ItemAttachment {
 			
 			if (player.isSneaking()) {
 				lockable.setLock(null);
-				AxisAlignedBB box = getBox();
-				double x = tileEntity.xCoord + (box.minX + box.maxX) / 2;
-				double y = tileEntity.yCoord + (box.minY + box.maxY) / 2;
-				double z = tileEntity.zCoord + (box.minZ + box.maxZ) / 2;
+				AxisAlignedBB box = getHighlightBox();
+				double x = (box.minX + box.maxX) / 2;
+				double y = (box.minY + box.maxY) / 2;
+				double z = (box.minZ + box.maxZ) / 2;
 				EntityItem item = WorldUtils.spawnItem(player.worldObj, x, y, z, lock);
 			} else lockable.useUnlocked(player);
 			
@@ -87,6 +107,14 @@ public class LockAttachment extends ItemAttachment {
 		}
 		
 		return false;
+	}
+	
+	private boolean canHurtLock(ItemStack stack) {
+		if (stack == null) return false;
+		Item item = stack.getItem();
+		return ((item instanceof ItemSword) ||
+		        (item instanceof ItemPickaxe) ||
+		        (item instanceof ItemAxe));
 	}
 	
 }

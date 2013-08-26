@@ -48,7 +48,7 @@ public class Attachments implements Iterable<Attachment> {
 		double distance = ((target != null) ? start.distanceTo(target.hitVec) : Double.MAX_VALUE);
 		for (Attachment attachment : this) {
 			if (!attachment.boxVisible(player)) continue;
-			AxisAlignedBB attachmentBox = attachment.getBox().copy().offset(x, y, z);
+			AxisAlignedBB attachmentBox = attachment.getHighlightBox();
 			MovingObjectPosition attachmentTarget = attachmentBox.calculateIntercept(start, end);
 			if (attachmentTarget == null) continue;
 			double attachmentDistance = start.distanceTo(attachmentTarget.hitVec);
