@@ -21,9 +21,7 @@ public class LockAttachment extends ItemAttachment {
 	
 	public int hit = 0;
 	
-	@SideOnly(Side.CLIENT)
 	public float wiggle = 0;
-	@SideOnly(Side.CLIENT)
 	public float wiggleStrength = 0.0F;
 	
 	public LockAttachment(TileEntity tileEntity, int subId) {
