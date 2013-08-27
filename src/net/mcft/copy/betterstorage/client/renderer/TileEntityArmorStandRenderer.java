@@ -21,6 +21,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class TileEntityArmorStandRenderer extends TileEntitySpecialRenderer {
 	
 	private EntityPlayer playerDummy = null;
+	private RenderArmor renderArmor = new RenderArmor(RenderManager.instance);
 	
 	private ModelArmorStand armorStandModel = new ModelArmorStand();
 	
@@ -55,11 +56,12 @@ public class TileEntityArmorStandRenderer extends TileEntitySpecialRenderer {
 			};
 			playerDummy.setInvisible(true);
 		}
+		playerDummy.ticksExisted = locker.tickCounter;
 		playerDummy.inventory.armorInventory = locker.armor;
 		playerDummy.worldObj = locker.worldObj;
 		playerDummy.renderYawOffset = playerDummy.prevRenderYawOffset = rotation;
 		playerDummy.rotationYawHead = playerDummy.prevRotationYawHead = rotation;
-		RenderManager.instance.renderEntityWithPosYaw(playerDummy, x + 0.5, y + 27 / 16.0, z + 0.5, rotation, par8);
+		renderArmor.doRender(playerDummy, x + 0.5, y + 27 / 16.0, z + 0.5, rotation, par8);
 		
 	}
 	

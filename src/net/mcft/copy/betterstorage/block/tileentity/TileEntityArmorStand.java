@@ -16,6 +16,12 @@ public class TileEntityArmorStand extends TileEntity {
 
 	public ItemStack[] armor = new ItemStack[4];
 	public int rotation = 0;
+	public int tickCounter = 0;
+	
+	@Override
+	public void updateEntity() {
+		tickCounter++;
+	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
