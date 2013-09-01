@@ -60,6 +60,7 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 	}
 	public ItemBackpack(int id) {
 		this(id, EnumArmorMaterial.CLOTH);
+		setMaxDamage(240);
 	}
 	
 	public String getName() { return Constants.containerBackpack; }
