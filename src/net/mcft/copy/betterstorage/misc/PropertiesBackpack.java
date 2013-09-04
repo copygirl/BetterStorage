@@ -11,7 +11,6 @@ public class PropertiesBackpack implements IExtendedEntityProperties {
 	
 	public static final String identifier = "BetterStorage.Backpack";
 	
-	// public EntityLiving entity;
 	public ItemStack[] contents = null;
 	
 	/** If the backpack has been initialized for the entity yet. */
@@ -25,17 +24,12 @@ public class PropertiesBackpack implements IExtendedEntityProperties {
 	/** If the backpack contains any items (wearer only),
 	 *  because the client doesn't have the contents. */
 	public boolean hasItems = false;
-	/** If the player has a cloak, it is hidden for as
-	 *  long as e has a backpack equipped (client only). */
-	public String hiddenCloak = null;
 	
 	public float lidAngle = 0;
 	public float prevLidAngle = 0;
 	
 	@Override
-	public void init(Entity entity, World world) {
-		// this.entity = (EntityLiving)entity;
-	}
+	public void init(Entity entity, World world) {  }
 	
 	@Override
 	public void saveNBTData(NBTTagCompound compound) {
