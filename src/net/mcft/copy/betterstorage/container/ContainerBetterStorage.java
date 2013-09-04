@@ -1,7 +1,7 @@
 package net.mcft.copy.betterstorage.container;
 
-import invtweaks.api.ContainerGUI;
-import invtweaks.api.ContainerGUI.RowSizeCallback;
+import invtweaks.api.container.ChestContainer;
+import invtweaks.api.container.ChestContainer.RowSizeCallback;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.mcft.copy.betterstorage.client.gui.GuiBetterStorage;
@@ -13,7 +13,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-@ContainerGUI
+@ChestContainer
 public class ContainerBetterStorage extends Container {
 	
 	private final int columns;
@@ -28,8 +28,8 @@ public class ContainerBetterStorage extends Container {
 	@SideOnly(Side.CLIENT)
 	public GuiBetterStorage updateGui;
 	
-	public int getColumns() { return columns; }
 	@RowSizeCallback
+	public int getColumns() { return columns; }
 	public int getRows() { return rows; }
 	
 	public ContainerBetterStorage(EntityPlayer player, IInventory inventory, int columns, int rows, int seperation) {
