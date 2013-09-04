@@ -11,7 +11,6 @@ public class PropertiesBackpack implements IExtendedEntityProperties {
 	
 	public static final String identifier = Constants.modId + ".backpack";
 	
-	// public EntityLiving entity;
 	public ItemStack[] contents = null;
 	
 	/** If the backpack has been initialized for the entity yet. */
@@ -30,7 +29,7 @@ public class PropertiesBackpack implements IExtendedEntityProperties {
 	public float prevLidAngle = 0;
 	
 	@Override
-	public void init(Entity entity, World world) {}
+	public void init(Entity entity, World world) {  }
 	
 	@Override
 	public void saveNBTData(NBTTagCompound compound) {

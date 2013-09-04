@@ -245,10 +245,10 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 	}
 	
 	public static void initBackpackData(EntityLivingBase entity) {
-		EntityUtils.createProperties(entity, PropertiesBackpack.class);
+		EntityUtils.createProperties(entity, PropertiesBackpack.class, PropertiesBackpack.identifier);
 	}
 	public static PropertiesBackpack getBackpackData(EntityLivingBase entity) {
-		PropertiesBackpack backpackData = EntityUtils.getOrCreateProperties(entity, PropertiesBackpack.class);
+		PropertiesBackpack backpackData = EntityUtils.getOrCreateProperties(entity, PropertiesBackpack.class, PropertiesBackpack.identifier);
 		if (!backpackData.initialized) {
 			ItemBackpack.initBackpackOpen(entity);
 			updateHasItems(entity, backpackData);

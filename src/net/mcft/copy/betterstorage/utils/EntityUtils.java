@@ -7,28 +7,22 @@ public final class EntityUtils {
 	
 	private EntityUtils() {  }
 	
-	private static String getIdentifier(Class<? extends IExtendedEntityProperties> propertiesClass) {
-		try { return (String)propertiesClass.getField("identifier").get(null); }
-		catch (Exception e) { throw new RuntimeException(e); }
-	}
-	
-	public static <T extends IExtendedEntityProperties> T getProperties(Entity entity, Class<T> propertiesClass) {
-		String identifier = getIdentifier(propertiesClass);
+	public static <T extends IExtendedEntityProperties> T getProperties(Entity entity, Class<T> propertiesClass, String identifier) {
 		IExtendedEntityProperties properties = entity.getExtendedProperties(identifier);
 		return (propertiesClass.isInstance(properties) ? (T)properties : null);
 	}
 	
-	public static <T extends IExtendedEntityProperties> T createProperties(Entity entity, Class<T> propertiesClass) {
+	public static <T extends IExtendedEntityProperties> T createProperties(Entity entity, Class<T> propertiesClass, String identifier) {
 		try {
 			T properties = propertiesClass.getConstructor().newInstance();
-			entity.registerExtendedProperties(getIdentifier(propertiesClass), properties);
+			entity.registerExtendedProperties(identifier, properties);
 			return properties;
 		} catch (Exception e) { throw new RuntimeException(e); }
 	}
 	
-	public static <T extends IExtendedEntityProperties> T getOrCreateProperties(Entity entity, Class<T> propertiesClass) {
-		T properties = getProperties(entity, propertiesClass);
-		return ((properties != null) ? properties : createProperties(entity, propertiesClass));
+	public static <T extends IExtendedEntityProperties> T getOrCreateProperties(Entity entity, Class<T> propertiesClass, String identifier) {
+		T properties = getProperties(entity, propertiesClass, identifier);
+		return ((properties != null) ? properties : createProperties(entity, propertiesClass, identifier));
 	}
 	
 }

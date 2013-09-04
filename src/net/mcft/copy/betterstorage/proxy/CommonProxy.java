@@ -233,7 +233,7 @@ public class CommonProxy implements IPlayerTracker {
 		PropertiesBackpack backpackData;
 		if (backpack == null) {
 			
-			backpackData = EntityUtils.getProperties(entity, PropertiesBackpack.class);
+			backpackData = EntityUtils.getProperties(entity, PropertiesBackpack.class, PropertiesBackpack.identifier);
 			if (backpackData == null) return;
 			
 			// If the entity is supposed to spawn with
