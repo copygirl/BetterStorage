@@ -1,13 +1,23 @@
 package net.mcft.copy.betterstorage.utils;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import net.minecraft.entity.Entity;
 import net.minecraftforge.common.IExtendedEntityProperties;
 
 public class EntityUtils {
 	
+	private static Map<Class, String> propertiesLookup = new HashMap<Class, String>();
+	
 	private static String getIdentifier(Class<? extends IExtendedEntityProperties> propertiesClass) {
-		try { return (String)propertiesClass.getField("identifier").get(null); }
-		catch (Exception e) { throw new RuntimeException(e); }
+		String identifier = propertiesLookup.get(propertiesClass);
+		if (identifier == null) {
+			try { identifier = (String)propertiesClass.getField("identifier").get(null); }
+			catch (Exception e) { throw new RuntimeException(e); }
+			propertiesLookup.put(propertiesClass, identifier);
+		}
+		return identifier;
 	}
 	
 	public static <T extends IExtendedEntityProperties> T getProperties(Entity entity, Class<T> propertiesClass) {
