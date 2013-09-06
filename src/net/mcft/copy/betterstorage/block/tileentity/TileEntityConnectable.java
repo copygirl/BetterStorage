@@ -118,12 +118,15 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 	
 	@Override
 	public InventoryTileEntity getPlayerInventory() {
-		if (isConnected()) {
-			TileEntityConnectable main = getMainTileEntity();
-			TileEntityConnectable connected = ((main == this) ? getConnectedTileEntity() : this);
-			return new InventoryTileEntity(this, main, connected);
-		} else return super.getPlayerInventory();
+		TileEntityConnectable connected = getConnectedTileEntity();
+		if (connected != null)
+			return new InventoryTileEntity(this, (isMain() ? this : connected),
+			                                     (isMain() ? connected : this));
+		else return super.getPlayerInventory();
 	}
+	
+	/** Returns if the container is accessible by other machines etc. */
+	protected boolean isAccessible() { return true; }
 	
 	// Update entity
 	
@@ -156,9 +159,6 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 	}
 	
 	// IInventory stuff
-	
-	/** Returns if the container is accessible by other machines etc. */
-	protected boolean isAccessible() { return true; }
 	
 	@Override
 	public String getInvName() { return getName(); }

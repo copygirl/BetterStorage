@@ -120,7 +120,7 @@ public abstract class TileEntityContainer extends TileEntity {
 	
 	@Override
 	public void updateEntity() {
-		if (!worldObj.isRemote && syncPlayersUsing())
+		if (!worldObj.isRemote && worldObj.doChunksNearChunkExist(xCoord, yCoord, zCoord, 16) && syncPlayersUsing())
 			playersUsing = WorldUtils.syncPlayersUsing(this, ++ticksSinceSync, playersUsing);
 		
 		prevLidAngle = lidAngle;
