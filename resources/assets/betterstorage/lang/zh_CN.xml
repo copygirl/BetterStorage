@@ -54,5 +54,5 @@
 	<entry key="tooltip.betterstorage.backpack.unequipHint">%REASON%空手情况下对着空地按住潜行#并右击地面来卸下背包.</entry>
 	<entry key="tooltip.betterstorage.backpack.used">背包当前正在被玩家翻开.</entry>
 	<entry key="tooltip.betterstorage.drinkingHelmet.useHint">按下%KEY%小啜一口.</entry>
-        <entry key="tooltip.betterstorage.drinkingHelmet.uses">剩余次数: %USES%</entry>
+	<entry key="tooltip.betterstorage.drinkingHelmet.uses">剩余次数: %USES%</entry>
 </properties>
