@@ -40,14 +40,14 @@ public class TileEntityLocker extends TileEntityConnectable {
 	@Override
 	public Packet getDescriptionPacket() {
 		Packet132TileEntityData packet = (Packet132TileEntityData)super.getDescriptionPacket();
-		NBTTagCompound compound = packet.customParam1;
+		NBTTagCompound compound = packet.data;
 		compound.setBoolean("mirror", mirror);
         return packet;
 	}
 	@Override
 	public void onDataPacket(INetworkManager net, Packet132TileEntityData packet) {
 		super.onDataPacket(net, packet);
-		NBTTagCompound compound = packet.customParam1;
+		NBTTagCompound compound = packet.data;
 		mirror = compound.getBoolean("mirror");
 	}
 	

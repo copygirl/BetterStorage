@@ -214,7 +214,7 @@ public class TileEntityReinforcedChest extends TileEntityConnectable
 	@Override
 	public Packet getDescriptionPacket() {
 		Packet132TileEntityData packet = (Packet132TileEntityData)super.getDescriptionPacket();
-		NBTTagCompound compound = packet.customParam1;
+		NBTTagCompound compound = packet.data;
 		ItemStack lock = getLockInternal();
 		if (lock != null) compound.setCompoundTag("lock", lock.writeToNBT(new NBTTagCompound()));
         return packet;
@@ -222,7 +222,7 @@ public class TileEntityReinforcedChest extends TileEntityConnectable
 	@Override
 	public void onDataPacket(INetworkManager net, Packet132TileEntityData packet) {
 		super.onDataPacket(net, packet);
-		NBTTagCompound compound = packet.customParam1;
+		NBTTagCompound compound = packet.data;
 		if (!compound.hasKey("lock")) setLockInternal(null);
 		else setLockInternal(ItemStack.loadItemStackFromNBT(compound.getCompoundTag("lock")));
 	}

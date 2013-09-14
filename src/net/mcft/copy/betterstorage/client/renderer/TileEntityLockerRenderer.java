@@ -29,7 +29,7 @@ public class TileEntityLockerRenderer extends TileEntitySpecialRenderer {
 		
 		int index = (locker.mirror ? 1 : 0);
 		ModelLocker model = (large ? largeLockerModel : lockerModel);
-		func_110628_a((large ? Resources.largeLockerTexture : Resources.lockerTexture));
+		bindTexture((large ? Resources.largeLockerTexture : Resources.lockerTexture));
 		
 		GL11.glPushMatrix();
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);

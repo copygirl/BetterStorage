@@ -77,7 +77,7 @@ public class TileEntityBackpack extends TileEntityContainer {
 	}
 	@Override
 	public void onDataPacket(INetworkManager net, Packet132TileEntityData packet) {
-		NBTTagCompound compound = packet.customParam1;
+		NBTTagCompound compound = packet.data;
 		stack = ItemStack.loadItemStackFromNBT(compound.getCompoundTag("stack"));
 	}
 	

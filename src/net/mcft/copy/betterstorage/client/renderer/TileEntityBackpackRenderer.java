@@ -46,7 +46,7 @@ public class TileEntityBackpackRenderer extends TileEntitySpecialRenderer {
 		for (int pass = 0; pass < renderPasses; pass++) {
 			ItemStack stack = ((backpack.stack != null) ? backpack.stack : new ItemStack(item));
 			String type = ((pass == 0) ? null : "overlay");
-			func_110628_a(RenderBiped.getArmorResource(null, stack, 0, type));
+			bindTexture(RenderBiped.getArmorResource(null, stack, 0, type));
             RenderUtils.setColorFromInt(item.getColorFromItemStack(stack, pass));
 			backpackModel.renderAll();
 		}

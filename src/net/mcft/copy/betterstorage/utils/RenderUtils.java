@@ -19,11 +19,13 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public final class RenderUtils {
 	
+	private static final ResourceLocation glint = new ResourceLocation("textures/misc/enchanted_item_glint.png");
+	
 	private RenderUtils() {  }
 	
 	public static void renderItemIn3d(ItemStack stack) {
 		
-		TextureManager textureManager = Minecraft.getMinecraft().func_110434_K();
+		TextureManager textureManager = Minecraft.getMinecraft().getTextureManager();
 		// Not sure why but this can be null when the world loads.
 		if (textureManager == null) return;
 		Item item = stack.getItem();
@@ -37,20 +39,20 @@ public final class RenderUtils {
 		
 		int passes = item.getRenderPasses(stack.getItemDamage());
 		for (int pass = 0; pass < passes; pass++) {
-			textureManager.func_110577_a(((stack.getItemSpriteNumber() == 0) ? TextureMap.field_110575_b : TextureMap.field_110576_c));
+			textureManager.bindTexture(((stack.getItemSpriteNumber() == 0) ? TextureMap.locationBlocksTexture : TextureMap.locationItemsTexture));
 			Icon icon = item.getIcon(stack, pass);
 			float minU = icon.getMinU();
 			float maxU = icon.getMaxU();
 			float minV = icon.getMinV();
 			float maxV = icon.getMaxV();
 			RenderUtils.setColorFromInt(item.getColorFromItemStack(stack, pass));
-			ItemRenderer.renderItemIn2D(tessellator, maxU, minV, minU, maxV, icon.getOriginX(), icon.getOriginY(), 0.0625F);
+			ItemRenderer.renderItemIn2D(tessellator, maxU, minV, minU, maxV, icon.getIconWidth(), icon.getIconHeight(), 0.0625F);
 		}
 		
 		if (stack.hasEffect(0)) {
 			GL11.glDepthFunc(GL11.GL_EQUAL);
 			GL11.glDisable(GL11.GL_LIGHTING);
-			textureManager.func_110577_a(new ResourceLocation("textures/misc/enchanted_item_glint.png"));
+			textureManager.bindTexture(glint);
 			GL11.glEnable(GL11.GL_BLEND);
 			GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE);
 			float f7 = 0.76F;

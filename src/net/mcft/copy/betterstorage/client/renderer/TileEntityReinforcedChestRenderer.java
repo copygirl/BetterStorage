@@ -25,7 +25,7 @@ public class TileEntityReinforcedChestRenderer extends TileEntitySpecialRenderer
 		if (large && !chest.isMain()) return;
 		
 		ModelChest model = (large ? largeChestModel : chestModel);
-		func_110628_a(chest.getResource());
+		bindTexture(chest.getResource());
 		
 		GL11.glPushMatrix();
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);

@@ -36,8 +36,8 @@ public class RenderFrienderman extends RenderEnderman {
 		if (!(item instanceof ItemArmor)) return -1;
 		
 		ItemArmor itemarmor = (ItemArmor)item;
-		TextureManager textureManager = Minecraft.getMinecraft().func_110434_K();
-		textureManager.func_110577_a(RenderBiped.getArmorResource(entity, stack, slot, null));
+		TextureManager textureManager = Minecraft.getMinecraft().getTextureManager();
+		textureManager.bindTexture(RenderBiped.getArmorResource(entity, stack, slot, null));
 		
 		ModelBiped modelBiped = ForgeHooksClient.getArmorModel(entity, stack, slot, null);
 		setRenderPassModel(modelBiped);

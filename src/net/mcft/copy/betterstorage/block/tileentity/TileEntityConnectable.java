@@ -210,7 +210,7 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 	}
 	@Override
 	public void onDataPacket(INetworkManager net, Packet132TileEntityData packet) {
-		NBTTagCompound compound = packet.customParam1;
+		NBTTagCompound compound = packet.data;
 		setOrientation(ForgeDirection.getOrientation(compound.getByte("orientation")));
 		setConnected(ForgeDirection.getOrientation(compound.getByte("connected")));
 	}

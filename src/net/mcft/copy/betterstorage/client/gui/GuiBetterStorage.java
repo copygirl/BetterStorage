@@ -70,7 +70,7 @@ public class GuiBetterStorage extends GuiContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3) {
 		GL11.glColor4f(1, 1, 1, 1);
-		mc.renderEngine.func_110577_a(getResource());
+		mc.renderEngine.bindTexture(getResource());
 		int x = (width - xSize) / 2;
 		int y = (height - ySize) / 2;
 		int w = getTextureWidth();

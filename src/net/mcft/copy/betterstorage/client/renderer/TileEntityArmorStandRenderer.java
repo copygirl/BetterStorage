@@ -30,7 +30,7 @@ public class TileEntityArmorStandRenderer extends TileEntitySpecialRenderer {
 		int rotation = locker.rotation * 360 / 16;
 		
 		ModelArmorStand model = armorStandModel;
-		func_110628_a(Resources.armorStandTexture);
+		bindTexture(Resources.armorStandTexture);
 		
 		GL11.glPushMatrix();
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);

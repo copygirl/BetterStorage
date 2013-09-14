@@ -37,7 +37,7 @@ public class TileEntityArmorStand extends TileEntity {
 	}
 	@Override
 	public void onDataPacket(INetworkManager net, Packet132TileEntityData packet) {
-		NBTTagCompound compound = packet.customParam1;
+		NBTTagCompound compound = packet.data;
 		read(compound);
 	}
 	

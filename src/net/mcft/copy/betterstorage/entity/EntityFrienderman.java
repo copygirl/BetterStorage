@@ -53,7 +53,7 @@ public class EntityFrienderman extends EntityEnderman {
 	public boolean attackEntityFrom(DamageSource source, float damage) {
 		boolean success = super.attackEntityFrom(source, damage);
 		if (entityToAttack != null) {
-			for (int i = 0; i < 40 - func_110138_aP() / 2; i++)
+			for (int i = 0; i < 40 - getMaxHealth() / 2; i++)
 				if (teleportRandomly()) break;
 			entityToAttack = null;
 		}
