@@ -23,11 +23,15 @@ public class ItemRendererBackpack implements IItemRenderer {
 	
 	@Override
 	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-		if ((type == ItemRenderType.ENTITY) || (type == ItemRenderType.EQUIPPED))
+		boolean entity = (type == ItemRenderType.ENTITY);
+		boolean equippedFirstPerson = (type == ItemRenderType.EQUIPPED_FIRST_PERSON);
+		boolean equippedThirdPerson = (type == ItemRenderType.EQUIPPED);
+		boolean equipped = (equippedFirstPerson || equippedThirdPerson);
+		if (entity || equippedThirdPerson)
 			GL11.glScalef(1.2F, 1.2F, 1.2F);
-		if (type == ItemRenderType.EQUIPPED) {
+		if (equipped) {
 			GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-			GL11.glRotatef(200.0F, 0.0F, 1.0F, 0.0F);
+			GL11.glRotatef((equippedThirdPerson ? 200.0F : 75.0F), 0.0F, 1.0F, 0.0F);
 		}
 		BetterStorageRenderingHandler renderingHanlder =
 				ClientProxy.renderingHandlers.get(TileEntityBackpack.class);
