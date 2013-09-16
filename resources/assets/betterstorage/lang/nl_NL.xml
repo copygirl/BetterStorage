@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties version="1.0">
+<comment>Dutch (nl_NL) Localization File</comment>
+<comment>Translated by TDarkShadowxD from en_US to nl_NL</comment>
+<entry key="container.betterstorage.backpack">Rugzak</entry>
+<entry key="container.betterstorage.cardboardBox">Kartonnen Doos</entry>
+<entry key="container.betterstorage.crate">Opbergkist</entry>
+<entry key="container.betterstorage.enderBackpack">Ender Rugzak</entry>
+<entry key="container.betterstorage.keyring">Sleutelring</entry>
+<entry key="container.betterstorage.locker">Locker</entry>
+<entry key="container.betterstorage.lockerLarge">Grote Locker</entry>
+<entry key="container.betterstorage.reinforcedChest">Verstevigde Kist</entry>
+<entry key="container.betterstorage.reinforcedChestLarge">Grote Verstevigde Kist</entry>
+<entry key="container.betterstorage.thaumcraftBackpack">Thaumaturge's Rugzak</entry>
+<entry key="container.betterstorage.thaumiumChest">Thaumium Kist</entry>
+<entry key="container.betterstorage.thaumiumChestLarge">Grote Thaumium Kist</entry>
+<entry key="enchantment.betterstorage.key.lockpicking">Slot Openen</entry>
+<entry key="enchantment.betterstorage.key.morphing">Transformeren</entry>
+<entry key="enchantment.betterstorage.key.unlocking">Openen</entry>
+<entry key="enchantment.betterstorage.lock.persistance">Persistentie</entry>
+<entry key="enchantment.betterstorage.lock.security">Beveiliging</entry>
+<entry key="enchantment.betterstorage.lock.shock">Schok</entry>
+<entry key="enchantment.betterstorage.lock.trigger">Activeer</entry>
+<entry key="entity.BetterStorage.Frienderman">Enderman</entry>
+<entry key="item.betterstorage.cardboardSheet.name">Kartonnen Doos Stuk</entry>
+<entry key="item.betterstorage.drinkingHelmet.name">Drink Helm</entry>
+<entry key="item.betterstorage.key.name">Sleutel</entry>
+<entry key="item.betterstorage.keyring.name">Sleutelring</entry>
+<entry key="item.betterstorage.lock.name">Slot</entry>
+<entry key="item.betterstorage.masterKey.name">Meester Sleutel</entry>
+<entry key="itemGroup.betterstorage">BetterStorage</entry>
+<entry key="material.betterstorage.iron">Ijzer</entry>
+<entry key="material.betterstorage.gold">Goud</entry>
+<entry key="material.betterstorage.diamond">Diamant</entry>
+<entry key="material.betterstorage.emerald">Smaragd</entry>
+<entry key="material.betterstorage.copper">Koper</entry>
+<entry key="material.betterstorage.tin">Tin</entry>
+<entry key="material.betterstorage.silver">Silver</entry>
+<entry key="material.betterstorage.zinc">Zink</entry>
+<entry key="tile.betterstorage.armorStand.name">Harnass Mannequin</entry>
+<entry key="tile.betterstorage.backpack.name">Rugzak</entry>
+<entry key="tile.betterstorage.cardboardBox.name">Kartonnen Doos</entry>
+<entry key="tile.betterstorage.crate.name">Opbergkist</entry>
+<entry key="tile.betterstorage.enderBackpack.name">Ender Rugzak</entry>
+<entry key="tile.betterstorage.locker.name">Locker</entry>
+<entry key="tile.betterstorage.reinforcedChest.name">Verstevigde Kist</entry>
+<entry key="tile.betterstorage.reinforcedChest.name.full">Verstevigde %MATERIAL% Chest</entry>
+<entry key="tile.betterstorage.thaumcraftBackpack.name">Thaumaturge's Rugzak</entry>
+<entry key="tile.betterstorage.thaumiumChest.name">Thaumium Kist</entry>
+<entry key="tooltip.betterstorage.backpack.bound">Gebonden rugzak.</entry>
+<entry key="tooltip.betterstorage.backpack.containsItems">Bevat voorwerpen.</entry>
+<entry key="tooltip.betterstorage.backpack.equipHint">Plaats neer en breek het#terwijl je sluipt om het aan te doen.</entry>
+<entry key="tooltip.betterstorage.backpack.openHint">Druk op %KEY% om het open te doen als je het aan hebt.</entry>
+<entry key="tooltip.betterstorage.backpack.unequipHint">%REASON% Sluip en rechtsklik#de grond met een lege hand om het uit te doen.</entry>
+<entry key="tooltip.betterstorage.backpack.used">Wordt momenteel gebruikt door een andere speler.</entry>
+<entry key="tooltip.betterstorage.drinkingHelmet.useHint">Druk op %KEY% om het te drinken.</entry>
+<entry key="tooltip.betterstorage.drinkingHelmet.uses">Overblijvende gebruiken: %USES%</entry>
+</properties>
