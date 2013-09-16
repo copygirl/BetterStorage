@@ -2,8 +2,6 @@ package net.mcft.copy.betterstorage.misc;
 
 public final class Constants {
 	
-	private Constants() {  }
-	
 	public static final String modId = "betterstorage";
 	public static final String modName = "BetterStorage";
 	
@@ -24,5 +22,8 @@ public final class Constants {
 
 	public static final String containerThaumcraftBackpack = "container." + modId + ".thaumcraftBackpack";
 	public static final String containerThaumiumChest = "container." + modId + ".thaumiumChest";
+	
+	
+	private Constants() {  }
 	
 }

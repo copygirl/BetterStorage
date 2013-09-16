@@ -7,6 +7,7 @@ import net.mcft.copy.betterstorage.content.Items;
 import net.mcft.copy.betterstorage.item.recipe.DrinkingHelmetRecipe;
 import net.mcft.copy.betterstorage.item.recipe.KeyRecipe;
 import net.mcft.copy.betterstorage.item.recipe.LockRecipe;
+import net.mcft.copy.betterstorage.utils.MiscUtils;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -20,7 +21,7 @@ public final class Recipes {
 	public static void add() {
 		
 		// Crate recipe
-		if (Blocks.crate != null)
+		if (MiscUtils.isEnabled(Blocks.crate))
 			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Blocks.crate),
 					"o/o",
 					"/ /",
@@ -28,12 +29,12 @@ public final class Recipes {
 					       '/', "stickWood"));
 		
 		// Reinforced chest recipes
-		if (Blocks.reinforcedChest != null)
+		if (MiscUtils.isEnabled(Blocks.reinforcedChest))
 			for (ChestMaterial material : ChestMaterial.materials)
 				GameRegistry.addRecipe(material.getRecipe(Blocks.reinforcedChest));
 		
 		// Locker recipe
-		if (Blocks.locker != null) {
+		if (MiscUtils.isEnabled(Blocks.locker)) {
 			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Blocks.locker),
 					"ooo",
 					"o |",
@@ -47,7 +48,7 @@ public final class Recipes {
 		}
 		
 		// Armor stand recipe
-		if (Blocks.armorStand != null)
+		if (MiscUtils.isEnabled(Blocks.armorStand))
 			GameRegistry.addRecipe(new ItemStack(Blocks.armorStand),
 					" i ",
 					"/i/",
@@ -56,7 +57,7 @@ public final class Recipes {
 					       '/', Item.stick);
 		
 		// Backpack recipe
-		if (Blocks.backpack != null)
+		if (MiscUtils.isEnabled(Blocks.backpack))
 			GameRegistry.addRecipe(new ItemStack(Blocks.backpack),
 					"#i#",
 					"#O#",
@@ -65,44 +66,44 @@ public final class Recipes {
 					       'i', Item.ingotGold);
 		
 		// Cardboard box recipe
-		if ((Blocks.cardboardBox != null) && (Items.cardboardSheet != null))
+		if (MiscUtils.isEnabled(Blocks.cardboardBox, Items.cardboardSheet))
 			GameRegistry.addRecipe(new ItemStack(Blocks.cardboardBox),
 					"ooo",
 					"o o",
 					"ooo", 'o', Items.cardboardSheet);
 		
-		// Key recipe
-		if (Items.key != null) {
+		if (MiscUtils.isEnabled(Items.key)) {
+			// Key recipe
 			GameRegistry.addRecipe(KeyRecipe.createKeyRecipe(
 					".o",
 					".o",
 					" o", 'o', Item.ingotGold,
 					      '.', Item.goldNugget));
-		// Key modify recipe
+			// Key modify recipe
 			GameRegistry.addRecipe(KeyRecipe.createKeyRecipe(
 					"k", 'k', new ItemStack(Items.key, 1, Constants.anyDamage)));
 		}
 		
 		// Lock recipe
-		if ((Items.lock != null) && (Items.key != null))
+		if (MiscUtils.isEnabled(Items.lock, Items.key))
 			GameRegistry.addRecipe(LockRecipe.createLockRecipe());
 		
 		// Keyring recipe
-		if ((Items.keyring != null))
+		if (MiscUtils.isEnabled(Items.keyring))
 			GameRegistry.addRecipe(new ItemStack(Items.keyring),
 					"...",
 					". .",
 					"...", '.', Item.goldNugget);
 		
 		// Cardboard sheet recipe
-		if (Items.cardboardSheet != null)
+		if (MiscUtils.isEnabled(Items.cardboardSheet))
 			GameRegistry.addRecipe(new ItemStack(Items.cardboardSheet),
 					"ooo",
 					"ooo",
 					"ooo", 'o', Item.paper);
 
 		// Drinking helmet recipe
-		if (Items.drinkingHelmet != null)
+		if (MiscUtils.isEnabled(Items.drinkingHelmet))
 			GameRegistry.addRecipe(new DrinkingHelmetRecipe(Items.drinkingHelmet));
 		
 		Addon.addRecipesAll();

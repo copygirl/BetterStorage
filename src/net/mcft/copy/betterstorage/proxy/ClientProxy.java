@@ -91,7 +91,7 @@ public class ClientProxy extends CommonProxy {
 	}
 	
 	public static int registerTileEntityRenderer(Class<? extends TileEntity> tileEntityClass, TileEntitySpecialRenderer renderer,
-	                                       boolean render3dInInventory, float rotation, float scale, float yOffset) {
+	                                             boolean render3dInInventory, float rotation, float scale, float yOffset) {
 		ClientRegistry.bindTileEntitySpecialRenderer(tileEntityClass, renderer);
 		BetterStorageRenderingHandler renderingHandler =
 			new BetterStorageRenderingHandler(tileEntityClass, renderer, render3dInInventory, rotation, scale, yOffset);

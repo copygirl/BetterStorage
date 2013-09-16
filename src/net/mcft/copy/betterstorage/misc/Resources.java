@@ -7,8 +7,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public final class Resources {
 	
-	private Resources() {  }
-	
 	public static final ResourceLocation crateContainer           = new BetterStorageResource("textures/gui/crate.png");
 	public static final ResourceLocation reinforcedChestContainer = new BetterStorageResource("textures/gui/reinforcedChest.png");
 	
@@ -25,5 +23,8 @@ public final class Resources {
 	
 	public static final String lockerModel      = modelbase + "locker.obj";
 	public static final String largeLockerModel = modelbase + "locker_large.obj";
+	
+	
+	private Resources() {  }
 	
 }

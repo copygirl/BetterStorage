@@ -3,6 +3,7 @@ package net.mcft.copy.betterstorage.addon.thaumcraft;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.RandomUtils;
+import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,13 +13,10 @@ import net.minecraft.world.World;
 import thaumcraft.api.EnumTag;
 import thaumcraft.api.IVisDiscounter;
 import thaumcraft.api.IVisRepairable;
-import thaumcraft.api.ItemApi;
 import thaumcraft.api.ObjectTags;
 import thaumcraft.api.ThaumcraftApi;
 
 public class ItemThaumcraftBackpack extends ItemBackpack implements IVisRepairable, IVisDiscounter {
-	
-	private static int thaumcraftFabricId = -1;
 	
 	public ItemThaumcraftBackpack(int id) {
 		super(id, material);
@@ -41,8 +39,7 @@ public class ItemThaumcraftBackpack extends ItemBackpack implements IVisRepairab
 	
 	@Override
 	public boolean getIsRepairable(ItemStack stack, ItemStack repairMaterial) {
-		if (thaumcraftFabricId < 0) thaumcraftFabricId = ItemApi.getItem("itemResource", 7).itemID;
-		return (repairMaterial.itemID == thaumcraftFabricId);
+		return StackUtils.matches(stack, ThaumcraftAddon.fabric, false);
 	}
 	
 	@Override

@@ -35,6 +35,10 @@ public class ThaumcraftAddon extends Addon {
 	
 	public static int thaumiumChestRenderId;
 	
+	public static ItemStack thaumium;
+	public static ItemStack fabric;
+	public static ItemStack arcaneWood;
+	
 	public ThaumcraftAddon() {
 		super("Thaumcraft");
 	}
@@ -54,12 +58,12 @@ public class ThaumcraftAddon extends Addon {
 	@Override
 	public void addRecipes() {
 		
-		ItemStack thaumium = ItemApi.getItem("itemResource", 2);
-		ItemStack fabric = ItemApi.getItem("itemResource", 7);
-		ItemStack arcaneWood = ItemApi.getItem("blockWooden", 0);
+		thaumium   = ItemApi.getItem("itemResource", 2);
+		fabric     = ItemApi.getItem("itemResource", 7);
+		arcaneWood = ItemApi.getItem("blockWooden", 0);
 		
 		// Thaumaturge's backpack recipe
-		if ((thaumcraftBackpack != null) && (Blocks.backpack != null)) {
+		if (MiscUtils.isEnabled(thaumcraftBackpack, Blocks.backpack)) {
 			ObjectTags thaumcraftBackpackAspects =
 					(new ObjectTags()).add(EnumTag.VOID, 16)
 					                  .add(EnumTag.EXCHANGE, 12)
@@ -74,7 +78,7 @@ public class ThaumcraftAddon extends Addon {
 		}
 		
 		// Thaumium chest recipe
-		if ((thaumiumChest != null) && (Blocks.reinforcedChest != null)) {
+		if (MiscUtils.isEnabled(thaumiumChest, Blocks.reinforcedChest)) {
 			ObjectTags thaumiumChestAspects =
 					(new ObjectTags()).add(EnumTag.METAL, 64)
 					                  .add(EnumTag.VOID, 20)
@@ -133,10 +137,12 @@ public class ThaumcraftAddon extends Addon {
 		
 	}
 	private static void addAspectsFor(Block block, int meta, Object... stuff) {
-		if (block != null) addAspectsFor(block.blockID, meta, stuff);
+		if (MiscUtils.isEnabled(block))
+			addAspectsFor(block.blockID, meta, stuff);
 	}
 	private static void addAspectsFor(Item item, int meta, Object... stuff) {
-		if (item != null) addAspectsFor(item.itemID, meta, stuff);
+		if (MiscUtils.isEnabled(item))
+			addAspectsFor(item.itemID, meta, stuff);
 	}
 	private static void addAspectsFor(int id, int meta, Object... stuff) {
 		ObjectTags aspects = new ObjectTags();

@@ -20,6 +20,7 @@ import net.mcft.copy.betterstorage.misc.PropertiesBackpack;
 import net.mcft.copy.betterstorage.misc.handlers.PacketHandler;
 import net.mcft.copy.betterstorage.utils.DirectionUtils;
 import net.mcft.copy.betterstorage.utils.EntityUtils;
+import net.mcft.copy.betterstorage.utils.MiscUtils;
 import net.mcft.copy.betterstorage.utils.NbtUtils;
 import net.mcft.copy.betterstorage.utils.RandomUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
@@ -88,20 +89,23 @@ public class CommonProxy implements IPlayerTracker {
 		
 		EntityLivingBase entity = event.entityLiving;
 		double probability = 0.0;
-		if (entity.getClass() == EntityZombie.class) probability = 1.0 / 800;
-		else if (entity.getClass() == EntityPigZombie.class) probability = 1.0 / 1000;
-		else if (entity.getClass() == EntitySkeleton.class) probability = 1.0 / 1200;
-		else if ((entity.getClass() == EntityEnderman.class) && RandomUtils.getBoolean(1.0 / 80) &&
-		         (entity.worldObj.getBiomeGenForCoords((int)entity.posX, (int)entity.posZ) != BiomeGenBase.sky) &&
-		         (Blocks.enderBackpack != null)) {
-			EntityFrienderman frienderman = new EntityFrienderman(entity.worldObj);
-			frienderman.setPositionAndRotation(entity.posX, entity.posY, entity.posZ, entity.rotationYaw, 0);
-			entity.worldObj.spawnEntityInWorld(frienderman);
-			ItemBackpack.getBackpackData(frienderman).spawnsWithBackpack = true;
-			entity.setDead();
-		}
-		if (RandomUtils.getDouble() >= probability || (Blocks.backpack == null)) return;
-		ItemBackpack.getBackpackData(event.entityLiving).spawnsWithBackpack = true;
+		if (entity instanceof EntityPigZombie) probability = 1.0 / 1000;
+		else if (entity instanceof EntitySkeleton) probability = 1.0 / 1200;
+		else if (entity instanceof EntityZombie) probability = 1.0 / 800;
+		else if ((entity instanceof EntityEnderman) && MiscUtils.isEnabled(Blocks.enderBackpack) &&
+		         (entity.worldObj.getBiomeGenForCoords((int)entity.posX, (int)entity.posZ) != BiomeGenBase.sky))
+			probability = 1.0 / 80;
+		if (RandomUtils.getDouble() >= probability) return;
+		if (entity instanceof EntityEnderman) {
+			if (MiscUtils.isEnabled(Blocks.enderBackpack)) {
+				EntityFrienderman frienderman = new EntityFrienderman(entity.worldObj);
+				frienderman.setPositionAndRotation(entity.posX, entity.posY, entity.posZ, entity.rotationYaw, 0);
+				entity.worldObj.spawnEntityInWorld(frienderman);
+				ItemBackpack.getBackpackData(frienderman).spawnsWithBackpack = true;
+				entity.setDead();
+			}
+		} else if (MiscUtils.isEnabled(Blocks.backpack))
+			ItemBackpack.getBackpackData(event.entityLiving).spawnsWithBackpack = true;
 		
 	}
 	

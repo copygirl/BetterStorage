@@ -8,6 +8,7 @@ import net.mcft.copy.betterstorage.utils.RandomUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -18,12 +19,10 @@ import net.minecraft.world.World;
 import cpw.mods.fml.common.network.PacketDispatcher;
 
 // Note to anyone reading this:
-//   First of all, this is more or less a "secret" feature
-// in BetterStorage. If you found this, please don't ruin
-// the surprise for others by telling them about it.
-//   Second, if you do talk about it, please don't call
-// the mob "Frienderman", it's just the name of the class.
-// It's just a friendly enderman with a backpack.
+// First of all, this is more or less a "secret" feature in BetterStorage. If you
+// found this, please don't ruin the surprise for others by telling them about it.
+// Second, if you do talk about it, please don't call the mob "Frienderman", it's
+// just the name of the class. It's just a friendly enderman with a backpack.
 
 public class EntityFrienderman extends EntityEnderman {
 	
@@ -32,14 +31,20 @@ public class EntityFrienderman extends EntityEnderman {
 	
 	public EntityFrienderman(World world) {
 		super(world);
-		// FIXME: Set maximum health.
+	}
+	
+	@Override
+	protected void applyEntityAttributes() {
+		getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(40.0);
 	}
 	
 	@Override
 	protected Entity findPlayerToAttack() { return null; }
 	
 	@Override
-	public void setScreaming(boolean screaming) { /* Friendly endermen don't scream. */ }
+	public void setScreaming(boolean screaming) {
+		/* Friendly endermen don't scream. */
+	}
 	
 	@Override
 	public int getCarried() {

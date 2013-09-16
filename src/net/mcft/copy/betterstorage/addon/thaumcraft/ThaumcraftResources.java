@@ -6,10 +6,12 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class ThaumcraftResources {
+public final class ThaumcraftResources {
 	
 	public static final ResourceLocation thaumiumChestContainer = new BetterStorageResource("textures/gui/thaumiumChest.png");
 	
 	public static final ResourceLocation thaumcraftBackpackTexture = new BetterStorageResource("textures/models/thaumcraftBackpack.png");
+	
+	private ThaumcraftResources() {  }
 	
 }
