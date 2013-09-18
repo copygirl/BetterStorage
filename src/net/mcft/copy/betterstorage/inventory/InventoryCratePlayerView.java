@@ -14,6 +14,7 @@ import net.mcft.copy.betterstorage.block.crate.TileEntityCrate;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.misc.ItemIdentifier;
 import net.mcft.copy.betterstorage.utils.RandomUtils;
+import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
@@ -179,6 +180,17 @@ public class InventoryCratePlayerView extends InventoryBetterStorage implements 
 	}
 	
 	// Misc functions
+	
+	/** Returns if at least 1 item from the stack could be
+	 *  stored in the player view, but doesn't change anything. */
+	public boolean canFitSome(ItemStack item) {
+		for (ItemStack stack : tempContents) {
+			if ((stack == null) || (StackUtils.matches(stack, item) &&
+			                        (stack.stackSize < stack.getMaxStackSize())))
+				return true;
+		}
+		return false;
+	}
 	
 	private void onSlotEmptied(int slot) {
 		int emptySlots = 0;

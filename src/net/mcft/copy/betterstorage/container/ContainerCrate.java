@@ -51,31 +51,25 @@ public class ContainerCrate extends ContainerBetterStorage {
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int slotId) {
 		Slot slot = (Slot)inventorySlots.get(slotId);
-		ItemStack stackBefore = slot.getStack();
-		if (stackBefore != null) stackBefore.copy();
-		// If slot isn't empty and item can be stacked.
-		if ((slot != null) && slot.getHasStack()) {
-			ItemStack slotStack = slot.getStack();
-			// If slot is in the container inventory, try to transfer the item to the player.
-			if (slotId < playerView.getSizeInventory()) {
-				int count = slotStack.stackSize;
-				mergeItemStack(slotStack, playerView.getSizeInventory(), inventorySlots.size(), true);
-				int amount = count - slotStack.stackSize;
-				slotStack.stackSize = count;
-				playerView.decrStackSize(slotId, amount);
-				return null;
-			// If slot is in the player inventory, try to transfer the item to the container.
-			} else {
-				ItemStack overflow = playerView.data.addItems(slotStack);
-				slot.putStack(overflow);
-				// Send slot contents to player.
-				PacketDispatcher.sendPacketToPlayer(new Packet103SetSlot(player.openContainer.windowId, slotId, overflow), (Player)player);
-				// If there's overflow, return null because otherwise, retrySlotClick
-				// will be called and there's going to be an infinite loop.
-				// This kills the game.
-				if (overflow != null)
-					return null;
-			}
+		ItemStack slotStack = slot.getStack();
+		if (slotStack == null) return null;
+		ItemStack stackBefore = slotStack.copy();
+		// If slot is in the container inventory, try to transfer the item to the player.
+		if (slotId < playerView.getSizeInventory()) {
+			int count = slotStack.stackSize;
+			boolean success = mergeItemStack(slotStack, playerView.getSizeInventory(), inventorySlots.size(), true);
+			int amount = count - slotStack.stackSize;
+			slotStack.stackSize = count;
+			playerView.decrStackSize(slotId, amount);
+			if (!success) return null;
+		// If slot is in the player inventory, try to transfer the item to the container.
+		} else {
+			boolean success = playerView.canFitSome(slotStack);
+			ItemStack overflow = playerView.data.addItems(slotStack);
+			slot.putStack(overflow);
+			// Send slot contents to player if it doesn't match the calculated overflow.
+			PacketDispatcher.sendPacketToPlayer(new Packet103SetSlot(player.openContainer.windowId, slotId, overflow), (Player)player);
+			if (!success) return null;
 		}
 		return stackBefore;
 	}

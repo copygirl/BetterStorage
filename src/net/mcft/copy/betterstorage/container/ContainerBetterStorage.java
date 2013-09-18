@@ -132,7 +132,8 @@ public class ContainerBetterStorage extends Container {
 					}
 				}
 				
-				if (stack.stackSize <= 0) return success;
+				if (stack.stackSize <= 0)
+					return success;
 			}
 		}
 		
@@ -156,7 +157,7 @@ public class ContainerBetterStorage extends Container {
 				}
 			}
 			
-			if (stack.stackSize <= 0) return success;
+			if (stack.stackSize <= 0) break;
 		}
 		
 		return success;
@@ -171,13 +172,13 @@ public class ContainerBetterStorage extends Container {
 		if (slot != null) {
 			if (special == 0) {
 				if ((button == 0) || (button == 1)) {
+					// Override default behavior to use putStack
+					// instead of manipulating stackSize directly.
 					ItemStack slotStack = slot.getStack();
 					ItemStack holding = player.inventory.getItemStack();
 					if ((slotStack != null) && (holding != null) &&
-					    slot.canTakeStack(player) && slot.isItemValid(holding) &&
-					    (slotStack.itemID == holding.itemID) &&
-					    (slotStack.getItemDamage() == holding.getItemDamage()) &&
-					    ItemStack.areItemStackTagsEqual(slotStack, holding)) {
+					    ((holding == null) ? slot.canTakeStack(player) : slot.isItemValid(holding)) &&
+					    StackUtils.matches(slotStack, holding)) {
 						int amount = ((button == 0) ? holding.stackSize : 1);
 						amount = Math.min(amount, slot.getSlotStackLimit() - slotStack.stackSize);
 						amount = Math.min(amount, slotStack.getMaxStackSize() - slotStack.stackSize);
@@ -189,7 +190,13 @@ public class ContainerBetterStorage extends Container {
 						return slotStack;
 					}
 				}
+			} else if (special == 1) {
+				// Override default shift-click so it doesn't call
+				// retrySlotClick, whatever that was meant for.
+				return (slot.canTakeStack(player) ? transferStackInSlot(player, slotId) : null);
 			} else if ((special == 2) && (button >= 0) && (button < 9)) {
+				// Override default hotbar switching to make sure
+				// the items can be taken and put into those slots.
 				if (startHotbar < 0) return null;
 				Slot slot2 = (Slot)inventorySlots.get(startHotbar + button);
 				ItemStack stack = slot.getStack();
