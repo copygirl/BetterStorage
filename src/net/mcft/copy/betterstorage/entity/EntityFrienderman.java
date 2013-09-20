@@ -35,6 +35,7 @@ public class EntityFrienderman extends EntityEnderman {
 	
 	@Override
 	protected void applyEntityAttributes() {
+		super.applyEntityAttributes();
 		getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(40.0);
 	}
 	
