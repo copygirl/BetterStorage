@@ -3,13 +3,17 @@ package net.mcft.copy.betterstorage.block.tileentity;
 import net.mcft.copy.betterstorage.Config;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.misc.Constants;
+import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class TileEntityBackpack extends TileEntityContainer {
 	
@@ -18,21 +22,17 @@ public class TileEntityBackpack extends TileEntityContainer {
 	/** Affects if items drop when the backpack is destroyed. */
 	public boolean equipped = false;
 	
-	public boolean brokenInCreative = false;
-	
 	// Equipping / unequipping
 	
-	public boolean equip(EntityLivingBase carrier) {
+	public void equip(EntityLivingBase carrier) {
 		equipped = true;
-		equipped = worldObj.setBlockToAir(xCoord, yCoord, zCoord);
-		if (equipped) ItemBackpack.setBackpack(carrier, stack, contents);
-		return equipped;
+		ItemBackpack.setBackpack(carrier, stack, contents);
 	}
 	
 	public void unequip(EntityLivingBase carrier) {
 		if (!worldObj.isRemote) {
-			ItemStack[] items = ItemBackpack.getBackpackData(carrier).contents;
 			// Move items from the player backpack data to this tile entity.
+			ItemStack[] items = ItemBackpack.getBackpackData(carrier).contents;
 			if (items != null) System.arraycopy(items, 0, contents, 0, items.length);
 		}
 		ItemBackpack.removeBackpack(carrier);
@@ -44,6 +44,36 @@ public class TileEntityBackpack extends TileEntityContainer {
 	public String getName() { return Constants.containerBackpack; }
 	@Override
 	public int getRows() { return Config.backpackRows; }
+	
+	@Override
+	public boolean onBlockBreak(EntityPlayer player) {
+		// This currently only runs on the server. Would be nice if it worked on
+		// the client, but if the client thinks e's equipped the backpack, and it's
+		// already gone on the server e doesn't have a way to tell the client.
+		if (!worldObj.isRemote && player.isSneaking() && (player.getCurrentArmor(2) == null))
+			equip(player);
+		return super.onBlockBreak(player);
+	}
+	
+	@Override
+	public void dropContents() {
+		// If the backpack was equipped instead
+		// of just broken, don't drop anything.
+		if (equipped) return;
+		// Drop the backpack item, unless
+		// player is in creative mode.
+		if (!brokenInCreative)
+			WorldUtils.dropStackFromBlock(this, stack);
+		// Drop actual backpack contents.
+		super.dropContents();
+	}
+	
+	@Override
+	public ItemStack onPickBlock() { return stack.copy(); }
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void onBlockRenderInInventory(ItemStack stack) { this.stack = stack; }
 	
 	// Update entity
 	

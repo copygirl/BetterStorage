@@ -89,10 +89,10 @@ public class CommonProxy implements IPlayerTracker {
 		
 		EntityLivingBase entity = event.entityLiving;
 		double probability = 0.0;
-		if (entity instanceof EntityPigZombie) probability = 1.0 / 1000;
-		else if (entity instanceof EntitySkeleton) probability = 1.0 / 1200;
-		else if (entity instanceof EntityZombie) probability = 1.0 / 800;
-		else if ((entity instanceof EntityEnderman) && MiscUtils.isEnabled(Blocks.enderBackpack) &&
+		if (entity.getClass().equals(EntityZombie.class)) probability = 1.0 / 800;
+		else if (entity.getClass().equals(EntitySkeleton.class)) probability = 1.0 / 1200;
+		else if (entity.getClass().equals(EntityPigZombie.class)) probability = 1.0 / 1000;
+		else if ((entity.getClass().equals(EntityEnderman.class)) && MiscUtils.isEnabled(Blocks.enderBackpack) &&
 		         (entity.worldObj.getBiomeGenForCoords((int)entity.posX, (int)entity.posZ) != BiomeGenBase.sky))
 			probability = 1.0 / 80;
 		if (RandomUtils.getDouble() >= probability) return;

@@ -2,7 +2,6 @@ package net.mcft.copy.betterstorage.addon.thaumcraft;
 
 import net.mcft.copy.betterstorage.addon.Addon;
 import net.mcft.copy.betterstorage.block.BlockBackpack;
-import net.mcft.copy.betterstorage.block.ChestMaterial;
 import net.mcft.copy.betterstorage.client.renderer.ItemRendererBackpack;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityReinforcedChestRenderer;
 import net.mcft.copy.betterstorage.content.Blocks;
@@ -101,26 +100,7 @@ public class ThaumcraftAddon extends Addon {
 	
 	private void addAspects() {
 		
-		// Vanilla materials reinforced chests
-		addAspectsFor(Blocks.reinforcedChest, ChestMaterial.iron.id,
-		              EnumTag.VOID, 6, EnumTag.ARMOR, 12, EnumTag.METAL, 64);
-		addAspectsFor(Blocks.reinforcedChest, ChestMaterial.gold.id,
-		              EnumTag.VOID, 6, EnumTag.ARMOR, 12, EnumTag.METAL, 64, EnumTag.VALUABLE, 30);
-		addAspectsFor(Blocks.reinforcedChest, ChestMaterial.diamond.id,
-		              EnumTag.VOID, 6, EnumTag.ARMOR, 12, EnumTag.CRYSTAL, 96, EnumTag.VALUABLE, 30, EnumTag.PURE, 30);
-		addAspectsFor(Blocks.reinforcedChest, ChestMaterial.emerald.id,
-		              EnumTag.VOID, 6, EnumTag.ARMOR, 12, EnumTag.CRYSTAL, 80, EnumTag.VALUABLE, 30, EnumTag.EXCHANGE, 30);
-		
-		// Mod materials reinforced chests
-		addAspectsFor(Blocks.reinforcedChest, ChestMaterial.copper.id,
-		              EnumTag.VOID, 6, EnumTag.ARMOR, 12, EnumTag.METAL, 48, EnumTag.LIFE, 16);
-		addAspectsFor(Blocks.reinforcedChest, ChestMaterial.tin.id,
-		              EnumTag.VOID, 6, EnumTag.ARMOR, 12, EnumTag.METAL, 48, EnumTag.CONTROL, 16);
-		addAspectsFor(Blocks.reinforcedChest, ChestMaterial.silver.id,
-		              EnumTag.VOID, 6, EnumTag.ARMOR, 12, EnumTag.METAL, 48, EnumTag.EXCHANGE, 16);
-		addAspectsFor(Blocks.reinforcedChest, ChestMaterial.zinc.id,
-		              EnumTag.VOID, 6, EnumTag.ARMOR, 12, EnumTag.METAL, 64);
-		
+		addAspectsFor(Blocks.reinforcedChest, -1, EnumTag.VOID, 10, EnumTag.ARMOR, 14);
 		addAspectsFor(Blocks.crate, -1, EnumTag.VOID, 4, EnumTag.WOOD, 2);
 		addAspectsFor(Blocks.locker, -1, EnumTag.VOID, 4, EnumTag.WOOD, 2);
 		addAspectsFor(Blocks.armorStand, -1, EnumTag.METAL, 14);

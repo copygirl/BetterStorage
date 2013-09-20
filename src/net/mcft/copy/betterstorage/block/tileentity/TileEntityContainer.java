@@ -5,10 +5,13 @@ import net.mcft.copy.betterstorage.inventory.InventoryTileEntity;
 import net.mcft.copy.betterstorage.utils.NbtUtils;
 import net.mcft.copy.betterstorage.utils.PlayerUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public abstract class TileEntityContainer extends TileEntity {
 	
@@ -20,7 +23,9 @@ public abstract class TileEntityContainer extends TileEntity {
 	private String customTitle = null;
 	
 	private int playersUsing = 0;
-	private int ticksSinceSync;
+	private int ticksSinceSync = 0;
+	
+	protected boolean brokenInCreative = false;
 	
 	public float lidAngle = 0;
 	public float prevLidAngle = 0;
@@ -50,9 +55,16 @@ public abstract class TileEntityContainer extends TileEntity {
 	}
 	public InventoryTileEntity getPlayerInventory() { return playerInventory; }
 	
-	/** Returns if a player can use this container. */
+	/** Returns if a player can use this container. This is called once before
+	 *  the GUI is opened and then again every tick. Returning false when the
+	 *  GUI is open, like when the player is too far away, will close the GUI. */
 	public boolean canPlayerUseContainer(EntityPlayer player) {
 		return WorldUtils.isTileEntityUsableByPlayer(this, player);
+	}
+	
+	/** Creates and returns a Container for this container. */
+	public ContainerBetterStorage createContainer(EntityPlayer player) {
+		return new ContainerBetterStorage(player, getPlayerInventory());
 	}
 	
 	// Container title related
@@ -75,19 +87,58 @@ public abstract class TileEntityContainer extends TileEntity {
 	/** Sets the custom title of this container. Has no effect if it can't be set. */
 	public void setCustomTitle(String title) { if (canSetCustomTitle()) customTitle = title; }
 	
-	// Container / GUI
+	// Block functions
 	
-	/** Opens a GUI of the container for the player. */
+	/** Called when a block is placed by a player. Sets data of the tile
+	 *  entity, like custom container title, enchantments or similar. */
+	public void onBlockPlaced(EntityLivingBase player, ItemStack stack) {
+		if (stack.hasDisplayName())
+			setCustomTitle(stack.getDisplayName());
+	}
+	
+	/** Called then the block is activated (right clicked).
+	 *  Usually opens the GUI of the container.*/
+	public boolean onBlockActivated(EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
+		if (worldObj.isRemote) return true;
+		if (!canPlayerUseContainer(player)) return true;
+		openGui(player);
+		return true;
+	}
+	
+	/** Opens the GUI of this container for the player. */
 	public void openGui(EntityPlayer player) {
-		if (!canPlayerUseContainer(player)) return;
-		PlayerUtils.openGui(player, getName(), getColumns(), getRows(),
-		                    getCustomTitle(), createContainer(player));
+		ContainerBetterStorage container = createContainer(player);
+		PlayerUtils.openGui(player, getName(), container.getColumns(), container.getRows(), getCustomTitle(), container);
 	}
 	
-	/** Creates and returns a Container for this container. */
-	public ContainerBetterStorage createContainer(EntityPlayer player) {
-		return new ContainerBetterStorage(player, getPlayerInventory());
+	/** Overrides default pick block behavior if it returns an ItemStack. */
+	public ItemStack onPickBlock() { return null; }
+	
+	/** Called when a block is attempted to be broken by a player.
+	 *  Returns if the block should actually be broken. */
+	public boolean onBlockBreak(EntityPlayer player) {
+		brokenInCreative = player.capabilities.isCreativeMode;
+		return true;
 	}
+	
+	/** Called after the block is destroyed, drops contents etc. */
+	public void onBlockDestroyed() {
+		dropContents();
+		brokenInCreative = false;
+	}
+	
+	/** Called when the container is destroyed to drop its contents. */
+	public void dropContents() {
+		if (contents != null)
+			for (ItemStack stack : contents)
+				WorldUtils.dropStackFromBlock(worldObj, xCoord, yCoord, zCoord, stack);
+	}
+	
+	/** Called before the tile entity is being rendered as an item.
+	 *  Sets things like the material taken from the stack. <br>
+	 *  Only gets called if an ItemRendererContainer is registered.*/
+	@SideOnly(Side.CLIENT)
+	public void onBlockRenderInInventory(ItemStack stack) {  }
 	
 	// Players using synchronization
 	
@@ -127,14 +178,6 @@ public abstract class TileEntityContainer extends TileEntity {
 		float lidSpeed = getLidSpeed();
 		if (playersUsing > 0) lidAngle = Math.min(1.0F, lidAngle + lidSpeed);
 		else lidAngle = Math.max(0.0F, lidAngle - lidSpeed);
-	}
-	
-	// Dropping items
-	
-	/** Called when the container is destroyed, to drop all its contents. */
-	public void dropContents() {
-		for (ItemStack stack : contents)
-			WorldUtils.dropStackFromBlock(worldObj, xCoord, yCoord, zCoord, stack);
 	}
 	
 	// Reading from / writing to NBT

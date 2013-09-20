@@ -2,8 +2,9 @@ package net.mcft.copy.betterstorage.block.tileentity;
 
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.inventory.InventoryTileEntity;
-import net.mcft.copy.betterstorage.utils.PlayerUtils;
+import net.mcft.copy.betterstorage.utils.DirectionUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -59,7 +60,6 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 	public boolean canConnect(TileEntityConnectable connectable) {
 		return ((connectable != null) &&                                  // check for null
 		        (getBlockType() == connectable.getBlockType()) &&         // check for same block type
-		        (getBlockMetadata() == connectable.getBlockMetadata()) && // check for same material
 		        (getOrientation() == connectable.orientation) &&          // check for same orientation
 		        // Make sure the containers are not already connected.
 		        !isConnected() && !connectable.isConnected());
@@ -110,19 +110,30 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 	public final String getName() { return (getConnectableName() + (isConnected() ? "Large" : "")); }
 	
 	@Override
-	public void openGui(EntityPlayer player) {
-		if (!canPlayerUseContainer(player)) return;
-		PlayerUtils.openGui(player, getName(), getColumns(), (isConnected() ? 2 : 1) * getRows(),
-		                    getCustomTitle(), createContainer(player));
-	}
-	
-	@Override
 	public InventoryTileEntity getPlayerInventory() {
 		TileEntityConnectable connected = getConnectedTileEntity();
 		if (connected != null)
 			return new InventoryTileEntity(this, (isMain() ? this : connected),
 			                                     (isMain() ? connected : this));
 		else return super.getPlayerInventory();
+	}
+	
+	@Override
+	public final void onBlockPlaced(EntityLivingBase player, ItemStack stack) {
+		super.onBlockPlaced(player, stack);
+		onBlockPlacedBeforeCheckingConnections(player, stack);
+		checkForConnections();
+	}
+	
+	@Override
+	public void onBlockDestroyed() {
+		super.onBlockDestroyed();
+		disconnect();
+	}
+	
+	// This is a horrible name for a function.
+	protected void onBlockPlacedBeforeCheckingConnections(EntityLivingBase player, ItemStack stack) {
+		setOrientation(DirectionUtils.getOrientation(player).getOpposite());
 	}
 	
 	/** Returns if the container is accessible by other machines etc. */

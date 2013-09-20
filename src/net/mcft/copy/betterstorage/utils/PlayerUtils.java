@@ -10,10 +10,10 @@ import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.misc.handlers.PacketHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.entity.DataWatcher;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.Packet;
 import cpw.mods.fml.common.network.PacketDispatcher;
@@ -46,39 +46,27 @@ public final class PlayerUtils {
 	
 	@SideOnly(Side.CLIENT)
 	public static void openGui(EntityPlayer player, String name, int columns, int rows, String title) {
-		
 		GuiScreen gui = createGuiFromName(player, name, columns, rows, title);
 		Minecraft.getMinecraft().displayGuiScreen(gui);
-		
 	}
-	
 	@SideOnly(Side.CLIENT)
 	private static GuiScreen createGuiFromName(EntityPlayer player, String name, int columns, int rows, String title) {
 		
 		boolean localized = !title.isEmpty();
 		if (!localized) title = name;
 		
-		if (name.equals(Constants.containerCrate))
+		if (name.equals(Constants.containerCrate)) {
 			return new GuiCrate(player, rows, title, localized);
-		if (name.equals(Constants.containerKeyring)) {
+		} else if (name.equals(Constants.containerKeyring)) {
 			ContainerKeyring.setProtectedIndex(columns);
 			return new GuiBetterStorage(new ContainerKeyring(player, title));
-		}
-		if (name.startsWith(Constants.containerThaumiumChest))
+		} else if (name.startsWith(Constants.containerThaumiumChest)) {
 			return new GuiThaumiumChest(player, columns, rows, title, localized);
-
-		if (name.equals(Constants.containerCardboardBox))
-			return new GuiBetterStorage(player, columns, rows, new InventoryWrapper(new InventoryCardboardBox(new ItemStack[9]), title, localized));
-		return new GuiBetterStorage(player, columns, rows, title, localized);
+		} else if (name.equals(Constants.containerCardboardBox)) {
+			IInventory inventory = new InventoryWrapper(new InventoryCardboardBox(new ItemStack[9]), title, localized);
+			return new GuiBetterStorage(player, columns, rows, inventory);
+		} else return new GuiBetterStorage(player, columns, rows, title, localized);
 		
-	}
-	
-	public static void setHideCape(EntityPlayer player, boolean hidden) {
-		DataWatcher dataWatcher = player.getDataWatcher();
-		int index = 16, shift = 1;
-		int value = dataWatcher.getWatchableObjectByte(index);
-		if (hidden) dataWatcher.updateObject(index, (byte)(value | 1 << shift));
-		else dataWatcher.updateObject(index, (byte)(value & ~(1 << shift)));
 	}
 	
 }

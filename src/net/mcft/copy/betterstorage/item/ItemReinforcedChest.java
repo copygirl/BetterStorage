@@ -1,6 +1,6 @@
 package net.mcft.copy.betterstorage.item;
 
-import net.mcft.copy.betterstorage.block.ChestMaterial;
+import net.mcft.copy.betterstorage.block.ContainerMaterial;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -20,7 +20,7 @@ public class ItemReinforcedChest extends ItemBlock {
 	@Override
 	public String getItemDisplayName(ItemStack stack) {
 		String name = StatCollector.translateToLocal(getUnlocalizedName(stack) + ".name.full");
-		String material = "material." + Constants.modId + "." + ChestMaterial.get(stack.getItemDamage()).name;
+		String material = "material." + Constants.modId + "." + ContainerMaterial.getMaterial(stack).name;
 		String materialName = StatCollector.translateToLocal(material);
 		return name.replace("%MATERIAL%", materialName);
 	}

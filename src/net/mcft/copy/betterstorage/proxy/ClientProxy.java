@@ -14,6 +14,7 @@ import net.mcft.copy.betterstorage.block.tileentity.TileEntityLocker;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityReinforcedChest;
 import net.mcft.copy.betterstorage.client.renderer.BetterStorageRenderingHandler;
 import net.mcft.copy.betterstorage.client.renderer.ItemRendererBackpack;
+import net.mcft.copy.betterstorage.client.renderer.ItemRendererContainer;
 import net.mcft.copy.betterstorage.client.renderer.RenderFrienderman;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityArmorStandRenderer;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityBackpackRenderer;
@@ -23,6 +24,7 @@ import net.mcft.copy.betterstorage.content.Blocks;
 import net.mcft.copy.betterstorage.entity.EntityFrienderman;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.misc.handlers.KeyBindingHandler;
+import net.mcft.copy.betterstorage.utils.MiscUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.Tessellator;
@@ -35,6 +37,7 @@ import net.minecraft.util.EnumMovingObjectType;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
@@ -74,10 +77,9 @@ public class ClientProxy extends CommonProxy {
 	
 	private void registerRenderers() {
 		
-		if (Blocks.backpack != null)
-			MinecraftForgeClient.registerItemRenderer(Blocks.backpack.blockID, ItemRendererBackpack.instance);
-		if (Blocks.enderBackpack != null)
-			MinecraftForgeClient.registerItemRenderer(Blocks.enderBackpack.blockID, ItemRendererBackpack.instance);
+		registerItemRenderer(Blocks.backpack, ItemRendererBackpack.instance);
+		registerItemRenderer(Blocks.enderBackpack, ItemRendererBackpack.instance);
+		registerItemRenderer(Blocks.reinforcedChest, new ItemRendererContainer(TileEntityReinforcedChest.class));
 		
 		RenderingRegistry.registerEntityRenderingHandler(EntityFrienderman.class, new RenderFrienderman());
 		
@@ -88,6 +90,11 @@ public class ClientProxy extends CommonProxy {
 		
 		Addon.registerRenderersAll();
 		
+	}
+	
+	public static void registerItemRenderer(Block block, IItemRenderer renderer) {
+		if (MiscUtils.isEnabled(block))
+			MinecraftForgeClient.registerItemRenderer(block.blockID, renderer);
 	}
 	
 	public static int registerTileEntityRenderer(Class<? extends TileEntity> tileEntityClass, TileEntitySpecialRenderer renderer,

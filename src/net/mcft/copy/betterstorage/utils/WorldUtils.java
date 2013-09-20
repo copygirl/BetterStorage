@@ -36,6 +36,8 @@ public final class WorldUtils {
 		return getAABB(entity, radius, radius, radius, radius, radius, radius);
 	}
 	
+	// Item spawning related functions
+	
 	/** Spawns an ItemStack in the world. */
 	public static EntityItem spawnItem(World world, double x, double y, double z, ItemStack stack) {
 		if (stack == null) return null;
@@ -53,6 +55,7 @@ public final class WorldUtils {
 		}
 		return item;
 	}
+	
 	/** Spawn an ItemStack dropping from a destroyed block. */
 	public static EntityItem dropStackFromBlock(World world, int x, int y, int z, ItemStack stack) {
 		float itemX = x + RandomUtils.getFloat(0.1F, 0.9F);
@@ -60,6 +63,11 @@ public final class WorldUtils {
 		float itemZ = z + RandomUtils.getFloat(0.1F, 0.9F);
 		return spawnItemWithMotion(world, itemX, itemY, itemZ, stack);
 	}
+	/** Spawn an ItemStack dropping from a destroyed block. */
+	public static EntityItem dropStackFromBlock(TileEntity te, ItemStack stack) {
+		return dropStackFromBlock(te.worldObj, te.xCoord, te.yCoord, te.zCoord, stack);
+	}
+	
 	/** Spawns an ItemStack as if it was dropped from an entity on death. */
 	public static EntityItem dropStackFromEntity(Entity entity, ItemStack stack, float speed) {
 		if (stack == null) return null;
@@ -80,6 +88,8 @@ public final class WorldUtils {
 		item.motionZ *= speed / 4;
 		return item;
 	}
+	
+	// TileEntity related functions
 	
 	/** Returns whether the Block at the position has this id. */
 	public static boolean is(IBlockAccess world, int x, int y, int z, int id) {
@@ -129,6 +139,8 @@ public final class WorldUtils {
 	public static int syncPlayersUsing(TileEntityContainer te, int ticksSinceSync, int numUsingPlayers) {
 		return syncPlayersUsing(te, ticksSinceSync, numUsingPlayers, te.getPlayerInventory());
 	}
+	
+	// Misc functions
 	
 	public static MovingObjectPosition rayTrace(EntityPlayer player, float partialTicks) {
 		Attachments.playerLocal.set(player);

@@ -1,7 +1,11 @@
 package net.mcft.copy.betterstorage.block.tileentity;
 
 import net.mcft.copy.betterstorage.misc.Constants;
+import net.mcft.copy.betterstorage.utils.DirectionUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
@@ -33,6 +37,20 @@ public class TileEntityLocker extends TileEntityConnectable {
 		if (!(connectable instanceof TileEntityLocker)) return false;
 		TileEntityLocker locker = (TileEntityLocker)connectable;
 		return (super.canConnect(connectable) && (mirror == locker.mirror));
+	}
+	
+	@Override
+	public void onBlockPlacedBeforeCheckingConnections(EntityLivingBase player, ItemStack stack) {
+		super.onBlockPlaced(player, stack);
+		double angle = DirectionUtils.getRotation(getOrientation().getOpposite());
+		double yaw = ((player.rotationYaw % 360) + 360) % 360;
+		mirror = (DirectionUtils.angleDifference(angle, yaw) > 0);
+	}
+	
+	@Override
+	public boolean onBlockActivated(EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
+		if (getOrientation() != DirectionUtils.getDirectionFromSide(side)) return true;
+		return super.onBlockActivated(player, side, hitX, hitY, hitZ);
 	}
 	
 	// TileEntity synchronization

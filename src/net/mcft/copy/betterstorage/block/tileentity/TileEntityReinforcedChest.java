@@ -8,9 +8,10 @@ import net.mcft.copy.betterstorage.api.ILockable;
 import net.mcft.copy.betterstorage.attachment.Attachments;
 import net.mcft.copy.betterstorage.attachment.IHasAttachments;
 import net.mcft.copy.betterstorage.attachment.LockAttachment;
-import net.mcft.copy.betterstorage.block.ChestMaterial;
+import net.mcft.copy.betterstorage.block.ContainerMaterial;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -27,6 +28,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class TileEntityReinforcedChest extends TileEntityConnectable
                                        implements IInventory, ILockable, IHasAttachments {
 	
+	private ContainerMaterial material;
 	private boolean powered;
 	
 	private Attachments attachments = new Attachments(this);
@@ -34,6 +36,11 @@ public class TileEntityReinforcedChest extends TileEntityConnectable
 	
 	private ItemStack getLockInternal() { return lockAttachment.getItem(); }
 	private void setLockInternal(ItemStack lock) { lockAttachment.setItem(lock); }
+	
+	public ContainerMaterial getMaterial() {
+		if (material != null) return material;
+		return material = ((worldObj != null) ? ContainerMaterial.get(getBlockMetadata()) : ContainerMaterial.iron);
+	}
 	
 	public TileEntityReinforcedChest() {
 		lockAttachment = attachments.add(LockAttachment.class);
@@ -49,7 +56,7 @@ public class TileEntityReinforcedChest extends TileEntityConnectable
 	
 	@SideOnly(Side.CLIENT)
 	public ResourceLocation getResource() {
-		return ChestMaterial.get(getBlockMetadata()).getResource(isConnected());
+		return getMaterial().getResource(isConnected());
 	}
 	
 	// Attachment points
@@ -89,10 +96,34 @@ public class TileEntityReinforcedChest extends TileEntityConnectable
 	public int getColumns() { return Config.reinforcedChestColumns; }
 	
 	@Override
+	public boolean canPlayerUseContainer(EntityPlayer player) {
+		return (super.canPlayerUseContainer(player) &&
+		        ((getLock() == null) || canUse(player)));
+	}
+	
+	@Override
+	protected void onBlockPlacedBeforeCheckingConnections(EntityLivingBase player, ItemStack stack) {
+		super.onBlockPlacedBeforeCheckingConnections(player, stack);
+		material = ContainerMaterial.getMaterial(stack);
+	}
+	
+	@Override
+	public ItemStack onPickBlock() {
+		return getMaterial().setMaterial(new ItemStack(getBlockType()));
+	}
+	
+	@Override
 	public void dropContents() {
 		super.dropContents();
-		WorldUtils.dropStackFromBlock(worldObj, xCoord, yCoord, zCoord, getLock());
+		WorldUtils.dropStackFromBlock(this, getLock());
 		setLock(null);
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void onBlockRenderInInventory(ItemStack stack) {
+		super.onBlockRenderInInventory(stack);
+		material = ContainerMaterial.getMaterial(stack);
 	}
 	
 	// TileEntityConnactable stuff
@@ -113,7 +144,7 @@ public class TileEntityReinforcedChest extends TileEntityConnectable
 	public boolean canConnect(TileEntityConnectable connectable) {
 		if (!(connectable instanceof TileEntityReinforcedChest)) return false;
 		TileEntityReinforcedChest chest = (TileEntityReinforcedChest)connectable;
-		return (super.canConnect(connectable) &&
+		return (super.canConnect(connectable) && (material == chest.material) &&
 		        (((xCoord != chest.xCoord) && ((getOrientation() == ForgeDirection.SOUTH) ||
 		                                       (getOrientation() == ForgeDirection.NORTH))) ||
 		         ((zCoord != chest.zCoord) && ((getOrientation() == ForgeDirection.EAST) ||
@@ -121,9 +152,12 @@ public class TileEntityReinforcedChest extends TileEntityConnectable
 		        (getLock() == null) && (chest.getLock() == null));
 	}
 	
-	public TileEntityReinforcedChest getConnectedChest() { return (TileEntityReinforcedChest)getConnectedTileEntity(); }
-	
-	public TileEntityReinforcedChest getMainChest() { return (TileEntityReinforcedChest)getMainTileEntity(); }
+	public TileEntityReinforcedChest getConnectedChest() {
+		return (TileEntityReinforcedChest)getConnectedTileEntity();
+	}
+	public TileEntityReinforcedChest getMainChest() {
+		return (TileEntityReinforcedChest)getMainTileEntity();
+	}
 	
 	// ILockable implementation
 	
@@ -151,7 +185,9 @@ public class TileEntityReinforcedChest extends TileEntityConnectable
 	}
 	
 	@Override
-	public boolean canUse(EntityPlayer player) { return (getPlayersUsing() > 0); }
+	public boolean canUse(EntityPlayer player) {
+		return (getMainChest().getPlayersUsing() > 0);
+	}
 	
 	@Override
 	public void useUnlocked(EntityPlayer player) {
@@ -214,17 +250,17 @@ public class TileEntityReinforcedChest extends TileEntityConnectable
 	@Override
 	public Packet getDescriptionPacket() {
 		Packet132TileEntityData packet = (Packet132TileEntityData)super.getDescriptionPacket();
-		NBTTagCompound compound = packet.data;
 		ItemStack lock = getLockInternal();
-		if (lock != null) compound.setCompoundTag("lock", lock.writeToNBT(new NBTTagCompound()));
+		packet.data.setString(ContainerMaterial.TAG_NAME, getMaterial().name);
+		if (lock != null) packet.data.setCompoundTag("lock", lock.writeToNBT(new NBTTagCompound()));
         return packet;
 	}
 	@Override
 	public void onDataPacket(INetworkManager net, Packet132TileEntityData packet) {
 		super.onDataPacket(net, packet);
-		NBTTagCompound compound = packet.data;
-		if (!compound.hasKey("lock")) setLockInternal(null);
-		else setLockInternal(ItemStack.loadItemStackFromNBT(compound.getCompoundTag("lock")));
+		material = ContainerMaterial.get(packet.data.getString(ContainerMaterial.TAG_NAME));
+		if (!packet.data.hasKey("lock")) setLockInternal(null);
+		else setLockInternal(ItemStack.loadItemStackFromNBT(packet.data.getCompoundTag("lock")));
 	}
 	
 	// Reading from / writing to NBT
@@ -232,12 +268,14 @@ public class TileEntityReinforcedChest extends TileEntityConnectable
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
+		material = ContainerMaterial.get(compound.getString(ContainerMaterial.TAG_NAME));
 		if (compound.hasKey("lock"))
 			setLockInternal(ItemStack.loadItemStackFromNBT(compound.getCompoundTag("lock")));
 	}
 	@Override
 	public void writeToNBT(NBTTagCompound compound) {
 		super.writeToNBT(compound);
+		compound.setString(ContainerMaterial.TAG_NAME, getMaterial().name);
 		ItemStack lock = getLockInternal();
 		if (lock != null)
 			compound.setCompoundTag("lock", lock.writeToNBT(new NBTTagCompound("")));

@@ -5,21 +5,18 @@ import java.util.Random;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityArmorStand;
 import net.mcft.copy.betterstorage.item.ItemArmorStand;
 import net.mcft.copy.betterstorage.misc.Constants;
+import net.mcft.copy.betterstorage.misc.SetBlockFlag;
 import net.mcft.copy.betterstorage.proxy.ClientProxy;
-import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.packet.Packet103SetSlot;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -70,17 +67,14 @@ public class BlockArmorStand extends BlockContainerBetterStorage {
 	
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
-		TileEntityArmorStand locker = WorldUtils.get(world, x, y, z, TileEntityArmorStand.class);
-		locker.rotation = Math.round((player.rotationYawHead + 180) * 16 / 360);
-		world.setBlock(x, y + 1, z, blockID, 1, 3);
+		super.onBlockPlacedBy(world, x, y, z, player, stack);
+		// Set block above to armor stand with metadata 1.
+		world.setBlock(x, y + 1, z, blockID, 1, SetBlockFlag.DEFAULT);
 	}
 	
 	@Override
 	public void breakBlock(World world, int x, int y, int z, int id, int meta) {
 		if (meta > 0) return;
-		TileEntityArmorStand armorStand = WorldUtils.get(world, x, y, z, TileEntityArmorStand.class);
-		if (armorStand != null)
-		    armorStand.dropContents();
 		super.breakBlock(world, x, y, z, id, meta);
 	}
 	
@@ -107,35 +101,9 @@ public class BlockArmorStand extends BlockContainerBetterStorage {
 	
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
-		
 		if (world.isRemote) return true;
-		
-		if (world.getBlockMetadata(x, y, z) > 0)
-			return onBlockActivated(world, x, y - 1, z, player, side, hitX, hitY + 1, hitZ);
-		
-		TileEntityArmorStand armorStand = WorldUtils.get(world, x, y, z, TileEntityArmorStand.class);
-		int slot = Math.min(3, (int)(hitY * 2));
-		
-		ItemStack item = armorStand.armor[slot];
-		ItemStack holding = player.getCurrentEquippedItem();
-		ItemStack armor = player.inventory.armorInventory[slot];
-		if (player.isSneaking()) {
-			if (((item != null) || (armor != null)) &&
-			    ((armor == null) || armor.getItem().isValidArmor(armor, 3 - slot, player))) {
-				armorStand.armor[slot] = player.inventory.armorInventory[slot];
-				player.inventory.armorInventory[slot] = item;
-				PacketDispatcher.sendPacketToPlayer(new Packet103SetSlot(0, 8 - slot, item), (Player)player);
-				world.markBlockForUpdate(x, y, z);
-			}
-		} else if (((item != null) && (holding == null)) ||
-		           ((holding != null) && holding.getItem().isValidArmor(holding, 3 - slot, player))) {
-			armorStand.armor[slot] = holding;
-			player.inventory.mainInventory[player.inventory.currentItem] = item;
-			world.markBlockForUpdate(x, y, z);
-		}
-		
-		return true;
-		
+		if (world.getBlockMetadata(x, y, z) > 0) { y -= 1; hitY += 1; }
+		return super.onBlockActivated(world, x, y, z, player, side, hitX, hitY, hitZ);
 	}
 	
 }

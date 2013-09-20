@@ -1,33 +1,90 @@
 package net.mcft.copy.betterstorage.block.tileentity;
 
+import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.Packet103SetSlot;
 import net.minecraft.network.packet.Packet132TileEntityData;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class TileEntityArmorStand extends TileEntity {
+public class TileEntityArmorStand extends TileEntityContainer {
 
 	public ItemStack[] armor = new ItemStack[4];
 	public int rotation = 0;
 	public int tickCounter = 0;
 	
 	@Override
-	public void updateEntity() {
-		tickCounter++;
-	}
-	
-	@Override
 	@SideOnly(Side.CLIENT)
 	public AxisAlignedBB getRenderBoundingBox() {
 		return WorldUtils.getAABB(this, 0, 0, 0, 0, 1, 0);
 	}
+	
+	@Override
+	public void updateEntity() { tickCounter++; }
+	
+	// TileEntityContainer stuff
+	
+	@Override
+	public String getName() { return Constants.containerArmorStand; }
+	@Override
+	public boolean canSetCustomTitle() { return false; }
+	
+	@Override
+	protected int getSizeContents() { return 0; }
+	@Override
+	protected boolean syncPlayersUsing() { return false; }
+	
+	@Override
+	public void onBlockPlaced(EntityLivingBase player, ItemStack stack) {
+		super.onBlockPlaced(player, stack);
+		rotation = Math.round((player.rotationYawHead + 180) * 16 / 360);
+	}
+	
+	@Override
+	public boolean onBlockActivated(EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
+		
+		int slot = Math.min(3, (int)(hitY * 2));
+		
+		ItemStack item = armor[slot];
+		ItemStack holding = player.getCurrentEquippedItem();
+		ItemStack playerArmor = player.inventory.armorInventory[slot];
+		
+		if (player.isSneaking()) {
+			if (((item != null) || (playerArmor != null)) &&
+			    ((playerArmor == null) || playerArmor.getItem().isValidArmor(playerArmor, 3 - slot, player))) {
+				armor[slot] = playerArmor;
+				player.inventory.armorInventory[slot] = item;
+				PacketDispatcher.sendPacketToPlayer(new Packet103SetSlot(0, 8 - slot, item), (Player)player);
+				markForUpdate();
+			}
+		} else if (((item != null) && (holding == null)) ||
+		           ((holding != null) && holding.getItem().isValidArmor(holding, 3 - slot, player))) {
+			armor[slot] = holding;
+			player.inventory.mainInventory[player.inventory.currentItem] = item;
+			markForUpdate();
+		}
+		
+		return true;
+		
+	}
+	
+	@Override
+	public void dropContents() {
+		for (ItemStack stack : armor)
+			WorldUtils.dropStackFromBlock(worldObj, xCoord, yCoord, zCoord, stack);
+	}
+	
+	// TileEntity synchronization
 	
 	@Override
 	public Packet getDescriptionPacket() {
@@ -40,6 +97,8 @@ public class TileEntityArmorStand extends TileEntity {
 		NBTTagCompound compound = packet.data;
 		read(compound);
 	}
+	
+	// Reading from / writing to NBT
 	
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
@@ -74,13 +133,6 @@ public class TileEntityArmorStand extends TileEntity {
 			list.appendTag(item);
 		}
 		compound.setTag("Items", list);
-	}
-	
-	// Dropping stuff
-	
-	public void dropContents() {
-		for (ItemStack stack : armor)
-			WorldUtils.dropStackFromBlock(worldObj, xCoord, yCoord, zCoord, stack);
 	}
 	
 }

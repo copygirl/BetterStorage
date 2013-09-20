@@ -1,10 +1,7 @@
 package net.mcft.copy.betterstorage.client.renderer;
 
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityBackpack;
-import net.mcft.copy.betterstorage.proxy.ClientProxy;
-import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 
@@ -12,14 +9,13 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class ItemRendererBackpack implements IItemRenderer {
+public class ItemRendererBackpack extends ItemRendererContainer {
 	
 	public static final ItemRendererBackpack instance = new ItemRendererBackpack();
 	
-	@Override
-	public boolean handleRenderType(ItemStack item, ItemRenderType type) { return true; }
-	@Override
-	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) { return true; }
+	private ItemRendererBackpack() {
+		super(TileEntityBackpack.class);
+	}
 	
 	@Override
 	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
@@ -33,10 +29,7 @@ public class ItemRendererBackpack implements IItemRenderer {
 			GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 			GL11.glRotatef((equippedThirdPerson ? 200.0F : 75.0F), 0.0F, 1.0F, 0.0F);
 		}
-		BetterStorageRenderingHandler renderingHanlder =
-				ClientProxy.renderingHandlers.get(TileEntityBackpack.class);
-		((TileEntityBackpack)renderingHanlder.tileEntity).stack = item;
-		renderingHanlder.renderInventoryBlock(Block.blocksList[item.itemID], 0, 0, null);
+		super.renderItem(type, item, data);
 	}
 	
 }

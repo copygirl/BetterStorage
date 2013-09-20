@@ -7,18 +7,15 @@ import net.mcft.copy.betterstorage.api.BetterStorageEnchantment;
 import net.mcft.copy.betterstorage.attachment.Attachments;
 import net.mcft.copy.betterstorage.attachment.EnumAttachmentInteraction;
 import net.mcft.copy.betterstorage.attachment.IHasAttachments;
-import net.mcft.copy.betterstorage.block.tileentity.TileEntityContainer;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityReinforcedChest;
 import net.mcft.copy.betterstorage.item.ItemReinforcedChest;
 import net.mcft.copy.betterstorage.proxy.ClientProxy;
-import net.mcft.copy.betterstorage.utils.DirectionUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -71,8 +68,8 @@ public class BlockReinforcedChest extends BlockContainerBetterStorage {
 	
 	@Override
 	public void getSubBlocks(int id, CreativeTabs tab, List list) {
-		for (ChestMaterial material : ChestMaterial.materials)
-			list.add(new ItemStack(id, 1, material.id));
+		for (ContainerMaterial material : ContainerMaterial.getMaterials())
+			list.add(material.setMaterial(new ItemStack(id, 1, 0)));
 	}
 	
 	@Override
@@ -126,43 +123,11 @@ public class BlockReinforcedChest extends BlockContainerBetterStorage {
 	}
 	
 	@Override
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
-		TileEntityReinforcedChest chest = WorldUtils.get(world, x, y, z, TileEntityReinforcedChest.class);
-		chest.setOrientation(DirectionUtils.getOrientation(player).getOpposite());
-		chest.checkForConnections();
-		
-		if (stack.hasDisplayName())
-			WorldUtils.get(world, x, y, z, TileEntityContainer.class).setCustomTitle(stack.getDisplayName());
-	}
-	
-	@Override
-	public void breakBlock(World world, int x, int y, int z, int id, int meta) {
-		TileEntityReinforcedChest chest = WorldUtils.get(world, x, y, z, TileEntityReinforcedChest.class);
-		if (chest != null) {
-			chest.dropContents();
-			chest.disconnect();
-		}
-		super.breakBlock(world, x, y, z, id, meta);
-	}
-	
-	@Override
 	public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player) {
-		// TODO: See if we can make a pull request to forge to get PlayerInteractEvent to fire for left click on client.
+		// TODO: See if we can make a pull request to Forge to get PlayerInteractEvent to fire for left click on client.
 		Attachments attachments = WorldUtils.get(world, x, y, z, IHasAttachments.class).getAttachments();
 		boolean abort = attachments.interact(player, EnumAttachmentInteraction.attack);
 		// TODO: Abort block breaking? playerController.resetBlockBreaking doesn't seem to do the job.
-	}
-	
-	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z,
-	                                EntityPlayer player, int side,
-	                                float hitX, float hitY, float hitZ) {
-		if (!world.isRemote) {
-			TileEntityReinforcedChest chest = WorldUtils.get(world, x, y, z, TileEntityReinforcedChest.class);
-			if ((chest.getLock() == null) || chest.canUse(player))
-				chest.openGui(player);
-		}
-		return true;
 	}
 	
 	// Trigger enchantment related

@@ -1,7 +1,7 @@
 package net.mcft.copy.betterstorage.misc;
 
 import net.mcft.copy.betterstorage.addon.Addon;
-import net.mcft.copy.betterstorage.block.ChestMaterial;
+import net.mcft.copy.betterstorage.block.ContainerMaterial;
 import net.mcft.copy.betterstorage.content.Blocks;
 import net.mcft.copy.betterstorage.content.Items;
 import net.mcft.copy.betterstorage.item.recipe.DrinkingHelmetRecipe;
@@ -11,6 +11,7 @@ import net.mcft.copy.betterstorage.utils.MiscUtils;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -30,8 +31,10 @@ public final class Recipes {
 		
 		// Reinforced chest recipes
 		if (MiscUtils.isEnabled(Blocks.reinforcedChest))
-			for (ChestMaterial material : ChestMaterial.materials)
-				GameRegistry.addRecipe(material.getRecipe(Blocks.reinforcedChest));
+			for (ContainerMaterial material : ContainerMaterial.getMaterials()) {
+				IRecipe recipe = material.getChestRecipe(Blocks.reinforcedChest);
+				if (recipe != null) GameRegistry.addRecipe(recipe);
+			}
 		
 		// Locker recipe
 		if (MiscUtils.isEnabled(Blocks.locker)) {
