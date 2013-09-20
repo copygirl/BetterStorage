@@ -89,7 +89,9 @@ public abstract class TileEntityContainer extends TileEntity {
 	// Players using synchronization
 	
 	/** Returns if the container should synchronize playersUsing over the network. */
-	protected boolean syncPlayersUsing() { return true; }
+	protected boolean syncPlayersUsing() {
+		return (worldObj.doChunksNearChunkExist(xCoord, yCoord, zCoord, 16));
+	}
 	
 	private void doSyncPlayersUsing(int playersUsing) {
 		if (!syncPlayersUsing()) return;
