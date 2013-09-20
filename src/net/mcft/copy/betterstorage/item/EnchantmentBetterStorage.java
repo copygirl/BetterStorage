@@ -118,4 +118,7 @@ public class EnchantmentBetterStorage extends Enchantment {
 		        !incompatible.contains(other));
 	}
 	
+	@Override
+	public boolean isAllowedOnBooks() { return false; }
+	
 }
