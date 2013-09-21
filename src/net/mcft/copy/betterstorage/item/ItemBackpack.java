@@ -277,16 +277,17 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 		return (entity.getDataWatcher().getWatchableObjectByte(Config.backpackOpenDataWatcherId) != 0);
 	}
 	
-	/** Opens the carrier's equipped backpack for the player. */
-	public static void openBackpack(EntityPlayer player, EntityLivingBase carrier) {
+	/** Opens the carrier's equipped backpack for the player.
+	 *  Returns if it was successfully opened. */
+	public static boolean openBackpack(EntityPlayer player, EntityLivingBase carrier) {
 		
 		ItemStack backpack = ItemBackpack.getBackpack(carrier);
-		if (backpack == null) return;
+		if (backpack == null) return false;
 		ItemBackpack backpackType = (ItemBackpack)backpack.getItem();
 		
 		IInventory inventory = ItemBackpack.getBackpackItems(carrier, player);
 		inventory = new InventoryBackpackEquipped(carrier, player, inventory);
-		if (!inventory.isUseableByPlayer(player)) return;
+		if (!inventory.isUseableByPlayer(player)) return false;
 		
 		int columns = backpackType.getColumns();
 		int rows = backpackType.getRows();
@@ -294,6 +295,8 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 		
 		String title = StackUtils.get(backpack, "", "display", "Name");
 		PlayerUtils.openGui(player, inventory.getInvName(), columns, rows, title, container);
+		
+		return true;
 		
 	}
 	
