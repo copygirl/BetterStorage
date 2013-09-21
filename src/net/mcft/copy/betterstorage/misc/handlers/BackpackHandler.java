@@ -26,6 +26,9 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityEnderman;
+import net.minecraft.entity.monster.EntityPigZombie;
+import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
@@ -100,6 +103,13 @@ public class BackpackHandler implements IPlayerTracker {
 		
 	};
 	
+	public BackpackHandler() {
+		BetterStorageBackpack.spawnWithBackpack(EntityZombie.class, 1.0 / 800);
+		BetterStorageBackpack.spawnWithBackpack(EntitySkeleton.class, 1.0 / 1200);
+		BetterStorageBackpack.spawnWithBackpack(EntityPigZombie.class, 1.0 / 1000);
+		BetterStorageBackpack.spawnWithBackpack(EntityEnderman.class, 1.0 / 80);
+	}
+	
 	@ForgeSubscribe
 	public void onEntityConstructing(EntityConstructing event) {
 		// Initialize backpack data for every living entity.
@@ -110,6 +120,7 @@ public class BackpackHandler implements IPlayerTracker {
 	
 	@ForgeSubscribe
 	public void onPlayerInteract(PlayerInteractEvent event) {
+		if (event.isCanceled()) return;
 		// When player right clicks a block, attempt to place backpack.
 		if (event.action == Action.RIGHT_CLICK_BLOCK)
 			if (ItemBackpack.onPlaceBackpack(event.entityPlayer, event.x, event.y, event.z, event.face))

@@ -40,6 +40,7 @@ public class CommonProxy {
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		
 		// Interact with attachments.
+		if (event.isCanceled()) return;
 		
 		if ((event.action != Action.LEFT_CLICK_BLOCK) &&
 		    (event.action != Action.RIGHT_CLICK_BLOCK)) return;

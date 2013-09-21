@@ -5,10 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.EntityEnderman;
-import net.minecraft.entity.monster.EntityPigZombie;
-import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Loader;
@@ -18,13 +14,6 @@ public final class BetterStorageBackpack {
 	private static Method getBackpack = null;
 	
 	public static List<BackpackSpawnEntry> spawnWithBackpack = new ArrayList<BackpackSpawnEntry>();
-	
-	static {
-		spawnWithBackpack(EntityZombie.class, 1.0 / 800);
-		spawnWithBackpack(EntitySkeleton.class, 1.0 / 1200);
-		spawnWithBackpack(EntityPigZombie.class, 1.0 / 1000);
-		spawnWithBackpack(EntityEnderman.class, 1.0 / 80);
-	}
 	
 	private BetterStorageBackpack() {  }
 	
@@ -36,18 +25,18 @@ public final class BetterStorageBackpack {
 	}
 	
 	/** Returns the backpack stack if an entity is carrying one, or null of it doesn't. <br>
-	 *  (This can and should be used to check if the entity has a backpack equipped.) */
+	 *  This can and should be used to check if the entity has a backpack equipped. */
 	// Used Thaumcraft's API to see how it did things - I'm unsure what's the best way.
 	public static ItemStack getBackpack(EntityLivingBase entity) {
 		if (Loader.isModLoaded("betterstorage")) {
 			try {
-				if (getBackpack != null) {
+				if (getBackpack == null) {
 					Class itemBackpack = Class.forName("net.mcft.copy.betterstorage.item.ItemBackpack");
 					getBackpack = itemBackpack.getMethod("getBackpack", EntityLivingBase.class);
 				}
 				return (ItemStack)getBackpack.invoke(null, entity);
 			} catch (Exception e) {
-				FMLLog.warning("[betterstorage] Could not invoke net.mcft.copy.betterstorage.item.ItemBackpack.getBackpack!");
+				FMLLog.warning("[betterstorage] Could not invoke net.mcft.copy.betterstorage.item.ItemBackpack.getBackpack.");
 			}
 		}
 		return null;
