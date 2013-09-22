@@ -111,8 +111,9 @@ public abstract class TileEntityContainer extends TileEntity {
 		PlayerUtils.openGui(player, getName(), container.getColumns(), container.getRows(), getCustomTitle(), container);
 	}
 	
-	/** Overrides default pick block behavior if it returns an ItemStack. */
-	public ItemStack onPickBlock() { return null; }
+	/** Called when the block is picked (default: middle mouse).
+	 *  Returns the item to be picked, or null if nothing. */
+	public ItemStack onPickBlock(ItemStack block) { return block; }
 	
 	/** Called when a block is attempted to be broken by a player.
 	 *  Returns if the block should actually be broken. */

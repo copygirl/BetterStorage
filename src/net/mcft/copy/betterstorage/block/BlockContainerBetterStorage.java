@@ -57,32 +57,34 @@ public abstract class BlockContainerBetterStorage extends BlockContainer {
 	
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
-		WorldUtils.get(world, x, y, z, TileEntityContainer.class).onBlockPlaced(player, stack);
+		getContainer(world, x, y, z).onBlockPlaced(player, stack);
 	}
 	
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player,
 	                                int side, float hitX, float hitY, float hitZ) {
-		return WorldUtils.get(world, x, y, z, TileEntityContainer.class)
-				.onBlockActivated(player, side, hitX, hitY, hitZ);
+		return getContainer(world, x, y, z).onBlockActivated(player, side, hitX, hitY, hitZ);
 	}
 	
 	@Override
 	public boolean removeBlockByPlayer(World world, EntityPlayer player, int x, int y, int z) {
-		if (!WorldUtils.get(world, x, y, z, TileEntityContainer.class).onBlockBreak(player)) return false;
+		if (!getContainer(world, x, y, z).onBlockBreak(player)) return false;
 		return super.removeBlockByPlayer(world, player, x, y, z);
 	}
 	
 	@Override
 	public void breakBlock(World world, int x, int y, int z, int id, int meta) {
-		WorldUtils.get(world, x, y, z, TileEntityContainer.class).onBlockDestroyed();
+		getContainer(world, x, y, z).onBlockDestroyed();
 		super.breakBlock(world, x, y, z, id, meta);
 	}
 	
 	@Override
 	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
-		ItemStack stack = WorldUtils.get(world, x, y, z, TileEntityContainer.class).onPickBlock();
-		return ((stack != null) ? stack : super.getPickBlock(target, world, x, y, z));
+		return getContainer(world, x, y, z).onPickBlock(super.getPickBlock(target, world, x, y, z));
+	}
+	
+	private TileEntityContainer getContainer(World world, int x, int y, int z) {
+		return WorldUtils.get(world, x, y, z, TileEntityContainer.class);
 	}
 	
 }

@@ -69,7 +69,7 @@ public class TileEntityBackpack extends TileEntityContainer {
 	}
 	
 	@Override
-	public ItemStack onPickBlock() { return stack.copy(); }
+	public ItemStack onPickBlock(ItemStack block) { return stack.copy(); }
 	
 	@Override
 	@SideOnly(Side.CLIENT)

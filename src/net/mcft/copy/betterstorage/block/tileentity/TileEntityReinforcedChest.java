@@ -108,8 +108,8 @@ public class TileEntityReinforcedChest extends TileEntityConnectable
 	}
 	
 	@Override
-	public ItemStack onPickBlock() {
-		return getMaterial().setMaterial(new ItemStack(getBlockType()));
+	public ItemStack onPickBlock(ItemStack block) {
+		return getMaterial().setMaterial(block);
 	}
 	
 	@Override
