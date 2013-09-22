@@ -38,30 +38,14 @@ public class ItemEnderBackpack extends ItemBackpack {
 	public boolean canTake(PropertiesBackpack backpackData, ItemStack backpack) { return false; }
 	@Override
 	public boolean containsItems(PropertiesBackpack backpackData) { return false; }
+	@Override
+	protected String getReason(ItemStack stack, EntityPlayer player) { return "backpack.bound"; }
 	
 	// Item stuff
 	
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
 		return Resources.enderBackpackTexture.toString();
-	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advancedTooltips) {
-		if (getBackpack(player) == stack) {
-			PropertiesBackpack backpackData = getBackpackData(player);
-			String reason = LanguageUtils.translateTooltip("backpack.bound");
-			if (ItemBackpack.isBackpackOpen(player)) {
-				list.add(reason);
-				LanguageUtils.translateTooltip(list, "backpack.used");
-			} else LanguageUtils.translateTooltip(list, "backpack.unequipHint", "%REASON%", reason);
-			if (KeyBindingHandler.serverBackpackKeyEnabled) {
-				GameSettings settings = Minecraft.getMinecraft().gameSettings;
-				String str = GameSettings.getKeyDisplayString(Config.backpackOpenKey);
-				LanguageUtils.translateTooltip(list, "backpack.openHint", "%KEY%", str);
-			}
-		} else LanguageUtils.translateTooltip(list, "backpack.equipHint");
 	}
 	
 	class InventoryEnderBackpackEquipped extends InventoryWrapper {

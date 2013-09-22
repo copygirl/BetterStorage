@@ -36,6 +36,7 @@ public final class Config {
 	public static boolean enableCrateInventoryInterface = false;
 	public static boolean enableBackpackOpen = false;
 	public static boolean dropBackpackOnDeath = true;
+	public static boolean enableHelpTooltips = true;
 	
 	public static int backpackOpenKey = 48;
 	public static int drinkingHelmetKey = 33;
@@ -89,6 +90,9 @@ public final class Config {
 		
 		drinkingHelmetKey = config.get(categorySettings, "drinkingHelmetKey", drinkingHelmetKey,
 		                               "The key to use a drinking helmet when equipped. (Default: F)").getInt();
+		
+		enableHelpTooltips = config.get(categorySettings, "enableHelpTooltips", enableHelpTooltips,
+		                                "If enabled, shows tooltips on some items to help players who're new to the mod.").getBoolean(enableHelpTooltips);
 		
 		validate();
 		

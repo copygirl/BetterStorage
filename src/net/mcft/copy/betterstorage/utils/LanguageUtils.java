@@ -11,6 +11,7 @@ public final class LanguageUtils {
 	private LanguageUtils() {  }
 	
 	public static String translateTooltip(String thing, String... replacements) {
+		if (thing == null) return null;
 		if ((replacements.length % 2) != 0)
 			throw new IllegalArgumentException("replacements must contain an even number of elements.");
 		String translated = StatCollector.translateToLocal("tooltip." + Constants.modId + "." + thing);
@@ -20,6 +21,7 @@ public final class LanguageUtils {
 	}
 	
 	public static void translateTooltip(List list, String thing, String... replacements) {
+		if (thing == null) return;
 		String translated = translateTooltip(thing, replacements);
 		list.addAll(Arrays.asList(translated.split("#")));
 	}

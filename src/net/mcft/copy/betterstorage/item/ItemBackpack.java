@@ -119,19 +119,32 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advancedTooltips) {
 		if (getBackpack(player) == stack) {
-			PropertiesBackpack backpackData = getBackpackData(player);
-			boolean containsItems = containsItems(backpackData);
-			String reason = LanguageUtils.translateTooltip("backpack.containsItems");
+			String reason = LanguageUtils.translateTooltip(getReason(stack, player));
+			// Tell players if someone's using their backpack when they hovers over it in the GUI.
+			// This is because if the backpack is used by another player it can't be placed down.
 			if (ItemBackpack.isBackpackOpen(player)) {
-				if (containsItems) list.add(reason);
+				if (reason != null) list.add(reason);
 				LanguageUtils.translateTooltip(list, "backpack.used");
-			} else if (containsItems)
-				LanguageUtils.translateTooltip(list, "backpack.unequipHint", "%REASON%", reason);
-			if (KeyBindingHandler.serverBackpackKeyEnabled) {
+			// If the backpack can't be removed from its slot (only placed down),
+			// tell the player why, like "Contains items" or "Bound backpack".
+			} else if (reason != null) {
+				if (Config.enableHelpTooltips)
+					LanguageUtils.translateTooltip(list, "backpack.unequipHint", "%REASON%", reason);
+				else list.add(reason);
+			}
+			// If the backpack can be opened by pressing a key, let the player know.
+			if (KeyBindingHandler.serverBackpackKeyEnabled && Config.enableHelpTooltips) {
 				String str = GameSettings.getKeyDisplayString(Config.backpackOpenKey);
 				LanguageUtils.translateTooltip(list, "backpack.openHint", "%KEY%", str);
 			}
-		} else LanguageUtils.translateTooltip(list, "backpack.equipHint");
+		// Tell the player to place down and break a backpack to equip it.
+		} else if (Config.enableHelpTooltips)
+			LanguageUtils.translateTooltip(list, "backpack.equipHint");
+	}
+	/** Returns the reason (a string to be translated) why a backpack
+	 *  can't be moved from the armor slot, or null if there is none. */
+	protected String getReason(ItemStack stack, EntityPlayer player) {
+		return (containsItems(getBackpackData(player)) ? "backpack.containsItems" : null);
 	}
 	
 	@Override
