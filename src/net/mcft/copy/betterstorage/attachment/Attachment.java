@@ -86,7 +86,7 @@ public abstract class Attachment {
 	
 	public boolean interact(EntityPlayer player, EnumAttachmentInteraction type) { return false; }
 	
-	public ItemStack pick(EntityPlayer player) { return null; }
+	public ItemStack pick() { return null; }
 	
 	public boolean boxVisible(EntityPlayer player) { return true; }
 	

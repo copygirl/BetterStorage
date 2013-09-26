@@ -20,6 +20,7 @@ import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
@@ -108,7 +109,7 @@ public class TileEntityReinforcedChest extends TileEntityConnectable
 	}
 	
 	@Override
-	public ItemStack onPickBlock(ItemStack block) {
+	public ItemStack onPickBlock(ItemStack block, MovingObjectPosition target) {
 		return getMaterial().setMaterial(block);
 	}
 	

@@ -7,8 +7,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovingObjectPosition;
@@ -30,12 +30,18 @@ public class Attachments implements Iterable<Attachment> {
 	public Attachments(TileEntity tileEntity) {
 		this.tileEntity = tileEntity;
 	}
-
+	
 	// Called in CommonProxy.onPlayerInteract.
-	public boolean interact(EntityPlayer player, EnumAttachmentInteraction interactionType) {
-		MovingObjectPosition target = WorldUtils.rayTrace(player, 1.0F);
+	public boolean interact(MovingObjectPosition target, EntityPlayer player,
+	                        EnumAttachmentInteraction interactionType) {
 		Attachment attachment = ((target != null) ? get(target.subHit) : null);
 		return ((attachment != null) ? attachment.interact(player, interactionType) : false);
+	}
+	
+	// Called in TileEntityContainer.onPickBlock.
+	public ItemStack pick(MovingObjectPosition target) {
+		Attachment attachment = ((target != null) ? get(target.subHit) : null);
+		return ((attachment != null) ? attachment.pick() : null);
 	}
 	
 	// Called in Block.collisionRayTrace.
@@ -66,7 +72,7 @@ public class Attachments implements Iterable<Attachment> {
 		return target;
 		
 	}
-
+	
 	// Called in TileEntity.updateEntity.
 	public void update() {
 		for (Attachment attachment : this)
@@ -103,7 +109,7 @@ public class Attachments implements Iterable<Attachment> {
 	public void remove(Attachment attachment) { attachments.remove(attachment.subId); }
 	
 	public boolean has(Attachment attachment) { return attachments.containsKey(attachment.subId); }
-
+	
 	@Override
 	public Iterator<Attachment> iterator() { return attachments.values().iterator(); }
 	

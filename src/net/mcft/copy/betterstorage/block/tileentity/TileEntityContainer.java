@@ -10,6 +10,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MovingObjectPosition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -113,7 +114,7 @@ public abstract class TileEntityContainer extends TileEntity {
 	
 	/** Called when the block is picked (default: middle mouse).
 	 *  Returns the item to be picked, or null if nothing. */
-	public ItemStack onPickBlock(ItemStack block) { return block; }
+	public ItemStack onPickBlock(ItemStack block, MovingObjectPosition target) { return block; }
 	
 	/** Called when a block is attempted to be broken by a player.
 	 *  Returns if the block should actually be broken. */

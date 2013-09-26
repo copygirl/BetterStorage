@@ -3,6 +3,8 @@ package net.mcft.copy.betterstorage.attachment;
 import net.mcft.copy.betterstorage.api.IKey;
 import net.mcft.copy.betterstorage.api.ILock;
 import net.mcft.copy.betterstorage.api.ILockable;
+import net.mcft.copy.betterstorage.content.Items;
+import net.mcft.copy.betterstorage.item.ItemBetterStorage;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.entity.item.EntityItem;
@@ -55,6 +57,18 @@ public class LockAttachment extends ItemAttachment {
 		return ((type == EnumAttachmentInteraction.attack)
 				? attack(player, holding)
 				: use(player, holding));
+	}
+	
+	@Override
+	public ItemStack pick() {
+		if (item == null) return null;
+		ItemStack key = new ItemStack(Items.key);
+		ItemBetterStorage.setID(key, ItemBetterStorage.getID(item));
+		int color = ItemBetterStorage.getColor(item);
+		if (color >= 0) ItemBetterStorage.setColor(key, color);
+		int fullColor = ItemBetterStorage.getFullColor(item);
+		if (fullColor >= 0) ItemBetterStorage.setFullColor(key, fullColor);
+		return key;
 	}
 	
 	private boolean attack(EntityPlayer player, ItemStack holding) {

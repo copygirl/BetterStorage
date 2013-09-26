@@ -2,14 +2,8 @@ package net.mcft.copy.betterstorage.utils;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
-
 import net.minecraft.block.BlockColored;
-import net.minecraft.block.BlockWood;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;

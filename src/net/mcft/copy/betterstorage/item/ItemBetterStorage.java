@@ -13,8 +13,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public abstract class ItemBetterStorage extends Item {
 	
-	private static final String TAG_COLOR = "color";
-	private static final String TAG_FULL_COLOR = "fullColor";
+	public static final String TAG_COLOR = "color";
+	public static final String TAG_FULL_COLOR = "fullColor";
+	public static final String TAG_KEYLOCK_ID = "id";
 	
 	public ItemBetterStorage(int id) {
 		
@@ -40,18 +41,7 @@ public abstract class ItemBetterStorage extends Item {
 	}
 	
 	// NBT helper functions
-	
-	public static int getFullColor(ItemStack stack) {
-		String type = StackUtils.getType(stack, TAG_FULL_COLOR);
-		if (type == "BYTE") // Backwards compatibility.
-			return StackUtils.get(stack, -1, TAG_COLOR);
-		else if (type == "INT")
-			return StackUtils.get(stack, -1, TAG_FULL_COLOR);
-		else return -1;
-	}
-	public static void setFullColor(ItemStack stack, int fullColor) {
-		StackUtils.set(stack, fullColor, TAG_FULL_COLOR);
-	}
+	// Only used by keys and locks currently.
 	
 	public static int getColor(ItemStack stack) {
 		String type = StackUtils.getType(stack, TAG_FULL_COLOR);
@@ -65,6 +55,25 @@ public abstract class ItemBetterStorage extends Item {
 			StackUtils.set(stack, fullColor, TAG_FULL_COLOR);
 		}
 		StackUtils.set(stack, color, TAG_COLOR);
+	}
+	
+	public static int getFullColor(ItemStack stack) {
+		String type = StackUtils.getType(stack, TAG_FULL_COLOR);
+		if (type == "BYTE") // Backwards compatibility.
+			return StackUtils.get(stack, -1, TAG_COLOR);
+		else if (type == "INT")
+			return StackUtils.get(stack, -1, TAG_FULL_COLOR);
+		else return -1;
+	}
+	public static void setFullColor(ItemStack stack, int fullColor) {
+		StackUtils.set(stack, fullColor, TAG_FULL_COLOR);
+	}
+	
+	public static int getID(ItemStack stack) {
+		return StackUtils.get(stack, 0, TAG_KEYLOCK_ID);
+	}
+	public static void setID(ItemStack stack, int id) {
+		StackUtils.set(stack, id, TAG_KEYLOCK_ID);
 	}
 	
 }

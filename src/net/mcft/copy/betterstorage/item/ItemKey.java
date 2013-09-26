@@ -34,8 +34,8 @@ public class ItemKey extends ItemBetterStorage implements IKey {
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister iconRegister) {
 		super.registerIcons(iconRegister);
-		iconColor = iconRegister.registerIcon(Constants.modId + ":lock_color");
-		iconFullColor = iconRegister.registerIcon(Constants.modId + ":lock_fullColor");
+		iconColor = iconRegister.registerIcon(Constants.modId + ":key_color");
+		iconFullColor = iconRegister.registerIcon(Constants.modId + ":key_fullColor");
 	}
 
 	@Override
@@ -80,8 +80,8 @@ public class ItemKey extends ItemBetterStorage implements IKey {
 	
 	/** Gives the key a random ID if it doesn't have one already. */
 	public static void ensureHasID(ItemStack stack) {
-		if (!StackUtils.has(stack, "id"))
-			StackUtils.set(stack, RandomUtils.getInt(1, 32000), "id");
+		if (!StackUtils.has(stack, TAG_KEYLOCK_ID))
+			setID(stack, RandomUtils.getInt(1, 32000));
 	}
 	
 	// IKey implementation
@@ -97,8 +97,8 @@ public class ItemKey extends ItemBetterStorage implements IKey {
 		if (lockType.getLockType() != "normal")
 			return false;
 		
-		int lockId = StackUtils.get(lock, 0, "id");
-		int keyId = StackUtils.get(key, 0, "id");
+		int lockId = getID(lock);
+		int keyId = getID(key);
 		
 		// If the lock and key IDs match, return true.
 		if (lockId == keyId) return true;

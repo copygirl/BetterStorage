@@ -12,6 +12,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
+import net.minecraft.util.MovingObjectPosition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -69,7 +70,7 @@ public class TileEntityBackpack extends TileEntityContainer {
 	}
 	
 	@Override
-	public ItemStack onPickBlock(ItemStack block) { return stack.copy(); }
+	public ItemStack onPickBlock(ItemStack block, MovingObjectPosition target) { return stack.copy(); }
 	
 	@Override
 	@SideOnly(Side.CLIENT)

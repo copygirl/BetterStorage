@@ -1,23 +1,14 @@
 package net.mcft.copy.betterstorage.item;
 
-import java.util.List;
-
-import net.mcft.copy.betterstorage.Config;
 import net.mcft.copy.betterstorage.inventory.InventoryWrapper;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.misc.PropertiesBackpack;
 import net.mcft.copy.betterstorage.misc.Resources;
-import net.mcft.copy.betterstorage.misc.handlers.KeyBindingHandler;
-import net.mcft.copy.betterstorage.utils.LanguageUtils;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemEnderBackpack extends ItemBackpack {
 	

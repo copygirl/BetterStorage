@@ -51,7 +51,8 @@ public class CommonProxy {
 				((event.action == Action.LEFT_CLICK_BLOCK)
 						? EnumAttachmentInteraction.attack
 						: EnumAttachmentInteraction.use);
-		if (hasAttachments.getAttachments().interact(event.entityPlayer, interactionType)) {
+		if (hasAttachments.getAttachments().interact(WorldUtils.rayTrace(event.entityPlayer, 1.0F),
+		                                             event.entityPlayer, interactionType)) {
 			event.useBlock = Result.DENY;
 			event.useItem = Result.DENY;
 		}

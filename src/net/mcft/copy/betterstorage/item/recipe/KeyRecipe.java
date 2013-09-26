@@ -9,10 +9,7 @@ import net.mcft.copy.betterstorage.content.Items;
 import net.mcft.copy.betterstorage.item.ItemBetterStorage;
 import net.mcft.copy.betterstorage.utils.DyeUtils;
 import net.mcft.copy.betterstorage.utils.InventoryUtils;
-import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockColored;
-import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -61,7 +58,7 @@ public class KeyRecipe extends ComboRecipe {
 		List<ItemStack> dyes = InventoryUtils.findDyes(crafting);
 		ItemStack result = (modifyKey ? key.copy() : new ItemStack(Items.key));
 		if (key != null)
-			result.setItemDamage(key.getItemDamage());
+			ItemBetterStorage.setID(result, ItemBetterStorage.getID(key));
 		// Apply color.
 		if (dyes.size() > 0) {
 			int color = DyeUtils.getColorFromDyes(dyes);

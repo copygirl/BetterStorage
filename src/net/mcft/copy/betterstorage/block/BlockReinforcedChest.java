@@ -126,7 +126,7 @@ public class BlockReinforcedChest extends BlockContainerBetterStorage {
 	public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player) {
 		// TODO: See if we can make a pull request to Forge to get PlayerInteractEvent to fire for left click on client.
 		Attachments attachments = WorldUtils.get(world, x, y, z, IHasAttachments.class).getAttachments();
-		boolean abort = attachments.interact(player, EnumAttachmentInteraction.attack);
+		boolean abort = attachments.interact(WorldUtils.rayTrace(player, 1.0F), player, EnumAttachmentInteraction.attack);
 		// TODO: Abort block breaking? playerController.resetBlockBreaking doesn't seem to do the job.
 	}
 	

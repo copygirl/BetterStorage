@@ -3,6 +3,7 @@ package net.mcft.copy.betterstorage.block;
 import java.util.Locale;
 
 import net.mcft.copy.betterstorage.BetterStorage;
+import net.mcft.copy.betterstorage.attachment.IHasAttachments;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityContainer;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
@@ -80,7 +81,12 @@ public abstract class BlockContainerBetterStorage extends BlockContainer {
 	
 	@Override
 	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
-		return getContainer(world, x, y, z).onPickBlock(super.getPickBlock(target, world, x, y, z));
+		TileEntityContainer container = getContainer(world, x, y, z);
+		if (container instanceof IHasAttachments) {
+			ItemStack pick = ((IHasAttachments)container).getAttachments().pick(target);
+			if (pick != null) return pick;
+		}
+		return container.onPickBlock(super.getPickBlock(target, world, x, y, z), target);
 	}
 	
 	private TileEntityContainer getContainer(World world, int x, int y, int z) {
