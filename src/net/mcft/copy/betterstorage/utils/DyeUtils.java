@@ -3,6 +3,7 @@ package net.mcft.copy.betterstorage.utils;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+
 import net.minecraft.block.BlockColored;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.item.ItemStack;

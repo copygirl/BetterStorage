@@ -1,17 +1,21 @@
 package net.mcft.copy.betterstorage.item;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.mcft.copy.betterstorage.api.BetterStorageEnchantment;
 import net.mcft.copy.betterstorage.api.ILock;
 import net.mcft.copy.betterstorage.api.ILockable;
 import net.mcft.copy.betterstorage.misc.Constants;
+import net.mcft.copy.betterstorage.utils.RandomUtils;
+import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Icon;
+import net.minecraft.world.World;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemLock extends ItemBetterStorage implements ILock {
 	
@@ -34,6 +38,15 @@ public class ItemLock extends ItemBetterStorage implements ILock {
 	@Override
 	public int getItemEnchantability() { return 20; }
 	
+	@Override
+	public void onCreated(ItemStack stack, World world, EntityPlayer player) {
+		if (!world.isRemote) ensureHasID(stack);
+	}
+	@Override
+	public void onUpdate(ItemStack stack, World world, Entity entity, int slot, boolean isBeingHeld) {
+		if (!world.isRemote) ensureHasID(stack);
+	}
+	
 	@SideOnly(Side.CLIENT)
 	@Override
 	public boolean requiresMultipleRenderPasses() { return true; }
@@ -53,6 +66,13 @@ public class ItemLock extends ItemBetterStorage implements ILock {
 		boolean hasFullColor = (getFullColor(stack) >= 0);
 		if ((renderPass > 0) && (getColor(stack) >= 0)) return iconColor;
 		return (hasFullColor ? iconFullColor : itemIcon);
+	}
+	
+	/** Gives the lock a random ID if it doesn't have one. <br>
+	 *  This is usually only when the lock is taken out of creative. */
+	public static void ensureHasID(ItemStack stack) {
+		if (!StackUtils.has(stack, TAG_KEYLOCK_ID))
+			setID(stack, RandomUtils.getInt(1, 32000));
 	}
 	
 	// ILock implementation
