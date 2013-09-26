@@ -6,6 +6,7 @@ import net.mcft.copy.betterstorage.content.Blocks;
 import net.mcft.copy.betterstorage.content.Items;
 import net.mcft.copy.betterstorage.item.recipe.DrinkingHelmetRecipe;
 import net.mcft.copy.betterstorage.item.recipe.KeyRecipe;
+import net.mcft.copy.betterstorage.item.recipe.LockColorRecipe;
 import net.mcft.copy.betterstorage.item.recipe.LockRecipe;
 import net.mcft.copy.betterstorage.utils.MiscUtils;
 import net.minecraft.block.Block;
@@ -87,9 +88,13 @@ public final class Recipes {
 					"k", 'k', new ItemStack(Items.key, 1, Constants.anyDamage)));
 		}
 		
-		// Lock recipe
-		if (MiscUtils.isEnabled(Items.lock, Items.key))
-			GameRegistry.addRecipe(LockRecipe.createLockRecipe());
+		if (MiscUtils.isEnabled(Items.lock)) {
+			// Lock recipe
+			if (MiscUtils.isEnabled(Items.key))
+				GameRegistry.addRecipe(LockRecipe.createLockRecipe());
+			// Lock color recipe
+			GameRegistry.addRecipe(LockColorRecipe.createLockColorRecipe());
+		}
 		
 		// Keyring recipe
 		if (MiscUtils.isEnabled(Items.keyring))

@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import net.mcft.copy.betterstorage.content.Items;
+import net.mcft.copy.betterstorage.item.ItemBetterStorage;
+import net.mcft.copy.betterstorage.utils.DyeUtils;
 import net.mcft.copy.betterstorage.utils.InventoryUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.block.Block;
@@ -39,19 +41,14 @@ public class KeyRecipe extends ComboRecipe {
 	
 	@Override
 	public boolean checkShapelessItems(InventoryCrafting crafting, List<ItemStack> shapelessItems) {
-		// See if this is modifying a key or duplicating it.
-		boolean modifyKey = (getRecipeSize() == 1);
-		List<ItemStack> keys = InventoryUtils.findItems(crafting, Items.key);
 		// Not a valid recipe if there's more than one key.
+		List<ItemStack> keys = InventoryUtils.findItems(crafting, Items.key);
 		if (keys.size() > 1) return false;
-		ItemStack key = ((keys.size() > 0) ? keys.get(0) : null);
-		int numIron = InventoryUtils.countItems(crafting, Item.ingotIron);
 		// Not a valid recipe if any shapeless item
 		// other than a key or dye is used.
 		for (ItemStack stack : shapelessItems) {
-			Item item = stack.getItem();
-			if ((item != Items.key) &&
-			    (item != Item.dyePowder)) return false;
+			if ((stack.getItem() != Items.key) &&
+			    (!DyeUtils.isDye(stack))) return false;
 		}
 		return true;
 	}
@@ -61,29 +58,15 @@ public class KeyRecipe extends ComboRecipe {
 		// See if this is modifying a key or duplicating it.
 		boolean modifyKey = (getRecipeSize() == 1);
 		ItemStack key = InventoryUtils.findItem(crafting, Items.key);
-		List<ItemStack> dyes = InventoryUtils.findItems(crafting, Item.dyePowder);
+		List<ItemStack> dyes = InventoryUtils.findDyes(crafting);
 		ItemStack result = (modifyKey ? key.copy() : new ItemStack(Items.key));
 		if (key != null)
 			result.setItemDamage(key.getItemDamage());
-		if (dyes.size() >= 8)
-			StackUtils.set(result, (byte)1, "fullColor");
-		// Apply color
+		// Apply color.
 		if (dyes.size() > 0) {
-			float r = 0, g = 0, b = 0;
-			int amount = 0;
-			for (ItemStack dye : dyes) {
-				int colorIndex = BlockColored.getBlockFromDye(dye.getItemDamage());
-				float[] color = EntitySheep.fleeceColorTable[colorIndex];
-				r += color[0];
-				g += color[1];
-				b += color[2];
-				amount++;
-			}
-			int rr = (int)(Math.min(1, r / amount) * 255);
-			int gg = (int)(Math.min(1, g / amount) * 255);
-			int bb = (int)(Math.min(1, b / amount) * 255);
-			int color = ((rr << 16) | (gg << 8) | bb);
-			StackUtils.set(result, color, "color");
+			int color = DyeUtils.getColorFromDyes(dyes);
+			if (dyes.size() >= 8) ItemBetterStorage.setFullColor(result, color);
+			else ItemBetterStorage.setColor(result, color);
 		}
 		return result;
 	}

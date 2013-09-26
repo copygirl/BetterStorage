@@ -34,12 +34,12 @@ public class ItemKey extends ItemBetterStorage implements IKey {
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister iconRegister) {
 		super.registerIcons(iconRegister);
-		iconColor = iconRegister.registerIcon(Constants.modId + ":key_color");
-		iconFullColor = iconRegister.registerIcon(Constants.modId + ":key_fullColor");
+		iconColor = iconRegister.registerIcon(Constants.modId + ":lock_color");
+		iconFullColor = iconRegister.registerIcon(Constants.modId + ":lock_fullColor");
 	}
-	
+
 	@Override
-	public boolean isItemTool(ItemStack stack) { return true; }
+	public boolean isDamageable() { return true; }
 	@Override
 	public int getItemEnchantability() { return 20; }
 	
@@ -64,15 +64,18 @@ public class ItemKey extends ItemBetterStorage implements IKey {
 	@SideOnly(Side.CLIENT)
 	@Override
 	public int getColorFromItemStack(ItemStack stack, int renderPass) {
-		boolean fullColor = (StackUtils.get(stack, (byte)0, "fullColor") == 1);
-		return (((renderPass > 0) || fullColor) ? StackUtils.get(stack, 0xFFFFFF, "color") : 0xFFFFFF);
+		int fullColor = getFullColor(stack);
+		if (fullColor < 0) fullColor = 0xFFFFFF;
+		if (renderPass > 0) {
+			int color = getColor(stack);
+			return ((color < 0) ? fullColor : color);
+		} else return fullColor;
 	}
-	
 	@Override
 	public Icon getIcon(ItemStack stack, int renderPass) {
-		boolean colored = StackUtils.has(stack, "color");
-		boolean fullColor = (StackUtils.get(stack, (byte)0, "fullColor") == 1);
-		return (((renderPass > 0) && colored) ? iconColor : (fullColor ? iconFullColor : itemIcon));
+		boolean hasFullColor = (getFullColor(stack) >= 0);
+		if ((renderPass > 0) && (getColor(stack) >= 0)) return iconColor;
+		return (hasFullColor ? iconFullColor : itemIcon);
 	}
 	
 	/** Gives the key a random ID if it doesn't have one already. */

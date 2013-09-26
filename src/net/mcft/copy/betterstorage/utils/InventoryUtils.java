@@ -78,6 +78,16 @@ public final class InventoryUtils {
 		return list;
 	}
 	
+	/** Returns a list of dyes in the inventory. */
+	public static List<ItemStack> findDyes(IInventory inventory) {
+		List<ItemStack> list = new ArrayList<ItemStack>();
+		for (int i = 0; i < inventory.getSizeInventory(); i++) {
+			ItemStack stack = inventory.getStackInSlot(i);
+			if (DyeUtils.isDye(stack)) list.add(stack);
+		}
+		return list;
+	}
+	
 	public static ItemStack copyStack(ItemStack stack, int stackSize) {
 		ItemStack copy = new ItemStack(stack.itemID, stackSize, stack.getItemDamage());
 		if (stack.stackTagCompound != null)

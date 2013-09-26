@@ -8,26 +8,39 @@ import net.mcft.copy.betterstorage.api.IKey;
 import net.mcft.copy.betterstorage.api.ILock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagByte;
 import net.minecraft.nbt.NBTTagCompound;
 
 public final class StackUtils {
 	
 	private StackUtils() {  }
 	
-	/** Gets a value from the ItemStack's custom NBT data. Example: <br>
-	 *  <code> int color = ItemUtils.get(stack, -1, "display", "color"); </code> <br>
-	 *  Returns defaultValue if any parent compounds or the value tag don't exist. */
-	public static <T> T get(ItemStack stack, T defaultValue, String... tags) {
-		if (!stack.hasTagCompound()) return defaultValue;
+	/** Gets the actual NBT tag from the ItemStack's custom NBT data. */
+	public static NBTBase getTag(ItemStack stack, String... tags) {
+		if (!stack.hasTagCompound()) return null;
 		String tag = null;
 		NBTTagCompound compound = stack.getTagCompound();
 		for (int i = 0; i < tags.length; i++) {
 			tag = tags[i];
-			if (!compound.hasKey(tag)) return defaultValue;
+			if (!compound.hasKey(tag)) return null;
 			if (i == tags.length - 1) break;
 			compound = compound.getCompoundTag(tag);
 		}
-		return NbtUtils.getTagValue(compound.getTag(tag));
+		return compound.getTag(tag);
+	}
+	/** Gets the type of a tag from the ItemStack's custom NBT data. <br>
+	 *  See {@link NBTBase#NBTTypes} for possible return values. <br>
+	 *  Returns null if the tag doesn't exist. */
+	public static String getType(ItemStack stack, String... tags) {
+		NBTBase tag = getTag(stack, tags);
+		return ((tag != null) ? NBTBase.NBTTypes[tag.getId()] : null);
+	}
+	/** Gets a value from the ItemStack's custom NBT data. Example: <br>
+	 *  <code> int color = ItemUtils.get(stack, -1, "display", "color"); </code> <br>
+	 *  Returns defaultValue if any parent compounds or the value tag don't exist. */
+	public static <T> T get(ItemStack stack, T defaultValue, String... tags) {
+		NBTBase tag = getTag(stack, tags);
+		return (T)((tag != null) ? NbtUtils.getTagValue(tag) : defaultValue);
 	}
 	
 	/** Sets a tag in the ItemStack's custom NBT data. <br>
