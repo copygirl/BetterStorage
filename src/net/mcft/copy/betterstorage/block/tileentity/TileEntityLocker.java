@@ -41,7 +41,7 @@ public class TileEntityLocker extends TileEntityConnectable {
 	
 	@Override
 	public void onBlockPlacedBeforeCheckingConnections(EntityLivingBase player, ItemStack stack) {
-		super.onBlockPlaced(player, stack);
+		super.onBlockPlacedBeforeCheckingConnections(player, stack);
 		double angle = DirectionUtils.getRotation(getOrientation().getOpposite());
 		double yaw = ((player.rotationYaw % 360) + 360) % 360;
 		mirror = (DirectionUtils.angleDifference(angle, yaw) > 0);
