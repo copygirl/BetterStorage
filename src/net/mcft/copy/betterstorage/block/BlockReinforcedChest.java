@@ -59,6 +59,8 @@ public class BlockReinforcedChest extends BlockContainerBetterStorage {
 	@Override
 	public boolean renderAsNormalBlock() { return false; }
 	
+	public boolean hasMaterial() { return true; }
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public int getRenderType() { return ClientProxy.reinforcedChestRenderId; }

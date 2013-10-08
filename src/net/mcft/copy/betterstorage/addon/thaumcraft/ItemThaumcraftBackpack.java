@@ -2,21 +2,20 @@ package net.mcft.copy.betterstorage.addon.thaumcraft;
 
 import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.misc.Constants;
-import net.mcft.copy.betterstorage.utils.RandomUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import thaumcraft.api.EnumTag;
+import thaumcraft.api.IRepairable;
+import thaumcraft.api.IRepairableExtended;
 import thaumcraft.api.IVisDiscounter;
-import thaumcraft.api.IVisRepairable;
-import thaumcraft.api.ObjectTags;
 import thaumcraft.api.ThaumcraftApi;
 
-public class ItemThaumcraftBackpack extends ItemBackpack implements IVisRepairable, IVisDiscounter {
+public class ItemThaumcraftBackpack extends ItemBackpack implements IRepairable, IVisDiscounter {
 	
 	public ItemThaumcraftBackpack(int id) {
 		super(id, material);
@@ -45,11 +44,10 @@ public class ItemThaumcraftBackpack extends ItemBackpack implements IVisRepairab
 	@Override
 	public void onArmorTickUpdate(World world, EntityPlayer player, ItemStack itemStack) {
 		super.onArmorTickUpdate(world, player, itemStack);
-		if (player.worldObj.isRemote || (itemStack.stackSize == 0)) return;
-		createFlux(player, itemStack);
-		fluxEffects(player, itemStack);
-		repairItems(player, itemStack);
+		if (!world.isRemote) repairItems(itemStack, player);
 	}
+	
+	/* TODO: Readd flux effects.
 	
 	private void createFlux(EntityPlayer player, ItemStack backpack) {
 		
@@ -84,21 +82,31 @@ public class ItemThaumcraftBackpack extends ItemBackpack implements IVisRepairab
 		effect.apply(player, backpack);
 		
 	}
+	*/
 	
-	private void repairItems(EntityPlayer player, ItemStack backpack) {
+	public void repairItems(ItemStack stack, EntityPlayer player) {
 		
-		// TODO
+		int time = 30 * 20;
+		IInventory backpackInventory = ItemBackpack.getBackpackItems(player);
+		int backpackRepair = EnchantmentHelper.getEnchantmentLevel(ThaumcraftApi.enchantRepair, stack);
+		if ((backpackRepair <= 0) || ((player.ticksExisted % time) > 0)) return;
+		
+		for (int i = 0; i < backpackInventory.getSizeInventory(); i++) {
+			ItemStack itemStack = backpackInventory.getStackInSlot(i);
+			if (itemStack == null) continue;
+			Item item = itemStack.getItem();
+			int repair = EnchantmentHelper.getEnchantmentLevel(ThaumcraftApi.enchantRepair, itemStack);
+			if (!(item instanceof IRepairable) || (repair <= 0) ||
+			    ((item instanceof IRepairableExtended) &&
+			     !((IRepairableExtended)item).doRepair(itemStack, player, repair))) continue;
+			itemStack.setItemDamage(Math.max(itemStack.getItemDamage() - repair, 0));
+		}
 		
 	}
 	
-	// Thaumcraft implementations
+	// IVisDiscounter implementation
 	
 	@Override
-	public void doRepair(ItemStack stack, Entity e) {
-		if (ThaumcraftApi.decreaseClosestAura(e.worldObj, e.posX, e.posY, e.posZ, 1, true))
-			stack.damageItem(-1, (EntityLiving)e);
-	}
-	@Override
-	public int getVisDiscount() { return 5; }
+	public int getVisDiscount() { return 2; }
 	
 }

@@ -1,22 +1,9 @@
 package net.mcft.copy.betterstorage.addon.thaumcraft;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import net.mcft.copy.betterstorage.Config;
-import net.mcft.copy.betterstorage.block.tileentity.TileEntityConnectable;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityReinforcedChest;
 import net.mcft.copy.betterstorage.misc.BetterStorageResource;
 import net.mcft.copy.betterstorage.misc.Constants;
-import net.mcft.copy.betterstorage.utils.RandomUtils;
-import net.mcft.copy.betterstorage.utils.StackUtils;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import thaumcraft.api.EnumTag;
-import thaumcraft.api.ObjectTags;
-import thaumcraft.api.ThaumcraftApi;
-import thaumcraft.api.aura.AuraNode;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -36,13 +23,7 @@ public class TileEntityThaumiumChest extends TileEntityReinforcedChest {
 	@Override
 	public int getColumns() { return 17; }
 	
-	@Override
-	public void updateEntity() {
-		super.updateEntity();
-		if (worldObj.isRemote || !isMain()) return;
-		createFlux();
-		fluxEffects();
-	}
+	/* In Thaumcraft 4, aura / nodes / flux changed.
 	
 	private void createFlux() {
 		
@@ -151,5 +132,6 @@ public class TileEntityThaumiumChest extends TileEntityReinforcedChest {
 		inventory.setInventorySlotContents(switchIndex, switchItem);
 		
 	}
+	*/
 	
 }

@@ -25,6 +25,9 @@ public class BlockThaumiumChest extends BlockReinforcedChest {
 	}
 	
 	@Override
+	public boolean hasMaterial() { return false; }
+	
+	@Override
 	@SideOnly(Side.CLIENT)
 	public int getRenderType() { return ThaumcraftAddon.thaumiumChestRenderId; }
 	
