@@ -37,6 +37,10 @@
 	<entry key="material.betterstorage.tin">Zinn</entry>
 	<entry key="material.betterstorage.silver">Silber</entry>
 	<entry key="material.betterstorage.zinc">Zink</entry>
+	<entry key="tc.research_name.betterstorage.magicstorage">Magischer Speicher</entry>
+	<entry key="tc.research_text.betterstorage.magicstorage">Verzaubere deine Container</entry>
+	<entry key="tc.research_page.betterstorage.magicstorage.1">Einen Rucksack mit Magie und Materialien magischer Natur zu infundieren, wird seine Haltbarkeit und Kapazität erhöhen. Dank des Upgrades ist er fähig, Verzauberungen leichter anzunehmen, einschließlich der Verzauberung Reparieren. So lange der Rucksack die Verzauberung Reparieren besitzt, werden sich Items in ihm ebenfalls reparieren, jedoch langsamer.
+Etwas ähnliches ist mit einer Verstärkten Eisentruhe und einem Häufchen Thaumium, was in einer haltbareren Kiste resultieren wird, die auch mehr Items enthalten kann.</entry>
 	<entry key="tile.betterstorage.armorStand.name">Rüstungsstand</entry>
 	<entry key="tile.betterstorage.backpack.name">Rucksack</entry>
 	<entry key="tile.betterstorage.cardboardBox.name">Pappkarton</entry>
@@ -44,7 +48,7 @@
 	<entry key="tile.betterstorage.enderBackpack.name">Ender-Rucksack</entry>
 	<entry key="tile.betterstorage.locker.name">Schließfach</entry>
 	<entry key="tile.betterstorage.reinforcedChest.name">Verstärkte Truhe</entry>
-	<entry key="tile.betterstorage.reinforcedChest.name.full">Verstärkte %MATERIAL%-Truhe</entry>
+	<entry key="tile.betterstorage.reinforcedChest.name.full">Verstärkte %MATERIAL%truhe</entry>
 	<entry key="tile.betterstorage.thaumcraftBackpack.name">Rucksack des Thaumaturgen</entry>
 	<entry key="tile.betterstorage.thaumiumChest.name">Thaumium-Truhe</entry>
 	<entry key="tooltip.betterstorage.backpack.bound">Gebunden.</entry>
