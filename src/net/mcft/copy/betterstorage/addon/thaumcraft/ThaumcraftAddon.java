@@ -151,6 +151,7 @@ public class ThaumcraftAddon extends Addon {
 				createAspectList(Aspect.VOID, 2, Aspect.MAGIC, 1, Aspect.EXCHANGE, 1),
 				2, 4, 3, new ItemStack(thaumcraftBackpack));
 		research.setParents("ENCHFABRIC");
+		research.setConcealed();
 		research.setPages(
 				new ResearchPage("tc.research_page.betterstorage.magicstorage.1"),
 				new ResearchPage(thaumcraftBackpackRecipe),
