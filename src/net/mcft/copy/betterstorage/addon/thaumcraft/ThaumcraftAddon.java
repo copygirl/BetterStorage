@@ -21,6 +21,7 @@ import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.crafting.InfusionRecipe;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.ResearchPage;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -149,7 +150,7 @@ public class ThaumcraftAddon extends Addon {
 		ResearchItem research = new ResearchItem(
 				"betterstorage.magicstorage", "ARTIFICE",
 				createAspectList(Aspect.VOID, 2, Aspect.MAGIC, 1, Aspect.EXCHANGE, 1),
-				2, 4, 3, new ItemStack(thaumcraftBackpack));
+				2, (Loader.isModLoaded("ThaumicTinkerer") ? 3 : 4), 3, new ItemStack(thaumcraftBackpack));
 		research.setParents("ENCHFABRIC");
 		research.setConcealed();
 		research.setPages(
