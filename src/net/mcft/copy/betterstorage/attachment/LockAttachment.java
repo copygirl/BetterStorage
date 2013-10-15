@@ -5,6 +5,7 @@ import net.mcft.copy.betterstorage.api.ILock;
 import net.mcft.copy.betterstorage.api.ILockable;
 import net.mcft.copy.betterstorage.content.Items;
 import net.mcft.copy.betterstorage.item.ItemBetterStorage;
+import net.mcft.copy.betterstorage.misc.handlers.PacketHandler;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.entity.item.EntityItem;
@@ -14,6 +15,7 @@ import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import cpw.mods.fml.relauncher.Side;
@@ -74,16 +76,26 @@ public class LockAttachment extends ItemAttachment {
 	private boolean attack(EntityPlayer player, ItemStack holding) {
 		if (((ILockable)tileEntity).getLock() == null) return false;
 		
-		if (player.worldObj.isRemote)
-			wiggleStrength = Math.min(20.0F, wiggleStrength + 12.0F);
-		
-		if ((hit <= 0) && canHurtLock(holding)) {
-			hit = 10;
-			tileEntity.worldObj.playSound(
-					tileEntity.xCoord + 0.5, tileEntity.yCoord + 0.5, tileEntity.zCoord + 0.5,
-					"random.break", 0.2F, 2.5F, false);
-		}
+		boolean canHurt = ((hit <= 0) && canHurtLock(holding)); 
+		if (!player.worldObj.isRemote) {
+			if (canHurt) hit = 10;
+			Packet packet = PacketHandler.makePacket(PacketHandler.lockHit, tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, canHurt);
+			PacketHandler.sendToEveryoneNear(tileEntity.worldObj, tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, 32, player, packet);
+		} else hit(canHurt);
 		return true;
+	}
+	
+	@SideOnly(Side.CLIENT)
+	public void hit(boolean damage) {
+		wiggleStrength = Math.min(20.0F, wiggleStrength + 12.0F);
+		if (damage) {
+			hit = 10;
+			AxisAlignedBB box = getHighlightBox();
+			double x = (box.minX + box.maxX) / 2;
+			double y = (box.minY + box.maxY) / 2;
+			double z = (box.minZ + box.maxZ) / 2;
+			tileEntity.worldObj.playSound(x, y, z, "random.break", 0.5F, 2.5F, false);
+		}
 	}
 	
 	private boolean use(EntityPlayer player, ItemStack holding) {

@@ -7,16 +7,19 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import net.mcft.copy.betterstorage.Config;
+import net.mcft.copy.betterstorage.block.tileentity.TileEntityLockable;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.item.ItemDrinkingHelmet;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.PlayerUtils;
 import net.mcft.copy.betterstorage.utils.RandomUtils;
+import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.IPacketHandler;
@@ -32,6 +35,7 @@ public class PacketHandler implements IPacketHandler {
 	public static final byte backpackOpen = 3;
 	public static final byte backpackKeyEnabled = 4;
 	public static final byte drinkingHelmet = 5;
+	public static final byte lockHit = 6;
 	
 	public static Packet makePacket(Object... args) {
 		ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
@@ -84,6 +88,10 @@ public class PacketHandler implements IPacketHandler {
 				case drinkingHelmet:
 					checkSide(id, side, Side.SERVER);
 					handleDrinkingHelmet(player, stream);
+					break;
+				case lockHit:
+					checkSide(id, side, Side.CLIENT);
+					handleLockHit(player, stream);
 					break;
 				default:
 					throw new Exception("Received " + Constants.modName + " packet for unhandled ID " + id + " on side " + side + ".");
@@ -149,6 +157,22 @@ public class PacketHandler implements IPacketHandler {
 	
 	private void handleDrinkingHelmet(EntityPlayer player, DataInputStream stream) {
 		ItemDrinkingHelmet.use(player);
+	}
+	
+	@SideOnly(Side.CLIENT)
+	private void handleLockHit(EntityPlayer player, DataInputStream stream) throws IOException {
+		int x = stream.readInt();
+		int y = stream.readInt();
+		int z = stream.readInt();
+		boolean damage = stream.readBoolean();
+		World world = Minecraft.getMinecraft().theWorld;
+		TileEntityLockable lockable = WorldUtils.get(world, x, y, z, TileEntityLockable.class);
+		if (lockable != null) lockable.lockAttachment.hit(damage);
+	}
+	
+	public static void sendToEveryoneNear(World world, double x, double y, double z, double distance, EntityPlayer except, Packet packet) {
+		MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+		server.getConfigurationManager().sendToAllNearExcept(except, x, y, z, distance, world.provider.dimensionId, packet);
 	}
 	
 }

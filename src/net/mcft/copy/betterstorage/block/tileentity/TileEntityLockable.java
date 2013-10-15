@@ -25,11 +25,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 public abstract class TileEntityLockable extends TileEntityConnectable
                                          implements IInventory, ILockable, IHasAttachments {
 	
-	protected ContainerMaterial material;
-	protected boolean powered;
+	private boolean powered;
+	
+	public ContainerMaterial material;
+	public LockAttachment lockAttachment;
 	
 	protected Attachments attachments = new Attachments(this);
-	protected LockAttachment lockAttachment;
 	
 	protected ItemStack getLockInternal() { return lockAttachment.getItem(); }
 	protected void setLockInternal(ItemStack lock) { lockAttachment.setItem(lock); }
