@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Icon;
@@ -23,6 +24,7 @@ public class ItemLock extends ItemBetterStorage implements ILock {
 	
 	public ItemLock(int id) {
 		super(id);
+		setMaxDamage(64);
 	}
 	
 	@Override
@@ -31,6 +33,13 @@ public class ItemLock extends ItemBetterStorage implements ILock {
 		super.registerIcons(iconRegister);
 		iconColor = iconRegister.registerIcon(Constants.modId + ":lock_color");
 		iconFullColor = iconRegister.registerIcon(Constants.modId + ":lock_fullColor");
+	}
+	
+	@Override
+	public boolean isRepairable() { return true; }
+	@Override
+	public boolean getIsRepairable(ItemStack stack, ItemStack material) {
+		return (material.getItem() == Item.ingotGold);
 	}
 	
 	@Override

@@ -8,6 +8,10 @@ import net.mcft.copy.betterstorage.item.ItemBetterStorage;
 import net.mcft.copy.betterstorage.misc.handlers.PacketHandler;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -24,6 +28,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class LockAttachment extends ItemAttachment {
 	
 	public int hit = 0;
+	public int breakProgress = 0;
 	
 	public float wiggle = 0;
 	public float wiggleStrength = 0.0F;
@@ -46,7 +51,8 @@ public class LockAttachment extends ItemAttachment {
 	
 	@Override
 	public void update() {
-		hit = Math.max(0, hit - 1);
+		hit = Math.max(-20, hit - 1);
+		if (hit <= -20) breakProgress = Math.max(0, breakProgress - 1);
 		if (tileEntity.worldObj.isRemote) {
 			wiggle++;
 			wiggleStrength = Math.max(0.0F, wiggleStrength * 0.9F - 0.1F);
@@ -74,11 +80,37 @@ public class LockAttachment extends ItemAttachment {
 	}
 	
 	private boolean attack(EntityPlayer player, ItemStack holding) {
-		if (((ILockable)tileEntity).getLock() == null) return false;
+		ILockable lockable = (ILockable)tileEntity;
+		ItemStack lock = lockable.getLock();
+		if (lock == null) return false;
 		
 		boolean canHurt = ((hit <= 0) && canHurtLock(holding)); 
+		if (canHurt) {
+			holding.damageItem(2, player);
+			if (holding.stackSize <= 0)
+				player.destroyCurrentEquippedItem();
+		}
 		if (!player.worldObj.isRemote) {
-			if (canHurt) hit = 10;
+			if (canHurt) {
+				hit = 10;
+				int damage = (int)((AttributeModifier)holding.getAttributeModifiers().get(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName()).iterator().next()).getAmount();
+				int sharpness = EnchantmentHelper.getEnchantmentLevel(Enchantment.sharpness.effectId, holding);
+				int efficiency = EnchantmentHelper.getEnchantmentLevel(Enchantment.efficiency.effectId, holding);
+				breakProgress += Math.min(damage, 10) / 2 + Math.min(Math.max(sharpness, efficiency), 5);
+				if (breakProgress > 100) {
+					int unbreaking = EnchantmentHelper.getEnchantmentLevel(Enchantment.unbreaking.effectId, lock);
+					lock.setItemDamage(lock.getItemDamage() + 10 / (1 + unbreaking));
+					if (lock.getItemDamage() < lock.getMaxDamage()) {
+						AxisAlignedBB box = getHighlightBox();
+						double x = (box.minX + box.maxX) / 2;
+						double y = (box.minY + box.maxY) / 2;
+						double z = (box.minZ + box.maxZ) / 2;
+						EntityItem item = WorldUtils.spawnItem(tileEntity.worldObj, x, y, z, lock);
+					}
+					lockable.setLock(null);
+					breakProgress = 0;
+				}
+			}
 			Packet packet = PacketHandler.makePacket(PacketHandler.lockHit, tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, canHurt);
 			PacketHandler.sendToEveryoneNear(tileEntity.worldObj, tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, 32, player, packet);
 		} else hit(canHurt);
@@ -119,12 +151,12 @@ public class LockAttachment extends ItemAttachment {
 			if (!success) return true;
 			
 			if (player.isSneaking()) {
-				lockable.setLock(null);
 				AxisAlignedBB box = getHighlightBox();
 				double x = (box.minX + box.maxX) / 2;
 				double y = (box.minY + box.maxY) / 2;
 				double z = (box.minZ + box.maxZ) / 2;
 				EntityItem item = WorldUtils.spawnItem(player.worldObj, x, y, z, lock);
+				lockable.setLock(null);
 			} else lockable.useUnlocked(player);
 			
 			return true;

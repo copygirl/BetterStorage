@@ -7,6 +7,7 @@ import net.mcft.copy.betterstorage.api.BetterStorageEnchantment;
 import net.mcft.copy.betterstorage.attachment.Attachments;
 import net.mcft.copy.betterstorage.attachment.EnumAttachmentInteraction;
 import net.mcft.copy.betterstorage.attachment.IHasAttachments;
+import net.mcft.copy.betterstorage.block.tileentity.TileEntityLockable;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityReinforcedChest;
 import net.mcft.copy.betterstorage.item.ItemReinforcedChest;
 import net.mcft.copy.betterstorage.proxy.ClientProxy;
@@ -76,14 +77,8 @@ public class BlockReinforcedChest extends BlockContainerBetterStorage {
 	
 	@Override
 	public float getBlockHardness(World world, int x, int y, int z) {
-		TileEntityReinforcedChest chest = WorldUtils.get(world, x, y, z, TileEntityReinforcedChest.class);
-		float hardness = blockHardness;
-		if ((chest != null) && (chest.getLock() != null)) {
-			hardness *= 15.0F;
-			int persistance = BetterStorageEnchantment.getLevel(chest.getLock(), "persistance");
-			if (persistance > 0) hardness *= persistance + 2;
-		}
-		return hardness;
+		if (WorldUtils.get(world, x, y, z, TileEntityLockable.class).getLock() != null) return -1;
+		else return super.getBlockHardness(world, x, y, z);
 	}
 	
 	@Override
