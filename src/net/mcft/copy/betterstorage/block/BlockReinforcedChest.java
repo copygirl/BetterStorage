@@ -9,7 +9,7 @@ import net.mcft.copy.betterstorage.attachment.EnumAttachmentInteraction;
 import net.mcft.copy.betterstorage.attachment.IHasAttachments;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityLockable;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityReinforcedChest;
-import net.mcft.copy.betterstorage.item.ItemReinforcedChest;
+import net.mcft.copy.betterstorage.item.block.ItemReinforcedChest;
 import net.mcft.copy.betterstorage.proxy.ClientProxy;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;

@@ -1,4 +1,4 @@
-package net.mcft.copy.betterstorage.item;
+package net.mcft.copy.betterstorage.item.block;
 
 import net.mcft.copy.betterstorage.block.BlockReinforcedChest;
 import net.mcft.copy.betterstorage.block.ContainerMaterial;

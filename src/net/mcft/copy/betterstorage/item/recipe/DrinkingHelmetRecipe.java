@@ -1,6 +1,6 @@
 package net.mcft.copy.betterstorage.item.recipe;
 
-import net.mcft.copy.betterstorage.item.ItemDrinkingHelmet;
+import net.mcft.copy.betterstorage.item.armor.ItemDrinkingHelmet;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;

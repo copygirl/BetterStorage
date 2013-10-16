@@ -1,4 +1,4 @@
-package net.mcft.copy.betterstorage.item;
+package net.mcft.copy.betterstorage.item.armor;
 
 import java.util.ArrayList;
 import java.util.List;

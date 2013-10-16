@@ -22,7 +22,7 @@ import net.mcft.copy.betterstorage.client.renderer.TileEntityLockerRenderer;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityReinforcedChestRenderer;
 import net.mcft.copy.betterstorage.content.Blocks;
 import net.mcft.copy.betterstorage.entity.EntityFrienderman;
-import net.mcft.copy.betterstorage.item.ItemBackpack;
+import net.mcft.copy.betterstorage.item.block.ItemBackpack;
 import net.mcft.copy.betterstorage.misc.handlers.KeyBindingHandler;
 import net.mcft.copy.betterstorage.utils.MiscUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;

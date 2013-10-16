@@ -3,11 +3,11 @@ package net.mcft.copy.betterstorage.content;
 import net.mcft.copy.betterstorage.Config;
 import net.mcft.copy.betterstorage.addon.Addon;
 import net.mcft.copy.betterstorage.item.ItemCardboardSheet;
-import net.mcft.copy.betterstorage.item.ItemDrinkingHelmet;
-import net.mcft.copy.betterstorage.item.ItemKey;
-import net.mcft.copy.betterstorage.item.ItemKeyring;
-import net.mcft.copy.betterstorage.item.ItemLock;
-import net.mcft.copy.betterstorage.item.ItemMasterKey;
+import net.mcft.copy.betterstorage.item.armor.ItemDrinkingHelmet;
+import net.mcft.copy.betterstorage.item.locking.ItemKey;
+import net.mcft.copy.betterstorage.item.locking.ItemKeyring;
+import net.mcft.copy.betterstorage.item.locking.ItemLock;
+import net.mcft.copy.betterstorage.item.locking.ItemMasterKey;
 import net.mcft.copy.betterstorage.utils.MiscUtils;
 
 public final class Items {

@@ -1,6 +1,6 @@
 package net.mcft.copy.betterstorage.addon.thaumcraft;
 
-import net.mcft.copy.betterstorage.item.ItemBackpack;
+import net.mcft.copy.betterstorage.item.block.ItemBackpack;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.enchantment.EnchantmentHelper;

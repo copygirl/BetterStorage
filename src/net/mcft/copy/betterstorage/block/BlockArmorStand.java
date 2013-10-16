@@ -3,7 +3,7 @@ package net.mcft.copy.betterstorage.block;
 import java.util.Random;
 
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityArmorStand;
-import net.mcft.copy.betterstorage.item.ItemArmorStand;
+import net.mcft.copy.betterstorage.item.block.ItemArmorStand;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.misc.SetBlockFlag;
 import net.mcft.copy.betterstorage.proxy.ClientProxy;

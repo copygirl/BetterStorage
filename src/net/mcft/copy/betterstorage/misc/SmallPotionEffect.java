@@ -1,6 +1,6 @@
 package net.mcft.copy.betterstorage.misc;
 
-import net.mcft.copy.betterstorage.item.ItemDrinkingHelmet;
+import net.mcft.copy.betterstorage.item.armor.ItemDrinkingHelmet;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;

@@ -1,6 +1,6 @@
 package net.mcft.copy.betterstorage.container;
 
-import net.mcft.copy.betterstorage.item.ItemBackpack;
+import net.mcft.copy.betterstorage.item.block.ItemBackpack;
 import net.mcft.copy.betterstorage.misc.PropertiesBackpack;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;

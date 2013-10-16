@@ -1,6 +1,6 @@
 package net.mcft.copy.betterstorage.inventory;
 
-import net.mcft.copy.betterstorage.item.ItemBackpack;
+import net.mcft.copy.betterstorage.item.block.ItemBackpack;
 import net.mcft.copy.betterstorage.utils.DirectionUtils;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;

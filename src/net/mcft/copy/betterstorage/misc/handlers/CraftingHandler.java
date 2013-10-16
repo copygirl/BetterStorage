@@ -1,7 +1,7 @@
 package net.mcft.copy.betterstorage.misc.handlers;
 
 import net.mcft.copy.betterstorage.content.Items;
-import net.mcft.copy.betterstorage.item.ItemKey;
+import net.mcft.copy.betterstorage.item.locking.ItemKey;
 import net.mcft.copy.betterstorage.utils.InventoryUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;

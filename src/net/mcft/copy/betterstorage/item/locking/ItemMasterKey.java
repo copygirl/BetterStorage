@@ -1,4 +1,4 @@
-package net.mcft.copy.betterstorage.item;
+package net.mcft.copy.betterstorage.item.locking;
 
 import java.util.List;
 

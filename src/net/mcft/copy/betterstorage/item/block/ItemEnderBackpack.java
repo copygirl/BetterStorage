@@ -1,4 +1,4 @@
-package net.mcft.copy.betterstorage.item;
+package net.mcft.copy.betterstorage.item.block;
 
 import net.mcft.copy.betterstorage.inventory.InventoryWrapper;
 import net.mcft.copy.betterstorage.misc.Constants;

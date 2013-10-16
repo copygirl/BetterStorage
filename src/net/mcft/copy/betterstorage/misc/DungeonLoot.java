@@ -2,7 +2,7 @@ package net.mcft.copy.betterstorage.misc;
 
 import net.mcft.copy.betterstorage.content.Blocks;
 import net.mcft.copy.betterstorage.content.Items;
-import net.mcft.copy.betterstorage.item.ItemDrinkingHelmet;
+import net.mcft.copy.betterstorage.item.armor.ItemDrinkingHelmet;
 import net.mcft.copy.betterstorage.utils.NbtUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.enchantment.Enchantment;
