@@ -2,6 +2,7 @@ package net.mcft.copy.betterstorage.block.tileentity;
 
 import java.security.InvalidParameterException;
 
+import net.mcft.copy.betterstorage.api.EnumLockInteraction;
 import net.mcft.copy.betterstorage.api.ILock;
 import net.mcft.copy.betterstorage.api.ILockable;
 import net.mcft.copy.betterstorage.attachment.Attachments;
@@ -72,6 +73,13 @@ public abstract class TileEntityLockable extends TileEntityConnectable
 	}
 	
 	// TileEntityContainer stuff
+	
+	@Override
+	public boolean onBlockActivated(EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
+		if (!worldObj.isRemote && !canPlayerUseContainer(player))
+			((ILock)getLock().getItem()).applyEffects(getLock(), this, player, EnumLockInteraction.OPEN);
+		return super.onBlockActivated(player, side, hitX, hitY, hitZ);
+	}
 	
 	@Override
 	public boolean canPlayerUseContainer(EntityPlayer player) {

@@ -8,6 +8,7 @@ import net.minecraftforge.common.Configuration;
 public final class Config {
 	
 	private static final String categorySettings = "settings";
+	private static final String categoryEnchantments = "enchantments";
 	
 	// The following IDs are also used as default values.
 	
@@ -26,7 +27,13 @@ public final class Config {
 	public static int masterKeyId      = 28544;
 	public static int drinkingHelmetId = 28545;
 	
-	public static int enchantmentBaseId = 0;
+	public static int enchantmentUnlockingId   = 170;
+	public static int enchantmentLockpickingId = 171;
+	public static int enchantmentMorphingId    = 172;
+	public static int enchantmentPersistanceId = 173;
+	public static int enchantmentSecurityId    = 174;
+	public static int enchantmentShockId       = 175;
+	public static int enchantmentTriggerId     = 176;
 	
 	public static int backpackOpenDataWatcherId = 27;
 	
@@ -64,8 +71,13 @@ public final class Config {
 		masterKeyId      = config.getItem("masterKey", masterKeyId).getInt();
 		drinkingHelmetId = config.getItem("drinkingHelmet", drinkingHelmetId).getInt();
 		
-		enchantmentBaseId = config.get(Configuration.CATEGORY_GENERAL, "enchantmentBaseId", enchantmentBaseId,
-		                               "Uses up about 10 IDs starting from this ID.").getInt();
+		enchantmentUnlockingId   = config.get(categoryEnchantments, "unlocking", enchantmentUnlockingId).getInt();
+		enchantmentLockpickingId = config.get(categoryEnchantments, "lockpicking", enchantmentLockpickingId).getInt();
+		enchantmentMorphingId    = config.get(categoryEnchantments, "morphing", enchantmentMorphingId).getInt();
+		enchantmentPersistanceId = config.get(categoryEnchantments, "persistance", enchantmentPersistanceId).getInt();
+		enchantmentSecurityId    = config.get(categoryEnchantments, "security", enchantmentSecurityId).getInt();
+		enchantmentShockId       = config.get(categoryEnchantments, "shock", enchantmentShockId).getInt();
+		enchantmentTriggerId     = config.get(categoryEnchantments, "trigger", enchantmentTriggerId).getInt();
 		
 		backpackOpenDataWatcherId = config.get(Configuration.CATEGORY_GENERAL, "backpackOpenDataWatcherId", backpackOpenDataWatcherId,
 		                                       "Valid values are 0 to 31, though many are already occupied.").getInt();

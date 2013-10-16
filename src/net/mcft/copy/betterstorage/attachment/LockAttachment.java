@@ -1,5 +1,7 @@
 package net.mcft.copy.betterstorage.attachment;
 
+import net.mcft.copy.betterstorage.api.BetterStorageEnchantment;
+import net.mcft.copy.betterstorage.api.EnumLockInteraction;
 import net.mcft.copy.betterstorage.api.IKey;
 import net.mcft.copy.betterstorage.api.ILock;
 import net.mcft.copy.betterstorage.api.ILockable;
@@ -93,11 +95,14 @@ public class LockAttachment extends ItemAttachment {
 		if (!player.worldObj.isRemote) {
 			if (canHurt) {
 				hit = 10;
+				
 				int damage = (int)((AttributeModifier)holding.getAttributeModifiers().get(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName()).iterator().next()).getAmount();
 				int sharpness = EnchantmentHelper.getEnchantmentLevel(Enchantment.sharpness.effectId, holding);
 				int efficiency = EnchantmentHelper.getEnchantmentLevel(Enchantment.efficiency.effectId, holding);
 				breakProgress += Math.min(damage, 10) / 2 + Math.min(Math.max(sharpness, efficiency), 5);
-				if (breakProgress > 100) {
+				
+				int persistance = BetterStorageEnchantment.getLevel(lock, "persistance");
+				if (breakProgress > 100 * (1 + persistance)) {
 					int unbreaking = EnchantmentHelper.getEnchantmentLevel(Enchantment.unbreaking.effectId, lock);
 					lock.setItemDamage(lock.getItemDamage() + 10 / (1 + unbreaking));
 					if (lock.getItemDamage() < lock.getMaxDamage()) {
@@ -110,6 +115,8 @@ public class LockAttachment extends ItemAttachment {
 					lockable.setLock(null);
 					breakProgress = 0;
 				}
+				
+				((ILock)lock.getItem()).applyEffects(lock, lockable, player, EnumLockInteraction.ATTACK);
 			}
 			Packet packet = PacketHandler.makePacket(PacketHandler.lockHit, tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, canHurt);
 			PacketHandler.sendToEveryoneNear(tileEntity.worldObj, tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, 32, player, packet);

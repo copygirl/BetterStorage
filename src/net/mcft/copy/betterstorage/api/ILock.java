@@ -14,12 +14,9 @@ public interface ILock {
 	public void onUnlock(ItemStack lock, ItemStack key, ILockable lockable,
 	                     EntityPlayer player, boolean success);
 	
-	/** Applies any effects from the lock. <br>
-	 *  Power is 1 when a player tries to open it unsuccessfully, 2 when
-	 *  the player failed trying to unlock it using a key and 3 when
-	 *  the player is trying to break the container. */
+	/** Applies any effects from the lock when an interaction fails. */
 	public void applyEffects(ItemStack lock, ILockable lockable,
-	                         EntityPlayer player, int power);
+	                         EntityPlayer player, EnumLockInteraction interaction);
 	
 	/** Returns if the lock can be enchanted with this lock enchantment. */
 	public boolean canApplyEnchantment(ItemStack lock, Enchantment enchantment);

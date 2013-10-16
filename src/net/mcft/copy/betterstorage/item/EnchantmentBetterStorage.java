@@ -27,9 +27,6 @@ public class EnchantmentBetterStorage extends Enchantment {
 	
 	public static void initialize() {
 		
-		int baseId = Config.enchantmentBaseId;
-		if (!MiscUtils.isEnabled(baseId)) return;
-		
 		Map<String, EnumEnchantmentType> types = BetterStorageEnchantment.enchantmentTypes;
 		Map<String, Enchantment> enchs = BetterStorageEnchantment.enchantments;
 		
@@ -37,9 +34,9 @@ public class EnchantmentBetterStorage extends Enchantment {
 		if (MiscUtils.isEnabled(Items.key)) {
 			EnumEnchantmentType key = EnumHelper.addEnchantmentType("key");
 			
-			EnchantmentBetterStorage unlocking   = new EnchantmentBetterStorage("unlocking",   key,  baseId + 0, 4, 5,  5, 10, 30, 0);
-			EnchantmentBetterStorage lockpicking = new EnchantmentBetterStorage("lockpicking", key,  baseId + 1, 6, 5,  5,  8, 30, 0);
-			EnchantmentBetterStorage morphing    = new EnchantmentBetterStorage("morphing",    key,  baseId + 2, 1, 5, 10, 12, 30, 0);
+			EnchantmentBetterStorage unlocking   = conditialNew("unlocking",   key, Config.enchantmentUnlockingId,   8, 5,  5, 10, 30, 0);
+			EnchantmentBetterStorage lockpicking = conditialNew("lockpicking", key, Config.enchantmentLockpickingId, 6, 5,  5,  8, 30, 0);
+			EnchantmentBetterStorage morphing    = conditialNew("morphing",    key, Config.enchantmentMorphingId,    1, 5, 10, 12, 30, 0);
 			
 			lockpicking.setIncompatible(morphing);
 			morphing.setIncompatible(lockpicking);
@@ -55,10 +52,10 @@ public class EnchantmentBetterStorage extends Enchantment {
 		if (MiscUtils.isEnabled(Items.lock)) {
 			EnumEnchantmentType lock = EnumHelper.addEnchantmentType("lock");
 			
-			EnchantmentBetterStorage persistance = new EnchantmentBetterStorage("persistance", lock, baseId + 4, 5, 5,  1,  8, 30, 0);
-			EnchantmentBetterStorage security    = new EnchantmentBetterStorage("security",    lock, baseId + 6, 4, 5,  1, 10, 30, 0);
-			EnchantmentBetterStorage shock       = new EnchantmentBetterStorage("shock",       lock, baseId + 7, 3, 3,  5, 10, 30, 0);
-			EnchantmentBetterStorage trigger     = new EnchantmentBetterStorage("trigger",     lock, baseId + 8, 1, 1, 20,  0, 30, 0);
+			EnchantmentBetterStorage persistance = conditialNew("persistance", lock, Config.enchantmentPersistanceId, 20, 5,  1,  8, 30, 0);
+			EnchantmentBetterStorage security    = conditialNew("security",    lock, Config.enchantmentSecurityId,    16, 5,  1, 10, 30, 0);
+			EnchantmentBetterStorage shock       = conditialNew("shock",       lock, Config.enchantmentShockId,        5, 3,  5, 15, 30, 0);
+			EnchantmentBetterStorage trigger     = conditialNew("trigger",     lock, Config.enchantmentTriggerId,     10, 1, 15,  0, 30, 0);
 			
 			types.put("lock", lock);
 	
@@ -68,6 +65,11 @@ public class EnchantmentBetterStorage extends Enchantment {
 			enchs.put("trigger", trigger);
 		}
 		
+	}
+	private static EnchantmentBetterStorage conditialNew(String name, EnumEnchantmentType type, int id, int weight, int maxLevel,
+	                                                     int minBase, int minScaling, int maxBase, int maxScaling) {
+		if (!MiscUtils.isEnabled(id)) return null;
+		return new EnchantmentBetterStorage(name, type, id, weight, maxLevel, minBase, minScaling, maxBase, maxScaling);
 	}
 	
 	public EnchantmentBetterStorage(String name, EnumEnchantmentType type, int id, int weight, int maxLevel,
