@@ -86,7 +86,8 @@ public abstract class BlockContainerBetterStorage extends BlockContainer {
 			ItemStack pick = ((IHasAttachments)container).getAttachments().pick(target);
 			if (pick != null) return pick;
 		}
-		return container.onPickBlock(super.getPickBlock(target, world, x, y, z), target);
+		ItemStack pick = super.getPickBlock(target, world, x, y, z);
+		return ((container != null) ? container.onPickBlock(pick, target) : pick);
 	}
 	
 	private TileEntityContainer getContainer(World world, int x, int y, int z) {
