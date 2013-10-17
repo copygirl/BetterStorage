@@ -8,8 +8,8 @@ import java.io.IOException;
 
 import net.mcft.copy.betterstorage.Config;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityLockable;
-import net.mcft.copy.betterstorage.item.armor.ItemDrinkingHelmet;
-import net.mcft.copy.betterstorage.item.block.ItemBackpack;
+import net.mcft.copy.betterstorage.item.ItemBackpack;
+import net.mcft.copy.betterstorage.item.ItemDrinkingHelmet;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.PlayerUtils;
 import net.mcft.copy.betterstorage.utils.RandomUtils;

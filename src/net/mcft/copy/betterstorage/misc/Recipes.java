@@ -5,6 +5,7 @@ import net.mcft.copy.betterstorage.block.ContainerMaterial;
 import net.mcft.copy.betterstorage.content.Blocks;
 import net.mcft.copy.betterstorage.content.Items;
 import net.mcft.copy.betterstorage.item.recipe.DrinkingHelmetRecipe;
+import net.mcft.copy.betterstorage.item.recipe.DyeRecipe;
 import net.mcft.copy.betterstorage.item.recipe.KeyRecipe;
 import net.mcft.copy.betterstorage.item.recipe.LockColorRecipe;
 import net.mcft.copy.betterstorage.item.recipe.LockRecipe;
@@ -104,15 +105,45 @@ public final class Recipes {
 					"...", '.', Item.goldNugget);
 		
 		// Cardboard sheet recipe
-		if (MiscUtils.isEnabled(Items.cardboardSheet))
+		if (MiscUtils.isEnabled(Items.cardboardSheet)) {
 			GameRegistry.addRecipe(new ItemStack(Items.cardboardSheet),
 					"ooo",
 					"ooo",
 					"ooo", 'o', Item.paper);
+			
+			// Cardboard helmet recipe
+			if (MiscUtils.isEnabled(Items.cardboardHelmet))
+				GameRegistry.addRecipe(new ItemStack(Items.cardboardHelmet),
+						"ooo",
+						"o o", 'o', Items.cardboardSheet);
+			// Cardboard chestplate recipe
+			if (MiscUtils.isEnabled(Items.cardboardChestplate))
+				GameRegistry.addRecipe(new ItemStack(Items.cardboardChestplate),
+						"o o",
+						"ooo",
+						"ooo", 'o', Items.cardboardSheet);
+			// Cardboard leggings recipe
+			if (MiscUtils.isEnabled(Items.cardboardLeggings))
+				GameRegistry.addRecipe(new ItemStack(Items.cardboardLeggings),
+						"ooo",
+						"o o",
+						"o o", 'o', Items.cardboardSheet);
+			// Cardboard boots recipe
+			if (MiscUtils.isEnabled(Items.cardboardBoots))
+				GameRegistry.addRecipe(new ItemStack(Items.cardboardBoots),
+						"o o",
+						"o o", 'o', Items.cardboardSheet);
+		}
 
 		// Drinking helmet recipe
 		if (MiscUtils.isEnabled(Items.drinkingHelmet))
 			GameRegistry.addRecipe(new DrinkingHelmetRecipe(Items.drinkingHelmet));
+		
+		// Dying recipes
+		GameRegistry.addRecipe(new DyeRecipe().add(
+				Item.itemsList[Blocks.backpack.blockID],
+				Items.cardboardHelmet, Items.cardboardChestplate,
+				Items.cardboardLeggings, Items.cardboardBoots));
 		
 		Addon.addRecipesAll();
 		

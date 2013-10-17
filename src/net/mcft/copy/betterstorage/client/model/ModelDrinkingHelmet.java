@@ -1,6 +1,6 @@
 package net.mcft.copy.betterstorage.client.model;
 
-import net.mcft.copy.betterstorage.item.armor.ItemDrinkingHelmet;
+import net.mcft.copy.betterstorage.item.ItemDrinkingHelmet;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;

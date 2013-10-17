@@ -1,4 +1,4 @@
-package net.mcft.copy.betterstorage.item.block;
+package net.mcft.copy.betterstorage.item;
 
 import net.mcft.copy.betterstorage.inventory.InventoryWrapper;
 import net.mcft.copy.betterstorage.misc.Constants;
@@ -19,6 +19,9 @@ public class ItemEnderBackpack extends ItemBackpack {
 	
 	@Override
 	public String getName() { return Constants.containerEnderBackpack; }
+	
+	@Override
+	protected int getDefaultColor() { return -1; }
 	
 	@Override
 	protected IInventory getBackpackItemsInternal(EntityLivingBase carrier, EntityPlayer player) {

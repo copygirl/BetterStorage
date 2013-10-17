@@ -27,6 +27,11 @@ public final class Config {
 	public static int masterKeyId      = 28544;
 	public static int drinkingHelmetId = 28545;
 	
+	public static int cardboardHelmetId     = 28560;
+	public static int cardboardChestplateId = 28561;
+	public static int cardboardLeggingsId   = 28562;
+	public static int cardboardBootsId      = 28563;
+	
 	public static int enchantmentUnlockingId   = 170;
 	public static int enchantmentLockpickingId = 171;
 	public static int enchantmentMorphingId    = 172;
@@ -70,6 +75,11 @@ public final class Config {
 		cardboardSheetId = config.getItem("cardboardSheet", cardboardSheetId).getInt();
 		masterKeyId      = config.getItem("masterKey", masterKeyId).getInt();
 		drinkingHelmetId = config.getItem("drinkingHelmet", drinkingHelmetId).getInt();
+		
+		cardboardHelmetId     = config.getItem("cardboardHelmet", cardboardHelmetId).getInt();
+		cardboardChestplateId = config.getItem("cardboarChestplate", cardboardChestplateId).getInt();
+		cardboardLeggingsId   = config.getItem("cardboardLeggings", cardboardLeggingsId).getInt();
+		cardboardBootsId      = config.getItem("cardboardBoots", cardboardBootsId).getInt();
 		
 		enchantmentUnlockingId   = config.get(categoryEnchantments, "unlocking", enchantmentUnlockingId).getInt();
 		enchantmentLockpickingId = config.get(categoryEnchantments, "lockpicking", enchantmentLockpickingId).getInt();

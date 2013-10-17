@@ -2,8 +2,9 @@ package net.mcft.copy.betterstorage.content;
 
 import net.mcft.copy.betterstorage.Config;
 import net.mcft.copy.betterstorage.addon.Addon;
-import net.mcft.copy.betterstorage.item.ItemCardboardSheet;
-import net.mcft.copy.betterstorage.item.armor.ItemDrinkingHelmet;
+import net.mcft.copy.betterstorage.item.ItemDrinkingHelmet;
+import net.mcft.copy.betterstorage.item.cardboard.ItemCardboardArmor;
+import net.mcft.copy.betterstorage.item.cardboard.ItemCardboardSheet;
 import net.mcft.copy.betterstorage.item.locking.ItemKey;
 import net.mcft.copy.betterstorage.item.locking.ItemKeyring;
 import net.mcft.copy.betterstorage.item.locking.ItemLock;
@@ -19,6 +20,11 @@ public final class Items {
 	public static ItemMasterKey masterKey;
 	public static ItemDrinkingHelmet drinkingHelmet;
 	
+	public static ItemCardboardArmor cardboardHelmet;
+	public static ItemCardboardArmor cardboardChestplate;
+	public static ItemCardboardArmor cardboardLeggings;
+	public static ItemCardboardArmor cardboardBoots;
+	
 	private Items() {  }
 	
 	public static void initialize() {
@@ -30,8 +36,17 @@ public final class Items {
 		masterKey      = MiscUtils.conditionalNew(ItemMasterKey.class, Config.masterKeyId);
 		drinkingHelmet = MiscUtils.conditionalNew(ItemDrinkingHelmet.class, Config.drinkingHelmetId);
 		
+		cardboardHelmet     = conditionalNewArmor(Config.cardboardHelmetId, 0);
+		cardboardChestplate = conditionalNewArmor(Config.cardboardChestplateId, 1);
+		cardboardLeggings   = conditionalNewArmor(Config.cardboardLeggingsId, 2);
+		cardboardBoots      = conditionalNewArmor(Config.cardboardBootsId, 3);
+		
 		Addon.initializeItemsAll();
 		
+	}
+	private static ItemCardboardArmor conditionalNewArmor(int id, int armorType) {
+		if (!MiscUtils.isEnabled(id)) return null;
+		return new ItemCardboardArmor(id, armorType);
 	}
 	
 }

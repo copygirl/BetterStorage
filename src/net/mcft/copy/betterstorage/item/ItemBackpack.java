@@ -1,4 +1,4 @@
-package net.mcft.copy.betterstorage.item.block;
+package net.mcft.copy.betterstorage.item;
 
 import java.util.List;
 
@@ -36,6 +36,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.EnumArmorMaterial;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.Packet;
@@ -53,15 +54,13 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 	
 	public static final EnumArmorMaterial material = EnumHelper.addArmorMaterial(
-			"backpack", 240, new int[]{ 0, 2, 0, 0 }, 15);
+			"backpack", 14, new int[]{ 0, 2, 0, 0 }, 15);
+	static { material.customCraftingMaterial = Item.leather; }
 	
 	protected ItemBackpack(int id, EnumArmorMaterial material) {
 		super(id - 256, material, 0, 1);
 	}
-	public ItemBackpack(int id) {
-		this(id, EnumArmorMaterial.CLOTH);
-		setMaxDamage(240);
-	}
+	public ItemBackpack(int id) { this(id, material); }
 	
 	public String getName() { return Constants.containerBackpack; }
 	
@@ -69,6 +68,8 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 	public int getColumns() { return 9; }
 	/** Returns the number of rows this backpack has. */
 	public int getRows() { return Config.backpackRows; }
+	
+	protected int getDefaultColor() { return 0xA06540; }
 	
 	protected IInventory getBackpackItemsInternal(EntityLivingBase carrier, EntityPlayer player) {
 		PropertiesBackpack backpackData = getBackpackData(carrier);
@@ -104,6 +105,14 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 	
 	@Override
 	public boolean isValidArmor(ItemStack stack, int armorType, Entity entity) { return false; }
+	
+	@Override
+	public int getColor(ItemStack stack) {
+		int color = getDefaultColor();
+		return ((color >= 0) ? StackUtils.get(stack, color, "display", "color") : color);
+	}
+	@Override
+	public int getRenderPasses(int metadata) { return ((getDefaultColor() >= 0) ? 2 : 1); }
 	
 	@Override
 	@SideOnly(Side.CLIENT)

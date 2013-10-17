@@ -3,7 +3,7 @@ package net.mcft.copy.betterstorage.misc.handlers;
 import java.util.EnumSet;
 
 import net.mcft.copy.betterstorage.Config;
-import net.mcft.copy.betterstorage.item.block.ItemBackpack;
+import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.misc.CurrentItem;
 import net.minecraft.client.Minecraft;

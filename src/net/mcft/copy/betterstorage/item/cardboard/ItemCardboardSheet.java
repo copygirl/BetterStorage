@@ -1,4 +1,6 @@
-package net.mcft.copy.betterstorage.item;
+package net.mcft.copy.betterstorage.item.cardboard;
+
+import net.mcft.copy.betterstorage.item.ItemBetterStorage;
 
 public class ItemCardboardSheet extends ItemBetterStorage {
 	

@@ -22,6 +22,10 @@
 	<entry key="enchantment.betterstorage.lock.shock">Shock</entry>
 	<entry key="enchantment.betterstorage.lock.trigger">Trigger</entry>
 	<entry key="entity.BetterStorage.Frienderman">Enderman</entry>
+	<entry key="item.betterstorage.cardboardHelmet.name">Cardboard Helmet</entry>
+	<entry key="item.betterstorage.cardboardChestplate.name">Cardboard Chestplate</entry>
+	<entry key="item.betterstorage.cardboardLeggings.name">Cardboard Leggings</entry>
+	<entry key="item.betterstorage.cardboardBoots.name">Cardboard Boots</entry>
 	<entry key="item.betterstorage.cardboardSheet.name">Cardboard Sheet</entry>
 	<entry key="item.betterstorage.drinkingHelmet.name">Drinking Helmet</entry>
 	<entry key="item.betterstorage.key.name">Key</entry>

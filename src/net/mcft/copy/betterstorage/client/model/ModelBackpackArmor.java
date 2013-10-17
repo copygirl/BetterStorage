@@ -1,7 +1,7 @@
 package net.mcft.copy.betterstorage.client.model;
 
 import net.mcft.copy.betterstorage.entity.EntityFrienderman;
-import net.mcft.copy.betterstorage.item.block.ItemBackpack;
+import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.misc.PropertiesBackpack;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;

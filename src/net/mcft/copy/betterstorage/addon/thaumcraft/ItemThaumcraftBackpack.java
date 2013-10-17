@@ -1,6 +1,6 @@
 package net.mcft.copy.betterstorage.addon.thaumcraft;
 
-import net.mcft.copy.betterstorage.item.block.ItemBackpack;
+import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -19,7 +19,7 @@ public class ItemThaumcraftBackpack extends ItemBackpack implements IRepairable,
 	
 	public ItemThaumcraftBackpack(int id) {
 		super(id, material);
-		setMaxDamage(300);
+		setMaxDamage(288);
 	}
 	
 	@Override
@@ -27,6 +27,9 @@ public class ItemThaumcraftBackpack extends ItemBackpack implements IRepairable,
 	
 	@Override
 	public int getColumns() { return 13; }
+	
+	@Override
+	protected int getDefaultColor() { return -1; }
 	
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {

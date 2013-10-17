@@ -1,4 +1,4 @@
-package net.mcft.copy.betterstorage.item.armor;
+package net.mcft.copy.betterstorage.item;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,12 +37,11 @@ public class ItemDrinkingHelmet extends ItemArmor {
 	public static final int maxUses = 12;
 	
 	public static final EnumArmorMaterial material = EnumHelper.addArmorMaterial(
-			"drinkingHelmet", 120, new int[]{ 3, 0, 0, 0 }, 15);
+			"drinkingHelmet", 11, new int[]{ 3, 0, 0, 0 }, 15);
 	static { material.customCraftingMaterial = Item.itemsList[Block.blockRedstone.blockID]; }
 	
 	public ItemDrinkingHelmet(int id) {
 		super(id - 256, material, 0, 0);
-		setMaxDamage(120);
 		setCreativeTab(BetterStorage.creativeTab);
 		setUnlocalizedName(Constants.modId + ".drinkingHelmet");
 	}
