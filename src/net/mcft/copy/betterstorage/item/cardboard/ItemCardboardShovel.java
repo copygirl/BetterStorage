@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemStack;
 
-public class ItemCardboardShovel extends ItemSpade {
+public class ItemCardboardShovel extends ItemSpade implements ICardboardItem {
 	
 	public ItemCardboardShovel(int id) {
 		super(id - 256, ItemCardboardSheet.toolMaterial);

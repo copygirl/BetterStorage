@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
 
-public class ItemCardboardAxe extends ItemAxe {
+public class ItemCardboardAxe extends ItemAxe implements ICardboardItem {
 	
 	public ItemCardboardAxe(int id) {
 		super(id - 256, ItemCardboardSheet.toolMaterial);

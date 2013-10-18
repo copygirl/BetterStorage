@@ -34,18 +34,18 @@ public class DyeRecipe implements IRecipe {
 	
 	@Override
 	public boolean matches(InventoryCrafting crafting, World world) {
-		boolean armor = false;
-		boolean dyes = false;
+		boolean hasArmor = false;
+		boolean hasDyes = false;
 		for (int i = 0; i < crafting.getSizeInventory(); i++) {
 			ItemStack stack = crafting.getStackInSlot(i);
 			if (stack == null) continue;
 			else if (dyableItems.containsKey(stack.getItem())) {
-				if (armor) return false;
-				armor = true;
-			} else if (DyeUtils.isDye(stack)) dyes = true;
+				if (hasArmor) return false;
+				hasArmor = true;
+			} else if (DyeUtils.isDye(stack)) hasDyes = true;
 			else return false;
 		}
-		return (armor && dyes);
+		return (hasArmor && hasDyes);
 	}
 	
 	@Override

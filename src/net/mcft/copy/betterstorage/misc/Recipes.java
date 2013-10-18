@@ -4,6 +4,7 @@ import net.mcft.copy.betterstorage.addon.Addon;
 import net.mcft.copy.betterstorage.block.ContainerMaterial;
 import net.mcft.copy.betterstorage.content.Blocks;
 import net.mcft.copy.betterstorage.content.Items;
+import net.mcft.copy.betterstorage.item.recipe.CardboardEnchantRecipe;
 import net.mcft.copy.betterstorage.item.recipe.DrinkingHelmetRecipe;
 import net.mcft.copy.betterstorage.item.recipe.DyeRecipe;
 import net.mcft.copy.betterstorage.item.recipe.KeyRecipe;
@@ -184,6 +185,9 @@ public final class Recipes {
 						"/ ", 'o', Items.cardboardSheet,
 						      '/', Item.stick);
 		}
+		
+		// Cardboard enchanting recipe
+		GameRegistry.addRecipe(new CardboardEnchantRecipe());
 
 		// Drinking helmet recipe
 		if (MiscUtils.isEnabled(Items.drinkingHelmet))

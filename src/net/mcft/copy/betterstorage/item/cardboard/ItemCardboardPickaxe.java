@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
 
-public class ItemCardboardPickaxe extends ItemPickaxe {
+public class ItemCardboardPickaxe extends ItemPickaxe implements ICardboardItem {
 	
 	public ItemCardboardPickaxe(int id) {
 		super(id - 256, ItemCardboardSheet.toolMaterial);

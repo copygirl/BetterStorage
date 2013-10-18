@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemStack;
 
-public class ItemCardboardHoe extends ItemHoe {
+public class ItemCardboardHoe extends ItemHoe implements ICardboardItem {
 	
 	public ItemCardboardHoe(int id) {
 		super(id - 256, ItemCardboardSheet.toolMaterial);

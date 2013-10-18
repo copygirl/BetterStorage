@@ -11,7 +11,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 
-public class ItemCardboardArmor extends ItemArmor {
+public class ItemCardboardArmor extends ItemArmor implements ICardboardItem {
 	
 	private static final String[] armorText = { "Helmet", "Chestplate", "Leggings", "Boots" };
 	

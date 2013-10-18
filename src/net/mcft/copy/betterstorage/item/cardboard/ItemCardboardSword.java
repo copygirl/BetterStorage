@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 
-public class ItemCardboardSword extends ItemSword {
+public class ItemCardboardSword extends ItemSword implements ICardboardItem {
 	
 	public ItemCardboardSword(int id) {
 		super(id - 256, ItemCardboardSheet.toolMaterial);
