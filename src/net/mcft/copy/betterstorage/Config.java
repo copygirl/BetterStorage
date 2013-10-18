@@ -31,6 +31,11 @@ public final class Config {
 	public static int cardboardChestplateId = 28561;
 	public static int cardboardLeggingsId   = 28562;
 	public static int cardboardBootsId      = 28563;
+	public static int cardboardSwordId   = 28564;
+	public static int cardboardPickaxeId = 28565;
+	public static int cardboardShovelId  = 28566;
+	public static int cardboardAxeId     = 28567;
+	public static int cardboardHoeId     = 28568;
 	
 	public static int enchantmentUnlockingId   = 170;
 	public static int enchantmentLockpickingId = 171;
@@ -80,6 +85,11 @@ public final class Config {
 		cardboardChestplateId = config.getItem("cardboarChestplate", cardboardChestplateId).getInt();
 		cardboardLeggingsId   = config.getItem("cardboardLeggings", cardboardLeggingsId).getInt();
 		cardboardBootsId      = config.getItem("cardboardBoots", cardboardBootsId).getInt();
+		cardboardSwordId   = config.getItem("cardboardSword", cardboardSwordId).getInt();
+		cardboardPickaxeId = config.getItem("cardboardPickaxe", cardboardPickaxeId).getInt();
+		cardboardShovelId  = config.getItem("cardboardShovel", cardboardShovelId).getInt();
+		cardboardAxeId     = config.getItem("cardboardAxe", cardboardAxeId).getInt();
+		cardboardHoeId     = config.getItem("cardboardHoe", cardboardHoeId).getInt();
 		
 		enchantmentUnlockingId   = config.get(categoryEnchantments, "unlocking", enchantmentUnlockingId).getInt();
 		enchantmentLockpickingId = config.get(categoryEnchantments, "lockpicking", enchantmentLockpickingId).getInt();

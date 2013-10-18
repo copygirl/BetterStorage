@@ -133,6 +133,56 @@ public final class Recipes {
 				GameRegistry.addRecipe(new ItemStack(Items.cardboardBoots),
 						"o o",
 						"o o", 'o', Items.cardboardSheet);
+			
+			// Cardboard sword recipe
+			if (MiscUtils.isEnabled(Items.cardboardSword))
+				GameRegistry.addRecipe(new ItemStack(Items.cardboardSword),
+						"o",
+						"o",
+						"/", 'o', Items.cardboardSheet,
+						     '/', Item.stick);
+			// Cardboard pickaxe recipe
+			if (MiscUtils.isEnabled(Items.cardboardPickaxe))
+				GameRegistry.addRecipe(new ItemStack(Items.cardboardPickaxe),
+						"ooo",
+						" / ",
+						" / ", 'o', Items.cardboardSheet,
+						       '/', Item.stick);
+			// Cardboard shovel recipe
+			if (MiscUtils.isEnabled(Items.cardboardShovel))
+				GameRegistry.addRecipe(new ItemStack(Items.cardboardShovel),
+						"o",
+						"/",
+						"/", 'o', Items.cardboardSheet,
+						     '/', Item.stick);
+			
+			// Cardboard axe recipe
+			if (MiscUtils.isEnabled(Items.cardboardAxe))
+				GameRegistry.addRecipe(new ItemStack(Items.cardboardAxe),
+						"oo",
+						"o/",
+						" /", 'o', Items.cardboardSheet,
+						      '/', Item.stick);
+			if (MiscUtils.isEnabled(Items.cardboardAxe))
+				GameRegistry.addRecipe(new ItemStack(Items.cardboardAxe),
+						"oo",
+						"/o",
+						"/ ", 'o', Items.cardboardSheet,
+						      '/', Item.stick);
+			
+			// Cardboard hoe recipe
+			if (MiscUtils.isEnabled(Items.cardboardHoe))
+				GameRegistry.addRecipe(new ItemStack(Items.cardboardHoe),
+						"oo",
+						" /",
+						" /", 'o', Items.cardboardSheet,
+						      '/', Item.stick);
+			if (MiscUtils.isEnabled(Items.cardboardHoe))
+				GameRegistry.addRecipe(new ItemStack(Items.cardboardHoe),
+						"oo",
+						"/ ",
+						"/ ", 'o', Items.cardboardSheet,
+						      '/', Item.stick);
 		}
 
 		// Drinking helmet recipe
@@ -142,8 +192,9 @@ public final class Recipes {
 		// Dying recipes
 		GameRegistry.addRecipe(new DyeRecipe().add(
 				Item.itemsList[Blocks.backpack.blockID],
-				Items.cardboardHelmet, Items.cardboardChestplate,
-				Items.cardboardLeggings, Items.cardboardBoots));
+				Items.cardboardHelmet, Items.cardboardChestplate, Items.cardboardLeggings,
+				Items.cardboardBoots, Items.cardboardSword, Items.cardboardPickaxe,
+				Items.cardboardShovel, Items.cardboardAxe, Items.cardboardHoe));
 		
 		Addon.addRecipesAll();
 		
