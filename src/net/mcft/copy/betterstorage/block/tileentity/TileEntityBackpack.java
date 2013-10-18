@@ -18,6 +18,10 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class TileEntityBackpack extends TileEntityContainer {
 	
+	/** Backpacks despawn after 5 minutes if dropped
+	 *  by a mob on death and there's no player nearby. */
+	private int despawnTime = -1;
+	
 	public ItemStack stack;
 	
 	/** Affects if items drop when the backpack is destroyed. */
@@ -30,11 +34,12 @@ public class TileEntityBackpack extends TileEntityContainer {
 		ItemBackpack.setBackpack(carrier, stack, contents);
 	}
 	
-	public void unequip(EntityLivingBase carrier) {
+	public void unequip(EntityLivingBase carrier, boolean despawn) {
 		if (!worldObj.isRemote) {
 			// Move items from the player backpack data to this tile entity.
 			ItemStack[] items = ItemBackpack.getBackpackData(carrier).contents;
 			if (items != null) System.arraycopy(items, 0, contents, 0, items.length);
+			if (despawn) despawnTime = 0;
 		}
 		ItemBackpack.removeBackpack(carrier);
 	}
@@ -96,6 +101,14 @@ public class TileEntityBackpack extends TileEntityContainer {
 		// Play sound when closing
 		if ((lidAngle < 0.2F) && (prevLidAngle >= 0.2F))
 			worldObj.playSoundEffect(x, y, z, sound, 0.8F, 0.3F);
+		
+		if (despawnTime < 0) return;
+		if (despawnTime++ > 20 * 60 * 5) {
+			equipped = true; // Prevents stuff from being dropped.
+			worldObj.setBlockToAir(xCoord, yCoord, zCoord);
+		} else if (((despawnTime % 40) == 0) &&
+		           (worldObj.getClosestPlayer(x, y, z, 24) != null))
+			despawnTime = -1;
 	}
 	
 	// Tile entity synchronization
@@ -118,11 +131,14 @@ public class TileEntityBackpack extends TileEntityContainer {
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
 		stack = ItemStack.loadItemStackFromNBT(compound.getCompoundTag("stack"));
+		despawnTime = compound.getInteger("despawnTime");
+		if (despawnTime == 0) despawnTime = -1;
 	}
 	@Override
 	public void writeToNBT(NBTTagCompound compound) {
 		super.writeToNBT(compound);
 		compound.setCompoundTag("stack", stack.writeToNBT(new NBTTagCompound()));
+		compound.setInteger("despawnTime", despawnTime);
 	}
 	
 }

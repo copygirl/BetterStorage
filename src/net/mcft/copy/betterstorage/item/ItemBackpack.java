@@ -189,7 +189,7 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 	                         World world, int x, int y, int z, int side,
 	                         float hitX, float hitY, float hitZ) {
 		ForgeDirection orientation = DirectionUtils.getOrientation(player).getOpposite();
-		return placeBackpack(player, player, stack, x, y, z, side, orientation);
+		return placeBackpack(player, player, stack, x, y, z, side, orientation, false);
 	}
 	
 	// ISpecialArmor implementation
@@ -349,7 +349,8 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 		
 	}
 	
-	public static boolean placeBackpack(EntityLivingBase carrier, EntityPlayer player, ItemStack backpack, int x, int y, int z, int side, ForgeDirection orientation) {
+	public static boolean placeBackpack(EntityLivingBase carrier, EntityPlayer player, ItemStack backpack,
+	                                    int x, int y, int z, int side, ForgeDirection orientation, boolean despawn) {
 		
 		if (backpack.stackSize == 0) return false;
 		
@@ -391,7 +392,7 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 		TileEntityBackpack te = WorldUtils.get(world, x, y, z, TileEntityBackpack.class);
 		te.stack = backpack.copy();
 		if (ItemBackpack.getBackpack(carrier) == backpack)
-			te.unequip(carrier);
+			te.unequip(carrier, despawn);
 		
 		String sound = blockBackpack.stepSound.getPlaceSound();
 		float volume = (blockBackpack.stepSound.getVolume() + 1.0F) / 2.0F;

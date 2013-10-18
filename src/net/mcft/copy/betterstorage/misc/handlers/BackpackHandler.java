@@ -20,6 +20,7 @@ import net.mcft.copy.betterstorage.utils.EntityUtils;
 import net.mcft.copy.betterstorage.utils.MiscUtils;
 import net.mcft.copy.betterstorage.utils.NbtUtils;
 import net.mcft.copy.betterstorage.utils.RandomUtils;
+import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLiving;
@@ -207,7 +208,7 @@ public class BackpackHandler implements IPlayerTracker {
 						int g = RandomUtils.getInt(32, 224);
 						int b = RandomUtils.getInt(32, 224);
 						int color = (r << 16) | (g << 8) | b;
-						backpackType.func_82813_b(backpack, color);
+						StackUtils.set(backpack, color, "display", "color");
 					}
 					contents = new ItemStack[backpackType.getColumns() * backpackType.getRows()];
 					// Set drop chance for the backpack to 100%.
@@ -281,18 +282,19 @@ public class BackpackHandler implements IPlayerTracker {
 		
 		EntityLivingBase entity = event.entityLiving;
 		if (entity.worldObj.isRemote) return;
+
+		EntityPlayer player = ((entity instanceof EntityPlayer) ? (EntityPlayer)entity : null);
 		ItemStack backpack = ItemBackpack.getBackpack(entity);
 		if (backpack == null) return;
 		PropertiesBackpack backpackData = ItemBackpack.getBackpackData(entity);
 		if (backpackData.contents == null) return;
 		
 		boolean keepInventory = entity.worldObj.getGameRules().getGameRuleBooleanValue("keepInventory");
-		if ((entity instanceof EntityPlayer) && keepInventory) {
+		if ((player != null) && keepInventory) {
 			
 			// If keep inventory is on, instead temporarily save the contents
 			// to the persistent NBT tag and get them back when the player respawns.
 			
-			EntityPlayer player = (EntityPlayer)entity;
 			NBTTagCompound compound = player.getEntityData();
 			NBTTagCompound persistent;
 			if (!compound.hasKey(EntityPlayer.PERSISTED_NBT_TAG)) {
@@ -324,8 +326,11 @@ public class BackpackHandler implements IPlayerTracker {
 				});
 				
 				ForgeDirection orientation = DirectionUtils.getOrientation(entity);
+				boolean despawn = ((player == null) && (entity.recentlyHit <= 0));
 				for (BlockCoordinate coord : coords)
-					if (ItemBackpack.placeBackpack(entity, null, backpack, coord.x, coord.y, coord.z, 1, orientation))
+					if (ItemBackpack.placeBackpack(entity, player, backpack,
+					                               coord.x, coord.y, coord.z, 1,
+					                               orientation, despawn))
 						return;
 				
 			}
