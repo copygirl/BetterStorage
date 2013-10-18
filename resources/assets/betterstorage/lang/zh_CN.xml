@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties version="1.0">
-  <comment>Simplified Chinese (zh_CN) Localization File</comment>
+    <comment>Simplified Chinese (zh_CN) Localization File</comment>
 	<entry key="container.betterstorage.backpack">背包</entry>
 	<entry key="container.betterstorage.cardboardBox">纸箱</entry>
 	<entry key="container.betterstorage.crate">仓储货箱</entry>
