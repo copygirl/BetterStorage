@@ -13,14 +13,12 @@ public class ItemCardboardSheet extends ItemBetterStorage {
 	public static final EnumArmorMaterial armorMaterial =
 			EnumHelper.addArmorMaterial("cardboard", 3, new int[]{ 1, 2, 2, 1 }, 20);
 	
-	static {
-		toolMaterial.customCraftingMaterial = Items.cardboardSheet;
-		armorMaterial.customCraftingMaterial = Items.cardboardSheet;
-	}
-	
 	public ItemCardboardSheet(int id) {
 		super(id);
 		setMaxStackSize(8);
+		
+		toolMaterial.customCraftingMaterial = this;
+		armorMaterial.customCraftingMaterial = this;
 	}
 	
 }
