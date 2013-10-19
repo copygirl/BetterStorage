@@ -124,8 +124,10 @@ public class BackpackHandler implements IPlayerTracker {
 		if (event.isCanceled()) return;
 		// When player right clicks a block, attempt to place backpack.
 		if (event.action == Action.RIGHT_CLICK_BLOCK)
-			if (ItemBackpack.onPlaceBackpack(event.entityPlayer, event.x, event.y, event.z, event.face))
+			if (ItemBackpack.onPlaceBackpack(event.entityPlayer, event.x, event.y, event.z, event.face)) {
 				event.useBlock = Result.DENY;
+				event.useItem = Result.DENY;
+			}
 	}
 	
 	@ForgeSubscribe
