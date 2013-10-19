@@ -18,7 +18,6 @@ public class SmallPotionEffect extends PotionEffect {
 	@Override
 	public void performEffect(EntityLivingBase entity) {
 		int smallEffect = 6 * (getAmplifier() + 1) / ItemDrinkingHelmet.maxUses;
-		System.out.println(smallEffect);
 		Potion potion = Potion.potionTypes[getPotionID()];
 		if (entity.isEntityUndead() ? (potion == Potion.heal) : (potion == Potion.harm))
 			entity.attackEntityFrom(DamageSource.magic, smallEffect);
