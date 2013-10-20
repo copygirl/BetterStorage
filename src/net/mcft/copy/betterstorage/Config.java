@@ -12,13 +12,14 @@ public final class Config {
 	
 	// The following IDs are also used as default values.
 	
-	public static int crateId         = 2830;
-	public static int chestId         = 2831;
-	public static int lockerId        = 2832;
-	public static int armorStandId    = 2833;
-	public static int backpackId      = 2834;
-	public static int enderBackpackId = 2835;
-	public static int cardboardBoxId  = 2836;
+	public static int crateId            = 2830;
+	public static int chestId            = 2831;
+	public static int lockerId           = 2832;
+	public static int armorStandId       = 2833;
+	public static int backpackId         = 2834;
+	public static int enderBackpackId    = 2835;
+	public static int cardboardBoxId     = 2836;
+	public static int reinforcedLockerId = 2837;
 	
 	public static int keyId            = 28540;
 	public static int lockId           = 28541;
@@ -48,7 +49,7 @@ public final class Config {
 	public static int backpackOpenDataWatcherId = 27;
 	
 	// More settings ...
-	public static int reinforcedChestColumns = 13;
+	public static int reinforcedColumns = 13;
 	public static int backpackRows = 3;
 	public static boolean enableCrateInventoryInterface = false;
 	public static boolean enableBackpackOpen = false;
@@ -66,13 +67,14 @@ public final class Config {
 		Configuration config = new Configuration(file);
 		config.load();
 		
-		crateId         = config.getBlock("crate", crateId).getInt();
-		chestId         = config.getBlock("chest", chestId).getInt();
-		lockerId        = config.getBlock("locker", lockerId).getInt();
-		armorStandId    = config.getBlock("armorStand", armorStandId).getInt();
-		backpackId      = config.getBlock("backpack", backpackId).getInt();
-		enderBackpackId = config.getBlock("enderBackpack", enderBackpackId).getInt();
-		cardboardBoxId  = config.getBlock("cardboardBox", cardboardBoxId).getInt();
+		crateId            = config.getBlock("crate", crateId).getInt();
+		chestId            = config.getBlock("chest", chestId).getInt();
+		lockerId           = config.getBlock("locker", lockerId).getInt();
+		armorStandId       = config.getBlock("armorStand", armorStandId).getInt();
+		backpackId         = config.getBlock("backpack", backpackId).getInt();
+		enderBackpackId    = config.getBlock("enderBackpack", enderBackpackId).getInt();
+		cardboardBoxId     = config.getBlock("cardboardBox", cardboardBoxId).getInt();
+		reinforcedLockerId = config.getBlock("reinforcedLocker", reinforcedLockerId).getInt();
 		
 		keyId            = config.getItem("key", keyId).getInt();
 		lockId           = config.getItem("lock", lockId).getInt();
@@ -102,8 +104,8 @@ public final class Config {
 		backpackOpenDataWatcherId = config.get(Configuration.CATEGORY_GENERAL, "backpackOpenDataWatcherId", backpackOpenDataWatcherId,
 		                                       "Valid values are 0 to 31, though many are already occupied.").getInt();
 		
-		reinforcedChestColumns = config.get(categorySettings, "reinforcedChestColumns", reinforcedChestColumns,
-		                                   "Number of colums in reinforced chests. Valid values are 9, 11 and 13.").getInt();
+		reinforcedColumns = config.get(categorySettings, "reinforcedColumns", reinforcedColumns,
+		                                   "Number of colums in reinforced chests and lockers. Valid values are 9, 11 and 13.").getInt();
 		
 		backpackRows = config.get(categorySettings, "backpackRows", backpackRows,
 		                          "Number of rows in backpacks. Valid values are 1 to 6.").getInt();
@@ -137,7 +139,7 @@ public final class Config {
 	private static void validate() {
 		
 		backpackOpenDataWatcherId = validateRange(backpackOpenDataWatcherId, "backpackOpenDataWatcherId", 0, 31);
-		reinforcedChestColumns = validateColumnAmount(reinforcedChestColumns, "reinforcedChestColumns", 13);
+		reinforcedColumns = validateColumnAmount(reinforcedColumns, "reinforcedChestColumns", 13);
 		backpackRows = validateRange(backpackRows, "backpackRows", 1, 6);
 		
 	}

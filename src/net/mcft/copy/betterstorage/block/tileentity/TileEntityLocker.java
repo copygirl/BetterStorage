@@ -1,6 +1,7 @@
 package net.mcft.copy.betterstorage.block.tileentity;
 
 import net.mcft.copy.betterstorage.misc.Constants;
+import net.mcft.copy.betterstorage.misc.Resources;
 import net.mcft.copy.betterstorage.utils.DirectionUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.entity.EntityLivingBase;
@@ -11,11 +12,12 @@ import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class TileEntityLocker extends TileEntityConnectable {
+public class TileEntityLocker extends TileEntityLockable {
 	
 	private static final ForgeDirection[] neighbors = { ForgeDirection.DOWN, ForgeDirection.UP };
 	
@@ -26,6 +28,18 @@ public class TileEntityLocker extends TileEntityConnectable {
 	public AxisAlignedBB getRenderBoundingBox() {
 		return WorldUtils.getAABB(this, 0, 0, 0, 0, 1, 0);
 	}
+	
+	@SideOnly(Side.CLIENT)
+	public ResourceLocation getResource() {
+		return (isConnected() ? Resources.lockerLargeTexture : Resources.lockerTexture);
+	}
+	
+	@Override
+	public boolean canHaveLock() { return false; }
+	@Override
+	public boolean canHaveMaterial() { return false; }
+	@Override
+	public void setAttachmentPosition() {  }
 	
 	@Override
 	public ForgeDirection[] getPossibleNeighbors() { return neighbors; }

@@ -7,6 +7,7 @@ import net.mcft.copy.betterstorage.block.tileentity.TileEntityBackpack;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityCardboardBox;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityLocker;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityReinforcedChest;
+import net.mcft.copy.betterstorage.block.tileentity.TileEntityReinforcedLocker;
 import net.mcft.copy.betterstorage.misc.Constants;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -22,6 +23,7 @@ public final class TileEntities {
 		GameRegistry.registerTileEntity(TileEntityArmorStand.class, Constants.containerArmorStand);
 		GameRegistry.registerTileEntity(TileEntityBackpack.class, Constants.containerBackpack);
 		GameRegistry.registerTileEntity(TileEntityCardboardBox.class, Constants.containerCardboardBox);
+		GameRegistry.registerTileEntity(TileEntityReinforcedLocker.class, Constants.containerReinforcedLocker);
 		
 		Addon.registerTileEntitesAll();
 		

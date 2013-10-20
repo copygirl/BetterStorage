@@ -11,6 +11,8 @@
 	<entry key="container.betterstorage.lockerLarge">Large Locker</entry>
 	<entry key="container.betterstorage.reinforcedChest">Reinforced Chest</entry>
 	<entry key="container.betterstorage.reinforcedChestLarge">Large Reinforced Chest</entry>
+    <entry key="container.betterstorage.reinforcedLocker">Reinforced Locker</entry>
+    <entry key="container.betterstorage.reinforcedLockerLarge">Large Reinforced Locker</entry>
 	<entry key="container.betterstorage.thaumcraftBackpack">Thaumaturge's Backpack</entry>
 	<entry key="container.betterstorage.thaumiumChest">Thaumium Chest</entry>
 	<entry key="container.betterstorage.thaumiumChestLarge">Large Thaumium Chest</entry>
@@ -58,6 +60,8 @@ A similar thing is possible with a reinforced iron chest and a bunch of thaumium
 	<entry key="tile.betterstorage.locker.name">Locker</entry>
 	<entry key="tile.betterstorage.reinforcedChest.name">Reinforced Chest</entry>
 	<entry key="tile.betterstorage.reinforcedChest.name.full">Reinforced %MATERIAL% Chest</entry>
+    <entry key="tile.betterstorage.reinforcedLocker.name">Reinforced Locker</entry>
+    <entry key="tile.betterstorage.reinforcedLocker.name.full">Reinforced %MATERIAL% Locker</entry>
 	<entry key="tile.betterstorage.thaumcraftBackpack.name">Thaumaturge's Backpack</entry>
 	<entry key="tile.betterstorage.thaumiumChest.name">Thaumium Chest</entry>
 	<entry key="tooltip.betterstorage.backpack.bound">Bound backpack.</entry>

@@ -1,13 +1,13 @@
 package net.mcft.copy.betterstorage.item.cardboard;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemStack;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemCardboardHoe extends ItemHoe implements ICardboardItem {
 	

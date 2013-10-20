@@ -7,13 +7,13 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public final class Resources {
 	
-	public static final ResourceLocation emptyTexture = new BetterStorageResource("textures/empty.png");;
+	public static final ResourceLocation emptyTexture = new BetterStorageResource("textures/empty.png");
 	
 	public static final ResourceLocation crateContainer           = new BetterStorageResource("textures/gui/crate.png");
 	public static final ResourceLocation reinforcedChestContainer = new BetterStorageResource("textures/gui/reinforcedChest.png");
 	
-	public static final ResourceLocation lockerTexture           = new BetterStorageResource("textures/models/locker.png");
-	public static final ResourceLocation largeLockerTexture      = new BetterStorageResource("textures/models/locker_large.png");
+	public static final ResourceLocation lockerTexture           = new BetterStorageResource("textures/models/locker/wood.png");
+	public static final ResourceLocation lockerLargeTexture      = new BetterStorageResource("textures/models/locker_large/wood.png");
 	public static final ResourceLocation armorStandTexture       = new BetterStorageResource("textures/models/armorstand.png");
 	public static final ResourceLocation backpackTexture         = new BetterStorageResource("textures/models/backpack.png");
 	public static final ResourceLocation backpackOverlayTexture  = new BetterStorageResource("textures/models/backpack_overlay.png");

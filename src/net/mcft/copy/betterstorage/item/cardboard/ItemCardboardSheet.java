@@ -1,6 +1,5 @@
 package net.mcft.copy.betterstorage.item.cardboard;
 
-import net.mcft.copy.betterstorage.content.Items;
 import net.mcft.copy.betterstorage.item.ItemBetterStorage;
 import net.minecraft.item.EnumArmorMaterial;
 import net.minecraft.item.EnumToolMaterial;

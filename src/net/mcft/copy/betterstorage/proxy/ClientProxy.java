@@ -12,6 +12,7 @@ import net.mcft.copy.betterstorage.block.tileentity.TileEntityArmorStand;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityBackpack;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityLocker;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityReinforcedChest;
+import net.mcft.copy.betterstorage.block.tileentity.TileEntityReinforcedLocker;
 import net.mcft.copy.betterstorage.client.renderer.BetterStorageRenderingHandler;
 import net.mcft.copy.betterstorage.client.renderer.ItemRendererBackpack;
 import net.mcft.copy.betterstorage.client.renderer.ItemRendererContainer;
@@ -58,6 +59,7 @@ public class ClientProxy extends CommonProxy {
 	public static int lockerRenderId;
 	public static int armorStandRenderId;
 	public static int backpackRenderId;
+	public static int reinforcedLockerRenderId;
 	
 	public static final Map<Class<? extends TileEntity>, BetterStorageRenderingHandler> renderingHandlers =
 			new HashMap<Class<? extends TileEntity>, BetterStorageRenderingHandler>();
@@ -80,6 +82,8 @@ public class ClientProxy extends CommonProxy {
 		registerItemRenderer(Blocks.backpack, ItemRendererBackpack.instance);
 		registerItemRenderer(Blocks.enderBackpack, ItemRendererBackpack.instance);
 		registerItemRenderer(Blocks.reinforcedChest, new ItemRendererContainer(TileEntityReinforcedChest.class));
+		registerItemRenderer(Blocks.locker, new ItemRendererContainer(TileEntityLocker.class));
+		registerItemRenderer(Blocks.reinforcedLocker, new ItemRendererContainer(TileEntityReinforcedLocker.class));
 		
 		RenderingRegistry.registerEntityRenderingHandler(EntityFrienderman.class, new RenderFrienderman());
 		
@@ -87,6 +91,7 @@ public class ClientProxy extends CommonProxy {
 		lockerRenderId = registerTileEntityRenderer(TileEntityLocker.class, new TileEntityLockerRenderer());
 		armorStandRenderId = registerTileEntityRenderer(TileEntityArmorStand.class, new TileEntityArmorStandRenderer(), false, 0, 1, 0);
 		backpackRenderId = registerTileEntityRenderer(TileEntityBackpack.class, new TileEntityBackpackRenderer(), true, -160, 1.5F, 0.14F);
+		reinforcedLockerRenderId = registerTileEntityRenderer(TileEntityReinforcedLocker.class, new TileEntityLockerRenderer());
 		
 		Addon.registerRenderersAll();
 		

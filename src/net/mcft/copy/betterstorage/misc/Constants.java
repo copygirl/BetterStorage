@@ -13,6 +13,7 @@ public final class Constants {
 	public static final String containerCrate = "container." + modId + ".crate";
 	public static final String containerReinforcedChest = "container." + modId + ".reinforcedChest";
 	public static final String containerLocker = "container." + modId + ".locker";
+	public static final String containerReinforcedLocker = "container." + modId + ".reinforcedLocker";
 	public static final String containerArmorStand = "container." + modId + ".armorStand";
 	public static final String containerBackpack = "container." + modId + ".backpack";
 	public static final String containerEnderBackpack = "container." + modId + ".enderBackpack";

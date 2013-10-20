@@ -38,6 +38,14 @@ public class ContainerMaterial {
 	public static ContainerMaterial get(String name) { return materialMap.get(name); }
 	public static ContainerMaterial get(int id) { return materialMapOld.get(id); }
 	
+	/** Gets the material of the stack, either using the new method, the
+	 *  old ID lookup or if everything fails, it'll return the default. */
+	public static ContainerMaterial getMaterial(ItemStack stack, ContainerMaterial _default) {
+		String name = StackUtils.get(stack, (String)null, TAG_NAME);
+		ContainerMaterial material = ((name != null) ? get(name) : get(stack.getItemDamage()));
+		return ((material != null) ? material : _default);
+	}
+	
 	
 	public final String name;
 	
@@ -58,32 +66,27 @@ public class ContainerMaterial {
 		materialMapOld.put(id, this);
 	}
 	
-	public ShapedOreRecipe getChestRecipe(Block result) {
+	public ShapedOreRecipe getReinforcedRecipe(Block middle, Block result) {
 		if ((ingot == null) || (block == null)) return null;
 		return new ShapedOreRecipe(setMaterial(new ItemStack(result)),
 				"o#o",
 				"#C#",
-				"oOo", 'C', Block.chest,
+				"oOo", 'C', middle,
 				       '#', "logWood",
 				       'o', ingot,
 				       'O', block);
 	}
 	
-	public ResourceLocation getResource(boolean large) {
+	public ResourceLocation getChestResource(boolean large) {
 		return new BetterStorageResource("textures/models/chest" + (large ? "_large/" : "/") + name + ".png");
+	}
+	public ResourceLocation getLockerResource(boolean large) {
+		return new BetterStorageResource("textures/models/locker" + (large ? "_large/" : "/") + name + ".png");
 	}
 	
 	public ItemStack setMaterial(ItemStack stack) {
 		StackUtils.set(stack, name, TAG_NAME);
 		return stack;
-	}
-	
-	/** Gets the material of the stack, either using the new method,
-	 *  the old ID lookup or if everything fails, it'll default to iron. */
-	public static ContainerMaterial getMaterial(ItemStack stack) {
-		String name = StackUtils.get(stack, (String)null, TAG_NAME);
-		ContainerMaterial material = ((name != null) ? get(name) : get(stack.getItemDamage()));
-		return ((material != null) ? material : iron);
 	}
 	
 }

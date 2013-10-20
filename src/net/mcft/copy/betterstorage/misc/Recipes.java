@@ -35,7 +35,7 @@ public final class Recipes {
 		// Reinforced chest recipes
 		if (MiscUtils.isEnabled(Blocks.reinforcedChest))
 			for (ContainerMaterial material : ContainerMaterial.getMaterials()) {
-				IRecipe recipe = material.getChestRecipe(Blocks.reinforcedChest);
+				IRecipe recipe = material.getReinforcedRecipe(Block.chest, Blocks.reinforcedChest);
 				if (recipe != null) GameRegistry.addRecipe(recipe);
 			}
 		
@@ -51,6 +51,13 @@ public final class Recipes {
 					"| o",
 					"ooo", 'o', "plankWood",
 					       '|', Block.trapdoor));
+			
+			// Reinforced locker recipes
+			if (MiscUtils.isEnabled(Blocks.reinforcedLocker))
+				for (ContainerMaterial material : ContainerMaterial.getMaterials()) {
+					IRecipe recipe = material.getReinforcedRecipe(Blocks.locker, Blocks.reinforcedLocker);
+					if (recipe != null) GameRegistry.addRecipe(recipe);
+				}
 		}
 		
 		// Armor stand recipe

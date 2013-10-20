@@ -9,8 +9,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class TileEntityThaumiumChest extends TileEntityReinforcedChest {
 	
-	private int ticksExisted = 0;
-	
 	@Override
 	protected String getConnectableName() { return Constants.containerThaumiumChest; }
 	

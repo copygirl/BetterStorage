@@ -19,7 +19,7 @@ public class TileEntityReinforcedChest extends TileEntityLockable {
 	
 	@SideOnly(Side.CLIENT)
 	public ResourceLocation getResource() {
-		return getMaterial().getResource(isConnected());
+		return getMaterial().getChestResource(isConnected());
 	}
 	
 	@Override
@@ -33,7 +33,7 @@ public class TileEntityReinforcedChest extends TileEntityLockable {
 	// TileEntityContainer stuff
 	
 	@Override
-	public int getColumns() { return Config.reinforcedChestColumns; }
+	public int getColumns() { return Config.reinforcedColumns; }
 	
 	// TileEntityConnactable stuff
 	

@@ -33,18 +33,24 @@ public abstract class TileEntityLockable extends TileEntityConnectable
 	
 	protected Attachments attachments = new Attachments(this);
 	
-	protected ItemStack getLockInternal() { return lockAttachment.getItem(); }
+	protected ItemStack getLockInternal() { return (canHaveLock() ? lockAttachment.getItem() : null); }
 	protected void setLockInternal(ItemStack lock) { lockAttachment.setItem(lock); }
 	
+	public TileEntityLockable() {
+		if (canHaveLock()) {
+			lockAttachment = attachments.add(LockAttachment.class);
+			lockAttachment.setScale(0.5F, 1.5F);
+		}
+	}
+	
 	public ContainerMaterial getMaterial() {
+		if (!canHaveMaterial()) return null;
 		if (material != null) return material;
 		return material = ((worldObj != null) ? ContainerMaterial.get(getBlockMetadata()) : ContainerMaterial.iron);
 	}
 	
-	public TileEntityLockable() {
-		lockAttachment = attachments.add(LockAttachment.class);
-		lockAttachment.setScale(0.5F, 1.5F);
-	}
+	public boolean canHaveMaterial() { return true; }
+	public boolean canHaveLock() { return true; }
 	
 	public abstract void setAttachmentPosition();
 	
@@ -58,12 +64,14 @@ public abstract class TileEntityLockable extends TileEntityConnectable
 	@Override
 	public void setOrientation(ForgeDirection orientation) {
 		super.setOrientation(orientation);
-		lockAttachment.setDirection(orientation);
+		if (canHaveLock())
+			lockAttachment.setDirection(orientation);
 	}
 	@Override
 	public void setConnected(ForgeDirection connected) {
 		super.setConnected(connected);
-		setAttachmentPosition();
+		if (canHaveLock())
+			setAttachmentPosition();
 	}
 	
 	@Override
@@ -76,7 +84,7 @@ public abstract class TileEntityLockable extends TileEntityConnectable
 	
 	@Override
 	public boolean onBlockActivated(EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
-		if (!worldObj.isRemote && !canPlayerUseContainer(player))
+		if (!worldObj.isRemote && canHaveLock() &&!canPlayerUseContainer(player))
 			((ILock)getLock().getItem()).applyEffects(getLock(), this, player, EnumLockInteraction.OPEN);
 		return super.onBlockActivated(player, side, hitX, hitY, hitZ);
 	}
@@ -90,11 +98,13 @@ public abstract class TileEntityLockable extends TileEntityConnectable
 	@Override
 	protected void onBlockPlacedBeforeCheckingConnections(EntityLivingBase player, ItemStack stack) {
 		super.onBlockPlacedBeforeCheckingConnections(player, stack);
-		material = ContainerMaterial.getMaterial(stack);
+		if (canHaveMaterial())
+			material = ContainerMaterial.getMaterial(stack, ContainerMaterial.iron);
 	}
 	
 	@Override
 	public ItemStack onPickBlock(ItemStack block, MovingObjectPosition target) {
+		if (!canHaveMaterial()) return block;
 		return getMaterial().setMaterial(block);
 	}
 	
@@ -109,7 +119,8 @@ public abstract class TileEntityLockable extends TileEntityConnectable
 	@SideOnly(Side.CLIENT)
 	public void onBlockRenderInInventory(ItemStack stack) {
 		super.onBlockRenderInInventory(stack);
-		material = ContainerMaterial.getMaterial(stack);
+		if (canHaveMaterial())
+			material = ContainerMaterial.getMaterial(stack, ContainerMaterial.iron);
 	}
 	
 	// TileEntityConnactable stuff
@@ -134,7 +145,7 @@ public abstract class TileEntityLockable extends TileEntityConnectable
 	
 	@Override
 	public boolean isLockValid(ItemStack lock) {
-		return ((lock == null) || (lock.getItem() instanceof ILock));
+		return ((lock == null) || ((lock.getItem() instanceof ILock) && canHaveLock()));
 	}
 	
 	@Override
@@ -142,14 +153,10 @@ public abstract class TileEntityLockable extends TileEntityConnectable
 		if (!isLockValid(lock))
 			throw new InvalidParameterException("Can't set lock to " + lock + ".");
 		
+		if (!canHaveLock()) return;
+			
 		setLockInternal(lock);
 		markForUpdate();
-		
-		TileEntityLockable connected = (TileEntityLockable)getConnectedTileEntity();
-		if (connected != null) {
-			connected.setLockInternal(lock);
-			connected.markForUpdate();
-		}
 	}
 	
 	@Override
@@ -218,17 +225,23 @@ public abstract class TileEntityLockable extends TileEntityConnectable
 	@Override
 	public Packet getDescriptionPacket() {
 		Packet132TileEntityData packet = (Packet132TileEntityData)super.getDescriptionPacket();
-		ItemStack lock = getLockInternal();
-		packet.data.setString(ContainerMaterial.TAG_NAME, getMaterial().name);
-		if (lock != null) packet.data.setCompoundTag("lock", lock.writeToNBT(new NBTTagCompound()));
+		if (canHaveMaterial())
+			packet.data.setString(ContainerMaterial.TAG_NAME, getMaterial().name);
+		if (canHaveLock()) {
+			ItemStack lock = getLockInternal();
+			if (lock != null) packet.data.setCompoundTag("lock", lock.writeToNBT(new NBTTagCompound()));
+		}
         return packet;
 	}
 	@Override
 	public void onDataPacket(INetworkManager net, Packet132TileEntityData packet) {
 		super.onDataPacket(net, packet);
-		material = ContainerMaterial.get(packet.data.getString(ContainerMaterial.TAG_NAME));
-		if (!packet.data.hasKey("lock")) setLockInternal(null);
-		else setLockInternal(ItemStack.loadItemStackFromNBT(packet.data.getCompoundTag("lock")));
+		if (canHaveMaterial())
+			material = ContainerMaterial.get(packet.data.getString(ContainerMaterial.TAG_NAME));
+		if (canHaveLock()) {
+			if (!packet.data.hasKey("lock")) setLockInternal(null);
+			else setLockInternal(ItemStack.loadItemStackFromNBT(packet.data.getCompoundTag("lock")));
+		}
 	}
 	
 	// Reading from / writing to NBT
@@ -236,17 +249,21 @@ public abstract class TileEntityLockable extends TileEntityConnectable
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
-		material = ContainerMaterial.get(compound.getString(ContainerMaterial.TAG_NAME));
-		if (compound.hasKey("lock"))
+		if (canHaveMaterial())
+			material = ContainerMaterial.get(compound.getString(ContainerMaterial.TAG_NAME));
+		if (canHaveLock() && compound.hasKey("lock"))
 			setLockInternal(ItemStack.loadItemStackFromNBT(compound.getCompoundTag("lock")));
 	}
 	@Override
 	public void writeToNBT(NBTTagCompound compound) {
 		super.writeToNBT(compound);
-		compound.setString(ContainerMaterial.TAG_NAME, getMaterial().name);
-		ItemStack lock = getLockInternal();
-		if (lock != null)
-			compound.setCompoundTag("lock", lock.writeToNBT(new NBTTagCompound("")));
+		if (canHaveMaterial())
+			compound.setString(ContainerMaterial.TAG_NAME, getMaterial().name);
+		if (canHaveLock()) {
+			ItemStack lock = getLockInternal();
+			if (lock != null)
+				compound.setCompoundTag("lock", lock.writeToNBT(new NBTTagCompound("")));
+		}
 	}
 	
 }

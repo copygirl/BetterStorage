@@ -3,7 +3,6 @@ package net.mcft.copy.betterstorage.client.renderer;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityLocker;
 import net.mcft.copy.betterstorage.client.model.ModelLargeLocker;
 import net.mcft.copy.betterstorage.client.model.ModelLocker;
-import net.mcft.copy.betterstorage.misc.Resources;
 import net.mcft.copy.betterstorage.utils.DirectionUtils;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
@@ -29,7 +28,7 @@ public class TileEntityLockerRenderer extends TileEntitySpecialRenderer {
 		
 		int index = (locker.mirror ? 1 : 0);
 		ModelLocker model = (large ? largeLockerModel : lockerModel);
-		bindTexture((large ? Resources.largeLockerTexture : Resources.lockerTexture));
+		bindTexture(locker.getResource());
 		
 		GL11.glPushMatrix();
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
