@@ -11,6 +11,8 @@
     <entry key="container.betterstorage.lockerLarge">Großes Schließfach</entry>
     <entry key="container.betterstorage.reinforcedChest">Verstärkte Truhe</entry>
     <entry key="container.betterstorage.reinforcedChestLarge">Große Verstärkte Truhe</entry>
+    <entry key="container.betterstorage.reinforcedLocker">Verstärktes Schließfach</entry>
+    <entry key="container.betterstorage.reinforcedLockerLarge">Großes Verstärktes Schließfach</entry>
     <entry key="container.betterstorage.thaumcraftBackpack">Rucksack des Thaumaturgen</entry>
     <entry key="container.betterstorage.thaumiumChest">Thaumium-Truhe</entry>
     <entry key="container.betterstorage.thaumiumChestLarge">Große Thaumium-Truhe</entry>
@@ -58,6 +60,8 @@ Etwas ähnliches geschieht mit einer Verstärkten Eisentruhe und einer Menge Tha
     <entry key="tile.betterstorage.locker.name">Schließfach</entry>
     <entry key="tile.betterstorage.reinforcedChest.name">Verstärkte Truhe</entry>
     <entry key="tile.betterstorage.reinforcedChest.name.full">Verstärkte %MATERIAL%truhe</entry>
+    <entry key="tile.betterstorage.reinforcedLocker.name">Verstärktes Schließfach</entry>
+    <entry key="tile.betterstorage.reinforcedLocker.name.full">Verstärktes %MATERIAL%schließfach</entry>
     <entry key="tile.betterstorage.thaumcraftBackpack.name">Rucksack des Thaumaturgen</entry>
     <entry key="tile.betterstorage.thaumiumChest.name">Thaumium-Truhe</entry>
     <entry key="tooltip.betterstorage.backpack.bound">Gebunden.</entry>
