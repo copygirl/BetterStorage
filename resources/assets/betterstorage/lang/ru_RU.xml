@@ -11,10 +11,12 @@
 	<entry key="container.betterstorage.lockerLarge">Большой шкаф</entry>
 	<entry key="container.betterstorage.reinforcedChest">Укреплённый сундук</entry>
 	<entry key="container.betterstorage.reinforcedChestLarge">Большой укреплённый сундук</entry>
+	<entry key="container.betterstorage.reinforcedLocker">Укреплённый шкаф</entry>
+	<entry key="container.betterstorage.reinforcedLockerLarge">Большой укреплённый шкаф</entry>
 	<entry key="container.betterstorage.thaumcraftBackpack">Рюкзак тауматурга</entry>
-	<entry key="container.betterstorage.thaumiumChest">Таумиум рюкзак</entry>
-	<entry key="container.betterstorage.thaumiumChestLarge">Большой таумиум рюкзак</entry>
-	<entry key="enchantment.betterstorage.key.lockpicking">Взлом</entry>
+	<entry key="container.betterstorage.thaumiumChest">Таум-сундук</entry>
+	<entry key="container.betterstorage.thaumiumChestLarge">Большой таум-сундук</entry>
+	<entry key="enchantment.betterstorage.key.lockpicking">Вскрытие</entry>
 	<entry key="enchantment.betterstorage.key.morphing">Морфинг</entry>
 	<entry key="enchantment.betterstorage.key.unlocking">Отпирание</entry>
 	<entry key="enchantment.betterstorage.lock.persistance">Устойчивость</entry>
@@ -58,6 +60,8 @@
 	<entry key="tile.betterstorage.locker.name">Шкаф</entry>
 	<entry key="tile.betterstorage.reinforcedChest.name">Укреплённый сундук</entry>
 	<entry key="tile.betterstorage.reinforcedChest.name.full">Укреплённый %MATERIAL% сундук</entry>
+	<entry key="tile.betterstorage.reinforcedLocker.name">Укреплённый шкаф</entry>
+	<entry key="tile.betterstorage.reinforcedLocker.name.full">Укреплённый %MATERIAL% шкаф</entry>
 	<entry key="tile.betterstorage.thaumcraftBackpack.name">Рюкзак тауматурга</entry>
 	<entry key="tile.betterstorage.thaumiumChest.name">Таум-сундук</entry>
 	<entry key="tooltip.betterstorage.backpack.bound">Связанный рюкзак.</entry>
