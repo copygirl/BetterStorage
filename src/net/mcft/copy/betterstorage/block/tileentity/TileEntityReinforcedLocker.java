@@ -20,7 +20,10 @@ public class TileEntityReinforcedLocker extends TileEntityLocker {
 	public boolean canHaveMaterial() { return true; }
 	@Override
 	public void setAttachmentPosition() {
-		lockAttachment.setBox(8, 6.5, 0.5, 7, 7, 1);
+		double x = (mirror ? 13.5 : 2.5);
+		double y = (isConnected() ? 0 : 8);
+		lockAttachment.setBox(x, y, 0.5, 5, 5, 1);
+		lockAttachment.setScale(0.375F, 1.5F);
 	}
 	
 	@Override

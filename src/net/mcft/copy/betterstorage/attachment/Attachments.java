@@ -87,8 +87,8 @@ public class Attachments implements Iterable<Attachment> {
 			GL11.glPushMatrix();
 				GL11.glTranslated(0.5, 0.5, 0.5);
 				GL11.glPushMatrix();
-					GL11.glRotatef(rotation, 0, 1, 0);
-					GL11.glTranslated(0.5 - attachment.getX(), attachment.getY() - 0.5, attachment.getZ() - 0.5);
+					GL11.glRotatef(rotation, 0, -1, 0);
+					GL11.glTranslated(0.5 - attachment.getX(), 0.5 - attachment.getY(), 0.5 - attachment.getZ());
 					attachment.getRenderer().render(attachment, partialTicks);
 				GL11.glPopMatrix();
 			GL11.glPopMatrix();

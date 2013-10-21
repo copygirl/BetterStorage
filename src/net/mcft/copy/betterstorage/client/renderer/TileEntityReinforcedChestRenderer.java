@@ -30,11 +30,11 @@ public class TileEntityReinforcedChestRenderer extends TileEntitySpecialRenderer
 		GL11.glPushMatrix();
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		GL11.glTranslatef((float)x, (float)y + 1.0F, (float)z + 1.0F);
-		GL11.glScalef(1.0F, -1.0F, -1.0F);
+		GL11.glTranslated(x, y, z);
 		
 			GL11.glPushMatrix();
-			GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+			GL11.glScalef(1.0F, -1.0F, -1.0F);
+			GL11.glTranslatef(0.5F, -0.5F, -0.5F);
 			
 			int rotation = DirectionUtils.getRotation(chest.getOrientation());
 			if ((rotation == 180) && large)

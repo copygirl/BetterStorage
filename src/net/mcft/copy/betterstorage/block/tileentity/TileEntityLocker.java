@@ -59,6 +59,7 @@ public class TileEntityLocker extends TileEntityLockable {
 		double angle = DirectionUtils.getRotation(getOrientation().getOpposite());
 		double yaw = ((player.rotationYaw % 360) + 360) % 360;
 		mirror = (DirectionUtils.angleDifference(angle, yaw) > 0);
+		setAttachmentPosition();
 	}
 	
 	@Override
@@ -81,6 +82,7 @@ public class TileEntityLocker extends TileEntityLockable {
 		super.onDataPacket(net, packet);
 		NBTTagCompound compound = packet.data;
 		mirror = compound.getBoolean("mirror");
+		setAttachmentPosition();
 	}
 	
 	// Reading from / writing to NBT
@@ -89,6 +91,7 @@ public class TileEntityLocker extends TileEntityLockable {
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
 		mirror = compound.getBoolean("mirror");
+		setAttachmentPosition();
 	}
 	@Override
 	public void writeToNBT(NBTTagCompound compound) {

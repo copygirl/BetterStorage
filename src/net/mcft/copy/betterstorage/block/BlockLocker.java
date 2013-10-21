@@ -6,6 +6,7 @@ import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;
@@ -35,14 +36,28 @@ public class BlockLocker extends BlockContainerBetterStorage {
 	public boolean renderAsNormalBlock() { return false; }
 	
 	@Override
+	@SideOnly(Side.CLIENT)
+	public int getRenderType() { return ClientProxy.lockerRenderId; }
+	
+	@Override
 	public boolean isBlockSolidOnSide(World world, int x, int y, int z, ForgeDirection side) {
 		TileEntityLocker locker = WorldUtils.get(world, x, y, z, TileEntityLocker.class);
 		return (locker.getOrientation() != side);
 	}
 	
 	@Override
-	@SideOnly(Side.CLIENT)
-	public int getRenderType() { return ClientProxy.lockerRenderId; }
+	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
+		float minX = 0, minY = 0, minZ = 0;
+		float maxX = 1, maxY = 1, maxZ = 1;
+		switch (WorldUtils.get(world, x, y, z, TileEntityLocker.class).getOrientation()) {
+			case EAST: maxX -= 1.0F / 16; break;
+			case WEST: minX += 1.0F / 16; break;
+			case SOUTH: maxZ -= 1.0F / 16; break;
+			case NORTH: minZ += 1.0F / 16; break;
+			default: break;
+		}
+		setBlockBounds(minX, minY, minZ, maxX, maxY, maxZ);
+	}
 	
 	@Override
 	public TileEntity createNewTileEntity(World world) {

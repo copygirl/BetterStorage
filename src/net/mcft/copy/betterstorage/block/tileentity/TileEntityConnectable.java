@@ -60,7 +60,7 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 	public boolean canConnect(TileEntityConnectable connectable) {
 		return ((connectable != null) &&                                  // check for null
 		        (getBlockType() == connectable.getBlockType()) &&         // check for same block type
-		        (getOrientation() == connectable.orientation) &&          // check for same orientation
+		        (getOrientation() == connectable.getOrientation()) &&     // check for same orientation
 		        // Make sure the containers are not already connected.
 		        !isConnected() && !connectable.isConnected());
 	}

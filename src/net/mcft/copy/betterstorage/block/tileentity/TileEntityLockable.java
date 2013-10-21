@@ -37,10 +37,10 @@ public abstract class TileEntityLockable extends TileEntityConnectable
 	protected void setLockInternal(ItemStack lock) { lockAttachment.setItem(lock); }
 	
 	public TileEntityLockable() {
-		if (canHaveLock()) {
-			lockAttachment = attachments.add(LockAttachment.class);
-			lockAttachment.setScale(0.5F, 1.5F);
-		}
+		if (!canHaveLock()) return;
+		lockAttachment = attachments.add(LockAttachment.class);
+		lockAttachment.setScale(0.5F, 1.5F);
+		setAttachmentPosition();
 	}
 	
 	public ContainerMaterial getMaterial() {
@@ -111,6 +111,7 @@ public abstract class TileEntityLockable extends TileEntityConnectable
 	@Override
 	public void dropContents() {
 		super.dropContents();
+		if (!canHaveLock()) return;
 		WorldUtils.dropStackFromBlock(this, getLock());
 		setLock(null);
 	}
@@ -153,10 +154,9 @@ public abstract class TileEntityLockable extends TileEntityConnectable
 		if (!isLockValid(lock))
 			throw new InvalidParameterException("Can't set lock to " + lock + ".");
 		
-		if (!canHaveLock()) return;
-			
-		setLockInternal(lock);
-		markForUpdate();
+		TileEntityLockable main = (TileEntityLockable)getMainTileEntity();
+		main.setLockInternal(lock);
+		main.markForUpdate();
 	}
 	
 	@Override

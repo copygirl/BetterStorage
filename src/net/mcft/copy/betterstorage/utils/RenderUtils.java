@@ -34,7 +34,6 @@ public final class RenderUtils {
 		
 		Tessellator tessellator = Tessellator.instance;
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-		GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
 		GL11.glTranslatef(-0.5F, -0.5F, 1 / 32.0F);
 		
 		int passes = item.getRenderPasses(stack.getItemDamage());

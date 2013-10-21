@@ -19,6 +19,7 @@ public class ModelRendererPotion extends ModelRenderer {
 		addChild(new Potion(modelBase));
 		
 		setRotationPoint((right ? -5.5F : 5.5F), -7, 1);
+		rotateAngleX = (float)Math.PI;
 		rotateAngleY = (float)Math.PI / (right ? -2 : 2);
 	}
 	
