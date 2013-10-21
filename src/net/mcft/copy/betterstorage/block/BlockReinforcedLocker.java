@@ -24,6 +24,7 @@ public class BlockReinforcedLocker extends BlockLockable {
 		setHardness(8.0F);
 		setResistance(20.0F);
 		setStepSound(soundWoodFootstep);
+		setBlockBounds(1 / 16.0F, 1 / 16.0F, 1 / 16.0F, 15 / 16.0F, 15 / 16.0F, 15 / 16.0F);
 		
 		MinecraftForge.setBlockHarvestLevel(this, "axe", 2);
 	}

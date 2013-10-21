@@ -20,6 +20,7 @@ public class BlockLocker extends BlockContainerBetterStorage {
 		
 		setHardness(2.5f);
 		setStepSound(soundWoodFootstep);
+		setBlockBounds(1 / 16.0F, 1 / 16.0F, 1 / 16.0F, 15 / 16.0F, 15 / 16.0F, 15 / 16.0F);
 		
 		MinecraftForge.setBlockHarvestLevel(this, "axe", 0);
 	}
