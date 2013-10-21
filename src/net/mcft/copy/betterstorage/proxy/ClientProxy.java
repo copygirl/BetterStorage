@@ -82,7 +82,6 @@ public class ClientProxy extends CommonProxy {
 		registerItemRenderer(Blocks.backpack, ItemRendererBackpack.instance);
 		registerItemRenderer(Blocks.enderBackpack, ItemRendererBackpack.instance);
 		registerItemRenderer(Blocks.reinforcedChest, new ItemRendererContainer(TileEntityReinforcedChest.class));
-		registerItemRenderer(Blocks.locker, new ItemRendererContainer(TileEntityLocker.class));
 		registerItemRenderer(Blocks.reinforcedLocker, new ItemRendererContainer(TileEntityReinforcedLocker.class));
 		
 		RenderingRegistry.registerEntityRenderingHandler(EntityFrienderman.class, new RenderFrienderman());

@@ -1,5 +1,7 @@
 package net.mcft.copy.betterstorage.client.renderer;
 
+import org.lwjgl.opengl.GL11;
+
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityContainer;
 import net.mcft.copy.betterstorage.proxy.ClientProxy;
 import net.minecraft.block.Block;
@@ -30,7 +32,12 @@ public class ItemRendererContainer implements IItemRenderer {
 		if (renderingHandler == null)
 			renderingHandler = ClientProxy.renderingHandlers.get(tileEntityClass);
 		((TileEntityContainer)renderingHandler.tileEntity).onBlockRenderInInventory(item);
+		GL11.glPushMatrix();
+		if ((type == ItemRenderType.EQUIPPED) ||
+		    (type == ItemRenderType.EQUIPPED_FIRST_PERSON))
+			GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 		renderingHandler.renderInventoryBlock(Block.blocksList[item.itemID], 0, 0, null);
+		GL11.glPopMatrix();
 	}
 	
 }
