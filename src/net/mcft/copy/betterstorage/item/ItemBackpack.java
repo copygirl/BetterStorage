@@ -225,7 +225,7 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 		// damage types (see above) and magic damage.
 		if (source.isMagicDamage()) return false;
 		for (String immune : immuneToDamageType)
-			if (immune == source.getDamageType()) return false;
+			if (immune.equals(source.getDamageType())) return false;
 		// Protection enchantments protect the backpack
 		// from taking damage from that damage type.
 		return (!enchantmentProtection(stack, Enchantment.protection, 0.3, 0.35, 0.4, 0.45) &&
