@@ -46,8 +46,6 @@ public final class Config {
 	public static int enchantmentShockId       = 175;
 	public static int enchantmentTriggerId     = 176;
 	
-	public static int backpackOpenDataWatcherId = 27;
-	
 	// More settings ...
 	public static int reinforcedColumns = 13;
 	public static int backpackRows = 3;
@@ -101,9 +99,6 @@ public final class Config {
 		enchantmentShockId       = config.get(categoryEnchantments, "shock", enchantmentShockId).getInt();
 		enchantmentTriggerId     = config.get(categoryEnchantments, "trigger", enchantmentTriggerId).getInt();
 		
-		backpackOpenDataWatcherId = config.get(Configuration.CATEGORY_GENERAL, "backpackOpenDataWatcherId", backpackOpenDataWatcherId,
-		                                       "Valid values are 0 to 31, though many are already occupied.").getInt();
-		
 		reinforcedColumns = config.get(categorySettings, "reinforcedColumns", reinforcedColumns,
 		                                   "Number of colums in reinforced chests and lockers. Valid values are 9, 11 and 13.").getInt();
 		
@@ -138,7 +133,6 @@ public final class Config {
 	
 	private static void validate() {
 		
-		backpackOpenDataWatcherId = validateRange(backpackOpenDataWatcherId, "backpackOpenDataWatcherId", 0, 31);
 		reinforcedColumns = validateColumnAmount(reinforcedColumns, "reinforcedChestColumns", 13);
 		backpackRows = validateRange(backpackRows, "backpackRows", 1, 6);
 		

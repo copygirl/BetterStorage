@@ -34,14 +34,8 @@ public class InventoryBackpackEquipped extends InventoryWrapper {
 	}
 	
 	@Override
-	public void openChest() {
-		int playersUsing = ++ItemBackpack.getBackpackData(carrier).playersUsing;
-		ItemBackpack.setBackpackOpen(carrier, (playersUsing > 0));
-	}
+	public void openChest() { ItemBackpack.getBackpackData(carrier).playersUsing++; }
 	@Override
-	public void closeChest() {
-		int playersUsing = --ItemBackpack.getBackpackData(carrier).playersUsing;
-		ItemBackpack.setBackpackOpen(carrier, (playersUsing > 0));
-	}
+	public void closeChest() { ItemBackpack.getBackpackData(carrier).playersUsing--; }
 	
 }

@@ -15,12 +15,15 @@ import net.mcft.copy.betterstorage.utils.PlayerUtils;
 import net.mcft.copy.betterstorage.utils.RandomUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.Player;
@@ -36,6 +39,8 @@ public class PacketHandler implements IPacketHandler {
 	public static final byte backpackKeyEnabled = 4;
 	public static final byte drinkingHelmet = 5;
 	public static final byte lockHit = 6;
+	public static final byte clientSpawn = 7;
+	public static final byte backpackIsOpen = 8;
 	
 	public static Packet makePacket(Object... args) {
 		ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
@@ -92,6 +97,14 @@ public class PacketHandler implements IPacketHandler {
 				case lockHit:
 					checkSide(id, side, Side.CLIENT);
 					handleLockHit(player, stream);
+					break;
+				case clientSpawn:
+					checkSide(id, side, Side.SERVER);
+					handleClientSpawn(player, stream);
+					break;
+				case backpackIsOpen:
+					checkSide(id, side, Side.CLIENT);
+					handleBackpackIsOpen(player, stream);
 					break;
 				default:
 					throw new Exception("Received " + Constants.modName + " packet for unhandled ID " + id + " on side " + side + ".");
@@ -170,9 +183,31 @@ public class PacketHandler implements IPacketHandler {
 		if (lockable != null) lockable.lockAttachment.hit(damage);
 	}
 	
+	private void handleClientSpawn(EntityPlayer player, DataInputStream stream) throws IOException {
+		int entityID = stream.readInt();
+		Entity entity = player.worldObj.getEntityByID(entityID);
+		if ((entity == null) || !(entity instanceof EntityLivingBase)) return;
+		ItemBackpack.getBackpackData((EntityLivingBase)entity).sendDataToPlayer((EntityLivingBase)entity, player);
+	}
+
+	@SideOnly(Side.CLIENT)
+	private void handleBackpackIsOpen(EntityPlayer player, DataInputStream stream) throws IOException {
+		int entityID = stream.readInt();
+		boolean isOpen = stream.readBoolean();
+		Entity entity = Minecraft.getMinecraft().theWorld.getEntityByID(entityID);
+		if (entity == null) return;
+		ItemBackpack.getBackpackData((EntityLivingBase)entity).playersUsing = ((isOpen) ? 1 : 0);
+	}
+	
+	/** Sends a packet to everyone near a certain position in the world. */
 	public static void sendToEveryoneNear(World world, double x, double y, double z, double distance, EntityPlayer except, Packet packet) {
 		MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
 		server.getConfigurationManager().sendToAllNearExcept(except, x, y, z, distance, world.provider.dimensionId, packet);
+	}
+	
+	/** Sends a packet to everyone tracking this entity. */
+	public static void sendToEveryoneTracking(Entity entity, Packet packet) {
+		((WorldServer)entity.worldObj).getEntityTracker().sendPacketToAllAssociatedPlayers(entity, packet);
 	}
 	
 }

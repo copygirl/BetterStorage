@@ -258,21 +258,7 @@ public class BackpackHandler implements IPlayerTracker {
 			
 			return;
 			
-		} else backpackData = ItemBackpack.getBackpackData(entity);
-		
-		// Update equipped backpack animation.
-		backpackData.prevLidAngle = backpackData.lidAngle;
-		float lidSpeed = 0.2F;
-		if (ItemBackpack.isBackpackOpen(entity))
-			backpackData.lidAngle = Math.min(1.0F, backpackData.lidAngle + lidSpeed);
-		else backpackData.lidAngle = Math.max(0.0F, backpackData.lidAngle - lidSpeed);
-		
-		// Play sound when equipped backpack opens / closes.
-		String sound = Block.soundSnowFootstep.getStepSound();
-		if ((backpackData.lidAngle > 0.0F) && (backpackData.prevLidAngle <= 0.0F))
-			entity.worldObj.playSoundEffect(entity.posX, entity.posY, entity.posZ, sound, 1.0F, 0.5F);
-		if ((backpackData.lidAngle < 0.2F) && (backpackData.prevLidAngle >= 0.2F))
-			entity.worldObj.playSoundEffect(entity.posX, entity.posY, entity.posZ, sound, 0.8F, 0.3F);
+		} else ItemBackpack.getBackpackData(entity).update(entity);
 		
 	}
 	
@@ -360,17 +346,26 @@ public class BackpackHandler implements IPlayerTracker {
 	@ForgeSubscribe
 	public void onEntityJoinWorldEvent(EntityJoinWorldEvent event) {
 		
-		// If an ender backpack ever drops as an item,
-		// instead teleport it somewhere as a block.
-		
-		if (!(event.entity instanceof EntityItem)) return;
-		EntityItem entity = (EntityItem)event.entity;
-		ItemStack stack = entity.getDataWatcher().getWatchableObjectItemStack(10);
-		if ((stack == null) || !(stack.getItem() instanceof ItemEnderBackpack)) return;
-		event.setCanceled(true);
-		for (int i = 0; i < 64; i++)
-			if (BlockEnderBackpack.teleportRandomly(entity.worldObj, entity.posX, entity.posY, entity.posZ, (i > 48), stack))
-				break;
+		if (event.world.isRemote) {
+			// When an entity spawns for the client, let the server
+			// know about it, so it can sent any data of the entity.
+			
+			if (!(event.entity instanceof EntityLivingBase)) return;
+			Packet packet = PacketHandler.makePacket(PacketHandler.clientSpawn, event.entity.entityId);
+			PacketDispatcher.sendPacketToServer(packet);
+		} else {
+			// If an ender backpack ever drops as an item,
+			// instead teleport it somewhere as a block.
+			
+			if (!(event.entity instanceof EntityItem)) return;
+			EntityItem entity = (EntityItem)event.entity;
+			ItemStack stack = entity.getDataWatcher().getWatchableObjectItemStack(10);
+			if ((stack == null) || !(stack.getItem() instanceof ItemEnderBackpack)) return;
+			event.setCanceled(true);
+			for (int i = 0; i < 64; i++)
+				if (BlockEnderBackpack.teleportRandomly(entity.worldObj, entity.posX, entity.posY, entity.posZ, (i > 48), stack))
+					break;
+		}
 		
 	}
 	

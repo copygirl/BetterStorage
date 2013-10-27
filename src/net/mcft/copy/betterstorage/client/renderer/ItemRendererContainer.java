@@ -1,12 +1,13 @@
 package net.mcft.copy.betterstorage.client.renderer;
 
-import org.lwjgl.opengl.GL11;
-
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityContainer;
 import net.mcft.copy.betterstorage.proxy.ClientProxy;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
+
+import org.lwjgl.opengl.GL11;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

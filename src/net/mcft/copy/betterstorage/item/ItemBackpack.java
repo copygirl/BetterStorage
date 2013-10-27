@@ -272,7 +272,6 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 	public static PropertiesBackpack getBackpackData(EntityLivingBase entity) {
 		PropertiesBackpack backpackData = EntityUtils.getOrCreateProperties(entity, PropertiesBackpack.class);
 		if (!backpackData.initialized) {
-			ItemBackpack.initBackpackOpen(entity);
 			updateHasItems(entity, backpackData);
 			backpackData.initialized = true;
 		}
@@ -289,14 +288,8 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 		backpackData.hasItems = hasItems;
 	}
 	
-	public static void initBackpackOpen(EntityLivingBase entity) {
-		entity.getDataWatcher().addObject(Config.backpackOpenDataWatcherId, (byte)0);
-	}
-	public static void setBackpackOpen(EntityLivingBase entity, boolean isOpen) {
-		entity.getDataWatcher().updateObject(Config.backpackOpenDataWatcherId, (byte)(isOpen ? 1 : 0));
-	}
 	public static boolean isBackpackOpen(EntityLivingBase entity) {
-		return (entity.getDataWatcher().getWatchableObjectByte(Config.backpackOpenDataWatcherId) != 0);
+		return (getBackpackData(entity).playersUsing > 0);
 	}
 	
 	/** Opens the carrier's equipped backpack for the player.

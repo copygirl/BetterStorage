@@ -1,11 +1,18 @@
 package net.mcft.copy.betterstorage.misc;
 
+import net.mcft.copy.betterstorage.misc.handlers.PacketHandler;
 import net.mcft.copy.betterstorage.utils.NbtUtils;
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
+import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.common.network.Player;
 
 public class PropertiesBackpack implements IExtendedEntityProperties {
 	
@@ -19,7 +26,8 @@ public class PropertiesBackpack implements IExtendedEntityProperties {
 	 *  spawn with a backpack that contains some items. */
 	public boolean spawnsWithBackpack = false;
 	
-	/** How many players are using the backpack (server only). */
+	/** How many players are using the backpack.
+	 *  On the client this is either 0 or 1. */
 	public int playersUsing = 0;
 	/** If the backpack contains any items (wearer only),
 	 *  because the client doesn't have the contents. */
@@ -27,6 +35,8 @@ public class PropertiesBackpack implements IExtendedEntityProperties {
 	
 	public float lidAngle = 0;
 	public float prevLidAngle = 0;
+	
+	private int prevPlayersUsing = 0;
 	
 	@Override
 	public void init(Entity entity, World world) {  }
@@ -46,6 +56,45 @@ public class PropertiesBackpack implements IExtendedEntityProperties {
 		NBTTagCompound backpack = compound.getCompoundTag("Backpack");
 		contents = new ItemStack[backpack.getInteger("count")];
 		NbtUtils.readItems(contents, backpack.getTagList("Items"));
+	}
+	
+	public void update(EntityLivingBase entity) {
+		
+		// Update equipped backpack animation.
+		prevLidAngle = lidAngle;
+		float lidSpeed = 0.2F;
+		if (playersUsing > 0)
+			lidAngle = Math.min(1.0F, lidAngle + lidSpeed);
+		else lidAngle = Math.max(0.0F, lidAngle - lidSpeed);
+		
+		if (!entity.worldObj.isRemote) {
+			
+			// Play sound when equipped backpack opens / closes.
+			String sound = Block.soundSnowFootstep.getStepSound();
+			if ((lidAngle > 0.0F) && (prevLidAngle <= 0.0F))
+				entity.worldObj.playSoundEffect(entity.posX, entity.posY, entity.posZ, sound, 1.0F, 0.6F);
+			if ((lidAngle < 0.2F) && (prevLidAngle >= 0.2F))
+				entity.worldObj.playSoundEffect(entity.posX, entity.posY, entity.posZ, sound, 0.8F, 0.4F);
+			
+			boolean isOpen = (playersUsing > 0);
+			if (isOpen != (prevPlayersUsing > 0)) {
+				Packet packet = PacketHandler.makePacket(PacketHandler.backpackIsOpen, entity.entityId, isOpen);
+				PacketHandler.sendToEveryoneTracking(entity, packet);
+			}
+			prevPlayersUsing = playersUsing;
+			
+		}
+		
+	}
+	
+	public void sendDataToPlayer(EntityLivingBase entity, EntityPlayer player) {
+		// Called when the players sends a packet informing
+		// the server that an entity has spawned.
+		// Sends any backpack data to the player.
+		if (playersUsing > 0) {
+			Packet packet = PacketHandler.makePacket(PacketHandler.backpackIsOpen, entity.entityId, true);
+			PacketDispatcher.sendPacketToPlayer(packet, (Player)player);
+		}
 	}
 	
 }
