@@ -11,7 +11,6 @@ import net.mcft.copy.betterstorage.item.EnchantmentBetterStorage;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.misc.CreativeTabBetterStorage;
 import net.mcft.copy.betterstorage.misc.DungeonLoot;
-import net.mcft.copy.betterstorage.misc.Localizations;
 import net.mcft.copy.betterstorage.misc.Recipes;
 import net.mcft.copy.betterstorage.misc.handlers.CraftingHandler;
 import net.mcft.copy.betterstorage.misc.handlers.PacketHandler;
@@ -72,8 +71,6 @@ public class BetterStorage {
 		proxy.initialize();
 		
 		GameRegistry.registerCraftingHandler(new CraftingHandler());
-		
-		Localizations.load();
 		
 	}
 	
