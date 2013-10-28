@@ -50,14 +50,20 @@ public final class DyeUtils {
 		return (getDyeColor(stack) >= 0);
 	}
 	
-	/** Returns the combined color of all the dyes. */
-	public static int getColorFromDyes(Collection<ItemStack> dyes) {
+	/** Returns the combined color of all the dyes and the base color. */
+	public static int getColorFromDyes(int color, Collection<ItemStack> dyes) {
 		int number = dyes.size();
 		if (number < 1) return -1;
 		int r = 0, g = 0, b = 0;
+		if (color >= 0) {
+			r = (color >> 16);
+			g = ((color >> 8) & 0xFF);
+			b = (color & 0xFF);
+			number++;
+		}
 		for (ItemStack dye : dyes) {
-			int color = getDyeColor(dye);
-			if (color < 0) return -1;
+			color = getDyeColor(dye);
+			if (color < 0) continue;
 			r += (color >> 16);
 			g += ((color >> 8) & 0xFF);
 			b += (color & 0xFF);
@@ -66,6 +72,10 @@ public final class DyeUtils {
 		g /= number;
 		b /= number;
 		return ((r << 16) | (g << 8) | b);
+	}
+	/** Returns the combined color of all the dyes. */
+	public static int getColorFromDyes(Collection<ItemStack> dyes) {
+		return getColorFromDyes(-1, dyes);
 	}
 	
 	private static void addColorFromTable(String name) {

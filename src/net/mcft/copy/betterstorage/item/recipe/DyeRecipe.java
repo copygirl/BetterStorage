@@ -64,7 +64,7 @@ public class DyeRecipe implements IRecipe {
 			else return null;
 		}
 		if (dyes.isEmpty()) return null;
-		StackUtils.set(armor, DyeUtils.getColorFromDyes(dyes), tags);
+		StackUtils.set(armor, DyeUtils.getColorFromDyes(StackUtils.get(armor, -1, tags), dyes), tags);
 		return armor;
 	}
 	
