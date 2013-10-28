@@ -27,7 +27,8 @@ public abstract class TileEntityContainer extends TileEntity {
 	private int ticksSinceSync = 0;
 	
 	protected boolean brokenInCreative = false;
-	
+
+	public int ticksExisted = 0;
 	public float lidAngle = 0;
 	public float prevLidAngle = 0;
 	
@@ -140,7 +141,7 @@ public abstract class TileEntityContainer extends TileEntity {
 	 *  Sets things like the material taken from the stack. <br>
 	 *  Only gets called if an ItemRendererContainer is registered.*/
 	@SideOnly(Side.CLIENT)
-	public void onBlockRenderInInventory(ItemStack stack) {  }
+	public void onBlockRenderAsItem(ItemStack stack) {  }
 	
 	// Players using synchronization
 	
@@ -175,6 +176,8 @@ public abstract class TileEntityContainer extends TileEntity {
 	
 	@Override
 	public void updateEntity() {
+		ticksExisted++;
+		
 		if (!worldObj.isRemote && syncPlayersUsing())
 			playersUsing = WorldUtils.syncPlayersUsing(this, ++ticksSinceSync, playersUsing);
 		

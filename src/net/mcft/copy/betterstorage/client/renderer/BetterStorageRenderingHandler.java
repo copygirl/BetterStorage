@@ -1,6 +1,8 @@
 package net.mcft.copy.betterstorage.client.renderer;
 
+import net.mcft.copy.betterstorage.block.tileentity.TileEntityContainer;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -47,6 +49,9 @@ public class BetterStorageRenderingHandler implements ISimpleBlockRenderingHandl
 	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
 		tileEntity.blockType = block;
 		tileEntity.blockMetadata = metadata;
+		if (tileEntity instanceof TileEntityContainer)
+			((TileEntityContainer)tileEntity).ticksExisted =
+				Minecraft.getMinecraft().thePlayer.ticksExisted;
 		GL11.glTranslatef(0, yOffset, 0);
 		GL11.glRotatef(rotation, 0.0F, 1.0F, 0.0F);
 		GL11.glScalef(scale, scale, scale);

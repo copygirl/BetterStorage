@@ -32,7 +32,7 @@ public class ItemRendererContainer implements IItemRenderer {
 	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
 		if (renderingHandler == null)
 			renderingHandler = ClientProxy.renderingHandlers.get(tileEntityClass);
-		((TileEntityContainer)renderingHandler.tileEntity).onBlockRenderInInventory(item);
+		((TileEntityContainer)renderingHandler.tileEntity).onBlockRenderAsItem(item);
 		GL11.glPushMatrix();
 		if ((type == ItemRenderType.EQUIPPED) ||
 		    (type == ItemRenderType.EQUIPPED_FIRST_PERSON))

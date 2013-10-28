@@ -118,8 +118,8 @@ public abstract class TileEntityLockable extends TileEntityConnectable
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void onBlockRenderInInventory(ItemStack stack) {
-		super.onBlockRenderInInventory(stack);
+	public void onBlockRenderAsItem(ItemStack stack) {
+		super.onBlockRenderAsItem(stack);
 		if (canHaveMaterial())
 			material = ContainerMaterial.getMaterial(stack, ContainerMaterial.iron);
 	}

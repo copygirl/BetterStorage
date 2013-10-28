@@ -82,7 +82,7 @@ public class TileEntityBackpack extends TileEntityContainer {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void onBlockRenderInInventory(ItemStack stack) { this.stack = stack; }
+	public void onBlockRenderAsItem(ItemStack stack) { this.stack = stack; }
 	
 	// Update entity
 	

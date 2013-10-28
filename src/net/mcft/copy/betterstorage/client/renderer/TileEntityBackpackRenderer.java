@@ -5,6 +5,7 @@ import net.mcft.copy.betterstorage.client.model.ModelBackpack;
 import net.mcft.copy.betterstorage.utils.DirectionUtils;
 import net.mcft.copy.betterstorage.utils.RenderUtils;
 import net.minecraft.client.renderer.entity.RenderBiped;
+import net.minecraft.client.renderer.entity.RendererLivingEntity;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -22,7 +23,7 @@ public class TileEntityBackpackRenderer extends TileEntitySpecialRenderer {
 	
 	private final ModelBackpack backpackModel = new ModelBackpack();
 	
-	public void renderTileEntityAt(TileEntityBackpack backpack, double x, double y, double z, float par8) {
+	public void renderTileEntityAt(TileEntityBackpack backpack, double x, double y, double z, float partialTicks) {
 		
 		if ((backpack.worldObj == null) && (backpack.blockType == null)) return;
 		Item item = Item.itemsList[backpack.getBlockType().blockID];
@@ -31,13 +32,13 @@ public class TileEntityBackpackRenderer extends TileEntitySpecialRenderer {
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		GL11.glTranslated(x, y + 2.0, z + 1.0);
 		GL11.glScalef(1.0F, -1.0F, -1.0F);
-		GL11.glTranslated(0.5F, 0.5F, 0.5F);
+		GL11.glTranslated(0.5, 0.5, 0.5);
 		
 		ForgeDirection orientation = ForgeDirection.getOrientation(backpack.getBlockMetadata());
 		int rotation = DirectionUtils.getRotation(orientation);
 		GL11.glRotatef(rotation, 0.0F, 1.0F, 0.0F);
 		
-		float angle = backpack.prevLidAngle + (backpack.lidAngle - backpack.prevLidAngle) * par8;
+		float angle = backpack.prevLidAngle + (backpack.lidAngle - backpack.prevLidAngle) * partialTicks;
 		angle = 1.0F - angle;
 		angle = 1.0F - angle * angle;
 		backpackModel.setLidRotation((float)(angle * Math.PI / 4.0));
@@ -49,6 +50,41 @@ public class TileEntityBackpackRenderer extends TileEntitySpecialRenderer {
 			bindTexture(RenderBiped.getArmorResource(null, stack, 0, type));
             RenderUtils.setColorFromInt(item.getColorFromItemStack(stack, pass));
 			backpackModel.renderAll();
+		}
+		
+		if ((backpack.stack != null) &&
+		    (backpack.stack.isItemEnchanted())) {
+			float f9 = (backpack.ticksExisted + partialTicks) / 3;
+			bindTexture(RendererLivingEntity.RES_ITEM_GLINT);
+			GL11.glEnable(GL11.GL_BLEND);
+			GL11.glColor4f(0.5F, 0.5F, 0.5F, 1.0F);
+			GL11.glDepthMask(false);
+			GL11.glPolygonOffset(-1.0F, -1.0F);
+			GL11.glEnable(GL11.GL_POLYGON_OFFSET_FILL);
+			for (int k = 0; k < 2; ++k) {
+				GL11.glDisable(GL11.GL_LIGHTING);
+				float f11 = 0.65F;
+				GL11.glColor4f(0.5F * f11, 0.25F * f11, 0.8F * f11, 1.0F);
+				GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE);
+				GL11.glMatrixMode(GL11.GL_TEXTURE);
+				GL11.glLoadIdentity();
+				float f12 = f9 * (0.001F + k * 0.003F) * 20.0F;
+				float f13 = 0.33333334F;
+				GL11.glScalef(f13, f13, f13);
+				GL11.glRotatef(30.0F - k * 60.0F, 0.0F, 0.0F, 1.0F);
+				GL11.glTranslatef(0.0F, f12, 0.0F);
+				GL11.glMatrixMode(GL11.GL_MODELVIEW);
+				backpackModel.renderAll();
+			}
+			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+			GL11.glMatrixMode(GL11.GL_TEXTURE);
+			GL11.glDisable(GL11.GL_POLYGON_OFFSET_FILL);
+			GL11.glPolygonOffset(0.0F, 0.0F);
+			GL11.glDepthMask(true);
+			GL11.glLoadIdentity();
+			GL11.glMatrixMode(GL11.GL_MODELVIEW);
+			GL11.glEnable(GL11.GL_LIGHTING);
+			GL11.glDisable(GL11.GL_BLEND);
 		}
 		
 		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
