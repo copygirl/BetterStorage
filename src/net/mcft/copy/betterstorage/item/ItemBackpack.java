@@ -292,7 +292,6 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 		boolean hasItems = ((backpackData.contents != null) && !StackUtils.isEmpty(backpackData.contents));
 		if (backpackData.hasItems == hasItems) return;
 		Packet packet = PacketHandler.makePacket(PacketHandler.backpackHasItems, hasItems);
-		System.out.println("sending update items");
 		PacketDispatcher.sendPacketToPlayer(packet, (Player)player);
 		backpackData.hasItems = hasItems;
 	}
