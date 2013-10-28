@@ -53,6 +53,7 @@ public final class Config {
 	public static boolean enableBackpackOpen = false;
 	public static boolean dropBackpackOnDeath = true;
 	public static boolean enableHelpTooltips = true;
+	public static boolean backpackChestplate = true;
 	
 	public static int backpackOpenKey = 48;
 	public static int drinkingHelmetKey = 33;
@@ -122,6 +123,9 @@ public final class Config {
 		
 		enableHelpTooltips = config.get(categorySettings, "enableHelpTooltips", enableHelpTooltips,
 		                                "If enabled, shows tooltips on some items to help players who're new to the mod.").getBoolean(enableHelpTooltips);
+		
+		backpackChestplate = config.get(categorySettings, "backpackChestplate", backpackChestplate,
+		                                "If false, backpacks don't take up the player's chestplate armor slot.").getBoolean(backpackChestplate);
 		
 		validate();
 		

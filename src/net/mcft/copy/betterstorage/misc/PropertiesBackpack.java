@@ -18,6 +18,7 @@ public class PropertiesBackpack implements IExtendedEntityProperties {
 	
 	public static final String identifier = Constants.modId + ".backpack";
 	
+	public ItemStack backpack = null;
 	public ItemStack[] contents = null;
 	
 	/** If the backpack has been initialized for the entity yet. */
@@ -36,6 +37,7 @@ public class PropertiesBackpack implements IExtendedEntityProperties {
 	public float lidAngle = 0;
 	public float prevLidAngle = 0;
 	
+	private ItemStack prevBackpack = null;
 	private int prevPlayersUsing = 0;
 	
 	@Override
@@ -44,18 +46,21 @@ public class PropertiesBackpack implements IExtendedEntityProperties {
 	@Override
 	public void saveNBTData(NBTTagCompound compound) {
 		if (contents == null) return;
-		NBTTagCompound backpack = new NBTTagCompound();
-		backpack.setInteger("count", contents.length);
-		backpack.setTag("Items", NbtUtils.writeItems(contents));
-		compound.setTag("Backpack", backpack);
+		NBTTagCompound backpackCompound = new NBTTagCompound();
+		backpackCompound.setInteger("count", contents.length);
+		backpackCompound.setTag("Items", NbtUtils.writeItems(contents));
+		if (backpack != null)
+			backpackCompound.setCompoundTag("Stack", backpack.writeToNBT(new NBTTagCompound()));
+		compound.setTag("Backpack", backpackCompound);
 	}
 	
 	@Override
 	public void loadNBTData(NBTTagCompound compound) {
 		if (!compound.hasKey("Backpack")) return;
-		NBTTagCompound backpack = compound.getCompoundTag("Backpack");
-		contents = new ItemStack[backpack.getInteger("count")];
-		NbtUtils.readItems(contents, backpack.getTagList("Items"));
+		NBTTagCompound backpackCompound = compound.getCompoundTag("Backpack");
+		contents = new ItemStack[backpackCompound.getInteger("count")];
+		NbtUtils.readItems(contents, backpackCompound.getTagList("Items"));
+		backpack = ItemStack.loadItemStackFromNBT(backpackCompound.getCompoundTag("Stack"));
 	}
 	
 	public void update(EntityLivingBase entity) {
@@ -80,8 +85,13 @@ public class PropertiesBackpack implements IExtendedEntityProperties {
 			if (isOpen != (prevPlayersUsing > 0)) {
 				Packet packet = PacketHandler.makePacket(PacketHandler.backpackIsOpen, entity.entityId, isOpen);
 				PacketHandler.sendToEveryoneTracking(entity, packet);
+				prevPlayersUsing = playersUsing;
 			}
-			prevPlayersUsing = playersUsing;
+			if (!ItemStack.areItemStacksEqual(backpack, prevBackpack)) {
+				Packet packet = PacketHandler.makePacket(PacketHandler.backpackStack, entity.entityId, backpack);
+				PacketHandler.sendToEveryoneTracking(entity, packet);
+				prevBackpack = ItemStack.copyItemStack(backpack);
+			}
 			
 		}
 		
@@ -93,6 +103,10 @@ public class PropertiesBackpack implements IExtendedEntityProperties {
 		// Sends any backpack data to the player.
 		if (playersUsing > 0) {
 			Packet packet = PacketHandler.makePacket(PacketHandler.backpackIsOpen, entity.entityId, true);
+			PacketDispatcher.sendPacketToPlayer(packet, (Player)player);
+		}
+		if (backpack != null) {
+			Packet packet = PacketHandler.makePacket(PacketHandler.backpackStack, entity.entityId, backpack);
 			PacketDispatcher.sendPacketToPlayer(packet, (Player)player);
 		}
 	}

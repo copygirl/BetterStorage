@@ -256,9 +256,9 @@ public class BackpackHandler implements IPlayerTracker {
 				
 			}
 			
-			return;
-			
-		} else ItemBackpack.getBackpackData(entity).update(entity);
+		}
+		
+		ItemBackpack.getBackpackData(entity).update(entity);
 		
 	}
 	

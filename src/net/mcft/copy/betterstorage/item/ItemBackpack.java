@@ -243,18 +243,26 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 	
 	public static ItemStack getBackpack(EntityLivingBase entity) {
 		ItemStack backpack = entity.getCurrentItemOrArmor(CurrentItem.CHEST);
-		if ((backpack != null) &&
-		    (backpack.getItem() instanceof ItemBackpack)) return backpack;
-		else return null;
+		if ((backpack != null) && (backpack.getItem() instanceof ItemBackpack)) return backpack;
+		return getBackpackData(entity).backpack;
 	}
 	public static void setBackpack(EntityLivingBase entity, ItemStack backpack, ItemStack[] contents) {
-		entity.setCurrentItemOrArmor(3, backpack);
+		boolean setChestplate = (Config.backpackChestplate || !(entity instanceof EntityPlayer) ||
+		                         hasChestplateBackpackEquipped(entity));
 		PropertiesBackpack backpackData = getBackpackData(entity);
+		if (!setChestplate) backpackData.backpack = backpack;
+		else entity.setCurrentItemOrArmor(CurrentItem.CHEST, backpack);
 		backpackData.contents = contents;
 		ItemBackpack.updateHasItems(entity, backpackData);
 	}
-	public static void removeBackpack(EntityLivingBase entity) {
-		setBackpack(entity, null, null);
+	public static boolean hasChestplateBackpackEquipped(EntityLivingBase entity) {
+		ItemStack backpack = getBackpack(entity);
+		return ((backpack != null) ? (backpack == entity.getCurrentItemOrArmor(CurrentItem.CHEST)) : false);
+	}
+	public static boolean canEquipBackpack(EntityPlayer player) {
+		return ((getBackpack(player) == null) &&
+		        !(Config.backpackChestplate &&
+		          (player.getCurrentItemOrArmor(CurrentItem.CHEST) != null)));
 	}
 	
 	public static IInventory getBackpackItems(EntityLivingBase carrier, EntityPlayer player) {
@@ -284,6 +292,7 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 		boolean hasItems = ((backpackData.contents != null) && !StackUtils.isEmpty(backpackData.contents));
 		if (backpackData.hasItems == hasItems) return;
 		Packet packet = PacketHandler.makePacket(PacketHandler.backpackHasItems, hasItems);
+		System.out.println("sending update items");
 		PacketDispatcher.sendPacketToPlayer(packet, (Player)player);
 		backpackData.hasItems = hasItems;
 	}
@@ -323,20 +332,26 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 		ItemStack backpack = ItemBackpack.getBackpack(player);
 		if (backpack == null) return false;
 		
+		boolean hasChestplateBackpack = hasChestplateBackpackEquipped(player);
+		boolean success = false;
 		if (!ItemBackpack.isBackpackOpen(player)) {
 			// Try to place the backpack as if it was being held and used by the player.
-			backpack.getItem().onItemUse(backpack, player, player.worldObj, x, y, z, side, 0, 0, 0);
-			if (backpack.stackSize <= 0) backpack = null;
+			success = backpack.getItem().onItemUse(backpack, player, player.worldObj, x, y, z, side, 0, 0, 0);
+			if (backpack.stackSize <= 0) {
+				if (hasChestplateBackpack)
+					player.setCurrentItemOrArmor(CurrentItem.CHEST, null);
+				else getBackpackData(player).backpack = null;
+				backpack = null;
+			}
 		}
-		
-		// Send set slot packet to for the chest slot to make
-		// sure the client has the same information as the server.
-		// This is especially important when there's a large delay, the
-		// client might think it placed the backpack, but server didn't.
+
+		// Make sure the client has the same information as the server.
 		if (!player.worldObj.isRemote)
-			PacketDispatcher.sendPacketToPlayer(new Packet103SetSlot(0, 6, backpack), (Player)player);
+			PacketDispatcher.sendPacketToPlayer((hasChestplateBackpack
+						? new Packet103SetSlot(0, 6, backpack)
+						: PacketHandler.makePacket(PacketHandler.backpackStack, player.entityId, backpack)
+					), (Player)player);
 		
-		boolean success = (backpack == null);
 		if (success) player.swingItem();
 		return success;
 		
@@ -369,6 +384,9 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 		
 		// Return false if there's an entity blocking the placement.
 		if (!world.canPlaceEntityOnSide(blockBackpack.blockID, x, y, z, false, side, carrier, backpack)) return false;
+		
+		// Do not actually place the backpack on the client.
+		if (world.isRemote) return true;
 		
 		// Actually place the block in the world,
 		// play place sound and decrease stack size if successful.

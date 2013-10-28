@@ -3,6 +3,7 @@ package net.mcft.copy.betterstorage.block.tileentity;
 import net.mcft.copy.betterstorage.Config;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.misc.Constants;
+import net.mcft.copy.betterstorage.misc.PropertiesBackpack;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
@@ -35,13 +36,14 @@ public class TileEntityBackpack extends TileEntityContainer {
 	}
 	
 	public void unequip(EntityLivingBase carrier, boolean despawn) {
-		if (!worldObj.isRemote) {
-			// Move items from the player backpack data to this tile entity.
-			ItemStack[] items = ItemBackpack.getBackpackData(carrier).contents;
-			if (items != null) System.arraycopy(items, 0, contents, 0, items.length);
-			if (despawn) despawnTime = 0;
+		if (worldObj.isRemote) return;
+		// Move items from the player backpack data to this tile entity.
+		PropertiesBackpack backpackData = ItemBackpack.getBackpackData(carrier);
+		if (backpackData.contents != null) {
+			System.arraycopy(backpackData.contents, 0, contents, 0, backpackData.contents.length);
+			backpackData.contents = null;
 		}
-		ItemBackpack.removeBackpack(carrier);
+		if (despawn) despawnTime = 0;
 	}
 	
 	// TileEntityContainer stuff
@@ -56,7 +58,8 @@ public class TileEntityBackpack extends TileEntityContainer {
 		// This currently only runs on the server. Would be nice if it worked on
 		// the client, but if the client thinks e's equipped the backpack, and it's
 		// already gone on the server e doesn't have a way to tell the client.
-		if (!worldObj.isRemote && player.isSneaking() && (player.getCurrentArmor(2) == null))
+		if (!worldObj.isRemote && player.isSneaking() &&
+		    ItemBackpack.canEquipBackpack(player))
 			equip(player);
 		return super.onBlockBreak(player);
 	}

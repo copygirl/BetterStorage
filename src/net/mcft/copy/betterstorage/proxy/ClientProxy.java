@@ -13,6 +13,7 @@ import net.mcft.copy.betterstorage.block.tileentity.TileEntityBackpack;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityLocker;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityReinforcedChest;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityReinforcedLocker;
+import net.mcft.copy.betterstorage.client.model.ModelBackpackArmor;
 import net.mcft.copy.betterstorage.client.renderer.BetterStorageRenderingHandler;
 import net.mcft.copy.betterstorage.client.renderer.ItemRendererBackpack;
 import net.mcft.copy.betterstorage.client.renderer.ItemRendererContainer;
@@ -26,9 +27,11 @@ import net.mcft.copy.betterstorage.entity.EntityFrienderman;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.misc.handlers.KeyBindingHandler;
 import net.mcft.copy.betterstorage.utils.MiscUtils;
+import net.mcft.copy.betterstorage.utils.RenderUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.entity.RendererLivingEntity;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -36,6 +39,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumMovingObjectType;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderer;
@@ -225,9 +229,62 @@ public class ClientProxy extends CommonProxy {
 	
 	@ForgeSubscribe
 	public void onRenderPlayerSpecialsPre(RenderPlayerEvent.Specials.Pre event) {
-		// If the player has a backpack equipped, don't render the cape.
-		if (ItemBackpack.getBackpack(event.entityPlayer) != null)
-			event.renderCape = false;
+		ItemStack backpack = ItemBackpack.getBackpackData(event.entityPlayer).backpack;
+		if (backpack != null) {
+
+			EntityPlayer player = event.entityPlayer;
+			float partial = event.partialRenderTick;
+			ItemBackpack backpackType = (ItemBackpack)backpack.getItem();
+			int color = backpackType.getColor(backpack);
+			ModelBackpackArmor model = ModelBackpackArmor.instance;
+			
+			model.onGround = event.renderer.renderSwingProgress(player, partial);
+			model.setLivingAnimations(player, 0, 0, partial);
+			
+			event.renderer.bindTexture(new ResourceLocation(backpackType.getArmorTexture(backpack, player, 0, null)));
+			RenderUtils.setColorFromInt((color >= 0) ? color : 0xFFFFFF);
+			model.render(player, 0, 0, 0, 0, 0, 0);
+			
+			if (color >= 0) {
+				event.renderer.bindTexture(new ResourceLocation(backpackType.getArmorTexture(backpack, player, 0, "overlay")));
+				GL11.glColor3f(1.0F, 1.0F, 1.0F);
+				model.render(player, 0, 0, 0, 0, 0, 0);
+			}
+			
+			if (backpack.isItemEnchanted()) {
+				float f9 = player.ticksExisted + partial;
+				event.renderer.bindTexture(RendererLivingEntity.RES_ITEM_GLINT);
+				GL11.glEnable(GL11.GL_BLEND);
+				GL11.glColor4f(0.5F, 0.5F, 0.5F, 1.0F);
+				GL11.glDepthFunc(GL11.GL_EQUAL);
+				GL11.glDepthMask(false);
+				for (int k = 0; k < 2; ++k) {
+					GL11.glDisable(GL11.GL_LIGHTING);
+					float f11 = 0.76F;
+					GL11.glColor4f(0.5F * f11, 0.25F * f11, 0.8F * f11, 1.0F);
+					GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE);
+					GL11.glMatrixMode(GL11.GL_TEXTURE);
+					GL11.glLoadIdentity();
+					float f12 = f9 * (0.001F + k * 0.003F) * 20.0F;
+					float f13 = 0.33333334F;
+					GL11.glScalef(f13, f13, f13);
+					GL11.glRotatef(30.0F - k * 60.0F, 0.0F, 0.0F, 1.0F);
+					GL11.glTranslatef(0.0F, f12, 0.0F);
+					GL11.glMatrixMode(GL11.GL_MODELVIEW);
+					model.render(player, 0, 0, 0, 0, 0, 0);
+				}
+				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+				GL11.glMatrixMode(GL11.GL_TEXTURE);
+				GL11.glDepthMask(true);
+				GL11.glLoadIdentity();
+				GL11.glMatrixMode(GL11.GL_MODELVIEW);
+				GL11.glEnable(GL11.GL_LIGHTING);
+				GL11.glDisable(GL11.GL_BLEND);
+				GL11.glDepthFunc(GL11.GL_LEQUAL);
+			}
+			
+		} else backpack = ItemBackpack.getBackpack(event.entityPlayer);
+		if (backpack != null) event.renderCape = false;
 	}
 	
 }

@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
@@ -33,7 +34,10 @@ public class SlotArmorBackpack extends Slot {
 	public boolean isItemValid(ItemStack stack) {
 		if (stack == null) return false;
 		EntityPlayer player = ((InventoryPlayer)inventory).player;
-		return stack.getItem().isValidArmor(stack, armorType, player);
+		Item item = stack.getItem();
+		if ((item instanceof ItemBackpack) &&
+		    !ItemBackpack.canEquipBackpack(player)) return false;
+		return item.isValidArmor(stack, armorType, player);
 	}
 	
 	@Override

@@ -18,6 +18,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
@@ -41,6 +44,7 @@ public class PacketHandler implements IPacketHandler {
 	public static final byte lockHit = 6;
 	public static final byte clientSpawn = 7;
 	public static final byte backpackIsOpen = 8;
+	public static final byte backpackStack = 9;
 	
 	public static Packet makePacket(Object... args) {
 		ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
@@ -59,7 +63,16 @@ public class PacketHandler implements IPacketHandler {
 			else if (object instanceof String) stream.writeUTF((String)object);
 			else if (object instanceof Boolean) stream.writeBoolean((Boolean)object);
 			else if (object instanceof byte[]) stream.write((byte[])object);
+			else if (object instanceof ItemStack) writeItemStack(stream, (ItemStack)object);
+			else if (object == null) NBTBase.writeNamedTag(new NBTTagCompound(), stream);
 		} catch (Exception e) { throw new RuntimeException(e); }
+	}
+	
+	public static void writeItemStack(DataOutputStream stream, ItemStack stack) throws IOException {
+		NBTBase.writeNamedTag(stack.writeToNBT(new NBTTagCompound()), stream);
+	}
+	public static ItemStack readItemStack(DataInputStream stream) throws IOException {
+		return ItemStack.loadItemStackFromNBT((NBTTagCompound)NBTBase.readNamedTag(stream));
 	}
 	
 	@Override
@@ -105,6 +118,10 @@ public class PacketHandler implements IPacketHandler {
 				case backpackIsOpen:
 					checkSide(id, side, Side.CLIENT);
 					handleBackpackIsOpen(player, stream);
+					break;
+				case backpackStack:
+					checkSide(id, side, Side.CLIENT);
+					handleBackpackStack(player, stream);
 					break;
 				default:
 					throw new Exception("Received " + Constants.modName + " packet for unhandled ID " + id + " on side " + side + ".");
@@ -189,7 +206,7 @@ public class PacketHandler implements IPacketHandler {
 		if ((entity == null) || !(entity instanceof EntityLivingBase)) return;
 		ItemBackpack.getBackpackData((EntityLivingBase)entity).sendDataToPlayer((EntityLivingBase)entity, player);
 	}
-
+	
 	@SideOnly(Side.CLIENT)
 	private void handleBackpackIsOpen(EntityPlayer player, DataInputStream stream) throws IOException {
 		int entityID = stream.readInt();
@@ -197,6 +214,15 @@ public class PacketHandler implements IPacketHandler {
 		Entity entity = Minecraft.getMinecraft().theWorld.getEntityByID(entityID);
 		if (entity == null) return;
 		ItemBackpack.getBackpackData((EntityLivingBase)entity).playersUsing = ((isOpen) ? 1 : 0);
+	}
+	
+	@SideOnly(Side.CLIENT)
+	private void handleBackpackStack(EntityPlayer player, DataInputStream stream) throws IOException {
+		int entityID = stream.readInt();
+		ItemStack stack = readItemStack(stream);
+		Entity entity = Minecraft.getMinecraft().theWorld.getEntityByID(entityID);
+		if (entity == null) return;
+		ItemBackpack.getBackpackData((EntityLivingBase)entity).backpack = stack;
 	}
 	
 	/** Sends a packet to everyone near a certain position in the world. */
