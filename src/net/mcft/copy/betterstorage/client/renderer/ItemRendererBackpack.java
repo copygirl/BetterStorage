@@ -23,12 +23,13 @@ public class ItemRendererBackpack extends ItemRendererContainer {
 		boolean equippedFirstPerson = (type == ItemRenderType.EQUIPPED_FIRST_PERSON);
 		boolean equippedThirdPerson = (type == ItemRenderType.EQUIPPED);
 		boolean equipped = (equippedFirstPerson || equippedThirdPerson);
-		if (entity || equippedThirdPerson)
-			GL11.glScalef(1.2F, 1.2F, 1.2F);
 		if (equipped) {
-			GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+			if (equippedThirdPerson) GL11.glTranslatef(1.3F, 0.0F, 1.0F);
+			else GL11.glTranslatef(0.0F, 0.0F, 0.85F);
 			GL11.glRotatef((equippedThirdPerson ? 200.0F : 75.0F), 0.0F, 1.0F, 0.0F);
 		}
+		if (entity || equippedThirdPerson)
+			GL11.glScalef(1.2F, 1.2F, 1.2F);
 		super.renderItem(type, item, data);
 	}
 	
