@@ -1,0 +1,86 @@
+# Containers
+container.betterstorage.backpack=Рюкзак
+container.betterstorage.cardboardBox=Картонная коробка
+container.betterstorage.crate=Ящик для хранения
+container.betterstorage.enderBackpack=Рюкзак Края
+container.betterstorage.keyring=Связка ключей
+container.betterstorage.locker=Шкаф
+container.betterstorage.lockerLarge=Большой шкаф
+container.betterstorage.reinforcedChest=Укреплённый сундук
+container.betterstorage.reinforcedChestLarge=Большой укреплённый сундук
+container.betterstorage.reinforcedLocker=Укреплённый шкаф
+container.betterstorage.reinforcedLockerLarge=Большой укреплённый шкаф
+container.betterstorage.thaumcraftBackpack=Рюкзак тауматурга
+container.betterstorage.thaumiumChest=Таум-сундук
+container.betterstorage.thaumiumChestLarge=Большой таум-сундук
+
+# Enchantments
+enchantment.betterstorage.key.lockpicking=Вскрытие
+enchantment.betterstorage.key.morphing=Морфинг
+enchantment.betterstorage.key.unlocking=Отпирание
+enchantment.betterstorage.lock.persistance=Устойчивость
+enchantment.betterstorage.lock.security=Безопасность
+enchantment.betterstorage.lock.shock=Шок
+enchantment.betterstorage.lock.trigger=Импульс
+
+# Entities
+entity.BetterStorage.Frienderman=Страник Края
+
+# Items
+item.betterstorage.cardboardAxe.name=Картонный топор
+item.betterstorage.cardboardBoots.name=Картонные ботинки
+item.betterstorage.cardboardChestplate.name=Картонный нагрудник
+item.betterstorage.cardboardHelmet.name=Картонный шлем
+item.betterstorage.cardboardHoe.name=Картонная мотыга
+item.betterstorage.cardboardLeggings.name=Картонные поножи
+item.betterstorage.cardboardPickaxe.name=Картонная кирка
+item.betterstorage.cardboardSheet.name=Картонный лист
+item.betterstorage.cardboardShovel.name=Картонная лопата
+item.betterstorage.cardboardSword.name=Картонный меч
+item.betterstorage.drinkingHelmet.name=Питьевой шлем
+item.betterstorage.key.name=Ключ
+item.betterstorage.keyring.name=Связка ключей
+item.betterstorage.lock.name=Замок
+item.betterstorage.masterKey.name=Отмычка
+
+# Creative tab
+itemGroup.betterstorage=BetterStorage
+
+# Container materials
+material.betterstorage.iron=железный
+material.betterstorage.gold=золотой
+material.betterstorage.diamond=алмазный
+material.betterstorage.emerald=изумрудный
+material.betterstorage.copper=медный
+material.betterstorage.tin=оловянный
+material.betterstorage.silver=серебряный
+material.betterstorage.zinc=цинковый
+
+# Thaumcraft
+tc.research_name.betterstorage.magicstorage=Магическое хранилище
+tc.research_text.betterstorage.magicstorage=зачаровывает ваши контейнеры
+tc.research_page.betterstorage.magicstorage.1=Соединение рюкзака с магией и материалами магической природы увеличит его общую прочность и ёмкость. Благодаря обновлению, оно сможет принимать чары проще, в том числе чар ремонта. Пока рюкзак имеет чар ремонта, предметы внутри его также будут ремонтироваться, медленными темпами.<BR>Нечто подобное можно сделать с укреплённым железным сундуком и кучкой таум-металла, что приведёт к более прочному сундуку, который может хранить больше предметов.
+
+# Blocks
+tile.betterstorage.armorStand.name=Стойка для брони
+tile.betterstorage.backpack.name=Рюкзак
+tile.betterstorage.cardboardBox.name=Картонная коробка
+tile.betterstorage.crate.name=Ящик для хранения
+tile.betterstorage.enderBackpack.name=Рюкзак Края
+tile.betterstorage.locker.name=Шкаф
+tile.betterstorage.reinforcedChest.name=Укреплённый сундук
+tile.betterstorage.reinforcedChest.name.full=Укреплённый %MATERIAL% сундук
+tile.betterstorage.reinforcedLocker.name=Укреплённый шкаф
+tile.betterstorage.reinforcedLocker.name.full=Укреплённый %MATERIAL% шкаф
+tile.betterstorage.thaumcraftBackpack.name=Рюкзак тауматурга
+tile.betterstorage.thaumiumChest.name=Таум-сундук
+
+# Tooltips
+tooltip.betterstorage.backpack.bound=Связанный рюкзак.
+tooltip.betterstorage.backpack.containsItems=Содержит предметы.
+tooltip.betterstorage.backpack.equipHint=Поставьте на пол и ударьте#присев, чтобы одеть.
+tooltip.betterstorage.backpack.openHint=Нажмите %KEY%, чтобы открыть, когда одет.
+tooltip.betterstorage.backpack.unequipHint=%REASON% Присядьте и кликните правой#кнопкой по полу с пустыми руками, чтобы снять.
+tooltip.betterstorage.backpack.used=В настоящее время используется игроком.
+tooltip.betterstorage.drinkingHelmet.useHint=Нажмите %KEY%, чтобы сделать глоток.
+tooltip.betterstorage.drinkingHelmet.uses=Осталось глотков: %USES%

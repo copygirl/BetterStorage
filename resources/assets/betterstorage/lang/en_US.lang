@@ -1,0 +1,86 @@
+# Containers
+container.betterstorage.backpack=Backpack
+container.betterstorage.cardboardBox=Cardboard Box
+container.betterstorage.crate=Storage Crate
+container.betterstorage.enderBackpack=Ender Backpack
+container.betterstorage.keyring=Keyring
+container.betterstorage.locker=Locker
+container.betterstorage.lockerLarge=Large Locker
+container.betterstorage.reinforcedChest=Reinforced Chest
+container.betterstorage.reinforcedChestLarge=Large Reinforced Chest
+container.betterstorage.reinforcedLocker=Reinforced Locker
+container.betterstorage.reinforcedLockerLarge=Large Reinforced Locker
+container.betterstorage.thaumcraftBackpack=Thaumaturge's Backpack
+container.betterstorage.thaumiumChest=Thaumium Chest
+container.betterstorage.thaumiumChestLarge=Large Thaumium Chest
+
+# Enchantments
+enchantment.betterstorage.key.lockpicking=Lockpicking
+enchantment.betterstorage.key.morphing=Morphing
+enchantment.betterstorage.key.unlocking=Unlocking
+enchantment.betterstorage.lock.persistance=Persistance
+enchantment.betterstorage.lock.security=Security
+enchantment.betterstorage.lock.shock=Shock
+enchantment.betterstorage.lock.trigger=Trigger
+
+# Entities
+entity.betterstorage.Frienderman=Enderman
+
+# Items
+item.betterstorage.cardboardAxe.name=Cardboard Axe
+item.betterstorage.cardboardBoots.name=Cardboard Boots
+item.betterstorage.cardboardChestplate.name=Cardboard Chestplate
+item.betterstorage.cardboardHelmet.name=Cardboard Helmet
+item.betterstorage.cardboardHoe.name=Cardboard Hoe
+item.betterstorage.cardboardLeggings.name=Cardboard Leggings
+item.betterstorage.cardboardPickaxe.name=Cardboard Pickaxe
+item.betterstorage.cardboardSheet.name=Cardboard Sheet
+item.betterstorage.cardboardShovel.name=Cardboard Shovel
+item.betterstorage.cardboardSword.name=Cardboard Sword
+item.betterstorage.drinkingHelmet.name=Drinking Helmet
+item.betterstorage.key.name=Key
+item.betterstorage.keyring.name=Keyring
+item.betterstorage.lock.name=Lock
+item.betterstorage.masterKey.name=Master Key
+
+# Creative tab
+itemGroup.betterstorage=BetterStorage
+
+# Container materials
+material.betterstorage.iron=Iron
+material.betterstorage.gold=Gold
+material.betterstorage.diamond=Diamond
+material.betterstorage.emerald=Emerald
+material.betterstorage.copper=Copper
+material.betterstorage.tin=Tin
+material.betterstorage.silver=Silver
+material.betterstorage.zinc=Zinc
+
+# Thaumcraft
+tc.research_name.betterstorage.magicstorage=Magical Storage
+tc.research_text.betterstorage.magicstorage=Enchanting your containers
+tc.research_page.betterstorage.magicstorage.1=Infusing a backpack with magic and materials of magical nature will increase its overall durability and storage capacity. Thanks to the upgrade, it'll be able to accept enchantments more easily, including the repair enchantment. As long as the backpack has the repair enchantment, items inside it will be able to repair as well, at a slower rate.<BR>A similar thing is possible with a reinforced iron chest and a bunch of thaumium, which will result in a more durable chest which can also store more items.
+
+# Blocks
+tile.betterstorage.armorStand.name=Armor Stand
+tile.betterstorage.backpack.name=Backpack
+tile.betterstorage.cardboardBox.name=Cardboard Box
+tile.betterstorage.crate.name=Storage Crate
+tile.betterstorage.enderBackpack.name=Ender Backpack
+tile.betterstorage.locker.name=Locker
+tile.betterstorage.reinforcedChest.name=Reinforced Chest
+tile.betterstorage.reinforcedChest.name.full=Reinforced %MATERIAL% Chest
+tile.betterstorage.reinforcedLocker.name=Reinforced Locker
+tile.betterstorage.reinforcedLocker.name.full=Reinforced %MATERIAL% Locker
+tile.betterstorage.thaumcraftBackpack.name=Thaumaturge's Backpack
+tile.betterstorage.thaumiumChest.name=Thaumium Chest
+
+# Tooltips
+tooltip.betterstorage.backpack.bound=Bound backpack.
+tooltip.betterstorage.backpack.containsItems=Contains Items.
+tooltip.betterstorage.backpack.equipHint=Place down and break#while sneaking to equip.
+tooltip.betterstorage.backpack.openHint=Press %KEY% to open while equipped.
+tooltip.betterstorage.backpack.unequipHint=%REASON% Sneak and right click#ground with empty hand to unequip.
+tooltip.betterstorage.backpack.used=Currently being used by a player.
+tooltip.betterstorage.drinkingHelmet.useHint=Press %KEY% to take a sip.
+tooltip.betterstorage.drinkingHelmet.uses=Remaining uses: %USES%

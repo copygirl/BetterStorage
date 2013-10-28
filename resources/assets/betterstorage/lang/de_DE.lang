@@ -1,0 +1,86 @@
+# Containers
+container.betterstorage.backpack=Rucksack
+container.betterstorage.cardboardBox=Pappkarton
+container.betterstorage.crate=Lagerkiste
+container.betterstorage.enderBackpack=Ender-Rucksack
+container.betterstorage.keyring=Schlüsselbund
+container.betterstorage.locker=Schließfach
+container.betterstorage.lockerLarge=Großes Schließfach
+container.betterstorage.reinforcedChest=Verstärkte Truhe
+container.betterstorage.reinforcedChestLarge=Große Verstärkte Truhe
+container.betterstorage.reinforcedLocker=Verstärktes Schließfach
+container.betterstorage.reinforcedLockerLarge=Großes Verstärktes Schließfach
+container.betterstorage.thaumcraftBackpack=Rucksack des Thaumaturgen
+container.betterstorage.thaumiumChest=Thaumium-Truhe
+container.betterstorage.thaumiumChestLarge=Große Thaumium-Truhe
+
+# Enchantments
+enchantment.betterstorage.key.lockpicking=Schlossknacken
+enchantment.betterstorage.key.morphing=Verwandlung
+enchantment.betterstorage.key.unlocking=Aufschließen
+enchantment.betterstorage.lock.persistance=Beharrlichkeit
+enchantment.betterstorage.lock.security=Sicherheit
+enchantment.betterstorage.lock.shock=Schock
+enchantment.betterstorage.lock.trigger=Auslösen
+
+# Entities
+entity.betterstorage.Frienderman=Enderman
+
+# Items
+item.betterstorage.cardboardAxe.name=Pappaxt
+item.betterstorage.cardboardBoots.name=Pappstiefel
+item.betterstorage.cardboardChestplate.name=Pappbrustpanzer
+item.betterstorage.cardboardHelmet.name=Papphelm
+item.betterstorage.cardboardHoe.name=Papphacke
+item.betterstorage.cardboardLeggings.name=Pappbeinschutz
+item.betterstorage.cardboardPickaxe.name=Pappspitzhacke
+item.betterstorage.cardboardSheet.name=Pappe
+item.betterstorage.cardboardShovel.name=Pappschaufel
+item.betterstorage.cardboardSword.name=Pappschwert
+item.betterstorage.drinkingHelmet.name=Trinkhelm
+item.betterstorage.key.name=Schlüssel
+item.betterstorage.keyring.name=Schlüsselbund
+item.betterstorage.lock.name=Schloss
+item.betterstorage.masterKey.name=Master-Schlüssel
+
+# Creative tab
+itemGroup.betterstorage=BetterStorage
+
+# Container materials
+material.betterstorage.iron=Eisen
+material.betterstorage.gold=Gold
+material.betterstorage.diamond=Diamant
+material.betterstorage.emerald=Smaragd
+material.betterstorage.copper=Kupfer
+material.betterstorage.tin=Zinn
+material.betterstorage.silver=Silber
+material.betterstorage.zinc=Zink
+
+# Thaumcraft
+tc.research_name.betterstorage.magicstorage=Magischer Speicher
+tc.research_text.betterstorage.magicstorage=Verzaubere deine Behälter
+tc.research_page.betterstorage.magicstorage.1=Einen Rucksack mit Magie und Materialien magischer Natur zu bearbeiten, wird seine Haltbarkeit und Kapazität erhöhen. Dank dieser Verbesserung ist er fähig, Verzauberungen leichter anzunehmen, einschließlich der Verzauberung Reparieren. So lange der Rucksack die Verzauberung Reparieren besitzt, werden sich Items in ihm ebenfalls reparieren, jedoch langsamer.<BR>Etwas ähnliches geschieht mit einer Verstärkten Eisentruhe und einer Menge Thaumium; entstehen wird eine Truhe, die sowohl haltbarer ist als auch mehr Items speichern kann.
+
+# Blocks
+tile.betterstorage.armorStand.name=Rüstungsstand
+tile.betterstorage.backpack.name=Rucksack
+tile.betterstorage.cardboardBox.name=Pappkarton
+tile.betterstorage.crate.name=Lagerkiste
+tile.betterstorage.enderBackpack.name=Ender-Rucksack
+tile.betterstorage.locker.name=Schließfach
+tile.betterstorage.reinforcedChest.name=Verstärkte Truhe
+tile.betterstorage.reinforcedChest.name.full=Verstärkte %MATERIAL%truhe
+tile.betterstorage.reinforcedLocker.name=Verstärktes Schließfach
+tile.betterstorage.reinforcedLocker.name.full=Verstärktes %MATERIAL%schließfach
+tile.betterstorage.thaumcraftBackpack.name=Rucksack des Thaumaturgen
+tile.betterstorage.thaumiumChest.name=Thaumium-Truhe
+
+# Tooltips
+tooltip.betterstorage.backpack.bound=Gebunden.
+tooltip.betterstorage.backpack.containsItems=Nicht leer.
+tooltip.betterstorage.backpack.equipHint=Platziere und bau ab, während#du schleichst, um auszurüsten.
+tooltip.betterstorage.backpack.openHint=Drücke %KEY%, um Rucksack zu öffnen.
+tooltip.betterstorage.backpack.unequipHint=%REASON% Schleiche und rechtsklicke#Boden mit leerer Hand, um abzusetzen.
+tooltip.betterstorage.backpack.used=Wird gerade von einem Spieler benutzt.
+tooltip.betterstorage.drinkingHelmet.useHint=Drücke %KEY%, um ein Schlückchen zu trinken.
+tooltip.betterstorage.drinkingHelmet.uses=Verbleibende Nutzungen: %USES%

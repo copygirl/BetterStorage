@@ -1,0 +1,68 @@
+# Containers
+container.betterstorage.backpack=Rugzak
+container.betterstorage.cardboardBox=Kartonnen Doos
+container.betterstorage.crate=Opbergkist
+container.betterstorage.enderBackpack=Ender Rugzak
+container.betterstorage.keyring=Sleutelring
+container.betterstorage.locker=Locker
+container.betterstorage.lockerLarge=Grote Locker
+container.betterstorage.reinforcedChest=Verstevigde Kist
+container.betterstorage.reinforcedChestLarge=Grote Verstevigde Kist
+container.betterstorage.thaumcraftBackpack=Thaumaturge's Rugzak
+container.betterstorage.thaumiumChest=Thaumium Kist
+container.betterstorage.thaumiumChestLarge=Grote Thaumium Kist
+
+# Enchantments
+enchantment.betterstorage.key.lockpicking=Slot Openen
+enchantment.betterstorage.key.morphing=Transformeren
+enchantment.betterstorage.key.unlocking=Openen
+enchantment.betterstorage.lock.persistance=Persistentie
+enchantment.betterstorage.lock.security=Beveiliging
+enchantment.betterstorage.lock.shock=Schok
+enchantment.betterstorage.lock.trigger=Activeer
+
+# Entities
+entity.betterstorage.Frienderman=Enderman
+
+# Items
+item.betterstorage.cardboardSheet.name=Kartonnen Doos Stuk
+item.betterstorage.drinkingHelmet.name=Drink Helm
+item.betterstorage.key.name=Sleutel
+item.betterstorage.keyring.name=Sleutelring
+item.betterstorage.lock.name=Slot
+item.betterstorage.masterKey.name=Meester Sleutel
+
+# Creative tab
+itemGroup.betterstorage=BetterStorage
+
+# Container materials
+material.betterstorage.iron=Ijzer
+material.betterstorage.gold=Goud
+material.betterstorage.diamond=Diamant
+material.betterstorage.emerald=Smaragd
+material.betterstorage.copper=Koper
+material.betterstorage.tin=Tin
+material.betterstorage.silver=Silver
+material.betterstorage.zinc=Zink
+
+# Blocks
+tile.betterstorage.armorStand.name=Harnass Mannequin
+tile.betterstorage.backpack.name=Rugzak
+tile.betterstorage.cardboardBox.name=Kartonnen Doos
+tile.betterstorage.crate.name=Opbergkist
+tile.betterstorage.enderBackpack.name=Ender Rugzak
+tile.betterstorage.locker.name=Locker
+tile.betterstorage.reinforcedChest.name=Verstevigde Kist
+tile.betterstorage.reinforcedChest.name.full=Verstevigde %MATERIAL% Chest
+tile.betterstorage.thaumcraftBackpack.name=Thaumaturge's Rugzak
+tile.betterstorage.thaumiumChest.name=Thaumium Kist
+
+# Tooltips
+tooltip.betterstorage.backpack.bound=Gebonden rugzak.
+tooltip.betterstorage.backpack.containsItems=Bevat voorwerpen.
+tooltip.betterstorage.backpack.equipHint=Plaats neer en breek het terwijl#je sluipt om het aan te doen.
+tooltip.betterstorage.backpack.openHint=Druk op %KEY% terwijl uitgerust.
+tooltip.betterstorage.backpack.unequipHint=%REASON% Sluip en rechtsklik de#grond met een lege hand om het uit te doen.
+tooltip.betterstorage.backpack.used=Wordt momenteel gebruikt door een andere speler.
+tooltip.betterstorage.drinkingHelmet.useHint=Druk op %KEY% om het te drinken.
+tooltip.betterstorage.drinkingHelmet.uses=Overblijvende gebruiken: %USES%
