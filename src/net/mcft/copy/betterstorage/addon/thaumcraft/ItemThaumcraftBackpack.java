@@ -5,11 +5,11 @@ import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
 import thaumcraft.api.IRepairable;
 import thaumcraft.api.IRepairableExtended;
 import thaumcraft.api.IVisDiscounter;
@@ -45,9 +45,10 @@ public class ItemThaumcraftBackpack extends ItemBackpack implements IRepairable,
 	}
 	
 	@Override
-	public void onArmorTickUpdate(World world, EntityPlayer player, ItemStack itemStack) {
-		super.onArmorTickUpdate(world, player, itemStack);
-		if (!world.isRemote) repairItems(itemStack, player);
+	public void onEquippedUpdate(EntityLivingBase entity, ItemStack backpack) {
+		super.onEquippedUpdate(entity, backpack);
+		if (!entity.worldObj.isRemote && (entity instanceof EntityPlayer))
+			repairItems(backpack, (EntityPlayer)entity);
 	}
 	
 	/* TODO: Readd flux effects.

@@ -192,6 +192,10 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 		return placeBackpack(player, player, stack, x, y, z, side, orientation, false);
 	}
 	
+	/** Called every tick regardless of whether the
+	 *  backpack is equipped in an armor slot or not. */
+	public void onEquippedUpdate(EntityLivingBase player, ItemStack backpack) {  }
+	
 	// ISpecialArmor implementation
 	
 	@Override
