@@ -1,5 +1,8 @@
 package net.mcft.copy.betterstorage.addon.thaumcraft;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.mcft.copy.betterstorage.addon.Addon;
 import net.mcft.copy.betterstorage.block.BlockBackpack;
 import net.mcft.copy.betterstorage.client.renderer.ItemRendererBackpack;
@@ -41,7 +44,7 @@ public class ThaumcraftAddon extends Addon {
 	public static ItemStack fabric;
 	
 	public static InfusionRecipe thaumcraftBackpackRecipe;
-	public static InfusionRecipe reinforcedChestRecipe;
+	public static InfusionRecipe thaumiumChestRecipe;
 	
 	public ThaumcraftAddon() {
 		super("Thaumcraft");
@@ -79,7 +82,7 @@ public class ThaumcraftAddon extends Addon {
 		
 		// Thaumium chest recipe
 		if (MiscUtils.isEnabled(thaumiumChest, Blocks.reinforcedChest)) {
-			reinforcedChestRecipe = ThaumcraftApi.addInfusionCraftingRecipe("betterstorage.magicstorage",
+			thaumiumChestRecipe = ThaumcraftApi.addInfusionCraftingRecipe("betterstorage.magicstorage",
 					new ItemStack(thaumiumChest), 4,
 					createAspectList(Aspect.METAL, 16, Aspect.VOID, 20, Aspect.MAGIC, 16),
 					new ItemStack(Blocks.reinforcedChest),
@@ -147,18 +150,23 @@ public class ThaumcraftAddon extends Addon {
 		
 		addAspects();
 		
-		ResearchItem research = new ResearchItem(
-				"betterstorage.magicstorage", "ARTIFICE",
-				createAspectList(Aspect.VOID, 2, Aspect.MAGIC, 1, Aspect.EXCHANGE, 1),
-				2, (Loader.isModLoaded("ThaumicTinkerer") ? 3 : 4), 3, new ItemStack(thaumcraftBackpack));
-		research.setParents("ENCHFABRIC");
-		research.setParentsHidden("INFUSION");
-		research.setConcealed();
-		research.setPages(
-				new ResearchPage("tc.research_page.betterstorage.magicstorage.1"),
-				new ResearchPage(thaumcraftBackpackRecipe),
-				new ResearchPage(reinforcedChestRecipe));
-		research.registerResearchItem();
+		if (MiscUtils.isEnabled(thaumcraftBackpack, thaumiumChest)) {
+			ResearchItem research = new ResearchItem(
+					"betterstorage.magicstorage", "ARTIFICE",
+					createAspectList(Aspect.VOID, 2, Aspect.MAGIC, 1, Aspect.EXCHANGE, 1),
+					2, (Loader.isModLoaded("ThaumicTinkerer") ? 3 : 4), 3, new ItemStack(thaumcraftBackpack));
+			research.setParents("ENCHFABRIC");
+			research.setParentsHidden("INFUSION");
+			research.setConcealed();
+			List<ResearchPage> pages = new ArrayList<ResearchPage>();
+			pages.add(new ResearchPage("tc.research_page.betterstorage.magicstorage.1"));
+			if (MiscUtils.isEnabled(thaumcraftBackpack))
+				pages.add(new ResearchPage(thaumcraftBackpackRecipe));
+			if (MiscUtils.isEnabled(thaumiumChest))
+				pages.add(new ResearchPage(thaumiumChestRecipe));
+			research.setPages(pages.toArray(new ResearchPage[0]));
+			research.registerResearchItem();
+		}
 		
 	}
 	
