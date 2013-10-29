@@ -1,0 +1,86 @@
+# Containers
+container.betterstorage.backpack=Reppu
+container.betterstorage.cardboardBox=Pahvilaatikko
+container.betterstorage.crate=Säilytyslaatikko
+container.betterstorage.enderBackpack=ÄÄrireppu
+container.betterstorage.keyring=Avaimenperä
+container.betterstorage.locker=Lokero
+container.betterstorage.lockerLarge=Iso Lokero
+container.betterstorage.reinforcedChest=Vahvistettu Arkku
+container.betterstorage.reinforcedChestLarge=Iso Vahvistettu Arkku
+container.betterstorage.reinforcedLocker=Vahvistettu Lokero
+container.betterstorage.reinforcedLockerLarge=Iso Vahvistettu Lokero
+container.betterstorage.thaumcraftBackpack=Thaumaturgen Reppu
+container.betterstorage.thaumiumChest=Thaumium Arkku
+container.betterstorage.thaumiumChestLarge=Iso Thaumium Arkku
+
+# Enchantments
+enchantment.betterstorage.key.lockpicking=Tiirikointi
+enchantment.betterstorage.key.morphing=Muodonmuutos
+enchantment.betterstorage.key.unlocking=Avaaminen
+enchantment.betterstorage.lock.persistance=Pysyvyys
+enchantment.betterstorage.lock.security=Turvallisuus
+enchantment.betterstorage.lock.shock=Shokki
+enchantment.betterstorage.lock.trigger=Laukaisin
+
+# Entities
+entity.betterstorage.Frienderman=Ääreläinen
+
+# Items
+item.betterstorage.cardboardAxe.name=Pahvikirves
+item.betterstorage.cardboardBoots.name=Pahvikengät
+item.betterstorage.cardboardChestplate.name=Pahvipanssari
+item.betterstorage.cardboardHelmet.name=Pahvikypärä
+item.betterstorage.cardboardHoe.name=Pahvikuokka
+item.betterstorage.cardboardLeggings.name=Pahvihousut
+item.betterstorage.cardboardPickaxe.name=Pahvihakku
+item.betterstorage.cardboardSheet.name=Pahviarkki
+item.betterstorage.cardboardShovel.name=Pahvilapio
+item.betterstorage.cardboardSword.name=PAhvimiekka
+item.betterstorage.drinkingHelmet.name=Juomakypärä
+item.betterstorage.key.name=Avain
+item.betterstorage.keyring.name=Avaimenperä
+item.betterstorage.lock.name=Lukko
+item.betterstorage.masterKey.name=Yleisavain
+
+# Creative tab
+itemGroup.betterstorage=BetterStorage
+
+# Container materials
+material.betterstorage.iron=Rauta
+material.betterstorage.gold=Kulta
+material.betterstorage.diamond=Timantti
+material.betterstorage.emerald=Smaragdi
+material.betterstorage.copper=Kupari
+material.betterstorage.tin=Tina
+material.betterstorage.silver=Hopea
+material.betterstorage.zinc=Sinkki
+
+# Thaumcraft
+tc.research_name.betterstorage.magicstorage=Maaginen Varasto
+tc.research_text.betterstorage.magicstorage=Lumoa Säiliösi
+tc.research_page.betterstorage.magicstorage.1=Hauduttamalla reppusi taialla ja materiaaleilla maagisesta luonnosta lisää sen kestävyyttä ja säilöntätilaa. Päivityksen ansiosta, se sallii lumouksia paremmin, mukaan lukien korjaus lumouksen. Kun repussa on korjaus, tavarat sisällä voivat myös korjaantua hitaammalla tahdilla.<BR>Samankaltainen on myös mahdollista vahvistetulla rauta arkulla ja kasalla thaumiumia, mikä johtaa kestävämpään arkkuun, joka voi säilöä enemmän tavaraa.
+
+# Blocks
+tile.betterstorage.armorStand.name=Haarniska jalusta
+tile.betterstorage.backpack.name=Reppu
+tile.betterstorage.cardboardBox.name=Pahvilaatikko
+tile.betterstorage.crate.name=Säilytyslaatikko
+tile.betterstorage.enderBackpack.name=Äärireppu
+tile.betterstorage.locker.name=Lokero
+tile.betterstorage.reinforcedChest.name=Vahvistettu Arkku
+tile.betterstorage.reinforcedChest.name.full=Vahvistettu %MATERIAL% Arkku
+tile.betterstorage.reinforcedLocker.name=Vahvistettu Lokero
+tile.betterstorage.reinforcedLocker.name.full=Vahvistettu %MATERIAL% Lokero
+tile.betterstorage.thaumcraftBackpack.name=Thaumaturgen Reppu
+tile.betterstorage.thaumiumChest.name=Thaumium Arkku
+
+# Tooltips
+tooltip.betterstorage.backpack.bound=Sidottu reppu.
+tooltip.betterstorage.backpack.containsItems=Sisältää tavaroita.
+tooltip.betterstorage.backpack.equipHint=Laita maahan ja riko#kun kyyristyt pukeaksesi.
+tooltip.betterstorage.backpack.openHint=Paina %KEY% avataksesi puettuna.
+tooltip.betterstorage.backpack.unequipHint=%REASON% Kyyristy ja oikea-klikkaa#maata tyhjällä kädellä riisuaksesi.
+tooltip.betterstorage.backpack.used=Juuri nyt pelaajan käyttämänä.
+tooltip.betterstorage.drinkingHelmet.useHint=Paina %KEY% ottaaksesi hörpyn.
+tooltip.betterstorage.drinkingHelmet.uses=Jäljelläolevia käyttökertoja: %USES%
