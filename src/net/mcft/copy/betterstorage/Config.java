@@ -83,7 +83,7 @@ public final class Config {
 		drinkingHelmetId = config.getItem("drinkingHelmet", drinkingHelmetId).getInt();
 		
 		cardboardHelmetId     = config.getItem("cardboardHelmet", cardboardHelmetId).getInt();
-		cardboardChestplateId = config.getItem("cardboarChestplate", cardboardChestplateId).getInt();
+		cardboardChestplateId = config.getItem("cardboardChestplate", cardboardChestplateId).getInt();
 		cardboardLeggingsId   = config.getItem("cardboardLeggings", cardboardLeggingsId).getInt();
 		cardboardBootsId      = config.getItem("cardboardBoots", cardboardBootsId).getInt();
 		cardboardSwordId   = config.getItem("cardboardSword", cardboardSwordId).getInt();
