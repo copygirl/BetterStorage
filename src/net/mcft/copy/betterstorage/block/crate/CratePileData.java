@@ -340,7 +340,9 @@ public class CratePileData implements Iterable<ItemStack> {
 	// Misc functions
 	
 	private void updateContentsArray() {
-		contentsArray = contents.values().toArray(new ItemStack[getNumItems()]);
+		if ((contentsArray == null) || (contentsArray.length > getNumItems() * 2 + 16))
+			contentsArray = new ItemStack[getNumItems() + 16];
+		contentsArray = contents.values().toArray(contentsArray);
 	}
 	
 	private static int calcNumStacks(ItemStack stack) {
