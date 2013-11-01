@@ -2,7 +2,7 @@
 container.betterstorage.backpack=Reppu
 container.betterstorage.cardboardBox=Pahvilaatikko
 container.betterstorage.crate=Säilytyslaatikko
-container.betterstorage.enderBackpack=ÄÄrireppu
+container.betterstorage.enderBackpack=Äärireppu
 container.betterstorage.keyring=Avaimenperä
 container.betterstorage.locker=Lokero
 container.betterstorage.lockerLarge=Iso Lokero
@@ -36,7 +36,7 @@ item.betterstorage.cardboardLeggings.name=Pahvihousut
 item.betterstorage.cardboardPickaxe.name=Pahvihakku
 item.betterstorage.cardboardSheet.name=Pahviarkki
 item.betterstorage.cardboardShovel.name=Pahvilapio
-item.betterstorage.cardboardSword.name=PAhvimiekka
+item.betterstorage.cardboardSword.name=Pahvimiekka
 item.betterstorage.drinkingHelmet.name=Juomakypärä
 item.betterstorage.key.name=Avain
 item.betterstorage.keyring.name=Avaimenperä
