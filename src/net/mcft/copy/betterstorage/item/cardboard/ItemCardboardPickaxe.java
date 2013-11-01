@@ -29,4 +29,7 @@ public class ItemCardboardPickaxe extends ItemPickaxe implements ICardboardItem 
 		return StackUtils.get(stack, 0x705030, "display", "color");
 	}
 	
+	@Override
+	public boolean canDye(ItemStack stack) { return true; }
+	
 }

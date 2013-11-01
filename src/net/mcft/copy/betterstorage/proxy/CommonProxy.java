@@ -3,8 +3,14 @@ package net.mcft.copy.betterstorage.proxy;
 import net.mcft.copy.betterstorage.attachment.EnumAttachmentInteraction;
 import net.mcft.copy.betterstorage.attachment.IHasAttachments;
 import net.mcft.copy.betterstorage.block.crate.CratePileCollection;
+import net.mcft.copy.betterstorage.item.IDyeableItem;
 import net.mcft.copy.betterstorage.misc.handlers.BackpackHandler;
+import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.Event.Result;
 import net.minecraftforge.event.ForgeSubscribe;
@@ -39,22 +45,50 @@ public class CommonProxy {
 	@ForgeSubscribe
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		
-		// Interact with attachments.
 		if (event.isCanceled()) return;
 		
-		if ((event.action != Action.LEFT_CLICK_BLOCK) &&
-		    (event.action != Action.RIGHT_CLICK_BLOCK)) return;
-		IHasAttachments hasAttachments =
-				WorldUtils.get(event.entity.worldObj, event.x, event.y, event.z, IHasAttachments.class);
-		if (hasAttachments == null) return;
-		EnumAttachmentInteraction interactionType =
-				((event.action == Action.LEFT_CLICK_BLOCK)
-						? EnumAttachmentInteraction.attack
-						: EnumAttachmentInteraction.use);
-		if (hasAttachments.getAttachments().interact(WorldUtils.rayTrace(event.entityPlayer, 1.0F),
-		                                             event.entityPlayer, interactionType)) {
-			event.useBlock = Result.DENY;
-			event.useItem = Result.DENY;
+		World world = event.entity.worldObj;
+		int x = event.x;
+		int y = event.y;
+		int z = event.z;
+		EntityPlayer player = event.entityPlayer;
+		Block block = Block.blocksList[world.getBlockId(x, y, z)];
+		boolean leftClick = (event.action == Action.LEFT_CLICK_BLOCK);
+		boolean rightClick = (event.action == Action.RIGHT_CLICK_BLOCK);
+		
+		// Interact with attachments.
+		if (leftClick || rightClick) {
+			IHasAttachments hasAttachments =
+					WorldUtils.get(world, x, y, z, IHasAttachments.class);
+			if (hasAttachments != null) {
+				EnumAttachmentInteraction interactionType =
+						((event.action == Action.LEFT_CLICK_BLOCK)
+								? EnumAttachmentInteraction.attack
+								: EnumAttachmentInteraction.use);
+				if (hasAttachments.getAttachments().interact(WorldUtils.rayTrace(player, 1.0F),
+				                                             player, interactionType)) {
+					event.useBlock = Result.DENY;
+					event.useItem = Result.DENY;
+				}
+			}
+		}
+		
+		// Use cauldron to remove color from dyable items
+		if (rightClick && (block == Block.cauldron)) {
+			int metadata = world.getBlockMetadata(x, y, z);
+			if (metadata > 0) {
+				ItemStack holding = player.getCurrentEquippedItem();
+				IDyeableItem dyeable = (((holding != null) && (holding.getItem() instanceof IDyeableItem))
+						? (IDyeableItem)holding.getItem() : null);
+				if ((dyeable != null) && (dyeable.canDye(holding))) {
+					StackUtils.remove(holding, "display", "color");
+					world.setBlockMetadataWithNotify(x, y, z, metadata - 1, 2);
+					world.func_96440_m(x, y, z, block.blockID);
+					
+					event.useBlock = Result.DENY;
+					event.useItem = Result.DENY;
+				}
+			}
 		}
 		
 	}

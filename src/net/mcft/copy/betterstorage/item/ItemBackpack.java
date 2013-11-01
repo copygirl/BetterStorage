@@ -51,7 +51,7 @@ import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemBackpack extends ItemArmor implements ISpecialArmor {
+public class ItemBackpack extends ItemArmor implements ISpecialArmor, IDyeableItem {
 	
 	public static final EnumArmorMaterial material = EnumHelper.addArmorMaterial(
 			"backpack", 14, new int[]{ 0, 2, 0, 0 }, 15);
@@ -242,6 +242,11 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor {
 		level = Math.min(level - 1, chance.length - 1);
 		return ((level >= 0) && RandomUtils.getBoolean(chance[level]));
 	}
+	
+	// IDyeableItem implementation
+	
+	@Override
+	public boolean canDye(ItemStack stack) { return (getDefaultColor() >= 0); }
 	
 	// Helper functions
 	

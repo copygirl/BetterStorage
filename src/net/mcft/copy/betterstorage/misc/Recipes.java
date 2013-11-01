@@ -200,12 +200,7 @@ public final class Recipes {
 		if (MiscUtils.isEnabled(Items.drinkingHelmet))
 			GameRegistry.addRecipe(new DrinkingHelmetRecipe(Items.drinkingHelmet));
 		
-		// Dying recipes
-		GameRegistry.addRecipe(new DyeRecipe().add(
-				Item.itemsList[Blocks.backpack.blockID],
-				Items.cardboardHelmet, Items.cardboardChestplate, Items.cardboardLeggings,
-				Items.cardboardBoots, Items.cardboardSword, Items.cardboardPickaxe,
-				Items.cardboardShovel, Items.cardboardAxe, Items.cardboardHoe));
+		GameRegistry.addRecipe(new DyeRecipe());
 		
 		Addon.addRecipesAll();
 		

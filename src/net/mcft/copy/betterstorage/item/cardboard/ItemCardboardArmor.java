@@ -37,4 +37,7 @@ public class ItemCardboardArmor extends ItemArmor implements ICardboardItem {
 	@Override
 	public int getColor(ItemStack stack) { return StackUtils.get(stack, 0x705030, "display", "color"); }
 	
+	@Override
+	public boolean canDye(ItemStack stack) { return true; }
+	
 }

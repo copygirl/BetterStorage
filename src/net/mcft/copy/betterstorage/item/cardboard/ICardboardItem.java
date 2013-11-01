@@ -1,5 +1,7 @@
 package net.mcft.copy.betterstorage.item.cardboard;
 
-public interface ICardboardItem {
+import net.mcft.copy.betterstorage.item.IDyeableItem;
+
+public interface ICardboardItem extends IDyeableItem {
 	
 }
