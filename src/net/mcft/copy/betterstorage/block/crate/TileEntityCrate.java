@@ -230,6 +230,12 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 	}
 	
 	@Override
+	public boolean isItemValidForSlot(int slot, ItemStack stack) {
+		if (!Config.enableCrateInventoryInterface) return false;
+		return getPileData().blockView.isItemValidForSlot(slot, stack);
+	}
+	
+	@Override
 	public ItemStack getStackInSlot(int slot) {
 		if (!Config.enableCrateInventoryInterface) return null;
 		return getPileData().blockView.getStackInSlot(slot);
@@ -249,13 +255,16 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 		if (!Config.enableCrateInventoryInterface) return null;
 		return getPileData().blockView.decrStackSize(slot, amount);
 	}
+	@Override
+	public void onInventoryChanged() {
+		if (Config.enableCrateInventoryInterface)
+			getPileData().blockView.onInventoryChanged();
+	}
 	
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) { return false; }
 	@Override
 	public boolean isInvNameLocalized() { return false; }
-	@Override
-	public boolean isItemValidForSlot(int i, ItemStack stack) { return true; }
 	
 	@Override
 	public void openChest() { getPileData().blockView.openChest(); }

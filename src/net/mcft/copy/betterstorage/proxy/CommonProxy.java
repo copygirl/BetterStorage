@@ -1,5 +1,7 @@
 package net.mcft.copy.betterstorage.proxy;
 
+import java.util.EnumSet;
+
 import net.mcft.copy.betterstorage.attachment.EnumAttachmentInteraction;
 import net.mcft.copy.betterstorage.attachment.IHasAttachments;
 import net.mcft.copy.betterstorage.block.crate.CratePileCollection;
@@ -18,9 +20,13 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import net.minecraftforge.event.world.WorldEvent.Save;
 import net.minecraftforge.event.world.WorldEvent.Unload;
+import cpw.mods.fml.common.ITickHandler;
+import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.TickRegistry;
+import cpw.mods.fml.relauncher.Side;
 
-public class CommonProxy {
+public class CommonProxy implements ITickHandler {
 	
 	public void initialize() {
 		
@@ -29,6 +35,7 @@ public class CommonProxy {
 		BackpackHandler backpacks = new BackpackHandler();
 		MinecraftForge.EVENT_BUS.register(backpacks);
 		GameRegistry.registerPlayerTracker(backpacks);
+		TickRegistry.registerTickHandler(this, Side.SERVER);
 		
 	}
 	
@@ -92,5 +99,16 @@ public class CommonProxy {
 		}
 		
 	}
+	@Override
+	public String getLabel() { return "BetterStorage"; }
+	@Override
+	public EnumSet<TickType> ticks() { return EnumSet.of(TickType.WORLD); }
+	
+	@Override
+	public void tickStart(EnumSet<TickType> type, Object... tickData) {
+		CratePileCollection.getCollection((World)tickData[0]).onTick();
+	}
+	@Override
+	public void tickEnd(EnumSet<TickType> type, Object... tickData) {  }
 	
 }

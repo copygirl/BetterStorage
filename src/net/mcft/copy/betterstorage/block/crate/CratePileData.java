@@ -14,7 +14,6 @@ import net.mcft.copy.betterstorage.api.ICrateWatcher;
 import net.mcft.copy.betterstorage.inventory.InventoryCrateBlockView;
 import net.mcft.copy.betterstorage.misc.ItemIdentifier;
 import net.mcft.copy.betterstorage.utils.RandomUtils;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -38,7 +37,7 @@ public class CratePileData implements Iterable<ItemStack> {
 	private Set<ICrateWatcher> watchers = new HashSet<ICrateWatcher>();
 	
 	/** An inventory interface built for machines accessing the crate pile. */
-	public final IInventory blockView = new InventoryCrateBlockView(this);
+	public final InventoryCrateBlockView blockView = new InventoryCrateBlockView(this);
 	
 	/** Returns the number of crates attached. */
 	public int getNumCrates() { return numCrates; }

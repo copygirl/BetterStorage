@@ -152,4 +152,10 @@ public class CratePileCollection {
 		//collectionMap.remove(dimension);
 	}
 	
+	/** Called every tick if the world is loaded. */
+	public void onTick() {
+		for (CratePileData data : pileDataMap.values())
+			data.blockView.onUpdate();
+	}
+	
 }
