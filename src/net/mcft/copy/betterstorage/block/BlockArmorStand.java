@@ -14,6 +14,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -77,6 +78,11 @@ public class BlockArmorStand extends BlockContainerBetterStorage {
 		if (world.isRemote) return true;
 		if (world.getBlockMetadata(x, y, z) > 0) { y -= 1; hitY += 1; }
 		return super.onBlockActivated(world, x, y, z, player, side, hitX, hitY, hitZ);
+	}
+	@Override
+	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
+		if (world.getBlockMetadata(x, y, z) > 0) { y -= 1; }
+		return super.getPickBlock(target, world, x, y, z);
 	}
 	
 	@Override

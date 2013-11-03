@@ -12,6 +12,7 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet103SetSlot;
 import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.MovingObjectPosition;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
@@ -76,6 +77,11 @@ public class TileEntityArmorStand extends TileEntityContainer {
 		
 		return true;
 		
+	}
+	@Override
+	public ItemStack onPickBlock(ItemStack block, MovingObjectPosition target) {
+		ItemStack result = armor[Math.min(3, (int)((target.hitVec.yCoord - yCoord) * 2))];
+		return ((result != null) ? result.copy() : block);
 	}
 	
 	@Override
