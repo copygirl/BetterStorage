@@ -14,7 +14,7 @@ import net.minecraft.item.ItemStack;
 /** An inventory interface built for machines accessing crate piles. */
 public class InventoryCrateBlockView extends InventoryBetterStorage implements ICrateWatcher {
 	
-	private static final int numStacksStored = 8;
+	private static final int numStacksStored = 4;
 	
 	private final CratePileData data;
 	
