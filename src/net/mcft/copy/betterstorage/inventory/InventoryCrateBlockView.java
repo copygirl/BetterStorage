@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.Config;
+import net.mcft.copy.betterstorage.api.ICrateWatcher;
 import net.mcft.copy.betterstorage.block.crate.CratePileData;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.StackUtils;
@@ -11,26 +12,34 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 /** An inventory interface built for machines accessing crate piles. */
-public class InventoryCrateBlockView extends InventoryBetterStorage {
+public class InventoryCrateBlockView extends InventoryBetterStorage implements ICrateWatcher {
 	
-	private static final int numStacksStored = 4;
+	private static final int numStacksStored = 8;
 	
 	private final CratePileData data;
 	
 	private final ItemStack[] originalStacks = new ItemStack[numStacksStored];
 	private final ItemStack[] exposedStacks = new ItemStack[numStacksStored];
 	
-	private boolean initialized = false;
+	/** If the crate contents were changed outside of this block view. */
+	private boolean changed = true;
+	/** If the block view is currently modifying items, so changed will not be set. */
+	private boolean isModifying = false;
+	
+	/** If the crate was accessed by something. Resets every update. */
 	private boolean accessed = false;
+	/** Used to find mods which cause problems by not calling
+	 *  onInventoryChanged after done manipulating stacks. */
 	private Throwable offending = null;
 	
 	public InventoryCrateBlockView(CratePileData data) {
 		super(Constants.containerCrate);
 		this.data = data;
+		data.addWatcher(this);
 	}
 	
 	@Override
-	public int getSizeInventory() { return (initialized ? (numStacksStored + 1) : 0); }
+	public int getSizeInventory() { return (numStacksStored + 1); }
 	
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
@@ -54,6 +63,7 @@ public class InventoryCrateBlockView extends InventoryBetterStorage {
 			exposedStacks[slot - 1] = stack;
 			originalStacks[slot - 1] = ItemStack.copyItemStack(stack);
 		}
+		isModifying = true;
 		if (oldStack != null) {
 			// If the two stacks match, just add/remove the difference.
 			if (StackUtils.matches(oldStack, stack)) {
@@ -67,11 +77,13 @@ public class InventoryCrateBlockView extends InventoryBetterStorage {
 					remove.stackSize = -count;
 					data.removeItems(remove);
 				}
+				isModifying = false;
 				return;
 			}
 			data.removeItems(oldStack);
 		}
 		data.addItems(stack);
+		isModifying = false;
 	}
 	
 	@Override
@@ -80,7 +92,10 @@ public class InventoryCrateBlockView extends InventoryBetterStorage {
 		if (stack == null) return null;
 		amount = Math.min(amount, stack.stackSize);
 		originalStacks[slot - 1].stackSize = exposedStacks[slot - 1].stackSize -= amount;
-		return data.removeItems(stack, amount);
+		isModifying = true;
+		ItemStack result = data.removeItems(stack, amount);
+		isModifying = false;
+		return result;
 	}
 	
 	@Override
@@ -102,8 +117,7 @@ public class InventoryCrateBlockView extends InventoryBetterStorage {
 	
 	public void onUpdate() {
 		
-		if (!Config.enableCrateInventoryInterface || (initialized && !accessed)) return;
-		initialized = true;
+		if (!Config.enableCrateInventoryInterface || !accessed) return;
 		accessed = false;
 		
 		// Check for modifications done to the inventory
@@ -119,10 +133,9 @@ public class InventoryCrateBlockView extends InventoryBetterStorage {
 					return;
 				}
 		
-		// Pick new random stacks from the crate.
-		List<ItemStack> picked = data.pickItemStacks(numStacksStored);
-		for (int i = 0; i < numStacksStored; i++)
-			originalStacks[i] = exposedStacks[i] = ((i < picked.size()) ? picked.get(i) : null);
+		// Cause new stacks to be picked the
+		// next time something is accessed.
+		changed = true;
 		
 	}
 	
@@ -130,6 +143,21 @@ public class InventoryCrateBlockView extends InventoryBetterStorage {
 		accessed = true;
 		if (offending == null)
 			offending = new Throwable().fillInStackTrace();
+		
+		if (changed) {
+			// Pick a new set of random stacks from the crate.
+			List<ItemStack> picked = data.pickItemStacks(numStacksStored);
+			for (int i = 0; i < numStacksStored; i++) {
+				exposedStacks[i] = ((i < picked.size()) ? picked.get(i) : null);
+				originalStacks[i] = ItemStack.copyItemStack(exposedStacks[i]);
+			}
+			changed = false;
+		}
+	}
+	
+	@Override
+	public void onCrateItemsModified(ItemStack stack) {
+		if (!isModifying) changed = true;
 	}
 	
 }
