@@ -10,7 +10,7 @@ public final class Config {
 	private static final String categorySettings = "settings";
 	private static final String categoryEnchantments = "enchantments";
 	
-	// The following IDs are also used as default values.
+	// The following settings are also used as default values.
 	
 	public static int crateId            = 2830;
 	public static int chestId            = 2831;
@@ -49,7 +49,7 @@ public final class Config {
 	// More settings ...
 	public static int reinforcedColumns = 13;
 	public static int backpackRows = 3;
-	public static boolean enableCrateInventoryInterface = false;
+	public static boolean enableCrateInventoryInterface = true;
 	public static boolean enableBackpackOpen = false;
 	public static boolean dropBackpackOnDeath = true;
 	public static boolean enableHelpTooltips = true;
@@ -107,7 +107,7 @@ public final class Config {
 		                          "Number of rows in backpacks. Valid values are 1 to 6.").getInt();
 		
 		enableCrateInventoryInterface = config.get(categorySettings, "enableCrateInventoryInterface", enableCrateInventoryInterface,
-		                                           "Whether most machines can interact with crates (disabled because of dupe issues).").getBoolean(enableCrateInventoryInterface);
+		                                           "If machines and such can interact with crates. Disable this if there's issues.").getBoolean(enableCrateInventoryInterface);
 		
 		enableBackpackOpen = config.get(categorySettings, "enableBackpackOpen", enableBackpackOpen,
 		                                "Allows backpacks to be opened when equipped by pressing a key.").getBoolean(enableBackpackOpen);
