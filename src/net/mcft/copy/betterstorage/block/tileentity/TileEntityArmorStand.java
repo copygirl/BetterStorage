@@ -80,7 +80,8 @@ public class TileEntityArmorStand extends TileEntityContainer {
 	}
 	@Override
 	public ItemStack onPickBlock(ItemStack block, MovingObjectPosition target) {
-		ItemStack result = armor[Math.min(3, (int)((target.hitVec.yCoord - yCoord) * 2))];
+		int y = (int)((target.hitVec.yCoord - yCoord) * 2);
+		ItemStack result = (((y >= 0) && (y < 4)) ? armor[y] : null);
 		return ((result != null) ? result.copy() : block);
 	}
 	
