@@ -292,8 +292,13 @@ public class BackpackHandler implements IPlayerTracker {
 			} else persistent = compound.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG);;
 			
 			NBTTagCompound backpackCompound = new NBTTagCompound();
+			
 			backpackCompound.setInteger("count", backpackData.contents.length);
 			backpackCompound.setTag("Items", NbtUtils.writeItems(backpackData.contents));
+			
+			if (!ItemBackpack.hasChestplateBackpackEquipped(entity))
+				backpackCompound.setTag("Stack", backpack.writeToNBT(new NBTTagCompound()));
+			
 			persistent.setTag("Backpack", backpackCompound);
 			
 		} else {
@@ -321,6 +326,10 @@ public class BackpackHandler implements IPlayerTracker {
 					                               coord.x, coord.y, coord.z, 1,
 					                               orientation, despawn))
 						return;
+				
+				// If backpack is not equipped as armor, drop it.
+				if (!ItemBackpack.hasChestplateBackpackEquipped(entity))
+					WorldUtils.dropStackFromEntity(entity, backpack, 4.0F);
 				
 			}
 			
@@ -391,21 +400,25 @@ public class BackpackHandler implements IPlayerTracker {
 		// If the player dies when when keepInventory is on and respawns,
 		// retrieve the backpack items from eir persistent NBT tag.
 		
-		NBTTagCompound compound = player.getEntityData();
-		if (!compound.hasKey(EntityPlayer.PERSISTED_NBT_TAG)) return;
-		NBTTagCompound persistent = compound.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG);
+		NBTTagCompound entityData = player.getEntityData();
+		if (!entityData.hasKey(EntityPlayer.PERSISTED_NBT_TAG)) return;
+		NBTTagCompound persistent = entityData.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG);
+		
 		if (!persistent.hasKey("Backpack")) return;
-		NBTTagCompound backpack = persistent.getCompoundTag("Backpack");
+		NBTTagCompound compound = persistent.getCompoundTag("Backpack");
+		PropertiesBackpack backpackData = ItemBackpack.getBackpackData(player);
 		
-		int size = backpack.getInteger("count");
+		int size = compound.getInteger("count");
 		ItemStack[] contents = new ItemStack[size];
-		NbtUtils.readItems(contents, backpack.getTagList("Items"));
+		NbtUtils.readItems(contents, compound.getTagList("Items"));
+		backpackData.contents = contents;
 		
-		ItemBackpack.getBackpackData(player).contents = contents;
+		if (compound.hasKey("Stack"))
+			backpackData.backpack = ItemStack.loadItemStackFromNBT(compound.getCompoundTag("Stack"));
 		
 		persistent.removeTag("Backpack");
 		if (persistent.hasNoTags())
-			compound.removeTag(EntityPlayer.PERSISTED_NBT_TAG);
+			entityData.removeTag(EntityPlayer.PERSISTED_NBT_TAG);
 		
 	}
 	
