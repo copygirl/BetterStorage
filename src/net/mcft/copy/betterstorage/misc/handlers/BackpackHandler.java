@@ -136,11 +136,12 @@ public class BackpackHandler implements IPlayerTracker {
 		// Right clicking the back of an entity that
 		// has a backpack will open a GUI for that it.
 		
-		if (event.entity.worldObj.isRemote) return;
-		EntityPlayerMP player = (EntityPlayerMP)event.entity;
-		if (!(event.target instanceof EntityLivingBase)) return;
-		EntityLivingBase target = (EntityLivingBase)event.target;
+		if (event.entity.worldObj.isRemote ||
+		    !(event.entity instanceof EntityPlayerMP) ||
+		    !(event.target instanceof EntityLivingBase)) return;
 		
+		EntityPlayerMP player = (EntityPlayerMP)event.entity;
+		EntityLivingBase target = (EntityLivingBase)event.target;
 		if (ItemBackpack.openBackpack(player, target))
 			player.swingItem();
 		
@@ -149,7 +150,7 @@ public class BackpackHandler implements IPlayerTracker {
 	@ForgeSubscribe
 	public void onSpecialSpawn(SpecialSpawn event) {
 		
-		// When a mob spawns natually, see if it has a chance to spawn with a backpack.
+		// When a mob spawns naturally, see if it has a chance to spawn with a backpack.
 		
 		EntityLivingBase entity = event.entityLiving;
 		double probability = 0.0;
