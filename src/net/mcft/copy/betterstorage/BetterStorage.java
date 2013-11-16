@@ -68,15 +68,15 @@ public class BetterStorage {
 		Entities.register();
 		DungeonLoot.add();
 		
-		proxy.initialize();
-		
-		GameRegistry.registerCraftingHandler(new CraftingHandler());
-		
 	}
 	
 	@EventHandler
 	public void load(FMLInitializationEvent event) {
+		
 		Recipes.add();
+		proxy.initialize();
+		GameRegistry.registerCraftingHandler(new CraftingHandler());
+		
 	}
 	
 	@EventHandler
