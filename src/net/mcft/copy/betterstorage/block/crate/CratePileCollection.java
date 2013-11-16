@@ -11,7 +11,7 @@ import net.mcft.copy.betterstorage.utils.RandomUtils;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import net.minecraftforge.common.DimensionManager;
+import net.minecraft.world.storage.SaveHandler;
 
 /** Holds all CratePileData objects for one world / dimension. */
 public class CratePileCollection {
@@ -115,10 +115,7 @@ public class CratePileCollection {
 	}
 	
 	private File getSaveDirectory() {
-		File saveFolder = DimensionManager.getCurrentSaveRootDirectory();
-		String dimensionFolderName = world.provider.getSaveFolder();
-		if (dimensionFolderName != null)
-			saveFolder = new File(DimensionManager.getCurrentSaveRootDirectory(), dimensionFolderName);
+		File saveFolder = ((SaveHandler)world.getSaveHandler()).getWorldDirectory();
 		return new File(saveFolder, "data" + File.separator + "crates");
 	}
 	private File getSaveFile(int id) {
