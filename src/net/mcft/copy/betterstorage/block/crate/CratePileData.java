@@ -53,6 +53,10 @@ public class CratePileData implements Iterable<ItemStack> {
 	/** Returns the number of slots free. Negative if there's any overflow. */
 	public int getFreeSlots() { return getCapacity() - getOccupiedSlots(); }
 	
+	public int getCenterX() { return (map.region.minX + map.region.maxX) / 2; }
+	public int getCenterY() { return (map.region.minY + map.region.maxY) / 2; }
+	public int getCenterZ() { return (map.region.minZ + map.region.maxZ) / 2; }
+	
 	public CratePileData(CratePileCollection collection, int id, int numCrates) {
 		this.collection = collection;
 		this.id = id;

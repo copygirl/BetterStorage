@@ -19,8 +19,8 @@ public class CratePileCollection {
 	private static final int maxCount = Short.MAX_VALUE;
 	private static Map<Integer, CratePileCollection> collectionMap = new HashMap<Integer, CratePileCollection>();
 	
-	private final World world;
-	private final int dimension;
+	public final World world;
+	public final int dimension;
 	
 	private int count = RandomUtils.getInt(maxCount);
 	private Map<Integer, CratePileData> pileDataMap = new HashMap<Integer, CratePileData>();

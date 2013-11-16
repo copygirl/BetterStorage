@@ -28,9 +28,6 @@ public class InventoryCrateBlockView extends InventoryBetterStorage implements I
 	
 	/** If the crate was accessed by something. Resets every update. */
 	private boolean accessed = false;
-	/** Used to find mods which cause problems by not calling
-	 *  onInventoryChanged after done manipulating stacks. */
-	private Throwable offending = null;
 	
 	public InventoryCrateBlockView(CratePileData data) {
 		super(Constants.containerCrate);
@@ -103,7 +100,6 @@ public class InventoryCrateBlockView extends InventoryBetterStorage implements I
 		for (int i = 0; i < numStacksStored; i++)
 			if (!ItemStack.areItemStacksEqual(originalStacks[i], exposedStacks[i]))
 				setInventorySlotContents(i + 1, exposedStacks[i]);
-		offending = null;
 	}
 	
 	@Override
@@ -122,16 +118,16 @@ public class InventoryCrateBlockView extends InventoryBetterStorage implements I
 		
 		// Check for modifications done to the inventory
 		// without onInventoryChanged being called.
-		if (offending != null)
-			for (int i = 0; i < numStacksStored; i++)
-				if (!ItemStack.areItemStacksEqual(originalStacks[i], exposedStacks[i])) {
-					BetterStorage.log.warning("A crate inventory was modified without onInventoryChanged() being called afterwards.");
-					BetterStorage.log.warning("The crate Inventory interface will be disabled until the next restart, to minimize chances of issues.");
-					BetterStorage.log.warning("A stack trace will be printed to make it easier to find which mod may have caused this.");
-					offending.printStackTrace();
-					Config.enableCrateInventoryInterface = false;
-					return;
-				}
+		for (int i = 0; i < numStacksStored; i++)
+			if (!ItemStack.areItemStacksEqual(originalStacks[i], exposedStacks[i])) {
+				BetterStorage.log.warning("A crate inventory was modified without onInventoryChanged() being called afterwards.");
+				BetterStorage.log.warning("The crate Inventory interface will be disabled until the next restart, to minimize chances of issues.");
+				BetterStorage.log.warning(String.format("You can find the crate pile at [%s,%s,%s] in dimension %s.",
+				                                        data.getCenterX(), data.getCenterY(), data.getCenterZ(), data.collection.dimension));
+				Config.enableCrateInventoryInterface = false;
+				onInventoryChanged();
+				return;
+			}
 		
 		// Cause new stacks to be picked the
 		// next time something is accessed.
@@ -141,8 +137,6 @@ public class InventoryCrateBlockView extends InventoryBetterStorage implements I
 	
 	private void access() {
 		accessed = true;
-		if (offending == null)
-			offending = new Throwable().fillInStackTrace();
 		
 		if (changed) {
 			// Pick a new set of random stacks from the crate.
