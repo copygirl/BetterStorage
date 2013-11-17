@@ -64,7 +64,7 @@ public class TileEntityLocker extends TileEntityLockable {
 	
 	@Override
 	public boolean onBlockActivated(EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
-		if (getOrientation() != DirectionUtils.getDirectionFromSide(side)) return true;
+		if (getOrientation().ordinal() != side) return true;
 		return super.onBlockActivated(player, side, hitX, hitY, hitZ);
 	}
 	

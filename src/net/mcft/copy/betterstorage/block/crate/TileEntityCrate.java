@@ -19,6 +19,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.INetworkManager;
+import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraftforge.common.ForgeDirection;
 
 public class TileEntityCrate extends TileEntityContainer implements IInventory, ICrateStorage {
@@ -32,6 +35,8 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 	private CratePileData data;
 	/** Crate pile id of this crate, used only for saving/loading. */
 	private int id = -1;
+	
+	public int getID() { return id; }
 	
 	/** Get the pile data for this tile entity. */
 	public CratePileData getPileData() {
@@ -53,6 +58,7 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 		this.data = data;
 		if (data != null) {
 			id = data.id;
+			markForUpdate();
 			if (addCrate) data.addCrate(this);
 		} else id = -1;
 	}
@@ -289,6 +295,20 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 	public void registerCrateWatcher(ICrateWatcher watcher) { getPileData().addWatcher(watcher); }
 	@Override
 	public void unregisterCrateWatcher(ICrateWatcher watcher) { getPileData().removeWatcher(watcher); }
+	
+	// TileEntity synchronization
+	
+	@Override
+	public Packet getDescriptionPacket() {
+		NBTTagCompound compound = new NBTTagCompound();
+		compound.setInteger("crateId", id);
+        return new Packet132TileEntityData(xCoord, yCoord, zCoord, 0, compound);
+	}
+	@Override
+	public void onDataPacket(INetworkManager net, Packet132TileEntityData packet) {
+		id = packet.data.getInteger("crateId");
+		worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
+	}
 	
 	// Reading from / writing to NBT
 	
