@@ -74,7 +74,8 @@ public class BlockArmorStand extends BlockContainerBetterStorage {
 	}
 	
 	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player,
+	                                int side, float hitX, float hitY, float hitZ) {
 		if (world.isRemote) return true;
 		if (world.getBlockMetadata(x, y, z) > 0) { y -= 1; hitY += 1; }
 		return super.onBlockActivated(world, x, y, z, player, side, hitX, hitY, hitZ);
