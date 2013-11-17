@@ -65,13 +65,13 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 	/** Destroys all crates above, and makes sure when piles split,
 	 *  each pile gets their own CratePileData object. */
 	private void checkPileConnections(CratePileData data) {
-		int x = xCoord;
-		int y = yCoord;
-		int z = zCoord;
+		int x = xCoord, y = yCoord, z = zCoord;
 		// Destroy all crates above.
 		TileEntityCrate crateAbove = WorldUtils.get(worldObj, x, y + 1, z, TileEntityCrate.class);
-		if ((crateAbove != null) && (crateAbove.data == data))
-			crateAbove.destroyCrate();
+		if ((crateAbove != null) && (crateAbove.data == data)) {
+			worldObj.setBlockToAir(x, y + 1, z);
+			crateAbove.dropItem(new ItemStack(Blocks.crate));
+		}
 		// If there's still some crates left and this is a
 		// base crate, see which crates are still connected.
 		if ((data.getNumCrates() > 0) && !WorldUtils.is(worldObj, x, y - 1, z, Blocks.crate)) {
@@ -140,9 +140,20 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 	
 	@Override
 	public void updateEntity() {
-		if (worldObj.isRemote || (data != null) ||
-		    ((id == -1) && findNeighborCratePile())) return;
+		if (worldObj.isRemote || (data != null)) return;
 		if (!isInvalid()) getPileData();
+	}
+	
+	public void attemptConnect(ForgeDirection side) {
+		if (worldObj.isRemote || (side == ForgeDirection.UP)) return;
+		int x = xCoord + side.offsetX;
+		int y = yCoord + side.offsetY;
+		int z = zCoord + side.offsetZ;
+		TileEntityCrate crateClicked = WorldUtils.get(worldObj, x, y, z, TileEntityCrate.class);
+		if (crateClicked == null) return;
+		CratePileData pileData = crateClicked.getPileData();
+		if (pileData.canAdd(this))
+			setPileData(pileData, true);
 	}
 	
 	@Override
@@ -153,37 +164,6 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 		setPileData(null, false);
 		dropOverflowContents(data);
 		checkPileConnections(data);
-	}
-	
-	private boolean findNeighborCratePile() {
-		CratePileData pileData = null;
-		boolean crateBelow = false;
-		for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-			int x = xCoord + dir.offsetX;
-			int y = yCoord + dir.offsetY;
-			int z = zCoord + dir.offsetZ;
-			TileEntityCrate checkedCrate = WorldUtils.get(worldObj, x, y, z, TileEntityCrate.class);
-			if (checkedCrate == null) continue;
-			CratePileData checkedPileData = checkedCrate.getPileData();
-			if (((pileData != null) && (checkedPileData.id != pileData.id)) ||
-			    ((dir != ForgeDirection.DOWN) && !crateBelow &&
-			     WorldUtils.is(worldObj, x, y - 1, z, Blocks.crate)) ||
-			    (dir == ForgeDirection.UP) || !checkedPileData.canAdd(this)) {
-				destroyCrate();
-				return false;
-			}
-			if (dir == ForgeDirection.DOWN) crateBelow = true;
-			pileData = checkedPileData;
-		}
-		if (pileData != null)
-			setPileData(pileData, true);
-		return (pileData != null);
-	}
-	
-	/** Destroys the crate when for example the crate's placement is invalid. */
-	private void destroyCrate() {
-		worldObj.setBlockToAir(xCoord, yCoord, zCoord);
-		dropItem(new ItemStack(Blocks.crate));
 	}
 	
 	/** Drops a single item from the (destroyed) crate. */

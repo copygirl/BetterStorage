@@ -68,7 +68,8 @@ public class CratePileData implements Iterable<ItemStack> {
 	/** Returns if the crate can be added to the crate pile. */
 	public boolean canAdd(TileEntityCrate crate) {
 		return ((map != null) && (numCrates < maxCratePileSize) &&
-		        (map.region.contains(crate) || canExpand(crate)));
+		        (map.region.contains(crate) || canExpand(crate)) &&
+		        (map.get(crate.xCoord, crate.yCoord - 1, crate.zCoord) || (crate.yCoord == map.region.minY)));
 	}
 	/** Returns if the crate can expand the crate pile. */
 	private boolean canExpand(TileEntityCrate crate) {
