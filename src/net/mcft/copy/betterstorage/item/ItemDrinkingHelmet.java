@@ -86,6 +86,8 @@ public class ItemDrinkingHelmet extends ItemArmor {
 		if (uses > 0)
 			list.add(EnumChatFormatting.DARK_GRAY.toString() + EnumChatFormatting.ITALIC + 
 			         LanguageUtils.translateTooltip("drinkingHelmet.uses", "%USES%", Integer.toString(uses)));
+		else if (Config.enableHelpTooltips)
+			list.add(LanguageUtils.translateTooltip("drinkingHelmet.craftHint"));
 	}
 	
 	public static ItemStack[] getPotions(ItemStack drinkingHelmet) {

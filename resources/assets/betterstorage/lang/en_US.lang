@@ -82,5 +82,6 @@ tooltip.betterstorage.backpack.equipHint=Place down and break#while sneaking to 
 tooltip.betterstorage.backpack.openHint=Press %KEY% to open while equipped.
 tooltip.betterstorage.backpack.unequipHint=%REASON% Sneak and right click#ground with empty hand to unequip.
 tooltip.betterstorage.backpack.used=Currently being used by a player.
+tooltip.betterstorage.drinkingHelmet.craftHint=Craft with 2 potions.
 tooltip.betterstorage.drinkingHelmet.useHint=Press %KEY% to take a sip.
 tooltip.betterstorage.drinkingHelmet.uses=Remaining uses: %USES%
