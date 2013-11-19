@@ -114,10 +114,10 @@ public final class Recipes {
 		
 		// Cardboard sheet recipe
 		if (MiscUtils.isEnabled(Items.cardboardSheet)) {
-			GameRegistry.addRecipe(new ItemStack(Items.cardboardSheet),
-					"ooo",
-					"ooo",
-					"ooo", 'o', Item.paper);
+			GameRegistry.addShapelessRecipe(new ItemStack(Items.cardboardSheet, 4),
+					Item.paper, Item.paper, Item.paper,
+					Item.paper, Item.paper, Item.paper,
+					Item.paper, Item.paper, Item.slimeBall);
 			
 			// Cardboard helmet recipe
 			if (MiscUtils.isEnabled(Items.cardboardHelmet))
