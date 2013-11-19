@@ -346,9 +346,7 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor, IDyeableIt
 			// Try to place the backpack as if it was being held and used by the player.
 			success = backpack.getItem().onItemUse(backpack, player, player.worldObj, x, y, z, side, 0, 0, 0);
 			if (backpack.stackSize <= 0) {
-				if (hasChestplateBackpack)
-					player.setCurrentItemOrArmor(CurrentItem.CHEST, null);
-				else getBackpackData(player).backpack = null;
+				ItemBackpack.setBackpack(player, null, null);
 				backpack = null;
 			}
 		}
