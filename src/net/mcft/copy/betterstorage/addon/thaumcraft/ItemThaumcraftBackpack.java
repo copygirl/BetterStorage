@@ -2,8 +2,6 @@ package net.mcft.copy.betterstorage.addon.thaumcraft;
 
 import java.util.List;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.StackUtils;
@@ -19,6 +17,8 @@ import thaumcraft.api.IRepairable;
 import thaumcraft.api.IRepairableExtended;
 import thaumcraft.api.IVisDiscounter;
 import thaumcraft.api.ThaumcraftApi;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemThaumcraftBackpack extends ItemBackpack implements IRepairable, IVisDiscounter {
 	
