@@ -1,5 +1,9 @@
 package net.mcft.copy.betterstorage.addon.thaumcraft;
 
+import java.util.List;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.StackUtils;
@@ -10,6 +14,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import thaumcraft.api.IRepairable;
 import thaumcraft.api.IRepairableExtended;
 import thaumcraft.api.IVisDiscounter;
@@ -34,6 +39,13 @@ public class ItemThaumcraftBackpack extends ItemBackpack implements IRepairable,
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
 		return ThaumcraftResources.thaumcraftBackpackTexture.toString();
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advancedTooltips) {
+		super.addInformation(stack, player, list, advancedTooltips);
+		list.add(String.format("%s: %s%%", StatCollector.translateToLocal("tc.visdiscount"), getVisDiscount()));
 	}
 	
 	@Override
