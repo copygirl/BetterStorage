@@ -12,16 +12,13 @@ import net.minecraftforge.common.EnumHelper;
 public class ItemCardboardSheet extends ItemBetterStorage {
 
 	public static final EnumToolMaterial toolMaterial =
-			EnumHelper.addToolMaterial("cardboard", 0, 64, 2.5F, 0.0F, 18);
+			EnumHelper.addToolMaterial("cardboard", 0, 64, 2.5F, 0.0F, 0);
 	public static final EnumArmorMaterial armorMaterial =
-			EnumHelper.addArmorMaterial("cardboard", 5, new int[]{ 1, 2, 2, 1 }, 20);
+			EnumHelper.addArmorMaterial("cardboard", 5, new int[]{ 1, 2, 2, 1 }, 0);
 	
 	public ItemCardboardSheet(int id) {
 		super(id);
 		setMaxStackSize(8);
-		
-		toolMaterial.customCraftingMaterial = this;
-		armorMaterial.customCraftingMaterial = this;
 	}
 	
 	public static boolean isEffective(ItemStack stack) {
