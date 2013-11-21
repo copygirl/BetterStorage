@@ -59,7 +59,7 @@ material.betterstorage.zinc=Zink
 # Thaumcraft
 tc.research_name.betterstorage.magicstorage=Magischer Speicher
 tc.research_text.betterstorage.magicstorage=Verzaubere deine Behälter
-tc.research_page.betterstorage.magicstorage.1=Einen Rucksack mit Magie und Materialien magischer Natur zu bearbeiten, wird seine Haltbarkeit und Kapazität erhöhen. Dank dieser Verbesserung ist er fähig, Verzauberungen leichter anzunehmen, einschließlich der Verzauberung Reparieren. So lange der Rucksack die Verzauberung Reparieren besitzt, werden sich Items in ihm ebenfalls reparieren, jedoch langsamer.<BR>Etwas ähnliches geschieht mit einer Verstärkten Eisentruhe und einer Menge Thaumium; entstehen wird eine Truhe, die sowohl haltbarer ist als auch mehr Items speichern kann.
+tc.research_page.betterstorage.magicstorage.1=Einen Rucksack mit Magie und Materialien magischer Natur zu bearbeiten, wird seine Haltbarkeit und Kapazität erhöhen. Items in ihm sind, wenn sie die Reparieren-Verzauberung besitzen, weiterhin fähig, sich zu reparieren, jedoch langsamer.<BR>Etwas ähnliches geschieht, wenn du eine Verstärkte Eisentruhe und eine Menge Thaumium zusammenschmeißt; entstehen wird eine Truhe, die sowohl haltbarer ist als auch mehr Items speichern kann.
 
 # Blocks
 tile.betterstorage.armorStand.name=Rüstungsstand
@@ -82,5 +82,6 @@ tooltip.betterstorage.backpack.equipHint=Platziere und bau ab, während#du schle
 tooltip.betterstorage.backpack.openHint=Drücke %KEY%, um Rucksack zu öffnen.
 tooltip.betterstorage.backpack.unequipHint=%REASON% Schleiche und rechtsklicke#Boden mit leerer Hand, um abzusetzen.
 tooltip.betterstorage.backpack.used=Wird gerade von einem Spieler benutzt.
+tooltip.betterstorage.drinkingHelmet.craftHint=Verbinde ihn mit 2 Tränken.
 tooltip.betterstorage.drinkingHelmet.useHint=Drücke %KEY%, um ein Schlückchen zu trinken.
 tooltip.betterstorage.drinkingHelmet.uses=Verbleibende Nutzungen: %USES%
