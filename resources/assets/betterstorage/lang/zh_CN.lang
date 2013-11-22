@@ -59,7 +59,7 @@ material.betterstorage.zinc=锌
 # Thaumcraft
 tc.research_name.betterstorage.magicstorage=魔力存储
 tc.research_text.betterstorage.magicstorage=附魔你的储物容器
-tc.research_page.betterstorage.magicstorage.1=用自然属性的魔力和材料对背包注魔能增加背包的耐用性以及容量.得益于魔力升级,背包将能够更容易地接受包括修复附魔在内的神秘时代特有附魔.只要背包拥有修复附魔,存放在背包内的物品就能缓慢地恢复耐久.与之类似,用神秘锭对强化铁箱进行改造,能得到更耐用,容量更大的箱子.
+tc.research_page.betterstorage.magicstorage.1=用自然属性的魔力和材料对背包注魔能增加背包的耐用性以及容量.被施加过修复附魔的物品即使装入这个背包也能回复耐久,虽然会比正常回复速度稍慢.<BR>用神秘锭改造的神秘箱子具有类似功能,你将得到了一个可以容纳更多物品也更加耐用的箱子. 
 
 # Blocks
 tile.betterstorage.armorStand.name=装备架
@@ -82,5 +82,6 @@ tooltip.betterstorage.backpack.equipHint=放置状态下按住潜行#然后打�
 tooltip.betterstorage.backpack.openHint=装备时按住%KEY%打开背包界面.
 tooltip.betterstorage.backpack.unequipHint=%REASON%空手情况下对着空地按住潜行#并右击地面来卸下背包.
 tooltip.betterstorage.backpack.used=背包当前正在被玩家翻开.
+tooltip.betterstorage.drinkingHelmet.craftHint=与两瓶药水合成.
 tooltip.betterstorage.drinkingHelmet.useHint=按下%KEY%小啜一口.
 tooltip.betterstorage.drinkingHelmet.uses=剩余次数: %USES%
