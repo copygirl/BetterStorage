@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.mcft.copy.betterstorage.api.IContainerItem;
-import net.mcft.copy.betterstorage.api.IKey;
-import net.mcft.copy.betterstorage.api.ILock;
+import net.mcft.copy.betterstorage.api.lock.IKey;
+import net.mcft.copy.betterstorage.api.lock.ILock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -109,9 +109,9 @@ public final class StackUtils {
 	/** Returns if the two item stacks match. <br>
 	 *  True when they're both null or their ID, damage and optionally NBT data match. */
 	public static boolean matches(ItemStack stack1, ItemStack stack2, boolean matchNBT) {
-		return ((stack1 == null) ? (stack2 == null) : ((stack2 != null) &&
-				matches(stack1.itemID, stack1.getItemDamage(), (matchNBT ? stack1.getTagCompound() : null),
-				        stack2.itemID, stack2.getItemDamage(), (matchNBT ? stack2.getTagCompound() : null))));
+		return ((stack1 == null) ? (stack2 == null) : ((stack2 != null) && matches(
+				stack1.itemID, stack1.getItemDamage(), (matchNBT ? stack1.getTagCompound() : null),
+				stack2.itemID, stack2.getItemDamage(), (matchNBT ? stack2.getTagCompound() : null))));
 	}
 	/** Returns if the two item stacks match. <br>
 	 *  True when they're both null or their ID, damage and NBT data match. */

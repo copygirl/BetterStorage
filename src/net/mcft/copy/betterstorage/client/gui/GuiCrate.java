@@ -17,7 +17,7 @@ public class GuiCrate extends GuiBetterStorage {
 	}
 	
 	@Override
-	protected ResourceLocation getResource() { return Resources.crateContainer; }
+	protected ResourceLocation getResource() { return Resources.containerCrate; }
 	
 	@Override
 	public void update(int id, int val) {

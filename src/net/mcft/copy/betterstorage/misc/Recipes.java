@@ -84,6 +84,18 @@ public final class Recipes {
 					"o o",
 					"ooo", 'o', Items.cardboardSheet);
 		
+		// Advanced crafter recipe
+		if (MiscUtils.isEnabled(Blocks.craftingStation))
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Blocks.craftingStation),
+					"BGB",
+					"ITI",
+					"WCW", 'B', Block.stoneBrick,
+					       'G', Item.ingotGold,
+					       'I', Item.ingotIron,
+					       'T', Block.workbench,
+					       'W', "plankWood",
+					       'C', (MiscUtils.isEnabled(Blocks.crate) ? Blocks.crate : Block.chest)));
+		
 		if (MiscUtils.isEnabled(Items.key)) {
 			// Key recipe
 			GameRegistry.addRecipe(KeyRecipe.createKeyRecipe(

@@ -4,6 +4,7 @@ import java.util.Random;
 
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityCardboardBox;
 import net.mcft.copy.betterstorage.item.block.ItemCardboardBox;
+import net.mcft.copy.betterstorage.misc.Constants;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.Item;
@@ -31,8 +32,8 @@ public class BlockCardboardBox extends BlockContainerBetterStorage {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister iconRegister) {
-		blockIcon = iconRegister.registerIcon("betterstorage:cardboardBox");
-		sideIcon = iconRegister.registerIcon("betterstorage:cardboardBox_side");
+		blockIcon = iconRegister.registerIcon(Constants.modId + ":cardboardBox");
+		sideIcon = iconRegister.registerIcon(Constants.modId + ":cardboardBox_side");
 	}
 	
 	@Override

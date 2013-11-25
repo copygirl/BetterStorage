@@ -2,9 +2,9 @@ package net.mcft.copy.betterstorage.block.tileentity;
 
 import java.security.InvalidParameterException;
 
-import net.mcft.copy.betterstorage.api.EnumLockInteraction;
-import net.mcft.copy.betterstorage.api.ILock;
-import net.mcft.copy.betterstorage.api.ILockable;
+import net.mcft.copy.betterstorage.api.lock.EnumLockInteraction;
+import net.mcft.copy.betterstorage.api.lock.ILock;
+import net.mcft.copy.betterstorage.api.lock.ILockable;
 import net.mcft.copy.betterstorage.attachment.Attachments;
 import net.mcft.copy.betterstorage.attachment.IHasAttachments;
 import net.mcft.copy.betterstorage.attachment.LockAttachment;

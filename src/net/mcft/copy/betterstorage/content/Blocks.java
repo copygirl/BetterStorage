@@ -5,6 +5,7 @@ import net.mcft.copy.betterstorage.addon.Addon;
 import net.mcft.copy.betterstorage.block.BlockArmorStand;
 import net.mcft.copy.betterstorage.block.BlockBackpack;
 import net.mcft.copy.betterstorage.block.BlockCardboardBox;
+import net.mcft.copy.betterstorage.block.BlockCraftingStation;
 import net.mcft.copy.betterstorage.block.BlockEnderBackpack;
 import net.mcft.copy.betterstorage.block.BlockLocker;
 import net.mcft.copy.betterstorage.block.BlockReinforcedChest;
@@ -22,6 +23,7 @@ public final class Blocks {
 	public static BlockEnderBackpack enderBackpack;
 	public static BlockCardboardBox cardboardBox;
 	public static BlockReinforcedLocker reinforcedLocker;
+	public static BlockCraftingStation craftingStation;
 	
 	private Blocks() {  }
 	
@@ -35,6 +37,7 @@ public final class Blocks {
 		enderBackpack    = MiscUtils.conditionalNew(BlockEnderBackpack.class, Config.enderBackpackId);
 		cardboardBox     = MiscUtils.conditionalNew(BlockCardboardBox.class, Config.cardboardBoxId);
 		reinforcedLocker = MiscUtils.conditionalNew(BlockReinforcedLocker.class, Config.reinforcedLockerId);
+		craftingStation  = MiscUtils.conditionalNew(BlockCraftingStation.class, Config.craftingStationId);
 		
 		Addon.initializeBlocksAll();
 		

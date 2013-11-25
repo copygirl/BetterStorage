@@ -2,6 +2,7 @@ package net.mcft.copy.betterstorage.utils;
 
 import net.mcft.copy.betterstorage.addon.thaumcraft.GuiThaumiumChest;
 import net.mcft.copy.betterstorage.client.gui.GuiBetterStorage;
+import net.mcft.copy.betterstorage.client.gui.GuiCraftingStation;
 import net.mcft.copy.betterstorage.client.gui.GuiCrate;
 import net.mcft.copy.betterstorage.container.ContainerKeyring;
 import net.mcft.copy.betterstorage.inventory.InventoryCardboardBox;
@@ -65,6 +66,8 @@ public final class PlayerUtils {
 		} else if (name.equals(Constants.containerCardboardBox)) {
 			IInventory inventory = new InventoryWrapper(new InventoryCardboardBox(new ItemStack[9]), title, localized);
 			return new GuiBetterStorage(player, columns, rows, inventory);
+		} else if (name.equals(Constants.containerCraftingStation)) {
+			return new GuiCraftingStation(player, title, localized);
 		} else return new GuiBetterStorage(player, columns, rows, title, localized);
 		
 	}

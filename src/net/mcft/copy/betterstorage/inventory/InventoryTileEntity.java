@@ -49,11 +49,12 @@ public class InventoryTileEntity extends InventoryBetterStorage {
 	public ItemStack getStackInSlot(int slot) { return inventory.getStackInSlot(slot); }
 	@Override
 	public void setInventorySlotContents(int slot, ItemStack stack) {
-		inventory.setInventorySlotContents(slot, stack);
-	}
+		inventory.setInventorySlotContents(slot, stack); }
+
 	@Override
-	public void onInventoryChanged() {  }
-	
+	public boolean isItemValidForSlot(int slot, ItemStack stack) {
+		return inventory.isItemValidForSlot(slot, stack);
+	}
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) {
 		for (TileEntityContainer tileEntity : tileEntities)
@@ -61,18 +62,12 @@ public class InventoryTileEntity extends InventoryBetterStorage {
 				return false;
 		return true;
 	}
-	@Override
-	public void openChest() {
-		mainTileEntity.onContainerOpened();
-	}
-	@Override
-	public void closeChest() {
-		mainTileEntity.onContainerClosed();
-	}
 	
 	@Override
-	public boolean isItemValidForSlot(int slot, ItemStack stack) {
-		return inventory.isItemValidForSlot(slot, stack);
-	}
+	public void openChest() { mainTileEntity.onContainerOpened(); }
+	@Override
+	public void closeChest() { mainTileEntity.onContainerClosed(); }
+	@Override
+	public void onInventoryChanged() {  }
 	
 }

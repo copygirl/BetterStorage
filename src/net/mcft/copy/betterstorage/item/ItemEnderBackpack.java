@@ -39,7 +39,7 @@ public class ItemEnderBackpack extends ItemBackpack {
 	
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
-		return Resources.enderBackpackTexture.toString();
+		return Resources.textureEnderBackpack.toString();
 	}
 	
 	class InventoryEnderBackpackEquipped extends InventoryWrapper {

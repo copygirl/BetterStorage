@@ -33,9 +33,9 @@ public class ItemCardboardArmor extends ItemArmor implements ICardboardItem, ISp
 	
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
-		return ((type != null) ? Resources.emptyTexture
-		                       : ((slot == 2) ? Resources.cardboardLegginsTexture :
-		                                        Resources.cardboardArmorTexture)).toString();
+		return ((type != null) ? Resources.textureEmpty
+		                       : ((slot == 2) ? Resources.textureCardboardLeggins :
+		                                        Resources.textureCardboardArmor)).toString();
 	}
 	
 	@Override

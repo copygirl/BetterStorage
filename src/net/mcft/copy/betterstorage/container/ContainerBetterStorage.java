@@ -57,10 +57,12 @@ public class ContainerBetterStorage extends Container {
 		setUpdateGui(gui);
 	}
 	
+	public int getHeight() { return ((getRows() + 4) * 18) + separation + 29; }
+	
 	protected void setupInventoryContainer() {
-		for (int y = 0; y < rows; y++)
-			for (int x = 0; x < columns; x++)
-				addSlotToContainer(new SlotBetterStorage(inventory, x + y * columns,
+		for (int y = 0; y < getRows(); y++)
+			for (int x = 0; x < getColumns(); x++)
+				addSlotToContainer(new SlotBetterStorage(inventory, x + y * getColumns(),
 				                                         8 + x * 18, 18 + y * 18));
 	}
 	
@@ -68,18 +70,31 @@ public class ContainerBetterStorage extends Container {
 		for (int y = 0; y < 3; y++)
 			for (int x = 0; x < 9; x++)
 				addSlotToContainer(new SlotBetterStorage(player.inventory, 9 + x + y * 9,
-				                                         8 + x * 18 + (columns - 9) * 9,
-				                                         rows * 18 + y * 18 + 18 + separation));
+				                                         8 + x * 18 + (getColumns() - 9) * 9,
+				                                         getHeight() - 83 + y * 18));
 		setHotbarStart();
 		for (int x = 0; x < 9; x++)
 			addSlotToContainer(new SlotBetterStorage(player.inventory, x,
-			                                         8 + x * 18 + (columns - 9) * 9,
-			                                         rows * 18 + 76 + separation));
+			                                         8 + x * 18 + (getColumns() - 9) * 9,
+			                                         getHeight() - 25));
 	}
 	
 	protected void setHotbarStart() {
 		startHotbar = inventorySlots.size();
 	}
+	
+	/** Returns if the slot is in the inventory. */
+	protected boolean inInventory(int slot) { return (slot < inventory.getSizeInventory()); }
+	/** Returns the start slot where items should be transfered to from this slot. */
+	protected int transferStart(int slot) {
+		return (inInventory(slot) ? inventory.getSizeInventory() : 0);
+	}
+	/** Returns the end slot where items should be transfered to from this slot. */
+	protected int transferEnd(int slot) {
+		return (inInventory(slot) ? inventorySlots.size() : inventory.getSizeInventory());
+	}
+	/** Returns the direction the stack should be transfered in. true = normal, false = backwards. */
+	protected boolean transferDirection(int slot) { return inInventory(slot); }
 	
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int slotId) {
@@ -90,12 +105,7 @@ public class ContainerBetterStorage extends Container {
 		if ((slot != null) && slot.getHasStack()) {
 			ItemStack slotStack = slot.getStack();
 			stack = slotStack.copy();
-			// If slot is in the container inventory, try to transfer the item to the player.
-			if (slotId < inventory.getSizeInventory()) {
-				if (!mergeItemStack(slotStack, inventory.getSizeInventory(), inventorySlots.size(), true))
-					return null;
-			// If slot is in the player inventory, try to transfer the item to the container.
-			} else if (!mergeItemStack(slotStack, 0, inventory.getSizeInventory(), false))
+			if (!mergeItemStack(slotStack, transferStart(slotId), transferEnd(slotId), transferDirection(slotId)))
 				return null;
 			if (slotStack.stackSize != 0)
 				slot.onSlotChanged();
@@ -113,7 +123,7 @@ public class ContainerBetterStorage extends Container {
 		// Try to put the stack into existing stacks with the same type.
 		if (stack.isStackable()) {
 			for (int i = 0; i < (end - start); i++) {
-				int index = (backwards ? (end - 1 - i) : i);
+				int index = start + (backwards ? ((end - start) - 1 - i) : i);
 				
 				Slot slot = (Slot)this.inventorySlots.get(index);
 				ItemStack slotStack = slot.getStack();
@@ -139,7 +149,7 @@ public class ContainerBetterStorage extends Container {
 		
 		// Try to put the stack into empty slots.
 		for (int i = 0; i < (end - start); i++) {
-			int index = (backwards ? (end - 1 - i) : i);
+			int index = start + (backwards ? ((end - start) - 1 - i) : i);
 			
 			Slot slot = (Slot)this.inventorySlots.get(index);
 			ItemStack slotStack = slot.getStack();

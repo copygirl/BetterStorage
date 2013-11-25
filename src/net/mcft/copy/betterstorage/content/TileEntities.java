@@ -5,6 +5,7 @@ import net.mcft.copy.betterstorage.block.crate.TileEntityCrate;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityArmorStand;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityBackpack;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityCardboardBox;
+import net.mcft.copy.betterstorage.block.tileentity.TileEntityCraftingStation;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityLocker;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityReinforcedChest;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityReinforcedLocker;
@@ -24,6 +25,7 @@ public final class TileEntities {
 		GameRegistry.registerTileEntity(TileEntityBackpack.class, Constants.containerBackpack);
 		GameRegistry.registerTileEntity(TileEntityCardboardBox.class, Constants.containerCardboardBox);
 		GameRegistry.registerTileEntity(TileEntityReinforcedLocker.class, Constants.containerReinforcedLocker);
+		GameRegistry.registerTileEntity(TileEntityCraftingStation.class, Constants.containerCraftingStation);
 		
 		Addon.registerTileEntitesAll();
 		

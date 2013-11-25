@@ -1,10 +1,10 @@
 package net.mcft.copy.betterstorage.attachment;
 
 import net.mcft.copy.betterstorage.api.BetterStorageEnchantment;
-import net.mcft.copy.betterstorage.api.EnumLockInteraction;
-import net.mcft.copy.betterstorage.api.IKey;
-import net.mcft.copy.betterstorage.api.ILock;
-import net.mcft.copy.betterstorage.api.ILockable;
+import net.mcft.copy.betterstorage.api.lock.EnumLockInteraction;
+import net.mcft.copy.betterstorage.api.lock.IKey;
+import net.mcft.copy.betterstorage.api.lock.ILock;
+import net.mcft.copy.betterstorage.api.lock.ILockable;
 import net.mcft.copy.betterstorage.content.Items;
 import net.mcft.copy.betterstorage.item.ItemBetterStorage;
 import net.mcft.copy.betterstorage.misc.handlers.PacketHandler;

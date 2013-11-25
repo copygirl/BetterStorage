@@ -31,7 +31,7 @@ public class TileEntityLocker extends TileEntityLockable {
 	
 	@SideOnly(Side.CLIENT)
 	public ResourceLocation getResource() {
-		return (isConnected() ? Resources.lockerLargeTexture : Resources.lockerTexture);
+		return (isConnected() ? Resources.textureLockerLarge : Resources.textureLocker);
 	}
 	
 	@Override

@@ -1,6 +1,6 @@
 package net.mcft.copy.betterstorage.inventory;
 
-import net.mcft.copy.betterstorage.api.IKey;
+import net.mcft.copy.betterstorage.api.lock.IKey;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;

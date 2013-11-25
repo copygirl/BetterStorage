@@ -20,6 +20,7 @@ public final class Config {
 	public static int enderBackpackId    = 2835;
 	public static int cardboardBoxId     = 2836;
 	public static int reinforcedLockerId = 2837;
+	public static int craftingStationId  = 2838;
 	
 	public static int keyId            = 28540;
 	public static int lockId           = 28541;
@@ -74,6 +75,7 @@ public final class Config {
 		enderBackpackId    = config.getBlock("enderBackpack", enderBackpackId).getInt();
 		cardboardBoxId     = config.getBlock("cardboardBox", cardboardBoxId).getInt();
 		reinforcedLockerId = config.getBlock("reinforcedLocker", reinforcedLockerId).getInt();
+		craftingStationId  = config.getBlock("craftingStation", craftingStationId).getInt();
 		
 		keyId            = config.getItem("key", keyId).getInt();
 		lockId           = config.getItem("lock", lockId).getInt();

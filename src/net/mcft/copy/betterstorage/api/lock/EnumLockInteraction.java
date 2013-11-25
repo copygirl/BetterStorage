@@ -1,4 +1,4 @@
-package net.mcft.copy.betterstorage.api;
+package net.mcft.copy.betterstorage.api.lock;
 
 public enum EnumLockInteraction {
 	

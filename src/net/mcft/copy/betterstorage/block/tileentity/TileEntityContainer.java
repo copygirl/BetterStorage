@@ -48,7 +48,7 @@ public abstract class TileEntityContainer extends TileEntity {
 	
 	public TileEntityContainer() {
 		int size = getSizeContents();
-		contents = ((size > 0) ? new ItemStack[getSizeContents()] : null);
+		contents = ((size > 0) ? new ItemStack[size] : null);
 		playerInventory = makePlayerInventory();
 	}
 	

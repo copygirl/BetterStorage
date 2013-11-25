@@ -7,8 +7,8 @@ import java.util.Map;
 
 import net.mcft.copy.betterstorage.Config;
 import net.mcft.copy.betterstorage.api.BetterStorageEnchantment;
-import net.mcft.copy.betterstorage.api.IKey;
-import net.mcft.copy.betterstorage.api.ILock;
+import net.mcft.copy.betterstorage.api.lock.IKey;
+import net.mcft.copy.betterstorage.api.lock.ILock;
 import net.mcft.copy.betterstorage.content.Items;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.MiscUtils;

@@ -1,8 +1,8 @@
 package net.mcft.copy.betterstorage.item.locking;
 
 import net.mcft.copy.betterstorage.api.BetterStorageEnchantment;
-import net.mcft.copy.betterstorage.api.IKey;
-import net.mcft.copy.betterstorage.api.ILock;
+import net.mcft.copy.betterstorage.api.lock.IKey;
+import net.mcft.copy.betterstorage.api.lock.ILock;
 import net.mcft.copy.betterstorage.item.ItemBetterStorage;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.RandomUtils;

@@ -54,7 +54,7 @@ public class ItemDrinkingHelmet extends ItemArmor {
 	
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
-		return Resources.drinkingHelmetTexture.toString();
+		return Resources.textureDrinkingHelmet.toString();
 	}
 	@Override
 	@SideOnly(Side.CLIENT)

@@ -15,7 +15,7 @@ public class ModelLocker extends ModelBase {
 	
 	private IModelCustom model;
 	
-	protected String modelPath() { return Resources.lockerModel; }
+	protected String modelPath() { return Resources.modelLocker; }
 	
 	public ModelLocker() {
 		model = AdvancedModelLoader.loadModel(modelPath());
