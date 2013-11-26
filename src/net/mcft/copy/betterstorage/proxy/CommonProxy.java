@@ -5,17 +5,21 @@ import java.util.EnumSet;
 import net.mcft.copy.betterstorage.attachment.EnumAttachmentInteraction;
 import net.mcft.copy.betterstorage.attachment.IHasAttachments;
 import net.mcft.copy.betterstorage.block.crate.CratePileCollection;
+import net.mcft.copy.betterstorage.entity.EntityCluckington;
 import net.mcft.copy.betterstorage.item.IDyeableItem;
 import net.mcft.copy.betterstorage.misc.handlers.BackpackHandler;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
+import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.Event.Result;
 import net.minecraftforge.event.ForgeSubscribe;
+import net.minecraftforge.event.entity.player.EntityInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import net.minecraftforge.event.world.WorldEvent.Save;
@@ -99,6 +103,18 @@ public class CommonProxy implements ITickHandler {
 		}
 		
 	}
+	
+	@ForgeSubscribe
+	public void onEntityInteract(EntityInteractEvent event) {
+		if (event.entity.worldObj.isRemote || event.isCanceled() ||
+		    (event.target.getClass() != EntityChicken.class) ||
+		    ((EntityChicken)event.target).isChild()) return;
+		ItemStack holding = event.entityPlayer.getCurrentEquippedItem();
+		if ((holding == null) || (holding.getItem() != Item.nameTag) ||
+		    !"Cluckington".equals(holding.getDisplayName())) return;
+		EntityCluckington.spawn((EntityChicken)event.target);
+	}
+	
 	@Override
 	public String getLabel() { return "BetterStorage"; }
 	@Override

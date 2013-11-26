@@ -14,6 +14,7 @@ import net.mcft.copy.betterstorage.block.tileentity.TileEntityLocker;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityReinforcedChest;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityReinforcedLocker;
 import net.mcft.copy.betterstorage.client.model.ModelBackpackArmor;
+import net.mcft.copy.betterstorage.client.model.ModelCluckington;
 import net.mcft.copy.betterstorage.client.renderer.BetterStorageRenderingHandler;
 import net.mcft.copy.betterstorage.client.renderer.ItemRendererBackpack;
 import net.mcft.copy.betterstorage.client.renderer.ItemRendererContainer;
@@ -23,6 +24,7 @@ import net.mcft.copy.betterstorage.client.renderer.TileEntityBackpackRenderer;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityLockerRenderer;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityReinforcedChestRenderer;
 import net.mcft.copy.betterstorage.content.Blocks;
+import net.mcft.copy.betterstorage.entity.EntityCluckington;
 import net.mcft.copy.betterstorage.entity.EntityFrienderman;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.misc.handlers.KeyBindingHandler;
@@ -31,6 +33,7 @@ import net.mcft.copy.betterstorage.utils.RenderUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.entity.RenderChicken;
 import net.minecraft.client.renderer.entity.RendererLivingEntity;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.player.EntityPlayer;
@@ -89,6 +92,7 @@ public class ClientProxy extends CommonProxy {
 		registerItemRenderer(Blocks.reinforcedLocker, new ItemRendererContainer(TileEntityReinforcedLocker.class));
 		
 		RenderingRegistry.registerEntityRenderingHandler(EntityFrienderman.class, new RenderFrienderman());
+		RenderingRegistry.registerEntityRenderingHandler(EntityCluckington.class, new RenderChicken(new ModelCluckington(), 0.4F));
 		
 		reinforcedChestRenderId = registerTileEntityRenderer(TileEntityReinforcedChest.class, new TileEntityReinforcedChestRenderer());
 		lockerRenderId = registerTileEntityRenderer(TileEntityLocker.class, new TileEntityLockerRenderer());

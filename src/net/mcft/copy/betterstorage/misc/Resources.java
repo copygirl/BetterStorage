@@ -22,6 +22,7 @@ public final class Resources {
 	public static final ResourceLocation textureDrinkingHelmet   = new BetterStorageResource("textures/models/drinkingHelmet.png");
 	public static final ResourceLocation textureCardboardArmor   = new BetterStorageResource("textures/models/cardboardArmor.png");
 	public static final ResourceLocation textureCardboardLeggins = new BetterStorageResource("textures/models/cardboardArmor_leggings.png");
+	public static final ResourceLocation textureCluckOverlay     = new BetterStorageResource("textures/models/cluck.png");
 	
 	
 	private static final String modelbase = "/assets/" + Constants.modId + "/models/";
