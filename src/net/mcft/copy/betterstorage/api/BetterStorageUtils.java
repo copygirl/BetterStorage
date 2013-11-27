@@ -3,7 +3,9 @@ package net.mcft.copy.betterstorage.api;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-public class BetterStorageUtils {
+public final class BetterStorageUtils {
+	
+	private BetterStorageUtils() {  }
 	
 	/** Returns if the stack matches the match stack. Stack size is ignored. <br>
 	 *  If the match stack damage is WILDCARD_VALUE, it will match any damage. <br>

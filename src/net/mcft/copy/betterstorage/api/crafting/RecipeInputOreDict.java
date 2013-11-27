@@ -1,5 +1,8 @@
 package net.mcft.copy.betterstorage.api.crafting;
 
+import java.util.List;
+import java.util.Random;
+
 import net.mcft.copy.betterstorage.api.BetterStorageUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -22,6 +25,15 @@ public class RecipeInputOreDict implements IRecipeInput {
 		for (ItemStack oreStack : OreDictionary.getOres(name))
 			if (BetterStorageUtils.wildcardMatch(oreStack, stack)) return true;
 		return false;
+	}
+	
+	@Override
+	public ItemStack getSampleInput(Random rnd) {
+		List<ItemStack> ores = OreDictionary.getOres(name);
+		if (ores.isEmpty()) return null;
+		ItemStack stack = ores.get(rnd.nextInt(ores.size())).copy();
+		stack.stackSize = getAmount();
+		return stack;
 	}
 	
 }
