@@ -1,4 +1,5 @@
 # Containers
+container.betterstorage.craftingStation=合成站
 container.betterstorage.backpack=背包
 container.betterstorage.cardboardBox=纸箱
 container.betterstorage.crate=仓储货箱
@@ -62,6 +63,7 @@ tc.research_text.betterstorage.magicstorage=附魔你的储物容器
 tc.research_page.betterstorage.magicstorage.1=用自然属性的魔力和材料对背包注魔能增加背包的耐用性以及容量.被施加过修复附魔的物品即使装入这个背包也能回复耐久,虽然会比正常回复速度稍慢.<BR>用神秘锭改造的神秘箱子具有类似功能,你将得到了一个可以容纳更多物品也更加耐用的箱子. 
 
 # Blocks
+tile.betterstorage.craftingStation.name=合成站
 tile.betterstorage.armorStand.name=装备架
 tile.betterstorage.backpack.name=背包
 tile.betterstorage.cardboardBox.name=纸箱
