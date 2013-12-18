@@ -1,4 +1,5 @@
 # Containers
+container.betterstorage.craftingStation=Handwerksstation
 container.betterstorage.backpack=Rucksack
 container.betterstorage.cardboardBox=Pappkarton
 container.betterstorage.crate=Lagerkiste
@@ -62,6 +63,7 @@ tc.research_text.betterstorage.magicstorage=Verzaubere deine Behälter
 tc.research_page.betterstorage.magicstorage.1=Einen Rucksack mit Magie und Materialien magischer Natur zu bearbeiten, wird seine Haltbarkeit und Kapazität erhöhen. Items in ihm sind, wenn sie die Reparieren-Verzauberung besitzen, weiterhin fähig, sich zu reparieren, jedoch langsamer.<BR>Etwas ähnliches geschieht, wenn du eine Verstärkte Eisentruhe und eine Menge Thaumium zusammenschmeißt; entstehen wird eine Truhe, die sowohl haltbarer ist als auch mehr Items speichern kann.
 
 # Blocks
+tile.betterstorage.craftingStation.name=Handwerksstation
 tile.betterstorage.armorStand.name=Rüstungsstand
 tile.betterstorage.backpack.name=Rucksack
 tile.betterstorage.cardboardBox.name=Pappkarton
