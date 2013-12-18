@@ -38,8 +38,10 @@ public class EnchantmentBetterStorage extends Enchantment {
 			EnchantmentBetterStorage lockpicking = conditialNew("lockpicking", key, Config.enchantmentLockpickingId, 6, 5,  5,  8, 30, 0);
 			EnchantmentBetterStorage morphing    = conditialNew("morphing",    key, Config.enchantmentMorphingId,    1, 5, 10, 12, 30, 0);
 			
-			lockpicking.setIncompatible(morphing);
-			morphing.setIncompatible(lockpicking);
+			if (lockpicking != null)
+				lockpicking.setIncompatible(morphing);
+			if (morphing != null)
+				morphing.setIncompatible(lockpicking);
 			
 			types.put("key", key);
 			
