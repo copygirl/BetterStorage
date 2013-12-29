@@ -100,6 +100,13 @@ public final class StackUtils {
 		compound.removeTag(tag);
 	}
 	
+	public static ItemStack copyStack(ItemStack stack, int stackSize) {
+		ItemStack copy = new ItemStack(stack.itemID, stackSize, stack.getItemDamage());
+		if (stack.stackTagCompound != null)
+			copy.stackTagCompound = (NBTTagCompound)stack.stackTagCompound.copy();
+		return copy;
+	}
+	
 	public static boolean matches(int id1, int damage1, NBTTagCompound data1, 
 	                              int id2, int damage2, NBTTagCompound data2) {
 		return ((id1 == id2) && (damage1 == damage2) &&

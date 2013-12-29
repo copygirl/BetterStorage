@@ -3,7 +3,6 @@ package net.mcft.copy.betterstorage.container;
 import net.mcft.copy.betterstorage.block.crate.CratePileData;
 import net.mcft.copy.betterstorage.inventory.InventoryCratePlayerView;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.Packet103SetSlot;
@@ -40,11 +39,7 @@ public class ContainerCrate extends ContainerBetterStorage {
 		// So to prevent a division by zero, just return.
 		if (data.getNumCrates() <= 0) return;
 		fullness = data.getOccupiedSlots() * 255 / data.getCapacity();
-		
-		if (lastFullness != fullness)
-			for (Object c : crafters)
-				((ICrafting)c).sendProgressBarUpdate(this, 0, fullness);
-		
+		sendUpdateIfChanged(0, fullness, lastFullness);
 		lastFullness = fullness;
 	}
 	

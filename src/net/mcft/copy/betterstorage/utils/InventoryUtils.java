@@ -6,7 +6,6 @@ import java.util.List;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 public final class InventoryUtils {
 	
@@ -19,8 +18,7 @@ public final class InventoryUtils {
 		amount = Math.min(amount, stack.stackSize);
 		if (amount < stack.stackSize) {
 			stack.stackSize -= amount;
-			stack = stack.copy();
-			stack.stackSize = amount;
+			stack = StackUtils.copyStack(stack, amount);
 		} else inventory.setInventorySlotContents(slot, null);
 		return stack;
 	}
@@ -86,13 +84,6 @@ public final class InventoryUtils {
 			if (DyeUtils.isDye(stack)) list.add(stack);
 		}
 		return list;
-	}
-	
-	public static ItemStack copyStack(ItemStack stack, int stackSize) {
-		ItemStack copy = new ItemStack(stack.itemID, stackSize, stack.getItemDamage());
-		if (stack.stackTagCompound != null)
-			copy.stackTagCompound = (NBTTagCompound)stack.stackTagCompound.copy();
-		return copy;
 	}
 	
 }

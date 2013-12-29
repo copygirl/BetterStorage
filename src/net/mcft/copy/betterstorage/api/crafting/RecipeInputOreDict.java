@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import net.mcft.copy.betterstorage.api.BetterStorageUtils;
+import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -30,10 +31,7 @@ public class RecipeInputOreDict implements IRecipeInput {
 	@Override
 	public ItemStack getSampleInput(Random rnd) {
 		List<ItemStack> ores = OreDictionary.getOres(name);
-		if (ores.isEmpty()) return null;
-		ItemStack stack = ores.get(rnd.nextInt(ores.size())).copy();
-		stack.stackSize = getAmount();
-		return stack;
+		return (!ores.isEmpty() ? StackUtils.copyStack(ores.get(rnd.nextInt(ores.size())), getAmount()) : null);
 	}
 	
 }

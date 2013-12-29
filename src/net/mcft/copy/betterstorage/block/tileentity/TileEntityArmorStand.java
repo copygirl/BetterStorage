@@ -67,6 +67,7 @@ public class TileEntityArmorStand extends TileEntityContainer {
 				player.inventory.armorInventory[slot] = item;
 				PacketDispatcher.sendPacketToPlayer(new Packet103SetSlot(0, 8 - slot, item), (Player)player);
 				markForUpdate();
+				onInventoryChanged();
 			}
 		} else if (((item != null) && (holding == null)) ||
 		           ((holding != null) && holding.getItem().isValidArmor(holding, 3 - slot, player))) {

@@ -93,7 +93,6 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 		if (!isConnected()) return;
 		TileEntityConnectable connectable = getConnectedTileEntity();
 		setConnected(ForgeDirection.UNKNOWN);
-		markForUpdate();
 		if (connectable != null) {
 			connectable.setConnected(ForgeDirection.UNKNOWN);
 			connectable.markForUpdate();
@@ -208,7 +207,7 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 	@Override
 	public void closeChest() { if (isAccessible()) getPlayerInventory().closeChest(); }
 	@Override
-	public void onInventoryChanged() {  }
+	public void onInventoryChanged() { super.onInventoryChanged(); }
 	
 	// Tile entity synchronization
 	

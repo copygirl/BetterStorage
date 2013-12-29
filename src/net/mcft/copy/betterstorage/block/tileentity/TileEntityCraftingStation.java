@@ -6,6 +6,7 @@ import net.mcft.copy.betterstorage.inventory.InventoryCraftingStation;
 import net.mcft.copy.betterstorage.inventory.InventoryTileEntity;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.NbtUtils;
+import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -17,6 +18,8 @@ public class TileEntityCraftingStation extends TileEntityContainer
 	
 	public ItemStack[] crafting;
 	public ItemStack[] output;
+	
+	private InventoryCraftingStation stationInventory;
 	
 	@Override
 	protected int getSizeContents() { return 18; }
@@ -30,13 +33,26 @@ public class TileEntityCraftingStation extends TileEntityContainer
 		// parent constructor. This gets called IN the parent constructor.
 		crafting = new ItemStack[9];
 		output = new ItemStack[9];
-		
-		return new InventoryTileEntity(this, new InventoryCraftingStation(this));
+		stationInventory = new InventoryCraftingStation(this);
+		return new InventoryTileEntity(this, stationInventory);
 	}
 	
 	@Override
 	public ContainerBetterStorage createContainer(EntityPlayer player) {
-		return new ContainerCraftingStation(player, new InventoryCraftingStation(this));
+		return new ContainerCraftingStation(player, getPlayerInventory());
+	}
+	
+	@Override
+	public void updateEntity() { stationInventory.update(); }
+	
+	@Override
+	public void dropContents() {
+		for (ItemStack stack : crafting)
+			WorldUtils.dropStackFromBlock(worldObj, xCoord, yCoord, zCoord, stack);
+		if (stationInventory.outputIsReal)
+			for (ItemStack stack : output)
+				WorldUtils.dropStackFromBlock(worldObj, xCoord, yCoord, zCoord, stack);
+		super.dropContents();
 	}
 	
 	// IInventory implementation
@@ -69,23 +85,26 @@ public class TileEntityCraftingStation extends TileEntityContainer
 	@Override
 	public ItemStack getStackInSlotOnClosing(int slot) { return null; }
 	@Override
+	public void onInventoryChanged() {
+		super.onInventoryChanged();
+		getPlayerInventory().onInventoryChanged();
+	}
+	@Override
 	public void openChest() {  }
 	@Override
 	public void closeChest() {  }
-	@Override
-	public void onInventoryChanged() {  }
 	
 	// ISidedInventory implementation
 	
-	private static int[] slotsAny = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 };
-	private static int[] slotsBottom = { 18, 19, 20, 21, 22, 23, 24, 25, 26 };
+	private static int[] slotsAny = { 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26 };
+	private static int[] slotsBottom = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
 	
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side) { return ((side == 0) ? slotsBottom : slotsAny); }
 	@Override
 	public boolean canInsertItem(int slot, ItemStack stack, int side) { return (side != 0); }
 	@Override
-	public boolean canExtractItem(int slot, ItemStack stack, int side) { return (side != 0); }
+	public boolean canExtractItem(int slot, ItemStack stack, int side) { return ((side != 0) || stationInventory.canTake(null)); }
 	
 	// Reading from / writing to NBT
 	
@@ -93,13 +112,17 @@ public class TileEntityCraftingStation extends TileEntityContainer
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
 		NbtUtils.readItems(crafting, compound.getTagList("Crafting"));
-		NbtUtils.readItems(output, compound.getTagList("Output"));
+		if (compound.hasKey("Output"))
+			NbtUtils.readItems(output, compound.getTagList("Output"));
+		stationInventory.progress = compound.getInteger("progress");
 	}
 	@Override
 	public void writeToNBT(NBTTagCompound compound) {
 		super.writeToNBT(compound);
 		compound.setTag("Crafting", NbtUtils.writeItems(crafting));
-		compound.setTag("Output", NbtUtils.writeItems(output));
+		if (stationInventory.outputIsReal)
+			compound.setTag("Output", NbtUtils.writeItems(output));
+		compound.setInteger("progress", stationInventory.progress);
 	}
 	
 }

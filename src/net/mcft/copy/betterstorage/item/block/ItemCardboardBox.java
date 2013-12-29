@@ -176,7 +176,7 @@ public class ItemCardboardBox extends ItemBlock implements IContainerItem {
 			items = new ArrayList<ItemStack>();
 			
 			for (int slot = 0; slot < inventory.getSizeInventory(); slot++) {
-				ItemStack slotStack = inventory.getStackInSlot(slot);
+				ItemStack slotStack = ItemStack.copyItemStack(inventory.getStackInSlot(slot));
 				if (slotStack == null) continue;
 				for (int i = 0; i < items.size(); i++) {
 					ItemStack itemsStack = items.get(i);
@@ -187,7 +187,8 @@ public class ItemCardboardBox extends ItemBlock implements IContainerItem {
 					if (addStack != null) {
 						itemsStack.stackSize += addStack.stackSize;
 						slotStack.stackSize -= addStack.stackSize;
-						break;
+						inventory.onInventoryChanged();
+						if (slotStack.stackSize <= 0) break;
 					}
 				}
 				if ((slotStack.stackSize <= 0) || (items.size() >= 9)) continue;
@@ -195,6 +196,7 @@ public class ItemCardboardBox extends ItemBlock implements IContainerItem {
 				slotStack = inventory.decrStackSize(slot, count);
 				if (slotStack == null) continue;
 				items.add(slotStack);
+				inventory.onInventoryChanged();
 			}
 			
 		}

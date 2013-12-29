@@ -100,12 +100,12 @@ public class InventoryCratePlayerView extends InventoryBetterStorage implements 
 			data.removeItems(oldStack);
 		}
 		if (stack != null) {
-			stack = stack.copy();
-			stack.stackSize = Math.min(stack.stackSize,
-			                           Math.min(data.spaceForItem(stack),
-			                                    stack.getMaxStackSize()));
-			if (stack.stackSize == 0) return;
-			getMapData(stack).itemCount += stack.stackSize;
+			int amount = Math.min(stack.stackSize,
+			                      Math.min(data.spaceForItem(stack),
+			                               stack.getMaxStackSize()));
+			if (amount == 0) return;
+			stack = StackUtils.copyStack(stack.copy(), amount);
+			getMapData(stack).itemCount += amount;
 			data.addItems(stack);
 		}
 		ignoreModifiedItems = false;

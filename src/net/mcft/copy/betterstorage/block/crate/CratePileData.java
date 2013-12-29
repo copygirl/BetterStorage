@@ -14,6 +14,7 @@ import net.mcft.copy.betterstorage.api.ICrateWatcher;
 import net.mcft.copy.betterstorage.inventory.InventoryCrateBlockView;
 import net.mcft.copy.betterstorage.misc.ItemIdentifier;
 import net.mcft.copy.betterstorage.utils.RandomUtils;
+import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -241,8 +242,7 @@ public class CratePileData implements Iterable<ItemStack> {
 		if (amount < stack.stackSize) {
 			stack.stackSize -= amount;
 			stacksAfter = calcNumStacks(stack);
-			stack = stack.copy();
-			stack.stackSize = amount;
+			stack = StackUtils.copyStack(stack, amount);
 		} else {
 			contents.remove(item);
 			updateContentsArray();
@@ -251,8 +251,7 @@ public class CratePileData implements Iterable<ItemStack> {
 		
 		numSlots -= (stacksBefore - stacksAfter);
 		
-		ItemStack removedStack = stack.copy();
-		removedStack.stackSize = -stack.stackSize;
+		ItemStack removedStack = StackUtils.copyStack(stack, -stack.stackSize);
 		for (ICrateWatcher watcher : watchers)
 			watcher.onCrateItemsModified(removedStack);
 		
@@ -307,11 +306,9 @@ public class CratePileData implements Iterable<ItemStack> {
 		for (ItemStack contentsStack : this) {
 			int numStacks = ItemIdentifier.calcNumStacks(contentsStack);
 			for (int i = 0; i < numStacks; i++) {
-				ItemStack stack = contentsStack.copy();
-				int maxStackSize = stack.getMaxStackSize();
+				int maxStackSize = contentsStack.getMaxStackSize();
 				int max = Math.min(contentsStack.stackSize - maxStackSize * i, maxStackSize);
-				stack.stackSize = Math.min(stack.stackSize, max);
-				stacks.add(stack);
+				stacks.add(StackUtils.copyStack(contentsStack, Math.min(contentsStack.stackSize, max)));
 			}
 			totalStacks += numStacks;
 		}

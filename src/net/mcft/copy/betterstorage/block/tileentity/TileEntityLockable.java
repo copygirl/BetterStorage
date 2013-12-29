@@ -157,6 +157,7 @@ public abstract class TileEntityLockable extends TileEntityConnectable
 		TileEntityLockable main = (TileEntityLockable)getMainTileEntity();
 		main.setLockInternal(lock);
 		main.markForUpdate();
+		onInventoryChanged();
 	}
 	
 	@Override

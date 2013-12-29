@@ -29,17 +29,24 @@ public interface IStationRecipe {
 	 *  and decreased in {@link #craft(ItemStack[], ItemStack[], EntityPlayer) craft()}. */
 	int getExperienceDisplay(ItemStack[] input);
 	
-	/** Returns the output for this recipe. */
+	/** Returns the time (in game ticks) needed to craft this recipe. <br>
+	 *  Return 0 for the recipe to be instantly available. Note: When a machine crafts,
+	 *  there might be minimum delay, which can be changed in the config file. Keep
+	 *  this within 0 to 32000 ticks. */
+	int getCraftingTime(ItemStack[] input);
+	
+	/** Returns the output items for this recipe. */
 	ItemStack[] getOutput(ItemStack[] input);
 	
 	/** Returns if the recipe can be crafted.
-	 * @param player may be null if a machine is trying to craft this. */
-	boolean canCraft(ItemStack[] input, EntityPlayer player);
+	 * @param source contains information of where this recipe is crafted and who crafts it. */
+	boolean canCraft(ItemStack[] input, ICraftingSource source);
 	
-	/** Called when the recipe is crafted.
-	 * @param input has to be modified to decrease/damage items used in the recipe.
-	 * @param output is already filled with what {@link #getOutput(ItemStack[]) getOutput()} returns.
-	 * @param player may be null if a machine crafted this. */
-	void craft(ItemStack[] input, ItemStack[] output, EntityPlayer player);
+	/** Called after the recipe is crafted.
+	 * @param input has to be modified to decrease/damage items used in the recipe. <br>
+	 *              Empty stacks (stack size = 0) and broken items (damage > max damage)
+	 *              will be removed from the input array automatically.
+	 * @param source contains information of where this recipe was crafted and who crafted it. */
+	void craft(ItemStack[] input, ICraftingSource source);
 	
 }

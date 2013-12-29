@@ -36,7 +36,7 @@ public class ContainerKeyring extends ContainerBetterStorage {
 	}
 	
 	private void addSlot(IInventory inventory, int slotId, int x, int y) {
-		SlotBetterStorage slot = new SlotBetterStorage(inventory, slotId, x, y);
+		SlotBetterStorage slot = new SlotBetterStorage(this, inventory, slotId, x, y);
 		if (slotId == getProtectedIndex()) slot.setProtected();
 		addSlotToContainer(slot);
 	}

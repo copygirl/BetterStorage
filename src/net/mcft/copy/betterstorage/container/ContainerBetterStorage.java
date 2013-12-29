@@ -2,10 +2,10 @@ package net.mcft.copy.betterstorage.container;
 
 import net.mcft.copy.betterstorage.client.gui.GuiBetterStorage;
 import net.mcft.copy.betterstorage.inventory.InventoryTileEntity;
-import net.mcft.copy.betterstorage.utils.InventoryUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -62,19 +62,19 @@ public class ContainerBetterStorage extends Container {
 	protected void setupInventoryContainer() {
 		for (int y = 0; y < getRows(); y++)
 			for (int x = 0; x < getColumns(); x++)
-				addSlotToContainer(new SlotBetterStorage(inventory, x + y * getColumns(),
+				addSlotToContainer(new SlotBetterStorage(this, inventory, x + y * getColumns(),
 				                                         8 + x * 18, 18 + y * 18));
 	}
 	
 	protected void setupInventoryPlayer() {
 		for (int y = 0; y < 3; y++)
 			for (int x = 0; x < 9; x++)
-				addSlotToContainer(new SlotBetterStorage(player.inventory, 9 + x + y * 9,
+				addSlotToContainer(new SlotBetterStorage(this, player.inventory, 9 + x + y * 9,
 				                                         8 + x * 18 + (getColumns() - 9) * 9,
 				                                         getHeight() - 83 + y * 18));
 		setHotbarStart();
 		for (int x = 0; x < 9; x++)
-			addSlotToContainer(new SlotBetterStorage(player.inventory, x,
+			addSlotToContainer(new SlotBetterStorage(this, player.inventory, x,
 			                                         8 + x * 18 + (getColumns() - 9) * 9,
 			                                         getHeight() - 25));
 	}
@@ -95,6 +95,9 @@ public class ContainerBetterStorage extends Container {
 	}
 	/** Returns the direction the stack should be transfered in. true = normal, false = backwards. */
 	protected boolean transferDirection(int slot) { return inInventory(slot); }
+	
+	/** Called when a slot is changed. */
+	public void onSlotChanged(int slot) {  }
 	
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int slotId) {
@@ -132,8 +135,8 @@ public class ContainerBetterStorage extends Container {
 				
 				if (StackUtils.matches(stack, slotStack) &&
 				    (slotStack.stackSize < maxStackSize)) {
-					ItemStack testStack = stack.copy();
-					testStack.stackSize = Math.min(slotStack.stackSize + stack.stackSize, maxStackSize);
+					int amount = Math.min(slotStack.stackSize + stack.stackSize, maxStackSize);
+					ItemStack testStack = StackUtils.copyStack(stack, amount);
 					if (slot.isItemValid(testStack) &&
 					    slot.inventory.isItemValidForSlot(slot.slotNumber, testStack)) {
 						stack.stackSize -= (testStack.stackSize - slotStack.stackSize);
@@ -155,10 +158,8 @@ public class ContainerBetterStorage extends Container {
 			ItemStack slotStack = slot.getStack();
 			
 			if (slotStack == null) {
-				ItemStack testStack = stack.copy();
-				int maxStackSize = Math.min(stack.getMaxStackSize(),
-				                            slot.inventory.getInventoryStackLimit());
-				testStack.stackSize = Math.min(stack.stackSize, maxStackSize);
+				int maxStackSize = Math.min(stack.getMaxStackSize(), slot.inventory.getInventoryStackLimit());
+				ItemStack testStack = StackUtils.copyStack(stack, Math.min(stack.stackSize, maxStackSize));
 				if (slot.isItemValid(testStack) &&
 				    slot.inventory.isItemValidForSlot(slot.slotNumber, testStack)) {
 					stack.stackSize -= testStack.stackSize;
@@ -195,7 +196,7 @@ public class ContainerBetterStorage extends Container {
 						if (amount > 0) {
 							if ((holding.stackSize -= amount) <= 0)
 								player.inventory.setItemStack(null);
-							slot.putStack(InventoryUtils.copyStack(slotStack, slotStack.stackSize + amount));
+							slot.putStack(StackUtils.copyStack(slotStack, slotStack.stackSize + amount));
 						}
 						return slotStack;
 					}
@@ -229,15 +230,28 @@ public class ContainerBetterStorage extends Container {
 		inventory.closeChest();
 	}
 	
-	@SideOnly(Side.CLIENT)
 	@Override
-	public void updateProgressBar(int par1, int par2) {
-		if (updateGui != null) updateGui.update(par1, par2);
+	@SideOnly(Side.CLIENT)
+	public void updateProgressBar(int id, int val) {
+		if (updateGui != null) updateGui.update(id, val);
 	}
 	
 	@SideOnly(Side.CLIENT)
 	public void setUpdateGui(GuiBetterStorage gui) {
 		updateGui = gui;
+	}
+	
+	/** Sends a packet to all players looking at
+	 *  this GUI for them to update something. */
+	public void sendUpdate(int id, int value) {
+		for (Object c : crafters)
+			((ICrafting)c).sendProgressBarUpdate(this, id, value);
+	}
+	/** Sends a packet to all players looking at this GUI for them to update
+	 *  something, but only if the value is different from the previous one. */
+	public void sendUpdateIfChanged(int id, int value, int previousValue) {
+		if (value != previousValue)
+			sendUpdate(id, value);
 	}
 	
 }

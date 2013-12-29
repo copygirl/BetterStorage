@@ -65,15 +65,8 @@ public class InventoryCrateBlockView extends InventoryBetterStorage implements I
 			// If the two stacks match, just add/remove the difference.
 			if (StackUtils.matches(oldStack, stack)) {
 				int count = stack.stackSize - oldStack.stackSize;
-				if (count > 0) {
-					ItemStack add = stack.copy();
-					add.stackSize = count;
-					data.addItems(add);
-				} else if (count < 0) {
-					ItemStack remove = stack.copy();
-					remove.stackSize = -count;
-					data.removeItems(remove);
-				}
+				if (count > 0) data.addItems(StackUtils.copyStack(stack, count));
+				else if (count < 0) data.removeItems(StackUtils.copyStack(stack, -count));
 				isModifying = false;
 				return;
 			}

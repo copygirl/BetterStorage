@@ -212,6 +212,7 @@ public abstract class TileEntityContainer extends TileEntity {
 	 *  a description packet to be send to players. */
 	public void markForUpdate() {
 		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		onInventoryChanged();
 	}
 	
 }

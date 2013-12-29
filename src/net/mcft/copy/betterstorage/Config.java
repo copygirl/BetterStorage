@@ -50,11 +50,13 @@ public final class Config {
 	// More settings ...
 	public static int reinforcedColumns = 13;
 	public static int backpackRows = 3;
+	public static int stationAutocraftDelay = 10;
 	public static boolean enableCrateInventoryInterface = true;
 	public static boolean enableBackpackOpen = false;
 	public static boolean dropBackpackOnDeath = true;
 	public static boolean enableHelpTooltips = true;
 	public static boolean backpackChestplate = true;
+	public static boolean enableStationAutoCrafting = false;
 	
 	public static int backpackOpenKey = 48;
 	public static int drinkingHelmetKey = 33;
@@ -108,6 +110,9 @@ public final class Config {
 		backpackRows = config.get(categorySettings, "backpackRows", backpackRows,
 		                          "Number of rows in backpacks. Valid values are 1 to 6.").getInt();
 		
+		stationAutocraftDelay = config.get(categorySettings, "stationAutocraftDelay", stationAutocraftDelay,
+		                                   "Delay between recipes being autocrafted in the crafting station in ticks. (Default: 10)").getInt();
+		
 		enableCrateInventoryInterface = config.get(categorySettings, "enableCrateInventoryInterface", enableCrateInventoryInterface,
 		                                           "If machines and such can interact with crates. Disable this if there's issues.").getBoolean(enableCrateInventoryInterface);
 		
@@ -128,6 +133,9 @@ public final class Config {
 		
 		backpackChestplate = config.get(categorySettings, "backpackChestplate", backpackChestplate,
 		                                "If false, backpacks don't take up the player's chestplate armor slot.").getBoolean(backpackChestplate);
+		
+		enableStationAutoCrafting = config.get(categorySettings, "enableStationAutoCrafting", enableStationAutoCrafting,
+		                                       "Controls if the crafting station can be used to auto-craft (may not work with all machines).").getBoolean(enableStationAutoCrafting);
 		
 		validate();
 		
