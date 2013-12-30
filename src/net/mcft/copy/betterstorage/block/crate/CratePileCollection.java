@@ -45,10 +45,6 @@ public class CratePileCollection {
 		return collection;
 	}
 	
-	private void removeCollectionFromMap() {
-		collectionMap.remove(dimension);
-	}
-	
 	/** Gets a crate pile from the collection, creates/loads it if necessary. */
 	public CratePileData getCratePile(int id) {
 		CratePileData pileData;
@@ -78,11 +74,11 @@ public class CratePileCollection {
 		dirtyPiles.remove(pileData);
 		getSaveFile(pileData.id).delete();
 		if (pileDataMap.size() <= 0)
-			removeCollectionFromMap();
+			collectionMap.remove(dimension);
 	}
 	
 	/** Saves the pile data to file. */
-	// Gets saved to <world>[/<dimension>]/crates/<id>.dat in uncompressed NBT.
+	// Gets saved to <world>[/<dimension>]/data/crates/<id>.dat in uncompressed NBT.
 	public void save(CratePileData pileData) {
 		try {
 			File file = getSaveFile(pileData.id);
@@ -106,7 +102,7 @@ public class CratePileCollection {
 			File file = getSaveFile(id);
 			if (!file.exists()) return null;
 			NBTTagCompound root = CompressedStreamTools.read(file);
-			return CratePileData.fromCompound(this, root.getCompoundTag("data"));
+			return CratePileData.fromCompound(this, id, root.getCompoundTag("data"));
 		} catch (Exception e) {
 			BetterStorage.log.warning("Error loading CratePileData: " + e);
 			e.printStackTrace();
@@ -143,10 +139,8 @@ public class CratePileCollection {
 	/** Called when the world unloads, removes the
 	 *  crate pile connection from the collection map. */
 	public static void unload(World world) {
-		// Unload is called before save. This breaks saving.
-		// Disabling this until there is something better isn't too bad.
-		//int dimension = world.provider.dimensionId;
-		//collectionMap.remove(dimension);
+		int dimension = world.provider.dimensionId;
+		collectionMap.remove(dimension);
 	}
 	
 	/** Called every tick if the world is loaded. */

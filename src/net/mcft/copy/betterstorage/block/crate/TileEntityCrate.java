@@ -74,7 +74,7 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 		}
 		// If there's still some crates left and this is a
 		// base crate, see which crates are still connected.
-		if ((data.getNumCrates() > 0) && !WorldUtils.is(worldObj, x, y - 1, z, Blocks.crate)) {
+		if ((data.getNumCrates() > 0) && (y == data.getRegion().minY)) {
 			List<HashSet<TileEntityCrate>> crateSets =
 					new ArrayList<HashSet<TileEntityCrate>>();
 			int checkedChecks = 0;

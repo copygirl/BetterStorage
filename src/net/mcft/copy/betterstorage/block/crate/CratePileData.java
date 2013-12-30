@@ -13,6 +13,7 @@ import java.util.Set;
 import net.mcft.copy.betterstorage.api.ICrateWatcher;
 import net.mcft.copy.betterstorage.inventory.InventoryCrateBlockView;
 import net.mcft.copy.betterstorage.misc.ItemIdentifier;
+import net.mcft.copy.betterstorage.misc.Region;
 import net.mcft.copy.betterstorage.utils.RandomUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.item.ItemStack;
@@ -53,6 +54,9 @@ public class CratePileData implements Iterable<ItemStack> {
 	public int getOccupiedSlots() { return numSlots; }
 	/** Returns the number of slots free. Negative if there's any overflow. */
 	public int getFreeSlots() { return getCapacity() - getOccupiedSlots(); }
+	
+	/** Returns the region / bounds this crate pile takes up. */
+	public Region getRegion() { return map.region; }
 	
 	public int getCenterX() { return (map.region.minX + map.region.maxX) / 2; }
 	public int getCenterY() { return (map.region.minY + map.region.maxY) / 2; }
@@ -360,7 +364,6 @@ public class CratePileData implements Iterable<ItemStack> {
 	
 	public NBTTagCompound toCompound() {
 		NBTTagCompound compound = new NBTTagCompound("");
-		compound.setInteger("id", id);
 		compound.setShort("numCrates", (short)getNumCrates());
 		NBTTagList stacks = new NBTTagList("stacks");
 		for (ItemStack stack : this) {
@@ -378,10 +381,9 @@ public class CratePileData implements Iterable<ItemStack> {
 		return compound;
 	}
 	
-	public static CratePileData fromCompound(CratePileCollection collection, NBTTagCompound compound) {
-		int cratePileId = compound.getInteger("id");
+	public static CratePileData fromCompound(CratePileCollection collection, int crateId, NBTTagCompound compound) {
 		int numCrates = compound.getShort("numCrates");
-		CratePileData pileData = new CratePileData(collection, cratePileId, numCrates);
+		CratePileData pileData = new CratePileData(collection, crateId, numCrates);
 		NBTTagList stacks = compound.getTagList("stacks");
 		for (int j = 0; j < stacks.tagCount(); j++) {
 			NBTTagCompound stackCompound = (NBTTagCompound)stacks.tagAt(j);
