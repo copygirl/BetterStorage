@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.mcft.copy.betterstorage.BetterStorage;
-import net.mcft.copy.betterstorage.Config;
 import net.mcft.copy.betterstorage.client.model.ModelDrinkingHelmet;
+import net.mcft.copy.betterstorage.config.GlobalConfig;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.misc.CurrentItem;
 import net.mcft.copy.betterstorage.misc.Resources;
@@ -73,7 +73,7 @@ public class ItemDrinkingHelmet extends ItemArmor {
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advancedTooltips) {
 		int uses = StackUtils.get(stack, 0, "uses");
 		if ((uses > 0) && (getDrinkingHelmet(player) == stack)) {
-			String str = GameSettings.getKeyDisplayString(Config.drinkingHelmetKey);
+			String str = GameSettings.getKeyDisplayString(BetterStorage.globalConfig.getInteger(GlobalConfig.drinkingHelmetKey));
 			LanguageUtils.translateTooltip(list, "drinkingHelmet.useHint", "%KEY%", str);
 		}
 		for (ItemStack potion : getPotions(stack)) {
@@ -86,7 +86,7 @@ public class ItemDrinkingHelmet extends ItemArmor {
 		if (uses > 0)
 			list.add(EnumChatFormatting.DARK_GRAY.toString() + EnumChatFormatting.ITALIC + 
 			         LanguageUtils.translateTooltip("drinkingHelmet.uses", "%USES%", Integer.toString(uses)));
-		else if (Config.enableHelpTooltips)
+		else if (BetterStorage.globalConfig.getBoolean(GlobalConfig.enableHelpTooltips))
 			list.add(LanguageUtils.translateTooltip("drinkingHelmet.craftHint"));
 	}
 	

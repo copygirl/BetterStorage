@@ -3,6 +3,8 @@ package net.mcft.copy.betterstorage;
 import java.util.logging.Logger;
 
 import net.mcft.copy.betterstorage.addon.Addon;
+import net.mcft.copy.betterstorage.config.Config;
+import net.mcft.copy.betterstorage.config.GlobalConfig;
 import net.mcft.copy.betterstorage.content.Blocks;
 import net.mcft.copy.betterstorage.content.Entities;
 import net.mcft.copy.betterstorage.content.Items;
@@ -48,6 +50,8 @@ public class BetterStorage {
 	
 	public static CreativeTabs creativeTab;
 	
+	public static Config globalConfig;
+	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		
@@ -56,7 +60,9 @@ public class BetterStorage {
 		
 		Addon.initialize();
 		
-		Config.load(event.getSuggestedConfigurationFile());
+		globalConfig = new GlobalConfig(event.getSuggestedConfigurationFile());
+		globalConfig.load();
+		globalConfig.save();
 		
 		BetterStorage.log.info(Constants.modName + " will overwrite some of its own items. Don't worry, this is normal.");
 		Blocks.initialize();

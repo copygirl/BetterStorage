@@ -10,6 +10,10 @@ import net.mcft.copy.betterstorage.config.setting.ItemIdSetting;
 
 public class GlobalConfig extends Config {
 	
+	// Often accessed settings
+	public static IntegerSetting stationAutocraftDelaySetting;
+	public static BooleanSetting enableCrateInventoryInterfaceSetting;
+	
 	public static final String crateId            = "block.crate";
 	public static final String reinforcedChestId  = "block.chest"; // TODO: Rename to reinforcedChest
 	public static final String lockerId           = "block.locker";
@@ -46,6 +50,7 @@ public class GlobalConfig extends Config {
 	public static final String enchShockId       = "enchantments.shock";
 	public static final String enchTriggerId     = "enchantments.trigger";
 	
+	// TODO: Rename category to "general"?
 	public static final String reinforcedColumns             = "settings.reinforcedColums";
 	public static final String enableCrateInventoryInterface = "settings.enableCrateInventoryInterface";
 	public static final String backpackChestplate            = "settings.backpackChestplate";
@@ -105,6 +110,7 @@ public class GlobalConfig extends Config {
 				"Number of colums in reinforced chests and lockers. Valid values are 9, 11 and 13.");
 		
 		// Crate settings
+		enableCrateInventoryInterfaceSetting =
 		new BooleanSetting(this, enableCrateInventoryInterface, true).setComment(
 				"If machines and such can interact with crates. Disable this if there's issues.");
 		
@@ -123,6 +129,7 @@ public class GlobalConfig extends Config {
 		// Crafting Station settings
 		new BooleanSetting(this, enableStationAutoCrafting, false).setComment(
 				"Controls if the crafting station can be used to auto-craft, as it may not work with all machines.");
+		stationAutocraftDelaySetting =
 		new IntegerSetting(this, stationAutocraftDelay, 10).setValidRange(0, Integer.MAX_VALUE).setComment(
 				"Delay between recipes being autocrafted in the crafting station in ticks. (Default: 10)");
 		

@@ -5,9 +5,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import net.mcft.copy.betterstorage.Config;
+import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.api.BetterStorageBackpack;
 import net.mcft.copy.betterstorage.block.BlockEnderBackpack;
+import net.mcft.copy.betterstorage.config.GlobalConfig;
 import net.mcft.copy.betterstorage.content.Blocks;
 import net.mcft.copy.betterstorage.entity.EntityFrienderman;
 import net.mcft.copy.betterstorage.inventory.InventoryStacks;
@@ -305,7 +306,7 @@ public class BackpackHandler implements IPlayerTracker {
 		} else {
 			
 			// Attempt to place the backpack as a block instead of dropping the items.
-			if (Config.dropBackpackOnDeath) {
+			if (BetterStorage.globalConfig.getBoolean(GlobalConfig.dropBackpackOnDeath)) {
 				
 				List<BlockCoordinate> coords = new ArrayList<BlockCoordinate>();
 				for (int x = -2; x <= 2; x++)
@@ -385,7 +386,9 @@ public class BackpackHandler implements IPlayerTracker {
 	@Override
 	public void onPlayerLogin(EntityPlayer player) {
 		// Send player the information if the backpack open key is enabled on this server.
-		Packet packet = PacketHandler.makePacket(PacketHandler.backpackKeyEnabled, Config.enableBackpackOpen);
+		NBTTagCompound compound = new NBTTagCompound();
+		BetterStorage.globalConfig.write(compound);
+		Packet packet = PacketHandler.makePacket(PacketHandler.syncSettings, compound);
 		PacketDispatcher.sendPacketToPlayer(packet, (Player)player);
 	}
 	

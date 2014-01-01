@@ -1,6 +1,7 @@
 package net.mcft.copy.betterstorage.block.tileentity;
 
-import net.mcft.copy.betterstorage.Config;
+import net.mcft.copy.betterstorage.BetterStorage;
+import net.mcft.copy.betterstorage.config.GlobalConfig;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.util.AxisAlignedBB;
@@ -33,7 +34,7 @@ public class TileEntityReinforcedChest extends TileEntityLockable {
 	// TileEntityContainer stuff
 	
 	@Override
-	public int getColumns() { return Config.reinforcedColumns; }
+	public int getColumns() { return BetterStorage.globalConfig.getInteger(GlobalConfig.reinforcedColumns); }
 	
 	// TileEntityConnactable stuff
 	

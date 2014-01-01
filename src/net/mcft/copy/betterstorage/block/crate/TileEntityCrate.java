@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import net.mcft.copy.betterstorage.Config;
 import net.mcft.copy.betterstorage.api.ICrateStorage;
 import net.mcft.copy.betterstorage.api.ICrateWatcher;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityContainer;
+import net.mcft.copy.betterstorage.config.GlobalConfig;
 import net.mcft.copy.betterstorage.container.ContainerBetterStorage;
 import net.mcft.copy.betterstorage.container.ContainerCrate;
 import net.mcft.copy.betterstorage.content.Blocks;
@@ -210,40 +210,40 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 	
 	@Override
 	public int getSizeInventory() {
-		if (!Config.enableCrateInventoryInterface) return 0;
+		if (!GlobalConfig.enableCrateInventoryInterfaceSetting.getValue()) return 0;
 		if (worldObj.isRemote) return 1;
 		return getPileData().blockView.getSizeInventory();
 	}
 	
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
-		if (!Config.enableCrateInventoryInterface) return false;
+		if (!GlobalConfig.enableCrateInventoryInterfaceSetting.getValue()) return false;
 		return getPileData().blockView.isItemValidForSlot(slot, stack);
 	}
 	
 	@Override
 	public ItemStack getStackInSlot(int slot) {
-		if (!Config.enableCrateInventoryInterface) return null;
+		if (!GlobalConfig.enableCrateInventoryInterfaceSetting.getValue()) return null;
 		return getPileData().blockView.getStackInSlot(slot);
 	}
 	@Override
 	public void setInventorySlotContents(int slot, ItemStack stack) {
-		if (Config.enableCrateInventoryInterface)
+		if (GlobalConfig.enableCrateInventoryInterfaceSetting.getValue())
 			getPileData().blockView.setInventorySlotContents(slot, stack);
 	}
 	@Override
 	public ItemStack getStackInSlotOnClosing(int slot) {
-		if (!Config.enableCrateInventoryInterface) return null;
+		if (!GlobalConfig.enableCrateInventoryInterfaceSetting.getValue()) return null;
 			return getPileData().blockView.getStackInSlotOnClosing(slot);
 	}
 	@Override
 	public ItemStack decrStackSize(int slot, int amount) {
-		if (!Config.enableCrateInventoryInterface) return null;
+		if (!GlobalConfig.enableCrateInventoryInterfaceSetting.getValue()) return null;
 		return getPileData().blockView.decrStackSize(slot, amount);
 	}
 	@Override
 	public void onInventoryChanged() {
-		if (Config.enableCrateInventoryInterface)
+		if (GlobalConfig.enableCrateInventoryInterfaceSetting.getValue())
 			getPileData().blockView.onInventoryChanged();
 	}
 	

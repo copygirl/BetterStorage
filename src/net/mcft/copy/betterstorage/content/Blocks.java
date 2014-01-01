@@ -1,6 +1,5 @@
 package net.mcft.copy.betterstorage.content;
 
-import net.mcft.copy.betterstorage.Config;
 import net.mcft.copy.betterstorage.addon.Addon;
 import net.mcft.copy.betterstorage.block.BlockArmorStand;
 import net.mcft.copy.betterstorage.block.BlockBackpack;
@@ -11,6 +10,7 @@ import net.mcft.copy.betterstorage.block.BlockLocker;
 import net.mcft.copy.betterstorage.block.BlockReinforcedChest;
 import net.mcft.copy.betterstorage.block.BlockReinforcedLocker;
 import net.mcft.copy.betterstorage.block.crate.BlockCrate;
+import net.mcft.copy.betterstorage.config.GlobalConfig;
 import net.mcft.copy.betterstorage.utils.MiscUtils;
 
 public final class Blocks {
@@ -29,15 +29,15 @@ public final class Blocks {
 	
 	public static void initialize() {
 		
-		crate            = MiscUtils.conditionalNew(BlockCrate.class, Config.crateId);
-		reinforcedChest  = MiscUtils.conditionalNew(BlockReinforcedChest.class, Config.chestId);
-		locker           = MiscUtils.conditionalNew(BlockLocker.class, Config.lockerId);
-		armorStand       = MiscUtils.conditionalNew(BlockArmorStand.class, Config.armorStandId);
-		backpack         = MiscUtils.conditionalNew(BlockBackpack.class, Config.backpackId);
-		enderBackpack    = MiscUtils.conditionalNew(BlockEnderBackpack.class, Config.enderBackpackId);
-		cardboardBox     = MiscUtils.conditionalNew(BlockCardboardBox.class, Config.cardboardBoxId);
-		reinforcedLocker = MiscUtils.conditionalNew(BlockReinforcedLocker.class, Config.reinforcedLockerId);
-		craftingStation  = MiscUtils.conditionalNew(BlockCraftingStation.class, Config.craftingStationId);
+		crate            = MiscUtils.conditionalNew(BlockCrate.class, GlobalConfig.crateId);
+		reinforcedChest  = MiscUtils.conditionalNew(BlockReinforcedChest.class, GlobalConfig.reinforcedChestId);
+		locker           = MiscUtils.conditionalNew(BlockLocker.class, GlobalConfig.lockerId);
+		armorStand       = MiscUtils.conditionalNew(BlockArmorStand.class, GlobalConfig.armorStandId);
+		backpack         = MiscUtils.conditionalNew(BlockBackpack.class, GlobalConfig.backpackId);
+		enderBackpack    = MiscUtils.conditionalNew(BlockEnderBackpack.class, GlobalConfig.enderBackpackId);
+		cardboardBox     = MiscUtils.conditionalNew(BlockCardboardBox.class, GlobalConfig.cardboardBoxId);
+		reinforcedLocker = MiscUtils.conditionalNew(BlockReinforcedLocker.class, GlobalConfig.reinforcedLockerId);
+		craftingStation  = MiscUtils.conditionalNew(BlockCraftingStation.class, GlobalConfig.craftingStationId);
 		
 		Addon.initializeBlocksAll();
 		

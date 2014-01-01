@@ -1,10 +1,10 @@
 package net.mcft.copy.betterstorage.inventory;
 
-import net.mcft.copy.betterstorage.Config;
 import net.mcft.copy.betterstorage.api.crafting.BetterStorageCrafting;
 import net.mcft.copy.betterstorage.api.crafting.CraftingSourceStation;
 import net.mcft.copy.betterstorage.api.crafting.IStationRecipe;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityCraftingStation;
+import net.mcft.copy.betterstorage.config.GlobalConfig;
 import net.mcft.copy.betterstorage.item.recipe.VanillaStationRecipe;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -48,7 +48,8 @@ public class InventoryCraftingStation extends InventoryBetterStorage {
 	
 	public void update() {
 		if (!outputIsReal && (currentRecipe != null) &&
-		    ((progress < craftingTime || (progress < Config.stationAutocraftDelay)))) progress++; 
+		    ((progress < craftingTime ||
+		     (progress < GlobalConfig.stationAutocraftDelaySetting.getValue())))) progress++; 
 	}
 	
 	/** Checks if the recipe changed and updates everything accordingly. */
@@ -103,7 +104,9 @@ public class InventoryCraftingStation extends InventoryBetterStorage {
 	public boolean canTake(EntityPlayer player) {
 		return (outputIsReal || ((currentRecipe != null) &&
 		                         (currentRecipe.canCraft(crafting, new CraftingSourceStation(entity, player))) &&
-		                         (progress >= craftingTime) && ((player != null) || (progress >= Config.stationAutocraftDelay))));
+		                         (progress >= craftingTime) &&
+		                          ((player != null) ||
+		                           (progress >= GlobalConfig.stationAutocraftDelaySetting.getValue()))));
 	}
 	
 	// IInventory implementation

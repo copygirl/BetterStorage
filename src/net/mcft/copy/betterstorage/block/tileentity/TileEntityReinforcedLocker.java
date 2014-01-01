@@ -1,6 +1,7 @@
 package net.mcft.copy.betterstorage.block.tileentity;
 
-import net.mcft.copy.betterstorage.Config;
+import net.mcft.copy.betterstorage.BetterStorage;
+import net.mcft.copy.betterstorage.config.GlobalConfig;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.minecraft.util.ResourceLocation;
 import cpw.mods.fml.relauncher.Side;
@@ -27,7 +28,7 @@ public class TileEntityReinforcedLocker extends TileEntityLocker {
 	}
 	
 	@Override
-	public int getColumns() { return Config.reinforcedColumns; }
+	public int getColumns() { return BetterStorage.globalConfig.getInteger(GlobalConfig.reinforcedColumns); }
 	@Override
 	protected String getConnectableName() { return Constants.containerReinforcedLocker; }
 }

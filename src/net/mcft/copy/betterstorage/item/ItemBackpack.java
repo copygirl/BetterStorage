@@ -2,9 +2,10 @@ package net.mcft.copy.betterstorage.item;
 
 import java.util.List;
 
-import net.mcft.copy.betterstorage.Config;
+import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityBackpack;
 import net.mcft.copy.betterstorage.client.model.ModelBackpackArmor;
+import net.mcft.copy.betterstorage.config.GlobalConfig;
 import net.mcft.copy.betterstorage.container.ContainerBetterStorage;
 import net.mcft.copy.betterstorage.container.SlotArmorBackpack;
 import net.mcft.copy.betterstorage.inventory.InventoryBackpackEquipped;
@@ -67,7 +68,7 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor, IDyeableIt
 	/** Returns the number of columns this backpack has. */
 	public int getColumns() { return 9; }
 	/** Returns the number of rows this backpack has. */
-	public int getRows() { return Config.backpackRows; }
+	public int getRows() { return BetterStorage.globalConfig.getInteger(GlobalConfig.backpackRows); }
 	
 	protected int getDefaultColor() { return 0xA06540; }
 	
@@ -127,6 +128,7 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor, IDyeableIt
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advancedTooltips) {
+		boolean enableHelpTooltips = BetterStorage.globalConfig.getBoolean(GlobalConfig.enableHelpTooltips);
 		if (getBackpack(player) == stack) {
 			String reason = LanguageUtils.translateTooltip(getReason(stack, player));
 			// Tell players if someone's using their backpack when they hovers over it in the GUI.
@@ -137,17 +139,17 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor, IDyeableIt
 			// If the backpack can't be removed from its slot (only placed down),
 			// tell the player why, like "Contains items" or "Bound backpack".
 			} else if (reason != null) {
-				if (Config.enableHelpTooltips)
+				if (enableHelpTooltips)
 					LanguageUtils.translateTooltip(list, "backpack.unequipHint", "%REASON%", reason);
 				else list.add(reason);
 			}
 			// If the backpack can be opened by pressing a key, let the player know.
-			if (KeyBindingHandler.serverBackpackKeyEnabled && Config.enableHelpTooltips) {
-				String str = GameSettings.getKeyDisplayString(Config.backpackOpenKey);
+			if (KeyBindingHandler.serverBackpackKeyEnabled && enableHelpTooltips) {
+				String str = GameSettings.getKeyDisplayString(BetterStorage.globalConfig.getInteger(GlobalConfig.backpackOpenKey));
 				LanguageUtils.translateTooltip(list, "backpack.openHint", "%KEY%", str);
 			}
 		// Tell the player to place down and break a backpack to equip it.
-		} else if (Config.enableHelpTooltips)
+		} else if (enableHelpTooltips)
 			LanguageUtils.translateTooltip(list, "backpack.equipHint");
 	}
 	/** Returns the reason (a string to be translated) why a backpack
@@ -256,8 +258,8 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor, IDyeableIt
 		return getBackpackData(entity).backpack;
 	}
 	public static void setBackpack(EntityLivingBase entity, ItemStack backpack, ItemStack[] contents) {
-		boolean setChestplate = (Config.backpackChestplate || !(entity instanceof EntityPlayer) ||
-		                         hasChestplateBackpackEquipped(entity));
+		boolean setChestplate = (BetterStorage.globalConfig.getBoolean(GlobalConfig.backpackChestplate) ||
+		                         !(entity instanceof EntityPlayer) || hasChestplateBackpackEquipped(entity));
 		PropertiesBackpack backpackData = getBackpackData(entity);
 		if (!setChestplate) backpackData.backpack = backpack;
 		else entity.setCurrentItemOrArmor(CurrentItem.CHEST, backpack);
@@ -270,7 +272,7 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor, IDyeableIt
 	}
 	public static boolean canEquipBackpack(EntityPlayer player) {
 		return ((getBackpack(player) == null) &&
-		        !(Config.backpackChestplate &&
+		        !(BetterStorage.globalConfig.getBoolean(GlobalConfig.backpackChestplate) &&
 		          (player.getCurrentItemOrArmor(CurrentItem.CHEST) != null)));
 	}
 	

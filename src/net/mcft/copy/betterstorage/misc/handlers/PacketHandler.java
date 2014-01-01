@@ -6,8 +6,9 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import net.mcft.copy.betterstorage.Config;
+import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityLockable;
+import net.mcft.copy.betterstorage.config.GlobalConfig;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.item.ItemDrinkingHelmet;
 import net.mcft.copy.betterstorage.misc.Constants;
@@ -39,7 +40,7 @@ public class PacketHandler implements IPacketHandler {
 	public static final byte backpackTeleport = 1;
 	public static final byte backpackHasItems = 2;
 	public static final byte backpackOpen = 3;
-	public static final byte backpackKeyEnabled = 4;
+	public static final byte syncSettings = 4;
 	public static final byte drinkingHelmet = 5;
 	public static final byte lockHit = 6;
 	public static final byte clientSpawn = 7;
@@ -63,6 +64,7 @@ public class PacketHandler implements IPacketHandler {
 			else if (object instanceof String) stream.writeUTF((String)object);
 			else if (object instanceof Boolean) stream.writeBoolean((Boolean)object);
 			else if (object instanceof byte[]) stream.write((byte[])object);
+			else if (object instanceof NBTTagCompound) NBTBase.writeNamedTag((NBTTagCompound)object, stream);
 			else if (object instanceof ItemStack) writeItemStack(stream, (ItemStack)object);
 			else if (object == null) NBTBase.writeNamedTag(new NBTTagCompound(), stream);
 		} catch (Exception e) { throw new RuntimeException(e); }
@@ -99,9 +101,9 @@ public class PacketHandler implements IPacketHandler {
 					checkSide(id, side, Side.SERVER);
 					handleBackpackOpen(player, stream);
 					break;
-				case backpackKeyEnabled:
+				case syncSettings:
 					checkSide(id, side, Side.CLIENT);
-					handleBackpackKeyEnabled(player, stream);
+					handleSyncSetting(player, stream);
 					break;
 				case drinkingHelmet:
 					checkSide(id, side, Side.SERVER);
@@ -176,13 +178,14 @@ public class PacketHandler implements IPacketHandler {
 	}
 	
 	private void handleBackpackOpen(EntityPlayer player, DataInputStream stream) {
-		if (Config.enableBackpackOpen)
+		if (BetterStorage.globalConfig.getBoolean(GlobalConfig.enableBackpackOpen))
 			ItemBackpack.openBackpack(player, player);
 	}
 	
 	@SideOnly(Side.CLIENT)
-	private void handleBackpackKeyEnabled(EntityPlayer player, DataInputStream stream) throws IOException {
-		KeyBindingHandler.serverBackpackKeyEnabled = stream.readBoolean();
+	private void handleSyncSetting(EntityPlayer player, DataInputStream stream) throws IOException {
+		NBTTagCompound compound = (NBTTagCompound)NBTBase.readNamedTag(stream);
+		BetterStorage.globalConfig.read(compound);
 	}
 	
 	private void handleDrinkingHelmet(EntityPlayer player, DataInputStream stream) {

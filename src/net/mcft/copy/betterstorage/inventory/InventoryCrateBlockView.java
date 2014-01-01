@@ -3,9 +3,9 @@ package net.mcft.copy.betterstorage.inventory;
 import java.util.List;
 
 import net.mcft.copy.betterstorage.BetterStorage;
-import net.mcft.copy.betterstorage.Config;
 import net.mcft.copy.betterstorage.api.ICrateWatcher;
 import net.mcft.copy.betterstorage.block.crate.CratePileData;
+import net.mcft.copy.betterstorage.config.GlobalConfig;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.entity.player.EntityPlayer;
@@ -106,7 +106,7 @@ public class InventoryCrateBlockView extends InventoryBetterStorage implements I
 	
 	public void onUpdate() {
 		
-		if (!Config.enableCrateInventoryInterface || !accessed) return;
+		if (!GlobalConfig.enableCrateInventoryInterfaceSetting.getValue() || !accessed) return;
 		accessed = false;
 		
 		// Check for modifications done to the inventory
@@ -117,7 +117,7 @@ public class InventoryCrateBlockView extends InventoryBetterStorage implements I
 				BetterStorage.log.warning("The crate Inventory interface will be disabled until the next restart, to minimize chances of issues.");
 				BetterStorage.log.warning(String.format("You can find the crate pile at [%s,%s,%s] in dimension %s.",
 				                                        data.getCenterX(), data.getCenterY(), data.getCenterZ(), data.collection.dimension));
-				Config.enableCrateInventoryInterface = false;
+				GlobalConfig.enableCrateInventoryInterfaceSetting.setSyncedValue(false);
 				onInventoryChanged();
 				return;
 			}

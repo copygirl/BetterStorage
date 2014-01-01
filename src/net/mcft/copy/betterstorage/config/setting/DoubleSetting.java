@@ -41,7 +41,7 @@ public class DoubleSetting extends SinglePropertySetting<Double> {
 	}
 	
 	@Override
-	public String validateInternal() {
+	public String validateInternal(Double value) {
 		if ((value < minValue) || (value > maxValue))
 			return String.format("Value %s is not in valid range, %s to %s",
 			                     value, minValue, maxValue);

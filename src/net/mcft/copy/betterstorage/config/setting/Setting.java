@@ -54,33 +54,44 @@ public abstract class Setting<T> {
 		return this;
 	}
 	
-	/** Gets the value of the setting. */ 
+	/** Returns the value of the setting. */ 
 	public T getValue() { return syncedValue; }
+	/** Returns the internal value of the setting. */
+	public T getInternalValue() { return value; }
+
+	/** Sets the value of the setting. */
+	public void setValue(T value) {
+		this.value = value;
+		syncedValue = value;
+	}
+	/** Sets the synced value of the setting. getValue()
+	 *  will return this value, but it won't be saved. */
+	public void setSyncedValue(T value) { syncedValue = value; }
 	
 	/** Validates the setting and returns a warning
 	 *  string, or null if validation was successful. */
-	protected String validateInternal() { return null; }
+	protected String validateInternal(T value) { return null; }
 	
 	/** Validates the setting. If value is invalid, prints a
 	 *  warning to console and uses the default value instead. */
 	public void validate() {
-		String warning = validateInternal();
+		String warning = validateInternal(getInternalValue());
 		if (warning != null) {
-			value = defaultValue;
+			setValue(defaultValue);
 			BetterStorage.log.warning(String.format("Config setting %s is invalid: %s. Using default value: %s.",
 			                                        fullName, warning, defaultValue));
 		}
 	}
 	
 	/** Loads the setting's value from the config. */
-	public void load(Configuration config) { value = loadInternal(config); }
+	public void load(Configuration config) { setValue(loadInternal(config)); }
 	/** Saves the setting's value to the config. */
-	public void save(Configuration config) { saveInternal(config, value); }
+	public void save(Configuration config) { saveInternal(config, getInternalValue()); }
 	
 	/** Reads the setting's synced value from the compound tag. */
-	public void read(NBTTagCompound compound) { syncedValue = readInternal(compound); }
+	public void read(NBTTagCompound compound) { setSyncedValue(readInternal(compound)); }
 	/** Writes the setting's value to the compound tag. */
-	public void write(NBTTagCompound compound) { writeInternal(compound, value); }
+	public void write(NBTTagCompound compound) { writeInternal(compound, getInternalValue()); }
 	
 	protected abstract T loadInternal(Configuration config);
 	protected abstract void saveInternal(Configuration config, T value);

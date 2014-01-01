@@ -5,10 +5,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import net.mcft.copy.betterstorage.Config;
+import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.api.BetterStorageEnchantment;
 import net.mcft.copy.betterstorage.api.lock.IKey;
 import net.mcft.copy.betterstorage.api.lock.ILock;
+import net.mcft.copy.betterstorage.config.GlobalConfig;
 import net.mcft.copy.betterstorage.content.Items;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.MiscUtils;
@@ -34,9 +35,9 @@ public class EnchantmentBetterStorage extends Enchantment {
 		if (MiscUtils.isEnabled(Items.key)) {
 			EnumEnchantmentType key = EnumHelper.addEnchantmentType("key");
 			
-			EnchantmentBetterStorage unlocking   = conditialNew("unlocking",   key, Config.enchantmentUnlockingId,   8, 5,  5, 10, 30, 0);
-			EnchantmentBetterStorage lockpicking = conditialNew("lockpicking", key, Config.enchantmentLockpickingId, 6, 5,  5,  8, 30, 0);
-			EnchantmentBetterStorage morphing    = conditialNew("morphing",    key, Config.enchantmentMorphingId,    1, 5, 10, 12, 30, 0);
+			EnchantmentBetterStorage unlocking   = conditialNew("unlocking",   key, GlobalConfig.enchUnlockingId,   8, 5,  5, 10, 30, 0);
+			EnchantmentBetterStorage lockpicking = conditialNew("lockpicking", key, GlobalConfig.enchLockpickingId, 6, 5,  5,  8, 30, 0);
+			EnchantmentBetterStorage morphing    = conditialNew("morphing",    key, GlobalConfig.enchMorphingId,    1, 5, 10, 12, 30, 0);
 			
 			if (lockpicking != null)
 				lockpicking.setIncompatible(morphing);
@@ -54,10 +55,10 @@ public class EnchantmentBetterStorage extends Enchantment {
 		if (MiscUtils.isEnabled(Items.lock)) {
 			EnumEnchantmentType lock = EnumHelper.addEnchantmentType("lock");
 			
-			EnchantmentBetterStorage persistance = conditialNew("persistance", lock, Config.enchantmentPersistanceId, 20, 5,  1,  8, 30, 0);
-			EnchantmentBetterStorage security    = conditialNew("security",    lock, Config.enchantmentSecurityId,    16, 5,  1, 10, 30, 0);
-			EnchantmentBetterStorage shock       = conditialNew("shock",       lock, Config.enchantmentShockId,        5, 3,  5, 15, 30, 0);
-			EnchantmentBetterStorage trigger     = conditialNew("trigger",     lock, Config.enchantmentTriggerId,     10, 1, 15,  0, 30, 0);
+			EnchantmentBetterStorage persistance = conditialNew("persistance", lock, GlobalConfig.enchPersistanceId, 20, 5,  1,  8, 30, 0);
+			EnchantmentBetterStorage security    = conditialNew("security",    lock, GlobalConfig.enchSecurityId,    16, 5,  1, 10, 30, 0);
+			EnchantmentBetterStorage shock       = conditialNew("shock",       lock, GlobalConfig.enchShockId,        5, 3,  5, 15, 30, 0);
+			EnchantmentBetterStorage trigger     = conditialNew("trigger",     lock, GlobalConfig.enchTriggerId,     10, 1, 15,  0, 30, 0);
 			
 			types.put("lock", lock);
 	
@@ -68,8 +69,9 @@ public class EnchantmentBetterStorage extends Enchantment {
 		}
 		
 	}
-	private static EnchantmentBetterStorage conditialNew(String name, EnumEnchantmentType type, int id, int weight, int maxLevel,
+	private static EnchantmentBetterStorage conditialNew(String name, EnumEnchantmentType type, String configName, int weight, int maxLevel,
 	                                                     int minBase, int minScaling, int maxBase, int maxScaling) {
+		int id = BetterStorage.globalConfig.getInteger(configName);
 		if (!MiscUtils.isEnabled(id)) return null;
 		return new EnchantmentBetterStorage(name, type, id, weight, maxLevel, minBase, minScaling, maxBase, maxScaling);
 	}

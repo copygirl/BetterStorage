@@ -2,7 +2,8 @@ package net.mcft.copy.betterstorage.misc.handlers;
 
 import java.util.EnumSet;
 
-import net.mcft.copy.betterstorage.Config;
+import net.mcft.copy.betterstorage.BetterStorage;
+import net.mcft.copy.betterstorage.config.GlobalConfig;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.misc.CurrentItem;
@@ -18,8 +19,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class KeyBindingHandler extends KeyHandler {
 	
-	private static final KeyBinding backpackOpen = new KeyBinding("key.backpackOpen", Config.backpackOpenKey);
-	private static final KeyBinding drinkingHelmet = new KeyBinding("key.drinkingHelmet", Config.drinkingHelmetKey);
+	private static final KeyBinding backpackOpen = new KeyBinding("key.backpackOpen", BetterStorage.globalConfig.getInteger(GlobalConfig.backpackOpenKey));
+	private static final KeyBinding drinkingHelmet = new KeyBinding("key.drinkingHelmet", BetterStorage.globalConfig.getInteger(GlobalConfig.drinkingHelmetKey));
 	
 	private static final KeyBinding[] bindings = new KeyBinding[]{ backpackOpen, drinkingHelmet };
 	

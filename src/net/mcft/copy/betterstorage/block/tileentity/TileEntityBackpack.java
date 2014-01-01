@@ -1,6 +1,7 @@
 package net.mcft.copy.betterstorage.block.tileentity;
 
-import net.mcft.copy.betterstorage.Config;
+import net.mcft.copy.betterstorage.BetterStorage;
+import net.mcft.copy.betterstorage.config.GlobalConfig;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.misc.PropertiesBackpack;
@@ -51,7 +52,7 @@ public class TileEntityBackpack extends TileEntityContainer {
 	@Override
 	public String getName() { return Constants.containerBackpack; }
 	@Override
-	public int getRows() { return Config.backpackRows; }
+	public int getRows() { return BetterStorage.globalConfig.getInteger(GlobalConfig.backpackRows); }
 	
 	@Override
 	public boolean onBlockBreak(EntityPlayer player) {
