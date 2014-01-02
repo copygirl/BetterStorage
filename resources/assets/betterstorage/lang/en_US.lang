@@ -25,7 +25,7 @@ enchantment.betterstorage.lock.shock=Shock
 enchantment.betterstorage.lock.trigger=Trigger
 
 # Entities
-entity.betterstorage.Frienderman=Enderman
+entity.betterstorage.Frienderman.name=Enderman
 
 # Items
 item.betterstorage.cardboardAxe.name=Cardboard Axe

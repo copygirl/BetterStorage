@@ -25,7 +25,7 @@ enchantment.betterstorage.lock.shock=Шок
 enchantment.betterstorage.lock.trigger=Импульс
 
 # Entities
-entity.BetterStorage.Frienderman=Страник Края
+entity.BetterStorage.Frienderman.name=Страник Края
 
 # Items
 item.betterstorage.cardboardAxe.name=Картонный топор

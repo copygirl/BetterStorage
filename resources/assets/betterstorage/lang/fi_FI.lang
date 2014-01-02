@@ -24,7 +24,7 @@ enchantment.betterstorage.lock.shock=Shokki
 enchantment.betterstorage.lock.trigger=Laukaisin
 
 # Entities
-entity.betterstorage.Frienderman=Ääreläinen
+entity.betterstorage.Frienderman.name=Ääreläinen
 
 # Items
 item.betterstorage.cardboardAxe.name=Pahvikirves
