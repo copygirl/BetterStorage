@@ -25,7 +25,7 @@ enchantment.betterstorage.lock.shock=Шок
 enchantment.betterstorage.lock.trigger=Импульс
 
 # Entities
-entity.BetterStorage.Frienderman.name=Страник Края
+entity.BetterStorage.Frienderman.name=Странник Края
 
 # Items
 item.betterstorage.cardboardAxe.name=Картонный топор
@@ -46,6 +46,10 @@ item.betterstorage.masterKey.name=Отмычка
 
 # Creative tab
 itemGroup.betterstorage=BetterStorage
+
+# Keys
+key.betterstorage.backpackOpen=[BetterStorage] Открыть рюкзак
+key.betterstorage.drinkingHelmet=[BetterStorage] Использовать питьевой шлем
 
 # Container materials
 material.betterstorage.iron=железный
