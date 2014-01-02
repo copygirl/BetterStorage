@@ -56,11 +56,9 @@ public class GlobalConfig extends Config {
 	public static final String backpackChestplate            = "settings.backpackChestplate";
 	public static final String backpackRows                  = "settings.backpackRows";
 	public static final String enableBackpackOpen            = "settings.enableBackpackOpen";
-	public static final String backpackOpenKey               = "settings.backpackOpenKey";
 	public static final String dropBackpackOnDeath           = "settings.dropBackpackOnDeath";
 	public static final String enableStationAutoCrafting     = "settings.enableStationAutoCrafting";
 	public static final String stationAutocraftDelay         = "settings.stationAutocraftDelay";
-	public static final String drinkingHelmetKey             = "settings.drinkingHelmetKey";
 	public static final String enableHelpTooltips            = "settings.enableHelpTooltips";
 	
 	public GlobalConfig(File file) {
@@ -121,8 +119,6 @@ public class GlobalConfig extends Config {
 				"Number of rows in backpacks. Valid values are 1 to 6.");
 		new BooleanSetting(this, enableBackpackOpen, false).setSynced().setComment(
 				"Allows backpacks to be opened when equipped by pressing a key.");
-		new IntegerSetting(this, backpackOpenKey, 48).setComment(
-				"The key to open a backpack while equipped, if enabled. (Default: B)");
 		new BooleanSetting(this, dropBackpackOnDeath, true).setComment(
 				"If enabled, drops backpacks as block instead of spilling the items around.");
 		
@@ -132,10 +128,6 @@ public class GlobalConfig extends Config {
 		stationAutocraftDelaySetting =
 		new IntegerSetting(this, stationAutocraftDelay, 10).setValidRange(0, Integer.MAX_VALUE).setComment(
 				"Delay between recipes being autocrafted in the crafting station in ticks. (Default: 10)");
-		
-		// Drinking Helmet settings
-		new IntegerSetting(this, drinkingHelmetKey, 33).setComment(
-				"The key to use a drinking helmet when equipped. (Default: F)");
 		
 		// Miscellaneous settings
 		new BooleanSetting(this, enableHelpTooltips, true).setComment(

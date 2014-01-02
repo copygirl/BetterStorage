@@ -54,8 +54,8 @@ import net.minecraftforge.event.ForgeSubscribe;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
+import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -76,9 +76,7 @@ public class ClientProxy extends CommonProxy {
 		
 		super.initialize();
 		
-		// Not using KeyBindingRegistry because I don't
-		// want the key to appear in the controls menu.
-		TickRegistry.registerTickHandler(new KeyBindingHandler(), Side.CLIENT);
+		KeyBindingRegistry.registerKeyBinding(new KeyBindingHandler());
 		
 		registerRenderers();
 		

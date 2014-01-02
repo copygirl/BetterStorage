@@ -10,6 +10,7 @@ import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.misc.CurrentItem;
 import net.mcft.copy.betterstorage.misc.Resources;
 import net.mcft.copy.betterstorage.misc.SmallPotionEffect;
+import net.mcft.copy.betterstorage.misc.handlers.KeyBindingHandler;
 import net.mcft.copy.betterstorage.utils.LanguageUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.block.Block;
@@ -73,7 +74,7 @@ public class ItemDrinkingHelmet extends ItemArmor {
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advancedTooltips) {
 		int uses = StackUtils.get(stack, 0, "uses");
 		if ((uses > 0) && (getDrinkingHelmet(player) == stack)) {
-			String str = GameSettings.getKeyDisplayString(BetterStorage.globalConfig.getInteger(GlobalConfig.drinkingHelmetKey));
+			String str = GameSettings.getKeyDisplayString(KeyBindingHandler.drinkingHelmet.keyCode);
 			LanguageUtils.translateTooltip(list, "drinkingHelmet.useHint", "%KEY%", str);
 		}
 		for (ItemStack potion : getPotions(stack)) {

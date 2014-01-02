@@ -47,6 +47,10 @@ item.betterstorage.masterKey.name=Master Key
 # Creative tab
 itemGroup.betterstorage=BetterStorage
 
+# Keys
+key.betterstorage.backpackOpen=[BetterStorage] Open Backpack
+key.betterstorage.drinkingHelmet=[BetterStorage] Use Drinking Helmet
+
 # Container materials
 material.betterstorage.iron=Iron
 material.betterstorage.gold=Gold

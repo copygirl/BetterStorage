@@ -10,6 +10,9 @@ import net.mcft.copy.betterstorage.misc.CurrentItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
+
+import org.lwjgl.input.Keyboard;
+
 import cpw.mods.fml.client.registry.KeyBindingRegistry.KeyHandler;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.network.PacketDispatcher;
@@ -19,8 +22,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class KeyBindingHandler extends KeyHandler {
 	
-	private static final KeyBinding backpackOpen = new KeyBinding("key.backpackOpen", BetterStorage.globalConfig.getInteger(GlobalConfig.backpackOpenKey));
-	private static final KeyBinding drinkingHelmet = new KeyBinding("key.drinkingHelmet", BetterStorage.globalConfig.getInteger(GlobalConfig.drinkingHelmetKey));
+	public static final KeyBinding backpackOpen = new KeyBinding("key.betterstorage.backpackOpen", Keyboard.KEY_B);
+	public static final KeyBinding drinkingHelmet = new KeyBinding("key.betterstorage.drinkingHelmet", Keyboard.KEY_F);
 	
 	private static final KeyBinding[] bindings = new KeyBinding[]{ backpackOpen, drinkingHelmet };
 	
@@ -39,7 +42,8 @@ public class KeyBindingHandler extends KeyHandler {
 		Minecraft mc = Minecraft.getMinecraft();
 		EntityPlayer player = mc.thePlayer;
 		if (!tickEnd || !mc.inGameHasFocus || (player == null)) return;
-		if ((kb == backpackOpen) && serverBackpackKeyEnabled && (ItemBackpack.getBackpack(player) != null))
+		if ((kb == backpackOpen) && (ItemBackpack.getBackpack(player) != null) &&
+		    BetterStorage.globalConfig.getBoolean(GlobalConfig.enableBackpackOpen))
 			PacketDispatcher.sendPacketToServer(PacketHandler.makePacket(PacketHandler.backpackOpen));
 		else if ((kb == drinkingHelmet) && (player.getCurrentItemOrArmor(CurrentItem.HEAD) != null))
 			PacketDispatcher.sendPacketToServer(PacketHandler.makePacket(PacketHandler.drinkingHelmet));

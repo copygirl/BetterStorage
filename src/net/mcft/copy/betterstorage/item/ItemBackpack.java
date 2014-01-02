@@ -144,8 +144,8 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor, IDyeableIt
 				else list.add(reason);
 			}
 			// If the backpack can be opened by pressing a key, let the player know.
-			if (KeyBindingHandler.serverBackpackKeyEnabled && enableHelpTooltips) {
-				String str = GameSettings.getKeyDisplayString(BetterStorage.globalConfig.getInteger(GlobalConfig.backpackOpenKey));
+			if (BetterStorage.globalConfig.getBoolean(GlobalConfig.enableBackpackOpen) && enableHelpTooltips) {
+				String str = GameSettings.getKeyDisplayString(KeyBindingHandler.backpackOpen.keyCode);
 				LanguageUtils.translateTooltip(list, "backpack.openHint", "%KEY%", str);
 			}
 		// Tell the player to place down and break a backpack to equip it.
