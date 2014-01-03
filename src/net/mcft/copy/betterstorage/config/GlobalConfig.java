@@ -11,9 +11,9 @@ import net.mcft.copy.betterstorage.config.setting.ItemIdSetting;
 public class GlobalConfig extends Config {
 	
 	// Often accessed settings
-	public static IntegerSetting stationAutocraftDelaySetting;
 	public static BooleanSetting enableCrateInventoryInterfaceSetting;
 	public static BooleanSetting enableStationAutoCraftingSetting;
+	public static IntegerSetting stationAutocraftDelaySetting;
 	
 	public static final String crateId            = "block.crate";
 	public static final String reinforcedChestId  = "block.chest"; // TODO: Rename to reinforcedChest
@@ -107,20 +107,20 @@ public class GlobalConfig extends Config {
 		
 		// Reinforced chest settings
 		new IntegerSetting(this, reinforcedColumns, 13).setValidValues(9, 11, 13).setComment(
-				"Number of colums in reinforced chests and lockers. Valid values are 9, 11 and 13.");
+				"Number of columns in reinforced chests and lockers. Valid values are 9, 11 and 13.");
 		
 		// Crate settings
 		enableCrateInventoryInterfaceSetting =
 		new BooleanSetting(this, enableCrateInventoryInterface, true).setComment(
-				"If machines and such can interact with crates. Disable this if there's issues.");
+				"If enabled, exposes a special block view of crates, so items can be moved in and out by automated systems.");
 		
 		// Backpack settings
 		new BooleanSetting(this, backpackChestplate, true).setComment(
-				"If false, backpacks don't take up the player's chestplate armor slot.");
+				"If disabled, backpacks don't take up the player's chestplate armor slot.");
 		new IntegerSetting(this, backpackRows, 3).setValidRange(1, 6).setComment(
 				"Number of rows in backpacks. Valid values are 1 to 6.");
 		new BooleanSetting(this, enableBackpackOpen, false).setSynced().setComment(
-				"Allows backpacks to be opened when equipped by pressing a key.");
+				"Allows equipped backpacks to be opened by pressing a key.");
 		new BooleanSetting(this, enableBackpackInteraction, true).setComment(
 				"Allows equipped backpacks to be opened by other players by right clicking them.");
 		new BooleanSetting(this, dropBackpackOnDeath, true).setComment(
@@ -129,10 +129,10 @@ public class GlobalConfig extends Config {
 		// Crafting Station settings
 		enableStationAutoCraftingSetting =
 		new BooleanSetting(this, enableStationAutoCrafting, false).setComment(
-				"Controls if the crafting station can be used to auto-craft, as it may not work with all machines.");
+				"If enabled, automated systems can pull out of crafting stations and therefore auto-craft items.");
 		stationAutocraftDelaySetting =
 		new IntegerSetting(this, stationAutocraftDelay, 10).setValidRange(0, Integer.MAX_VALUE).setComment(
-				"Delay between recipes being autocrafted in the crafting station in ticks. (Default: 10)");
+				"Delay between recipes being autocrafted in the crafting station, in ticks. (Default: 10)");
 		
 		// Miscellaneous settings
 		new BooleanSetting(this, enableHelpTooltips, true).setComment(
