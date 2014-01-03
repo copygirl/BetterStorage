@@ -107,6 +107,8 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 	
 	@Override
 	public final String getName() { return (getConnectableName() + (isConnected() ? "Large" : "")); }
+	@Override
+	protected boolean doesSyncPlayers() { return true; }
 	
 	@Override
 	public InventoryTileEntity getPlayerInventory() {

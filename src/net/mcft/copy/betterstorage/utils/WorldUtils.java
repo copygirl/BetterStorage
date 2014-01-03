@@ -117,14 +117,11 @@ public final class WorldUtils {
 	}
 	
 	/** Counts and returns the number of players who're accessing a tile entity. */
-	public static int syncPlayersUsing(TileEntity te, int ticksSinceSync, int playersUsing, IInventory playerInventory) {
-		World world = te.worldObj;
-		ticksSinceSync += te.xCoord + te.yCoord + te.zCoord;
-		if (!world.isRemote && (playersUsing != 0) && (ticksSinceSync % 200 == 0)) {
+	public static int syncPlayersUsing(TileEntity te, int playersUsing, IInventory playerInventory) {
+		if (!te.worldObj.isRemote && (playersUsing != 0)) {
 			playersUsing = 0;
-			List players = world.getEntitiesWithinAABB(EntityPlayer.class, getAABB(te, 5));
-			for (Object p : players) {
-				EntityPlayer player = (EntityPlayer)p;
+			List<EntityPlayer> players = te.worldObj.getEntitiesWithinAABB(EntityPlayer.class, getAABB(te, 5));
+			for (EntityPlayer player : players) {
 				if (player.openContainer instanceof ContainerBetterStorage) {
 					IInventory inventory = ((ContainerBetterStorage)player.openContainer).inventory;
 					if (inventory == playerInventory) playersUsing++;
@@ -136,8 +133,8 @@ public final class WorldUtils {
 		return playersUsing;
 	}
 	/** Counts and returns the number of players who're accessing a tile entity. */
-	public static int syncPlayersUsing(TileEntityContainer te, int ticksSinceSync, int numUsingPlayers) {
-		return syncPlayersUsing(te, ticksSinceSync, numUsingPlayers, te.getPlayerInventory());
+	public static int syncPlayersUsing(TileEntityContainer te, int numUsingPlayers) {
+		return syncPlayersUsing(te, numUsingPlayers, te.getPlayerInventory());
 	}
 	
 	// Misc functions

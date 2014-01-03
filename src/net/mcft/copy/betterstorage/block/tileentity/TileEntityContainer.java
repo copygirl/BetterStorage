@@ -24,7 +24,6 @@ public abstract class TileEntityContainer extends TileEntity {
 	private String customTitle = null;
 	
 	private int playersUsing = 0;
-	private int ticksSinceSync = 0;
 	
 	protected boolean brokenInCreative = false;
 
@@ -145,13 +144,17 @@ public abstract class TileEntityContainer extends TileEntity {
 	
 	// Players using synchronization
 	
-	/** Returns if the container should synchronize playersUsing over the network. */
+	/** Returns if the container does synchronize playersUsing at all. */
+	protected boolean doesSyncPlayers() { return false; }
+	/** Returns if the container should synchronize playersUsing over the network, called each tick. */
 	protected boolean syncPlayersUsing() {
-		return (worldObj.doChunksNearChunkExist(xCoord, yCoord, zCoord, 16));
+		return (!worldObj.isRemote && doesSyncPlayers() &&
+		        (((ticksExisted + xCoord + yCoord + zCoord) & 0xFF) == 0) &&
+		        worldObj.doChunksNearChunkExist(xCoord, yCoord, zCoord, 16));
 	}
-	
+	/** Synchronizes playersUsing over the network. */
 	private void doSyncPlayersUsing(int playersUsing) {
-		if (!syncPlayersUsing()) return;
+		if (!doesSyncPlayers()) return;
 		worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType().blockID, 0, playersUsing);
 	}
 	
@@ -178,13 +181,16 @@ public abstract class TileEntityContainer extends TileEntity {
 	public void updateEntity() {
 		ticksExisted++;
 		
-		if (!worldObj.isRemote && syncPlayersUsing())
-			playersUsing = WorldUtils.syncPlayersUsing(this, ++ticksSinceSync, playersUsing);
+		if (syncPlayersUsing()) {
+			int newPlayersUsing = WorldUtils.syncPlayersUsing(this, playersUsing);
+			if (newPlayersUsing != playersUsing)
+				doSyncPlayersUsing(playersUsing = newPlayersUsing);
+		}
 		
 		prevLidAngle = lidAngle;
-		float lidSpeed = getLidSpeed();
-		if (playersUsing > 0) lidAngle = Math.min(1.0F, lidAngle + lidSpeed);
-		else lidAngle = Math.max(0.0F, lidAngle - lidSpeed);
+		if (playersUsing > 0) {
+			if (lidAngle < 1.0F) lidAngle = Math.min(1.0F, lidAngle + getLidSpeed());
+		} else if (lidAngle > 0.0F) lidAngle = Math.max(0.0F, lidAngle - getLidSpeed());
 	}
 	
 	// Reading from / writing to NBT

@@ -53,6 +53,8 @@ public class TileEntityBackpack extends TileEntityContainer {
 	public String getName() { return Constants.containerBackpack; }
 	@Override
 	public int getRows() { return BetterStorage.globalConfig.getInteger(GlobalConfig.backpackRows); }
+	@Override
+	protected boolean doesSyncPlayers() { return true; }
 	
 	@Override
 	public boolean onBlockBreak(EntityPlayer player) {

@@ -42,8 +42,6 @@ public class TileEntityArmorStand extends TileEntityContainer {
 	
 	@Override
 	protected int getSizeContents() { return 0; }
-	@Override
-	protected boolean syncPlayersUsing() { return false; }
 	
 	@Override
 	public void onBlockPlaced(EntityLivingBase player, ItemStack stack) {
