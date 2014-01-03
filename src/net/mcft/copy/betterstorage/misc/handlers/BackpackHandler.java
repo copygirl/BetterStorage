@@ -139,7 +139,9 @@ public class BackpackHandler implements IPlayerTracker {
 		
 		if (event.entity.worldObj.isRemote ||
 		    !(event.entity instanceof EntityPlayerMP) ||
-		    !(event.target instanceof EntityLivingBase)) return;
+		    !(event.target instanceof EntityLivingBase) ||
+		    ((event.target instanceof EntityPlayer) &&
+		     !BetterStorage.globalConfig.getBoolean(GlobalConfig.enableBackpackInteraction))) return;
 		
 		EntityPlayerMP player = (EntityPlayerMP)event.entity;
 		EntityLivingBase target = (EntityLivingBase)event.target;

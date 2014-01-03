@@ -57,6 +57,7 @@ public class GlobalConfig extends Config {
 	public static final String backpackChestplate            = "settings.backpackChestplate";
 	public static final String backpackRows                  = "settings.backpackRows";
 	public static final String enableBackpackOpen            = "settings.enableBackpackOpen";
+	public static final String enableBackpackInteraction     = "settings.enableBackpackInteraction";
 	public static final String dropBackpackOnDeath           = "settings.dropBackpackOnDeath";
 	public static final String enableStationAutoCrafting     = "settings.enableStationAutoCrafting";
 	public static final String stationAutocraftDelay         = "settings.stationAutocraftDelay";
@@ -120,6 +121,8 @@ public class GlobalConfig extends Config {
 				"Number of rows in backpacks. Valid values are 1 to 6.");
 		new BooleanSetting(this, enableBackpackOpen, false).setSynced().setComment(
 				"Allows backpacks to be opened when equipped by pressing a key.");
+		new BooleanSetting(this, enableBackpackInteraction, true).setComment(
+				"Allows equipped backpacks to be opened by other players by right clicking them.");
 		new BooleanSetting(this, dropBackpackOnDeath, true).setComment(
 				"If enabled, drops backpacks as block instead of spilling the items around.");
 		
