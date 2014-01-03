@@ -13,6 +13,7 @@ public class GlobalConfig extends Config {
 	// Often accessed settings
 	public static IntegerSetting stationAutocraftDelaySetting;
 	public static BooleanSetting enableCrateInventoryInterfaceSetting;
+	public static BooleanSetting enableStationAutoCraftingSetting;
 	
 	public static final String crateId            = "block.crate";
 	public static final String reinforcedChestId  = "block.chest"; // TODO: Rename to reinforcedChest
@@ -123,6 +124,7 @@ public class GlobalConfig extends Config {
 				"If enabled, drops backpacks as block instead of spilling the items around.");
 		
 		// Crafting Station settings
+		enableStationAutoCraftingSetting =
 		new BooleanSetting(this, enableStationAutoCrafting, false).setComment(
 				"Controls if the crafting station can be used to auto-craft, as it may not work with all machines.");
 		stationAutocraftDelaySetting =

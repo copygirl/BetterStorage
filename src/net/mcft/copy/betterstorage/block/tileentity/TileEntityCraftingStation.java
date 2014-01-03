@@ -1,5 +1,6 @@
 package net.mcft.copy.betterstorage.block.tileentity;
 
+import net.mcft.copy.betterstorage.config.GlobalConfig;
 import net.mcft.copy.betterstorage.container.ContainerBetterStorage;
 import net.mcft.copy.betterstorage.container.ContainerCraftingStation;
 import net.mcft.copy.betterstorage.inventory.InventoryCraftingStation;
@@ -104,7 +105,10 @@ public class TileEntityCraftingStation extends TileEntityContainer
 	@Override
 	public boolean canInsertItem(int slot, ItemStack stack, int side) { return (side != 0); }
 	@Override
-	public boolean canExtractItem(int slot, ItemStack stack, int side) { return ((side != 0) || stationInventory.canTake(null)); }
+	public boolean canExtractItem(int slot, ItemStack stack, int side) {
+		return ((side != 0) || (GlobalConfig.enableStationAutoCraftingSetting.getValue() &&
+		                        stationInventory.canTake(null)));
+	}
 	
 	// Reading from / writing to NBT
 	
