@@ -328,8 +328,10 @@ public class BackpackHandler implements IPlayerTracker {
 				for (BlockCoordinate coord : coords)
 					if (ItemBackpack.placeBackpack(entity, player, backpack,
 					                               coord.x, coord.y, coord.z, 1,
-					                               orientation, despawn))
+					                               orientation, despawn)) {
+						ItemBackpack.setBackpack(player, null, null);
 						return;
+					}
 				
 				// If backpack is not equipped as armor, drop it.
 				if (!ItemBackpack.hasChestplateBackpackEquipped(entity))
