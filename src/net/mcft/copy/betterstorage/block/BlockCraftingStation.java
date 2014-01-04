@@ -17,6 +17,9 @@ public class BlockCraftingStation extends BlockContainerBetterStorage {
 	
 	public BlockCraftingStation(int id) {
 		super(id, Material.wood);
+		
+		setHardness(1.5f);
+                setStepSound(soundWoodFootstep);
 	}
 	
 	@Override
