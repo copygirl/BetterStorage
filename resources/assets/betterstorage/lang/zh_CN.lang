@@ -47,6 +47,10 @@ item.betterstorage.masterKey.name=万能钥匙
 # Creative tab
 itemGroup.betterstorage=更好存储
 
+# Keys
+key.betterstorage.backpackOpen=[更好存储] 打开背包
+key.betterstorage.drinkingHelmet=[更好存储] 使用嗜饮头盔
+
 # Container materials
 material.betterstorage.iron=铁
 material.betterstorage.gold=金
