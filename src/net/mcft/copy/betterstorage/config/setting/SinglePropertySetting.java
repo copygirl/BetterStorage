@@ -13,6 +13,13 @@ public abstract class SinglePropertySetting<T> extends Setting<T> {
 		property = getProperty(config.forgeConfig);
 	}
 	
+	@Override
+	public SinglePropertySetting<T> setComment(String comment) {
+		property.comment = comment;
+		super.setComment(comment);
+		return this;
+	}
+	
 	protected abstract Property getProperty(Configuration config);
 	
 }

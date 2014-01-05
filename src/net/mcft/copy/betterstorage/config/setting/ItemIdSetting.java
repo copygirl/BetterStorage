@@ -12,6 +12,6 @@ public class ItemIdSetting extends IntegerSetting {
 	
 	@Override
 	protected Property getProperty(Configuration config) {
-		return config.getItem(category, name, defaultValue, comment); }
+		return config.getItem(category, name, defaultValue); }
 	
 }

@@ -12,6 +12,6 @@ public class BlockIdSetting extends IntegerSetting {
 	
 	@Override
 	protected Property getProperty(Configuration config) {
-		return config.getBlock(category, name, defaultValue, comment); }
+		return config.getBlock(category, name, defaultValue); }
 	
 }
