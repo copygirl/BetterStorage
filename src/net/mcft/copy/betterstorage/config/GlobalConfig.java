@@ -115,7 +115,7 @@ public class GlobalConfig extends Config {
 				"If enabled, exposes a special block view of crates, so items can be moved in and out by automated systems.");
 		
 		// Backpack settings
-		new BooleanSetting(this, backpackChestplate, true).setComment(
+		new BooleanSetting(this, backpackChestplate, true).setSynced().setComment(
 				"If disabled, backpacks don't take up the player's chestplate armor slot.");
 		new IntegerSetting(this, backpackRows, 3).setValidRange(1, 6).setComment(
 				"Number of rows in backpacks. Valid values are 1 to 6.");

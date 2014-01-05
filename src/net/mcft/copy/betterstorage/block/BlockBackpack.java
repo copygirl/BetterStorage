@@ -2,11 +2,14 @@ package net.mcft.copy.betterstorage.block;
 
 import java.util.Random;
 
+import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityBackpack;
+import net.mcft.copy.betterstorage.config.GlobalConfig;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.proxy.ClientProxy;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
@@ -55,6 +58,24 @@ public class BlockBackpack extends BlockContainerBetterStorage {
 	
 	@Override
 	public int quantityDropped(int meta, int fortune, Random random) { return 0; }
+	
+	@Override
+	public float getPlayerRelativeBlockHardness(EntityPlayer player, World world, int x, int y, int z) {
+		return ((player.isSneaking() && !ItemBackpack.canEquipBackpack(player)) ? -1.0F
+				: super.getPlayerRelativeBlockHardness(player, world, x, y, z));
+	}
+	
+	private long lastHelpMessage = System.currentTimeMillis();
+	@Override
+	public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player) {
+		if (world.isRemote && player.isSneaking() && !ItemBackpack.canEquipBackpack(player) &&
+		    BetterStorage.globalConfig.getBoolean(GlobalConfig.enableHelpTooltips) &&
+		    (System.currentTimeMillis() > lastHelpMessage + 10 * 1000)) {
+			boolean backpack = (ItemBackpack.getBackpack(player) != null);
+			player.addChatMessage("tile.betterstorage.backpack.cantEquip." + (backpack ? "backpack" : "chestplate"));
+			lastHelpMessage = System.currentTimeMillis();
+		}
+	}
 	
 	@Override
 	public TileEntity createNewTileEntity(World world) {

@@ -79,8 +79,6 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor, IDyeableIt
 		return new InventoryStacks(getName(), backpackData.contents);
 	}
 	
-	public boolean canTake(PropertiesBackpack backpackData, ItemStack backpack) { return true; }
-	
 	public boolean containsItems(PropertiesBackpack backpackData) {
 		return (backpackData.hasItems || ((backpackData.contents != null) && !StackUtils.isEmpty(backpackData.contents)));
 	}
@@ -130,31 +128,33 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor, IDyeableIt
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advancedTooltips) {
 		boolean enableHelpTooltips = BetterStorage.globalConfig.getBoolean(GlobalConfig.enableHelpTooltips);
 		if (getBackpack(player) == stack) {
-			String reason = LanguageUtils.translateTooltip(getReason(stack, player));
+			String info = LanguageUtils.translateTooltip(getAdditionalInfo(stack, player));
 			// Tell players if someone's using their backpack when they hovers over it in the GUI.
 			// This is because if the backpack is used by another player it can't be placed down.
 			if (ItemBackpack.isBackpackOpen(player)) {
-				if (reason != null) list.add(reason);
+				if (info != null) list.add(info);
 				LanguageUtils.translateTooltip(list, "backpack.used");
 			// If the backpack can't be removed from its slot (only placed down),
 			// tell the player why, like "Contains items" or "Bound backpack".
-			} else if (reason != null) {
-				if (enableHelpTooltips)
-					LanguageUtils.translateTooltip(list, "backpack.unequipHint", "%REASON%", reason);
-				else list.add(reason);
-			}
+			} else if (enableHelpTooltips)
+				LanguageUtils.translateTooltip(list,
+						(info != null) ? "backpack.unequipHint.extended" : "backpack.unequipHint",
+						(info != null) ? new String[]{ "%INFO%", info } : new String[0]);
+			else if (info != null) list.add(info);
 			// If the backpack can be opened by pressing a key, let the player know.
 			if (BetterStorage.globalConfig.getBoolean(GlobalConfig.enableBackpackOpen) && enableHelpTooltips) {
 				String str = GameSettings.getKeyDisplayString(KeyBindingHandler.backpackOpen.keyCode);
 				LanguageUtils.translateTooltip(list, "backpack.openHint", "%KEY%", str);
 			}
 		// Tell the player to place down and break a backpack to equip it.
-		} else if (enableHelpTooltips)
-			LanguageUtils.translateTooltip(list, "backpack.equipHint");
+		} else if (enableHelpTooltips) {
+			boolean chestplate = BetterStorage.globalConfig.getBoolean(GlobalConfig.backpackChestplate);
+			LanguageUtils.translateTooltip(list, (chestplate ? "backpack.equipHint"
+			                                                 : "backpack.equipHint.extended"));
+		}
 	}
-	/** Returns the reason (a string to be translated) why a backpack
-	 *  can't be moved from the armor slot, or null if there is none. */
-	protected String getReason(ItemStack stack, EntityPlayer player) {
+	/** Returns additional info (a string to be translated) of the backpack. */
+	protected String getAdditionalInfo(ItemStack stack, EntityPlayer player) {
 		return (containsItems(getBackpackData(player)) ? "backpack.containsItems" : null);
 	}
 	

@@ -1,7 +1,6 @@
 package net.mcft.copy.betterstorage.container;
 
 import net.mcft.copy.betterstorage.item.ItemBackpack;
-import net.mcft.copy.betterstorage.misc.PropertiesBackpack;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
@@ -43,13 +42,7 @@ public class SlotArmorBackpack extends Slot {
 	@Override
 	public boolean canTakeStack(EntityPlayer player) { 
 		ItemStack backpack = getStack();
-		if ((backpack == null) || !(backpack.getItem() instanceof ItemBackpack)) return true;
-		ItemBackpack backpackType = (ItemBackpack)backpack.getItem();
-		
-		PropertiesBackpack data = ItemBackpack.getBackpackData(player);
-		return (!ItemBackpack.isBackpackOpen(player) &&
-				backpackType.canTake(data, backpack) &&
-				!backpackType.containsItems(data));
+		return ((backpack == null) || !(backpack.getItem() instanceof ItemBackpack));
 	}
 	
 }

@@ -29,11 +29,9 @@ public class ItemEnderBackpack extends ItemBackpack {
 	}
 	
 	@Override
-	public boolean canTake(PropertiesBackpack backpackData, ItemStack backpack) { return false; }
-	@Override
 	public boolean containsItems(PropertiesBackpack backpackData) { return false; }
 	@Override
-	protected String getReason(ItemStack stack, EntityPlayer player) { return "backpack.bound"; }
+	protected String getAdditionalInfo(ItemStack stack, EntityPlayer player) { return "backpack.bound"; }
 	
 	// Item stuff
 	
