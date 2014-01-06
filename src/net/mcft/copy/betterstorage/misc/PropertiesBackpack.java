@@ -47,7 +47,6 @@ public class PropertiesBackpack implements IExtendedEntityProperties {
 	public void saveNBTData(NBTTagCompound compound) {
 		if (contents == null) return;
 		NBTTagCompound backpackCompound = new NBTTagCompound();
-		backpackCompound.setInteger("count", contents.length);
 		backpackCompound.setTag("Items", NbtUtils.writeItems(contents));
 		if (backpack != null)
 			backpackCompound.setCompoundTag("Stack", backpack.writeToNBT(new NBTTagCompound()));
@@ -56,11 +55,13 @@ public class PropertiesBackpack implements IExtendedEntityProperties {
 	
 	@Override
 	public void loadNBTData(NBTTagCompound compound) {
-		if (!compound.hasKey("Backpack")) return;
-		NBTTagCompound backpackCompound = compound.getCompoundTag("Backpack");
-		contents = new ItemStack[backpackCompound.getInteger("count")];
-		NbtUtils.readItems(contents, backpackCompound.getTagList("Items"));
-		backpack = ItemStack.loadItemStackFromNBT(backpackCompound.getCompoundTag("Stack"));
+		backpack = null;
+		contents = new ItemStack[contents.length];
+		if (compound.hasKey("Backpack")) {
+			NBTTagCompound backpackCompound = compound.getCompoundTag("Backpack");
+			backpack = ItemStack.loadItemStackFromNBT(backpackCompound.getCompoundTag("Stack"));
+			NbtUtils.readItems(contents, backpackCompound.getTagList("Items"));
+		}
 	}
 	
 	public void update(EntityLivingBase entity) {
