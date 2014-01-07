@@ -223,7 +223,7 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor, IDyeableIt
 	}
 	
 	private static final String[] immuneToDamageType = {
-		"inWall", "drown", "starve", "catcus", "fall", "outOfWorld",
+		"inWall", "drown", "starve", "cactus", "fall", "outOfWorld",
 		"generic", "wither", "anvil", "fallingBlock", "thrown"
 	};
 	protected boolean takesDamage(ItemStack stack, DamageSource source) {
