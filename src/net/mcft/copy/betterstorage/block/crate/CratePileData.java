@@ -114,6 +114,7 @@ public class CratePileData implements Iterable<ItemStack> {
 		numCrates++;
 		markDirty();
 	}
+	
 	/** Removes a crate from the crate pile, decreasing the number
 	 *  of crates and removing it from the crate pile map. */
 	public void removeCrate(TileEntityCrate crate) {
@@ -125,6 +126,11 @@ public class CratePileData implements Iterable<ItemStack> {
 				map.remove(crate);
 			markDirty();
 		}
+	}
+	
+	/** Returns if there's a crate from the crate pile at that position. */
+	public boolean hasCrate(int x, int y, int z) {
+		return map.get(x, y, z);
 	}
 	
 	// Getting items

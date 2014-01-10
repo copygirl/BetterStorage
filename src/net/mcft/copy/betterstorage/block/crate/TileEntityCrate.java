@@ -82,9 +82,10 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 			for (ForgeDirection dir : sideDirections) {
 				int nx = x + dir.offsetX;
 				int nz = z + dir.offsetZ;
-				// Continue if this neighbor block is not a crate.
+				// Continue if this neighbor block is not part of the crate pile.
+				// TODO: Use data.hasCrate before?
 				TileEntityCrate neighborCrate = WorldUtils.get(worldObj, nx, y, nz, TileEntityCrate.class);
-				if (neighborCrate == null) continue;
+				if ((neighborCrate == null) || (neighborCrate.id != id)) continue;
 				// See if the neighbor crate is already in a crate set,
 				// in that case continue with the next neighbor block.
 				for (HashSet<TileEntityCrate> set : crateSets)
