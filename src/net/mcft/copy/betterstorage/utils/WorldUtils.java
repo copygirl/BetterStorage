@@ -40,7 +40,7 @@ public final class WorldUtils {
 	
 	/** Spawns an ItemStack in the world. */
 	public static EntityItem spawnItem(World world, double x, double y, double z, ItemStack stack) {
-		if (stack == null) return null;
+		if ((stack == null) || (stack.stackSize <= 0)) return null;
 		EntityItem item = new EntityItem(world, x, y, z, stack);
 		world.spawnEntityInWorld(item);
 		return item;
@@ -70,12 +70,12 @@ public final class WorldUtils {
 	
 	/** Spawns an ItemStack as if it was dropped from an entity on death. */
 	public static EntityItem dropStackFromEntity(Entity entity, ItemStack stack, float speed) {
-		if (stack == null) return null;
 		EntityPlayer player = ((entity instanceof EntityPlayer) ? (EntityPlayer)entity : null);
 		EntityItem item;
 		if (player == null) {
 			double y = entity.posY + entity.getEyeHeight() - 0.3;
 			item = spawnItem(entity.worldObj, entity.posX, y, entity.posZ, stack);
+			if (item == null) return null;
 			item.delayBeforeCanPickup = 40;
 			float f1 = RandomUtils.getFloat(0.5F);
 			float f2 = RandomUtils.getFloat((float)Math.PI * 2.0F);
@@ -84,8 +84,10 @@ public final class WorldUtils {
 			item.motionZ =  MathHelper.cos(f2) * f1;
 			return item;
 		} else item = player.dropPlayerItemWithRandomChoice(stack, true);
-		item.motionX *= speed / 4;
-		item.motionZ *= speed / 4;
+		if (item != null) {
+			item.motionX *= speed / 4;
+			item.motionZ *= speed / 4;
+		}
 		return item;
 	}
 	
