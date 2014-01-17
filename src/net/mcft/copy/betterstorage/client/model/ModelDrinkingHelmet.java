@@ -30,7 +30,7 @@ public class ModelDrinkingHelmet extends ModelBiped {
 		ItemStack[] potions = new ItemStack[2];
 		if (entity instanceof EntityLivingBase) {
 			ItemStack drinkingHelmet = ItemDrinkingHelmet.getDrinkingHelmet((EntityLivingBase)entity);
-			// Ugly hack-ish thing to make prevent potions from
+			// Ugly hack-ish thing to prevent potions from
 			// rendering in the enchantment effect render pass. 
 			if (!drinkingHelmet.isItemEnchanted() || (pass++ == 0))
 				potions = ItemDrinkingHelmet.getPotions(drinkingHelmet);
