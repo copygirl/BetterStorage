@@ -3,6 +3,7 @@ package net.mcft.copy.betterstorage.misc.handlers;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 
 import net.mcft.copy.betterstorage.BetterStorage;
@@ -271,7 +272,7 @@ public class BackpackHandler implements IPlayerTracker {
 	public void onLivingDeath(LivingDeathEvent event) {
 		
 		// If an entity wearing a backpack dies,
-		// tries to place it, or drop the items.
+		// try to place it, or drop the items.
 		
 		EntityLivingBase entity = event.entityLiving;
 		if (entity.worldObj.isRemote) return;
@@ -310,31 +311,37 @@ public class BackpackHandler implements IPlayerTracker {
 			// Attempt to place the backpack as a block instead of dropping the items.
 			if (BetterStorage.globalConfig.getBoolean(GlobalConfig.dropBackpackOnDeath)) {
 				
-				List<BlockCoordinate> coords = new ArrayList<BlockCoordinate>();
-				for (int x = -2; x <= 2; x++)
-					for (int y = -2; y <= 2; y++)
-						for (int z = -2; z <= 2; z++)
-							coords.add(new BlockCoordinate(entity.posX, entity.posY, entity.posZ, x, y, z));
-				Collections.sort(coords, new Comparator<BlockCoordinate>() {
-					@Override public int compare(BlockCoordinate o1, BlockCoordinate o2) {
-						if (o1.distance < o2.distance) return -1;
-						else if (o1.distance > o2.distance) return 1;
-						else return 0;
-					}
-				});
-				
 				ForgeDirection orientation = DirectionUtils.getOrientation(entity);
 				boolean despawn = ((player == null) && (entity.recentlyHit <= 0));
-				for (BlockCoordinate coord : coords)
-					if (ItemBackpack.placeBackpack(entity, player, backpack,
-					                               coord.x, coord.y, coord.z, 1,
-					                               orientation, despawn)) {
-						ItemBackpack.setBackpack(player, null, null);
-						return;
-					}
 				
-				// If backpack is not equipped as armor, drop it.
-				if (!ItemBackpack.hasChestplateBackpackEquipped(entity))
+				List<BlockCoordinate> coords = new ArrayList<BlockCoordinate>();
+				for (int x = -2; x <= 2; x++)
+					for (int z = -2; z <= 2; z++)
+						coords.add(new BlockCoordinate(entity.posX, entity.posY, entity.posZ, x, 0, z));
+				
+				// Try to place the backpack on the ground nearby,
+				// or look for a ground above or below to place it.
+				Collections.sort(coords, blockDistanceComparator);
+				while (!coords.isEmpty()) {
+					Iterator<BlockCoordinate> iter = coords.iterator();
+					while (iter.hasNext()) {
+						BlockCoordinate coord = iter.next();
+						if (ItemBackpack.placeBackpack(entity, player, backpack,
+						                               coord.x, coord.y, coord.z, 1,
+						                               orientation, despawn, true)) {
+							ItemBackpack.setBackpack(player, null, null);
+							return;
+						}
+						boolean replacable = WorldUtils.isBlockReplacable(entity.worldObj, coord.x, coord.y, coord.z);
+						coord.y += (replacable ? -1 : 1);
+						coord.moved += (replacable ? 1 : 5);
+						if ((coord.y <= 0) || (coord.y > entity.worldObj.getHeight()) ||
+						    (coord.moved > 24 - coord.distance * 4)) iter.remove();
+					}
+				}
+				
+				// If backpack couldn't be placed and isn't equipped as armor, drop it.
+				if (backpackData.backpack != null)
 					WorldUtils.dropStackFromEntity(entity, backpack, 4.0F);
 				
 			}
@@ -347,8 +354,9 @@ public class BackpackHandler implements IPlayerTracker {
 		
 	}
 	private static class BlockCoordinate {
-		public final int x, y, z;
-		public final double distance;
+		public int x, y, z;
+		public double distance;
+		public int moved = 0;
 		public BlockCoordinate(double ex, double ey, double ez, int x, int y, int z) {
 			this.x = (int)ex + x;
 			this.y = (int)ey + y;
@@ -358,6 +366,13 @@ public class BackpackHandler implements IPlayerTracker {
 			                     Math.pow(this.z + 0.5 - ez, 2));
 		}
 	}
+	private static Comparator<BlockCoordinate> blockDistanceComparator = new Comparator<BlockCoordinate>() {
+		@Override public int compare(BlockCoordinate o1, BlockCoordinate o2) {
+			if (o1.distance < o2.distance) return -1;
+			else if (o1.distance > o2.distance) return 1;
+			else return 0;
+		}
+	};
 	
 	@ForgeSubscribe
 	public void onEntityJoinWorldEvent(EntityJoinWorldEvent event) {

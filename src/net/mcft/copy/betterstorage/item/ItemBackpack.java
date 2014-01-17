@@ -219,7 +219,7 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor, IDyeableIt
 	                         World world, int x, int y, int z, int side,
 	                         float hitX, float hitY, float hitZ) {
 		ForgeDirection orientation = DirectionUtils.getOrientation(player).getOpposite();
-		return placeBackpack(player, player, stack, x, y, z, side, orientation, false);
+		return placeBackpack(player, player, stack, x, y, z, side, orientation, false, false);
 	}
 	
 	/** Called every tick regardless of whether the
@@ -393,33 +393,52 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor, IDyeableIt
 		
 	}
 	
+	/** Place a backpack down on a block.
+	 * @param carrier The carrier of the backpack (non-null).
+	 * @param player The player placing the backpack, if any.
+	 *               Used to check if they're allowed to place it.
+	 * @param backpack The backpack stack.
+	 *                 Stack size is decreased if placed successfully.
+	 * @param side The side of block the backpack is placed on.
+	 *             Anything other than top usually doesn't place it.
+	 * @param orientation The orientation the backpack will be placed in.
+	 * @param despawn If the backpack should despawn after a while.
+	 *                True for mobs, unless hit recently.
+	 * @param deathDrop True if the backpack is dropped on death.
+	 *                  Will not check for block solidity or entities.
+	 * @return If the backpack was placed successfully. */
 	public static boolean placeBackpack(EntityLivingBase carrier, EntityPlayer player, ItemStack backpack,
-	                                    int x, int y, int z, int side, ForgeDirection orientation, boolean despawn) {
+	                                    int x, int y, int z, int side, ForgeDirection orientation,
+	                                    boolean despawn, boolean deathDrop) {
 		
 		if (backpack.stackSize == 0) return false;
 		
 		World world = carrier.worldObj;
 		Block blockBackpack = Block.blocksList[backpack.itemID];
 		
-		// If a replacable block was clicked, move on.
+		// Return false if there's block is too low or too high.
+		if ((y <= 0) || (y >= world.getHeight() - 1)) return false;
+		
+		// If a replaceable block was clicked, move on.
 		// Otherwise, check if the top side was clicked and adjust the position.
 		if (!WorldUtils.isBlockReplacable(world, x, y, z)) {
 			if (side != 1) return false;
 			y++;
 		}
 		
-		// Return false if there's block is too low or too high.
-		if ((y <= 0) || (y >= world.getHeight() - 1)) return false;
-		
-		// Return false if not placed on top of a solid block.	
+		// If the backpack is dropped on death, return false
+		// if it's placed on a non-replaceable block. Otherwise,
+		// return false if the block isn't solid on top.
 		Block blockBelow = Block.blocksList[world.getBlockId(x, y - 1, z)];
-		if ((blockBelow == null) || !blockBelow.isBlockSolidOnSide(world, x, y - 1, z, ForgeDirection.UP)) return false;
-		
-		// Return false if the player can't edit the block.
-		if ((player != null) && !player.canPlayerEdit(x, y, z, side, backpack)) return false;
+		if ((deathDrop ? WorldUtils.isBlockReplacable(blockBelow, world, x, y - 1, z)
+		               : ((blockBelow == null) || !blockBelow.isBlockSolidOnSide(world, x, y - 1, z, ForgeDirection.UP)))) return false;
 		
 		// Return false if there's an entity blocking the placement.
-		if (!world.canPlaceEntityOnSide(blockBackpack.blockID, x, y, z, false, side, carrier, backpack)) return false;
+		if (!world.canPlaceEntityOnSide(blockBackpack.blockID, x, y, z, deathDrop, side, carrier, backpack)) return false;
+		
+		// Return false if the player can't edit the block.
+		if ((player != null) && (!world.canMineBlock(player, x, y, z) ||
+		                         !player.canPlayerEdit(x, y, z, side, backpack))) return false;
 		
 		// Do not actually place the backpack on the client.
 		if (world.isRemote) return true;
