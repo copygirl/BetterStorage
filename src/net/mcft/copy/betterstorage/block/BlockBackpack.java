@@ -25,8 +25,14 @@ public class BlockBackpack extends BlockContainerBetterStorage {
 		
 		setHardness(0.7f);
 		setStepSound(soundClothFootstep);
-		setBlockBounds(3 / 16.0F, 0.0F, 3 / 16.0F, 13 / 16.0F, 13 / 16.0F, 13 / 16.0F);
+		float w = getBoundsWidth() / 16.0F;
+		float h = getBoundsHeight() / 16.0F;
+		setBlockBounds(0.5F - w / 2, 0.0F, 0.5F - w / 2, 0.5F + w / 2, h, 0.5F + w / 2);
 	}
+	
+	public int getBoundsWidth() { return 12; }
+	public int getBoundsHeight() { return 13; }
+	public int getBoundsDepth() { return 10; }
 	
 	@Override
 	public Class<? extends Item> getItemClass() { return ItemBackpack.class; }
@@ -39,12 +45,15 @@ public class BlockBackpack extends BlockContainerBetterStorage {
 	
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
+		float w = getBoundsWidth() / 16.0F;
+		float h = getBoundsHeight() / 16.0F;
+		float d = getBoundsDepth() / 16.0F;
 		ForgeDirection orientation = ForgeDirection.getOrientation(world.getBlockMetadata(x, y, z));
 		if ((orientation == ForgeDirection.NORTH) || (orientation == ForgeDirection.SOUTH))
-			setBlockBounds(2 / 16.0F, 0.0F, 3 / 16.0F, 14 / 16.0F, 13 / 16.0F, 13 / 16.0F);
+			setBlockBounds(0.5F - w / 2, 0.0F, 0.5F - d / 2, 0.5F + w / 2, h, 0.5F + d / 2);
 		else if ((orientation == ForgeDirection.WEST) || (orientation == ForgeDirection.EAST))
-			setBlockBounds(3 / 16.0F, 0.0F, 2 / 16.0F, 13 / 16.0F, 13 / 16.0F, 14 / 16.0F);
-		else setBlockBounds(3 / 16.0F, 0.0F, 3 / 16.0F, 13 / 16.0F, 13 / 16.0F, 13 / 16.0F);
+			setBlockBounds(0.5F - d / 2, 0.0F, 0.5F - w / 2, 0.5F + d / 2, h, 0.5F + w / 2);
+		else setBlockBounds(0.5F - w / 2, 0.0F, 0.5F - w / 2, 0.5F + w / 2, h, 0.5F + w / 2);
 	}
 	
 	@Override

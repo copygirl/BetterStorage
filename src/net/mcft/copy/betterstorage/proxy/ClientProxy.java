@@ -238,7 +238,7 @@ public class ClientProxy extends CommonProxy {
 			float partial = event.partialRenderTick;
 			ItemBackpack backpackType = (ItemBackpack)backpack.getItem();
 			int color = backpackType.getColor(backpack);
-			ModelBackpackArmor model = ModelBackpackArmor.instance;
+			ModelBackpackArmor model = (ModelBackpackArmor)backpackType.getArmorModel(player, backpack, 0);
 			
 			model.onGround = event.renderer.renderSwingProgress(player, partial);
 			model.setLivingAnimations(player, 0, 0, partial);

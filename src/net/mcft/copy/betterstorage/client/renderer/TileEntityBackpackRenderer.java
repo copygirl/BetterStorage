@@ -2,14 +2,15 @@ package net.mcft.copy.betterstorage.client.renderer;
 
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityBackpack;
 import net.mcft.copy.betterstorage.client.model.ModelBackpack;
+import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.utils.DirectionUtils;
 import net.mcft.copy.betterstorage.utils.RenderUtils;
-import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.client.renderer.entity.RendererLivingEntity;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
@@ -21,12 +22,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class TileEntityBackpackRenderer extends TileEntitySpecialRenderer {
 	
-	private final ModelBackpack backpackModel = new ModelBackpack();
-	
 	public void renderTileEntityAt(TileEntityBackpack backpack, double x, double y, double z, float partialTicks) {
 		
 		if ((backpack.worldObj == null) && (backpack.blockType == null)) return;
-		Item item = Item.itemsList[backpack.getBlockType().blockID];
+		ItemBackpack item = (ItemBackpack)Item.itemsList[backpack.getBlockType().blockID];
+		ItemStack stack = ((backpack.stack != null) ? backpack.stack : new ItemStack(item));
+		ModelBackpack backpackModel = item.getModel();
 		
 		GL11.glPushMatrix();
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
@@ -45,9 +46,8 @@ public class TileEntityBackpackRenderer extends TileEntitySpecialRenderer {
 		
 		int renderPasses = item.getRenderPasses(0);
 		for (int pass = 0; pass < renderPasses; pass++) {
-			ItemStack stack = ((backpack.stack != null) ? backpack.stack : new ItemStack(item));
 			String type = ((pass == 0) ? null : "overlay");
-			bindTexture(RenderBiped.getArmorResource(null, stack, 0, type));
+			bindTexture(new ResourceLocation(item.getArmorTexture(stack, null, 0, type)));
             RenderUtils.setColorFromInt(item.getColorFromItemStack(stack, pass));
 			backpackModel.renderAll();
 		}

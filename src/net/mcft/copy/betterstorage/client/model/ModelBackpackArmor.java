@@ -1,5 +1,7 @@
 package net.mcft.copy.betterstorage.client.model;
 
+import java.util.List;
+
 import net.mcft.copy.betterstorage.entity.EntityFrienderman;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.misc.PropertiesBackpack;
@@ -13,32 +15,24 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ModelBackpackArmor extends ModelBiped {
 	
-	public static final ModelBackpackArmor instance = new ModelBackpackArmor();
+	public final ModelBackpack baseModel;
 	
-	private ModelRenderer main;
-	private ModelRenderer top;
-	private ModelRenderer front;
-	
-	public ModelBackpackArmor() {
+	public ModelBackpackArmor(ModelBackpack baseModel) {
+		this.baseModel = baseModel;
 		
-		textureWidth = 32;
-		textureHeight = 32;
+		textureWidth = baseModel.textureWidth;
+		textureHeight = baseModel.textureHeight;
 		
 		bipedBody = new ModelRenderer(this);
 		
-		main = new ModelRenderer(this, 0, 8);
-		main.addBox(-5F, 4F, 2.5F, 10, 9, 5);
-		bipedBody.addChild(main);
+		ModelRenderer model = new ModelRenderer(this);
+		for (ModelRenderer box : (List<ModelRenderer>)baseModel.boxList) {
+			box.rotationPointY -= baseModel.getModelHeight();
+			box.rotationPointZ += 5.5F;
+			bipedBody.addChild(box);
+		}
 		
-		top = new ModelRenderer(this, 0, 0);
-		top.addBox(-5F, -3F, 0F, 10, 3, 5);
-		top.setRotationPoint(0F, 4F, 2.5F);
-		bipedBody.addChild(top);
-		
-		front = new ModelRenderer(this, 0, 22);
-		front.addBox(-4F, 6F, 7.5F, 8, 6, 2);
-		bipedBody.addChild(front);
-		
+		bipedBody.addChild(model);
 	}
 	
 	@Override
@@ -50,7 +44,8 @@ public class ModelBackpackArmor extends ModelBiped {
 			angle = 1.0F - angle;
 			angle = 1.0F - angle * angle;
 		}
-		top.rotateAngleX = (float)(angle * Math.PI / 4.0);
+		if (baseModel.top != null)
+			baseModel.top.rotateAngleX = (float)(angle * Math.PI / 4.0);
 	}
 	
 	@Override

@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.block.tileentity.TileEntityBackpack;
+import net.mcft.copy.betterstorage.client.model.ModelBackpack;
 import net.mcft.copy.betterstorage.client.model.ModelBackpackArmor;
 import net.mcft.copy.betterstorage.config.GlobalConfig;
 import net.mcft.copy.betterstorage.container.ContainerBetterStorage;
@@ -83,6 +84,43 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor, IDyeableIt
 		return (backpackData.hasItems || ((backpackData.contents != null) && !StackUtils.isEmpty(backpackData.contents)));
 	}
 	
+	// Model and texture
+	
+	@SideOnly(Side.CLIENT)
+	private ModelBackpack model;
+	@SideOnly(Side.CLIENT)
+	private ModelBackpackArmor modelArmor;
+	
+	/** Returns the model class of the backpack. */
+	@SideOnly(Side.CLIENT)
+	public Class<? extends ModelBackpack> getModelClass() { return ModelBackpack.class; }
+	
+	@SideOnly(Side.CLIENT)
+	public ModelBackpack getModel() {
+		if (model == null) {
+			try { model = getModelClass().getConstructor(boolean.class).newInstance(true); }
+			catch (Exception e) { e.printStackTrace(); }
+		}
+		return model;
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public ModelBiped getArmorModel(EntityLivingBase entity, ItemStack stack, int slot) {
+		if (modelArmor == null) {
+			try {
+				ModelBackpack model = getModelClass().getConstructor(boolean.class).newInstance(false);
+				modelArmor = new ModelBackpackArmor(model);
+			} catch (Exception e) { e.printStackTrace(); }
+		}
+		return modelArmor;
+	}
+	
+	@Override
+	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
+		return ((type == "overlay") ? Resources.textureBackpackOverlay : Resources.textureBackpack).toString();
+	}
+	
 	// Item stuff
 	
 	@Override
@@ -112,16 +150,6 @@ public class ItemBackpack extends ItemArmor implements ISpecialArmor, IDyeableIt
 	}
 	@Override
 	public int getRenderPasses(int metadata) { return ((getDefaultColor() >= 0) ? 2 : 1); }
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public ModelBiped getArmorModel(EntityLivingBase entity, ItemStack stack, int slot) {
-		return ModelBackpackArmor.instance;
-	}
-	@Override
-	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
-		return ((type == "overlay") ? Resources.textureBackpackOverlay : Resources.textureBackpack).toString();
-	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
