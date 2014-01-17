@@ -16,6 +16,7 @@ import net.mcft.copy.betterstorage.item.locking.ItemKeyring;
 import net.mcft.copy.betterstorage.item.locking.ItemLock;
 import net.mcft.copy.betterstorage.item.locking.ItemMasterKey;
 import net.mcft.copy.betterstorage.utils.MiscUtils;
+import net.minecraftforge.oredict.OreDictionary;
 
 public final class Items {
 	
@@ -58,6 +59,8 @@ public final class Items {
 		cardboardShovel = MiscUtils.conditionalNew(ItemCardboardShovel.class, GlobalConfig.cardboardShovelId);
 		cardboardAxe = MiscUtils.conditionalNew(ItemCardboardAxe.class, GlobalConfig.cardboardAxeId);
 		cardboardHoe = MiscUtils.conditionalNew(ItemCardboardHoe.class, GlobalConfig.cardboardHoeId);
+		
+		OreDictionary.registerOre("sheetCardboard", cardboardSheet);
 		
 		Addon.initializeItemsAll();
 		
