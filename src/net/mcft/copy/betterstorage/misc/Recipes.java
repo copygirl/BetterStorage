@@ -14,6 +14,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -72,7 +73,7 @@ public final class Recipes {
 		
 		// Armor stand recipe
 		if (MiscUtils.isEnabled(Tiles.armorStand))
-			GameRegistry.addRecipe(new ItemStack(Tiles.armorStand),
+			GameRegistry.addShapedRecipe(new ItemStack(Tiles.armorStand),
 					" i ",
 					"/i/",
 					" s ", 's', new ItemStack(Block.stoneSingleSlab, 1, 0),
@@ -81,7 +82,7 @@ public final class Recipes {
 		
 		// Backpack recipe
 		if (MiscUtils.isEnabled(Tiles.backpack))
-			GameRegistry.addRecipe(new ItemStack(Tiles.backpack),
+			GameRegistry.addShapedRecipe(new ItemStack(Tiles.backpack),
 					"#i#",
 					"#O#",
 					"###", '#', Item.leather,
@@ -90,10 +91,10 @@ public final class Recipes {
 		
 		// Cardboard box recipe
 		if (MiscUtils.isEnabled(Tiles.cardboardBox, Items.cardboardSheet))
-			GameRegistry.addRecipe(new ItemStack(Tiles.cardboardBox),
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Tiles.cardboardBox),
 					"ooo",
 					"o o",
-					"ooo", 'o', Items.cardboardSheet);
+					"ooo", 'o', "sheetCardboard"));
 		
 		// Crafting Station recipe
 		if (MiscUtils.isEnabled(Tiles.craftingStation))
@@ -129,7 +130,7 @@ public final class Recipes {
 					      '.', Item.goldNugget));
 			// Key modify recipe
 			GameRegistry.addRecipe(KeyRecipe.createKeyRecipe(
-					"k", 'k', new ItemStack(Items.key, 1, Constants.anyDamage)));
+					"k", 'k', new ItemStack(Items.key, 1, OreDictionary.WILDCARD_VALUE)));
 		}
 		
 		if (MiscUtils.isEnabled(Items.lock)) {
@@ -142,7 +143,7 @@ public final class Recipes {
 		
 		// Keyring recipe
 		if (MiscUtils.isEnabled(Items.keyring))
-			GameRegistry.addRecipe(new ItemStack(Items.keyring),
+			GameRegistry.addShapedRecipe(new ItemStack(Items.keyring),
 					"...",
 					". .",
 					"...", '.', Item.goldNugget);
@@ -164,76 +165,76 @@ public final class Recipes {
 			
 			// Cardboard helmet recipe
 			if (MiscUtils.isEnabled(Items.cardboardHelmet))
-				GameRegistry.addRecipe(new ItemStack(Items.cardboardHelmet),
+				GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.cardboardHelmet),
 						"ooo",
-						"o o", 'o', Items.cardboardSheet);
+						"o o", 'o', "sheetCardboard"));
 			// Cardboard chestplate recipe
 			if (MiscUtils.isEnabled(Items.cardboardChestplate))
-				GameRegistry.addRecipe(new ItemStack(Items.cardboardChestplate),
+				GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.cardboardChestplate),
 						"o o",
 						"ooo",
-						"ooo", 'o', Items.cardboardSheet);
+						"ooo", 'o', "sheetCardboard"));
 			// Cardboard leggings recipe
 			if (MiscUtils.isEnabled(Items.cardboardLeggings))
-				GameRegistry.addRecipe(new ItemStack(Items.cardboardLeggings),
+				GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.cardboardLeggings),
 						"ooo",
 						"o o",
-						"o o", 'o', Items.cardboardSheet);
+						"o o", 'o', "sheetCardboard"));
 			// Cardboard boots recipe
 			if (MiscUtils.isEnabled(Items.cardboardBoots))
-				GameRegistry.addRecipe(new ItemStack(Items.cardboardBoots),
+				GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.cardboardBoots),
 						"o o",
-						"o o", 'o', Items.cardboardSheet);
+						"o o", 'o', "sheetCardboard"));
 			
 			// Cardboard sword recipe
 			if (MiscUtils.isEnabled(Items.cardboardSword))
-				GameRegistry.addRecipe(new ItemStack(Items.cardboardSword),
+				GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.cardboardSword),
 						"o",
 						"o",
-						"/", 'o', Items.cardboardSheet,
-						     '/', Item.stick);
+						"/", 'o', "sheetCardboard",
+						     '/', Item.stick));
 			// Cardboard pickaxe recipe
 			if (MiscUtils.isEnabled(Items.cardboardPickaxe))
-				GameRegistry.addRecipe(new ItemStack(Items.cardboardPickaxe),
+				GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.cardboardPickaxe),
 						"ooo",
 						" / ",
-						" / ", 'o', Items.cardboardSheet,
-						       '/', Item.stick);
+						" / ", 'o', "sheetCardboard",
+						       '/', Item.stick));
 			// Cardboard shovel recipe
 			if (MiscUtils.isEnabled(Items.cardboardShovel))
-				GameRegistry.addRecipe(new ItemStack(Items.cardboardShovel),
+				GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.cardboardShovel),
 						"o",
 						"/",
-						"/", 'o', Items.cardboardSheet,
-						     '/', Item.stick);
+						"/", 'o', "sheetCardboard",
+						     '/', Item.stick));
 			
 			// Cardboard axe recipe
 			if (MiscUtils.isEnabled(Items.cardboardAxe))
-				GameRegistry.addRecipe(new ItemStack(Items.cardboardAxe),
+				GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.cardboardAxe),
 						"oo",
 						"o/",
-						" /", 'o', Items.cardboardSheet,
-						      '/', Item.stick);
+						" /", 'o', "sheetCardboard",
+						      '/', Item.stick));
 			if (MiscUtils.isEnabled(Items.cardboardAxe))
-				GameRegistry.addRecipe(new ItemStack(Items.cardboardAxe),
+				GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.cardboardAxe),
 						"oo",
 						"/o",
-						"/ ", 'o', Items.cardboardSheet,
-						      '/', Item.stick);
+						"/ ", 'o', "sheetCardboard",
+						      '/', Item.stick));
 			
 			// Cardboard hoe recipe
 			if (MiscUtils.isEnabled(Items.cardboardHoe))
-				GameRegistry.addRecipe(new ItemStack(Items.cardboardHoe),
+				GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.cardboardHoe),
 						"oo",
 						" /",
-						" /", 'o', Items.cardboardSheet,
-						      '/', Item.stick);
+						" /", 'o', "sheetCardboard",
+						      '/', Item.stick));
 			if (MiscUtils.isEnabled(Items.cardboardHoe))
-				GameRegistry.addRecipe(new ItemStack(Items.cardboardHoe),
+				GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.cardboardHoe),
 						"oo",
 						"/ ",
-						"/ ", 'o', Items.cardboardSheet,
-						      '/', Item.stick);
+						"/ ", 'o', "sheetCardboard",
+						      '/', Item.stick));
 		}
 		
 	}
