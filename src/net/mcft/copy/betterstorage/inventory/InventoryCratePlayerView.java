@@ -9,10 +9,10 @@ import java.util.Map;
 import java.util.Queue;
 
 import net.mcft.copy.betterstorage.api.ICrateWatcher;
-import net.mcft.copy.betterstorage.block.crate.CratePileData;
-import net.mcft.copy.betterstorage.block.crate.TileEntityCrate;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.misc.ItemIdentifier;
+import net.mcft.copy.betterstorage.tile.crate.CratePileData;
+import net.mcft.copy.betterstorage.tile.crate.TileEntityCrate;
 import net.mcft.copy.betterstorage.utils.RandomUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.entity.player.EntityPlayer;

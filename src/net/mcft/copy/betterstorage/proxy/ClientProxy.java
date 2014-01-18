@@ -7,12 +7,6 @@ import net.mcft.copy.betterstorage.addon.Addon;
 import net.mcft.copy.betterstorage.attachment.Attachment;
 import net.mcft.copy.betterstorage.attachment.Attachments;
 import net.mcft.copy.betterstorage.attachment.IHasAttachments;
-import net.mcft.copy.betterstorage.block.BlockArmorStand;
-import net.mcft.copy.betterstorage.block.tileentity.TileEntityArmorStand;
-import net.mcft.copy.betterstorage.block.tileentity.TileEntityBackpack;
-import net.mcft.copy.betterstorage.block.tileentity.TileEntityLocker;
-import net.mcft.copy.betterstorage.block.tileentity.TileEntityReinforcedChest;
-import net.mcft.copy.betterstorage.block.tileentity.TileEntityReinforcedLocker;
 import net.mcft.copy.betterstorage.client.model.ModelBackpackArmor;
 import net.mcft.copy.betterstorage.client.model.ModelCluckington;
 import net.mcft.copy.betterstorage.client.renderer.BetterStorageRenderingHandler;
@@ -23,11 +17,17 @@ import net.mcft.copy.betterstorage.client.renderer.TileEntityArmorStandRenderer;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityBackpackRenderer;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityLockerRenderer;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityReinforcedChestRenderer;
-import net.mcft.copy.betterstorage.content.Blocks;
+import net.mcft.copy.betterstorage.content.Tiles;
 import net.mcft.copy.betterstorage.entity.EntityCluckington;
 import net.mcft.copy.betterstorage.entity.EntityFrienderman;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.misc.handlers.KeyBindingHandler;
+import net.mcft.copy.betterstorage.tile.TileArmorStand;
+import net.mcft.copy.betterstorage.tile.entity.TileEntityArmorStand;
+import net.mcft.copy.betterstorage.tile.entity.TileEntityBackpack;
+import net.mcft.copy.betterstorage.tile.entity.TileEntityLocker;
+import net.mcft.copy.betterstorage.tile.entity.TileEntityReinforcedChest;
+import net.mcft.copy.betterstorage.tile.entity.TileEntityReinforcedLocker;
 import net.mcft.copy.betterstorage.utils.MiscUtils;
 import net.mcft.copy.betterstorage.utils.RenderUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
@@ -84,10 +84,10 @@ public class ClientProxy extends CommonProxy {
 	
 	private void registerRenderers() {
 		
-		registerItemRenderer(Blocks.backpack, ItemRendererBackpack.instance);
-		registerItemRenderer(Blocks.enderBackpack, ItemRendererBackpack.instance);
-		registerItemRenderer(Blocks.reinforcedChest, new ItemRendererContainer(TileEntityReinforcedChest.class));
-		registerItemRenderer(Blocks.reinforcedLocker, new ItemRendererContainer(TileEntityReinforcedLocker.class));
+		registerItemRenderer(Tiles.backpack, ItemRendererBackpack.instance);
+		registerItemRenderer(Tiles.enderBackpack, ItemRendererBackpack.instance);
+		registerItemRenderer(Tiles.reinforcedChest, new ItemRendererContainer(TileEntityReinforcedChest.class));
+		registerItemRenderer(Tiles.reinforcedLocker, new ItemRendererContainer(TileEntityReinforcedLocker.class));
 		
 		RenderingRegistry.registerEntityRenderingHandler(EntityFrienderman.class, new RenderFrienderman());
 		RenderingRegistry.registerEntityRenderingHandler(EntityCluckington.class, new RenderChicken(new ModelCluckington(), 0.4F));
@@ -135,7 +135,7 @@ public class ClientProxy extends CommonProxy {
 		Block block = Block.blocksList[world.getBlockId(x, y, z)];
 		TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
 		
-		if (block instanceof BlockArmorStand)
+		if (block instanceof TileArmorStand)
 			box = getArmorStandHighlightBox(player, world, x, y, z, target.hitVec);
 		else if (tileEntity instanceof IHasAttachments)
 			box = getAttachmentPointsHighlightBox(player, tileEntity, target);

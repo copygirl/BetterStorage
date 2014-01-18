@@ -8,15 +8,15 @@ import java.util.List;
 
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.api.BetterStorageBackpack;
-import net.mcft.copy.betterstorage.block.BlockEnderBackpack;
 import net.mcft.copy.betterstorage.config.GlobalConfig;
-import net.mcft.copy.betterstorage.content.Blocks;
+import net.mcft.copy.betterstorage.content.Tiles;
 import net.mcft.copy.betterstorage.entity.EntityFrienderman;
 import net.mcft.copy.betterstorage.inventory.InventoryStacks;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.item.ItemEnderBackpack;
 import net.mcft.copy.betterstorage.misc.CurrentItem;
 import net.mcft.copy.betterstorage.misc.PropertiesBackpack;
+import net.mcft.copy.betterstorage.tile.TileEnderBackpack;
 import net.mcft.copy.betterstorage.utils.DirectionUtils;
 import net.mcft.copy.betterstorage.utils.EntityUtils;
 import net.mcft.copy.betterstorage.utils.MiscUtils;
@@ -169,7 +169,7 @@ public class BackpackHandler implements IPlayerTracker {
 		
 		// If entity is a vanilla enderman, replace it with a friendly one.
 		if (entity.getClass().equals(EntityEnderman.class)) {
-			if (MiscUtils.isEnabled(Blocks.enderBackpack) &&
+			if (MiscUtils.isEnabled(Tiles.enderBackpack) &&
 			    // Don't spawn friendly endermen in the end / end biomes, would make them too easy to get.
 			    (entity.worldObj.getBiomeGenForCoords((int)entity.posX, (int)entity.posZ) != BiomeGenBase.sky)) {
 				EntityFrienderman frienderman = new EntityFrienderman(entity.worldObj);
@@ -179,7 +179,7 @@ public class BackpackHandler implements IPlayerTracker {
 				entity.setDead();
 			}
 		// Otherwise, just mark it to spawn with a backpack.
-		} else if (MiscUtils.isEnabled(Blocks.backpack))
+		} else if (MiscUtils.isEnabled(Tiles.backpack))
 			ItemBackpack.getBackpackData(entity).spawnsWithBackpack = true;
 		
 	}
@@ -203,11 +203,11 @@ public class BackpackHandler implements IPlayerTracker {
 				
 				ItemStack[] contents = null;
 				if (entity instanceof EntityFrienderman) {
-					backpack = new ItemStack(Blocks.enderBackpack);
+					backpack = new ItemStack(Tiles.enderBackpack);
 					// Remove drop chance for the backpack.
 					((EntityLiving)entity).setEquipmentDropChance(CurrentItem.CHEST, 0.0F);
 				} else {
-					backpack = new ItemStack(Blocks.backpack, 1, RandomUtils.getInt(120, 240));
+					backpack = new ItemStack(Tiles.backpack, 1, RandomUtils.getInt(120, 240));
 					ItemBackpack backpackType = (ItemBackpack)Item.itemsList[backpack.itemID];
 					if (RandomUtils.getBoolean(0.15)) {
 						// Give the backpack a random color.
@@ -394,7 +394,7 @@ public class BackpackHandler implements IPlayerTracker {
 			if ((stack == null) || !(stack.getItem() instanceof ItemEnderBackpack)) return;
 			event.setCanceled(true);
 			for (int i = 0; i < 64; i++)
-				if (BlockEnderBackpack.teleportRandomly(entity.worldObj, entity.posX, entity.posY, entity.posZ, (i > 48), stack))
+				if (TileEnderBackpack.teleportRandomly(entity.worldObj, entity.posX, entity.posY, entity.posZ, (i > 48), stack))
 					break;
 		}
 		

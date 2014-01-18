@@ -1,9 +1,9 @@
 package net.mcft.copy.betterstorage.client.renderer;
 
 import net.mcft.copy.betterstorage.attachment.LockAttachment;
-import net.mcft.copy.betterstorage.block.tileentity.TileEntityLocker;
 import net.mcft.copy.betterstorage.client.model.ModelLargeLocker;
 import net.mcft.copy.betterstorage.client.model.ModelLocker;
+import net.mcft.copy.betterstorage.tile.entity.TileEntityLocker;
 import net.mcft.copy.betterstorage.utils.DirectionUtils;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;

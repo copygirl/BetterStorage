@@ -1,6 +1,6 @@
 package net.mcft.copy.betterstorage.client.renderer;
 
-import net.mcft.copy.betterstorage.block.tileentity.TileEntityContainer;
+import net.mcft.copy.betterstorage.tile.entity.TileEntityContainer;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;

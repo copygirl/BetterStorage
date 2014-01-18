@@ -2,11 +2,11 @@ package net.mcft.copy.betterstorage.config;
 
 import java.io.File;
 
-import net.mcft.copy.betterstorage.config.setting.BlockIdSetting;
 import net.mcft.copy.betterstorage.config.setting.BooleanSetting;
 import net.mcft.copy.betterstorage.config.setting.EnchantmentIdSetting;
 import net.mcft.copy.betterstorage.config.setting.IntegerSetting;
 import net.mcft.copy.betterstorage.config.setting.ItemIdSetting;
+import net.mcft.copy.betterstorage.config.setting.TileIdSetting;
 
 public class GlobalConfig extends Config {
 	
@@ -15,8 +15,9 @@ public class GlobalConfig extends Config {
 	public static BooleanSetting enableStationAutoCraftingSetting;
 	public static IntegerSetting stationAutocraftDelaySetting;
 	
+	// TODO: Rename category to "tile"
 	public static final String crateId            = "block.crate";
-	public static final String reinforcedChestId  = "block.chest"; // TODO: Rename to reinforcedChest
+	public static final String reinforcedChestId  = "block.chest"; // TODO: Rename to "reinforcedChest"
 	public static final String lockerId           = "block.locker";
 	public static final String armorStandId       = "block.armorStand";
 	public static final String backpackId         = "block.backpack";
@@ -24,6 +25,7 @@ public class GlobalConfig extends Config {
 	public static final String cardboardBoxId     = "block.cardboardBox";
 	public static final String reinforcedLockerId = "block.reinforcedLocker";
 	public static final String craftingStationId  = "block.craftingStation";
+	public static final String flintBlockId       = "block.flintBlock";
 	
 	public static final String keyId            = "item.key";
 	public static final String lockId           = "item.lock";
@@ -67,15 +69,16 @@ public class GlobalConfig extends Config {
 		super(file);
 		
 		// Block IDs
-		new BlockIdSetting(this, crateId, 2830);
-		new BlockIdSetting(this, reinforcedChestId, 2831);
-		new BlockIdSetting(this, lockerId, 2832);
-		new BlockIdSetting(this, armorStandId, 2833);
-		new BlockIdSetting(this, backpackId, 2834);
-		new BlockIdSetting(this, enderBackpackId, 2835);
-		new BlockIdSetting(this, cardboardBoxId, 2836);
-		new BlockIdSetting(this, reinforcedLockerId, 2837);
-		new BlockIdSetting(this, craftingStationId , 2838);
+		new TileIdSetting(this, crateId, 2830);
+		new TileIdSetting(this, reinforcedChestId, 2831);
+		new TileIdSetting(this, lockerId, 2832);
+		new TileIdSetting(this, armorStandId, 2833);
+		new TileIdSetting(this, backpackId, 2834);
+		new TileIdSetting(this, enderBackpackId, 2835);
+		new TileIdSetting(this, cardboardBoxId, 2836);
+		new TileIdSetting(this, reinforcedLockerId, 2837);
+		new TileIdSetting(this, craftingStationId, 2838);
+		new TileIdSetting(this, flintBlockId, 2839);
 		
 		// Item IDs
 		new ItemIdSetting(this, keyId, 28540);

@@ -1,6 +1,6 @@
 package net.mcft.copy.betterstorage.client.renderer;
 
-import net.mcft.copy.betterstorage.block.tileentity.TileEntityBackpack;
+import net.mcft.copy.betterstorage.tile.entity.TileEntityBackpack;
 import net.minecraft.item.ItemStack;
 
 import org.lwjgl.opengl.GL11;

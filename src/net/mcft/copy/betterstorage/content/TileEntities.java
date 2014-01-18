@@ -1,15 +1,15 @@
 package net.mcft.copy.betterstorage.content;
 
 import net.mcft.copy.betterstorage.addon.Addon;
-import net.mcft.copy.betterstorage.block.crate.TileEntityCrate;
-import net.mcft.copy.betterstorage.block.tileentity.TileEntityArmorStand;
-import net.mcft.copy.betterstorage.block.tileentity.TileEntityBackpack;
-import net.mcft.copy.betterstorage.block.tileentity.TileEntityCardboardBox;
-import net.mcft.copy.betterstorage.block.tileentity.TileEntityCraftingStation;
-import net.mcft.copy.betterstorage.block.tileentity.TileEntityLocker;
-import net.mcft.copy.betterstorage.block.tileentity.TileEntityReinforcedChest;
-import net.mcft.copy.betterstorage.block.tileentity.TileEntityReinforcedLocker;
 import net.mcft.copy.betterstorage.misc.Constants;
+import net.mcft.copy.betterstorage.tile.crate.TileEntityCrate;
+import net.mcft.copy.betterstorage.tile.entity.TileEntityArmorStand;
+import net.mcft.copy.betterstorage.tile.entity.TileEntityBackpack;
+import net.mcft.copy.betterstorage.tile.entity.TileEntityCardboardBox;
+import net.mcft.copy.betterstorage.tile.entity.TileEntityCraftingStation;
+import net.mcft.copy.betterstorage.tile.entity.TileEntityLocker;
+import net.mcft.copy.betterstorage.tile.entity.TileEntityReinforcedChest;
+import net.mcft.copy.betterstorage.tile.entity.TileEntityReinforcedLocker;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public final class TileEntities {

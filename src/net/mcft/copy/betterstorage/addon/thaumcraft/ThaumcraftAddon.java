@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.mcft.copy.betterstorage.addon.Addon;
-import net.mcft.copy.betterstorage.block.BlockBackpack;
 import net.mcft.copy.betterstorage.client.renderer.ItemRendererBackpack;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityReinforcedChestRenderer;
-import net.mcft.copy.betterstorage.content.Blocks;
 import net.mcft.copy.betterstorage.content.Items;
+import net.mcft.copy.betterstorage.content.Tiles;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.proxy.ClientProxy;
+import net.mcft.copy.betterstorage.tile.TileBackpack;
 import net.mcft.copy.betterstorage.utils.MiscUtils;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -34,8 +34,8 @@ public class ThaumcraftAddon extends Addon {
 	public static int thaumcraftBackpackId = 2880;
 	public static int thaumiumChestId = 2881;
 	
-	public static BlockBackpack thaumcraftBackpack;
-	public static BlockThaumiumChest thaumiumChest;
+	public static TileBackpack thaumcraftBackpack;
+	public static TileThaumiumChest thaumiumChest;
 	
 	public static int thaumiumChestRenderId;
 	
@@ -58,8 +58,8 @@ public class ThaumcraftAddon extends Addon {
 	
 	@Override
 	public void initializeBlocks() {
-		thaumcraftBackpack = MiscUtils.conditionalNew(BlockThaumcraftBackpack.class, thaumcraftBackpackId);
-		thaumiumChest = MiscUtils.conditionalNew(BlockThaumiumChest.class, thaumiumChestId);
+		thaumcraftBackpack = MiscUtils.conditionalNew(TileThaumcraftBackpack.class, thaumcraftBackpackId);
+		thaumiumChest = MiscUtils.conditionalNew(TileThaumiumChest.class, thaumiumChestId);
 	}
 	
 	@Override
@@ -72,20 +72,20 @@ public class ThaumcraftAddon extends Addon {
 		ItemStack oakWood = new ItemStack(Block.wood);
 		
 		// Thaumaturge's backpack recipe
-		if (MiscUtils.isEnabled(thaumcraftBackpack, Blocks.backpack)) {
+		if (MiscUtils.isEnabled(thaumcraftBackpack, Tiles.backpack)) {
 			thaumcraftBackpackRecipe = ThaumcraftApi.addInfusionCraftingRecipe("betterstorage.magicstorage",
 					new ItemStack(thaumcraftBackpack), 1,
 					createAspectList(Aspect.VOID, 16, Aspect.EXCHANGE, 12, Aspect.MAGIC, 10),
-					new ItemStack(Blocks.backpack),
+					new ItemStack(Tiles.backpack),
 					new ItemStack[]{ thaumium, fabric, fabric, fabric });
 		}
 		
 		// Thaumium chest recipe
-		if (MiscUtils.isEnabled(thaumiumChest, Blocks.reinforcedChest)) {
+		if (MiscUtils.isEnabled(thaumiumChest, Tiles.reinforcedChest)) {
 			thaumiumChestRecipe = ThaumcraftApi.addInfusionCraftingRecipe("betterstorage.magicstorage",
 					new ItemStack(thaumiumChest), 4,
 					createAspectList(Aspect.METAL, 16, Aspect.VOID, 20, Aspect.MAGIC, 16),
-					new ItemStack(Blocks.reinforcedChest),
+					new ItemStack(Tiles.reinforcedChest),
 					new ItemStack[]{ thaumiumBlock, thaumium, oakWood, thaumium, oakWood, thaumium });
 		}
 		
@@ -93,16 +93,16 @@ public class ThaumcraftAddon extends Addon {
 	
 	private void addAspects() {
 		
-		addAspectsFor(Blocks.crate, -1, true, Aspect.VOID, 3);
-		addAspectsFor(Blocks.locker, -1, true, Aspect.VOID, 4);
-		addAspectsFor(Blocks.reinforcedChest, -1, true, Aspect.VOID, 5, Aspect.METAL, 10, Aspect.ARMOR, 6);
+		addAspectsFor(Tiles.crate, -1, true, Aspect.VOID, 3);
+		addAspectsFor(Tiles.locker, -1, true, Aspect.VOID, 4);
+		addAspectsFor(Tiles.reinforcedChest, -1, true, Aspect.VOID, 5, Aspect.METAL, 10, Aspect.ARMOR, 6);
 		
-		addAspectsFor(Blocks.backpack, -1, true, Aspect.VOID, 4, Aspect.EXCHANGE, 6);
-		addAspectsFor(Blocks.enderBackpack, -1, true, Aspect.DARKNESS, 8, Aspect.VOID, 4, Aspect.EXCHANGE, 8,
+		addAspectsFor(Tiles.backpack, -1, true, Aspect.VOID, 4, Aspect.EXCHANGE, 6);
+		addAspectsFor(Tiles.enderBackpack, -1, true, Aspect.DARKNESS, 8, Aspect.VOID, 4, Aspect.EXCHANGE, 8,
 		                                              Aspect.TRAVEL, 4, Aspect.ELDRITCH, 4, Aspect.MAGIC, 4);
 		
 		addAspectsFor(Items.cardboardSheet, -1, false, Aspect.CRAFT, 1);
-		addAspectsFor(Blocks.cardboardBox, -1, true, Aspect.VOID, 2, Aspect.TRAVEL, 2);
+		addAspectsFor(Tiles.cardboardBox, -1, true, Aspect.VOID, 2, Aspect.TRAVEL, 2);
 		
 		addAspectsFor(Items.key, -1, false, Aspect.GREED, 5, Aspect.METAL, 4, Aspect.TOOL, 2);
 		addAspectsFor(Items.lock, -1, false, Aspect.GREED, 4, Aspect.METAL, 6, Aspect.MECHANISM, 6, Aspect.ARMOR, 8);

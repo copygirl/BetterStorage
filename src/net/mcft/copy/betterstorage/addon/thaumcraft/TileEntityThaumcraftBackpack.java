@@ -1,7 +1,7 @@
 package net.mcft.copy.betterstorage.addon.thaumcraft;
 
-import net.mcft.copy.betterstorage.block.tileentity.TileEntityBackpack;
 import net.mcft.copy.betterstorage.misc.Constants;
+import net.mcft.copy.betterstorage.tile.entity.TileEntityBackpack;
 
 public class TileEntityThaumcraftBackpack extends TileEntityBackpack {
 	

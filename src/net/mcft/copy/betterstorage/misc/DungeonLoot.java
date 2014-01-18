@@ -2,8 +2,8 @@ package net.mcft.copy.betterstorage.misc;
 
 import java.util.Random;
 
-import net.mcft.copy.betterstorage.content.Blocks;
 import net.mcft.copy.betterstorage.content.Items;
+import net.mcft.copy.betterstorage.content.Tiles;
 import net.mcft.copy.betterstorage.item.ItemDrinkingHelmet;
 import net.mcft.copy.betterstorage.utils.NbtUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
@@ -42,14 +42,14 @@ public final class DungeonLoot {
 			addMultiple(drinkingHelmetSpecial, ChestGenHooks.PYRAMID_DESERT_CHEST, 0.2);
 		}
 		
-		if (Blocks.backpack != null) {
-			ItemStack backpackSpecial1 = new ItemStack(Blocks.backpack);
+		if (Tiles.backpack != null) {
+			ItemStack backpackSpecial1 = new ItemStack(Tiles.backpack);
 			backpackSpecial1.setItemName("Everlasting Backpack");
 			backpackSpecial1.addEnchantment(Enchantment.unbreaking, 4);
 			StackUtils.set(backpackSpecial1, 0x006622, "display", "color");
 			addMultiple(backpackSpecial1, ChestGenHooks.PYRAMID_JUNGLE_CHEST, 0.5);
 			
-			ItemStack backpackSpecial2 = new ItemStack(Blocks.backpack);
+			ItemStack backpackSpecial2 = new ItemStack(Tiles.backpack);
 			backpackSpecial2.setItemName("Shielding Backpack");
 			backpackSpecial2.addEnchantment(Enchantment.protection, 5);
 			StackUtils.set(backpackSpecial2, 0x0000BB, "display", "color");

@@ -1,8 +1,8 @@
 package net.mcft.copy.betterstorage.addon.thaumcraft;
 
-import net.mcft.copy.betterstorage.block.tileentity.TileEntityReinforcedChest;
 import net.mcft.copy.betterstorage.misc.BetterStorageResource;
 import net.mcft.copy.betterstorage.misc.Constants;
+import net.mcft.copy.betterstorage.tile.entity.TileEntityReinforcedChest;
 import net.minecraft.util.ResourceLocation;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

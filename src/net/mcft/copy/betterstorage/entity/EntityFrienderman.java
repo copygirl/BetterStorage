@@ -1,9 +1,9 @@
 package net.mcft.copy.betterstorage.entity;
 
-import net.mcft.copy.betterstorage.block.tileentity.TileEntityBackpack;
-import net.mcft.copy.betterstorage.content.Blocks;
+import net.mcft.copy.betterstorage.content.Tiles;
 import net.mcft.copy.betterstorage.misc.CurrentItem;
 import net.mcft.copy.betterstorage.misc.handlers.PacketHandler;
+import net.mcft.copy.betterstorage.tile.entity.TileEntityBackpack;
 import net.mcft.copy.betterstorage.utils.RandomUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
@@ -115,9 +115,9 @@ public class EntityFrienderman extends EntityEnderman {
 		
 		if (!worldObj.isRemote && !hadEnderChest && (getCarried() == Block.enderChest.blockID)) {
 			setCurrentItemOrArmor(3, null);
-			worldObj.setBlock(x, y, z, Blocks.enderBackpack.blockID, RandomUtils.getInt(2, 6), 3);
+			worldObj.setBlock(x, y, z, Tiles.enderBackpack.blockID, RandomUtils.getInt(2, 6), 3);
 			WorldUtils.get(worldObj, x, y, z, TileEntityBackpack.class).stack =
-					new ItemStack(Blocks.enderBackpack);
+					new ItemStack(Tiles.enderBackpack);
 			double px = x + 0.5;
 			double py = y + 0.5;
 			double pz = z + 0.5;

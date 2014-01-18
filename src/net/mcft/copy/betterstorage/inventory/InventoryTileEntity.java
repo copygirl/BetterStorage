@@ -1,6 +1,6 @@
 package net.mcft.copy.betterstorage.inventory;
 
-import net.mcft.copy.betterstorage.block.tileentity.TileEntityContainer;
+import net.mcft.copy.betterstorage.tile.entity.TileEntityContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;

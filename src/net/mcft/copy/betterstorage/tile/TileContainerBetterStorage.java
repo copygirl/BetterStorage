@@ -1,0 +1,68 @@
+package net.mcft.copy.betterstorage.tile;
+
+import net.mcft.copy.betterstorage.attachment.IHasAttachments;
+import net.mcft.copy.betterstorage.tile.entity.TileEntityContainer;
+import net.mcft.copy.betterstorage.utils.WorldUtils;
+import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.material.Material;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.World;
+
+public abstract class TileContainerBetterStorage extends TileBetterStorage implements ITileEntityProvider {
+	
+	protected TileContainerBetterStorage(int id, Material material) {
+		super(id, material);
+		isBlockContainer = true;
+	}
+	
+	@Override
+	public boolean onBlockEventReceived(World world, int x, int y, int z, int eventId, int eventPar) {
+        TileEntity te = world.getBlockTileEntity(x, y, z);
+        return ((te != null) ? te.receiveClientEvent(eventId, eventPar) : false);
+	}
+	
+	// Pass actions to TileEntityContainer
+	
+	@Override
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
+		getContainer(world, x, y, z).onBlockPlaced(player, stack);
+	}
+	
+	@Override
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player,
+	                                int side, float hitX, float hitY, float hitZ) {
+		return getContainer(world, x, y, z).onBlockActivated(player, side, hitX, hitY, hitZ);
+	}
+	
+	@Override
+	public boolean removeBlockByPlayer(World world, EntityPlayer player, int x, int y, int z) {
+		if (!getContainer(world, x, y, z).onBlockBreak(player)) return false;
+		return super.removeBlockByPlayer(world, player, x, y, z);
+	}
+	
+	@Override
+	public void breakBlock(World world, int x, int y, int z, int id, int meta) {
+		getContainer(world, x, y, z).onBlockDestroyed();
+		super.breakBlock(world, x, y, z, id, meta);
+	}
+	
+	@Override
+	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
+		TileEntityContainer container = getContainer(world, x, y, z);
+		if (container instanceof IHasAttachments) {
+			ItemStack pick = ((IHasAttachments)container).getAttachments().pick(target);
+			if (pick != null) return pick;
+		}
+		ItemStack pick = super.getPickBlock(target, world, x, y, z);
+		return container.onPickBlock(pick, target);
+	}
+	
+	private TileEntityContainer getContainer(World world, int x, int y, int z) {
+		return WorldUtils.get(world, x, y, z, TileEntityContainer.class);
+	}
+	
+}

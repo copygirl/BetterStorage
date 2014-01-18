@@ -1,7 +1,7 @@
 package net.mcft.copy.betterstorage.api.crafting;
 
-import net.mcft.copy.betterstorage.block.tileentity.TileEntityCraftingStation;
 import net.mcft.copy.betterstorage.inventory.InventoryStacks;
+import net.mcft.copy.betterstorage.tile.entity.TileEntityCraftingStation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 

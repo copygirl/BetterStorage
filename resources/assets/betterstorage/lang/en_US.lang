@@ -75,6 +75,7 @@ tile.betterstorage.backpack.name=Backpack
 tile.betterstorage.cardboardBox.name=Cardboard Box
 tile.betterstorage.crate.name=Storage Crate
 tile.betterstorage.enderBackpack.name=Ender Backpack
+tile.betterstorage.flintBlock.name=Block of Flint
 tile.betterstorage.locker.name=Locker
 tile.betterstorage.reinforcedChest.name=Reinforced Chest
 tile.betterstorage.reinforcedChest.name.full=Reinforced %MATERIAL% Chest

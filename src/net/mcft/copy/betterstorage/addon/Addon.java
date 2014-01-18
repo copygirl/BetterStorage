@@ -27,7 +27,7 @@ public abstract class Addon {
 	public static void loadConfigsAll(Configuration config) {
 		for (Addon addon : addons) addon.loadConfig(config);
 	}
-	public static void initializeBlocksAll() {
+	public static void initializeTilesAll() {
 		for (Addon addon : addons) addon.initializeBlocks();
 	}
 	public static void initializeItemsAll() {

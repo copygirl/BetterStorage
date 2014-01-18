@@ -5,10 +5,10 @@ import java.util.logging.Logger;
 import net.mcft.copy.betterstorage.addon.Addon;
 import net.mcft.copy.betterstorage.config.Config;
 import net.mcft.copy.betterstorage.config.GlobalConfig;
-import net.mcft.copy.betterstorage.content.Blocks;
 import net.mcft.copy.betterstorage.content.Entities;
 import net.mcft.copy.betterstorage.content.Items;
 import net.mcft.copy.betterstorage.content.TileEntities;
+import net.mcft.copy.betterstorage.content.Tiles;
 import net.mcft.copy.betterstorage.item.EnchantmentBetterStorage;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.misc.CreativeTabBetterStorage;
@@ -65,7 +65,7 @@ public class BetterStorage {
 		globalConfig.save();
 		
 		BetterStorage.log.info(Constants.modName + " will overwrite some of its own items. Don't worry, this is normal.");
-		Blocks.initialize();
+		Tiles.initialize();
 		Items.initialize();
 		
 		EnchantmentBetterStorage.initialize();
