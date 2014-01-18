@@ -1,18 +1,18 @@
 package net.mcft.copy.betterstorage.item.recipe;
 
 import net.mcft.copy.betterstorage.item.ItemDrinkingHelmet;
-import net.mcft.copy.betterstorage.misc.Constants;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.ShapedRecipes;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class DrinkingHelmetRecipe extends ShapedRecipes {
 	
-	private static final ItemStack potion = new ItemStack(Item.potion, 1, Constants.anyDamage);
+	private static final ItemStack potion = new ItemStack(Item.potion, 1, OreDictionary.WILDCARD_VALUE);
 	
 	public DrinkingHelmetRecipe(Item drinkingHelmet) {
-		super(3, 1, new ItemStack[]{ potion, new ItemStack(drinkingHelmet, 1, Constants.anyDamage), potion }, new ItemStack(drinkingHelmet));
+		super(3, 1, new ItemStack[]{ potion, new ItemStack(drinkingHelmet, 1, OreDictionary.WILDCARD_VALUE), potion }, new ItemStack(drinkingHelmet));
 	}
 	
 	@Override

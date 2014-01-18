@@ -3,11 +3,11 @@ package net.mcft.copy.betterstorage.item.recipe;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.mcft.copy.betterstorage.misc.Constants;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.OreDictionary;
 
 /** A mixture of ShapedRecipe and ShapelessRecipe. */
 public abstract class ComboRecipe implements IRecipe {
@@ -62,7 +62,7 @@ public abstract class ComboRecipe implements IRecipe {
 						shapelessItems.add(craftingStack);
 					else {
 						if (recipeStack.itemID != craftingStack.itemID) return false;
-						if ((recipeStack.getItemDamage() != Constants.anyDamage) &&
+						if ((recipeStack.getItemDamage() != OreDictionary.WILDCARD_VALUE) &&
 						    (recipeStack.getItemDamage() != craftingStack.getItemDamage())) return false;
 					}
 				}

@@ -8,9 +8,6 @@ public final class Constants {
 	public static final String commonProxy = "net.mcft.copy.betterstorage.proxy.CommonProxy";
 	public static final String clientProxy = "net.mcft.copy.betterstorage.proxy.ClientProxy";
 	
-	@Deprecated
-	public static final int anyDamage = Short.MAX_VALUE;
-	
 	public static final String containerCrate = "container." + modId + ".crate";
 	public static final String containerReinforcedChest = "container." + modId + ".reinforcedChest";
 	public static final String containerLocker = "container." + modId + ".locker";
