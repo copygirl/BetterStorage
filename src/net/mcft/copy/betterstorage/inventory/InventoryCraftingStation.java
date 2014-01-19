@@ -1,11 +1,15 @@
 package net.mcft.copy.betterstorage.inventory;
 
+import java.util.Arrays;
+
 import net.mcft.copy.betterstorage.api.crafting.BetterStorageCrafting;
 import net.mcft.copy.betterstorage.api.crafting.CraftingSourceStation;
+import net.mcft.copy.betterstorage.api.crafting.IRecipeInput;
 import net.mcft.copy.betterstorage.api.crafting.IStationRecipe;
 import net.mcft.copy.betterstorage.config.GlobalConfig;
 import net.mcft.copy.betterstorage.item.recipe.VanillaStationRecipe;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityCraftingStation;
+import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
@@ -82,6 +86,8 @@ public class InventoryCraftingStation extends InventoryBetterStorage {
 	/** Called when an item is removed from the output
 	 *  slot while it doesn't store any real items. */
 	public void craft(EntityPlayer player) {
+		IRecipeInput[] requiredInput = new IRecipeInput[9];
+		currentRecipe.getCraftRequirements(crafting, requiredInput);
 		currentRecipe.craft(crafting, new CraftingSourceStation(entity, player));
 		for (int i = 0; i < crafting.length; i++) {
 			ItemStack stack = crafting[i];
@@ -95,9 +101,42 @@ public class InventoryCraftingStation extends InventoryBetterStorage {
 			} else continue;
 			crafting[i] = null;
 		}
+		pullRequired(requiredInput, true);
 		outputIsReal = !outputEmpty();
 		progress = 0;
 		checkRecipe();
+	}
+	
+	/** Pull items required for the recipe from the internal inventory.
+	 *  Returns if successful. If doPull is false, only checks but doesn't move items. */
+	public boolean pullRequired(IRecipeInput[] requiredInput, boolean doPull) {
+		ItemStack[] contents = (doPull ? this.contents : this.contents.clone());
+		ItemStack[] crafting = (doPull ? this.crafting : this.crafting.clone());
+		craftingLoop:
+		for (int i = 0; i < crafting.length; i++) {
+			ItemStack stack = crafting[i];
+			IRecipeInput required = requiredInput[i];
+			if (required != null) {
+				if ((stack != null) && !required.matches(stack)) return false;
+				int currentAmount = ((stack != null) ? stack.stackSize : 0);
+				int requiredAmount = (required.getAmount() - currentAmount);
+				if (requiredAmount < 0) continue;
+				for (int j = 0; j < contents.length; j++) {
+					ItemStack contentsStack = contents[j];
+					if (contentsStack == null) continue;
+					if ((stack == null) ? required.matches(contentsStack)
+					                    : StackUtils.matches(stack, contentsStack)) {
+						int amount = Math.min(contentsStack.stackSize, requiredAmount);
+						crafting[i] = stack = StackUtils.copyStack(contentsStack, (currentAmount += amount));;
+						contents[j] =         StackUtils.copyStack(contentsStack, contentsStack.stackSize - amount);
+						if ((requiredAmount -= amount) <= 0)
+							continue craftingLoop;
+					}
+				}
+				return false;
+			} else if (stack != null) return false;
+		}
+		return true;
 	}
 	
 	/** Returns if items can be taken out of the output slots. */

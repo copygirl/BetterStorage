@@ -59,7 +59,7 @@ public final class BetterStorageCrafting {
 		}
 	}
 	
-	private static boolean tryAddItemToInventory(ICraftingSource source, ItemStack stack) {
+	public static boolean tryAddItemToInventory(ICraftingSource source, ItemStack stack) {
 		IInventory inventory = source.getInventory();
 		if (inventory == null) return false;
 		// Try to put the stack into existing stacks with the same type.

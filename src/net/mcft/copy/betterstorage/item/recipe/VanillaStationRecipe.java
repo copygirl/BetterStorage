@@ -76,7 +76,8 @@ public class VanillaStationRecipe implements IStationRecipe {
 		// TODO
 		for (int i = 0; i < currentInput.length; i++) {
 			ItemStack stack = StackUtils.copyStack(currentInput[i], 1);
-			requiredInput[i] = new RecipeInputItemStack(stack);
+			if (stack != null)
+				requiredInput[i] = new RecipeInputItemStack(stack);
 		}
 	}
 	
