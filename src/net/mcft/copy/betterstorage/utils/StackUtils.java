@@ -100,7 +100,10 @@ public final class StackUtils {
 		compound.removeTag(tag);
 	}
 	
+	/** Creates a copy of an item stack with a specific stack size. <br>
+	 *  Returns null if the stack is null or stackSize is <= 0. */
 	public static ItemStack copyStack(ItemStack stack, int stackSize) {
+		if ((stack == null) || (stackSize <= 0)) return null;
 		ItemStack copy = new ItemStack(stack.itemID, stackSize, stack.getItemDamage());
 		if (stack.stackTagCompound != null)
 			copy.stackTagCompound = (NBTTagCompound)stack.stackTagCompound.copy();
