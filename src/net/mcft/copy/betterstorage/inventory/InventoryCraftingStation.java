@@ -31,6 +31,11 @@ public class InventoryCraftingStation extends InventoryBetterStorage {
 	public int craftingTime = 0;
 	public int experience = 0;
 	
+	private IRecipeInput[] requiredInput = new IRecipeInput[9];
+	
+	private boolean hasRequirements = false;
+	private boolean checkHasRequirements = true;
+	
 	public InventoryCraftingStation(TileEntityCraftingStation entity) {
 		this("", entity.crafting, entity.output, entity.contents);
 		this.entity = entity;
@@ -72,6 +77,9 @@ public class InventoryCraftingStation extends InventoryBetterStorage {
 				for (int i = 0; i < output.length; i++)
 					output[i] = null;
 		}
+		Arrays.fill(requiredInput, null);
+		if (currentRecipe != null)
+			currentRecipe.getCraftRequirements(crafting, requiredInput);
 		updateLastOutput();
 	}
 	private boolean recipeOutputMatches() {
@@ -86,8 +94,6 @@ public class InventoryCraftingStation extends InventoryBetterStorage {
 	/** Called when an item is removed from the output
 	 *  slot while it doesn't store any real items. */
 	public void craft(EntityPlayer player) {
-		IRecipeInput[] requiredInput = new IRecipeInput[9];
-		currentRecipe.getCraftRequirements(crafting, requiredInput);
 		currentRecipe.craft(crafting, new CraftingSourceStation(entity, player));
 		for (int i = 0; i < crafting.length; i++) {
 			ItemStack stack = crafting[i];
@@ -145,7 +151,18 @@ public class InventoryCraftingStation extends InventoryBetterStorage {
 		                         (currentRecipe.canCraft(crafting, new CraftingSourceStation(entity, player))) &&
 		                         (progress >= craftingTime) &&
 		                          ((player != null) ||
-		                           (progress >= GlobalConfig.stationAutocraftDelaySetting.getValue()))));
+		                           ((progress >= GlobalConfig.stationAutocraftDelaySetting.getValue()) &&
+		                            hasRequirements()))));
+	}
+	
+	/** Returns if the crafting station has the items
+	 *  required in its inventory to craft the recipe again. */
+	private boolean hasRequirements() {
+		if (checkHasRequirements) {
+			hasRequirements = pullRequired(requiredInput, false);
+			checkHasRequirements = false;
+		}
+		return hasRequirements;
 	}
 	
 	// IInventory implementation
@@ -199,6 +216,7 @@ public class InventoryCraftingStation extends InventoryBetterStorage {
 			updateLastOutput = true;
 		}
 		
+		checkHasRequirements = true;
 		if (updateLastOutput)
 			updateLastOutput();
 		
