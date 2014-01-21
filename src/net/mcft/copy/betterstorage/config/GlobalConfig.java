@@ -33,6 +33,7 @@ public class GlobalConfig extends Config {
 	public static final String cardboardSheetId = "item.cardboardSheet";
 	public static final String masterKeyId      = "item.masterKey";
 	public static final String drinkingHelmetId = "item.drinkingHelmet";
+	public static final String slimeBucketId    = "item.slimeBucket";
 	
 	public static final String cardboardHelmetId     = "item.cardboardHelmet";
 	public static final String cardboardChestplateId = "item.cardboardChestplate";
@@ -87,6 +88,7 @@ public class GlobalConfig extends Config {
 		new ItemIdSetting(this, cardboardSheetId, 28543);
 		new ItemIdSetting(this, masterKeyId, 28544);
 		new ItemIdSetting(this, drinkingHelmetId, 28545);
+		new ItemIdSetting(this, slimeBucketId, 28546);
 		
 		// Cardboard item IDs
 		new ItemIdSetting(this, cardboardHelmetId, 28560);

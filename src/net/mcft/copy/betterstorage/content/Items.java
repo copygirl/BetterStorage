@@ -3,6 +3,7 @@ package net.mcft.copy.betterstorage.content;
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.addon.Addon;
 import net.mcft.copy.betterstorage.config.GlobalConfig;
+import net.mcft.copy.betterstorage.item.ItemBucketSlime;
 import net.mcft.copy.betterstorage.item.ItemDrinkingHelmet;
 import net.mcft.copy.betterstorage.item.cardboard.ItemCardboardArmor;
 import net.mcft.copy.betterstorage.item.cardboard.ItemCardboardAxe;
@@ -26,6 +27,7 @@ public final class Items {
 	public static ItemCardboardSheet cardboardSheet;
 	public static ItemMasterKey masterKey;
 	public static ItemDrinkingHelmet drinkingHelmet;
+	public static ItemBucketSlime slimeBucket;
 	
 	public static ItemCardboardArmor cardboardHelmet;
 	public static ItemCardboardArmor cardboardChestplate;
@@ -48,6 +50,7 @@ public final class Items {
 		cardboardSheet = MiscUtils.conditionalNew(ItemCardboardSheet.class, GlobalConfig.cardboardSheetId);
 		masterKey      = MiscUtils.conditionalNew(ItemMasterKey.class, GlobalConfig.masterKeyId);
 		drinkingHelmet = MiscUtils.conditionalNew(ItemDrinkingHelmet.class, GlobalConfig.drinkingHelmetId);
+		slimeBucket    = MiscUtils.conditionalNew(ItemBucketSlime.class, GlobalConfig.slimeBucketId);
 		
 		cardboardHelmet     = conditionalNewArmor(GlobalConfig.cardboardHelmetId, 0);
 		cardboardChestplate = conditionalNewArmor(GlobalConfig.cardboardChestplateId, 1);

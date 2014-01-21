@@ -28,6 +28,7 @@ enchantment.betterstorage.lock.trigger=Trigger
 entity.betterstorage.Frienderman.name=Enderman
 
 # Items
+item.betterstorage.bucketSlime.name=Slime in a Bucket
 item.betterstorage.cardboardAxe.name=Cardboard Axe
 item.betterstorage.cardboardBoots.name=Cardboard Boots
 item.betterstorage.cardboardChestplate.name=Cardboard Chestplate
