@@ -40,16 +40,16 @@ public class ItemBucketSlime extends ItemBetterStorage {
 	}
 	
 	@Override
-	@SideOnly(Side.CLIENT)
-	public Icon getIconIndex(ItemStack stack) {
+	public Icon getIcon(ItemStack stack, int pass) {
 		String id = StackUtils.get(stack, "Slime", "Slime", "id");
 		if (id.equals("LavaSlime")) return iconMagmaCube;
 		else if (id.equals("TwilightForest.Maze Slime")) return iconMazeSlime;
 		else return itemIcon;
 	}
 	@Override
-	public Icon getIcon(ItemStack stack, int pass) {
-		return getIconIndex(stack);
+	@SideOnly(Side.CLIENT)
+	public Icon getIconIndex(ItemStack stack) {
+		return getIcon(stack, 0);
 	}
 	
 	@Override
