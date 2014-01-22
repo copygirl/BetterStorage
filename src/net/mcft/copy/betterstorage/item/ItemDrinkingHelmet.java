@@ -29,11 +29,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.Icon;
 import net.minecraftforge.common.EnumHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemDrinkingHelmet extends ItemArmor {
+	
+	private Icon iconPotions;
 	
 	public static final int maxUses = 12;
 	
@@ -51,6 +54,17 @@ public class ItemDrinkingHelmet extends ItemArmor {
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister iconRegister) {
 		itemIcon = iconRegister.registerIcon(Constants.modId + ":drinkingHelmet");
+		iconPotions = iconRegister.registerIcon(Constants.modId + ":drinkingHelmet_potions");
+	}
+
+	@Override
+	public Icon getIcon(ItemStack stack, int pass) {
+		return ((StackUtils.get(stack, 0, "uses") > 0) ? iconPotions : itemIcon);
+	}
+	@Override
+	@SideOnly(Side.CLIENT)
+	public Icon getIconIndex(ItemStack stack) {
+		return getIcon(stack, 0);
 	}
 	
 	@Override
