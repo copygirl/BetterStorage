@@ -17,6 +17,9 @@ public class TileCraftingStation extends TileContainerBetterStorage {
 	
 	public TileCraftingStation(int id) {
 		super(id, Material.wood);
+		
+		setHardness(1.5f);
+                setStepSound(soundWoodFootstep);
 	}
 	
 	@Override
