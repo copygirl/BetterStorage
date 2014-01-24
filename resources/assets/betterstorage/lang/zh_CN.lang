@@ -69,6 +69,8 @@ tc.research_page.betterstorage.magicstorage.1=用自然属性的魔力和材料�
 # Blocks
 tile.betterstorage.craftingStation.name=合成站
 tile.betterstorage.armorStand.name=装备架
+tile.betterstorage.backpack.cantEquip.backpack=你已经背着背包了
+tile.betterstorage.backpack.cantEquip.chestplate=穿着胸甲的时候背不了背包
 tile.betterstorage.backpack.name=背包
 tile.betterstorage.cardboardBox.name=纸箱
 tile.betterstorage.crate.name=货箱
@@ -85,6 +87,7 @@ tile.betterstorage.thaumiumChest.name=神秘箱子
 tooltip.betterstorage.backpack.bound=用以绑定背包.
 tooltip.betterstorage.backpack.containsItems=用以容纳物品.
 tooltip.betterstorage.backpack.equipHint=放置状态下按住潜行#然后打掉就能装备上.
+tooltip.betterstorage.backpack.equipHint.extended=潜行打掉就能装备.#空手时潜行右击地面#就能将其脱下.
 tooltip.betterstorage.backpack.openHint=装备时按住%KEY%打开背包界面.
 tooltip.betterstorage.backpack.unequipHint=空手情况下对着空地按住潜行#并右击地面来卸下背包.
 tooltip.betterstorage.backpack.unequipHint.extended=%INFO%空手情况下对着空地按住潜行#并右击地面来卸下背包.
