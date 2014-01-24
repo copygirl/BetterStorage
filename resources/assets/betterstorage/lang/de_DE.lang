@@ -28,6 +28,7 @@ enchantment.betterstorage.lock.trigger=Auslösen
 entity.betterstorage.Frienderman.name=Enderman
 
 # Items
+item.betterstorage.bucketSlime.name=Schleim im Eimer
 item.betterstorage.cardboardAxe.name=Pappaxt
 item.betterstorage.cardboardBoots.name=Pappstiefel
 item.betterstorage.cardboardChestplate.name=Pappbrustpanzer
@@ -75,6 +76,7 @@ tile.betterstorage.backpack.name=Rucksack
 tile.betterstorage.cardboardBox.name=Pappkarton
 tile.betterstorage.crate.name=Lagerkiste
 tile.betterstorage.enderBackpack.name=Ender-Rucksack
+tile.betterstorage.flintBlock.name=Feuersteinblock
 tile.betterstorage.locker.name=Schließfach
 tile.betterstorage.reinforcedChest.name=Verstärkte Truhe
 tile.betterstorage.reinforcedChest.name.full=Verstärkte %MATERIAL%truhe
