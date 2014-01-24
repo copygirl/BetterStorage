@@ -43,7 +43,7 @@ public class TileArmorStand extends TileContainerBetterStorage {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public String getItemIconName() { return Constants.modId + ":armorstand"; }
+	public String getItemIconName() { return Constants.modId + ":armorStand"; }
 	
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
