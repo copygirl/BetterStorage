@@ -139,7 +139,7 @@ public class ShapedStationRecipe implements IStationRecipe {
 	
 	@Override
 	public void craft(ItemStack[] input, ICraftingSource source) {
-		BetterStorageCrafting.decreaseCraftingMatrix(input, source);
+		BetterStorageCrafting.decreaseCraftingMatrix(input, source, this);
 		if (requiredExperience != 0)
 			source.getPlayer().addExperienceLevel(-requiredExperience);
 	}

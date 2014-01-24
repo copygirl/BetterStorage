@@ -97,7 +97,7 @@ public class VanillaStationRecipe implements IStationRecipe {
 	
 	@Override
 	public void craft(ItemStack[] input, ICraftingSource source) {
-		BetterStorageCrafting.decreaseCraftingMatrix(input, source);
+		BetterStorageCrafting.decreaseCraftingMatrix(input, source, this);
 	}
 	
 }

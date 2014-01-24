@@ -39,14 +39,14 @@ public final class BetterStorageCrafting {
 		else throw new IllegalArgumentException("Argument is not a IRecipeInput, ItemStack, Item, Block or String.");
 	}
 	
-	/** Decreases the stack size of every item stack in the crafting, or
-	 *  in case the item is a container item, replaces it with that. <br>
+	/** Decreases the stack size of every item stack in the crafting matrix,
+	 *  or in case the item is a container item, replaces it with that. <br>
 	 *  This does the same as in the vanilla crafting table. */
-	public static void decreaseCraftingMatrix(ItemStack[] crafting, ICraftingSource source) {
+	public static void decreaseCraftingMatrix(ItemStack[] crafting, ICraftingSource source, IRecipeInput[] craftReq) {
 		for (int i = 0; i < crafting.length; i++) {
 			ItemStack stack = crafting[i];
 			if (stack == null) continue;
-			stack.stackSize--;
+			stack.stackSize -= ((craftReq != null) ? craftReq[i].getAmount() : 1);
 			Item item = stack.getItem();
 			ItemStack containerItem = item.getContainerItemStack(stack);
 			if (containerItem == null) continue;
@@ -57,6 +57,14 @@ public final class BetterStorageCrafting {
 				else crafting[i] = containerItem;
 			}
 		}
+	}
+	/** Decreases the stack size of every item stack in the crafting matrix,
+	 *  or in case the item is a container item, replaces it with that. <br>
+	 *  This does the same as in the vanilla crafting table. */
+	public static void decreaseCraftingMatrix(ItemStack[] crafting, ICraftingSource source, IStationRecipe recipe) {
+		IRecipeInput[] craftReq = new IRecipeInput[9];
+		recipe.getCraftRequirements(crafting, craftReq);
+		decreaseCraftingMatrix(crafting, source, craftReq);
 	}
 	
 	public static boolean tryAddItemToInventory(ICraftingSource source, ItemStack stack) {
