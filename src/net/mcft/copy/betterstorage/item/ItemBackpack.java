@@ -63,6 +63,9 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 	}
 	public ItemBackpack(int id) { this(id, material); }
 	
+	@Override
+	public boolean isItemBlock() { return true; }
+	
 	public String getBackpackName() { return Constants.containerBackpack; }
 	
 	/** Returns the number of columns this backpack has. */

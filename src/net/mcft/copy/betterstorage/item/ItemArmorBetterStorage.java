@@ -18,9 +18,11 @@ public abstract class ItemArmorBetterStorage extends ItemArmor {
 		setCreativeTab(BetterStorage.creativeTab);
 		
 		setUnlocalizedName(Constants.modId + "." + getItemName());
-		GameRegistry.registerItem(this, getItemName());
+		if (!isItemBlock()) GameRegistry.registerItem(this, getItemName());
 		
 	}
+	
+	public boolean isItemBlock() { return false; }
 	
 	/** Returns the name of this item, for example "drinkingHelmet". */
 	public String getItemName() {
