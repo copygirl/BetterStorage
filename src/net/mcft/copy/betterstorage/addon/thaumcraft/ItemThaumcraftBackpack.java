@@ -28,10 +28,10 @@ public class ItemThaumcraftBackpack extends ItemBackpack implements IRepairable,
 	}
 	
 	@Override
-	public String getName() { return Constants.containerThaumcraftBackpack; }
+	public String getBackpackName() { return Constants.containerThaumcraftBackpack; }
 	
 	@Override
-	public int getColumns() { return 13; }
+	public int getBackpackColumns() { return 13; }
 	
 	@Override
 	protected int getDefaultColor() { return -1; }

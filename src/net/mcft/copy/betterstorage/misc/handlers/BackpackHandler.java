@@ -217,7 +217,7 @@ public class BackpackHandler implements IPlayerTracker {
 						int color = (r << 16) | (g << 8) | b;
 						StackUtils.set(backpack, color, "display", "color");
 					}
-					contents = new ItemStack[backpackType.getColumns() * backpackType.getRows()];
+					contents = new ItemStack[backpackType.getBackpackColumns() * backpackType.getBackpackRows()];
 					// Set drop chance for the backpack to 100%.
 					((EntityLiving)entity).setEquipmentDropChance(CurrentItem.CHEST, 1.0F);
 				}

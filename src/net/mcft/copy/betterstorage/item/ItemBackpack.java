@@ -63,20 +63,20 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 	}
 	public ItemBackpack(int id) { this(id, material); }
 	
-	public String getName() { return Constants.containerBackpack; }
+	public String getBackpackName() { return Constants.containerBackpack; }
 	
 	/** Returns the number of columns this backpack has. */
-	public int getColumns() { return 9; }
+	public int getBackpackColumns() { return 9; }
 	/** Returns the number of rows this backpack has. */
-	public int getRows() { return BetterStorage.globalConfig.getInteger(GlobalConfig.backpackRows); }
+	public int getBackpackRows() { return BetterStorage.globalConfig.getInteger(GlobalConfig.backpackRows); }
 	
 	protected int getDefaultColor() { return 0xA06540; }
 	
 	protected IInventory getBackpackItemsInternal(EntityLivingBase carrier, EntityPlayer player) {
 		PropertiesBackpack backpackData = getBackpackData(carrier);
 		if (backpackData.contents == null)
-			backpackData.contents = new ItemStack[getColumns() * getRows()];
-		return new InventoryStacks(getName(), backpackData.contents);
+			backpackData.contents = new ItemStack[getBackpackColumns() * getBackpackRows()];
+		return new InventoryStacks(getBackpackName(), backpackData.contents);
 	}
 	
 	public boolean containsItems(PropertiesBackpack backpackData) {
@@ -350,8 +350,8 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 		inventory = new InventoryBackpackEquipped(carrier, player, inventory);
 		if (!inventory.isUseableByPlayer(player)) return false;
 		
-		int columns = backpackType.getColumns();
-		int rows = backpackType.getRows();
+		int columns = backpackType.getBackpackColumns();
+		int rows = backpackType.getBackpackRows();
 		Container container = new ContainerBetterStorage(player, inventory, columns, rows);
 		
 		String title = StackUtils.get(backpack, "", "display", "Name");

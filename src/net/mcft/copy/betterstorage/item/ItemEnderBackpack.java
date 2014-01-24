@@ -18,7 +18,7 @@ public class ItemEnderBackpack extends ItemBackpack {
 	}
 	
 	@Override
-	public String getName() { return Constants.containerEnderBackpack; }
+	public String getBackpackName() { return Constants.containerEnderBackpack; }
 	
 	@Override
 	protected int getDefaultColor() { return -1; }
@@ -42,7 +42,7 @@ public class ItemEnderBackpack extends ItemBackpack {
 	
 	class InventoryEnderBackpackEquipped extends InventoryWrapper {
 		public InventoryEnderBackpackEquipped(IInventory base) { super(base); }
-		@Override public String getInvName() { return getName(); }
+		@Override public String getInvName() { return getBackpackName(); }
 	}
 	
 	
