@@ -19,7 +19,7 @@ public class TileFlintBlock extends TileBetterStorage {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister iconRegister) {
-		blockIcon = iconRegister.registerIcon(Constants.modId + ":flintBlock");
+		blockIcon = iconRegister.registerIcon(Constants.modId + ":" + getTileName());
 	}
 	
 }

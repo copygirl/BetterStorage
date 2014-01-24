@@ -23,7 +23,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumArmorMaterial;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
@@ -34,7 +33,7 @@ import net.minecraftforge.common.EnumHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemDrinkingHelmet extends ItemArmor {
+public class ItemDrinkingHelmet extends ItemArmorBetterStorage {
 	
 	private Icon iconPotions;
 	
@@ -46,15 +45,13 @@ public class ItemDrinkingHelmet extends ItemArmor {
 	
 	public ItemDrinkingHelmet(int id) {
 		super(id - 256, material, 0, 0);
-		setCreativeTab(BetterStorage.creativeTab);
-		setUnlocalizedName(Constants.modId + ".drinkingHelmet");
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister iconRegister) {
-		itemIcon = iconRegister.registerIcon(Constants.modId + ":drinkingHelmet");
-		iconPotions = iconRegister.registerIcon(Constants.modId + ":drinkingHelmet_potions");
+		itemIcon = iconRegister.registerIcon(Constants.modId + ":" + getItemName());
+		iconPotions = iconRegister.registerIcon(Constants.modId + ":" + getItemName() + "_potions");
 	}
 
 	@Override

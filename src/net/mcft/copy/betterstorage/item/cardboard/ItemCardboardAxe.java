@@ -2,6 +2,7 @@ package net.mcft.copy.betterstorage.item.cardboard;
 
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.misc.Constants;
+import net.mcft.copy.betterstorage.utils.MiscUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -11,21 +12,30 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemCardboardAxe extends ItemAxe implements ICardboardItem {
 	
+	private String name;
+	
 	public ItemCardboardAxe(int id) {
 		super(id - 256, ItemCardboardSheet.toolMaterial);
 		setCreativeTab(BetterStorage.creativeTab);
-		setUnlocalizedName(Constants.modId + ".cardboardAxe");
+		setUnlocalizedName(Constants.modId + "." + getItemName());
+		GameRegistry.registerItem(this, getItemName());
+	}
+	
+	/** Returns the name of this item, for example "drinkingHelmet". */
+	public String getItemName() {
+		return ((name != null) ? name : (name = MiscUtils.getName(this)));
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister iconRegister) {
-		itemIcon = iconRegister.registerIcon(Constants.modId + ":cardboardAxe");
+		itemIcon = iconRegister.registerIcon(Constants.modId + ":" + getItemName());
 	}
 	
 	@Override

@@ -32,8 +32,8 @@ public class TileCardboardBox extends TileContainerBetterStorage {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister iconRegister) {
-		blockIcon = iconRegister.registerIcon(Constants.modId + ":cardboardBox");
-		sideIcon = iconRegister.registerIcon(Constants.modId + ":cardboardBox_side");
+		blockIcon = iconRegister.registerIcon(Constants.modId + ":" + getTileName());
+		sideIcon = iconRegister.registerIcon(Constants.modId + ":" + getTileName() + "_side");
 	}
 	
 	@Override

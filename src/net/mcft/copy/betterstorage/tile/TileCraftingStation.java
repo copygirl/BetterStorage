@@ -25,9 +25,9 @@ public class TileCraftingStation extends TileContainerBetterStorage {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister iconRegister) {
-		blockIcon = iconRegister.registerIcon(Constants.modId + ":craftingStation");
-		topIcon = iconRegister.registerIcon(Constants.modId + ":craftingStation_top");
-		bottomIcon = iconRegister.registerIcon(Constants.modId + ":craftingStation_bottom");
+		blockIcon = iconRegister.registerIcon(Constants.modId + ":" + getTileName());
+		topIcon = iconRegister.registerIcon(Constants.modId + ":" + getTileName() + "_top");
+		bottomIcon = iconRegister.registerIcon(Constants.modId + ":" + getTileName() + "_bottom");
 	}
 	
 	@Override

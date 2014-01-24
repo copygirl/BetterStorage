@@ -1,6 +1,6 @@
 package net.mcft.copy.betterstorage.item.cardboard;
 
-import net.mcft.copy.betterstorage.BetterStorage;
+import net.mcft.copy.betterstorage.item.ItemArmorBetterStorage;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.misc.Resources;
 import net.mcft.copy.betterstorage.utils.StackUtils;
@@ -8,27 +8,27 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.common.ISpecialArmor;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemCardboardArmor extends ItemArmor implements ICardboardItem, ISpecialArmor {
+public class ItemCardboardArmor extends ItemArmorBetterStorage implements ICardboardItem, ISpecialArmor {
 	
 	private static final String[] armorText = { "Helmet", "Chestplate", "Leggings", "Boots" };
 	
 	public ItemCardboardArmor(int id, int armorType) {
 		super(id - 256, ItemCardboardSheet.armorMaterial, 0, armorType);
-		setCreativeTab(BetterStorage.creativeTab);
-		setUnlocalizedName(Constants.modId + ".cardboard" + armorText[armorType]);
 	}
+	
+	@Override
+	public String getItemName() { return ("cardboard" + armorText[armorType]); }
 	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister iconRegister) {
-		itemIcon = iconRegister.registerIcon(Constants.modId + ":cardboard" + armorText[armorType]);
+		itemIcon = iconRegister.registerIcon(Constants.modId + ":" + getItemName());
 	}
 	
 	@Override

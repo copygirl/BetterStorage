@@ -1,9 +1,8 @@
 package net.mcft.copy.betterstorage.tile;
 
-import java.util.Locale;
-
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.misc.Constants;
+import net.mcft.copy.betterstorage.utils.MiscUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
@@ -11,19 +10,23 @@ import net.minecraft.item.ItemBlock;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class TileBetterStorage extends Block {
-
+	
+	private String name;
+	
 	public TileBetterStorage(int id, Material material) {
 		
 		super(id, material);
 		
 		setCreativeTab(BetterStorage.creativeTab);
 		
-		String name = getClass().getSimpleName();                                    // TileMyBlock
-		name = name.substring(4, 5).toLowerCase(Locale.ENGLISH) + name.substring(5); // 'm' + "yBlock"
-		setUnlocalizedName(Constants.modId + "." + name);                            // modname.myBlock
-		
+		setUnlocalizedName(Constants.modId + "." + getTileName());
 		registerBlock();
 		
+	}
+	
+	/** Returns the name of this tile, for example "craftingStation". */
+	public String getTileName() {
+		return ((name != null) ? name : (name = MiscUtils.getName(this)));
 	}
 	
 	/** Returns the item class used for this block. <br>
@@ -32,18 +35,15 @@ public class TileBetterStorage extends Block {
 	
 	/** Registers the block in the GameRegistry. */
 	protected void registerBlock() {
-		String name = getUnlocalizedName();
-		name = name.substring(name.lastIndexOf('.') + 1);
-		
 		Class<? extends Item> itemClass = getItemClass();
 		if (ItemBlock.class.isAssignableFrom(itemClass)) {
-			GameRegistry.registerBlock(this, (Class<? extends ItemBlock>)itemClass, name, Constants.modId);
+			GameRegistry.registerBlock(this, (Class<? extends ItemBlock>)itemClass, getTileName(), Constants.modId);
 		} else {
-			GameRegistry.registerBlock(this, ItemBlock.class, name, Constants.modId);
+			GameRegistry.registerBlock(this, ItemBlock.class, getTileName(), Constants.modId);
 			Item.itemsList[blockID] = null;
 			try { itemClass.getConstructor(int.class).newInstance(blockID); }
 			catch (Exception e) { throw new RuntimeException(e); }
 		}
 	}
-
+	
 }

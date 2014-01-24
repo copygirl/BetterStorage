@@ -39,7 +39,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.EnumArmorMaterial;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet103SetSlot;
@@ -53,7 +52,7 @@ import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemBackpack extends ItemArmor implements ISpecialArmor, IDyeableItem {
+public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmor, IDyeableItem {
 	
 	public static final EnumArmorMaterial material = EnumHelper.addArmorMaterial(
 			"backpack", 14, new int[]{ 0, 2, 0, 0 }, 15);
