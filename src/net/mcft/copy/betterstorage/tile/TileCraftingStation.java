@@ -16,10 +16,10 @@ public class TileCraftingStation extends TileContainerBetterStorage {
 	private Icon bottomIcon;
 	
 	public TileCraftingStation(int id) {
-		super(id, Material.wood);
+		super(id, Material.iron);
 		
 		setHardness(1.5f);
-                setStepSound(soundWoodFootstep);
+		setStepSound(soundStoneFootstep);
 	}
 	
 	@Override
