@@ -16,6 +16,8 @@ public class GuiThaumiumChest extends GuiBetterStorage {
 		super(new ContainerBetterStorage(player, new InventoryBasic(name, localized, columns * rows), columns, rows, 20));
 	}
 	
+	protected int getHeight() { return 229; }
+	
 	@Override
 	protected int getTextureWidth() { return 512; }
 	
