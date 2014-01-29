@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.ListIterator;
 
 import net.mcft.copy.betterstorage.addon.thaumcraft.ThaumcraftAddon;
-import net.minecraftforge.common.Configuration;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -24,8 +23,8 @@ public abstract class Addon {
 		}
 	}
 	
-	public static void loadConfigsAll(Configuration config) {
-		for (Addon addon : addons) addon.loadConfig(config);
+	public static void setupConfigsAll() {
+		for (Addon addon : addons) addon.setupConfig();
 	}
 	public static void initializeTilesAll() {
 		for (Addon addon : addons) addon.initializeBlocks();
@@ -58,7 +57,7 @@ public abstract class Addon {
 		addons.add(this);
 	}
 	
-	public void loadConfig(Configuration config) {  }
+	public void setupConfig() {  }
 	
 	public void initializeItems() {  }
 	

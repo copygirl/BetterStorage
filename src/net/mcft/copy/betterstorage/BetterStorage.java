@@ -61,6 +61,7 @@ public class BetterStorage {
 		Addon.initialize();
 		
 		globalConfig = new GlobalConfig(event.getSuggestedConfigurationFile());
+		Addon.setupConfigsAll();
 		globalConfig.load();
 		globalConfig.save();
 		

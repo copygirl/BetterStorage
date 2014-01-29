@@ -3,9 +3,11 @@ package net.mcft.copy.betterstorage.addon.thaumcraft;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.addon.Addon;
 import net.mcft.copy.betterstorage.client.renderer.ItemRendererBackpack;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityReinforcedChestRenderer;
+import net.mcft.copy.betterstorage.config.setting.TileIdSetting;
 import net.mcft.copy.betterstorage.content.Items;
 import net.mcft.copy.betterstorage.content.Tiles;
 import net.mcft.copy.betterstorage.misc.Constants;
@@ -16,7 +18,6 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.MinecraftForgeClient;
-import net.minecraftforge.common.Configuration;
 import thaumcraft.api.ItemApi;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
@@ -31,8 +32,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ThaumcraftAddon extends Addon {
 	
-	public static int thaumcraftBackpackId = 2880;
-	public static int thaumiumChestId = 2881;
+	public static final String thaumcraftBackpackId = "block.thaumcraftBackpack";
+	public static final String thaumiumChestId = "block.thaumiumChest";
 	
 	public static TileBackpack thaumcraftBackpack;
 	public static TileThaumiumChest thaumiumChest;
@@ -51,9 +52,9 @@ public class ThaumcraftAddon extends Addon {
 	}
 	
 	@Override
-	public void loadConfig(Configuration config) {
-		thaumcraftBackpackId = config.getBlock("thaumcraftBackpack", thaumcraftBackpackId).getInt();
-		thaumiumChestId = config.getBlock("thaumiumChest", thaumiumChestId).getInt();
+	public void setupConfig() {
+		new TileIdSetting(BetterStorage.globalConfig, thaumcraftBackpackId, 2880);
+		new TileIdSetting(BetterStorage.globalConfig, thaumiumChestId, 2881);
 	}
 	
 	@Override
@@ -141,7 +142,7 @@ public class ThaumcraftAddon extends Addon {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerRenderers() {
-		MinecraftForgeClient.registerItemRenderer(thaumcraftBackpackId, ItemRendererBackpack.instance);
+		MinecraftForgeClient.registerItemRenderer(BetterStorage.globalConfig.getInteger(thaumcraftBackpackId), ItemRendererBackpack.instance);
 		thaumiumChestRenderId = ClientProxy.registerTileEntityRenderer(TileEntityThaumiumChest.class, new TileEntityReinforcedChestRenderer());
 	}
 	
