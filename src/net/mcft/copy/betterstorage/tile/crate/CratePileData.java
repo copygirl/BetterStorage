@@ -261,7 +261,7 @@ public class CratePileData implements Iterable<ItemStack> {
 		
 		numSlots -= (stacksBefore - stacksAfter);
 		
-		ItemStack removedStack = StackUtils.copyStack(stack, -stack.stackSize);
+		ItemStack removedStack = StackUtils.copyStack(stack, -stack.stackSize, false);
 		for (ICrateWatcher watcher : watchers)
 			watcher.onCrateItemsModified(removedStack);
 		

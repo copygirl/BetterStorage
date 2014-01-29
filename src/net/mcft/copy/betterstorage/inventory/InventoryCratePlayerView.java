@@ -103,7 +103,7 @@ public class InventoryCratePlayerView extends InventoryBetterStorage implements 
 			int amount = Math.min(stack.stackSize,
 			                      Math.min(data.spaceForItem(stack),
 			                               stack.getMaxStackSize()));
-			if (amount == 0) return;
+			if (amount <= 0) return;
 			stack = StackUtils.copyStack(stack.copy(), amount);
 			getMapData(stack).itemCount += amount;
 			data.addItems(stack);
