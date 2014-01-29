@@ -1,22 +1,14 @@
 package net.mcft.copy.betterstorage.item.tile;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 
 import net.mcft.copy.betterstorage.api.IContainerItem;
-import net.mcft.copy.betterstorage.misc.ItemIdentifier;
-import net.mcft.copy.betterstorage.tile.crate.CratePileData;
-import net.mcft.copy.betterstorage.tile.crate.TileEntityCrate;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
