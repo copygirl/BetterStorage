@@ -122,7 +122,7 @@ public class GlobalConfig extends Config {
 		// Backpack settings
 		new BooleanSetting(this, backpackChestplate, true).setSynced().setComment(
 				"If disabled, backpacks don't take up the player's chestplate armor slot.");
-		new IntegerSetting(this, backpackRows, 3).setValidRange(1, 6).setComment(
+		new IntegerSetting(this, backpackRows, 4).setValidRange(1, 6).setComment(
 				"Number of rows in backpacks. Valid values are 1 to 6.");
 		new BooleanSetting(this, enableBackpackOpen, false).setSynced().setComment(
 				"Allows equipped backpacks to be opened by pressing a key.");
