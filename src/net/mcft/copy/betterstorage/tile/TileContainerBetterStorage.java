@@ -45,9 +45,8 @@ public abstract class TileContainerBetterStorage extends TileBetterStorage imple
 	}
 	
 	@Override
-	public void breakBlock(World world, int x, int y, int z, int id, int meta) {
+	public void onBlockPreDestroy(World world, int x, int y, int z, int meta) {
 		getContainer(world, x, y, z).onBlockDestroyed();
-		super.breakBlock(world, x, y, z, id, meta);
 	}
 	
 	@Override
