@@ -4,19 +4,16 @@ import java.util.EnumSet;
 
 import net.mcft.copy.betterstorage.attachment.EnumAttachmentInteraction;
 import net.mcft.copy.betterstorage.attachment.IHasAttachments;
-import net.mcft.copy.betterstorage.content.Items;
 import net.mcft.copy.betterstorage.entity.EntityCluckington;
 import net.mcft.copy.betterstorage.item.IDyeableItem;
 import net.mcft.copy.betterstorage.item.ItemBucketSlime;
-import net.mcft.copy.betterstorage.misc.CurrentItem;
 import net.mcft.copy.betterstorage.misc.handlers.BackpackHandler;
 import net.mcft.copy.betterstorage.tile.crate.CratePileCollection;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.monster.EntitySlime;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -26,7 +23,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.Event.Result;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.player.EntityInteractEvent;
-import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import net.minecraftforge.event.world.WorldEvent.Save;
@@ -112,33 +108,6 @@ public class CommonProxy implements ITickHandler {
 	}
 	
 	@ForgeSubscribe
-	public void onFillBucket(FillBucketEvent event) {
-		
-		EntitySlime slime = ((event.target.entityHit instanceof EntitySlime)
-				? (EntitySlime)event.target.entityHit : null);
-		
-		if (event.entity.worldObj.isRemote || (slime == null) ||
-		    event.target.entityHit.isDead || (slime.getSlimeSize() != 1)) return;
-		
-		ItemStack stack = new ItemStack(Items.slimeBucket);
-
-		String entityId = EntityList.getEntityString(slime);
-		if (entityId == null) return;
-		if (!entityId.equals("Slime"))
-			StackUtils.set(stack, entityId, "id");
-		
-		if (slime.hasCustomNameTag())
-			stack.setItemName(slime.getCustomNameTag());
-		
-		slime.playSound("mob.slime.big", 0.8F, 1.5F);
-		slime.isDead = true;
-		
-		event.entityPlayer.setCurrentItemOrArmor(CurrentItem.HELD, stack);
-		event.setResult(Result.DENY);
-		
-	}
-	
-	@ForgeSubscribe
 	public void onEntityInteract(EntityInteractEvent event) {
 		
 		if (event.entity.worldObj.isRemote || event.isCanceled()) return;
@@ -157,9 +126,9 @@ public class CommonProxy implements ITickHandler {
 			
 		}
 		
-		if ((target instanceof EntitySlime) &&
+		if ((target instanceof EntityLiving) &&
 		    (holding != null) && (holding.getItem() == Item.bucketEmpty))
-			ItemBucketSlime.pickUpSlime(player, (EntitySlime)target);
+			ItemBucketSlime.pickUpSlime(player, (EntityLiving)target);
 		
 	}
 	

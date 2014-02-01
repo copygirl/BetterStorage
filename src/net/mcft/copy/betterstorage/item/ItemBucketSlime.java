@@ -10,6 +10,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -24,7 +25,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ItemBucketSlime extends ItemBetterStorage {
 	
 	@SideOnly(Side.CLIENT)
-	private Icon iconMagmaCube, iconMazeSlime;
+	private Icon iconMagmaCube, iconMazeSlime, iconPinkSlime,
+	             iconThaumicSlime, iconBlueSlime;
 	
 	public ItemBucketSlime(int id) {
 		super(id);
@@ -37,6 +39,9 @@ public class ItemBucketSlime extends ItemBetterStorage {
 		itemIcon = iconRegister.registerIcon(Constants.modId + ":bucketSlime");
 		iconMagmaCube = iconRegister.registerIcon(Constants.modId + ":bucketSlime_magmaCube");
 		iconMazeSlime = iconRegister.registerIcon(Constants.modId + ":bucketSlime_mazeSlime");
+		iconPinkSlime = iconRegister.registerIcon(Constants.modId + ":bucketSlime_pinkSlime");
+		iconThaumicSlime = iconRegister.registerIcon(Constants.modId + ":bucketSlime_thaumicSlime");
+		iconBlueSlime = iconRegister.registerIcon(Constants.modId + ":bucketSlime_blueSlime");
 	}
 	
 	@Override
@@ -44,6 +49,9 @@ public class ItemBucketSlime extends ItemBetterStorage {
 		String id = StackUtils.get(stack, "Slime", "Slime", "id");
 		if (id.equals("LavaSlime")) return iconMagmaCube;
 		else if (id.equals("TwilightForest.Maze Slime")) return iconMazeSlime;
+		else if (id.equals("MineFactoryReloaded.mfrEntityPinkSlime")) return iconPinkSlime;
+		else if (id.equals("ThaumSlime")) return iconThaumicSlime;
+		else if (id.equals("TConstruct.EdibleSlime")) return iconBlueSlime;
 		else return itemIcon;
 	}
 	@Override
@@ -77,15 +85,15 @@ public class ItemBucketSlime extends ItemBetterStorage {
 			String name = StackUtils.get(stack, (String)null, "Slime", "name");
 			Entity entity = EntityList.createEntityByName(id, world);
 			
-			if ((entity != null) && (entity instanceof EntitySlime)) {
-				EntitySlime slime = (EntitySlime)entity;
+			if ((entity != null) && (entity instanceof EntityLiving)) {
+				EntityLiving slime = (EntityLiving)entity;
 				
 				float rotation = MathHelper.wrapAngleTo180_float(world.rand.nextFloat() * 360.0F);
 				slime.setLocationAndAngles(x + 0.5, y, z + 0.5, rotation, 0.0F);
 				slime.rotationYawHead = slime.renderYawOffset = rotation;
 				
 				if (name != null) slime.setCustomNameTag(name);
-				slime.setSlimeSize(1);
+				setSlimeSize(slime, 1);
 				
 				world.spawnEntityInWorld(slime);
 				slime.playSound("mob.slime.big", 1.2F, 0.6F);
@@ -97,8 +105,11 @@ public class ItemBucketSlime extends ItemBetterStorage {
 		return true;
 	}
 	
-	public static void pickUpSlime(EntityPlayer player, EntitySlime slime) {
-		if (slime.isDead || (slime.getSlimeSize() != 1)) return;
+	/** Called when a player right clicks an entity with an empty bucket.
+	 *  If the entity clicked is a small slime, attempts to pick it up and
+	 *  sets the held item to a Slime in a Bucket containing that slime. */
+	public static void pickUpSlime(EntityPlayer player, EntityLiving slime) {
+		if (slime.isDead || (getSlimeSize(slime) != 1)) return;
 		
 		ItemStack stack = new ItemStack(Items.slimeBucket);
 		
@@ -111,6 +122,21 @@ public class ItemBucketSlime extends ItemBetterStorage {
 		player.setCurrentItemOrArmor(CurrentItem.HELD, stack);
 		slime.playSound("mob.slime.big", 1.2F, 0.8F);
 		slime.isDead = true;
+	}
+	
+	public static int getSlimeSize(EntityLiving slime) {
+		String name = EntityList.getEntityString(slime);
+		if ((slime instanceof EntitySlime) ||
+		    name.equals("ThaumSlime") || name.equals("TConstruct.EdibleSlime"))
+			return slime.getDataWatcher().getWatchableObjectByte(16);
+		else return 0;
+	}
+	
+	public static void setSlimeSize(EntityLiving slime, int size) {
+		String name = EntityList.getEntityString(slime);
+		if ((slime instanceof EntitySlime) ||
+		    name.equals("ThaumSlime") || name.equals("TConstruct.EdibleSlime"))
+			slime.getDataWatcher().updateObject(16, (byte)size);
 	}
 	
 }
