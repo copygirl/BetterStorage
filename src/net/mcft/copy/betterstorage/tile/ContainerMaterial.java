@@ -32,6 +32,7 @@ public class ContainerMaterial {
 	public static ContainerMaterial tin    = new ContainerMaterial(6, "tin",    "ingotTin",    "blockTin");
 	public static ContainerMaterial silver = new ContainerMaterial(7, "silver", "ingotSilver", "blockSilver");
 	public static ContainerMaterial zinc   = new ContainerMaterial(8, "zinc",   "ingotZinc",   "blockZinc");
+	public static ContainerMaterial steel  = new ContainerMaterial(   "steel",  "ingotSteel",  "blockSteel");
 	
 	public static List<ContainerMaterial> getMaterials() { return materials; }
 	
