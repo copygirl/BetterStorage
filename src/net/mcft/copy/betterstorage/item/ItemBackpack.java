@@ -172,7 +172,7 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 						(info != null) ? new String[]{ "%INFO%", info } : new String[0]);
 			else if (info != null) list.add(info);
 			// If the backpack can be opened by pressing a key, let the player know.
-			if (BetterStorage.globalConfig.getBoolean(GlobalConfig.enableBackpackOpen) && enableHelpTooltips) {
+			if (BetterStorage.globalConfig.getBoolean(GlobalConfig.enableBackpackOpen)) {
 				String str = GameSettings.getKeyDisplayString(KeyBindingHandler.backpackOpen.keyCode);
 				LanguageUtils.translateTooltip(list, "backpack.openHint", "%KEY%", str);
 			}
@@ -181,6 +181,12 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 			boolean chestplate = BetterStorage.globalConfig.getBoolean(GlobalConfig.backpackChestplate);
 			LanguageUtils.translateTooltip(list, (chestplate ? "backpack.equipHint"
 			                                                 : "backpack.equipHint.extended"));
+			// If the backpack doesn't get equipped to the chestplate slot,
+			// let players know they can open it in the regular item tooltip.
+			if (!chestplate) {
+				String str = GameSettings.getKeyDisplayString(KeyBindingHandler.backpackOpen.keyCode);
+				LanguageUtils.translateTooltip(list, "backpack.openHint", "%KEY%", str);
+			}
 		}
 	}
 	/** Returns additional info (a string to be translated) of the backpack. */
