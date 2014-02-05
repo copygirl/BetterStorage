@@ -10,6 +10,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
@@ -40,6 +41,10 @@ public class ItemThaumcraftBackpack extends ItemBackpack implements IRepairable,
 	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
 		return ThaumcraftResources.thaumcraftBackpackTexture.toString();
 	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public EnumRarity getRarity(ItemStack stack) { return EnumRarity.uncommon; }
 	
 	@Override
 	@SideOnly(Side.CLIENT)
