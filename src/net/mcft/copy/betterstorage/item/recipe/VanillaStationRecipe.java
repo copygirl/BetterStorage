@@ -37,7 +37,7 @@ public class VanillaStationRecipe implements IStationRecipe {
 		output = recipe.getCraftingResult(crafting);
 		boolean overridden = false;
 		Class itemClass = output.getItem().getClass();
-		for (String name : new String[]{ "onCreated", "func_77622_d" } ) {
+		for (String name : new String[]{ "onCreated", "func_77622_d" }) {
 			try {
 				Method onCreatedMethod = itemClass.getMethod(name, ItemStack.class, World.class, EntityPlayer.class);
 				overridden = (onCreatedMethod.getDeclaringClass() != Item.class);
@@ -50,11 +50,12 @@ public class VanillaStationRecipe implements IStationRecipe {
 	public static VanillaStationRecipe findVanillaRecipe(InventoryCraftingStation inv) {
 		InventoryCrafting crafting = new InventoryCrafting(null, 3, 3);
 		crafting.stackList = inv.crafting;
-		World world = ((inv.entity != null) ? inv.entity.worldObj : Minecraft.getMinecraft().theWorld);
+		World world = ((inv.entity != null) ? inv.entity.worldObj : getClientWorld());
 		IRecipe recipe = findRecipe(crafting, world);
 		if (recipe == null) return null;
 		return new VanillaStationRecipe(world, recipe, crafting);
 	}
+	private static World getClientWorld() { return Minecraft.getMinecraft().theWorld; }
 	
 	private static IRecipe findRecipe(InventoryCrafting crafting, World world) {
 		for (IRecipe recipe : (List<IRecipe>)CraftingManager.getInstance().getRecipeList())
