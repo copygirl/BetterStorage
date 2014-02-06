@@ -43,7 +43,7 @@ public class TileLocker extends TileContainerBetterStorage {
 	@Override
 	public boolean isBlockSolidOnSide(World world, int x, int y, int z, ForgeDirection side) {
 		TileEntityLocker locker = WorldUtils.get(world, x, y, z, TileEntityLocker.class);
-		return (locker.getOrientation() != side);
+		return ((locker == null) || (locker.getOrientation() != side));
 	}
 	
 	@Override
