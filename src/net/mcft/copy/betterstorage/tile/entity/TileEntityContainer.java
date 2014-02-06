@@ -26,7 +26,7 @@ public abstract class TileEntityContainer extends TileEntity {
 	private int playersUsing = 0;
 	
 	protected boolean brokenInCreative = false;
-
+	
 	public int ticksExisted = 0;
 	public float lidAngle = 0;
 	public float prevLidAngle = 0;
