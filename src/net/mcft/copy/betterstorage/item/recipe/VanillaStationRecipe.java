@@ -4,6 +4,9 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Random;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 import net.mcft.copy.betterstorage.api.crafting.BetterStorageCrafting;
 import net.mcft.copy.betterstorage.api.crafting.ICraftingSource;
 import net.mcft.copy.betterstorage.api.crafting.IRecipeInput;
@@ -55,6 +58,7 @@ public class VanillaStationRecipe implements IStationRecipe {
 		if (recipe == null) return null;
 		return new VanillaStationRecipe(world, recipe, crafting);
 	}
+	@SideOnly(Side.CLIENT)
 	private static World getClientWorld() { return Minecraft.getMinecraft().theWorld; }
 	
 	private static IRecipe findRecipe(InventoryCrafting crafting, World world) {
