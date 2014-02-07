@@ -119,6 +119,10 @@ public class TileEntityCraftingStation extends TileEntityContainer
 		if (compound.hasKey("Output"))
 			NbtUtils.readItems(output, compound.getTagList("Output"));
 		stationInventory.progress = compound.getInteger("progress");
+		stationInventory.outputIsReal = compound.hasKey("Output");
+		// Update the inventory, causes ghost output to be initialized.
+		stationInventory.checkRecipe();
+		stationInventory.onInventoryChanged();
 	}
 	@Override
 	public void writeToNBT(NBTTagCompound compound) {
