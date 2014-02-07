@@ -111,6 +111,7 @@ public class InventoryCraftingStation extends InventoryBetterStorage {
 		outputIsReal = !outputEmpty();
 		progress = 0;
 		checkRecipe();
+		checkHasRequirements = true;
 	}
 	
 	/** Pull items required for the recipe from the internal inventory.
@@ -126,6 +127,7 @@ public class InventoryCraftingStation extends InventoryBetterStorage {
 				if ((stack != null) && !required.matches(stack)) return false;
 				int currentAmount = ((stack != null) ? stack.stackSize : 0);
 				int requiredAmount = (required.getAmount() - currentAmount);
+				if (!doPull) requiredAmount += required.getAmount();
 				if (requiredAmount < 0) continue;
 				for (int j = 0; j < contents.length; j++) {
 					ItemStack contentsStack = contents[j];
@@ -133,14 +135,15 @@ public class InventoryCraftingStation extends InventoryBetterStorage {
 					if ((stack == null) ? required.matches(contentsStack)
 					                    : StackUtils.matches(stack, contentsStack)) {
 						int amount = Math.min(contentsStack.stackSize, requiredAmount);
-						crafting[i] = stack = StackUtils.copyStack(contentsStack, (currentAmount += amount));;
+						crafting[i] = stack = StackUtils.copyStack(contentsStack, (currentAmount += amount));
 						contents[j] =         StackUtils.copyStack(contentsStack, contentsStack.stackSize - amount);
 						if ((requiredAmount -= amount) <= 0)
 							continue craftingLoop;
 					}
 				}
 				return false;
-			} else if (stack != null) return false;
+			} else if (stack != null)
+				return false;
 		}
 		return true;
 	}
