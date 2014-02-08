@@ -88,7 +88,7 @@ public class TileEntityCraftingStation extends TileEntityContainer
 	@Override
 	public void onInventoryChanged() {
 		super.onInventoryChanged();
-		getPlayerInventory().onInventoryChanged();
+		stationInventory.onInventoryChanged();
 	}
 	@Override
 	public void openChest() {  }
