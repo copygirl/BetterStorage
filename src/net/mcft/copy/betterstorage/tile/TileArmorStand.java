@@ -117,4 +117,7 @@ public class TileArmorStand extends TileContainerBetterStorage {
 		return ((metadata == 0) ? createNewTileEntity(world) : null);
 	}
 	
+	@Override
+	public boolean hasComparatorInputOverride() { return true; }
+	
 }

@@ -82,6 +82,9 @@ public abstract class TileLockable extends TileContainerBetterStorage {
 		// TODO: Abort block breaking? playerController.resetBlockBreaking doesn't seem to do the job.
 	}
 	
+	@Override
+	public boolean hasComparatorInputOverride() { return true; }
+	
 	// Trigger enchantment related
 	
 	@Override

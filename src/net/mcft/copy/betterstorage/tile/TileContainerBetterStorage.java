@@ -46,7 +46,8 @@ public abstract class TileContainerBetterStorage extends TileBetterStorage imple
 	
 	@Override
 	public void onBlockPreDestroy(World world, int x, int y, int z, int meta) {
-		getContainer(world, x, y, z).onBlockDestroyed();
+		TileEntityContainer container = getContainer(world, x, y, z);
+		if (container != null) container.onBlockDestroyed();
 	}
 	
 	@Override
@@ -58,6 +59,11 @@ public abstract class TileContainerBetterStorage extends TileBetterStorage imple
 		}
 		ItemStack pick = super.getPickBlock(target, world, x, y, z);
 		return container.onPickBlock(pick, target);
+	}
+	
+	@Override
+	public int getComparatorInputOverride(World world, int x, int y, int z, int direction) {
+		return TileEntityContainer.getContainerComparatorSignalStrength(world, x, y, z);
 	}
 	
 	private TileEntityContainer getContainer(World world, int x, int y, int z) {

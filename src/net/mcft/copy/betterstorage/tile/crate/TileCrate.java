@@ -73,6 +73,9 @@ public class TileCrate extends TileContainerBetterStorage {
 		return true;
 	}
 	
+	@Override
+	public boolean hasComparatorInputOverride() { return true; }
+	
 	private class ConnectedTextureCrate extends ConnectedTexture {
 		@Override
 		public boolean canConnect(IBlockAccess world, int x, int y, int z, ForgeDirection side, ForgeDirection connected) {

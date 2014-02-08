@@ -24,7 +24,7 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraftforge.common.ForgeDirection;
 
-public class TileEntityCrate extends TileEntityContainer implements IInventory, ICrateStorage {
+public class TileEntityCrate extends TileEntityContainer implements IInventory, ICrateStorage, ICrateWatcher {
 	
 	private static final ForgeDirection[] sideDirections = {
 		ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.WEST, ForgeDirection.EAST
@@ -141,6 +141,7 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 	
 	@Override
 	public void updateEntity() {
+		super.updateEntity();
 		if (worldObj.isRemote || (data != null)) return;
 		if (!isInvalid()) getPileData();
 	}
@@ -162,6 +163,8 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 		super.invalidate();
 		if (worldObj.isRemote) return;
 		CratePileData data = getPileData();
+		if (watcherRegistered)
+			data.removeWatcher(this);
 		setPileData(null, false);
 		dropOverflowContents(data);
 		checkPileConnections(data);
@@ -200,6 +203,41 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 	@Override
 	public ContainerBetterStorage createContainer(EntityPlayer player) {
 		return new ContainerCrate(player, new InventoryCratePlayerView(this));
+	}
+	
+	// Comparator related
+	
+	private boolean watcherRegistered = false;
+	
+	@Override
+	protected int getComparatorSignalStengthInternal() {
+		if (worldObj.isRemote) return 0;
+		CratePileData data = getPileData();
+		return ((data.getOccupiedSlots() > 0)
+				? (1 + data.getOccupiedSlots() * 14 / data.getCapacity()) : 0);
+	}
+	
+	@Override
+	protected void markComparatorAccessed() {
+		super.markComparatorAccessed();
+		if (!watcherRegistered && !worldObj.isRemote) {
+			getPileData().addWatcher(this);
+			watcherRegistered = true;
+		}
+	}
+	
+	@Override
+	protected void comparatorUpdateAndReset() {
+		super.comparatorUpdateAndReset();
+		if (watcherRegistered && !hasComparatorAccessed()) {
+			getPileData().removeWatcher(this);
+			watcherRegistered = false;
+		}
+	}
+	
+	@Override
+	public void onCrateItemsModified(ItemStack stack) {
+		markContentsChanged();
 	}
 	
 	// IInventory implementation

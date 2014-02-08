@@ -65,4 +65,7 @@ public class TileLocker extends TileContainerBetterStorage {
 		return new TileEntityLocker();
 	}
 	
+	@Override
+	public boolean hasComparatorInputOverride() { return true; }
+	
 }

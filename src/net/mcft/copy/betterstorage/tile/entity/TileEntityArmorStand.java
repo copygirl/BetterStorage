@@ -22,16 +22,12 @@ public class TileEntityArmorStand extends TileEntityContainer {
 
 	public ItemStack[] armor = new ItemStack[4];
 	public int rotation = 0;
-	public int tickCounter = 0;
 	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public AxisAlignedBB getRenderBoundingBox() {
 		return WorldUtils.getAABB(this, 0, 0, 0, 0, 1, 0);
 	}
-	
-	@Override
-	public void updateEntity() { tickCounter++; }
 	
 	// TileEntityContainer stuff
 	
@@ -72,6 +68,7 @@ public class TileEntityArmorStand extends TileEntityContainer {
 			armor[slot] = holding;
 			player.inventory.mainInventory[player.inventory.currentItem] = item;
 			markForUpdate();
+			onInventoryChanged();
 		}
 		
 		return true;
@@ -88,6 +85,14 @@ public class TileEntityArmorStand extends TileEntityContainer {
 	public void dropContents() {
 		for (ItemStack stack : armor)
 			WorldUtils.dropStackFromBlock(worldObj, xCoord, yCoord, zCoord, stack);
+	}
+	
+	@Override
+	protected int getComparatorSignalStengthInternal() {
+		int count = 0;
+		for (ItemStack stack : armor)
+			if (stack != null) count++;
+		return count;
 	}
 	
 	// TileEntity synchronization

@@ -12,7 +12,6 @@ import net.mcft.copy.betterstorage.tile.ContainerMaterial;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
@@ -24,7 +23,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public abstract class TileEntityLockable extends TileEntityConnectable
-                                         implements IInventory, ILockable, IHasAttachments {
+                                         implements ILockable, IHasAttachments {
 	
 	private boolean powered;
 	

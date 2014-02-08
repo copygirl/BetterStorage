@@ -56,7 +56,7 @@ public class TileEntityArmorStandRenderer extends TileEntitySpecialRenderer {
 			};
 			playerDummy.setInvisible(true);
 		}
-		playerDummy.ticksExisted = locker.tickCounter;
+		playerDummy.ticksExisted = locker.ticksExisted;
 		playerDummy.inventory.armorInventory = locker.armor;
 		playerDummy.worldObj = locker.worldObj;
 		playerDummy.renderYawOffset = playerDummy.prevRenderYawOffset = rotation;

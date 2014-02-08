@@ -7,10 +7,13 @@ import net.mcft.copy.betterstorage.utils.PlayerUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.IBlockAccess;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -142,6 +145,75 @@ public abstract class TileEntityContainer extends TileEntity {
 	@SideOnly(Side.CLIENT)
 	public void onBlockRenderAsItem(ItemStack stack) {  }
 	
+	// Comparator related
+	
+	private boolean compAccessedOnLoad = false;
+	private boolean compAccessed = false;
+	private boolean compContentsChanged = false;
+	
+	protected boolean hasComparatorAccessed() { return compAccessed; }
+	protected boolean hasContentsChanged() { return compContentsChanged; }
+	
+	/** Helper function. Returns the comparator signal strength of
+	 *  the container at this position, or 0 if there is no container
+	 *  or the function is called on client-side. */
+	public static int getContainerComparatorSignalStrength(IBlockAccess world, int x, int y, int z) {
+		TileEntityContainer container = WorldUtils.get(world, x, y, z, TileEntityContainer.class);
+		return ((container != null) ? container.getComparatorSignalStrength() : 0);
+	}
+	
+	/** Called when a comparator or similar block wants to know this
+	 *  TileEntity's comparator signal strength. Marks this location
+	 *  to be updated the next time the container contents change. */
+	public int getComparatorSignalStrength() {
+		markComparatorAccessed();
+		return getComparatorSignalStengthInternal();
+	}
+	
+	/** Called when a comparator or similar block wants to know this
+	 *  container's comparator signal strength. Marks the block to
+	 *  update blocks around it next updateEntity(). */
+	protected void markComparatorAccessed() {
+		compAccessed = true;
+	}
+	
+	/** Called when the inventory is modified. When a comparator
+	 *  accessed this container, marks to update blocks around it
+	 *  next updateEntity(). */
+	protected void markContentsChanged() {
+		compContentsChanged = true;
+	}
+	
+	/** Returns the container's comparator signal strength. Calculated
+	 *  automatically if it implements IInventory. Overridden if necessary. */
+	protected int getComparatorSignalStengthInternal() {
+		return ((this instanceof IInventory) ? Container.calcRedstoneFromInventory((IInventory)this) : 0);
+	}
+	
+	/** Resets accessed and contents changed flags and updates nearby blocks.
+	 *  Returns if the crate was accessed by a comparator during the block update. */
+	protected void comparatorUpdateAndReset() {
+		compAccessed = false;
+		compContentsChanged = false;
+		worldObj.func_96440_m(xCoord, yCoord, zCoord, 0);
+	}
+	
+	@Override
+	public void onInventoryChanged() {
+		if (worldObj.isRemote) return;
+		worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
+		if (hasComparatorAccessed())
+			markContentsChanged();
+	}
+	
+	@Override
+	public void validate() {
+		if (compAccessedOnLoad) {
+			markComparatorAccessed();
+			compAccessedOnLoad = false;
+		}
+	}
+	
 	// Players using synchronization
 	
 	/** Returns if the container does synchronize playersUsing at all. */
@@ -181,6 +253,11 @@ public abstract class TileEntityContainer extends TileEntity {
 	public void updateEntity() {
 		ticksExisted++;
 		
+		// If a comparator or such has accessed the container and
+		// the contents have been changed, send a block update.
+		if (hasComparatorAccessed() && hasContentsChanged())
+			comparatorUpdateAndReset();
+		
 		if (syncPlayersUsing()) {
 			int newPlayersUsing = WorldUtils.syncPlayersUsing(this, playersUsing);
 			if (newPlayersUsing != playersUsing)
@@ -202,6 +279,8 @@ public abstract class TileEntityContainer extends TileEntity {
 			customTitle = compound.getString("CustomName");
 		if (contents != null)
 			NbtUtils.readItems(contents, compound.getTagList("Items"));
+		if (compound.getBoolean("ComparatorAccessed"))
+			compAccessedOnLoad = true;
 	}
 	@Override
 	public void writeToNBT(NBTTagCompound compound) {
@@ -210,6 +289,8 @@ public abstract class TileEntityContainer extends TileEntity {
 			compound.setString("CustomName", customTitle);
 		if (contents != null)
 			compound.setTag("Items", NbtUtils.writeItems(contents));
+		if (hasComparatorAccessed())
+			compound.setBoolean("ComparatorAccessed", true);
 	}
 	
 	// Utility functions

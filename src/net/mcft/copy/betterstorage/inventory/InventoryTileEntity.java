@@ -68,6 +68,10 @@ public class InventoryTileEntity extends InventoryBetterStorage {
 	@Override
 	public void closeChest() { mainTileEntity.onContainerClosed(); }
 	@Override
-	public void onInventoryChanged() { inventory.onInventoryChanged(); }
+	public void onInventoryChanged() {
+		inventory.onInventoryChanged();
+		for (TileEntityContainer te : tileEntities)
+			te.onInventoryChanged();
+	}
 	
 }
