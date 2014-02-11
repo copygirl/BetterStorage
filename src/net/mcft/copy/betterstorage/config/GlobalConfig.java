@@ -133,7 +133,7 @@ public class GlobalConfig extends Config {
 		
 		// Crafting Station settings
 		enableStationAutoCraftingSetting =
-		new BooleanSetting(this, enableStationAutoCrafting, false).setComment(
+		new BooleanSetting(this, enableStationAutoCrafting, false).setSynced().setComment(
 				"If enabled, automated systems can pull out of crafting stations and therefore auto-craft items.");
 		stationAutocraftDelaySetting =
 		new IntegerSetting(this, stationAutocraftDelay, 10).setValidRange(0, Integer.MAX_VALUE).setComment(

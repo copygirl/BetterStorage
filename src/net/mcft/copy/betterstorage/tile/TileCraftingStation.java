@@ -1,5 +1,7 @@
 package net.mcft.copy.betterstorage.tile;
 
+import net.mcft.copy.betterstorage.BetterStorage;
+import net.mcft.copy.betterstorage.config.GlobalConfig;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityCraftingStation;
 import net.minecraft.block.material.Material;
@@ -13,7 +15,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class TileCraftingStation extends TileContainerBetterStorage {
 	
 	private Icon topIcon;
-	private Icon bottomIcon;
+	private Icon bottomIconDisabled;
+	private Icon bottomIconEnabled;
 	
 	public TileCraftingStation(int id) {
 		super(id, Material.iron);
@@ -27,13 +30,17 @@ public class TileCraftingStation extends TileContainerBetterStorage {
 	public void registerIcons(IconRegister iconRegister) {
 		blockIcon = iconRegister.registerIcon(Constants.modId + ":" + getTileName());
 		topIcon = iconRegister.registerIcon(Constants.modId + ":" + getTileName() + "_top");
-		bottomIcon = iconRegister.registerIcon(Constants.modId + ":" + getTileName() + "_bottom");
+		bottomIconDisabled = iconRegister.registerIcon(Constants.modId + ":" + getTileName() + "_bottom_0");
+		bottomIconEnabled = iconRegister.registerIcon(Constants.modId + ":" + getTileName() + "_bottom_1");
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Icon getIcon(int side, int meta) {
-		return ((side == 0) ? bottomIcon : ((side == 1) ? topIcon : blockIcon));
+		return ((side == 0)
+				? (BetterStorage.globalConfig.getBoolean(GlobalConfig.enableStationAutoCrafting)
+						? bottomIconEnabled : bottomIconDisabled)
+				: ((side == 1) ? topIcon : blockIcon));
 	}
 	
 	@Override
