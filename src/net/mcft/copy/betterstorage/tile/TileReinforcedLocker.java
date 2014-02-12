@@ -52,7 +52,8 @@ public class TileReinforcedLocker extends TileLockable {
 	
 	@Override
 	public boolean isBlockSolidOnSide(World world, int x, int y, int z, ForgeDirection side) {
-		return (WorldUtils.get(world, x, y, z, TileEntityLocker.class).getOrientation() != side);
+		TileEntityLocker locker = WorldUtils.get(world, x, y, z, TileEntityLocker.class);
+		return ((locker == null) || (locker.getOrientation() != side));
 	}
 	
 	@Override
