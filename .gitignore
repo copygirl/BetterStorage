@@ -1,5 +1,20 @@
-/downloads/
-/screenshots/
-/images/
-/models/
+/.gradle/
+/.settings/
+/gradle/
+/eclipse/
+/build/
+/bin/
 
+/.classpath
+/.project
+/gradlew
+/gradlew.bat
+
+# Project related files
+# Currently not included
+/downloads/
+/models/
+/images/
+
+# Not including APIs
+/src/api
