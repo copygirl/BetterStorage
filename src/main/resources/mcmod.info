@@ -1,11 +1,21 @@
-[
-  {
+{
+  "modinfoversion": 2,
+  "modlist": [{
     "modid": "betterstorage",
     "name": "BetterStorage",
-    "version": "@VERSION@",
     "description": "Adds more storage related blocks and items to the game.",
-    "authors": [ "copygirl", "copyboy" ],
-    "credits": "Sponsored by RichardG. Thanks to everyone from #Direwolf20.",
-    "url": "http://copy.mcft.net/mc/BetterStorage/"
-  }
-]
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "http://copy.mcft.net/mc/BetterStorage/",
+    "updateUrl": "",
+    "authors": [ "copygirl" ],
+    "credits": "",
+    "logoFile": "",
+    "screenshots": [ ],
+    "parent": "",
+    "requiredMods": [ "Forge" ],
+    "dependencies": [ ],
+    "dependants": [ ],
+    "useDependencyInfromation": "true"
+  }]
+}
