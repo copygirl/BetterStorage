@@ -56,6 +56,8 @@ public class GuiCraftingStation extends GuiBetterStorage {
 		    inv.outputIsReal || !slot.getHasStack()) return;
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
 		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		
 		float a = ((inv.progress < inv.craftingTime) ? 0.5F : 1.0F);
 		GL11.glColor4f(a, a, a, 0.6F);
 		mc.renderEngine.bindTexture(getResource());
@@ -63,6 +65,7 @@ public class GuiCraftingStation extends GuiBetterStorage {
 		int slotY = slot.yDisplayPosition - 1;
 		RenderUtils.drawTexturedModalRect(slotX, slotY, slotX, slotY, 18, 18, 0,
 		                                  getTextureWidth(), getTextureHeight());
+		
 		GL11.glDisable(GL11.GL_BLEND);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 	}
