@@ -30,9 +30,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(modid = Constants.modId,
      name = Constants.modName,
-     version = "@VERSION@",
-     useMetadata = true,
-     dependencies = "after:Thaumcraft")
+     dependencies = "required-after:Forge; after:Thaumcraft")
 @NetworkMod(clientSideRequired = true,
             serverSideRequired = false,
             channels = { Constants.modId },
