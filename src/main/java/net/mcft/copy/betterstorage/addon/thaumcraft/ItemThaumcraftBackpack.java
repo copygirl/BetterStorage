@@ -24,7 +24,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ItemThaumcraftBackpack extends ItemBackpack implements IRepairable, IVisDiscounter {
 	
 	public ItemThaumcraftBackpack(int id) {
-		super(id, material);
+		super(id, ItemBackpack.material);
 		setMaxDamage(288);
 	}
 	
