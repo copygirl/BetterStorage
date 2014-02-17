@@ -17,10 +17,10 @@ public final class BetterStorageCrafting {
 	private BetterStorageCrafting() {  }
 	
 	/** Adds a station recipe to the recipe list. */
-	public static void addRecipe(IStationRecipe recipe) { recipes.add(recipe); }
+	public static void addStationRecipe(IStationRecipe recipe) { recipes.add(recipe); }
 	
 	/** Returns a recipe matching the input, or null if none was found. */
-	public static IStationRecipe findMatchingRecipe(ItemStack[] input) {
+	public static IStationRecipe findMatchingStationRecipe(ItemStack[] input) {
 		for (IStationRecipe recipe : recipes)
 			if (recipe.matches(input)) return recipe;
 		return null;

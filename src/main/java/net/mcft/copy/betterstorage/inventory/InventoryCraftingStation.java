@@ -65,7 +65,7 @@ public class InventoryCraftingStation extends InventoryBetterStorage {
 	public void checkRecipe() {
 		IStationRecipe previous = currentRecipe;
 		if ((currentRecipe == null) || !currentRecipe.matches(crafting)) {
-			currentRecipe = BetterStorageCrafting.findMatchingRecipe(crafting);
+			currentRecipe = BetterStorageCrafting.findMatchingStationRecipe(crafting);
 			if (currentRecipe == null)
 				currentRecipe = VanillaStationRecipe.findVanillaRecipe(this);
 		}
@@ -83,7 +83,7 @@ public class InventoryCraftingStation extends InventoryBetterStorage {
 		updateLastOutput();
 	}
 	private boolean recipeOutputMatches() {
-		if (!outputIsReal || (currentRecipe == null)) return true;
+		if (currentRecipe == null) return false;
 		ItemStack[] recipeOutput = currentRecipe.getOutput(crafting);
 		for (int i = 0; i < output.length; i++)
 			if (!ItemStack.areItemStacksEqual(((i < recipeOutput.length) ? recipeOutput[i] : null), output[i]))
