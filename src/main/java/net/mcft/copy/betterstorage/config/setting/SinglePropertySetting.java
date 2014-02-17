@@ -15,11 +15,15 @@ public abstract class SinglePropertySetting<T> extends Setting<T> {
 	
 	@Override
 	public SinglePropertySetting<T> setComment(String comment) {
-		property.comment = comment;
 		super.setComment(comment);
 		return this;
 	}
 	
 	protected abstract Property getProperty(Configuration config);
+	
+	@Override
+	protected void saveInternal(Configuration config, T value) {
+		property.comment = comment;
+	}
 	
 }

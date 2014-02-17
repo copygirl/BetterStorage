@@ -64,7 +64,8 @@ public class IntegerSetting extends SinglePropertySetting<Integer> {
 	@Override
 	protected Integer loadInternal(Configuration config) { return property.getInt(); }
 	@Override
-	protected void saveInternal(Configuration config, Integer value) { property.set(value); }
+	protected void saveInternal(Configuration config, Integer value) {
+		super.saveInternal(config, value); property.set(value); }
 	
 	@Override
 	protected Integer readInternal(NBTTagCompound compound) { return compound.getInteger(fullName); }

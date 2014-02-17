@@ -51,7 +51,8 @@ public class DoubleSetting extends SinglePropertySetting<Double> {
 	@Override
 	protected Double loadInternal(Configuration config) { return property.getDouble(defaultValue); }
 	@Override
-	protected void saveInternal(Configuration config, Double value) { property.set(value); }
+	protected void saveInternal(Configuration config, Double value) {
+		super.saveInternal(config, value); property.set(value); }
 	
 	@Override
 	protected Double readInternal(NBTTagCompound compound) { return compound.getDouble(fullName); }

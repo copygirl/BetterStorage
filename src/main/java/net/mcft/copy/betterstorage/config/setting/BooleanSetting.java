@@ -33,7 +33,8 @@ public class BooleanSetting extends SinglePropertySetting<Boolean> {
 	@Override
 	protected Boolean loadInternal(Configuration config) { return property.getBoolean(defaultValue); }
 	@Override
-	protected void saveInternal(Configuration config, Boolean value) { property.set(value); }
+	protected void saveInternal(Configuration config, Boolean value) {
+		super.saveInternal(config, value); property.set(value); }
 	
 	@Override
 	protected Boolean readInternal(NBTTagCompound compound) { return compound.getBoolean(fullName); }
