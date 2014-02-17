@@ -119,6 +119,7 @@ public class InventoryCraftingStation extends InventoryBetterStorage {
 	public boolean pullRequired(IRecipeInput[] requiredInput, boolean doPull) {
 		ItemStack[] contents = (doPull ? this.contents : this.contents.clone());
 		ItemStack[] crafting = (doPull ? this.crafting : this.crafting.clone());
+		boolean success = true;
 		craftingLoop:
 		for (int i = 0; i < crafting.length; i++) {
 			ItemStack stack = crafting[i];
@@ -141,11 +142,14 @@ public class InventoryCraftingStation extends InventoryBetterStorage {
 							continue craftingLoop;
 					}
 				}
-				return false;
-			} else if (stack != null)
-				return false;
+				success = false;
+				if (!doPull) break;
+			} else if (stack != null) {
+				success = false;
+				if (!doPull) break;
+			}
 		}
-		return true;
+		return success;
 	}
 	
 	/** Returns if items can be taken out of the output slots. */
