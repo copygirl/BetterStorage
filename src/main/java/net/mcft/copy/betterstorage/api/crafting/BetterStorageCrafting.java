@@ -46,15 +46,15 @@ public final class BetterStorageCrafting {
 		for (int i = 0; i < crafting.length; i++) {
 			ItemStack stack = crafting[i];
 			if (stack == null) continue;
-			stack.stackSize -= ((craftReq != null) ? craftReq[i].getAmount() : 1);
 			Item item = stack.getItem();
-			ItemStack containerItem = item.getContainerItemStack(stack);
+			ItemStack containerItem = ItemStack.copyItemStack(item.getContainerItemStack(stack));
+			stack.stackSize -= ((craftReq != null) ? craftReq[i].getAmount() : 1);
 			if (containerItem == null) continue;
 			if (!item.doesContainerItemLeaveCraftingGrid(stack) ||
 			    !tryAddItemToInventory(source, containerItem)) {
-				if ((crafting[i] != null) || (crafting[i].stackSize > 0))
+				if (stack.stackSize <= 0) crafting[i] = containerItem;
+				else if (source.getWorld() != null)
 					WorldUtils.spawnItem(source.getWorld(), source.getX(), source.getY(), source.getZ(), containerItem);
-				else crafting[i] = containerItem;
 			}
 		}
 	}

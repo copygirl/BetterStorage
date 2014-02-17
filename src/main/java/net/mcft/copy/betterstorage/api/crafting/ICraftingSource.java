@@ -14,7 +14,7 @@ public interface ICraftingSource {
 	IInventory getInventory();
 	
 	/** Returns the world the recipe is being crafted in. <br>
-	 *  Not supported on client-side. */
+	 *  Returns null on client-side. */
 	World getWorld();
 	
 	double getX();
