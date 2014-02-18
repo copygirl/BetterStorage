@@ -66,14 +66,16 @@ public class ShapelessStationRecipe implements IStationRecipe {
 	
 	@Override
 	public boolean canCraft(ItemStack[] input, ICraftingSource source) {
-		return ((requiredExperience <= 0) || ((source.getPlayer() != null) &&
-		                                      (source.getPlayer().experienceLevel >= requiredExperience)));
+		return ((requiredExperience <= 0) ||
+		        ((source.getPlayer() != null) &&
+		         ((source.getPlayer().experienceLevel >= requiredExperience) ||
+		          source.getPlayer().capabilities.isCreativeMode)));
 	}
 	
 	@Override
 	public void craft(ItemStack[] input, ICraftingSource source) {
 		BetterStorageCrafting.decreaseCraftingMatrix(input, source, this);
-		if (requiredExperience != 0)
+		if ((requiredExperience != 0) && !source.getPlayer().capabilities.isCreativeMode)
 			source.getPlayer().addExperienceLevel(-requiredExperience);
 	}
 	
