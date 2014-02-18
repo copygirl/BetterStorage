@@ -114,11 +114,11 @@ public final class Recipes {
 		// Crafting Station recipe
 		if (MiscUtils.isEnabled(Tiles.craftingStation))
 			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Tiles.craftingStation),
-					"BGB",
-					"ITI",
+					"B-B",
+					"PTP",
 					"WCW", 'B', Block.stoneBrick,
-					       'G', Item.ingotGold,
-					       'I', Item.ingotIron,
+					       '-', Block.pressurePlateGold,
+					       'P', Block.pistonBase,
 					       'T', Block.workbench,
 					       'W', "plankWood",
 					       'C', (MiscUtils.isEnabled(Tiles.crate) ? Tiles.crate : Block.chest)));
@@ -224,32 +224,32 @@ public final class Recipes {
 						     '/', Item.stick));
 			
 			// Cardboard axe recipe
-			if (MiscUtils.isEnabled(Items.cardboardAxe))
+			if (MiscUtils.isEnabled(Items.cardboardAxe)) {
 				GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.cardboardAxe),
 						"oo",
 						"o/",
 						" /", 'o', "sheetCardboard",
 						      '/', Item.stick));
-			if (MiscUtils.isEnabled(Items.cardboardAxe))
 				GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.cardboardAxe),
 						"oo",
 						"/o",
 						"/ ", 'o', "sheetCardboard",
 						      '/', Item.stick));
+			}
 			
 			// Cardboard hoe recipe
-			if (MiscUtils.isEnabled(Items.cardboardHoe))
+			if (MiscUtils.isEnabled(Items.cardboardHoe)) {
 				GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.cardboardHoe),
 						"oo",
 						" /",
 						" /", 'o', "sheetCardboard",
 						      '/', Item.stick));
-			if (MiscUtils.isEnabled(Items.cardboardHoe))
 				GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.cardboardHoe),
 						"oo",
 						"/ ",
 						"/ ", 'o', "sheetCardboard",
 						      '/', Item.stick));
+			}
 		}
 		
 	}
