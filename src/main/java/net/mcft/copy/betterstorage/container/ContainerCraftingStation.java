@@ -86,10 +86,12 @@ public class ContainerCraftingStation extends ContainerBetterStorage {
 	
 	@Override
 	public ItemStack slotClick(int slotId, int button, int special, EntityPlayer player) {
-		if (!inv.outputIsReal && (slotId == 9) && (inv.output[0] != null) &&
-		    (inv.currentRecipe instanceof VanillaStationRecipe) && inv.canTake(player)) {
-			GameRegistry.onItemCrafted(player, inv.output[0], craftMatrix);
-			slotCrafting.onCrafting(inv.output[0]);
+		if (!inv.outputIsReal && (inv.currentRecipe != null) && (slotId >= 9) && (slotId < 18) &&
+		    (inv.output[slotId - 9] != null) && inv.canTake(player)) {
+			if (inv.currentRecipe instanceof VanillaStationRecipe) {
+				GameRegistry.onItemCrafted(player, inv.output[slotId - 9], craftMatrix);
+				slotCrafting.onCrafting(inv.output[slotId - 9]);
+			}
 			inv.craft(player);
 		}
 		return super.slotClick(slotId, button, special, player);
