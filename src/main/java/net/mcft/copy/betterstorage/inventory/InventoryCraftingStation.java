@@ -205,9 +205,12 @@ public class InventoryCraftingStation extends InventoryBetterStorage {
 		
 		boolean updateLastOutput = false;
 		
-		// See if items were taken out.
+		// See if items were taken out from the output.
 		if (outputChanged()) {
-			if (!outputIsReal && (currentRecipe != null)) craft(null);
+			// If the output is ghost items, there is a recipe and we're
+			// on the server, craft the items and decrement the input.
+			if (!outputIsReal && (currentRecipe != null) && (entity != null))
+				craft(null);
 			updateLastOutput = true;
 		}
 		
