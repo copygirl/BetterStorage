@@ -17,9 +17,6 @@ public class ContainerCrate extends ContainerBetterStorage {
 	private int lastFullness = 0;
 	private int fullness = 0;
 	
-	@Override
-	public boolean invtweaks$validChest() { return false; }
-	
 	public ContainerCrate(EntityPlayer player, InventoryCratePlayerView inventory) {
 		super(player, inventory, 9, inventory.getSizeInventory() / 9);
 		

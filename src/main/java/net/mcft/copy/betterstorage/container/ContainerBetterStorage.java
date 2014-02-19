@@ -29,10 +29,6 @@ public class ContainerBetterStorage extends Container {
 	public int getColumns() { return columns; }
 	public int getRows() { return rows; }
 	
-	// Inventory Tweaks methods
-	public boolean invtweaks$validChest() { return true; }
-	public int invtweaks$rowSize() { return getColumns(); }
-	
 	public ContainerBetterStorage(EntityPlayer player, IInventory inventory, int columns, int rows, int seperation) {
 		this.player = player;
 		this.inventory = inventory;
