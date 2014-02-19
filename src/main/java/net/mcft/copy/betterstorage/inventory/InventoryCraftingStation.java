@@ -125,11 +125,15 @@ public class InventoryCraftingStation extends InventoryBetterStorage {
 			ItemStack stack = crafting[i];
 			IRecipeInput required = requiredInput[i];
 			if (required != null) {
-				if ((stack != null) && !required.matches(stack)) return false;
-				int currentAmount = ((stack != null) ? stack.stackSize : 0);
+				int currentAmount = 0;
+				if ((stack != null) && !doPull)
+					stack = StackUtils.copyStack(stack, stack.stackSize - required.getAmount());
+				if (stack != null) {
+					if (!required.matches(stack)) return false;
+					currentAmount = stack.stackSize;
+				}
 				int requiredAmount = (required.getAmount() - currentAmount);
-				if (!doPull) requiredAmount += required.getAmount();
-				if (requiredAmount < 0) continue;
+				if (requiredAmount <= 0) continue;
 				for (int j = 0; j < contents.length; j++) {
 					ItemStack contentsStack = contents[j];
 					if (contentsStack == null) continue;
