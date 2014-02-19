@@ -329,7 +329,7 @@ public class BackpackHandler implements IPlayerTracker {
 						if (ItemBackpack.placeBackpack(entity, player, backpack,
 						                               coord.x, coord.y, coord.z, 1,
 						                               orientation, despawn, true)) {
-							ItemBackpack.setBackpack(player, null, null);
+							ItemBackpack.setBackpack(entity, null, null);
 							return;
 						}
 						boolean replacable = WorldUtils.isBlockReplacable(entity.worldObj, coord.x, coord.y, coord.z);
