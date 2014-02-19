@@ -117,9 +117,14 @@ public final class StackUtils {
 	
 	public static boolean matches(int id1, int damage1, NBTTagCompound data1, 
 	                              int id2, int damage2, NBTTagCompound data2) {
-		return ((id1 == id2) && (damage1 == damage2) &&
-		        (((data1 == null) && (data2 == null)) ||
-		         ((data1 != null) && data1.equals(data2))));
+		return ((id1 == id2) && (damage1 == damage2) && nbtEquals(data1, data2));
+	}
+	/** Returns if the two NBT compounds are equal.
+	 *  Used instead of default comparison because this function
+	 *  makes sure the names of the main NBT tags match. */
+	public static boolean nbtEquals(NBTTagCompound nbt1, NBTTagCompound nbt2) {
+		return ((nbt1 == nbt2) || (!((nbt1 == null) || (nbt2 == null)) &&
+		                           nbt1.setName("tag").equals(nbt2.setName("tag"))));
 	}
 	/** Returns if the two item stacks match. <br>
 	 *  True when they're both null or their ID, damage and optionally NBT data match. */

@@ -18,7 +18,7 @@ public final class BetterStorageUtils {
 		          (match.getItemDamage() == stack.getItemDamage())) &&
 		         (!match.hasTagCompound() ||
 		          (match.getTagCompound().hasNoTags() && !stack.hasTagCompound()) ||
-		          (match.getTagCompound().equals(stack.getTagCompound())))));
+		          (match.getTagCompound().setName("tag").equals(stack.getTagCompound().setName("tag"))))));
 	}
 	
 }
