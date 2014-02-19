@@ -1,8 +1,10 @@
 package net.mcft.copy.betterstorage.misc;
 
 import net.mcft.copy.betterstorage.addon.Addon;
+import net.mcft.copy.betterstorage.api.crafting.BetterStorageCrafting;
 import net.mcft.copy.betterstorage.content.Items;
 import net.mcft.copy.betterstorage.content.Tiles;
+import net.mcft.copy.betterstorage.item.cardboard.CardboardEnchantmentRecipe;
 import net.mcft.copy.betterstorage.item.recipe.DrinkingHelmetRecipe;
 import net.mcft.copy.betterstorage.item.recipe.DyeRecipe;
 import net.mcft.copy.betterstorage.item.recipe.KeyRecipe;
@@ -251,6 +253,8 @@ public final class Recipes {
 						      '/', Item.stick));
 			}
 		}
+		
+		BetterStorageCrafting.addStationRecipe(new CardboardEnchantmentRecipe());
 		
 	}
 	
