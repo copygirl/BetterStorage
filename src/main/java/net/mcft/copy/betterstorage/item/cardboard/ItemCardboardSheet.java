@@ -1,7 +1,10 @@
 package net.mcft.copy.betterstorage.item.cardboard;
 
+import java.util.Map;
+
 import net.mcft.copy.betterstorage.item.ItemBetterStorage;
 import net.minecraft.block.Block;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.EnumArmorMaterial;
 import net.minecraft.item.EnumToolMaterial;
@@ -24,19 +27,37 @@ public class ItemCardboardSheet extends ItemBetterStorage {
 	public static boolean isEffective(ItemStack stack) {
 		return (stack.getItemDamage() < stack.getMaxDamage());
 	}
+	
 	public static boolean canHarvestBlock(ItemStack stack, boolean canHarvestDefault) {
 		return (isEffective(stack) ? canHarvestDefault : false);
 	}
+	
 	public static boolean damageItem(ItemStack stack, int damage, EntityLivingBase entity) {
+		
 		if (!isEffective(stack)) return true;
-		stack.damageItem(1, entity);
+		
+		Map<Integer, Integer> enchants = (EnchantmentHelper.getEnchantments(stack));
+		int numEnchants = enchants.size();
+		int numLevelTotal = 0;
+		for (int enchLevel : enchants.values())
+			numLevelTotal += enchLevel;
+		
+		double changeForNoDamage = - 1 / Math.pow((numLevelTotal / 10 + 1), 2) + 1;
+		changeForNoDamage = (numEnchants / 10) + (changeForNoDamage * (1 - (numEnchants / 10)));
+		
+		if (entity.worldObj.rand.nextDouble() >= changeForNoDamage)
+			stack.damageItem(1, entity);
+		
 		if (!isEffective(stack)) {
 			entity.renderBrokenItemStack(stack);
 			stack.setItemDamage(stack.getMaxDamage());
 			stack.stackSize = 1;
 		}
+		
 		return true;
+		
 	}
+	
 	public static boolean onBlockDestroyed(World world, int blockID, int x, int y, int z,
 	                                       ItemStack stack, EntityLivingBase entity) {
 		return ((Block.blocksList[blockID].getBlockHardness(world, x, y, z) > 0)
