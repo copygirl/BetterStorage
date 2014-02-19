@@ -7,14 +7,29 @@ import java.util.Random;
 import net.mcft.copy.betterstorage.api.BetterStorageUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class RecipeInputItemStack implements IRecipeInput {
 	
 	public final ItemStack stack;
+	public final boolean nbtSensitive;
 	
-	public RecipeInputItemStack(ItemStack stack) {
+	public RecipeInputItemStack(ItemStack stack, boolean nbtSensitive) {
 		this.stack = stack;
+		this.nbtSensitive = nbtSensitive;
+		// If input is NBT sensitive, make sure it has an NBT compound.
+		// Empty means it only matches items with no NBT data.
+		if (nbtSensitive) {
+			if (!stack.hasTagCompound())
+				stack.setTagCompound(new NBTTagCompound());
+		// Otherwise, always remove the NBT compound,
+		// because then it will match any item.
+		} else if (stack.hasTagCompound())
+			stack.setTagCompound(null);
+	}
+	public RecipeInputItemStack(ItemStack stack) {
+		this(stack, false);
 	}
 	
 	@Override
