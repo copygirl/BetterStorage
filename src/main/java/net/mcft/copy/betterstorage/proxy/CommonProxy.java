@@ -7,6 +7,8 @@ import net.mcft.copy.betterstorage.attachment.IHasAttachments;
 import net.mcft.copy.betterstorage.entity.EntityCluckington;
 import net.mcft.copy.betterstorage.item.IDyeableItem;
 import net.mcft.copy.betterstorage.item.ItemBucketSlime;
+import net.mcft.copy.betterstorage.item.cardboard.ICardboardItem;
+import net.mcft.copy.betterstorage.item.cardboard.ItemCardboardSheet;
 import net.mcft.copy.betterstorage.misc.handlers.BackpackHandler;
 import net.mcft.copy.betterstorage.tile.crate.CratePileCollection;
 import net.mcft.copy.betterstorage.utils.StackUtils;
@@ -23,6 +25,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.Event.Result;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.player.EntityInteractEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import net.minecraftforge.event.world.WorldEvent.Save;
@@ -66,6 +69,7 @@ public class CommonProxy implements ITickHandler {
 		int y = event.y;
 		int z = event.z;
 		EntityPlayer player = event.entityPlayer;
+		ItemStack holding = player.getCurrentEquippedItem();
 		Block block = Block.blocksList[world.getBlockId(x, y, z)];
 		boolean leftClick = (event.action == Action.LEFT_CLICK_BLOCK);
 		boolean rightClick = (event.action == Action.RIGHT_CLICK_BLOCK);
@@ -91,7 +95,6 @@ public class CommonProxy implements ITickHandler {
 		if (rightClick && (block == Block.cauldron)) {
 			int metadata = world.getBlockMetadata(x, y, z);
 			if (metadata > 0) {
-				ItemStack holding = player.getCurrentEquippedItem();
 				IDyeableItem dyeable = (((holding != null) && (holding.getItem() instanceof IDyeableItem))
 						? (IDyeableItem)holding.getItem() : null);
 				if ((dyeable != null) && (dyeable.canDye(holding))) {
@@ -105,6 +108,23 @@ public class CommonProxy implements ITickHandler {
 			}
 		}
 		
+		// Prevent players from breaking blocks with broken cardboard items.
+		if (leftClick && (holding != null) &&
+		    (holding.getItem() instanceof ICardboardItem) &&
+		    !ItemCardboardSheet.isEffective(holding))
+			event.useItem = Result.DENY;
+		
+	}
+	
+	@ForgeSubscribe
+	public void onBreakSpeed(BreakSpeed event) {
+		// Stupid Forge not firing PlayerInteractEvent for left-clicks!
+		// This is a workaround to instead make blocks appear unbreakable.
+		EntityPlayer player = event.entityPlayer;
+		ItemStack holding = player.getCurrentEquippedItem();
+		if ((holding != null) && (holding.getItem() instanceof ICardboardItem) &&
+		    !ItemCardboardSheet.isEffective(holding))
+			event.newSpeed = -1;
 	}
 	
 	@ForgeSubscribe
