@@ -5,6 +5,7 @@ import net.mcft.copy.betterstorage.api.crafting.BetterStorageCrafting;
 import net.mcft.copy.betterstorage.content.Items;
 import net.mcft.copy.betterstorage.content.Tiles;
 import net.mcft.copy.betterstorage.item.cardboard.CardboardEnchantmentRecipe;
+import net.mcft.copy.betterstorage.item.cardboard.CardboardRepairRecipe;
 import net.mcft.copy.betterstorage.item.recipe.DrinkingHelmetRecipe;
 import net.mcft.copy.betterstorage.item.recipe.DyeRecipe;
 import net.mcft.copy.betterstorage.item.recipe.KeyRecipe;
@@ -254,7 +255,12 @@ public final class Recipes {
 			}
 		}
 		
+		// Crafting Station: Add cardboard enchantment recipe
 		BetterStorageCrafting.addStationRecipe(new CardboardEnchantmentRecipe());
+		
+		// Crafting Station: Add cardboard repair recipe
+		if (MiscUtils.isEnabled(Items.cardboardSheet))
+			BetterStorageCrafting.addStationRecipe(new CardboardRepairRecipe());
 		
 	}
 	
