@@ -1,6 +1,7 @@
 package net.mcft.copy.betterstorage.inventory;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -48,6 +49,10 @@ public class InventoryCratePlayerView extends InventoryBetterStorage implements 
 		LinkedList<ItemStack> stacks = new LinkedList<ItemStack>();
 		for (ItemStack contentsStack : data)
 			stacks.add(contentsStack.copy());
+		List<Integer> slotAccess = new ArrayList<Integer>(size);
+		for (int i = 0; i < size; i++) slotAccess.add(i);
+		if (totalStacks < size)
+			Collections.shuffle(slotAccess);
 		for (int slot = 0; (totalStacks > 0) && (slot < size); slot++) {
 			int randomStack = RandomUtils.getInt(totalStacks--);
 			for (ListIterator<ItemStack> iter = stacks.listIterator(); iter.hasNext(); ) {
@@ -57,7 +62,7 @@ public class InventoryCratePlayerView extends InventoryBetterStorage implements 
 					ItemStack stack = contentsStack.copy();
 					stack.stackSize = Math.min(stack.stackSize, stack.getMaxStackSize());
 					getMapData(stack).itemCount += stack.stackSize;
-					tempContents[slot] = stack;
+					tempContents[slotAccess.get(slot)] = stack;
 					if ((contentsStack.stackSize -= stack.stackSize) <= 0) iter.remove();
 					break;
 				}
