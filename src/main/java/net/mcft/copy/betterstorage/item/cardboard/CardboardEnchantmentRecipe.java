@@ -21,7 +21,9 @@ import net.minecraft.nbt.NBTTagList;
 public class CardboardEnchantmentRecipe implements IStationRecipe {
 	
 	@Override
-	public boolean matches(ItemStack[] input) { return (getRecipeInfo(input, true) != null); }
+	public boolean matches(ItemStack[] input) {
+		return (getRecipeInfo(input, true) != null);
+	}
 	
 	@Override
 	public void getSampleInput(ItemStack[] input, Random rnd) {
@@ -49,7 +51,7 @@ public class CardboardEnchantmentRecipe implements IStationRecipe {
 	
 	@Override
 	public ItemStack[] getOutput(ItemStack[] input) {
-		return getRecipeInfo(input, false).applyEnchantments();
+		return getRecipeInfo(input, false).getOutput();
 	}
 	
 	@Override
@@ -63,41 +65,10 @@ public class CardboardEnchantmentRecipe implements IStationRecipe {
 	
 	@Override
 	public void craft(ItemStack[] input, ICraftingSource source) {
-		for (int i = 0; i < input.length; i++) {
-			ItemStack stack = input[i];
-			if ((stack != null) && (stack.getItem() instanceof ICardboardItem))
-				stack.stackSize--;
-		}
-		int requiredExperience = getRecipeInfo(input, false).getEnchantmentCost();
-		if ((requiredExperience != 0) && !source.getPlayer().capabilities.isCreativeMode)
-			source.getPlayer().addExperienceLevel(-requiredExperience);
+		getRecipeInfo(input, false).craft(source);
 	}
 	
 	// Helper functions
-	
-	private static Map<Integer, StackEnchantment> getEnchantmentMap(ItemStack stack) {
-		Map<Integer, StackEnchantment> enchantments = new HashMap<Integer, StackEnchantment>();
-		NBTTagList list = ((stack.getItem() == Item.enchantedBook) ? Item.enchantedBook.func_92110_g(stack)
-		                                                           : stack.getEnchantmentTagList());
-		if (list != null)
-			for (int i = 0; i < list.tagCount(); i++) {
-				StackEnchantment ench = new StackEnchantment(stack, (NBTTagCompound)list.tagAt(i));
-				enchantments.put(ench.ench.effectId, ench);
-			}
-		return enchantments;
-	}
-	
-	private static boolean enchantmentCompatible(ItemStack stack,
-	                                             Collection<StackEnchantment> stackEnchants,
-	                                             StackEnchantment bookEnch) {
-		if (!bookEnch.ench.canApply(stack)) return false;
-		for (StackEnchantment stackEnch : stackEnchants)
-			if ((bookEnch.ench == stackEnch.ench)
-					? (bookEnch.getLevel() <= stackEnch.getLevel())
-					: (!bookEnch.ench.canApplyTogether(stackEnch.ench) ||
-					   !stackEnch.ench.canApplyTogether(bookEnch.ench))) return false;
-		return true;
-	}
 	
 	private static RecipeInfo getRecipeInfo(ItemStack[] input, boolean checkCanEnchant) {
 		
@@ -135,6 +106,40 @@ public class CardboardEnchantmentRecipe implements IStationRecipe {
 		
 	}
 	
+	private static Map<Integer, StackEnchantment> getEnchantmentMap(ItemStack stack) {
+		Map<Integer, StackEnchantment> enchantments = new HashMap<Integer, StackEnchantment>();
+		NBTTagList list = ((stack.getItem() == Item.enchantedBook) ? Item.enchantedBook.func_92110_g(stack)
+		                                                           : stack.getEnchantmentTagList());
+		if (list != null)
+			for (int i = 0; i < list.tagCount(); i++) {
+				StackEnchantment ench = new StackEnchantment(stack, (NBTTagCompound)list.tagAt(i));
+				enchantments.put(ench.ench.effectId, ench);
+			}
+		return enchantments;
+	}
+	
+	private static boolean enchantmentCompatible(ItemStack stack,
+	                                             Collection<StackEnchantment> stackEnchants,
+	                                             StackEnchantment bookEnch) {
+		if (!bookEnch.ench.canApply(stack)) return false;
+		for (StackEnchantment stackEnch : stackEnchants)
+			if ((bookEnch.ench == stackEnch.ench)
+					? (bookEnch.getLevel() <= stackEnch.getLevel())
+					: (!bookEnch.ench.canApplyTogether(stackEnch.ench) ||
+					   !stackEnch.ench.canApplyTogether(bookEnch.ench))) return false;
+		return true;
+	}
+	
+	/** Returns additional costs for an enchantment to be put
+	 *  onto the cardboard item, like silk touch and fortune. */
+	public static int getAdditionalEnchantmentCost(Enchantment ench, int level) {
+		if (ench == Enchantment.silkTouch) return 10;
+		else if (ench == Enchantment.fortune) return level;
+		else if (ench == Enchantment.fireAspect) return 2;
+		else if (ench == Enchantment.thorns) return 1;
+		else return 0;
+	}
+	
 	// Helper classes
 	
 	private static class RecipeInfo {
@@ -147,7 +152,7 @@ public class CardboardEnchantmentRecipe implements IStationRecipe {
 			this.bookEnchantments = bookEnchantments;
 		}
 		
-		public ItemStack[] applyEnchantments() {
+		public ItemStack[] getOutput() {
 			ItemStack[] output = new ItemStack[9];
 			for (ItemStackTuple stackTuple : cardboardItems) {
 				ItemStack stack = stackTuple.stack.copy();
@@ -164,6 +169,17 @@ public class CardboardEnchantmentRecipe implements IStationRecipe {
 			return output;
 		}
 		
+		public void craft(ICraftingSource source) {
+			
+			for (ItemStackTuple stackTuple : cardboardItems)
+				stackTuple.stack.stackSize--;
+			
+			int requiredExperience = getEnchantmentCost();
+			if ((requiredExperience != 0) && !source.getPlayer().capabilities.isCreativeMode)
+				source.getPlayer().addExperienceLevel(-requiredExperience);
+			
+		}
+		
 		public int getEnchantmentCost() {
 			int cost = 0;
 			for (ItemStackTuple stackTuple : cardboardItems) {
@@ -174,18 +190,18 @@ public class CardboardEnchantmentRecipe implements IStationRecipe {
 					if (!enchantmentCompatible(stack, stackEnchants.values(), bookEnch))
 						continue;
 					StackEnchantment stackEnch = stackEnchants.get(bookEnch.ench.effectId);
-					int levels = (bookEnch.getLevel() - ((stackEnch != null) ? stackEnch.getLevel() : 0));
+					int level = (bookEnch.getLevel() - ((stackEnch != null) ? stackEnch.getLevel() : 0));
 					if (stackEnch == null) {
 						if (numEnchants > 0) cost++;
 						if (numEnchants > 2) cost++;
 					}
-					cost += calculateCost(bookEnch.ench, levels);
+					cost += calculateCost(bookEnch.ench, level);
 				}
 			}
 			return cost;
 		}
 		
-		private int calculateCost(Enchantment ench, int levels) {
+		private int calculateCost(Enchantment ench, int level) {
 			int enchWeight = ench.getWeight();
 			int costPerLevel;
 			if (enchWeight > 8) costPerLevel = 1;
@@ -193,7 +209,7 @@ public class CardboardEnchantmentRecipe implements IStationRecipe {
 			else if (enchWeight > 3) costPerLevel = 3;
 			else if (enchWeight > 1) costPerLevel = 4;
 			else costPerLevel = 6;
-			return (costPerLevel * levels - 1);
+			return (costPerLevel * level - 1 + getAdditionalEnchantmentCost(ench, level));
 		}
 		
 	}
