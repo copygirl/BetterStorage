@@ -3,32 +3,35 @@ package net.mcft.copy.betterstorage.container;
 import net.mcft.copy.betterstorage.inventory.InventoryCratePlayerView;
 import net.mcft.copy.betterstorage.tile.crate.CratePileData;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.Packet103SetSlot;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class ContainerCrate extends ContainerBetterStorage {
 	
-	private EntityPlayer player;
 	private InventoryCratePlayerView playerView;
 	
+	public int fullness = 0;
 	private int lastFullness = 0;
-	private int fullness = 0;
 	
 	public ContainerCrate(EntityPlayer player, InventoryCratePlayerView inventory) {
 		super(player, inventory, 9, inventory.getSizeInventory() / 9);
-		
-		this.player = player;
 		this.playerView = inventory;
-		
 		CratePileData data = inventory.data;
 		fullness = data.getOccupiedSlots() * 255 / data.getCapacity();
+	}
+	public ContainerCrate(EntityPlayer player, int rows, String name, boolean localized) {
+		super(player, new InventoryBasic(name, !localized, 9 * rows), 9, rows);
 	}
 	
 	@Override
 	public void detectAndSendChanges() {
+		if (playerView == null) return;
 		super.detectAndSendChanges();
 		
 		CratePileData data = playerView.data;
@@ -41,13 +44,21 @@ public class ContainerCrate extends ContainerBetterStorage {
 	}
 	
 	@Override
+	@SideOnly(Side.CLIENT)
+	public void updateProgressBar(int id, int val) {
+		if (id == 0) fullness = val;
+	}
+	
+	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int slotId) {
 		Slot slot = (Slot)inventorySlots.get(slotId);
 		ItemStack slotStack = slot.getStack();
 		if (slotStack == null) return null;
 		ItemStack stackBefore = slotStack.copy();
 		// If slot is in the container inventory, try to transfer the item to the player.
-		if (slotId < playerView.getSizeInventory()) {
+		if (slotId < getColumns() * getRows()) {
+			if (playerView == null)
+				return super.transferStackInSlot(player, slotId);
 			int count = slotStack.stackSize;
 			boolean success = mergeItemStack(slotStack, playerView.getSizeInventory(), inventorySlots.size(), true);
 			int amount = count - slotStack.stackSize;
@@ -56,12 +67,16 @@ public class ContainerCrate extends ContainerBetterStorage {
 			if (!success) return null;
 		// If slot is in the player inventory, try to transfer the item to the container.
 		} else {
-			boolean success = playerView.canFitSome(slotStack);
-			ItemStack overflow = playerView.data.addItems(slotStack);
-			slot.putStack(overflow);
-			// Send slot contents to player if it doesn't match the calculated overflow.
-			PacketDispatcher.sendPacketToPlayer(new Packet103SetSlot(player.openContainer.windowId, slotId, overflow), (Player)player);
-			if (!success) return null;
+			if (playerView != null) {
+				boolean success = playerView.canFitSome(slotStack);
+				ItemStack overflow = playerView.data.addItems(slotStack);
+				slot.putStack(overflow);
+				// Send slot contents to player if it doesn't match the calculated overflow.
+				PacketDispatcher.sendPacketToPlayer(new Packet103SetSlot(player.openContainer.windowId, slotId, overflow), (Player)player);
+				if (!success) return null;
+			} else {
+				
+			}
 		}
 		return stackBefore;
 	}
