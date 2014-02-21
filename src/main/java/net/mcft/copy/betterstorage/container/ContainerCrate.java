@@ -51,32 +51,33 @@ public class ContainerCrate extends ContainerBetterStorage {
 	
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int slotId) {
+		// On the client, don't do anything fancy, just
+		// use ContainerBetterStorage.transferStackInSlot.
+		if (playerView == null)
+			return super.transferStackInSlot(player, slotId);
+		
 		Slot slot = (Slot)inventorySlots.get(slotId);
 		ItemStack slotStack = slot.getStack();
 		if (slotStack == null) return null;
 		ItemStack stackBefore = slotStack.copy();
+		
 		// If slot is in the container inventory, try to transfer the item to the player.
 		if (slotId < getColumns() * getRows()) {
-			if (playerView == null)
-				return super.transferStackInSlot(player, slotId);
 			int count = slotStack.stackSize;
 			boolean success = mergeItemStack(slotStack, playerView.getSizeInventory(), inventorySlots.size(), true);
 			int amount = count - slotStack.stackSize;
 			slotStack.stackSize = count;
 			playerView.decrStackSize(slotId, amount);
 			if (!success) return null;
+		
 		// If slot is in the player inventory, try to transfer the item to the container.
 		} else {
-			if (playerView != null) {
-				boolean success = playerView.canFitSome(slotStack);
-				ItemStack overflow = playerView.data.addItems(slotStack);
-				slot.putStack(overflow);
-				// Send slot contents to player if it doesn't match the calculated overflow.
-				PacketDispatcher.sendPacketToPlayer(new Packet103SetSlot(player.openContainer.windowId, slotId, overflow), (Player)player);
-				if (!success) return null;
-			} else {
-				
-			}
+			boolean success = playerView.canFitSome(slotStack);
+			ItemStack overflow = playerView.data.addItems(slotStack);
+			slot.putStack(overflow);
+			// Send slot contents to player if it doesn't match the calculated overflow.
+			PacketDispatcher.sendPacketToPlayer(new Packet103SetSlot(player.openContainer.windowId, slotId, overflow), (Player)player);
+			if (!success) return null;
 		}
 		return stackBefore;
 	}
