@@ -16,12 +16,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import thaumcraft.api.IRepairable;
 import thaumcraft.api.IRepairableExtended;
-import thaumcraft.api.IVisDiscounter;
+import thaumcraft.api.IVisDiscountGear;
 import thaumcraft.api.ThaumcraftApi;
+import thaumcraft.api.aspects.Aspect;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemThaumcraftBackpack extends ItemBackpack implements IRepairable, IVisDiscounter {
+public class ItemThaumcraftBackpack extends ItemBackpack implements IRepairable, IVisDiscountGear {
 	
 	public ItemThaumcraftBackpack(int id) {
 		super(id, ItemBackpack.material);
@@ -50,7 +51,7 @@ public class ItemThaumcraftBackpack extends ItemBackpack implements IRepairable,
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advancedTooltips) {
 		super.addInformation(stack, player, list, advancedTooltips);
-		list.add(String.format("%s: %s%%", StatCollector.translateToLocal("tc.visdiscount"), getVisDiscount()));
+		list.add(String.format("%s: %s%%", StatCollector.translateToLocal("tc.visdiscount"), 2));
 	}
 	
 	@Override
@@ -125,9 +126,9 @@ public class ItemThaumcraftBackpack extends ItemBackpack implements IRepairable,
 		
 	}
 	
-	// IVisDiscounter implementation
+	// IVisDiscountGear implementation
 	
 	@Override
-	public int getVisDiscount() { return 2; }
+	public int getVisDiscount(ItemStack stack, EntityPlayer player, Aspect aspect) { return 2; }
 	
 }

@@ -91,15 +91,16 @@ public class ThaumcraftAddon extends Addon {
 		
 	}
 	
-	private void addAspects() {
+	private void addItemAspects() {
 		
 		addAspectsFor(Tiles.crate, -1, true, Aspect.VOID, 3);
 		addAspectsFor(Tiles.locker, -1, true, Aspect.VOID, 4);
 		addAspectsFor(Tiles.reinforcedChest, -1, true, Aspect.VOID, 5, Aspect.METAL, 10, Aspect.ARMOR, 6);
+		addAspectsFor(Tiles.craftingStation, -1, true, Aspect.CRAFT, 6, Aspect.MECHANISM, 4);
 		
 		addAspectsFor(Tiles.backpack, -1, true, Aspect.VOID, 4, Aspect.EXCHANGE, 6);
 		addAspectsFor(Tiles.enderBackpack, -1, true, Aspect.DARKNESS, 8, Aspect.VOID, 4, Aspect.EXCHANGE, 8,
-		                                              Aspect.TRAVEL, 4, Aspect.ELDRITCH, 4, Aspect.MAGIC, 4);
+		                                             Aspect.TRAVEL, 4, Aspect.ELDRITCH, 4, Aspect.MAGIC, 4);
 		
 		addAspectsFor(Items.cardboardSheet, -1, false, Aspect.CRAFT, 1);
 		addAspectsFor(Tiles.cardboardBox, -1, true, Aspect.VOID, 2, Aspect.TRAVEL, 2);
@@ -109,8 +110,17 @@ public class ThaumcraftAddon extends Addon {
 		addAspectsFor(Items.keyring, -1, false, Aspect.GREED, 1, Aspect.METAL, 2, Aspect.TOOL, 1);
 		
 		addAspectsFor(Items.drinkingHelmet, -1, true, Aspect.ARMOR, 2, Aspect.MECHANISM, 5, Aspect.ENERGY, 6);
+		addAspectsFor(Items.slimeBucket, -1, false, Aspect.METAL, 8, Aspect.VOID, 1, Aspect.SLIME, 4);
 		
 	}
+	
+	private void addEntityAspects() {
+		
+		addAspectsFor("betterstorage.Frienderman", Aspect.ELDRITCH, 4, Aspect.TRAVEL, 4, Aspect.EXCHANGE, 2);
+		addAspectsFor("betterstorage.Cluckington", Aspect.BEAST, 2, Aspect.FLIGHT, 2, Aspect.WEAPON, 1);
+		
+	}
+	
 	private static void addAspectsFor(Block block, int meta, boolean add, Object... aspects) {
 		if (MiscUtils.isEnabled(block))
 			addAspectsFor(block.blockID, meta, add, aspects);
@@ -123,6 +133,9 @@ public class ThaumcraftAddon extends Addon {
 		AspectList list = createAspectList(aspects);
 		if (add) ThaumcraftApi.registerComplexObjectTag(id, meta, list);
 		else ThaumcraftApi.registerObjectTag(id, meta, list);
+	}
+	private static void addAspectsFor(String entityName, Object... aspects) {
+		ThaumcraftApi.registerEntityTag(entityName, createAspectList(aspects));
 	}
 	
 	public static AspectList createAspectList(Object... aspects) {
@@ -148,24 +161,29 @@ public class ThaumcraftAddon extends Addon {
 	@Override
 	public void postInitialize() {
 		
-		addAspects();
+		addItemAspects();
+		addEntityAspects();
 		
-		if (MiscUtils.isEnabled(thaumcraftBackpack, thaumiumChest)) {
-			ResearchItem research = new ResearchItem(
-					"betterstorage.magicstorage", "ARTIFICE",
-					createAspectList(Aspect.VOID, 2, Aspect.MAGIC, 1, Aspect.EXCHANGE, 1),
-					2, 4, 3, new ItemStack(thaumcraftBackpack));
-			research.setParents("ENCHFABRIC");
-			research.setParentsHidden("INFUSION");
-			research.setConcealed();
+		if (MiscUtils.isEnabled(thaumcraftBackpack) ||
+		    MiscUtils.isEnabled(thaumiumChest)) {
+			
 			List<ResearchPage> pages = new ArrayList<ResearchPage>();
 			pages.add(new ResearchPage("tc.research_page.betterstorage.magicstorage.1"));
 			if (MiscUtils.isEnabled(thaumcraftBackpack))
 				pages.add(new ResearchPage(thaumcraftBackpackRecipe));
 			if (MiscUtils.isEnabled(thaumiumChest))
 				pages.add(new ResearchPage(thaumiumChestRecipe));
-			research.setPages(pages.toArray(new ResearchPage[0]));
-			research.registerResearchItem();
+			
+			ResearchItem research = new ResearchItem(
+					"betterstorage.magicstorage", "ARTIFICE",
+					createAspectList(Aspect.VOID, 8, Aspect.MAGIC, 5, Aspect.EXCHANGE, 5),
+					2, 4, 2, new ItemStack(thaumcraftBackpack))
+				.setPages(pages.toArray(new ResearchPage[0]))
+				.setParents("ENCHFABRIC")
+				.setParentsHidden("INFUSION")
+				.setConcealed()
+				.registerResearchItem();
+			
 		}
 		
 	}
