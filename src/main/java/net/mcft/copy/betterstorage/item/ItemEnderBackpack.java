@@ -21,6 +21,9 @@ public class ItemEnderBackpack extends ItemBackpack {
 	public String getBackpackName() { return Constants.containerEnderBackpack; }
 	
 	@Override
+	public int getBackpackRows() { return 3; }
+	
+	@Override
 	protected int getDefaultColor() { return -1; }
 	
 	@Override
