@@ -63,7 +63,8 @@ public final class Items {
 		cardboardAxe = MiscUtils.conditionalNew(ItemCardboardAxe.class, GlobalConfig.cardboardAxeId);
 		cardboardHoe = MiscUtils.conditionalNew(ItemCardboardHoe.class, GlobalConfig.cardboardHoeId);
 		
-		OreDictionary.registerOre("sheetCardboard", cardboardSheet);
+		if (MiscUtils.isEnabled(cardboardSheet))
+			OreDictionary.registerOre("sheetCardboard", cardboardSheet);
 		
 		Addon.initializeItemsAll();
 		
