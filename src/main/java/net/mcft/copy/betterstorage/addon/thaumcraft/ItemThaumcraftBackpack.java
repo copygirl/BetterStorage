@@ -51,7 +51,7 @@ public class ItemThaumcraftBackpack extends ItemBackpack implements IRepairable,
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advancedTooltips) {
 		super.addInformation(stack, player, list, advancedTooltips);
-		list.add(String.format("%s: %s%%", StatCollector.translateToLocal("tc.visdiscount"), 2));
+		list.add(String.format("§5%s: %s%%", StatCollector.translateToLocal("tc.visdiscount"), 2));
 	}
 	
 	@Override
