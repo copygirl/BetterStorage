@@ -77,8 +77,16 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 	
 	protected IInventory getBackpackItemsInternal(EntityLivingBase carrier, EntityPlayer player) {
 		PropertiesBackpack backpackData = getBackpackData(carrier);
+		int size = (getBackpackColumns() * getBackpackRows());
 		if (backpackData.contents == null)
-			backpackData.contents = new ItemStack[getBackpackColumns() * getBackpackRows()];
+			backpackData.contents = new ItemStack[size];
+		// In case the backpack size got changed in
+		// the configuration file, update it here.
+		else if (backpackData.contents.length != size) {
+			ItemStack[] newContents = new ItemStack[size];
+			System.arraycopy(backpackData, 0, newContents, 0, Math.min(size, backpackData.contents.length));
+			backpackData.contents = newContents;
+		}
 		return new InventoryStacks(getBackpackName(), backpackData.contents);
 	}
 	

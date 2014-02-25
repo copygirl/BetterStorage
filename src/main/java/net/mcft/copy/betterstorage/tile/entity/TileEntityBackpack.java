@@ -41,7 +41,7 @@ public class TileEntityBackpack extends TileEntityContainer {
 		// Move items from the player backpack data to this tile entity.
 		PropertiesBackpack backpackData = ItemBackpack.getBackpackData(carrier);
 		if (backpackData.contents != null) {
-			System.arraycopy(backpackData.contents, 0, contents, 0, backpackData.contents.length);
+			System.arraycopy(backpackData.contents, 0, contents, 0, Math.min(contents.length, backpackData.contents.length));
 			backpackData.contents = null;
 		}
 		if (despawn) despawnTime = 0;
