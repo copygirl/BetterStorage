@@ -8,6 +8,7 @@ import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.proxy.ClientProxy;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityBackpack;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -23,7 +24,7 @@ public class TileBackpack extends TileContainerBetterStorage {
 	public TileBackpack(int id) {
 		super(id, Material.cloth);
 		
-		setHardness(0.7f);
+		setHardness(1.5f);
 		setStepSound(soundClothFootstep);
 		float w = getBoundsWidth() / 16.0F;
 		float h = getBoundsHeight() / 16.0F;
@@ -70,8 +71,19 @@ public class TileBackpack extends TileContainerBetterStorage {
 	
 	@Override
 	public float getPlayerRelativeBlockHardness(EntityPlayer player, World world, int x, int y, int z) {
-		return ((player.isSneaking() && !ItemBackpack.canEquipBackpack(player)) ? -1.0F
-				: super.getPlayerRelativeBlockHardness(player, world, x, y, z));
+		float hardness = super.getPlayerRelativeBlockHardness(player, world, x, y, z);
+		boolean sneaking = player.isSneaking();
+		boolean canEquip = ItemBackpack.canEquipBackpack(player);
+		boolean stoppedSneaking = localPlayerStoppedSneaking(player);
+		return ((stoppedSneaking || (sneaking && !canEquip)) ? -1.0F : (hardness * (sneaking ? 4 : 1)));
+	}
+	
+	boolean lastSneaking = false;
+	private boolean localPlayerStoppedSneaking(EntityPlayer player) {
+		if (!player.worldObj.isRemote || (player != Minecraft.getMinecraft().thePlayer)) return false;
+		boolean stoppedSneaking = (!player.isSneaking() && lastSneaking);
+		lastSneaking = player.isSneaking();
+		return stoppedSneaking;
 	}
 	
 	private long lastHelpMessage = System.currentTimeMillis();

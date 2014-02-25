@@ -28,7 +28,7 @@ public class TileEnderBackpack extends TileBackpack {
 	
 	public TileEnderBackpack(int id) {
 		super(id);
-		setHardness(1.5f);
+		setHardness(3.0f);
 	}
 	
 	@Override
