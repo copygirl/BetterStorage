@@ -125,7 +125,7 @@ public class TileEntityBackpack extends TileEntityContainer {
 	public Packet getDescriptionPacket() {
 		NBTTagCompound compound = new NBTTagCompound();
 		compound.setCompoundTag("stack", stack.writeToNBT(new NBTTagCompound()));
-        return new Packet132TileEntityData(xCoord, yCoord, zCoord, 0, compound);
+		return new Packet132TileEntityData(xCoord, yCoord, zCoord, 0, compound);
 	}
 	@Override
 	public void onDataPacket(INetworkManager net, Packet132TileEntityData packet) {
