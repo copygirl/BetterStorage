@@ -177,7 +177,7 @@ public class ThaumcraftAddon extends Addon {
 			ResearchItem research = new ResearchItem(
 					"betterstorage.magicstorage", "ARTIFICE",
 					createAspectList(Aspect.VOID, 8, Aspect.MAGIC, 5, Aspect.EXCHANGE, 5),
-					2, 4, 2, new ItemStack(thaumcraftBackpack))
+					2, 2, 2, new ItemStack(thaumcraftBackpack))
 				.setPages(pages.toArray(new ResearchPage[0]))
 				.setParents("ENCHFABRIC")
 				.setParentsHidden("INFUSION")
