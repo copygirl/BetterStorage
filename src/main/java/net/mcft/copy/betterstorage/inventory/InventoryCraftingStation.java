@@ -4,10 +4,11 @@ import java.util.Arrays;
 
 import net.mcft.copy.betterstorage.api.crafting.BetterStorageCrafting;
 import net.mcft.copy.betterstorage.api.crafting.CraftingSourceStation;
+import net.mcft.copy.betterstorage.api.crafting.ICraftingSource;
 import net.mcft.copy.betterstorage.api.crafting.IRecipeInput;
-import net.mcft.copy.betterstorage.api.crafting.IStationRecipe;
+import net.mcft.copy.betterstorage.api.crafting.StationCrafting;
 import net.mcft.copy.betterstorage.config.GlobalConfig;
-import net.mcft.copy.betterstorage.item.recipe.VanillaStationRecipe;
+import net.mcft.copy.betterstorage.item.recipe.VanillaStationCrafting;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityCraftingStation;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,13 +26,9 @@ public class InventoryCraftingStation extends InventoryBetterStorage {
 	
 	public final ItemStack[] lastOutput;
 	
-	public IStationRecipe currentRecipe = null;
+	public StationCrafting currentCrafting = null;
 	public boolean outputIsReal = false;
 	public int progress = 0;
-	public int craftingTime = 0;
-	public int experience = 0;
-	
-	private IRecipeInput[] requiredInput = new IRecipeInput[9];
 	
 	private boolean hasRequirements = false;
 	private boolean checkHasRequirements = true;
@@ -56,61 +53,55 @@ public class InventoryCraftingStation extends InventoryBetterStorage {
 	}
 	
 	public void update() {
-		if (!outputIsReal && (currentRecipe != null) &&
-		    ((progress < craftingTime ||
-		     (progress < GlobalConfig.stationAutocraftDelaySetting.getValue())))) progress++; 
+		if (!outputIsReal && (currentCrafting != null) &&
+		    (((progress < currentCrafting.getCraftingTime()) ||
+		      (progress < GlobalConfig.stationAutocraftDelaySetting.getValue())))) progress++; 
 	}
 	
-	/** Checks if the recipe changed and updates everything accordingly. */
-	public void checkRecipe() {
-		IStationRecipe previous = currentRecipe;
-		if ((currentRecipe == null) || !currentRecipe.matches(crafting)) {
-			currentRecipe = BetterStorageCrafting.findMatchingStationRecipe(crafting);
-			if (currentRecipe == null)
-				currentRecipe = VanillaStationRecipe.findVanillaRecipe(this);
-		}
-		if ((previous != currentRecipe) || !recipeOutputMatches()) {
-			progress = 0;
-			craftingTime = ((currentRecipe != null) ? currentRecipe.getCraftingTime(crafting) : 0);
-			experience = ((currentRecipe != null) ? currentRecipe.getExperienceDisplay(crafting) : 0);
-			if (!outputIsReal)
+	/** Called whenever the crafting input changes. */
+	public void inputChanged() {
+		currentCrafting = BetterStorageCrafting.findMatchingStationCrafting(crafting);
+		if (currentCrafting == null)
+			currentCrafting = VanillaStationCrafting.findVanillaRecipe(this);
+		if (!outputIsReal) {
+			if (currentCrafting != null) {
+				ItemStack[] craftingOutput = currentCrafting.getOutput();
 				for (int i = 0; i < output.length; i++)
-					output[i] = null;
+					output[i] = ((i < craftingOutput.length) ? ItemStack.copyItemStack(craftingOutput[i]) : null);
+			} else Arrays.fill(output, null);
 		}
-		Arrays.fill(requiredInput, null);
-		if (currentRecipe != null)
-			currentRecipe.getCraftRequirements(crafting, requiredInput);
 		updateLastOutput();
-	}
-	private boolean recipeOutputMatches() {
-		if (currentRecipe == null) return false;
-		ItemStack[] recipeOutput = currentRecipe.getOutput(crafting);
-		for (int i = 0; i < output.length; i++)
-			if (!ItemStack.areItemStacksEqual(((i < recipeOutput.length) ? recipeOutput[i] : null), output[i]))
-				return false;
-		return true;
 	}
 	
 	/** Called when an item is removed from the output
 	 *  slot while it doesn't store any real items. */
 	public void craft(EntityPlayer player) {
-		currentRecipe.craft(crafting, new CraftingSourceStation(entity, player));
+		ICraftingSource source = new CraftingSourceStation(entity, player);
+		currentCrafting.craft(source);
+		IRecipeInput[] requiredInput = currentCrafting.getCraftRequirements();
 		for (int i = 0; i < crafting.length; i++) {
 			ItemStack stack = crafting[i];
-			if (stack == null) continue;
-			if (stack.stackSize <= 0) {
-				// Item stack is depleted.
-			} else if (stack.getItem().isDamageable() && (stack.getItemDamage() > stack.getMaxDamage())) {
-				// Item stack is destroyed.
-				if (player != null)
-					MinecraftForge.EVENT_BUS.post(new PlayerDestroyItemEvent(player, stack));
-			} else continue;
-			crafting[i] = null;
+			if (requiredInput[i] != null)
+				stack = crafting[i] = requiredInput[i].craft(stack, source);
+			if (stack != null) {
+				if (stack.stackSize <= 0) {
+					// Item stack is depleted.
+				} else if (stack.getItem().isDamageable() && (stack.getItemDamage() > stack.getMaxDamage())) {
+					// Item stack is destroyed.
+					if (player != null)
+						MinecraftForge.EVENT_BUS.post(new PlayerDestroyItemEvent(player, stack));
+				} else continue;
+				crafting[i] = null;
+			}
 		}
+		int requiredExperience = currentCrafting.getRequiredExperience();
+		if ((requiredExperience != 0) && (player != null) &&
+		    !player.capabilities.isCreativeMode)
+			player.experienceLevel -= requiredExperience;
 		pullRequired(requiredInput, true);
 		outputIsReal = !outputEmpty();
 		progress = 0;
-		checkRecipe();
+		inputChanged();
 		checkHasRequirements = true;
 	}
 	
@@ -146,31 +137,35 @@ public class InventoryCraftingStation extends InventoryBetterStorage {
 							continue craftingLoop;
 					}
 				}
-				success = false;
-				if (!doPull) break;
-			} else if (stack != null) {
-				success = false;
-				if (!doPull) break;
-			}
+			} else if (stack == null)
+				continue;
+			success = false;
+			if (!doPull) break;
 		}
 		return success;
 	}
 	
 	/** Returns if items can be taken out of the output slots. */
 	public boolean canTake(EntityPlayer player) {
-		return (outputIsReal || ((currentRecipe != null) &&
-		                         (currentRecipe.canCraft(crafting, new CraftingSourceStation(entity, player))) &&
-		                         (progress >= craftingTime) &&
-		                          ((player != null) ||
-		                           ((progress >= GlobalConfig.stationAutocraftDelaySetting.getValue()) &&
-		                            hasRequirements()))));
+		return (outputIsReal || ((currentCrafting != null) &&
+		                         (currentCrafting.canCraft(new CraftingSourceStation(entity, player))) &&
+		                         (progress >= currentCrafting.getCraftingTime()) && hasRequiredExperience(player) &&
+		                          ((player != null) || ((progress >= GlobalConfig.stationAutocraftDelaySetting.getValue()) &&
+		                                                hasRequirements()))));
+	}
+	
+	private boolean hasRequiredExperience(EntityPlayer player) {
+		int requiredExperience = currentCrafting.getRequiredExperience();
+		return ((requiredExperience == 0) ||
+		        ((player != null) && (player.capabilities.isCreativeMode ||
+		                              (player.experienceLevel >= requiredExperience))));
 	}
 	
 	/** Returns if the crafting station has the items
 	 *  required in its inventory to craft the recipe again. */
 	private boolean hasRequirements() {
 		if (checkHasRequirements) {
-			hasRequirements = pullRequired(requiredInput, false);
+			hasRequirements = pullRequired(currentCrafting.getCraftRequirements(), false);
 			checkHasRequirements = false;
 		}
 		return hasRequirements;
@@ -213,7 +208,7 @@ public class InventoryCraftingStation extends InventoryBetterStorage {
 		if (outputChanged()) {
 			// If the output is ghost items, there is a recipe and we're
 			// on the server, craft the items and decrement the input.
-			if (!outputIsReal && (currentRecipe != null) && (entity != null))
+			if (!outputIsReal && (currentCrafting != null) && (entity != null))
 				craft(null);
 			updateLastOutput = true;
 		}
@@ -221,11 +216,11 @@ public class InventoryCraftingStation extends InventoryBetterStorage {
 		if (outputEmpty()) {
 			// Otherwise set the output to not be real.
 			outputIsReal = false;
-			if (currentRecipe != null) {
+			if (currentCrafting != null) {
 				// Fill it with ghost output from the recipe.
-				ItemStack[] output = currentRecipe.getOutput(crafting);
-				for (int i = 0; i < output.length; i++)
-					this.output[i] = ItemStack.copyItemStack(output[i]);
+				ItemStack[] recipeOutput = currentCrafting.getOutput();
+				for (int i = 0; i < recipeOutput.length; i++)
+					output[i] = ItemStack.copyItemStack(recipeOutput[i]);
 			}
 			updateLastOutput = true;
 		}

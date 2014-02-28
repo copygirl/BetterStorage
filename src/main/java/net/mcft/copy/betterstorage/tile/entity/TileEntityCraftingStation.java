@@ -121,7 +121,7 @@ public class TileEntityCraftingStation extends TileEntityContainer
 		stationInventory.progress = compound.getInteger("progress");
 		stationInventory.outputIsReal = compound.hasKey("Output");
 		// Update the inventory, causes ghost output to be initialized.
-		stationInventory.checkRecipe();
+		stationInventory.inputChanged();
 		stationInventory.onInventoryChanged();
 	}
 	@Override

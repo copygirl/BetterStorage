@@ -2,7 +2,7 @@ package net.mcft.copy.betterstorage.container;
 
 import net.mcft.copy.betterstorage.inventory.InventoryCraftingStation;
 import net.mcft.copy.betterstorage.inventory.InventoryTileEntity;
-import net.mcft.copy.betterstorage.item.recipe.VanillaStationRecipe;
+import net.mcft.copy.betterstorage.item.recipe.VanillaStationCrafting;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
@@ -72,7 +72,7 @@ public class ContainerCraftingStation extends ContainerBetterStorage {
 		sendUpdateIfChanged(0, outputIsReal, lastOutputIsReal);
 		lastOutputIsReal = outputIsReal;
 		
-		int progress = Math.min(inv.progress, inv.craftingTime);
+		int progress = ((inv.currentCrafting != null) ? Math.min(inv.progress, inv.currentCrafting.getCraftingTime()) : 0);
 		sendUpdateIfChanged(1, progress, lastProgress);
 		lastProgress = progress;
 	}
@@ -86,9 +86,10 @@ public class ContainerCraftingStation extends ContainerBetterStorage {
 	
 	@Override
 	public ItemStack slotClick(int slotId, int button, int special, EntityPlayer player) {
-		if (!inv.outputIsReal && (inv.currentRecipe != null) && (slotId >= 9) && (slotId < 18) &&
+		if (!inv.outputIsReal && (inv.currentCrafting != null) && (slotId >= 9) && (slotId < 18) &&
 		    (inv.output[slotId - 9] != null) && inv.canTake(player)) {
-			if (inv.currentRecipe instanceof VanillaStationRecipe) {
+			// For full compatibility with vanilla, we do special stuff here.
+			if (inv.currentCrafting instanceof VanillaStationCrafting) {
 				GameRegistry.onItemCrafted(player, inv.output[slotId - 9], craftMatrix);
 				slotCrafting.onCrafting(inv.output[slotId - 9]);
 			}
@@ -99,7 +100,7 @@ public class ContainerCraftingStation extends ContainerBetterStorage {
 	
 	@Override
 	public void onSlotChanged(int slot) {
-		if (slot < 9) inv.checkRecipe();
+		if (slot < 9) inv.inputChanged();
 	}
 	
 	@Override

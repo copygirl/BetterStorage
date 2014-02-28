@@ -1,7 +1,5 @@
 package net.mcft.copy.betterstorage.api.crafting;
 
-import java.util.Random;
-
 import net.minecraft.item.ItemStack;
 
 public interface IRecipeInput {
@@ -12,7 +10,8 @@ public interface IRecipeInput {
 	/** Returns if the stack matches the input, ignores stack size. */
 	boolean matches(ItemStack stack);
 	
-	/** Returns a random item that could be used as input (used for NEI). */
-	ItemStack getSampleInput(Random rnd);
+	/** Called when a recipe is crafted, returns what is left after the crafting. <br>
+	 *  Empty stacks and damageable items with no durability left are removed automatically. */
+	ItemStack craft(ItemStack input, ICraftingSource source);
 	
 }

@@ -1,18 +1,26 @@
 package net.mcft.copy.betterstorage.utils;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.mcft.copy.betterstorage.api.IContainerItem;
 import net.mcft.copy.betterstorage.api.lock.IKey;
 import net.mcft.copy.betterstorage.api.lock.ILock;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 
 public final class StackUtils {
 	
 	private StackUtils() {  }
+	
+	// NBT utility functions
 	
 	/** Gets the actual NBT tag from the ItemStack's custom NBT data. */
 	public static NBTBase getTag(ItemStack stack, String... tags) {
@@ -100,6 +108,8 @@ public final class StackUtils {
 		compound.removeTag(tag);
 	}
 	
+	// Stack copying
+	
 	/** Creates a copy of an item stack with a specific stack size. <br>
 	 *  Returns null if the stack is null or stackSize is <= 0. */
 	public static ItemStack copyStack(ItemStack stack, int stackSize) {
@@ -115,13 +125,15 @@ public final class StackUtils {
 		return copy;
 	}
 	
+	// Stack matching
+	
 	public static boolean matches(int id1, int damage1, NBTTagCompound data1, 
 	                              int id2, int damage2, NBTTagCompound data2) {
 		return ((id1 == id2) && (damage1 == damage2) && nbtEquals(data1, data2));
 	}
 	/** Returns if the two NBT compounds are equal.
 	 *  Used instead of default comparison because this function
-	 *  makes sure the names of the main NBT tags match. */
+	 *  makes sure the names of the main NBT tags match before comparing. */
 	public static boolean nbtEquals(NBTTagCompound nbt1, NBTTagCompound nbt2) {
 		return ((nbt1 == nbt2) || (!((nbt1 == null) || (nbt2 == null)) &&
 		                           nbt1.setName("tag").equals(nbt2.setName("tag"))));
@@ -138,6 +150,57 @@ public final class StackUtils {
 	public static boolean matches(ItemStack stack1, ItemStack stack2) {
 		return matches(stack1, stack2, true);
 	}
+	
+	// Enchantment functions
+	
+	/** Returns the enchantments on the item stack. */
+	public static Map<Integer, StackEnchantment> getEnchantments(ItemStack stack) {
+		Map<Integer, StackEnchantment> enchantments = new HashMap<Integer, StackEnchantment>();
+		NBTTagList list = ((stack.getItem() == Item.enchantedBook)
+				? Item.enchantedBook.func_92110_g(stack)
+				: stack.getEnchantmentTagList());
+		if (list != null)
+			for (int i = 0; i < list.tagCount(); i++) {
+				StackEnchantment ench = new StackEnchantment(stack, (NBTTagCompound)list.tagAt(i));
+				enchantments.put(ench.ench.effectId, ench);
+			}
+		return enchantments;
+	}
+	
+	/** Returns if the enchantment can go on this item stack. */
+	public static boolean isEnchantmentCompatible(ItemStack stack,
+	                                              Collection<StackEnchantment> stackEnchants,
+	                                              StackEnchantment newEnchant) {
+		if (!newEnchant.ench.canApply(stack)) return false;
+		for (StackEnchantment stackEnch : stackEnchants)
+			if ((newEnchant.ench == stackEnch.ench)
+					? (newEnchant.getLevel() <= stackEnch.getLevel())
+					: (!newEnchant.ench.canApplyTogether(stackEnch.ench) ||
+					   !stackEnch.ench.canApplyTogether(newEnchant.ench))) return false;
+		return true;
+	}
+	/** Returns if the enchantment can go on this item stack. */
+	public static boolean isEnchantmentCompatible(ItemStack stack, StackEnchantment newEnchant) {
+		return isEnchantmentCompatible(stack, getEnchantments(stack).values(), newEnchant);
+	}
+	
+	/** Represents an enchantment entry on an item stack. */
+	public static class StackEnchantment {
+		public final ItemStack stack;
+		public final Enchantment ench;
+		private final NBTTagCompound entry;
+		
+		public int getLevel() { return entry.getShort("lvl"); }
+		public void setLevel(int level) { entry.setShort("lvl", (short)level); }
+		
+		public StackEnchantment(ItemStack stack, NBTTagCompound entry) {
+			this.stack = stack;
+			this.entry = entry;
+			this.ench = Enchantment.enchantmentsList[entry.getShort("id")];
+		}
+	}
+	
+	// Other functions, mostly BetterStorage related
 	
 	/** Stacks items from the ItemStack array into the list. <br>
 	 *  Returns the number of stacks processed. */

@@ -31,11 +31,12 @@ public class GuiCraftingStation extends GuiBetterStorage {
 		super.drawGuiContainerBackgroundLayer(var1, var2, var3);
 		int x = (width - xSize) / 2;
 		int y = (height - ySize) / 2;
-		int maxProgress = Math.max(inv.craftingTime, 1);
+		int maxProgress = ((inv.currentCrafting != null) ? Math.max(inv.currentCrafting.getCraftingTime(), 1) : 1);
 		int progress = ((inv.progress <= maxProgress) ? (inv.progress * 28 / maxProgress) : 0);
 		drawTexturedModalRect(x + 74, y + 34, 176, 0, progress, 18);
-		if (inv.experience != 0) {
-			String str = Integer.toString(inv.experience);
+		int requiredExperience = ((inv.currentCrafting != null) ? inv.currentCrafting.getRequiredExperience() : 0);
+		if (requiredExperience != 0) {
+			String str = Integer.toString(requiredExperience);
 			int strX = x + (xSize - mc.fontRenderer.getStringWidth(str)) / 2;
 			int strY = y + 58 - mc.fontRenderer.FONT_HEIGHT / 2;
 			mc.fontRenderer.drawStringWithShadow(str, strX, strY, 0x80FF20);
@@ -58,7 +59,7 @@ public class GuiCraftingStation extends GuiBetterStorage {
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		
-		float a = ((inv.progress < inv.craftingTime) ? 0.5F : 1.0F);
+		float a = ((inv.progress < inv.currentCrafting.getCraftingTime()) ? 0.5F : 1.0F);
 		GL11.glColor4f(a, a, a, 0.6F);
 		mc.renderEngine.bindTexture(getResource());
 		int slotX = slot.xDisplayPosition - 1;

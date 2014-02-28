@@ -180,79 +180,79 @@ public final class Recipes {
 					Item.paper, Item.paper, Item.paper,
 					Item.paper, Item.paper, Item.paper,
 					Item.paper, Item.paper, Item.slimeBall);
-			
-			// Cardboard helmet recipe
-			if (MiscUtils.isEnabled(Items.cardboardHelmet))
-				GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.cardboardHelmet),
-						"ooo",
-						"o o", 'o', "sheetCardboard"));
-			// Cardboard chestplate recipe
-			if (MiscUtils.isEnabled(Items.cardboardChestplate))
-				GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.cardboardChestplate),
-						"o o",
-						"ooo",
-						"ooo", 'o', "sheetCardboard"));
-			// Cardboard leggings recipe
-			if (MiscUtils.isEnabled(Items.cardboardLeggings))
-				GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.cardboardLeggings),
-						"ooo",
-						"o o",
-						"o o", 'o', "sheetCardboard"));
-			// Cardboard boots recipe
-			if (MiscUtils.isEnabled(Items.cardboardBoots))
-				GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.cardboardBoots),
-						"o o",
-						"o o", 'o', "sheetCardboard"));
-			
-			// Cardboard sword recipe
-			if (MiscUtils.isEnabled(Items.cardboardSword))
-				GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.cardboardSword),
-						"o",
-						"o",
-						"/", 'o', "sheetCardboard",
-						     '/', Item.stick));
-			// Cardboard pickaxe recipe
-			if (MiscUtils.isEnabled(Items.cardboardPickaxe))
-				GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.cardboardPickaxe),
-						"ooo",
-						" / ",
-						" / ", 'o', "sheetCardboard",
-						       '/', Item.stick));
-			// Cardboard shovel recipe
-			if (MiscUtils.isEnabled(Items.cardboardShovel))
-				GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.cardboardShovel),
-						"o",
-						"/",
-						"/", 'o', "sheetCardboard",
-						     '/', Item.stick));
-			
-			// Cardboard axe recipe
-			if (MiscUtils.isEnabled(Items.cardboardAxe)) {
-				GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.cardboardAxe),
-						"oo",
-						"o/",
-						" /", 'o', "sheetCardboard",
-						      '/', Item.stick));
-				GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.cardboardAxe),
-						"oo",
-						"/o",
-						"/ ", 'o', "sheetCardboard",
-						      '/', Item.stick));
-			}
-			
-			// Cardboard hoe recipe
-			if (MiscUtils.isEnabled(Items.cardboardHoe)) {
-				GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.cardboardHoe),
-						"oo",
-						" /",
-						" /", 'o', "sheetCardboard",
-						      '/', Item.stick));
-				GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.cardboardHoe),
-						"oo",
-						"/ ",
-						"/ ", 'o', "sheetCardboard",
-						      '/', Item.stick));
-			}
+		}
+		
+		// Cardboard helmet recipe
+		if (MiscUtils.isEnabled(Items.cardboardHelmet))
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.cardboardHelmet),
+					"ooo",
+					"o o", 'o', "sheetCardboard"));
+		// Cardboard chestplate recipe
+		if (MiscUtils.isEnabled(Items.cardboardChestplate))
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.cardboardChestplate),
+					"o o",
+					"ooo",
+					"ooo", 'o', "sheetCardboard"));
+		// Cardboard leggings recipe
+		if (MiscUtils.isEnabled(Items.cardboardLeggings))
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.cardboardLeggings),
+					"ooo",
+					"o o",
+					"o o", 'o', "sheetCardboard"));
+		// Cardboard boots recipe
+		if (MiscUtils.isEnabled(Items.cardboardBoots))
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.cardboardBoots),
+					"o o",
+					"o o", 'o', "sheetCardboard"));
+		
+		// Cardboard sword recipe
+		if (MiscUtils.isEnabled(Items.cardboardSword))
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.cardboardSword),
+					"o",
+					"o",
+					"/", 'o', "sheetCardboard",
+					     '/', Item.stick));
+		// Cardboard pickaxe recipe
+		if (MiscUtils.isEnabled(Items.cardboardPickaxe))
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.cardboardPickaxe),
+					"ooo",
+					" / ",
+					" / ", 'o', "sheetCardboard",
+					       '/', Item.stick));
+		// Cardboard shovel recipe
+		if (MiscUtils.isEnabled(Items.cardboardShovel))
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.cardboardShovel),
+					"o",
+					"/",
+					"/", 'o', "sheetCardboard",
+					     '/', Item.stick));
+		
+		// Cardboard axe recipe
+		if (MiscUtils.isEnabled(Items.cardboardAxe)) {
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.cardboardAxe),
+					"oo",
+					"o/",
+					" /", 'o', "sheetCardboard",
+					      '/', Item.stick));
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.cardboardAxe),
+					"oo",
+					"/o",
+					"/ ", 'o', "sheetCardboard",
+					      '/', Item.stick));
+		}
+		
+		// Cardboard hoe recipe
+		if (MiscUtils.isEnabled(Items.cardboardHoe)) {
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.cardboardHoe),
+					"oo",
+					" /",
+					" /", 'o', "sheetCardboard",
+					      '/', Item.stick));
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.cardboardHoe),
+					"oo",
+					"/ ",
+					"/ ", 'o', "sheetCardboard",
+					      '/', Item.stick));
 		}
 		
 		// Crafting Station: Add cardboard enchantment recipe

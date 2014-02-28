@@ -10,7 +10,7 @@ public interface ICraftingSource {
 	EntityPlayer getPlayer();
 	
 	/** Returns the inventory of the object that's crafting the recipe. <br>
-	 *  May return null. Not supported on client-side. */
+	 *  May return null if unsupported. Always returns null on client-side. */
 	IInventory getInventory();
 	
 	/** Returns the world the recipe is being crafted in. <br>

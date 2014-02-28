@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.mcft.copy.betterstorage.utils.StackUtils;
-import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -19,10 +18,12 @@ public final class BetterStorageCrafting {
 	/** Adds a station recipe to the recipe list. */
 	public static void addStationRecipe(IStationRecipe recipe) { recipes.add(recipe); }
 	
-	/** Returns a recipe matching the input, or null if none was found. */
-	public static IStationRecipe findMatchingStationRecipe(ItemStack[] input) {
-		for (IStationRecipe recipe : recipes)
-			if (recipe.matches(input)) return recipe;
+	/** Creates and returns a crafting matching the input, or null if none was found. */
+	public static StationCrafting findMatchingStationCrafting(ItemStack[] input) {
+		for (IStationRecipe recipe : recipes) {
+			StationCrafting crafting = recipe.checkMatch(input);
+			if (crafting != null) return crafting;
+		}
 		return null;
 	}
 	
@@ -36,35 +37,9 @@ public final class BetterStorageCrafting {
 		else if (obj instanceof Item) return new RecipeInputItemStack(new ItemStack((Item)obj));
 		else if (obj instanceof Block) return new RecipeInputItemStack(new ItemStack((Block)obj));
 		else if (obj instanceof String) return new RecipeInputOreDict((String)obj, 1);
-		else throw new IllegalArgumentException("Argument is not a IRecipeInput, ItemStack, Item, Block or String.");
-	}
-	
-	/** Decreases the stack size of every item stack in the crafting matrix,
-	 *  or in case the item is a container item, replaces it with that. <br>
-	 *  This does the same as in the vanilla crafting table. */
-	public static void decreaseCraftingMatrix(ItemStack[] crafting, ICraftingSource source, IRecipeInput[] craftReq) {
-		for (int i = 0; i < crafting.length; i++) {
-			ItemStack stack = crafting[i];
-			if (stack == null) continue;
-			Item item = stack.getItem();
-			ItemStack containerItem = ItemStack.copyItemStack(item.getContainerItemStack(stack));
-			stack.stackSize -= ((craftReq != null) ? craftReq[i].getAmount() : 1);
-			if (containerItem == null) continue;
-			if (!item.doesContainerItemLeaveCraftingGrid(stack) ||
-			    !tryAddItemToInventory(source, containerItem)) {
-				if (stack.stackSize <= 0) crafting[i] = containerItem;
-				else if (source.getWorld() != null)
-					WorldUtils.spawnItem(source.getWorld(), source.getX(), source.getY(), source.getZ(), containerItem);
-			}
-		}
-	}
-	/** Decreases the stack size of every item stack in the crafting matrix,
-	 *  or in case the item is a container item, replaces it with that. <br>
-	 *  This does the same as in the vanilla crafting table. */
-	public static void decreaseCraftingMatrix(ItemStack[] crafting, ICraftingSource source, IStationRecipe recipe) {
-		IRecipeInput[] craftReq = new IRecipeInput[9];
-		recipe.getCraftRequirements(crafting, craftReq);
-		decreaseCraftingMatrix(crafting, source, craftReq);
+		else throw new IllegalArgumentException(
+				String.format("Argument is %s, not an IRecipeInput, ItemStack, Item, Block or String.",
+				              ((obj != null) ? obj.getClass().getSimpleName() : "null")));
 	}
 	
 	public static boolean tryAddItemToInventory(ICraftingSource source, ItemStack stack) {
