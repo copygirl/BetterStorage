@@ -68,6 +68,10 @@ public class EntityFrienderman extends EntityEnderman {
 	
 	@Override
 	protected void despawnEntity() {
+		if (isNoDespawnRequired()) {
+			entityAge = 0;
+			return;
+		}
 		EntityPlayer player = worldObj.getClosestPlayerToEntity(this, -1.0D);
 		double distance = ((player != null) ? getDistanceToEntity(player) : 64000);
 		if (entityAge < 0) {  } // Do nothing, in case I want to add a feature
