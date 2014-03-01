@@ -4,9 +4,9 @@ import java.util.Collection;
 import java.util.Map;
 
 import net.mcft.copy.betterstorage.api.crafting.IRecipeInput;
-import net.mcft.copy.betterstorage.api.crafting.StationCrafting;
 import net.mcft.copy.betterstorage.api.crafting.IStationRecipe;
 import net.mcft.copy.betterstorage.api.crafting.RecipeInputItemStack;
+import net.mcft.copy.betterstorage.api.crafting.StationCrafting;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils.StackEnchantment;
 import net.minecraft.item.Item;
