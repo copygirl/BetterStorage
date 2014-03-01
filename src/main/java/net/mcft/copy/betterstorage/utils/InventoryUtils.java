@@ -86,4 +86,43 @@ public final class InventoryUtils {
 		return list;
 	}
 	
+	/** Tries to add an item to the target inventory and returns if it was successful. <br>
+	 *  Even if not successful, some of the items may have been put into the inventory,
+	 *  and the stack size of the input stack will have been decreased. <br>
+	 *  If doAdd is false, no modifications will be done to input stack or target inventory.*/
+	public static boolean tryAddItemToInventory(ItemStack stack, IInventory inventory, boolean doAdd) {
+		int maxStackSize = Math.min(stack.getMaxStackSize(), inventory.getInventoryStackLimit());
+		if (!doAdd) stack = stack.copy();
+		// Try to put the stack into existing stacks with the same type.
+		if (stack.isStackable()) {
+			for (int i = 0; i < inventory.getSizeInventory(); i++) {
+				ItemStack invStack = inventory.getStackInSlot(i);
+				if (StackUtils.matches(stack, invStack) && (invStack.stackSize < maxStackSize)) {
+					int amount = Math.min(invStack.stackSize + stack.stackSize, maxStackSize);
+					ItemStack testStack = StackUtils.copyStack(stack, amount);
+					if (inventory.isItemValidForSlot(i, testStack)) {
+						stack.stackSize -= (testStack.stackSize - invStack.stackSize);
+						if (doAdd) inventory.setInventorySlotContents(i, testStack);
+					}
+				}
+				if (stack.stackSize <= 0)
+					return true;
+			}
+		}
+		// Try to put the stack into empty slots.
+		for (int i = 0; i < inventory.getSizeInventory(); i++) {
+			ItemStack invStack = inventory.getStackInSlot(i);
+			if (invStack == null) {
+				ItemStack testStack = StackUtils.copyStack(stack, Math.min(stack.stackSize, maxStackSize));
+				if (inventory.isItemValidForSlot(i, testStack)) {
+					stack.stackSize -= testStack.stackSize;
+					if (doAdd) inventory.setInventorySlotContents(i, testStack);
+				}
+			}
+			if (stack.stackSize <= 0)
+				return true;
+		}
+		return false;
+	}
+	
 }
