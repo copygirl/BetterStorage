@@ -54,7 +54,7 @@ public class CardboardEnchantmentRecipe implements IStationRecipe {
 			ItemStack outputStack = stack.copy();
 			
 			boolean canApply = false;
-			Map<Integer, StackEnchantment> stackEnchants = StackUtils.getEnchantments(stack);
+			Map<Integer, StackEnchantment> stackEnchants = StackUtils.getEnchantments(outputStack);
 			int numEnchants = stackEnchants.size();
 			
 			for (StackEnchantment bookEnch : bookEnchantments) {
