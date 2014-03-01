@@ -55,7 +55,7 @@ public class GlobalConfig extends Config {
 	public static final String enchTriggerId     = "enchantments.trigger";
 	
 	// TODO: Rename category to "general"?
-	public static final String reinforcedColumns             = "settings.reinforcedColums";
+	public static final String reinforcedColumns             = "settings.reinforcedColumns";
 	public static final String enableCrateInventoryInterface = "settings.enableCrateInventoryInterface";
 	public static final String backpackChestplate            = "settings.backpackChestplate";
 	public static final String backpackRows                  = "settings.backpackRows";
