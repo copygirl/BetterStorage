@@ -1,28 +1,26 @@
 package net.mcft.copy.betterstorage.api.crafting;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-public abstract class CraftingSourceTileEntity implements ICraftingSource {
+public class CraftingSourceTileEntity implements ICraftingSource {
 	
 	public final TileEntity entity;
 	public final EntityPlayer player;
+	public final World world;
 	
 	public CraftingSourceTileEntity(TileEntity entity, EntityPlayer player) {
 		this.entity = entity;
 		this.player = player;
+		this.world = ((entity != null) ? entity.worldObj : ((player != null) ? player.worldObj : null));
 	}
 	
 	@Override
 	public EntityPlayer getPlayer() { return player; }
 	
 	@Override
-	public abstract IInventory getInventory();
-	
-	@Override
-	public World getWorld() { return ((entity != null) ? entity.worldObj : null); }
+	public World getWorld() { return world; }
 	
 	@Override
 	public double getX() { return ((entity != null) ? (entity.xCoord + 0.5) : 0); }
