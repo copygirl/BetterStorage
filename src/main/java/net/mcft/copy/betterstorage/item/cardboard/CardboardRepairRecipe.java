@@ -13,8 +13,8 @@ import net.minecraftforge.oredict.OreDictionary;
 
 public class CardboardRepairRecipe implements IStationRecipe {
 	
-	private static final IRecipeInput sheetUsed = new RecipeInputOreDict("cardboardSheet", 1);
-	private static final IRecipeInput sheetUnused = new RecipeInputOreDict("cardboardSheet", 0);
+	private static final IRecipeInput sheetUsed = new RecipeInputOreDict("sheetCardboard", 1);
+	private static final IRecipeInput sheetUnused = new RecipeInputOreDict("sheetCardboard", 0);
 	
 	@Override
 	public StationCrafting checkMatch(ItemStack[] input) {
@@ -36,7 +36,7 @@ public class CardboardRepairRecipe implements IStationRecipe {
 			else return null;
 		}
 		
-		if (!hasCardboardItems) return null;
+		if (!hasCardboardItems || (numSheets <= 0)) return null;
 		
 		// If there's not enough sheets to repair all items, return null.
 		int numSheetsNeeded = (totalDamage + 79) / 80;
