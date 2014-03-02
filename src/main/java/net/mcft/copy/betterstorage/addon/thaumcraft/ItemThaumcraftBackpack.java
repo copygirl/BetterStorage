@@ -13,6 +13,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import thaumcraft.api.IRepairable;
 import thaumcraft.api.IRepairableExtended;
@@ -51,7 +52,8 @@ public class ItemThaumcraftBackpack extends ItemBackpack implements IRepairable,
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advancedTooltips) {
 		super.addInformation(stack, player, list, advancedTooltips);
-		list.add(String.format("§5%s: %s%%", StatCollector.translateToLocal("tc.visdiscount"), 2));
+		list.add(String.format("%s%s: %s%%", EnumChatFormatting.DARK_PURPLE,
+		                       StatCollector.translateToLocal("tc.visdiscount"), 2));
 	}
 	
 	@Override
