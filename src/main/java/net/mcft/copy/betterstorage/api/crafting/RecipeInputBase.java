@@ -14,12 +14,13 @@ public abstract class RecipeInputBase implements IRecipeInput {
 	@Override
 	public void craft(ItemStack input, ContainerInfo containerInfo) {
 		if (input == null) return;
-		input.stackSize -= getAmount();
 
 		Item item = input.getItem();
-		ItemStack containerItem = item.getContainerItemStack(input);
+		ItemStack containerItem = item.getContainerItemStack(input.copy());
 		boolean doesLeaveCrafting = item.doesContainerItemLeaveCraftingGrid(input);
 		containerInfo.set(containerItem, doesLeaveCrafting);
+		
+		input.stackSize -= getAmount();
 	}
 	
 }
