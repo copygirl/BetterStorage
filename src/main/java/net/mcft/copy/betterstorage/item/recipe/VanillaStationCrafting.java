@@ -7,6 +7,7 @@ import net.mcft.copy.betterstorage.api.crafting.ICraftingSource;
 import net.mcft.copy.betterstorage.api.crafting.IRecipeInput;
 import net.mcft.copy.betterstorage.api.crafting.RecipeInputBase;
 import net.mcft.copy.betterstorage.api.crafting.StationCrafting;
+import net.mcft.copy.betterstorage.config.GlobalConfig;
 import net.mcft.copy.betterstorage.inventory.InventoryCraftingStation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,7 +26,11 @@ public class VanillaStationCrafting extends StationCrafting {
 	
 	public VanillaStationCrafting(World world, IRecipe recipe, ItemStack[] input, ItemStack output) {
 		super(new ItemStack[]{ output }, createRecipeInput(world, recipe, input));
-		onCreatedOverridden = isOnCreatedOverridden(output);
+		// Only run isOnCreatedOverridden when auto-crafting is enabled.
+		// Currently lots of mod items cause problems when accessed by reflection.
+		// This way, with auto-crafting disabled the game at least doesn't crash.
+		onCreatedOverridden = (GlobalConfig.enableStationAutoCraftingSetting.getValue()
+				? isOnCreatedOverridden(output) : false);
 	}
 	
 	private static IRecipeInput[] createRecipeInput(World world, IRecipe recipe, ItemStack[] input) {
