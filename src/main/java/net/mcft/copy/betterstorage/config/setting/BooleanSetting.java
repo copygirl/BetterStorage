@@ -3,7 +3,7 @@ package net.mcft.copy.betterstorage.config.setting;
 import net.mcft.copy.betterstorage.config.Config;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.Configuration;
-import net.minecraftforge.common.Property;
+import net.minecraftforge.common.Property.Type;
 
 public class BooleanSetting extends SinglePropertySetting<Boolean> {
 	
@@ -12,11 +12,6 @@ public class BooleanSetting extends SinglePropertySetting<Boolean> {
 	}
 	public BooleanSetting(Config config, String fullName) {
 		this(config, fullName, false);
-	}
-	
-	@Override
-	protected Property getProperty(Configuration config) {
-		return config.get(category, name, defaultValue);
 	}
 	
 	@Override
@@ -31,10 +26,12 @@ public class BooleanSetting extends SinglePropertySetting<Boolean> {
 	}
 	
 	@Override
-	protected Boolean loadInternal(Configuration config) { return property.getBoolean(defaultValue); }
+	protected Type getPropertyType() { return Type.BOOLEAN; }
+	
 	@Override
-	protected void saveInternal(Configuration config, Boolean value) {
-		super.saveInternal(config, value); property.set(value); }
+	protected Boolean loadInternal(Configuration config) { return getProperty(config).getBoolean(defaultValue); }
+	@Override
+	protected void saveInternal(Configuration config, Boolean value) { getProperty(config).set(value); }
 	
 	@Override
 	protected Boolean readInternal(NBTTagCompound compound) { return compound.getBoolean(fullName); }

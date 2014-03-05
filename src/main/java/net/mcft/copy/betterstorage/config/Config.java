@@ -15,7 +15,7 @@ import net.minecraftforge.common.Configuration;
 
 public class Config {
 	
-	public final Configuration forgeConfig;
+	private final Configuration forgeConfig;
 	
 	private final Map<String, Setting> settings = new HashMap<String, Setting>();
 	private final List<Setting> syncedSettings = new ArrayList<Setting>();

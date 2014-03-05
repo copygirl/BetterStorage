@@ -5,7 +5,7 @@ import java.util.Arrays;
 import net.mcft.copy.betterstorage.config.Config;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.Configuration;
-import net.minecraftforge.common.Property;
+import net.minecraftforge.common.Property.Type;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -20,11 +20,6 @@ public class IntegerSetting extends SinglePropertySetting<Integer> {
 	}
 	public IntegerSetting(Config config, String fullName) {
 		this(config, fullName, 0);
-	}
-	
-	@Override
-	protected Property getProperty(Configuration config) {
-		return config.get(category, name, defaultValue);
 	}
 	
 	@Override
@@ -62,10 +57,12 @@ public class IntegerSetting extends SinglePropertySetting<Integer> {
 	}
 	
 	@Override
-	protected Integer loadInternal(Configuration config) { return property.getInt(); }
+	protected Type getPropertyType() { return Type.INTEGER; }
+	
 	@Override
-	protected void saveInternal(Configuration config, Integer value) {
-		super.saveInternal(config, value); property.set(value); }
+	protected Integer loadInternal(Configuration config) { return getProperty(config).getInt(); }
+	@Override
+	protected void saveInternal(Configuration config, Integer value) { getProperty(config).set(value); }
 	
 	@Override
 	protected Integer readInternal(NBTTagCompound compound) { return compound.getInteger(fullName); }

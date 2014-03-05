@@ -3,7 +3,7 @@ package net.mcft.copy.betterstorage.config.setting;
 import net.mcft.copy.betterstorage.config.Config;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.Configuration;
-import net.minecraftforge.common.Property;
+import net.minecraftforge.common.Property.Type;
 
 public class DoubleSetting extends SinglePropertySetting<Double> {
 	
@@ -15,11 +15,6 @@ public class DoubleSetting extends SinglePropertySetting<Double> {
 	}
 	public DoubleSetting(Config config, String fullName) {
 		this(config, fullName, 0.0);
-	}
-	
-	@Override
-	protected Property getProperty(Configuration config) {
-		return config.get(category, name, defaultValue);
 	}
 	
 	@Override
@@ -49,10 +44,12 @@ public class DoubleSetting extends SinglePropertySetting<Double> {
 	}
 	
 	@Override
-	protected Double loadInternal(Configuration config) { return property.getDouble(defaultValue); }
+	protected Type getPropertyType() { return Type.DOUBLE; }
+	
 	@Override
-	protected void saveInternal(Configuration config, Double value) {
-		super.saveInternal(config, value); property.set(value); }
+	protected Double loadInternal(Configuration config) { return getProperty(config).getDouble(defaultValue); }
+	@Override
+	protected void saveInternal(Configuration config, Double value) { getProperty(config).set(value); }
 	
 	@Override
 	protected Double readInternal(NBTTagCompound compound) { return compound.getDouble(fullName); }
