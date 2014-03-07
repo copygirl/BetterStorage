@@ -202,6 +202,18 @@ public final class StackUtils {
 	
 	// Other functions, mostly BetterStorage related
 	
+	/** Gets the number of stacks the item would
+	 *  split into under normal circumstances. */
+	public static int calcNumStacks(ItemStack stack, int count) {
+		int maxStackSize = stack.getMaxStackSize();
+		return (count + maxStackSize - 1) / maxStackSize;
+	}
+	/** Gets the number of stacks the item would
+	 *  split into under normal circumstances. */
+	public static int calcNumStacks(ItemStack stack) {
+		return calcNumStacks(stack, stack.stackSize);
+	}
+	
 	/** Stacks items from the ItemStack array into the list. <br>
 	 *  Returns the number of stacks processed. */
 	public static int stackItems(ItemStack[] contents, List<ItemStack> items) {

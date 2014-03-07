@@ -7,15 +7,18 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class ItemIdentifier {
 	
-	private int id;
-	private int damage;
-	private NBTTagCompound data;
+	private final int id;
+	private final int damage;
+	private final NBTTagCompound data;
 	
+	public ItemIdentifier(int id, int damage, NBTTagCompound data) {
+		this.id = id;
+		this.damage = damage;
+		this.data = data;
+	}
 	public ItemIdentifier(ItemStack stack) {
-		id = stack.itemID;
-		damage = stack.getItemDamage();
-		if (stack.hasTagCompound())
-			data = (NBTTagCompound)stack.getTagCompound().copy();
+		this(stack.itemID, stack.getItemDamage(), (stack.hasTagCompound()
+				? (NBTTagCompound)stack.getTagCompound().copy() : null));
 	}
 	
 	public Item getItem() {
@@ -27,23 +30,6 @@ public class ItemIdentifier {
 		if (data != null)
 			stack.stackTagCompound = (NBTTagCompound)data.copy();
 		return stack;
-	}
-	
-	/** Gets the number of stacks the item would
-	 *  split into under normal circumstances. */
-	public static int calcNumStacks(Item item, int count) {
-		int maxStackSize = item.getItemStackLimit();
-		return (count + maxStackSize - 1) / maxStackSize;
-	}
-	/** Gets the number of stacks the item would
-	 *  split into under normal circumstances. */
-	public static int calcNumStacks(ItemStack stack) {
-		return calcNumStacks(stack.getItem(), stack.stackSize);
-	}
-	/** Gets the number of stacks the item would
-	 *  split into under normal circumstances. */
-	public int calcNumStacks(int count) {
-		return calcNumStacks(getItem(), count);
 	}
 	
 	/** Returns if this item identifier matches the id, damage and data. */

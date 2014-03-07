@@ -203,11 +203,11 @@ public class CratePileData implements Iterable<ItemStack> {
 				updateContentsArray();
 			// Otherwise just increase the stack size.
 			} else {
-				stacksBefore = calcNumStacks(contentsStack);
+				stacksBefore = StackUtils.calcNumStacks(contentsStack);
 				contentsStack.stackSize += stack.stackSize;
 			}
 			
-			int stacksAfter = calcNumStacks(contentsStack);
+			int stacksAfter = StackUtils.calcNumStacks(contentsStack);
 			numSlots += (stacksAfter - stacksBefore);
 			
 			for (ICrateWatcher watcher : watchers)
@@ -246,12 +246,12 @@ public class CratePileData implements Iterable<ItemStack> {
 		ItemStack stack = getItemStack(item, false);
 		if ((stack == null) || (amount <= 0)) return null;
 		
-		int stacksBefore = calcNumStacks(stack);
+		int stacksBefore = StackUtils.calcNumStacks(stack);
 		int stacksAfter;
 		
 		if (amount < stack.stackSize) {
 			stack.stackSize -= amount;
-			stacksAfter = calcNumStacks(stack);
+			stacksAfter = StackUtils.calcNumStacks(stack);
 			stack = StackUtils.copyStack(stack, amount);
 		} else {
 			contents.remove(item);
@@ -290,11 +290,11 @@ public class CratePileData implements Iterable<ItemStack> {
 	/** Returns how much space there is left for a specific item. */
 	public int spaceForItem(ItemIdentifier item) {
 		if (item == null) return 0;
-		int stackLimit = item.getItem().getItemStackLimit();
-		int space = getFreeSlots() * stackLimit;
+		int maxStackSize = item.createStack(1).getMaxStackSize();
+		int space = getFreeSlots() * maxStackSize;
 		ItemStack stack = getItemStack(item);
 		if (stack != null)
-			space += (calcNumStacks(stack) * stackLimit) - stack.stackSize;
+			space += (StackUtils.calcNumStacks(stack) * maxStackSize) - stack.stackSize;
 		return space;
 	}
 	
@@ -314,7 +314,7 @@ public class CratePileData implements Iterable<ItemStack> {
 		int totalStacks = 0;
 		List<ItemStack> stacks = new ArrayList<ItemStack>();
 		for (ItemStack contentsStack : this) {
-			int numStacks = ItemIdentifier.calcNumStacks(contentsStack);
+			int numStacks = StackUtils.calcNumStacks(contentsStack);
 			for (int i = 0; i < numStacks; i++) {
 				int maxStackSize = contentsStack.getMaxStackSize();
 				int max = Math.min(contentsStack.stackSize - maxStackSize * i, maxStackSize);
@@ -354,10 +354,6 @@ public class CratePileData implements Iterable<ItemStack> {
 		if ((contentsArray == null) || (contentsArray.length > getNumItems() * 2 + 16))
 			contentsArray = new ItemStack[getNumItems() + 16];
 		contentsArray = contents.values().toArray(contentsArray);
-	}
-	
-	private static int calcNumStacks(ItemStack stack) {
-		return ItemIdentifier.calcNumStacks(stack.getItem(), stack.stackSize);
 	}
 	
 	/** Marks the pile data as dirty so it gets saved. */

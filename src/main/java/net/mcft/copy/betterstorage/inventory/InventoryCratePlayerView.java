@@ -57,7 +57,7 @@ public class InventoryCratePlayerView extends InventoryBetterStorage implements 
 			int randomStack = RandomUtils.getInt(totalStacks--);
 			for (ListIterator<ItemStack> iter = stacks.listIterator(); iter.hasNext(); ) {
 				ItemStack contentsStack = iter.next();
-				int numStacks = ItemIdentifier.calcNumStacks(contentsStack);
+				int numStacks = StackUtils.calcNumStacks(contentsStack);
 				if (randomStack < numStacks) {
 					ItemStack stack = contentsStack.copy();
 					stack.stackSize = Math.min(stack.stackSize, stack.getMaxStackSize());

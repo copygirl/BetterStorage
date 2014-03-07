@@ -98,6 +98,7 @@ public class ItemDrinkingHelmet extends ItemArmorBetterStorage {
 		if (uses > 0)
 			list.add(EnumChatFormatting.DARK_GRAY.toString() + EnumChatFormatting.ITALIC + 
 			         LanguageUtils.translateTooltip("drinkingHelmet.uses", "%USES%", Integer.toString(uses)));
+		// TODO: Remove crafting hint?
 		else if (BetterStorage.globalConfig.getBoolean(GlobalConfig.enableHelpTooltips))
 			list.add(LanguageUtils.translateTooltip("drinkingHelmet.craftHint"));
 	}
