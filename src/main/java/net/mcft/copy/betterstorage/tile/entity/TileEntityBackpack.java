@@ -11,9 +11,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.util.MovingObjectPosition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -102,7 +99,7 @@ public class TileEntityBackpack extends TileEntityContainer {
 		double y = yCoord + 0.5;
 		double z = zCoord + 0.5;
 		
-		String sound = Block.soundSnowFootstep.getStepSound();
+		String sound = Block.soundTypeSnow.getStepResourcePath();
 		// Play sound when opening
 		if ((lidAngle > 0.0F) && (prevLidAngle <= 0.0F))
 			worldObj.playSoundEffect(x, y, z, sound, 1.0F, 0.6F);
@@ -145,7 +142,7 @@ public class TileEntityBackpack extends TileEntityContainer {
 	@Override
 	public void writeToNBT(NBTTagCompound compound) {
 		super.writeToNBT(compound);
-		compound.setCompoundTag("stack", stack.writeToNBT(new NBTTagCompound()));
+		compound.setTag("stack", stack.writeToNBT(new NBTTagCompound()));
 		compound.setInteger("despawnTime", despawnTime);
 	}
 	

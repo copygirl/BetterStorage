@@ -18,7 +18,7 @@ public class InventoryKeyring extends InventoryItem {
 	}
 	
 	@Override
-	public void onInventoryChanged() {
+	public void markDirty() {
 		updateStack();
 	}
 	

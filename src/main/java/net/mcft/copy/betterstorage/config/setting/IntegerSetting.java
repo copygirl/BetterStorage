@@ -4,8 +4,8 @@ import java.util.Arrays;
 
 import net.mcft.copy.betterstorage.config.Config;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.Configuration;
-import net.minecraftforge.common.Property.Type;
+import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.common.config.Property.Type;
 
 import org.apache.commons.lang3.ArrayUtils;
 

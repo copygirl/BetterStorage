@@ -1,6 +1,6 @@
 package net.mcft.copy.betterstorage.misc;
 
-public final class CurrentItem {
+public final class EquipmentSlot {
 	
 	public static final int HELD = 0;
 	
@@ -9,6 +9,6 @@ public final class CurrentItem {
 	public static final int LEGS  = 2;
 	public static final int FEET  = 1;
 	
-	private CurrentItem() {  }
+	private EquipmentSlot() {  }
 	
 }

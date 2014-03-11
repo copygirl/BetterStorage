@@ -18,22 +18,20 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.Event.Result;
-import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.player.EntityInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import net.minecraftforge.event.world.WorldEvent.Save;
 import net.minecraftforge.event.world.WorldEvent.Unload;
-import cpw.mods.fml.common.ITickHandler;
-import cpw.mods.fml.common.TickType;
+import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 
 public class CommonProxy implements ITickHandler {
@@ -49,17 +47,17 @@ public class CommonProxy implements ITickHandler {
 		
 	}
 	
-	@ForgeSubscribe
+	@EventHandler
 	public void onWorldSave(Save event) {
 		CratePileCollection.saveAll(event.world);
 	}
 	
-	@ForgeSubscribe
+	@EventHandler
 	public void onWorldUnload(Unload event) {
 		CratePileCollection.unload(event.world);
 	}
 	
-	@ForgeSubscribe
+	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		
 		if (event.isCanceled()) return;
@@ -70,7 +68,7 @@ public class CommonProxy implements ITickHandler {
 		int z = event.z;
 		EntityPlayer player = event.entityPlayer;
 		ItemStack holding = player.getCurrentEquippedItem();
-		Block block = Block.blocksList[world.getBlockId(x, y, z)];
+		Block block = world.getBlock(x, y, z);
 		boolean leftClick = (event.action == Action.LEFT_CLICK_BLOCK);
 		boolean rightClick = (event.action == Action.RIGHT_CLICK_BLOCK);
 		
@@ -92,7 +90,7 @@ public class CommonProxy implements ITickHandler {
 		}
 		
 		// Use cauldron to remove color from dyable items
-		if (rightClick && (block == Block.cauldron)) {
+		if (rightClick && (block == Blocks.cauldron)) {
 			int metadata = world.getBlockMetadata(x, y, z);
 			if (metadata > 0) {
 				IDyeableItem dyeable = (((holding != null) && (holding.getItem() instanceof IDyeableItem))
@@ -100,7 +98,7 @@ public class CommonProxy implements ITickHandler {
 				if ((dyeable != null) && (dyeable.canDye(holding))) {
 					StackUtils.remove(holding, "display", "color");
 					world.setBlockMetadataWithNotify(x, y, z, metadata - 1, 2);
-					world.func_96440_m(x, y, z, block.blockID);
+					world.func_147453_f(x, y, z, block);
 					
 					event.useBlock = Result.DENY;
 					event.useItem = Result.DENY;
@@ -116,7 +114,7 @@ public class CommonProxy implements ITickHandler {
 		
 	}
 	
-	@ForgeSubscribe
+	@EventHandler
 	public void onBreakSpeed(BreakSpeed event) {
 		// Stupid Forge not firing PlayerInteractEvent for left-clicks!
 		// This is a workaround to instead make blocks appear unbreakable.
@@ -127,7 +125,7 @@ public class CommonProxy implements ITickHandler {
 			event.newSpeed = -1;
 	}
 	
-	@ForgeSubscribe
+	@EventHandler
 	public void onEntityInteract(EntityInteractEvent event) {
 		
 		if (event.entity.worldObj.isRemote || event.isCanceled()) return;
@@ -137,7 +135,7 @@ public class CommonProxy implements ITickHandler {
 		ItemStack holding = player.getCurrentEquippedItem();
 		
 		if ((target.getClass() == EntityChicken.class) &&
-		    (holding != null) && (holding.getItem() == Item.nameTag)) {
+		    (holding != null) && (holding.getItem() == Items.name_tag)) {
 			
 			EntityChicken chicken = (EntityChicken)target;
 			if (!chicken.isDead && !chicken.isChild() &&
@@ -147,7 +145,7 @@ public class CommonProxy implements ITickHandler {
 		}
 		
 		if ((target instanceof EntityLiving) &&
-		    (holding != null) && (holding.getItem() == Item.bucketEmpty))
+		    (holding != null) && (holding.getItem() == Items.bucket))
 			ItemBucketSlime.pickUpSlime(player, (EntityLiving)target);
 		
 	}

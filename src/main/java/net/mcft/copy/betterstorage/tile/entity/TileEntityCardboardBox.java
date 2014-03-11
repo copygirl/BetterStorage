@@ -1,6 +1,6 @@
 package net.mcft.copy.betterstorage.tile.entity;
 
-import net.mcft.copy.betterstorage.content.Tiles;
+import net.mcft.copy.betterstorage.content.BetterStorageTiles;
 import net.mcft.copy.betterstorage.inventory.InventoryCardboardBox;
 import net.mcft.copy.betterstorage.inventory.InventoryTileEntity;
 import net.mcft.copy.betterstorage.misc.Constants;
@@ -42,7 +42,7 @@ public class TileEntityCardboardBox extends TileEntityContainer {
 	public void onBlockDestroyed() {
 		if (!moved) {
 			boolean empty = StackUtils.isEmpty(contents);
-			ItemStack stack = new ItemStack(Tiles.cardboardBox);
+			ItemStack stack = new ItemStack(BetterStorageTiles.cardboardBox);
 			if (!empty) StackUtils.setStackContents(stack, contents);
 			// Don't drop an empty cardboard box in creative.
 			if (!empty || !brokenInCreative)

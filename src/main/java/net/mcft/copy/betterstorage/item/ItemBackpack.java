@@ -1,5 +1,7 @@
 package net.mcft.copy.betterstorage.item;
 
+import ibxm.Player;
+
 import java.util.List;
 
 import net.mcft.copy.betterstorage.BetterStorage;
@@ -11,7 +13,7 @@ import net.mcft.copy.betterstorage.container.SlotArmorBackpack;
 import net.mcft.copy.betterstorage.inventory.InventoryBackpackEquipped;
 import net.mcft.copy.betterstorage.inventory.InventoryStacks;
 import net.mcft.copy.betterstorage.misc.Constants;
-import net.mcft.copy.betterstorage.misc.CurrentItem;
+import net.mcft.copy.betterstorage.misc.EquipmentSlot;
 import net.mcft.copy.betterstorage.misc.PropertiesBackpack;
 import net.mcft.copy.betterstorage.misc.Resources;
 import net.mcft.copy.betterstorage.misc.handlers.KeyBindingHandler;
@@ -26,7 +28,7 @@ import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
@@ -34,34 +36,27 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.EnumArmorMaterial;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet103SetSlot;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-import net.minecraftforge.common.EnumHelper;
-import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISpecialArmor;
-import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.common.network.Player;
+import net.minecraftforge.common.util.EnumHelper;
+import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmor, IDyeableItem {
 	
-	public static final EnumArmorMaterial material = EnumHelper.addArmorMaterial(
+	public static final ArmorMaterial material = EnumHelper.addArmorMaterial(
 			"backpack", 14, new int[]{ 0, 2, 0, 0 }, 15);
-	static { material.customCraftingMaterial = Item.leather; }
+	static { material.customCraftingMaterial = Items.leather; }
 	
-	protected ItemBackpack(int id, EnumArmorMaterial material) {
-		super(id - 256, material, 0, 1);
-	}
-	public ItemBackpack(int id) { this(id, material); }
+	protected ItemBackpack(ArmorMaterial material) { super(material, 0, 1); }
+	public ItemBackpack() { this(material); }
 	
 	@Override
 	public boolean isItemBlock() { return true; }
@@ -139,16 +134,16 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister iconRegister) {  }
+	public void registerIcons(IIconRegister iconRegister) {  }
 	
 	@Override
-	public String getUnlocalizedName() { return Block.blocksList[itemID].getUnlocalizedName(); }
+	public String getUnlocalizedName() { return Block.getBlockFromItem(this).getUnlocalizedName(); }
 	@Override
 	public String getUnlocalizedName(ItemStack stack) { return getUnlocalizedName(); }
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public CreativeTabs getCreativeTab() { return Block.blocksList[itemID].getCreativeTabToDisplayOn(); }
+	public CreativeTabs getCreativeTab() { return Block.getBlockFromItem(this).getCreativeTabToDisplayOn(); }
 	
 	@Override
 	public boolean isValidArmor(ItemStack stack, int armorType, Entity entity) { return false; }
@@ -181,7 +176,7 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 			else if (info != null) list.add(info);
 			// If the backpack can be opened by pressing a key, let the player know.
 			if (BetterStorage.globalConfig.getBoolean(GlobalConfig.enableBackpackOpen)) {
-				String str = GameSettings.getKeyDisplayString(KeyBindingHandler.backpackOpen.keyCode);
+				String str = GameSettings.getKeyDisplayString(KeyBindingHandler.backpackOpen.getKeyCode());
 				LanguageUtils.translateTooltip(list, "backpack.openHint", "%KEY%", str);
 			}
 		// Tell the player to place down and break a backpack to equip it.
@@ -192,7 +187,7 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 			// If the backpack doesn't get equipped to the chestplate slot,
 			// let players know they can open it in the regular item tooltip.
 			if (!chestplate) {
-				String str = GameSettings.getKeyDisplayString(KeyBindingHandler.backpackOpen.keyCode);
+				String str = GameSettings.getKeyDisplayString(KeyBindingHandler.backpackOpen.getKeyCode());
 				LanguageUtils.translateTooltip(list, "backpack.openHint", "%KEY%", str);
 			}
 		}
@@ -203,7 +198,7 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 	}
 	
 	@Override
-	public void onArmorTickUpdate(World world, EntityPlayer player, ItemStack itemStack) {
+	public void onArmorTick(World world, EntityPlayer player, ItemStack itemStack) {
 		
 		// Replace the armor slot with a custom one, so the player
 		// can't unequip the backpack when there's items inside.
@@ -297,7 +292,7 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 	// Helper functions
 	
 	public static ItemStack getBackpack(EntityLivingBase entity) {
-		ItemStack backpack = entity.getCurrentItemOrArmor(CurrentItem.CHEST);
+		ItemStack backpack = entity.getEquipmentInSlot(EquipmentSlot.CHEST);
 		if ((backpack != null) && (backpack.getItem() instanceof ItemBackpack)) return backpack;
 		return getBackpackData(entity).backpack;
 	}
@@ -306,18 +301,18 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 		                         !(entity instanceof EntityPlayer) || hasChestplateBackpackEquipped(entity));
 		PropertiesBackpack backpackData = getBackpackData(entity);
 		if (!setChestplate) backpackData.backpack = backpack;
-		else entity.setCurrentItemOrArmor(CurrentItem.CHEST, backpack);
+		else entity.setCurrentItemOrArmor(EquipmentSlot.CHEST, backpack);
 		backpackData.contents = contents;
 		ItemBackpack.updateHasItems(entity, backpackData);
 	}
 	public static boolean hasChestplateBackpackEquipped(EntityLivingBase entity) {
 		ItemStack backpack = getBackpack(entity);
-		return ((backpack != null) ? (backpack == entity.getCurrentItemOrArmor(CurrentItem.CHEST)) : false);
+		return ((backpack != null) ? (backpack == entity.getEquipmentInSlot(EquipmentSlot.CHEST)) : false);
 	}
 	public static boolean canEquipBackpack(EntityPlayer player) {
 		return ((getBackpack(player) == null) &&
 		        !(BetterStorage.globalConfig.getBoolean(GlobalConfig.backpackChestplate) &&
-		          (player.getCurrentItemOrArmor(CurrentItem.CHEST) != null)));
+		          (player.getEquipmentInSlot(EquipmentSlot.CHEST) != null)));
 	}
 	
 	public static IInventory getBackpackItems(EntityLivingBase carrier, EntityPlayer player) {
@@ -372,7 +367,7 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 		Container container = new ContainerBetterStorage(player, inventory, columns, rows);
 		
 		String title = StackUtils.get(backpack, "", "display", "Name");
-		PlayerUtils.openGui(player, inventory.getInvName(), columns, rows, title, container);
+		PlayerUtils.openGui(player, inventory.getInventoryName(), columns, rows, title, container);
 		
 		return true;
 		
@@ -430,14 +425,14 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 		if (backpack.stackSize == 0) return false;
 		
 		World world = carrier.worldObj;
-		Block blockBackpack = Block.blocksList[backpack.itemID];
+		Block blockBackpack = Block.getBlockFromItem(backpack.getItem());
 		
 		// Return false if there's block is too low or too high.
 		if ((y <= 0) || (y >= world.getHeight() - 1)) return false;
 		
 		// If a replaceable block was clicked, move on.
 		// Otherwise, check if the top side was clicked and adjust the position.
-		if (!WorldUtils.isBlockReplacable(world, x, y, z)) {
+		if (!world.getBlock(x, y, z).isReplaceable(world, x, y, z)) {
 			if (side != 1) return false;
 			y++;
 		}
@@ -445,12 +440,12 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 		// If the backpack is dropped on death, return false
 		// if it's placed on a non-replaceable block. Otherwise,
 		// return false if the block isn't solid on top.
-		Block blockBelow = Block.blocksList[world.getBlockId(x, y - 1, z)];
-		if ((deathDrop ? WorldUtils.isBlockReplacable(blockBelow, world, x, y - 1, z)
-		               : ((blockBelow == null) || !blockBelow.isBlockSolidOnSide(world, x, y - 1, z, ForgeDirection.UP)))) return false;
+		Block blockBelow = world.getBlock(x, y - 1, z);
+		if ((deathDrop ? blockBelow.isReplaceable(world, x, y - 1, z)
+		               : !world.isSideSolid(x, y - 1, z, ForgeDirection.UP))) return false;
 		
 		// Return false if there's an entity blocking the placement.
-		if (!world.canPlaceEntityOnSide(blockBackpack.blockID, x, y, z, deathDrop, side, carrier, backpack)) return false;
+		if (!world.canPlaceEntityOnSide(blockBackpack, x, y, z, deathDrop, side, carrier, backpack)) return false;
 		
 		// Return false if the player can't edit the block.
 		if ((player != null) && (!world.canMineBlock(player, x, y, z) ||
@@ -462,10 +457,10 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 		// Actually place the block in the world,
 		// play place sound and decrease stack size if successful.
 		
-		if (!world.setBlock(x, y, z, blockBackpack.blockID, orientation.ordinal(), 3))
+		if (!world.setBlock(x, y, z, blockBackpack, orientation.ordinal(), 3))
 			return false;
 		
-		if (world.getBlockId(x, y, z) != blockBackpack.blockID)
+		if (world.getBlock(x, y, z) != blockBackpack)
 			return false;
 		
 		blockBackpack.onBlockPlacedBy(world, x, y, z, carrier, backpack);
@@ -476,7 +471,7 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 		if (ItemBackpack.getBackpack(carrier) == backpack)
 			te.unequip(carrier, despawn);
 		
-		String sound = blockBackpack.stepSound.getPlaceSound();
+		String sound = blockBackpack.stepSound.func_150496_b();
 		float volume = (blockBackpack.stepSound.getVolume() + 1.0F) / 2.0F;
 		float pitch = blockBackpack.stepSound.getPitch() * 0.8F;
 		world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5F, sound, volume, pitch);

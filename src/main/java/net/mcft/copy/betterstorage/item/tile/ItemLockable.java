@@ -10,8 +10,8 @@ import net.minecraft.util.StatCollector;
 
 public class ItemLockable extends ItemBlock {
 	
-	public ItemLockable(int id) {
-		super(id);
+	public ItemLockable(Block block) {
+		super(block);
 		setHasSubtypes(true);
 		setMaxDamage(0);
 	}
@@ -20,9 +20,9 @@ public class ItemLockable extends ItemBlock {
 	public int getMetadata(int damage) { return damage; }
 	
 	@Override
-	public String getItemDisplayName(ItemStack stack) {
-		if (!((TileLockable)Block.blocksList[itemID]).hasMaterial())
-			return super.getItemDisplayName(stack);
+	public String getItemStackDisplayName(ItemStack stack) {
+		if (!((TileLockable)Block.getBlockFromItem(stack.getItem())).hasMaterial())
+			return super.getItemStackDisplayName(stack);
 		
 		ContainerMaterial material = ContainerMaterial.getMaterial(stack, ContainerMaterial.iron);
 		

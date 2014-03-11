@@ -38,7 +38,7 @@ public class ContainerBetterStorage extends Container {
 		
 		setupInventoryContainer();
 		setupInventoryPlayer();
-		inventory.openChest();
+		inventory.openInventory();
 	}
 	public ContainerBetterStorage(EntityPlayer player, IInventory inventory, int columns, int rows) {
 		this(player, inventory, columns, rows, 14);
@@ -223,7 +223,7 @@ public class ContainerBetterStorage extends Container {
 	@Override
 	public void onContainerClosed(EntityPlayer player) {
 		super.onContainerClosed(player);
-		inventory.closeChest();
+		inventory.closeInventory();
 	}
 	
 	@Override

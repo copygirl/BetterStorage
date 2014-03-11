@@ -135,9 +135,9 @@ public class CratePileMap {
 	
 	public NBTTagCompound toCompound() {
 		NBTTagCompound compound = new NBTTagCompound();
-		compound.setCompoundTag("region", region.toCompound());
+		compound.setTag("region", region.toCompound());
 		compound.setByteArray("map", map);
-		compound.setCompoundTag("mapRegion", mapRegion.toCompound());
+		compound.setTag("mapRegion", mapRegion.toCompound());
 		return compound;
 	}
 	public static CratePileMap fromCompound(NBTTagCompound compound) {

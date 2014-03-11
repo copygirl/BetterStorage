@@ -10,11 +10,13 @@ import net.mcft.copy.betterstorage.api.IContainerItem;
 import net.mcft.copy.betterstorage.api.lock.IKey;
 import net.mcft.copy.betterstorage.api.lock.ILock;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraftforge.common.util.Constants.NBT;
 
 public final class StackUtils {
 	
@@ -63,8 +65,8 @@ public final class StackUtils {
 			tag = tags[i];
 			if (i == tags.length - 1) break;
 			if (!compound.hasKey(tag)) {
-				NBTTagCompound newCompound = new NBTTagCompound(tag);
-				compound.setCompoundTag(tag, newCompound);
+				NBTTagCompound newCompound = new NBTTagCompound();
+				compound.setTag(tag, newCompound);
 				compound = newCompound;
 			} else compound = compound.getCompoundTag(tag);
 		}
@@ -74,7 +76,7 @@ public final class StackUtils {
 	 *  <code> ItemUtils.set(stack, 0xFF0000, "display", "color"); </code> <br>
 	 *  Creates parent compounds if they don't exist. */
 	public static <T> void set(ItemStack stack, T value, String... tags) {
-		set(stack, NbtUtils.createTag(null, value), tags);
+		set(stack, NbtUtils.createTag(value), tags);
 	}
 	
 	/** Returns if the tag exists in the ItemStack's custom NBT data. Example: <br>
@@ -119,7 +121,7 @@ public final class StackUtils {
 	 *  Returns null if the stack is null or stackSize is <= 0 and checkSize is true. */
 	public static ItemStack copyStack(ItemStack stack, int stackSize, boolean checkSize) {
 		if ((stack == null) || (checkSize && (stackSize <= 0))) return null;
-		ItemStack copy = new ItemStack(stack.itemID, stackSize, stack.getItemDamage());
+		ItemStack copy = new ItemStack(stack.getItem(), stackSize, getRealItemDamage(stack));
 		if (stack.stackTagCompound != null)
 			copy.stackTagCompound = (NBTTagCompound)stack.stackTagCompound.copy();
 		return copy;
@@ -127,23 +129,22 @@ public final class StackUtils {
 	
 	// Stack matching
 	
-	public static boolean matches(int id1, int damage1, NBTTagCompound data1, 
-	                              int id2, int damage2, NBTTagCompound data2) {
-		return ((id1 == id2) && (damage1 == damage2) && nbtEquals(data1, data2));
+	public static boolean matches(Item item1, int damage1, NBTTagCompound data1, 
+	                              Item item2, int damage2, NBTTagCompound data2) {
+		return ((item1 == item2) && (damage1 == damage2) && nbtEquals(data1, data2));
 	}
 	/** Returns if the two NBT compounds are equal.
 	 *  Used instead of default comparison because this function
 	 *  makes sure the names of the main NBT tags match before comparing. */
 	public static boolean nbtEquals(NBTTagCompound nbt1, NBTTagCompound nbt2) {
-		return ((nbt1 == nbt2) || (!((nbt1 == null) || (nbt2 == null)) &&
-		                           nbt1.setName("tag").equals(nbt2.setName("tag"))));
+		return ((nbt1 == nbt2) || (!((nbt1 == null) || (nbt2 == null)) && nbt1.equals(nbt2)));
 	}
 	/** Returns if the two item stacks match. <br>
 	 *  True when they're both null or their ID, damage and optionally NBT data match. */
 	public static boolean matches(ItemStack stack1, ItemStack stack2, boolean matchNBT) {
 		return ((stack1 == null) ? (stack2 == null) : ((stack2 != null) && matches(
-				stack1.itemID, stack1.getItemDamage(), (matchNBT ? stack1.getTagCompound() : null),
-				stack2.itemID, stack2.getItemDamage(), (matchNBT ? stack2.getTagCompound() : null))));
+				stack1.getItem(), StackUtils.getRealItemDamage(stack1), (matchNBT ? stack1.getTagCompound() : null),
+				stack2.getItem(), StackUtils.getRealItemDamage(stack2), (matchNBT ? stack2.getTagCompound() : null))));
 	}
 	/** Returns if the two item stacks match. <br>
 	 *  True when they're both null or their ID, damage and NBT data match. */
@@ -156,12 +157,12 @@ public final class StackUtils {
 	/** Returns the enchantments on the item stack. */
 	public static Map<Integer, StackEnchantment> getEnchantments(ItemStack stack) {
 		Map<Integer, StackEnchantment> enchantments = new HashMap<Integer, StackEnchantment>();
-		NBTTagList list = ((stack.getItem() == Item.enchantedBook)
-				? Item.enchantedBook.func_92110_g(stack)
+		NBTTagList list = ((stack.getItem() == Items.enchanted_book)
+				? Items.enchanted_book.func_92110_g(stack)
 				: stack.getEnchantmentTagList());
 		if (list != null)
 			for (int i = 0; i < list.tagCount(); i++) {
-				StackEnchantment ench = new StackEnchantment(stack, (NBTTagCompound)list.tagAt(i));
+				StackEnchantment ench = new StackEnchantment(stack, list.getCompoundTagAt(i));
 				enchantments.put(ench.ench.effectId, ench);
 			}
 		return enchantments;
@@ -201,6 +202,12 @@ public final class StackUtils {
 	}
 	
 	// Other functions, mostly BetterStorage related
+	
+	/** Returns the actual itemDamage value of an ItemStack. */
+	public static int getRealItemDamage(ItemStack stack) {
+		// Uses a vanilla item to return the actual value.
+		return Items.emerald.getDamage(stack);
+	}
 	
 	/** Gets the number of stacks the item would
 	 *  split into under normal circumstances. */
@@ -243,7 +250,7 @@ public final class StackUtils {
 		ItemStack[] contents = new ItemStack[size];
 		NBTTagCompound compound = stack.getTagCompound();
 		if (compound != null && compound.hasKey("Items"))
-			NbtUtils.readItems(contents, compound.getTagList("Items"));
+			NbtUtils.readItems(contents, compound.getTagList("Items", NBT.TAG_COMPOUND));
 		return contents;
 	}
 	

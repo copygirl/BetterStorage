@@ -2,21 +2,21 @@ package net.mcft.copy.betterstorage.item;
 
 import java.util.List;
 
-import net.mcft.copy.betterstorage.content.Items;
+import net.mcft.copy.betterstorage.content.BetterStorageItems;
 import net.mcft.copy.betterstorage.misc.Constants;
-import net.mcft.copy.betterstorage.misc.CurrentItem;
+import net.mcft.copy.betterstorage.misc.EquipmentSlot;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Facing;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
@@ -25,17 +25,16 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ItemBucketSlime extends ItemBetterStorage {
 	
 	@SideOnly(Side.CLIENT)
-	private Icon iconMagmaCube, iconMazeSlime, iconPinkSlime,
-	             iconThaumicSlime, iconBlueSlime;
+	private IIcon iconMagmaCube, iconMazeSlime, iconPinkSlime,
+	              iconThaumicSlime, iconBlueSlime;
 	
-	public ItemBucketSlime(int id) {
-		super(id);
-		setContainerItem(bucketEmpty);
+	public ItemBucketSlime() {
+		setContainerItem(Items.bucket);
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister iconRegister) {
+	public void registerIcons(IIconRegister iconRegister) {
 		itemIcon = iconRegister.registerIcon(Constants.modId + ":bucketSlime");
 		iconMagmaCube = iconRegister.registerIcon(Constants.modId + ":bucketSlime_magmaCube");
 		iconMazeSlime = iconRegister.registerIcon(Constants.modId + ":bucketSlime_mazeSlime");
@@ -45,7 +44,7 @@ public class ItemBucketSlime extends ItemBetterStorage {
 	}
 	
 	@Override
-	public Icon getIcon(ItemStack stack, int pass) {
+	public IIcon getIcon(ItemStack stack, int pass) {
 		String id = StackUtils.get(stack, "Slime", "Slime", "id");
 		if (id.equals("LavaSlime")) return iconMagmaCube;
 		else if (id.equals("TwilightForest.Maze Slime")) return iconMazeSlime;
@@ -56,7 +55,7 @@ public class ItemBucketSlime extends ItemBetterStorage {
 	}
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getIconIndex(ItemStack stack) {
+	public IIcon getIconIndex(ItemStack stack) {
 		return getIcon(stack, 0);
 	}
 	
@@ -76,7 +75,7 @@ public class ItemBucketSlime extends ItemBetterStorage {
 	                         float hitX, float hitY, float hitZ) {
 		if (!world.isRemote) {
 			
-			Block block = Block.blocksList[world.getBlockId(x, y, z)];
+			Block block = world.getBlock(x, y, z);
 			x += Facing.offsetsXForSide[side];
 			y += Facing.offsetsYForSide[side];
 			z += Facing.offsetsZForSide[side];
@@ -98,7 +97,7 @@ public class ItemBucketSlime extends ItemBetterStorage {
 				world.spawnEntityInWorld(slime);
 				slime.playSound("mob.slime.big", 1.2F, 0.6F);
 				
-				player.setCurrentItemOrArmor(CurrentItem.HELD, new ItemStack(Item.bucketEmpty));
+				player.setCurrentItemOrArmor(EquipmentSlot.HELD, new ItemStack(Items.bucket));
 			}
 			
 		}
@@ -111,7 +110,7 @@ public class ItemBucketSlime extends ItemBetterStorage {
 	public static void pickUpSlime(EntityPlayer player, EntityLiving slime) {
 		if (slime.isDead || (getSlimeSize(slime) != 1)) return;
 		
-		ItemStack stack = new ItemStack(Items.slimeBucket);
+		ItemStack stack = new ItemStack(BetterStorageItems.slimeBucket);
 		
 		String entityId = EntityList.getEntityString(slime);
 		if (!entityId.equals("Slime"))
@@ -119,7 +118,7 @@ public class ItemBucketSlime extends ItemBetterStorage {
 		if (slime.hasCustomNameTag())
 			StackUtils.set(stack, slime.getCustomNameTag(), "Slime", "name");
 		
-		player.setCurrentItemOrArmor(CurrentItem.HELD, stack);
+		player.setCurrentItemOrArmor(EquipmentSlot.HELD, stack);
 		slime.playSound("mob.slime.big", 1.2F, 0.8F);
 		slime.isDead = true;
 	}

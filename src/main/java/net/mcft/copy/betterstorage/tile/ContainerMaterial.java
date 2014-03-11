@@ -8,7 +8,8 @@ import java.util.Map;
 import net.mcft.copy.betterstorage.misc.BetterStorageResource;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.block.Block;
-import net.minecraft.item.Item;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -22,10 +23,10 @@ public class ContainerMaterial {
 	private static List<ContainerMaterial> materials = new ArrayList<ContainerMaterial>();
 	
 	// Vanilla materials
-	public static ContainerMaterial iron    = new ContainerMaterial(0, "iron",    Item.ingotIron, Block.blockIron);
-	public static ContainerMaterial gold    = new ContainerMaterial(1, "gold",    Item.ingotGold, Block.blockGold);
-	public static ContainerMaterial diamond = new ContainerMaterial(2, "diamond", Item.diamond,   Block.blockDiamond);
-	public static ContainerMaterial emerald = new ContainerMaterial(3, "emerald", Item.emerald,   Block.blockEmerald);
+	public static ContainerMaterial iron    = new ContainerMaterial(0, "iron",    Items.iron_ingot, Blocks.iron_block);
+	public static ContainerMaterial gold    = new ContainerMaterial(1, "gold",    Items.gold_ingot, Blocks.gold_block);
+	public static ContainerMaterial diamond = new ContainerMaterial(2, "diamond", Items.diamond,    Blocks.diamond_block);
+	public static ContainerMaterial emerald = new ContainerMaterial(3, "emerald", Items.emerald,    Blocks.emerald_block);
 	
 	// Mod materials
 	public static ContainerMaterial copper = new ContainerMaterial(5, "copper", "ingotCopper", "blockCopper");

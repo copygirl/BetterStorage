@@ -11,7 +11,7 @@ import net.mcft.copy.betterstorage.config.setting.DoubleSetting;
 import net.mcft.copy.betterstorage.config.setting.IntegerSetting;
 import net.mcft.copy.betterstorage.config.setting.Setting;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.Configuration;
+import net.minecraftforge.common.config.Configuration;
 
 public class Config {
 	

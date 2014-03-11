@@ -1,6 +1,7 @@
 package net.mcft.copy.betterstorage.item.recipe;
 
 import net.mcft.copy.betterstorage.item.ItemDrinkingHelmet;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -9,7 +10,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 public class DrinkingHelmetRecipe extends ShapedRecipes {
 	
-	private static final ItemStack potion = new ItemStack(Item.potion, 1, OreDictionary.WILDCARD_VALUE);
+	private static final ItemStack potion = new ItemStack(Items.potionitem, 1, OreDictionary.WILDCARD_VALUE);
 	
 	public DrinkingHelmetRecipe(Item drinkingHelmet) {
 		super(3, 1, new ItemStack[]{ potion, new ItemStack(drinkingHelmet, 1, OreDictionary.WILDCARD_VALUE), potion }, new ItemStack(drinkingHelmet));

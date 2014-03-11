@@ -3,7 +3,6 @@ package net.mcft.copy.betterstorage.tile;
 import net.mcft.copy.betterstorage.attachment.IHasAttachments;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityContainer;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,16 +11,16 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
-public abstract class TileContainerBetterStorage extends TileBetterStorage implements ITileEntityProvider {
+public abstract class TileContainerBetterStorage extends TileBetterStorage {
 	
-	protected TileContainerBetterStorage(int id, Material material) {
-		super(id, material);
+	protected TileContainerBetterStorage(Material material) {
+		super(material);
 		isBlockContainer = true;
 	}
 	
 	@Override
 	public boolean onBlockEventReceived(World world, int x, int y, int z, int eventId, int eventPar) {
-        TileEntity te = world.getBlockTileEntity(x, y, z);
+        TileEntity te = world.getTileEntity(x, y, z);
         return ((te != null) ? te.receiveClientEvent(eventId, eventPar) : false);
 	}
 	
@@ -39,9 +38,9 @@ public abstract class TileContainerBetterStorage extends TileBetterStorage imple
 	}
 	
 	@Override
-	public boolean removeBlockByPlayer(World world, EntityPlayer player, int x, int y, int z) {
+	public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z) {
 		if (!getContainer(world, x, y, z).onBlockBreak(player)) return false;
-		return super.removeBlockByPlayer(world, player, x, y, z);
+		return super.removedByPlayer(world, player, x, y, z);
 	}
 	
 	@Override

@@ -6,9 +6,9 @@ import net.mcft.copy.betterstorage.entity.EntityCluckington;
 import net.mcft.copy.betterstorage.entity.EntityFrienderman;
 import cpw.mods.fml.common.registry.EntityRegistry;
 
-public final class Entities {
+public final class BetterStorageEntities {
 	
-	private Entities() {  }
+	private BetterStorageEntities() {  }
 	
 	public static void register() {
 		

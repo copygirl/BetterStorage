@@ -85,13 +85,13 @@ public class CratePileCollection {
 			File tempFile = getTempSaveFile(pileData.id);
 			file.getParentFile().mkdir();
 			NBTTagCompound root = new NBTTagCompound();
-			root.setCompoundTag("data", pileData.toCompound());
+			root.setTag("data", pileData.toCompound());
 			CompressedStreamTools.write(root, tempFile);
 			if (file.exists() && !file.delete())
 				throw new Exception(file + " could not be deleted.");
 			tempFile.renameTo(file);
 		} catch (Exception e) {
-			BetterStorage.log.warning("Error saving CratePileData: " + e);
+			BetterStorage.log.warn("Error saving CratePileData: " + e);
 			e.printStackTrace();
 		}
 	}
@@ -104,7 +104,7 @@ public class CratePileCollection {
 			NBTTagCompound root = CompressedStreamTools.read(file);
 			return CratePileData.fromCompound(this, id, root.getCompoundTag("data"));
 		} catch (Exception e) {
-			BetterStorage.log.warning("Error loading CratePileData: " + e);
+			BetterStorage.log.warn("Error loading CratePileData: " + e);
 			e.printStackTrace();
 			return null;
 		}

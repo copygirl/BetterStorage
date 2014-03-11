@@ -13,6 +13,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
@@ -22,29 +23,29 @@ import net.minecraft.world.World;
 
 public abstract class TileLockable extends TileContainerBetterStorage {
 	
-	protected TileLockable(int id, Material material) {
-		super(id, material);
+	protected TileLockable(Material material) {
+		super(material);
 	}
 	
 	public boolean hasMaterial() { return true; }
 	
 	@Override
-	public void getSubBlocks(int id, CreativeTabs tab, List list) {
-		if (!hasMaterial()) super.getSubBlocks(id, tab, list);
+	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+		if (!hasMaterial()) super.getSubBlocks(item, tab, list);
 		else for (ContainerMaterial material : ContainerMaterial.getMaterials())
-			list.add(material.setMaterial(new ItemStack(id, 1, 0)));
+			list.add(material.setMaterial(new ItemStack(item, 1, 0)));
 	}
 	
 	@Override
-	public boolean removeBlockByPlayer(World world, EntityPlayer player, int x, int y, int z) {
+	public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z) {
 		if (hasMaterial() && !player.capabilities.isCreativeMode)
-			dropBlockAsItem_do(world, x, y, z, WorldUtils.get(world, x, y, z, TileEntityLockable.class).material.setMaterial(new ItemStack(blockID, 1, 0)));
-		return super.removeBlockByPlayer(world, player, x, y, z);
+			dropBlockAsItem(world, x, y, z, WorldUtils.get(world, x, y, z, TileEntityLockable.class).material.setMaterial(new ItemStack(this, 1, 0)));
+		return super.removedByPlayer(world, player, x, y, z);
 	}
 	@Override
 	public void onBlockExploded(World world, int x, int y, int z, Explosion explosion) {
 		if (hasMaterial())
-			dropBlockAsItem_do(world, x, y, z, WorldUtils.get(world, x, y, z, TileEntityLockable.class).material.setMaterial(new ItemStack(blockID, 1, 0)));
+			dropBlockAsItem(world, x, y, z, WorldUtils.get(world, x, y, z, TileEntityLockable.class).material.setMaterial(new ItemStack(this, 1, 0)));
 		super.onBlockExploded(world, x, y, z, explosion);
 	}
 	

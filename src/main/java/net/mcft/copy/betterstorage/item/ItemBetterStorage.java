@@ -4,7 +4,7 @@ import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.MiscUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -19,11 +19,7 @@ public abstract class ItemBetterStorage extends Item {
 
 	private String name;
 	
-	public ItemBetterStorage(int id) {
-		
-		// Adjusts the ID so the item's config ID
-		// represents the actual ID of the item.
-		super(id - 256);
+	public ItemBetterStorage() {
 		
 		setMaxStackSize(1);
 		setCreativeTab(BetterStorage.creativeTab);
@@ -40,7 +36,7 @@ public abstract class ItemBetterStorage extends Item {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister iconRegister) {
+	public void registerIcons(IIconRegister iconRegister) {
 		itemIcon = iconRegister.registerIcon(Constants.modId + ":" + getItemName());
 	}
 	

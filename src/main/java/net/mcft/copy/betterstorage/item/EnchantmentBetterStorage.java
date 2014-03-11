@@ -10,13 +10,13 @@ import net.mcft.copy.betterstorage.api.BetterStorageEnchantment;
 import net.mcft.copy.betterstorage.api.lock.IKey;
 import net.mcft.copy.betterstorage.api.lock.ILock;
 import net.mcft.copy.betterstorage.config.GlobalConfig;
-import net.mcft.copy.betterstorage.content.Items;
+import net.mcft.copy.betterstorage.content.BetterStorageItems;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.MiscUtils;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.EnumHelper;
+import net.minecraftforge.common.util.EnumHelper;
 
 public class EnchantmentBetterStorage extends Enchantment {
 	
@@ -32,7 +32,7 @@ public class EnchantmentBetterStorage extends Enchantment {
 		Map<String, Enchantment> enchs = BetterStorageEnchantment.enchantments;
 		
 		// Add key enchantments
-		if (MiscUtils.isEnabled(Items.key)) {
+		if (MiscUtils.isEnabled(BetterStorageItems.key)) {
 			EnumEnchantmentType key = EnumHelper.addEnchantmentType("key");
 			
 			EnchantmentBetterStorage unlocking   = conditialNew("unlocking",   key, GlobalConfig.enchUnlockingId,   8, 5,  5, 10, 30, 0);
@@ -52,7 +52,7 @@ public class EnchantmentBetterStorage extends Enchantment {
 		}
 		
 		// Add lock enchantments
-		if (MiscUtils.isEnabled(Items.lock)) {
+		if (MiscUtils.isEnabled(BetterStorageItems.lock)) {
 			EnumEnchantmentType lock = EnumHelper.addEnchantmentType("lock");
 			
 			EnchantmentBetterStorage persistance = conditialNew("persistance", lock, GlobalConfig.enchPersistanceId, 20, 5,  1,  8, 30, 0);

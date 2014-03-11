@@ -9,7 +9,7 @@ import net.mcft.copy.betterstorage.api.ICrateWatcher;
 import net.mcft.copy.betterstorage.config.GlobalConfig;
 import net.mcft.copy.betterstorage.container.ContainerBetterStorage;
 import net.mcft.copy.betterstorage.container.ContainerCrate;
-import net.mcft.copy.betterstorage.content.Tiles;
+import net.mcft.copy.betterstorage.content.BetterStorageTiles;
 import net.mcft.copy.betterstorage.inventory.InventoryCratePlayerView;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityContainer;
@@ -19,10 +19,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet132TileEntityData;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileEntityCrate extends TileEntityContainer implements IInventory, ICrateStorage, ICrateWatcher {
 	
@@ -70,7 +67,7 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 		TileEntityCrate crateAbove = WorldUtils.get(worldObj, x, y + 1, z, TileEntityCrate.class);
 		if ((crateAbove != null) && (crateAbove.data == data)) {
 			worldObj.setBlockToAir(x, y + 1, z);
-			crateAbove.dropItem(new ItemStack(Tiles.crate));
+			crateAbove.dropItem(new ItemStack(BetterStorageTiles.crate));
 		}
 		// If there's still some crates left and this is a
 		// base crate, see which crates are still connected.
@@ -243,7 +240,7 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 	// IInventory implementation
 
 	@Override
-	public String getInvName() { return getName(); }
+	public String getInventoryName() { return getName(); }
 	@Override
 	public int getInventoryStackLimit() { return 64; }
 	
@@ -283,18 +280,18 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 	@Override
 	public void onInventoryChanged() {
 		if (GlobalConfig.enableCrateInventoryInterfaceSetting.getValue())
-			getPileData().blockView.onInventoryChanged();
+			getPileData().blockView.markDirty();
 	}
 	
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) { return false; }
 	@Override
-	public boolean isInvNameLocalized() { return false; }
+	public boolean hasCustomInventoryName() { return false; }
 	
 	@Override
-	public void openChest() { getPileData().blockView.openChest(); }
+	public void openInventory() { getPileData().blockView.openInventory(); }
 	@Override
-	public void closeChest() { getPileData().blockView.closeChest(); }
+	public void closeInventory() { getPileData().blockView.closeInventory(); }
 	
 	// ICrateStorage implementation
 	
@@ -317,6 +314,7 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 	
 	// TileEntity synchronization
 	
+	get
 	@Override
 	public Packet getDescriptionPacket() {
 		NBTTagCompound compound = new NBTTagCompound();

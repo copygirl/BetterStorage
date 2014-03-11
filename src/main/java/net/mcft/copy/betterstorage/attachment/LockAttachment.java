@@ -5,7 +5,7 @@ import net.mcft.copy.betterstorage.api.lock.EnumLockInteraction;
 import net.mcft.copy.betterstorage.api.lock.IKey;
 import net.mcft.copy.betterstorage.api.lock.ILock;
 import net.mcft.copy.betterstorage.api.lock.ILockable;
-import net.mcft.copy.betterstorage.content.Items;
+import net.mcft.copy.betterstorage.content.BetterStorageItems;
 import net.mcft.copy.betterstorage.item.ItemBetterStorage;
 import net.mcft.copy.betterstorage.misc.handlers.PacketHandler;
 import net.mcft.copy.betterstorage.utils.StackUtils;
@@ -21,7 +21,7 @@ import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
-import net.minecraft.network.packet.Packet;
+import net.minecraft.network.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import cpw.mods.fml.relauncher.Side;
@@ -55,7 +55,7 @@ public class LockAttachment extends ItemAttachment {
 	public void update() {
 		hit = Math.max(-20, hit - 1);
 		if (hit <= -20) breakProgress = Math.max(0, breakProgress - 1);
-		if (tileEntity.worldObj.isRemote) {
+		if (tileEntity.getWorldObj().isRemote) {
 			wiggle++;
 			wiggleStrength = Math.max(0.0F, wiggleStrength * 0.9F - 0.1F);
 		}
@@ -72,7 +72,7 @@ public class LockAttachment extends ItemAttachment {
 	@Override
 	public ItemStack pick() {
 		if (item == null) return null;
-		ItemStack key = new ItemStack(Items.key);
+		ItemStack key = new ItemStack(BetterStorageItems.key);
 		ItemBetterStorage.setID(key, ItemBetterStorage.getID(item));
 		int color = ItemBetterStorage.getColor(item);
 		if (color >= 0) ItemBetterStorage.setColor(key, color);
@@ -110,7 +110,7 @@ public class LockAttachment extends ItemAttachment {
 						double x = (box.minX + box.maxX) / 2;
 						double y = (box.minY + box.maxY) / 2;
 						double z = (box.minZ + box.maxZ) / 2;
-						EntityItem item = WorldUtils.spawnItem(tileEntity.worldObj, x, y, z, lock);
+						EntityItem item = WorldUtils.spawnItem(tileEntity.getWorldObj(), x, y, z, lock);
 					}
 					lockable.setLock(null);
 					breakProgress = 0;
@@ -119,7 +119,7 @@ public class LockAttachment extends ItemAttachment {
 				((ILock)lock.getItem()).applyEffects(lock, lockable, player, EnumLockInteraction.ATTACK);
 			}
 			Packet packet = PacketHandler.makePacket(PacketHandler.lockHit, tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, canHurt);
-			PacketHandler.sendToEveryoneNear(tileEntity.worldObj, tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, 32, player, packet);
+			PacketHandler.sendToEveryoneNear(tileEntity.getWorldObj(), tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, 32, player, packet);
 		} else hit(canHurt);
 		return true;
 	}
@@ -133,7 +133,7 @@ public class LockAttachment extends ItemAttachment {
 			double x = (box.minX + box.maxX) / 2;
 			double y = (box.minY + box.maxY) / 2;
 			double z = (box.minZ + box.maxZ) / 2;
-			tileEntity.worldObj.playSound(x, y, z, "random.break", 0.5F, 2.5F, false);
+			tileEntity.getWorldObj().playSound(x, y, z, "random.break", 0.5F, 2.5F, false);
 		}
 	}
 	

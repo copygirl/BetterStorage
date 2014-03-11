@@ -9,23 +9,24 @@ import net.mcft.copy.betterstorage.proxy.ClientProxy;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityBackpack;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class TileBackpack extends TileContainerBetterStorage {
 	
-	public TileBackpack(int id) {
-		super(id, Material.cloth);
+	public TileBackpack() {
+		super(Material.cloth);
 		
 		setHardness(1.5f);
-		setStepSound(soundClothFootstep);
+		setStepSound(soundTypeCloth);
 		float w = getBoundsWidth() / 16.0F;
 		float h = getBoundsHeight() / 16.0F;
 		setBlockBounds(0.5F - w / 2, 0.0F, 0.5F - w / 2, 0.5F + w / 2, h, 0.5F + w / 2);
@@ -40,7 +41,7 @@ public class TileBackpack extends TileContainerBetterStorage {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister iconRegister) {
+	public void registerBlockIcons(IIconRegister iconRegister) {
 		blockIcon = iconRegister.registerIcon("wool_colored_brown");
 	}
 	
@@ -93,13 +94,13 @@ public class TileBackpack extends TileContainerBetterStorage {
 		    BetterStorage.globalConfig.getBoolean(GlobalConfig.enableHelpTooltips) &&
 		    (System.currentTimeMillis() > lastHelpMessage + 10 * 1000)) {
 			boolean backpack = (ItemBackpack.getBackpack(player) != null);
-			player.addChatMessage("tile.betterstorage.backpack.cantEquip." + (backpack ? "backpack" : "chestplate"));
+			player.addChatMessage(new ChatComponentTranslation("tile.betterstorage.backpack.cantEquip." + (backpack ? "backpack" : "chestplate")));
 			lastHelpMessage = System.currentTimeMillis();
 		}
 	}
 	
 	@Override
-	public TileEntity createNewTileEntity(World world) {
+	public TileEntity createTileEntity(World world, int metadata) {
 		return new TileEntityBackpack();
 	}
 	

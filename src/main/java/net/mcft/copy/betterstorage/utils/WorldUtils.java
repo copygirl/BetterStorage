@@ -65,7 +65,7 @@ public final class WorldUtils {
 	}
 	/** Spawn an ItemStack dropping from a destroyed block. */
 	public static EntityItem dropStackFromBlock(TileEntity te, ItemStack stack) {
-		return dropStackFromBlock(te.worldObj, te.xCoord, te.yCoord, te.zCoord, stack);
+		return dropStackFromBlock(te.getWorldObj(), te.xCoord, te.yCoord, te.zCoord, stack);
 	}
 	
 	/** Spawns an ItemStack as if it was dropped from an entity on death. */
@@ -93,36 +93,32 @@ public final class WorldUtils {
 	
 	// TileEntity related functions
 	
-	/** Returns whether the Block at the position has this id. */
-	public static boolean is(IBlockAccess world, int x, int y, int z, int id) {
-		return (world.getBlockId(x, y, z) == id);
-	}
 	/** Returns whether the Block at the position is the same as block. */
 	public static boolean is(IBlockAccess world, int x, int y, int z, Block block) {
-		return is(world, x, y, z, block.blockID);
+		return is(world, x, y, z, block);
 	}
 	
 	/** Returns whether the TileEntity at the position is an instance of tileClass. */
 	public static <T> boolean is(IBlockAccess world, int x, int y, int z, Class<T> tileClass) {
-		return tileClass.isInstance(world.getBlockTileEntity(x, y, z));
+		return tileClass.isInstance(world.getTileEntity(x, y, z));
 	}
 	/** Returns the TileEntity at the position if it's an instance of tileClass, null if not. */
 	public static <T> T get(IBlockAccess world, int x, int y, int z, Class<T> tileClass) {
-		TileEntity t = world.getBlockTileEntity(x, y, z);
+		TileEntity t = world.getTileEntity(x, y, z);
 		return (tileClass.isInstance(t) ? (T)t : null);
 	}
 	
 	/** Returns if the TileEntity can be used by this player. */
 	public static boolean isTileEntityUsableByPlayer(TileEntity entity, EntityPlayer player) {
-		return (entity.worldObj.getBlockTileEntity(entity.xCoord, entity.yCoord, entity.zCoord) == entity &&
+		return (entity.getWorldObj().getTileEntity(entity.xCoord, entity.yCoord, entity.zCoord) == entity &&
 		        player.getDistanceSq(entity.xCoord + 0.5, entity.yCoord + 0.5, entity.zCoord + 0.5) <= 64.0);
 	}
 	
 	/** Counts and returns the number of players who're accessing a tile entity. */
 	public static int syncPlayersUsing(TileEntity te, int playersUsing, IInventory playerInventory) {
-		if (!te.worldObj.isRemote && (playersUsing != 0)) {
+		if (!te.getWorldObj().isRemote && (playersUsing != 0)) {
 			playersUsing = 0;
-			List<EntityPlayer> players = te.worldObj.getEntitiesWithinAABB(EntityPlayer.class, getAABB(te, 5));
+			List<EntityPlayer> players = te.getWorldObj().getEntitiesWithinAABB(EntityPlayer.class, getAABB(te, 5));
 			for (EntityPlayer player : players) {
 				if (player.openContainer instanceof ContainerBetterStorage) {
 					IInventory inventory = ((ContainerBetterStorage)player.openContainer).inventory;
@@ -149,19 +145,9 @@ public final class WorldUtils {
 		Vec3 start = player.worldObj.getWorldVec3Pool().getVecFromPool(player.posX, player.posY + 1.62 - player.yOffset, player.posZ);
 		Vec3 look = player.getLook(1.0F);
 		Vec3 end = start.addVector(look.xCoord * range, look.yCoord * range, look.zCoord * range);
-		MovingObjectPosition target = player.worldObj.clip(start, end);
+		MovingObjectPosition target = player.worldObj.rayTraceBlocks(start, end);
 		Attachments.playerLocal.remove();
 		return target;
-	}
-	
-	public static boolean isBlockReplacable(Block block, World world, int x, int y, int z) {
-		return ((block == null) || (block == Block.snow) || (block == Block.vine) ||
-			    (block == Block.tallGrass) || (block == Block.deadBush) ||
-			    block.isBlockReplaceable(world, x, y, z));
-	}
-	public static boolean isBlockReplacable(World world, int x, int y, int z) {
-		Block block = Block.blocksList[world.getBlockId(x, y, z)];
-		return isBlockReplacable(block, world, x, y, z);
 	}
 	
 }

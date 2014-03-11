@@ -1,23 +1,22 @@
 package net.mcft.copy.betterstorage;
 
-import java.util.logging.Logger;
-
 import net.mcft.copy.betterstorage.addon.Addon;
 import net.mcft.copy.betterstorage.config.Config;
 import net.mcft.copy.betterstorage.config.GlobalConfig;
-import net.mcft.copy.betterstorage.content.Entities;
-import net.mcft.copy.betterstorage.content.Items;
-import net.mcft.copy.betterstorage.content.TileEntities;
-import net.mcft.copy.betterstorage.content.Tiles;
+import net.mcft.copy.betterstorage.content.BetterStorageEntities;
+import net.mcft.copy.betterstorage.content.BetterStorageItems;
+import net.mcft.copy.betterstorage.content.BetterStorageTileEntities;
+import net.mcft.copy.betterstorage.content.BetterStorageTiles;
 import net.mcft.copy.betterstorage.item.EnchantmentBetterStorage;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.misc.CreativeTabBetterStorage;
 import net.mcft.copy.betterstorage.misc.DungeonLoot;
 import net.mcft.copy.betterstorage.misc.Recipes;
-import net.mcft.copy.betterstorage.misc.handlers.CraftingHandler;
-import net.mcft.copy.betterstorage.misc.handlers.PacketHandler;
 import net.mcft.copy.betterstorage.proxy.CommonProxy;
 import net.minecraft.creativetab.CreativeTabs;
+
+import org.apache.logging.log4j.Logger;
+
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -25,17 +24,13 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.network.NetworkMod;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(modid = Constants.modId,
      name = Constants.modName,
      dependencies = "required-after:Forge; after:Thaumcraft")
-@NetworkMod(clientSideRequired = true,
-            serverSideRequired = false,
-            channels = { Constants.modId },
-            packetHandler = PacketHandler.class)
 public class BetterStorage {
+	
+	// FIXME: Register PacketHandler
 	
 	@Instance(Constants.modId)
 	public static BetterStorage instance;
@@ -64,13 +59,13 @@ public class BetterStorage {
 		globalConfig.save();
 		
 		BetterStorage.log.info(Constants.modName + " will overwrite some of its own items. Don't worry, this is normal.");
-		Tiles.initialize();
-		Items.initialize();
+		BetterStorageTiles.initialize();
+		BetterStorageItems.initialize();
 		
 		EnchantmentBetterStorage.initialize();
 		
-		TileEntities.register();
-		Entities.register();
+		BetterStorageTileEntities.register();
+		BetterStorageEntities.register();
 		DungeonLoot.add();
 		
 	}
@@ -80,7 +75,6 @@ public class BetterStorage {
 		
 		Recipes.add();
 		proxy.initialize();
-		GameRegistry.registerCraftingHandler(new CraftingHandler());
 		
 	}
 	

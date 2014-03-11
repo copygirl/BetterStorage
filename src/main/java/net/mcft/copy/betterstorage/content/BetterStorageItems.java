@@ -19,7 +19,7 @@ import net.mcft.copy.betterstorage.item.locking.ItemMasterKey;
 import net.mcft.copy.betterstorage.utils.MiscUtils;
 import net.minecraftforge.oredict.OreDictionary;
 
-public final class Items {
+public final class BetterStorageItems {
 	
 	public static ItemKey key;
 	public static ItemLock lock;
@@ -40,7 +40,7 @@ public final class Items {
 	public static ItemCardboardAxe cardboardAxe;
 	public static ItemCardboardHoe cardboardHoe;
 	
-	private Items() {  }
+	private BetterStorageItems() {  }
 	
 	public static void initialize() {
 		

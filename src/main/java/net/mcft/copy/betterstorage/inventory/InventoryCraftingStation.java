@@ -52,7 +52,7 @@ public class InventoryCraftingStation extends InventoryBetterStorage {
 		lastOutput = new ItemStack[output.length];
 		updateLastOutput();
 		
-		onInventoryChanged();
+		markDirty();
 	}
 	
 	public void update() {
@@ -124,7 +124,7 @@ public class InventoryCraftingStation extends InventoryBetterStorage {
 		if ((containerItem != null) && !simulate) {
 			// Try to add the container item to the internal storage, or spawn the item in the world.
 			if (!InventoryUtils.tryAddItemToInventory(containerItem, new InventoryStacks(contents), true) && (entity != null))
-				WorldUtils.spawnItem(entity.worldObj, entity.xCoord + 0.5, entity.yCoord + 0.5, entity.zCoord + 0.5, containerItem);
+				WorldUtils.spawnItem(entity.getWorldObj(), entity.xCoord + 0.5, entity.yCoord + 0.5, entity.zCoord + 0.5, containerItem);
 		}
 		return stack;
 	}
@@ -218,12 +218,12 @@ public class InventoryCraftingStation extends InventoryBetterStorage {
 	public boolean isUseableByPlayer(EntityPlayer player) { return true; }
 	
 	@Override
-	public void openChest() {  }
+	public void openInventory() {  }
 	@Override
-	public void closeChest() {  }
+	public void closeInventory() {  }
 	
 	@Override
-	public void onInventoryChanged() {
+	public void markDirty() {
 		
 		boolean updateLastOutput = false;
 		

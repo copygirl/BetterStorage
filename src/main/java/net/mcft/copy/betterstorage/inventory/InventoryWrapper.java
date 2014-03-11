@@ -23,9 +23,9 @@ public class InventoryWrapper implements IInventory {
 	}
 	
 	@Override
-	public String getInvName() { return (overwriteName ? title : base.getInvName()); }
+	public String getInventoryName() { return (overwriteName ? title : base.getInventoryName()); }
 	@Override
-	public boolean isInvNameLocalized() { return (overwriteName ? localized : base.isInvNameLocalized()); }
+	public boolean hasCustomInventoryName() { return (overwriteName ? localized : base.hasCustomInventoryName()); }
 	
 	@Override
 	public int getSizeInventory() { return base.getSizeInventory(); }
@@ -46,11 +46,11 @@ public class InventoryWrapper implements IInventory {
 	public boolean isItemValidForSlot(int slot, ItemStack stack) { return base.isItemValidForSlot(slot, stack); }
 	
 	@Override
-	public void onInventoryChanged() { base.onInventoryChanged(); }
+	public void markDirty() { base.markDirty(); }
 	@Override
-	public void openChest() { base.openChest(); }
+	public void openInventory() { base.openInventory(); }
 	@Override
-	public void closeChest() { base.closeChest(); }
+	public void closeInventory() { base.closeInventory(); }
 	
 	@Override
 	public boolean equals(Object obj) {

@@ -11,8 +11,11 @@ public class SmallPotionEffect extends PotionEffect {
 	public SmallPotionEffect(int potionID, int duration, int amplifier) {
 		super(potionID, Math.max(1, duration / ItemDrinkingHelmet.maxUses), amplifier);
 	}
-	public SmallPotionEffect(PotionEffect effect) {
-		this(effect.getPotionID(), effect.duration, effect.getAmplifier());
+	public SmallPotionEffect(PotionEffect effect, PotionEffect active) {
+		this(effect.getPotionID(), getDuration(effect, active), effect.getAmplifier());
+	}
+	private static int getDuration(PotionEffect effect, PotionEffect active) {
+		return ((active != null) ? (effect.getDuration() + active.getDuration()) : effect.getDuration());
 	}
 	
 	@Override

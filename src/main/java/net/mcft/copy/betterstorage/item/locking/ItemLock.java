@@ -8,30 +8,29 @@ import net.mcft.copy.betterstorage.item.ItemBetterStorage;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.RandomUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemLock extends ItemBetterStorage implements ILock {
 	
-	private Icon iconColor, iconFullColor;
+	private IIcon iconColor, iconFullColor;
 	
-	public ItemLock(int id) {
-		super(id);
+	public ItemLock() {
 		setMaxDamage(64);
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister iconRegister) {
+	public void registerIcons(IIconRegister iconRegister) {
 		super.registerIcons(iconRegister);
 		iconColor = iconRegister.registerIcon(Constants.modId + ":lock_color");
 		iconFullColor = iconRegister.registerIcon(Constants.modId + ":lock_fullColor");
@@ -41,7 +40,7 @@ public class ItemLock extends ItemBetterStorage implements ILock {
 	public boolean isRepairable() { return true; }
 	@Override
 	public boolean getIsRepairable(ItemStack stack, ItemStack material) {
-		return (material.getItem() == Item.ingotGold);
+		return (material.getItem() == Items.gold_ingot);
 	}
 	
 	@Override
@@ -73,7 +72,7 @@ public class ItemLock extends ItemBetterStorage implements ILock {
 		} else return fullColor;
 	}
 	@Override
-	public Icon getIcon(ItemStack stack, int renderPass) {
+	public IIcon getIcon(ItemStack stack, int renderPass) {
 		boolean hasFullColor = (getFullColor(stack) >= 0);
 		if ((renderPass > 0) && (getColor(stack) >= 0)) return iconColor;
 		return (hasFullColor ? iconFullColor : itemIcon);

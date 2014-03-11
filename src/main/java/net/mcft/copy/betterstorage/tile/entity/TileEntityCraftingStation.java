@@ -13,6 +13,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.Constants.NBT;
 
 public class TileEntityCraftingStation extends TileEntityContainer
                                        implements IInventory, ISidedInventory {
@@ -59,9 +60,9 @@ public class TileEntityCraftingStation extends TileEntityContainer
 	// IInventory implementation
 	
 	@Override
-	public String getInvName() { return getName(); }
+	public String getInventoryName() { return getName(); }
 	@Override
-	public boolean isInvNameLocalized() { return !shouldLocalizeTitle(); }
+	public boolean hasCustomInventoryName() { return !shouldLocalizeTitle(); }
 	@Override
 	public int getInventoryStackLimit() { return 64; }
 	@Override
@@ -86,14 +87,14 @@ public class TileEntityCraftingStation extends TileEntityContainer
 	@Override
 	public ItemStack getStackInSlotOnClosing(int slot) { return null; }
 	@Override
-	public void onInventoryChanged() {
-		super.onInventoryChanged();
-		stationInventory.onInventoryChanged();
+	public void markDirty() {
+		super.markDirty();
+		stationInventory.markDirty();
 	}
 	@Override
-	public void openChest() {  }
+	public void openInventory() {  }
 	@Override
-	public void closeChest() {  }
+	public void closeInventory() {  }
 	
 	// ISidedInventory implementation
 	
@@ -115,14 +116,14 @@ public class TileEntityCraftingStation extends TileEntityContainer
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
-		NbtUtils.readItems(crafting, compound.getTagList("Crafting"));
+		NbtUtils.readItems(crafting, compound.getTagList("Crafting", NBT.TAG_COMPOUND));
 		if (compound.hasKey("Output"))
-			NbtUtils.readItems(output, compound.getTagList("Output"));
+			NbtUtils.readItems(output, compound.getTagList("Output", NBT.TAG_COMPOUND));
 		stationInventory.progress = compound.getInteger("progress");
 		stationInventory.outputIsReal = compound.hasKey("Output");
 		// Update the inventory, causes ghost output to be initialized.
 		stationInventory.inputChanged();
-		stationInventory.onInventoryChanged();
+		stationInventory.markDirty();
 	}
 	@Override
 	public void writeToNBT(NBTTagCompound compound) {

@@ -1,5 +1,7 @@
 package net.mcft.copy.betterstorage.misc.handlers;
 
+import ibxm.Player;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -9,12 +11,12 @@ import java.util.List;
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.api.BetterStorageBackpack;
 import net.mcft.copy.betterstorage.config.GlobalConfig;
-import net.mcft.copy.betterstorage.content.Tiles;
+import net.mcft.copy.betterstorage.content.BetterStorageTiles;
 import net.mcft.copy.betterstorage.entity.EntityFrienderman;
 import net.mcft.copy.betterstorage.inventory.InventoryStacks;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.item.ItemEnderBackpack;
-import net.mcft.copy.betterstorage.misc.CurrentItem;
+import net.mcft.copy.betterstorage.misc.EquipmentSlot;
 import net.mcft.copy.betterstorage.misc.PropertiesBackpack;
 import net.mcft.copy.betterstorage.tile.TileEnderBackpack;
 import net.mcft.copy.betterstorage.utils.DirectionUtils;
@@ -34,16 +36,16 @@ import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.packet.Packet;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.ChestGenHooks;
-import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.event.Event.Result;
-import net.minecraftforge.event.ForgeSubscribe;
+import net.minecraftforge.common.util.Constants.NBT;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -52,9 +54,8 @@ import net.minecraftforge.event.entity.living.LivingSpawnEvent.SpecialSpawn;
 import net.minecraftforge.event.entity.player.EntityInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
-import cpw.mods.fml.common.IPlayerTracker;
-import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.common.network.Player;
+import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.eventhandler.Event.Result;
 
 public class BackpackHandler implements IPlayerTracker {
 	
@@ -62,49 +63,62 @@ public class BackpackHandler implements IPlayerTracker {
 	    chance the backpack will contain some dungeon loot. */
 	private static final WeightedRandomChestContent[] randomBackpackItems = new WeightedRandomChestContent[]{
 		
-		new WeightedRandomChestContent(Item.stick.itemID, 0, 8, 20, 100),
-		new WeightedRandomChestContent(Block.planks.blockID, 0, 2, 10, 100),
-		new WeightedRandomChestContent(Block.wood.blockID, 0, 1, 8, 40),
-		new WeightedRandomChestContent(Block.cobblestone.blockID, 0, 6, 16, 80),
+		makeWeightedContent(Items.stick, 8, 20, 100),
+		makeWeightedContent(Blocks.planks, 2, 10, 100),
+		makeWeightedContent(Blocks.log, 1, 8, 40),
+		makeWeightedContent(Blocks.cobblestone, 6, 16, 80),
 		
-		new WeightedRandomChestContent(Item.pickaxeWood.itemID, 50, 1, 1, 35),
-		new WeightedRandomChestContent(Item.pickaxeWood.itemID, 20, 1, 1, 10),
-		new WeightedRandomChestContent(Item.pickaxeStone.itemID, 120, 1, 1, 10),
-		new WeightedRandomChestContent(Item.pickaxeStone.itemID, 80, 1, 1, 5),
-		new WeightedRandomChestContent(Item.pickaxeIron.itemID, 220, 1, 1, 2),
+		makeWeightedContent(Items.wooden_pickaxe, 50, 35),
+		makeWeightedContent(Items.wooden_pickaxe, 20, 10),
+		makeWeightedContent(Items.stone_pickaxe, 120, 10),
+		makeWeightedContent(Items.stone_pickaxe, 80, 5),
+		makeWeightedContent(Items.iron_pickaxe, 220, 2),
 		
-		new WeightedRandomChestContent(Item.swordWood.itemID, 40, 1, 1, 30),
-		new WeightedRandomChestContent(Item.swordStone.itemID, 60, 1, 1, 5),
+		makeWeightedContent(Items.wooden_sword, 40, 30),
+		makeWeightedContent(Items.stone_sword, 60, 5),
 		
-		new WeightedRandomChestContent(Item.bow.itemID, 200, 1, 1, 10),
-		new WeightedRandomChestContent(Item.bow.itemID, 50, 1, 1, 3),
-		new WeightedRandomChestContent(Item.fishingRod.itemID, 20, 1, 1, 4),
-		new WeightedRandomChestContent(Item.compass.itemID, 0, 1, 1, 6),
-		new WeightedRandomChestContent(Item.pocketSundial.itemID, 0, 1, 1, 5),
+		makeWeightedContent(Items.bow, 200, 1, 1, 10),
+		makeWeightedContent(Items.bow, 50, 1, 1, 3),
+		makeWeightedContent(Items.fishing_rod, 20, 1, 1, 4),
+		makeWeightedContent(Items.compass, 1, 1, 6),
+		makeWeightedContent(Items.clock, 1, 1, 5),
 		
-		new WeightedRandomChestContent(Block.torchWood.blockID, 0, 6, 24, 30),
-		new WeightedRandomChestContent(Item.arrow.itemID, 0, 2, 12, 10),
-		new WeightedRandomChestContent(Item.rottenFlesh.itemID, 0, 3, 6, 15),
-		new WeightedRandomChestContent(Item.bone.itemID, 0, 2, 5, 20),
-		new WeightedRandomChestContent(Item.silk.itemID, 0, 3, 10, 15),
+		makeWeightedContent(Blocks.torch, 6, 24, 30),
+		makeWeightedContent(Items.arrow, 2, 12, 10),
+		makeWeightedContent(Items.rotten_flesh, 0, 3, 6, 15),
+		makeWeightedContent(Items.bone, 2, 5, 20),
+		makeWeightedContent(Items.string, 3, 10, 15),
 		
-		new WeightedRandomChestContent(Item.appleRed.itemID, 0, 2, 5, 15),
-		new WeightedRandomChestContent(Item.bread.itemID, 0, 2, 4, 10),
-		new WeightedRandomChestContent(Item.wheat.itemID, 0, 3, 6, 10),
-		new WeightedRandomChestContent(Item.carrot.itemID, 0, 1, 2, 8),
-		new WeightedRandomChestContent(Item.potato.itemID, 0, 1, 2, 5),
-		new WeightedRandomChestContent(Item.fishRaw.itemID, 0, 1, 4, 5),
-		new WeightedRandomChestContent(Item.fishCooked.itemID, 0, 1, 2, 4),
+		makeWeightedContent(Items.apple, 2, 5, 15),
+		makeWeightedContent(Items.bread, 2, 4, 10),
+		makeWeightedContent(Items.wheat, 3, 6, 10),
+		makeWeightedContent(Items.carrot, 1, 2, 8),
+		makeWeightedContent(Items.potato, 1, 2, 5),
+		makeWeightedContent(Items.fish, 1, 4, 5),
+		makeWeightedContent(Items.cooked_fished, 1, 2, 4),
 		
-		new WeightedRandomChestContent(Item.coal.itemID, 0, 3, 9, 20),
-		new WeightedRandomChestContent(Item.coal.itemID, 0, 20, 32, 5),
-		new WeightedRandomChestContent(Block.oreIron.blockID, 0, 2, 5, 15),
-		new WeightedRandomChestContent(Block.oreIron.blockID, 0, 10, 20, 2),
-		new WeightedRandomChestContent(Block.oreGold.blockID, 0, 2, 7, 8),
-		new WeightedRandomChestContent(Item.diamond.itemID, 0, 1, 2, 1),
-		new WeightedRandomChestContent(Item.emerald.itemID, 0, 1, 1, 1),
+		makeWeightedContent(Items.coal, 3, 9, 20),
+		makeWeightedContent(Items.coal, 20, 32, 5),
+		makeWeightedContent(Blocks.iron_ore, 2, 5, 15),
+		makeWeightedContent(Blocks.iron_ore, 10, 20, 2),
+		makeWeightedContent(Blocks.gold_ore, 2, 7, 8),
+		makeWeightedContent(Items.diamond, 1, 2, 1),
+		makeWeightedContent(Items.emerald, 1, 1, 1),
 		
 	};
+
+	private static WeightedRandomChestContent makeWeightedContent(Item item, int damage, int min, int max, int weight) {
+		return new WeightedRandomChestContent(item, damage, min, max, weight);
+	}
+	private static WeightedRandomChestContent makeWeightedContent(Item item, int min, int max, int weight) {
+		makeWeightedContent(item, 0, min, max, weight);
+	}
+	private static WeightedRandomChestContent makeWeightedContent(Item item, int damage, int weight) {
+		makeWeightedContent(item, damage, 1, 1, weight);
+	}
+	private static WeightedRandomChestContent makeWeightedContent(Block block, int min, int max, int weight) {
+		makeWeightedContent(Item.getItemFromBlock(block), min, max, weight);
+	}
 	
 	public BackpackHandler() {
 		BetterStorageBackpack.spawnWithBackpack(EntityZombie.class, 1.0 / 800);
@@ -113,7 +127,7 @@ public class BackpackHandler implements IPlayerTracker {
 		BetterStorageBackpack.spawnWithBackpack(EntityEnderman.class, 1.0 / 80);
 	}
 	
-	@ForgeSubscribe
+	@EventHandler
 	public void onEntityConstructing(EntityConstructing event) {
 		// Initialize backpack data for every living entity.
 		// If the entity does have a backpack, it will be loaded automatically.
@@ -121,7 +135,7 @@ public class BackpackHandler implements IPlayerTracker {
 			ItemBackpack.initBackpackData((EntityLivingBase)event.entity);
 	}
 	
-	@ForgeSubscribe
+	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		if (event.isCanceled()) return;
 		// When player right clicks a block, attempt to place backpack.
@@ -132,7 +146,7 @@ public class BackpackHandler implements IPlayerTracker {
 			}
 	}
 	
-	@ForgeSubscribe
+	@EventHandler
 	public void onEntityInteract(EntityInteractEvent event) {
 		
 		// Right clicking the back of an entity that
@@ -151,7 +165,7 @@ public class BackpackHandler implements IPlayerTracker {
 		
 	}
 	
-	@ForgeSubscribe
+	@EventHandler
 	public void onSpecialSpawn(SpecialSpawn event) {
 		
 		// When a mob spawns naturally, see if it has a chance to spawn with a backpack.
@@ -169,7 +183,7 @@ public class BackpackHandler implements IPlayerTracker {
 		
 		// If entity is a vanilla enderman, replace it with a friendly one.
 		if (entity.getClass().equals(EntityEnderman.class)) {
-			if (MiscUtils.isEnabled(Tiles.enderBackpack) &&
+			if (MiscUtils.isEnabled(BetterStorageTiles.enderBackpack) &&
 			    // Don't spawn friendly endermen in the end / end biomes, would make them too easy to get.
 			    (entity.worldObj.getBiomeGenForCoords((int)entity.posX, (int)entity.posZ) != BiomeGenBase.sky)) {
 				EntityFrienderman frienderman = new EntityFrienderman(entity.worldObj);
@@ -179,12 +193,12 @@ public class BackpackHandler implements IPlayerTracker {
 				entity.setDead();
 			}
 		// Otherwise, just mark it to spawn with a backpack.
-		} else if (MiscUtils.isEnabled(Tiles.backpack))
+		} else if (MiscUtils.isEnabled(BetterStorageTiles.backpack))
 			ItemBackpack.getBackpackData(entity).spawnsWithBackpack = true;
 		
 	}
 	
-	@ForgeSubscribe
+	@EventHandler
 	public void onLivingUpdate(LivingUpdateEvent event) {
 		
 		EntityLivingBase entity = event.entityLiving;
@@ -203,12 +217,12 @@ public class BackpackHandler implements IPlayerTracker {
 				
 				ItemStack[] contents = null;
 				if (entity instanceof EntityFrienderman) {
-					backpack = new ItemStack(Tiles.enderBackpack);
+					backpack = new ItemStack(BetterStorageTiles.enderBackpack);
 					// Remove drop chance for the backpack.
-					((EntityLiving)entity).setEquipmentDropChance(CurrentItem.CHEST, 0.0F);
+					((EntityLiving)entity).setEquipmentDropChance(EquipmentSlot.CHEST, 0.0F);
 				} else {
-					backpack = new ItemStack(Tiles.backpack, 1, RandomUtils.getInt(120, 240));
-					ItemBackpack backpackType = (ItemBackpack)Item.itemsList[backpack.itemID];
+					backpack = new ItemStack(BetterStorageTiles.backpack, 1, RandomUtils.getInt(120, 240));
+					ItemBackpack backpackType = (ItemBackpack)backpack.getItem();
 					if (RandomUtils.getBoolean(0.15)) {
 						// Give the backpack a random color.
 						int r = RandomUtils.getInt(32, 224);
@@ -219,12 +233,12 @@ public class BackpackHandler implements IPlayerTracker {
 					}
 					contents = new ItemStack[backpackType.getBackpackColumns() * backpackType.getBackpackRows()];
 					// Set drop chance for the backpack to 100%.
-					((EntityLiving)entity).setEquipmentDropChance(CurrentItem.CHEST, 1.0F);
+					((EntityLiving)entity).setEquipmentDropChance(EquipmentSlot.CHEST, 1.0F);
 				}
 				
 				// If the entity spawned with enchanted armor,
 				// move the enchantments over to the backpack.
-				ItemStack armor = entity.getCurrentItemOrArmor(CurrentItem.CHEST);
+				ItemStack armor = entity.getEquipmentInSlot(EquipmentSlot.CHEST);
 				if (armor != null && armor.isItemEnchanted()) {
 					NBTTagCompound compound = new NBTTagCompound();
 					compound.setTag("ench", armor.getTagCompound().getTag("ench"));
@@ -268,7 +282,7 @@ public class BackpackHandler implements IPlayerTracker {
 		
 	}
 	
-	@ForgeSubscribe
+	@EventHandler
 	public void onLivingDeath(LivingDeathEvent event) {
 		
 		// If an entity wearing a backpack dies,
@@ -332,7 +346,8 @@ public class BackpackHandler implements IPlayerTracker {
 							ItemBackpack.setBackpack(entity, null, null);
 							return;
 						}
-						boolean replacable = WorldUtils.isBlockReplacable(entity.worldObj, coord.x, coord.y, coord.z);
+						boolean replacable = entity.worldObj.getBlock(coord.x, coord.y, coord.z)
+								.isReplaceable(entity.worldObj, coord.x, coord.y, coord.z);
 						coord.y += (replacable ? -1 : 1);
 						coord.moved += (replacable ? 1 : 5);
 						if ((coord.y <= 0) || (coord.y > entity.worldObj.getHeight()) ||
@@ -374,7 +389,7 @@ public class BackpackHandler implements IPlayerTracker {
 		}
 	};
 	
-	@ForgeSubscribe
+	@EventHandler
 	public void onEntityJoinWorldEvent(EntityJoinWorldEvent event) {
 		
 		if (event.world.isRemote) {
@@ -433,7 +448,7 @@ public class BackpackHandler implements IPlayerTracker {
 		
 		int size = compound.getInteger("count");
 		ItemStack[] contents = new ItemStack[size];
-		NbtUtils.readItems(contents, compound.getTagList("Items"));
+		NbtUtils.readItems(contents, compound.getTagList("Items", NBT.TAG_COMPOUND));
 		backpackData.contents = contents;
 		
 		if (compound.hasKey("Stack"))

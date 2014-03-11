@@ -2,7 +2,7 @@ package net.mcft.copy.betterstorage.utils;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public final class DirectionUtils {
 	

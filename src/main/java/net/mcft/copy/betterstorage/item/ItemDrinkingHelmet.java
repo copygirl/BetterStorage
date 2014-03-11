@@ -7,20 +7,19 @@ import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.client.model.ModelDrinkingHelmet;
 import net.mcft.copy.betterstorage.config.GlobalConfig;
 import net.mcft.copy.betterstorage.misc.Constants;
-import net.mcft.copy.betterstorage.misc.CurrentItem;
+import net.mcft.copy.betterstorage.misc.EquipmentSlot;
 import net.mcft.copy.betterstorage.misc.Resources;
 import net.mcft.copy.betterstorage.misc.SmallPotionEffect;
 import net.mcft.copy.betterstorage.misc.handlers.KeyBindingHandler;
 import net.mcft.copy.betterstorage.utils.LanguageUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
-import net.minecraft.block.Block;
 import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumArmorMaterial;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemPotion;
@@ -28,39 +27,37 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.Icon;
-import net.minecraftforge.common.EnumHelper;
+import net.minecraft.util.IIcon;
+import net.minecraftforge.common.util.EnumHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemDrinkingHelmet extends ItemArmorBetterStorage {
 	
-	private Icon iconPotions;
+	private IIcon iconPotions;
 	
 	public static final int maxUses = 12;
 	
-	public static final EnumArmorMaterial material = EnumHelper.addArmorMaterial(
+	public static final ArmorMaterial material = EnumHelper.addArmorMaterial(
 			"drinkingHelmet", 11, new int[]{ 3, 0, 0, 0 }, 15);
-	static { material.customCraftingMaterial = Item.itemsList[Block.blockRedstone.blockID]; }
+	static { material.customCraftingMaterial = Item.getItemFromBlock(Blocks.redstone_block); }
 	
-	public ItemDrinkingHelmet(int id) {
-		super(id - 256, material, 0, 0);
-	}
+	public ItemDrinkingHelmet() { super(material, 0, 0); }
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister iconRegister) {
+	public void registerIcons(IIconRegister iconRegister) {
 		itemIcon = iconRegister.registerIcon(Constants.modId + ":" + getItemName());
 		iconPotions = iconRegister.registerIcon(Constants.modId + ":" + getItemName() + "_potions");
 	}
 
 	@Override
-	public Icon getIcon(ItemStack stack, int pass) {
+	public IIcon getIcon(ItemStack stack, int pass) {
 		return ((StackUtils.get(stack, 0, "uses") > 0) ? iconPotions : itemIcon);
 	}
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getIconIndex(ItemStack stack) {
+	public IIcon getIconIndex(ItemStack stack) {
 		return getIcon(stack, 0);
 	}
 	
@@ -85,7 +82,7 @@ public class ItemDrinkingHelmet extends ItemArmorBetterStorage {
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advancedTooltips) {
 		int uses = StackUtils.get(stack, 0, "uses");
 		if ((uses > 0) && (getDrinkingHelmet(player) == stack)) {
-			String str = GameSettings.getKeyDisplayString(KeyBindingHandler.drinkingHelmet.keyCode);
+			String str = GameSettings.getKeyDisplayString(KeyBindingHandler.drinkingHelmet.getKeyCode());
 			LanguageUtils.translateTooltip(list, "drinkingHelmet.useHint", "%KEY%", str);
 		}
 		for (ItemStack potion : getPotions(stack)) {
@@ -117,7 +114,7 @@ public class ItemDrinkingHelmet extends ItemArmorBetterStorage {
 	}
 	
 	public static ItemStack getDrinkingHelmet(EntityLivingBase entity) {
-		ItemStack drinkingHelmet = entity.getCurrentItemOrArmor(CurrentItem.HEAD);
+		ItemStack drinkingHelmet = entity.getEquipmentInSlot(EquipmentSlot.HEAD);
 		if ((drinkingHelmet != null) && (drinkingHelmet.getItem() instanceof ItemDrinkingHelmet))
 			return drinkingHelmet;
 		else return null;
@@ -140,11 +137,9 @@ public class ItemDrinkingHelmet extends ItemArmorBetterStorage {
 			}
 		
 		for (PotionEffect effect : potionEffects) {
-			effect = new SmallPotionEffect(effect);
 			Potion potion = Potion.potionTypes[effect.getPotionID()];
 			PotionEffect active = player.getActivePotionEffect(potion);
-			if (active != null)
-				effect.duration += active.duration;
+			effect = new SmallPotionEffect(effect, active);
 			player.addPotionEffect(effect);
 		}
 		

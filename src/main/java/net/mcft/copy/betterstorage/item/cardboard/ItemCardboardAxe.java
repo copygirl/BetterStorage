@@ -5,7 +5,7 @@ import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.MiscUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,8 +20,8 @@ public class ItemCardboardAxe extends ItemAxe implements ICardboardItem {
 	
 	private String name;
 	
-	public ItemCardboardAxe(int id) {
-		super(id - 256, ItemCardboardSheet.toolMaterial);
+	public ItemCardboardAxe() {
+		super(ItemCardboardSheet.toolMaterial);
 		setCreativeTab(BetterStorage.creativeTab);
 		setUnlocalizedName(Constants.modId + "." + getItemName());
 		GameRegistry.registerItem(this, getItemName());
@@ -34,7 +34,7 @@ public class ItemCardboardAxe extends ItemAxe implements ICardboardItem {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister iconRegister) {
+	public void registerIcons(IIconRegister iconRegister) {
 		itemIcon = iconRegister.registerIcon(Constants.modId + ":" + getItemName());
 	}
 	
@@ -53,8 +53,8 @@ public class ItemCardboardAxe extends ItemAxe implements ICardboardItem {
 		return ItemCardboardSheet.canHarvestBlock(stack, super.canHarvestBlock(block, stack)); }
 	@Override public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity) {
 		return !ItemCardboardSheet.isEffective(stack); }
-	@Override public boolean onBlockDestroyed(ItemStack stack, World world, int blockID, int x, int y, int z, EntityLivingBase player) {
-		return ItemCardboardSheet.onBlockDestroyed(world, blockID, x, y, z, stack, player); }
+	@Override public boolean onBlockDestroyed(ItemStack stack, World world, Block block, int x, int y, int z, EntityLivingBase player) {
+		return ItemCardboardSheet.onBlockDestroyed(world, block, x, y, z, stack, player); }
 	@Override public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase player) {
 		return ItemCardboardSheet.damageItem(stack, 1, player); }
 	

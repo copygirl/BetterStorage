@@ -16,9 +16,11 @@ import net.mcft.copy.betterstorage.misc.ItemIdentifier;
 import net.mcft.copy.betterstorage.misc.Region;
 import net.mcft.copy.betterstorage.utils.RandomUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraftforge.common.util.Constants.NBT;
 
 /** Holds data for a single crate pile, a multi-block
  *  structure made from individual crate blocks */
@@ -365,34 +367,34 @@ public class CratePileData implements Iterable<ItemStack> {
 	// NBT related functions
 	
 	public NBTTagCompound toCompound() {
-		NBTTagCompound compound = new NBTTagCompound("");
+		NBTTagCompound compound = new NBTTagCompound();
 		compound.setShort("numCrates", (short)getNumCrates());
-		NBTTagList stacks = new NBTTagList("stacks");
+		NBTTagList stacks = new NBTTagList();
 		for (ItemStack stack : this) {
-			NBTTagCompound stackCompound = new NBTTagCompound("");
-			stackCompound.setShort("id", (short)stack.itemID);
+			NBTTagCompound stackCompound = new NBTTagCompound();
+			stackCompound.setShort("id", (short)Item.getIdFromItem(stack.getItem()));
 			stackCompound.setInteger("Count", stack.stackSize);
-			stackCompound.setShort("Damage", (short)stack.getItemDamage());
+			stackCompound.setShort("Damage", (short)StackUtils.getRealItemDamage(stack));
 			if (stack.hasTagCompound())
-				stackCompound.setCompoundTag("tag", stack.getTagCompound());
+				stackCompound.setTag("tag", stack.getTagCompound());
 			stacks.appendTag(stackCompound);
 		}
 		compound.setTag("stacks", stacks);
 		if (map != null)
-			compound.setCompoundTag("map", map.toCompound());
+			compound.setTag("map", map.toCompound());
 		return compound;
 	}
 	
 	public static CratePileData fromCompound(CratePileCollection collection, int crateId, NBTTagCompound compound) {
 		int numCrates = compound.getShort("numCrates");
 		CratePileData pileData = new CratePileData(collection, crateId, numCrates);
-		NBTTagList stacks = compound.getTagList("stacks");
+		NBTTagList stacks = compound.getTagList("stacks", NBT.TAG_COMPOUND);
 		for (int j = 0; j < stacks.tagCount(); j++) {
-			NBTTagCompound stackCompound = (NBTTagCompound)stacks.tagAt(j);
-			int id = stackCompound.getShort("id");
+			NBTTagCompound stackCompound = stacks.getCompoundTagAt(j);
+			Item item = Item.getItemById(stackCompound.getShort("id"));
 			int count = stackCompound.getInteger("Count");
 			int damage = stackCompound.getShort("Damage");
-			ItemStack stack = new ItemStack(id, count, damage);
+			ItemStack stack = new ItemStack(item, count, damage);
 			if (stackCompound.hasKey("tag"))
 				stack.stackTagCompound = stackCompound.getCompoundTag("tag");
 			if (stack.getItem() != null)

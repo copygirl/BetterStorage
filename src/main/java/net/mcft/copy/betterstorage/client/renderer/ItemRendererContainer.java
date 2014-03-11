@@ -37,7 +37,7 @@ public class ItemRendererContainer implements IItemRenderer {
 		if ((type == ItemRenderType.EQUIPPED) ||
 		    (type == ItemRenderType.EQUIPPED_FIRST_PERSON))
 			GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-		renderingHandler.renderInventoryBlock(Block.blocksList[item.itemID], 0, 0, null);
+		renderingHandler.renderInventoryBlock(Block.getBlockFromItem(item.getItem()), 0, 0, null);
 		GL11.glPopMatrix();
 	}
 	

@@ -7,27 +7,23 @@ import net.mcft.copy.betterstorage.item.ItemBetterStorage;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.PlayerUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemKeyring extends ItemBetterStorage implements IKey, IContainerItem {
 	
-	private Icon[] icons = new Icon[4];
-	
-	public ItemKeyring(int id) {
-		super(id);
-	}
+	private IIcon[] icons = new IIcon[4];
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister iconRegister) {
+	public void registerIcons(IIconRegister iconRegister) {
 		for (int i = 0; i < icons.length; i++)
 			icons[i] = iconRegister.registerIcon(Constants.modId + ":keyring_" + i);
 		itemIcon = icons[0];
@@ -35,7 +31,7 @@ public class ItemKeyring extends ItemBetterStorage implements IKey, IContainerIt
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getIconFromDamage(int damage) {
+	public IIcon getIconFromDamage(int damage) {
 		return icons[Math.min(damage, icons.length - 1)];
 	}
 	

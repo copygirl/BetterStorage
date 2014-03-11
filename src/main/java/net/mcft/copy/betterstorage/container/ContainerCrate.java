@@ -1,14 +1,12 @@
 package net.mcft.copy.betterstorage.container;
 
+import ibxm.Player;
 import net.mcft.copy.betterstorage.inventory.InventoryCratePlayerView;
 import net.mcft.copy.betterstorage.tile.crate.CratePileData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.packet.Packet103SetSlot;
-import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

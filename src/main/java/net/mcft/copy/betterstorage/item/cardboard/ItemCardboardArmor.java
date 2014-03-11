@@ -4,7 +4,7 @@ import net.mcft.copy.betterstorage.item.ItemArmorBetterStorage;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.misc.Resources;
 import net.mcft.copy.betterstorage.utils.StackUtils;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,8 +18,8 @@ public class ItemCardboardArmor extends ItemArmorBetterStorage implements ICardb
 	
 	private static final String[] armorText = { "Helmet", "Chestplate", "Leggings", "Boots" };
 	
-	public ItemCardboardArmor(int id, int armorType) {
-		super(id - 256, ItemCardboardSheet.armorMaterial, 0, armorType);
+	public ItemCardboardArmor(int armorType) {
+		super(ItemCardboardSheet.armorMaterial, 0, armorType);
 	}
 	
 	@Override
@@ -27,7 +27,7 @@ public class ItemCardboardArmor extends ItemArmorBetterStorage implements ICardb
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister iconRegister) {
+	public void registerIcons(IIconRegister iconRegister) {
 		itemIcon = iconRegister.registerIcon(Constants.modId + ":" + getItemName());
 	}
 	

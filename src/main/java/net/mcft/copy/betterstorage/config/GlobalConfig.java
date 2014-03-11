@@ -3,10 +3,7 @@ package net.mcft.copy.betterstorage.config;
 import java.io.File;
 
 import net.mcft.copy.betterstorage.config.setting.BooleanSetting;
-import net.mcft.copy.betterstorage.config.setting.EnchantmentIdSetting;
 import net.mcft.copy.betterstorage.config.setting.IntegerSetting;
-import net.mcft.copy.betterstorage.config.setting.ItemIdSetting;
-import net.mcft.copy.betterstorage.config.setting.TileIdSetting;
 
 public class GlobalConfig extends Config {
 	
@@ -69,6 +66,7 @@ public class GlobalConfig extends Config {
 	public GlobalConfig(File file) {
 		super(file);
 		
+		/* FIXME Disable items and blocks
 		// Block IDs
 		new TileIdSetting(this, crateId, 2830);
 		new TileIdSetting(this, reinforcedChestId, 2831);
@@ -109,6 +107,7 @@ public class GlobalConfig extends Config {
 		new EnchantmentIdSetting(this, enchSecurityId, 174);
 		new EnchantmentIdSetting(this, enchShockId, 175);
 		new EnchantmentIdSetting(this, enchTriggerId, 176);
+		*/
 		
 		// Reinforced chest settings
 		new IntegerSetting(this, reinforcedColumns, 13).setValidValues(9, 11, 13).setComment(

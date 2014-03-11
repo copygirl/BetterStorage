@@ -1,9 +1,9 @@
 package net.mcft.copy.betterstorage.item.recipe;
 
-import net.mcft.copy.betterstorage.content.Items;
+import net.mcft.copy.betterstorage.content.BetterStorageItems;
 import net.mcft.copy.betterstorage.item.ItemBetterStorage;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraftforge.oredict.OreDictionary;
@@ -23,10 +23,10 @@ public class LockRecipe extends ShapedRecipes {
 	}
 	
 	public static LockRecipe createLockRecipe() {
-		ItemStack gold = new ItemStack(Item.ingotGold);
-		ItemStack iron = new ItemStack(Item.ingotIron);
-		ItemStack key = new ItemStack(Items.key, 1, OreDictionary.WILDCARD_VALUE);
-		ItemStack lock = new ItemStack(Items.lock);
+		ItemStack gold = new ItemStack(Items.gold_ingot);
+		ItemStack iron = new ItemStack(Items.iron_ingot);
+		ItemStack key = new ItemStack(BetterStorageItems.key, 1, OreDictionary.WILDCARD_VALUE);
+		ItemStack lock = new ItemStack(BetterStorageItems.lock);
 		ItemStack[] items = new ItemStack[]{
 			null, gold, null,
 			gold, key,  gold,

@@ -4,32 +4,30 @@ import net.mcft.copy.betterstorage.item.tile.ItemLockable;
 import net.mcft.copy.betterstorage.proxy.ClientProxy;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityReinforcedChest;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class TileReinforcedChest extends TileLockable {
 	
-	public TileReinforcedChest(int id, Material material) {
-		super(id, material);
+	public TileReinforcedChest(Material material) {
+		super(material);
 		
 		setHardness(8.0F);
 		setResistance(20.0F);
-		setStepSound(Block.soundWoodFootstep);
+		setStepSound(soundTypeWood);
 		setBlockBounds(0.0625F, 0.0F, 0.0625F, 0.9375F, 0.875F, 0.9375F);
 		
-		MinecraftForge.setBlockHarvestLevel(this, "axe", 2);
+		setHarvestLevel("axe", 2);
 	}
-	public TileReinforcedChest(int id) {
-		this(id, Material.wood);
+	public TileReinforcedChest() {
+		this(Material.wood);
 	}
 	
 	@Override
@@ -37,7 +35,7 @@ public class TileReinforcedChest extends TileLockable {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister iconRegister) {
+	public void registerBlockIcons(IIconRegister iconRegister) {
 		blockIcon = iconRegister.registerIcon("log_oak");
 	}
 	
@@ -67,7 +65,7 @@ public class TileReinforcedChest extends TileLockable {
 	}
 	
 	@Override
-	public TileEntity createNewTileEntity(World world) {
+	public TileEntity createTileEntity(World world, int metadata) {
 		return new TileEntityReinforcedChest();
 	}
 	

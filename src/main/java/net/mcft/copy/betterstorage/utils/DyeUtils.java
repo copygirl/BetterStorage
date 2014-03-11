@@ -79,7 +79,7 @@ public final class DyeUtils {
 	}
 	
 	private static void addColorFromTable(String name) {
-		int dye = BlockColored.getBlockFromDye(dyes.size());
+		int dye = BlockColored.func_150031_c(dyes.size());
 		float[] values = EntitySheep.fleeceColorTable[dye];
 		int r = (int)(values[0] * 255);
 		int g = (int)(values[1] * 255);

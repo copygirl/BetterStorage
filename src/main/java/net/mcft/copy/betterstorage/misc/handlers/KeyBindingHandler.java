@@ -6,24 +6,23 @@ import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.config.GlobalConfig;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.misc.Constants;
-import net.mcft.copy.betterstorage.misc.CurrentItem;
+import net.mcft.copy.betterstorage.misc.EquipmentSlot;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
 
 import org.lwjgl.input.Keyboard;
 
-import cpw.mods.fml.client.registry.KeyBindingRegistry.KeyHandler;
-import cpw.mods.fml.common.TickType;
-import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class KeyBindingHandler extends KeyHandler {
 	
-	public static final KeyBinding backpackOpen = new KeyBinding("key.betterstorage.backpackOpen", Keyboard.KEY_B);
-	public static final KeyBinding drinkingHelmet = new KeyBinding("key.betterstorage.drinkingHelmet", Keyboard.KEY_F);
+	public static final KeyBinding backpackOpen =
+			new KeyBinding("key.betterstorage.backpackOpen", Keyboard.KEY_B, "key.categories.gameplay");
+	public static final KeyBinding drinkingHelmet =
+			new KeyBinding("key.betterstorage.drinkingHelmet", Keyboard.KEY_F, "key.categories.gameplay");
 	
 	private static final KeyBinding[] bindings = new KeyBinding[]{ backpackOpen, drinkingHelmet };
 	
@@ -45,7 +44,7 @@ public class KeyBindingHandler extends KeyHandler {
 		if ((kb == backpackOpen) && (ItemBackpack.getBackpack(player) != null) &&
 		    BetterStorage.globalConfig.getBoolean(GlobalConfig.enableBackpackOpen))
 			PacketDispatcher.sendPacketToServer(PacketHandler.makePacket(PacketHandler.backpackOpen));
-		else if ((kb == drinkingHelmet) && (player.getCurrentItemOrArmor(CurrentItem.HEAD) != null))
+		else if ((kb == drinkingHelmet) && (player.getCurrentItemOrArmor(EquipmentSlot.HEAD) != null))
 			PacketDispatcher.sendPacketToServer(PacketHandler.makePacket(PacketHandler.drinkingHelmet));
 	}
 	

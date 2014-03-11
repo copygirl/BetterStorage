@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
@@ -39,7 +39,7 @@ public final class RenderUtils {
 		int passes = item.getRenderPasses(stack.getItemDamage());
 		for (int pass = 0; pass < passes; pass++) {
 			textureManager.bindTexture(((stack.getItemSpriteNumber() == 0) ? TextureMap.locationBlocksTexture : TextureMap.locationItemsTexture));
-			Icon icon = item.getIcon(stack, pass);
+			IIcon icon = item.getIcon(stack, pass);
 			float minU = icon.getMinU();
 			float maxU = icon.getMaxU();
 			float minV = icon.getMinV();

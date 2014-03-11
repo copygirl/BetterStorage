@@ -28,14 +28,14 @@ public class InventoryBackpackEquipped extends InventoryWrapper {
 	}
 	
 	@Override
-	public void onInventoryChanged() {
+	public void markDirty() {
 		if(!(base instanceof InventoryStacks)) return;
 		ItemBackpack.updateHasItems(carrier, ItemBackpack.getBackpackData(carrier));
 	}
 	
 	@Override
-	public void openChest() { ItemBackpack.getBackpackData(carrier).playersUsing++; }
+	public void openInventory() { ItemBackpack.getBackpackData(carrier).playersUsing++; }
 	@Override
-	public void closeChest() { ItemBackpack.getBackpackData(carrier).playersUsing--; }
+	public void closeInventory() { ItemBackpack.getBackpackData(carrier).playersUsing--; }
 	
 }

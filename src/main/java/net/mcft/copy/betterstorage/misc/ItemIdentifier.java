@@ -7,53 +7,58 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class ItemIdentifier {
 	
-	private final int id;
+	private final Item item;
 	private final int damage;
 	private final NBTTagCompound data;
 	
-	public ItemIdentifier(int id, int damage, NBTTagCompound data) {
-		this.id = id;
+	private int hashCode;
+	private boolean calculatedHashCode = false;
+	
+	public ItemIdentifier(Item item, int damage, NBTTagCompound data) {
+		this.item = item;
 		this.damage = damage;
 		this.data = data;
 	}
 	public ItemIdentifier(ItemStack stack) {
-		this(stack.itemID, stack.getItemDamage(), (stack.hasTagCompound()
+		this(stack.getItem(), StackUtils.getRealItemDamage(stack), (stack.hasTagCompound()
 				? (NBTTagCompound)stack.getTagCompound().copy() : null));
 	}
 	
-	public Item getItem() {
-		return Item.itemsList[id];
-	}
-	
 	public ItemStack createStack(int size) {
-		ItemStack stack = new ItemStack(id, size, damage);
+		ItemStack stack = new ItemStack(item, size, damage);
 		if (data != null)
 			stack.stackTagCompound = (NBTTagCompound)data.copy();
 		return stack;
 	}
 	
 	/** Returns if this item identifier matches the id, damage and data. */
-	public boolean matches(int id, int damage, NBTTagCompound data) {
-		return StackUtils.matches(this.id, this.damage, this.data, id, damage, data);
+	public boolean matches(Item item, int damage, NBTTagCompound data) {
+		return StackUtils.matches(this.item, this.damage, this.data, item, damage, data);
 	}
 	/** Returns if this item identifier matches the ItemStack. */
 	public boolean matches(ItemStack stack) {
-		return matches(stack.itemID, stack.getItemDamage(), stack.stackTagCompound);
+		return matches(stack.getItem(), StackUtils.getRealItemDamage(stack), stack.stackTagCompound);
 	}
 	
 	@Override
-	public int hashCode() { return (id << 16 ^ damage); }
+	public int hashCode() {
+		if (!calculatedHashCode) {
+			hashCode = ((Item.getIdFromItem(item) << 16) | damage);
+			if (data != null) hashCode ^= data.hashCode();
+		}
+		return hashCode;
+	}
 	
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == null || !(obj instanceof ItemIdentifier)) return false;
 		ItemIdentifier other = (ItemIdentifier)obj;
-		return matches(other.id, other.damage, other.data);
+		return matches(other.item, other.damage, other.data);
 	}
 	
 	@Override
 	public String toString() {
-		return getItem().getStatName() + ":" + damage;
+		return item.getUnlocalizedName() + ":" + damage;
 	}
 	
 }

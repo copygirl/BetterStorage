@@ -147,18 +147,18 @@ public class InventoryCratePlayerView extends InventoryBetterStorage implements 
 		int x = crate.xCoord;
 		int y = crate.yCoord;
 		int z = crate.zCoord;
-		return ((player.worldObj.getBlockTileEntity(x, y, z) == crate) &&
+		return ((player.worldObj.getTileEntity(x, y, z) == crate) &&
 				(player.getDistanceSq(x + 0.5, y + 0.5, z + 0.5) < 64.0) &&
 				(getSizeInventory() <= data.getCapacity()));
 	}
 	
 	@Override
-	public void onInventoryChanged() { }
+	public void markDirty() { }
 	
 	@Override
-	public void openChest() { data.addWatcher(this); }
+	public void openInventory() { data.addWatcher(this); }
 	@Override
-	public void closeChest() { data.removeWatcher(this); }
+	public void closeInventory() { data.removeWatcher(this); }
 	
 	// ICrateWatcher implementation
 	
@@ -235,7 +235,7 @@ public class InventoryCratePlayerView extends InventoryBetterStorage implements 
 	}
 	
 	private int setItemsInSlot(int slot, ItemIdentifier item, MapData itemData, int maxAmount) {
-		int size = Math.min(maxAmount, item.getItem().getItemStackLimit());
+		int size = Math.min(maxAmount, item.createStack(1).getMaxStackSize());
 		tempContents[slot] = item.createStack(size);
 		itemData.itemCount += size;
 		return size;

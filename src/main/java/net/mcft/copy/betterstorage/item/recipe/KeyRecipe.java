@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.mcft.copy.betterstorage.content.Items;
+import net.mcft.copy.betterstorage.content.BetterStorageItems;
 import net.mcft.copy.betterstorage.item.ItemBetterStorage;
 import net.mcft.copy.betterstorage.utils.DyeUtils;
 import net.mcft.copy.betterstorage.utils.InventoryUtils;
@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 
 public class KeyRecipe extends ComboRecipe {
 	
-	private static ItemStack dummyResult = new ItemStack(Items.key);
+	private static ItemStack dummyResult = new ItemStack(BetterStorageItems.key);
 	
 	public KeyRecipe(int width, int height, ItemStack[] recipe) {
 		super(width, height, recipe, dummyResult);
@@ -39,12 +39,12 @@ public class KeyRecipe extends ComboRecipe {
 	@Override
 	public boolean checkShapelessItems(InventoryCrafting crafting, List<ItemStack> shapelessItems) {
 		// Not a valid recipe if there's more than one key.
-		List<ItemStack> keys = InventoryUtils.findItems(crafting, Items.key);
+		List<ItemStack> keys = InventoryUtils.findItems(crafting, BetterStorageItems.key);
 		if (keys.size() > 1) return false;
 		// Not a valid recipe if any shapeless item
 		// other than a key or dye is used.
 		for (ItemStack stack : shapelessItems) {
-			if ((stack.getItem() != Items.key) &&
+			if ((stack.getItem() != BetterStorageItems.key) &&
 			    (!DyeUtils.isDye(stack))) return false;
 		}
 		return true;
@@ -54,9 +54,9 @@ public class KeyRecipe extends ComboRecipe {
 	public ItemStack getCraftingResult(InventoryCrafting crafting) {
 		// See if this is modifying a key or duplicating it.
 		boolean modifyKey = (getRecipeSize() == 1);
-		ItemStack key = InventoryUtils.findItem(crafting, Items.key);
+		ItemStack key = InventoryUtils.findItem(crafting, BetterStorageItems.key);
 		List<ItemStack> dyes = InventoryUtils.findDyes(crafting);
-		ItemStack result = (modifyKey ? key.copy() : new ItemStack(Items.key));
+		ItemStack result = (modifyKey ? key.copy() : new ItemStack(BetterStorageItems.key));
 		if (key != null)
 			ItemBetterStorage.setID(result, ItemBetterStorage.getID(key));
 		// Apply color.

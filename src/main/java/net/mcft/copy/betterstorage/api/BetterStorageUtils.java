@@ -1,5 +1,6 @@
 package net.mcft.copy.betterstorage.api;
 
+import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -13,12 +14,12 @@ public final class BetterStorageUtils {
 	 *  (If the match stack has an empty NBT compound it'll only match stacks without NBT data.) */
 	public static boolean wildcardMatch(ItemStack match, ItemStack stack) {
 		return ((match == null) ? (stack == null) :
-		        ((stack != null) && (match.itemID == stack.itemID) &&
-		         ((match.getItemDamage() == OreDictionary.WILDCARD_VALUE) ||
-		          (match.getItemDamage() == stack.getItemDamage())) &&
+		        ((stack != null) && (match == stack) &&
+		         ((StackUtils.getRealItemDamage(match) == OreDictionary.WILDCARD_VALUE) ||
+		          (StackUtils.getRealItemDamage(match) == StackUtils.getRealItemDamage(stack))) &&
 		         (!match.hasTagCompound() ||
 		          (match.getTagCompound().hasNoTags() && !stack.hasTagCompound()) ||
-		          (match.getTagCompound().setName("tag").equals(stack.getTagCompound().setName("tag"))))));
+		          (match.getTagCompound().equals(stack.getTagCompound())))));
 	}
 	
 }

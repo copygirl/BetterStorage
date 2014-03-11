@@ -6,6 +6,7 @@ import java.util.List;
 
 import net.mcft.copy.betterstorage.api.IContainerItem;
 import net.mcft.copy.betterstorage.utils.StackUtils;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -14,8 +15,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemCardboardBox extends ItemBlock implements IContainerItem {
 	
-	public ItemCardboardBox(int id) {
-		super(id);
+	public ItemCardboardBox(Block block) {
+		super(block);
 		setMaxStackSize(1);
 	}
 	

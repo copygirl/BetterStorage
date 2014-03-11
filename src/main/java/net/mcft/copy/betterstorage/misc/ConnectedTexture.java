@@ -3,10 +3,10 @@ package net.mcft.copy.betterstorage.misc;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.util.Icon;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public abstract class ConnectedTexture {
 	
@@ -27,18 +27,18 @@ public abstract class ConnectedTexture {
 		{ 1, 0, 3, 2 },
 	};
 	
-	private Map<String, Icon> icons = new HashMap<String, Icon>();
+	private Map<String, IIcon> icons = new HashMap<String, IIcon>();
 	
-	public void registerIcons(IconRegister iconRegister, String format) {
+	public void registerIcons(IIconRegister iconRegister, String format) {
 		for (String name : iconNames)
 			icons.put(name, iconRegister.registerIcon(String.format(format, name)));
 	}
 	
-	public Icon getIcon(String name) {
+	public IIcon getIcon(String name) {
 		return icons.get(name);
 	}
 	
-	public Icon getConnectedIcon(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
+	public IIcon getConnectedIcon(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
 		boolean top    = canConnect(world, x, y, z, side, ForgeDirection.getOrientation(connectedLookup[side.ordinal()][0]));
 		boolean bottom = canConnect(world, x, y, z, side, ForgeDirection.getOrientation(connectedLookup[side.ordinal()][1]));
 		boolean left   = canConnect(world, x, y, z, side, ForgeDirection.getOrientation(connectedLookup[side.ordinal()][2]));

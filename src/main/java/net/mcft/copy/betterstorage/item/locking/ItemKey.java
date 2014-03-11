@@ -7,25 +7,23 @@ import net.mcft.copy.betterstorage.item.ItemBetterStorage;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.RandomUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemKey extends ItemBetterStorage implements IKey {
 	
-	private Icon iconColor, iconFullColor;
+	private IIcon iconColor, iconFullColor;
 	
-	public ItemKey(int id) {
-		super(id);
-		
+	public ItemKey() {
 		// This is needed to make sure the item stays in the crafting
 		// matrix when used to craft a lock or duplicate a key.
 		setContainerItem(this);
@@ -33,7 +31,7 @@ public class ItemKey extends ItemBetterStorage implements IKey {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister iconRegister) {
+	public void registerIcons(IIconRegister iconRegister) {
 		super.registerIcons(iconRegister);
 		iconColor = iconRegister.registerIcon(Constants.modId + ":key_color");
 		iconFullColor = iconRegister.registerIcon(Constants.modId + ":key_fullColor");
@@ -47,7 +45,7 @@ public class ItemKey extends ItemBetterStorage implements IKey {
 	@Override
 	public boolean doesContainerItemLeaveCraftingGrid(ItemStack stack) { return false; }
 	@Override
-	public ItemStack getContainerItemStack(ItemStack stack) { return stack; }
+	public ItemStack getContainerItem(ItemStack stack) { return stack; }
 	
 	@Override
 	public void onCreated(ItemStack stack, World world, EntityPlayer player) {
@@ -73,7 +71,7 @@ public class ItemKey extends ItemBetterStorage implements IKey {
 		} else return fullColor;
 	}
 	@Override
-	public Icon getIcon(ItemStack stack, int renderPass) {
+	public IIcon getIcon(ItemStack stack, int renderPass) {
 		boolean hasFullColor = (getFullColor(stack) >= 0);
 		if ((renderPass > 0) && (getColor(stack) >= 0)) return iconColor;
 		return (hasFullColor ? iconFullColor : itemIcon);
@@ -120,7 +118,7 @@ public class ItemKey extends ItemBetterStorage implements IKey {
 		if (useAbility && (effectiveLockpicking > 0)) {
 			NBTTagList list = key.getEnchantmentTagList();
 			for (int i = 0; i < list.tagCount(); i++) {
-				NBTTagCompound compound = (NBTTagCompound)list.tagAt(i);
+				NBTTagCompound compound = list.getCompoundTagAt(i);
 				if (compound.getShort("id") != BetterStorageEnchantment.get("lockpicking").effectId) continue;
 				int level = compound.getShort("lvl") - 1;
 				if (level == 0) {
@@ -136,7 +134,7 @@ public class ItemKey extends ItemBetterStorage implements IKey {
 			key.setItemDamage(lockId);
 			NBTTagList list = key.getEnchantmentTagList();
 			for (int i = 0; i < list.tagCount(); i++) {
-				NBTTagCompound compound = (NBTTagCompound)list.tagAt(i);
+				NBTTagCompound compound = list.getCompoundTagAt(i);
 				if (compound.getShort("id") != BetterStorageEnchantment.get("morphing").effectId) continue;
 				list.removeTag(i);
 				// Morphed keys keep their enchanted look, it looks sweet.

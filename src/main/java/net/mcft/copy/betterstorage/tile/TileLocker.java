@@ -4,30 +4,29 @@ import net.mcft.copy.betterstorage.proxy.ClientProxy;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityLocker;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class TileLocker extends TileContainerBetterStorage {
 	
-	public TileLocker(int id) {
-		super(id, Material.wood);
+	public TileLocker() {
+		super(Material.wood);
 		
 		setHardness(2.5f);
-		setStepSound(soundWoodFootstep);
+		setStepSound(soundTypeWood);
 		setBlockBounds(1 / 16.0F, 1 / 16.0F, 1 / 16.0F, 15 / 16.0F, 15 / 16.0F, 15 / 16.0F);
 		
-		MinecraftForge.setBlockHarvestLevel(this, "axe", 0);
+		setHarvestLevel("axe", 0);
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister iconRegister) {
+	public void registerBlockIcons(IIconRegister iconRegister) {
 		blockIcon = iconRegister.registerIcon("planks_oak");
 	}
 	
@@ -41,7 +40,7 @@ public class TileLocker extends TileContainerBetterStorage {
 	public int getRenderType() { return ClientProxy.lockerRenderId; }
 	
 	@Override
-	public boolean isBlockSolidOnSide(World world, int x, int y, int z, ForgeDirection side) {
+	public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
 		TileEntityLocker locker = WorldUtils.get(world, x, y, z, TileEntityLocker.class);
 		return ((locker == null) || (locker.getOrientation() != side));
 	}
@@ -61,7 +60,7 @@ public class TileLocker extends TileContainerBetterStorage {
 	}
 	
 	@Override
-	public TileEntity createNewTileEntity(World world) {
+	public TileEntity createTileEntity(World world, int metadata) {
 		return new TileEntityLocker();
 	}
 	

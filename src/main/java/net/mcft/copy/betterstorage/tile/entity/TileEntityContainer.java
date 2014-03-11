@@ -14,6 +14,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.common.util.Constants.NBT;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -199,7 +200,7 @@ public abstract class TileEntityContainer extends TileEntity {
 	}
 	
 	@Override
-	public void onInventoryChanged() {
+	public void markDirty() {
 		if (worldObj.isRemote) return;
 		worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
 		if (hasComparatorAccessed())
@@ -227,7 +228,7 @@ public abstract class TileEntityContainer extends TileEntity {
 	/** Synchronizes playersUsing over the network. */
 	private void doSyncPlayersUsing(int playersUsing) {
 		if (!doesSyncPlayers()) return;
-		worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType().blockID, 0, playersUsing);
+		worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), 0, playersUsing);
 	}
 	
 	@Override
@@ -278,7 +279,7 @@ public abstract class TileEntityContainer extends TileEntity {
 		if (compound.hasKey("CustomName"))
 			customTitle = compound.getString("CustomName");
 		if (contents != null)
-			NbtUtils.readItems(contents, compound.getTagList("Items"));
+			NbtUtils.readItems(contents, compound.getTagList("Items", NBT.TAG_COMPOUND));
 		if (compound.getBoolean("ComparatorAccessed"))
 			compAccessedOnLoad = true;
 	}
@@ -299,7 +300,7 @@ public abstract class TileEntityContainer extends TileEntity {
 	 *  a description packet to be send to players. */
 	public void markForUpdate() {
 		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-		onInventoryChanged();
+		markDirty();
 	}
 	
 }

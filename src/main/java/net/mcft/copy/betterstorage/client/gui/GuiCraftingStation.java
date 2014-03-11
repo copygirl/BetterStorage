@@ -45,30 +45,29 @@ public class GuiCraftingStation extends GuiBetterStorage {
 	
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-		fontRenderer.drawString(title, 15, 6, 0x404040);
-		fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8 + (xSize - 176) / 2, ySize - 95, 0x404040);
-	}
-	
-	@Override
-	protected void drawSlotInventory(Slot slot) {
-		super.drawSlotInventory(slot);
+		fontRendererObj.drawString(title, 15, 6, 0x404040);
+		fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8 + (xSize - 176) / 2, ySize - 95, 0x404040);
 		
-		if ((slot.slotNumber < 9) || (slot.slotNumber >= 18) ||
-		    inv.outputIsReal || !slot.getHasStack()) return;
-		GL11.glDisable(GL11.GL_DEPTH_TEST);
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		
-		float a = ((inv.progress < inv.currentCrafting.getCraftingTime()) ? 0.5F : 1.0F);
-		GL11.glColor4f(a, a, a, 0.6F);
-		mc.renderEngine.bindTexture(getResource());
-		int slotX = slot.xDisplayPosition - 1;
-		int slotY = slot.yDisplayPosition - 1;
-		RenderUtils.drawTexturedModalRect(slotX, slotY, slotX, slotY, 18, 18, 0,
-		                                  getTextureWidth(), getTextureHeight());
-		
-		GL11.glDisable(GL11.GL_BLEND);
-		GL11.glEnable(GL11.GL_DEPTH_TEST);
+		if (!inv.outputIsReal)
+			for (int i = 9; i < 18; i++) {
+				Slot slot = inventorySlots.getSlot(i);
+				if (!slot.getHasStack()) continue;
+				
+				GL11.glDisable(GL11.GL_DEPTH_TEST);
+				GL11.glEnable(GL11.GL_BLEND);
+				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+				
+				float a = ((inv.progress < inv.currentCrafting.getCraftingTime()) ? 0.5F : 1.0F);
+				GL11.glColor4f(a, a, a, 0.6F);
+				mc.renderEngine.bindTexture(getResource());
+				int slotX = slot.xDisplayPosition - 1;
+				int slotY = slot.yDisplayPosition - 1;
+				RenderUtils.drawTexturedModalRect(slotX, slotY, slotX, slotY, 18, 18, 0,
+				                                  getTextureWidth(), getTextureHeight());
+				
+				GL11.glDisable(GL11.GL_BLEND);
+				GL11.glEnable(GL11.GL_DEPTH_TEST);
+			}
 	}
 	
 }

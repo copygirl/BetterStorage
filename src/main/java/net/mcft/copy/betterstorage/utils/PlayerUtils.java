@@ -1,5 +1,6 @@
 package net.mcft.copy.betterstorage.utils;
 
+import ibxm.Player;
 import net.mcft.copy.betterstorage.addon.thaumcraft.GuiThaumiumChest;
 import net.mcft.copy.betterstorage.client.gui.GuiBetterStorage;
 import net.mcft.copy.betterstorage.client.gui.GuiCraftingStation;
@@ -16,9 +17,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.packet.Packet;
-import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

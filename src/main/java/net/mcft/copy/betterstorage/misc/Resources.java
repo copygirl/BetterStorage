@@ -25,10 +25,8 @@ public final class Resources {
 	public static final ResourceLocation textureCluckOverlay     = new BetterStorageResource("textures/models/cluck.png");
 	
 	
-	private static final String modelbase = "/assets/" + Constants.modId + "/models/";
-	
-	public static final String modelLocker      = modelbase + "locker.obj";
-	public static final String modelLockerLarge = modelbase + "locker_large.obj";
+	public static final ResourceLocation modelLocker      = new BetterStorageResource("models/locker.obj");
+	public static final ResourceLocation modelLockerLarge = new BetterStorageResource("models/locker_large.obj");
 	
 	
 	private Resources() {  }

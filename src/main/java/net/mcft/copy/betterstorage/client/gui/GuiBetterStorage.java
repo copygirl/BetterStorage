@@ -32,7 +32,8 @@ public class GuiBetterStorage extends GuiContainer {
 		
 		this.container = container;
 		IInventory inv = container.inventory;
-		title = (inv.isInvNameLocalized() ? inv.getInvName() : StatCollector.translateToLocal(inv.getInvName()));
+		title = (inv.hasCustomInventoryName() ? inv.getInventoryName()
+		                                      : StatCollector.translateToLocal(inv.getInventoryName()));
 		columns = container.getColumns();
 		rows = container.getRows();
 		
@@ -65,8 +66,8 @@ public class GuiBetterStorage extends GuiContainer {
 	
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-		fontRenderer.drawString(title, 8, 6, 0x404040);
-		fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8 + (xSize - 176) / 2, ySize - 94, 0x404040);
+		fontRendererObj.drawString(title, 8, 6, 0x404040);
+		fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8 + (xSize - 176) / 2, ySize - 94, 0x404040);
 	}
 	
 	@Override

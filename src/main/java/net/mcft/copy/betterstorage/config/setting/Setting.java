@@ -3,7 +3,7 @@ package net.mcft.copy.betterstorage.config.setting;
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.config.Config;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.Configuration;
+import net.minecraftforge.common.config.Configuration;
 
 public abstract class Setting<T> {
 	
@@ -78,8 +78,8 @@ public abstract class Setting<T> {
 		String warning = validateInternal(getInternalValue());
 		if (warning != null) {
 			setValue(defaultValue);
-			BetterStorage.log.warning(String.format("Config setting %s is invalid: %s. Using default value: %s.",
-			                                        fullName, warning, defaultValue));
+			BetterStorage.log.warn(String.format("Config setting %s is invalid: %s. Using default value: %s.",
+			                                     fullName, warning, defaultValue));
 		}
 	}
 	

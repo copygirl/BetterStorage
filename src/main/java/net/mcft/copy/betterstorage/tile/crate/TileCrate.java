@@ -5,19 +5,17 @@ import net.mcft.copy.betterstorage.misc.ConnectedTexture;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.tile.TileContainerBetterStorage;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -25,13 +23,13 @@ public class TileCrate extends TileContainerBetterStorage {
 	
 	private ConnectedTexture texture = new ConnectedTextureCrate();
 	
-	public TileCrate(int id) {
-		super(id, Material.wood);
+	public TileCrate() {
+		super(Material.wood);
 		
 		setHardness(2.0f);
-		setStepSound(Block.soundWoodFootstep);
+		setStepSound(soundTypeWood);
 		
-		MinecraftForge.setBlockHarvestLevel(this, "axe", 0);
+		setHarvestLevel("axe", 0);
 	}
 	
 	@Override
@@ -39,20 +37,20 @@ public class TileCrate extends TileContainerBetterStorage {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister iconRegister) {
+	public void registerBlockIcons(IIconRegister iconRegister) {
 		texture.registerIcons(iconRegister, Constants.modId + ":crate/%s");
 	}
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getIcon(int side, int meta) { return texture.getIcon("all"); }
+	public IIcon getIcon(int side, int meta) { return texture.getIcon("all"); }
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getBlockTexture(IBlockAccess world, int x, int y, int z, int side) {
+	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
 		return texture.getConnectedIcon(world, x, y, z, ForgeDirection.getOrientation(side));
 	}
 	
 	@Override
-	public TileEntity createNewTileEntity(World world) {
+	public TileEntity createTileEntity(World world, int metadata) {
         return new TileEntityCrate();
     }
 	
@@ -79,7 +77,7 @@ public class TileCrate extends TileContainerBetterStorage {
 	private class ConnectedTextureCrate extends ConnectedTexture {
 		@Override
 		public boolean canConnect(IBlockAccess world, int x, int y, int z, ForgeDirection side, ForgeDirection connected) {
-			if (world.getBlockId(x, y, z) != blockID) return false;
+			if (world.getBlock(x, y, z) != TileCrate.this) return false;
 			int offX = x + connected.offsetX;
 			int offY = y + connected.offsetY;
 			int offZ = z + connected.offsetZ;

@@ -11,7 +11,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -24,8 +24,8 @@ public class TileEntityBackpackRenderer extends TileEntitySpecialRenderer {
 	
 	public void renderTileEntityAt(TileEntityBackpack backpack, double x, double y, double z, float partialTicks) {
 		
-		if ((backpack.worldObj == null) && (backpack.blockType == null)) return;
-		ItemBackpack item = (ItemBackpack)Item.itemsList[backpack.getBlockType().blockID];
+		if ((backpack.getWorldObj() == null) && (backpack.blockType == null)) return;
+		ItemBackpack item = (ItemBackpack)Item.getItemFromBlock(backpack.getBlockType());
 		ItemStack stack = ((backpack.stack != null) ? backpack.stack : new ItemStack(item));
 		ModelBackpack backpackModel = item.getModel();
 		

@@ -9,7 +9,7 @@ import net.mcft.copy.betterstorage.api.crafting.RecipeInputItemStack;
 import net.mcft.copy.betterstorage.api.crafting.StationCrafting;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils.StackEnchantment;
-import net.minecraft.item.Item;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 public class CardboardEnchantmentRecipe implements IStationRecipe {
@@ -28,7 +28,7 @@ public class CardboardEnchantmentRecipe implements IStationRecipe {
 			if (stack == null) continue;
 			if (stack.getItem() instanceof ICardboardItem)
 				hasCardboardItems = true;
-			else if ((book == null) && (stack.getItem() == Item.enchantedBook)) {
+			else if ((book == null) && (stack.getItem() == Items.enchanted_book)) {
 				bookIndex = i;
 				book = stack;
 			} else return null;

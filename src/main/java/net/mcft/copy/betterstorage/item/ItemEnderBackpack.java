@@ -12,8 +12,8 @@ import net.minecraft.item.ItemStack;
 
 public class ItemEnderBackpack extends ItemBackpack {
 	
-	public ItemEnderBackpack(int id) {
-		super(id, ItemBackpack.material);
+	public ItemEnderBackpack() {
+		super(ItemBackpack.material);
 		setMaxDamage(0);
 	}
 	
@@ -45,7 +45,7 @@ public class ItemEnderBackpack extends ItemBackpack {
 	
 	class InventoryEnderBackpackEquipped extends InventoryWrapper {
 		public InventoryEnderBackpackEquipped(IInventory base) { super(base); }
-		@Override public String getInvName() { return getBackpackName(); }
+		@Override public String getInventoryName() { return getBackpackName(); }
 	}
 	
 }

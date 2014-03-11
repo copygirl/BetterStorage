@@ -10,15 +10,13 @@ import net.mcft.copy.betterstorage.attachment.IHasAttachments;
 import net.mcft.copy.betterstorage.attachment.LockAttachment;
 import net.mcft.copy.betterstorage.tile.ContainerMaterial;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
+import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.util.MovingObjectPosition;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -189,33 +187,33 @@ public abstract class TileEntityLockable extends TileEntityConnectable
 		if (this.powered == powered) return;
 		this.powered = powered;
 		
-		int id = getBlockType().blockID;
+		Block block = getBlockType();
 		// Schedule a block update to turn the redstone signal back off.
-		if (powered) worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, id, 10);
+		if (powered) worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, block, 10);
 		
 		// Notify nearby blocks
-		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, id);
-		worldObj.notifyBlocksOfNeighborChange(xCoord + 1, yCoord, zCoord, id);
-		worldObj.notifyBlocksOfNeighborChange(xCoord - 1, yCoord, zCoord, id);
-		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord + 1, zCoord, id);
-		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord - 1, zCoord, id);
-		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord + 1, id);
-		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord - 1, id);
+		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, block);
+		worldObj.notifyBlocksOfNeighborChange(xCoord + 1, yCoord, zCoord, block);
+		worldObj.notifyBlocksOfNeighborChange(xCoord - 1, yCoord, zCoord, block);
+		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord + 1, zCoord, block);
+		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord - 1, zCoord, block);
+		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord + 1, block);
+		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord - 1, block);
 		
 		// Notify nearby blocks of adjacent chest
 		if (isConnected() && (getConnected() == ForgeDirection.EAST)) {
-			worldObj.notifyBlocksOfNeighborChange(xCoord + 2, yCoord, zCoord, id);
-			worldObj.notifyBlocksOfNeighborChange(xCoord + 1, yCoord + 1, zCoord, id);
-			worldObj.notifyBlocksOfNeighborChange(xCoord + 1, yCoord - 1, zCoord, id);
-			worldObj.notifyBlocksOfNeighborChange(xCoord + 1, yCoord, zCoord + 1, id);
-			worldObj.notifyBlocksOfNeighborChange(xCoord + 1, yCoord, zCoord - 1, id);
+			worldObj.notifyBlocksOfNeighborChange(xCoord + 2, yCoord, zCoord, block);
+			worldObj.notifyBlocksOfNeighborChange(xCoord + 1, yCoord + 1, zCoord, block);
+			worldObj.notifyBlocksOfNeighborChange(xCoord + 1, yCoord - 1, zCoord, block);
+			worldObj.notifyBlocksOfNeighborChange(xCoord + 1, yCoord, zCoord + 1, block);
+			worldObj.notifyBlocksOfNeighborChange(xCoord + 1, yCoord, zCoord - 1, block);
 		}
 		if (isConnected() && (getConnected() == ForgeDirection.SOUTH)) {
-			worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord + 2, id);
-			worldObj.notifyBlocksOfNeighborChange(xCoord + 1, yCoord, zCoord + 1, id);
-			worldObj.notifyBlocksOfNeighborChange(xCoord - 1, yCoord, zCoord + 1, id);
-			worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord + 1, zCoord + 1, id);
-			worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord - 1, zCoord + 1, id);
+			worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord + 2, block);
+			worldObj.notifyBlocksOfNeighborChange(xCoord + 1, yCoord, zCoord + 1, block);
+			worldObj.notifyBlocksOfNeighborChange(xCoord - 1, yCoord, zCoord + 1, block);
+			worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord + 1, zCoord + 1, block);
+			worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord - 1, zCoord + 1, block);
 		}
 		
 	}
@@ -262,7 +260,7 @@ public abstract class TileEntityLockable extends TileEntityConnectable
 		if (canHaveLock()) {
 			ItemStack lock = getLockInternal();
 			if (lock != null)
-				compound.setCompoundTag("lock", lock.writeToNBT(new NBTTagCompound("")));
+				compound.setTag("lock", lock.writeToNBT(new NBTTagCompound()));
 		}
 	}
 	

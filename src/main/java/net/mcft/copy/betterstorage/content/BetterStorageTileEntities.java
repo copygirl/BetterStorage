@@ -12,9 +12,9 @@ import net.mcft.copy.betterstorage.tile.entity.TileEntityReinforcedChest;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityReinforcedLocker;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-public final class TileEntities {
+public final class BetterStorageTileEntities {
 	
-	private TileEntities() {  }
+	private BetterStorageTileEntities() {  }
 	
 	public static void register() {
 		

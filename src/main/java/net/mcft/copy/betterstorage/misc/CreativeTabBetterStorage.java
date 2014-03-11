@@ -3,9 +3,10 @@ package net.mcft.copy.betterstorage.misc;
 import java.util.List;
 
 import net.mcft.copy.betterstorage.api.BetterStorageEnchantment;
-import net.mcft.copy.betterstorage.content.Tiles;
-import net.minecraft.block.Block;
+import net.mcft.copy.betterstorage.content.BetterStorageTiles;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -17,11 +18,14 @@ public class CreativeTabBetterStorage extends CreativeTabs {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public int getTabIconItemIndex() {
-		if (Tiles.crate != null) return Tiles.crate.blockID;
-		else if (Tiles.backpack != null) return Tiles.backpack.blockID;
-		else if (Tiles.reinforcedChest != null) return Tiles.reinforcedChest.blockID;
-		else return Block.chest.blockID;
+	public Item getTabIconItem() {
+		if (BetterStorageTiles.crate != null)
+			return Item.getItemFromBlock(BetterStorageTiles.crate);
+		else if (BetterStorageTiles.backpack != null)
+			return Item.getItemFromBlock(BetterStorageTiles.backpack);
+		else if (BetterStorageTiles.reinforcedChest != null)
+			return Item.getItemFromBlock(BetterStorageTiles.reinforcedChest);
+		else return Item.getItemFromBlock(Blocks.chest);
 	}
 	
 	@Override

@@ -13,7 +13,7 @@ public class CraftingSourceTileEntity implements ICraftingSource {
 	public CraftingSourceTileEntity(TileEntity entity, EntityPlayer player) {
 		this.entity = entity;
 		this.player = player;
-		this.world = ((entity != null) ? entity.worldObj : ((player != null) ? player.worldObj : null));
+		this.world = ((entity != null) ? entity.getWorldObj() : ((player != null) ? player.worldObj : null));
 	}
 	
 	@Override

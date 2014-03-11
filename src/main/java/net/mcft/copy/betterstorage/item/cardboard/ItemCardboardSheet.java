@@ -6,21 +6,19 @@ import net.mcft.copy.betterstorage.item.ItemBetterStorage;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.EnumArmorMaterial;
-import net.minecraft.item.EnumToolMaterial;
+import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.minecraftforge.common.EnumHelper;
+import net.minecraftforge.common.util.EnumHelper;
 
 public class ItemCardboardSheet extends ItemBetterStorage {
 
-	public static final EnumToolMaterial toolMaterial =
+	public static final ToolMaterial toolMaterial =
 			EnumHelper.addToolMaterial("cardboard", 0, 64, 2.0F, -0.5F, 0);
-	public static final EnumArmorMaterial armorMaterial =
+	public static final ArmorMaterial armorMaterial =
 			EnumHelper.addArmorMaterial("cardboard", 5, new int[]{ 1, 2, 2, 1 }, 0);
 	
-	public ItemCardboardSheet(int id) {
-		super(id);
+	public ItemCardboardSheet() {
 		setMaxStackSize(8);
 	}
 	
@@ -58,9 +56,9 @@ public class ItemCardboardSheet extends ItemBetterStorage {
 		
 	}
 	
-	public static boolean onBlockDestroyed(World world, int blockID, int x, int y, int z,
+	public static boolean onBlockDestroyed(World world, Block block, int x, int y, int z,
 	                                       ItemStack stack, EntityLivingBase entity) {
-		return ((Block.blocksList[blockID].getBlockHardness(world, x, y, z) > 0)
+		return ((block.getBlockHardness(world, x, y, z) > 0)
 				? ItemCardboardSheet.damageItem(stack, 1, entity) : true);
 	}
 	

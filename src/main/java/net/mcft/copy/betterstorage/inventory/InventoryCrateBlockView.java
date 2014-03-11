@@ -89,7 +89,7 @@ public class InventoryCrateBlockView extends InventoryBetterStorage implements I
 	}
 	
 	@Override
-	public void onInventoryChanged() {
+	public void markDirty() {
 		for (int i = 0; i < numStacksStored; i++)
 			if (!ItemStack.areItemStacksEqual(originalStacks[i], exposedStacks[i]))
 				setInventorySlotContents(i + 1, exposedStacks[i]);
@@ -99,9 +99,9 @@ public class InventoryCrateBlockView extends InventoryBetterStorage implements I
 	public boolean isUseableByPlayer(EntityPlayer player) { return true; }
 	
 	@Override
-	public void openChest() { }
+	public void openInventory() { }
 	@Override
-	public void closeChest() { }
+	public void closeInventory() { }
 	
 	
 	public void onUpdate() {
@@ -113,12 +113,12 @@ public class InventoryCrateBlockView extends InventoryBetterStorage implements I
 		// without onInventoryChanged being called.
 		for (int i = 0; i < numStacksStored; i++)
 			if (!ItemStack.areItemStacksEqual(originalStacks[i], exposedStacks[i])) {
-				BetterStorage.log.warning("A crate inventory was modified without onInventoryChanged() being called afterwards.");
-				BetterStorage.log.warning("The crate Inventory interface will be disabled until the next restart, to minimize chances of issues.");
-				BetterStorage.log.warning(String.format("You can find the crate pile at [%s,%s,%s] in dimension %s.",
-				                                        data.getCenterX(), data.getCenterY(), data.getCenterZ(), data.collection.dimension));
+				BetterStorage.log.warn("A crate inventory was modified without onInventoryChanged() being called afterwards.");
+				BetterStorage.log.warn("The crate Inventory interface will be disabled until the next restart, to minimize chances of issues.");
+				BetterStorage.log.warn(String.format("You can find the crate pile at [%s,%s,%s] in dimension %s.",
+				                                     data.getCenterX(), data.getCenterY(), data.getCenterZ(), data.collection.dimension));
 				GlobalConfig.enableCrateInventoryInterfaceSetting.setSyncedValue(false);
-				onInventoryChanged();
+				markDirty();
 				return;
 			}
 		

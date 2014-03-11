@@ -1,6 +1,6 @@
 package net.mcft.copy.betterstorage.client.renderer;
 
-import net.mcft.copy.betterstorage.misc.CurrentItem;
+import net.mcft.copy.betterstorage.misc.EquipmentSlot;
 import net.mcft.copy.betterstorage.utils.RenderUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
@@ -29,7 +29,7 @@ public class RenderFrienderman extends RenderEnderman {
 			return super.shouldRenderPass(entity, slot, partialTicks);
 		} else if (slot != 1) return -1;
 		
-		ItemStack stack = entity.getCurrentItemOrArmor(CurrentItem.CHEST);
+		ItemStack stack = entity.getEquipmentInSlot(EquipmentSlot.CHEST);
 		if (stack == null) return -1;
 		
 		Item item = stack.getItem();

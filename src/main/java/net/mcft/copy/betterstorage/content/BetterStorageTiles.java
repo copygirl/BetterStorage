@@ -14,7 +14,7 @@ import net.mcft.copy.betterstorage.tile.TileReinforcedLocker;
 import net.mcft.copy.betterstorage.tile.crate.TileCrate;
 import net.mcft.copy.betterstorage.utils.MiscUtils;
 
-public final class Tiles {
+public final class BetterStorageTiles {
 	
 	public static TileCrate crate;
 	public static TileReinforcedChest reinforcedChest;
@@ -27,7 +27,7 @@ public final class Tiles {
 	public static TileCraftingStation craftingStation;
 	public static TileFlintBlock flintBlock;
 	
-	private Tiles() {  }
+	private BetterStorageTiles() {  }
 	
 	public static void initialize() {
 		

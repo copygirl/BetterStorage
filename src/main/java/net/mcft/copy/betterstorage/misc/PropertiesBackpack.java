@@ -1,5 +1,6 @@
 package net.mcft.copy.betterstorage.misc;
 
+import ibxm.Player;
 import net.mcft.copy.betterstorage.misc.handlers.PacketHandler;
 import net.mcft.copy.betterstorage.utils.NbtUtils;
 import net.minecraft.block.Block;
@@ -8,11 +9,9 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.packet.Packet;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
-import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.common.network.Player;
+import net.minecraftforge.common.util.Constants.NBT;
 
 public class PropertiesBackpack implements IExtendedEntityProperties {
 	
@@ -50,7 +49,7 @@ public class PropertiesBackpack implements IExtendedEntityProperties {
 		backpackCompound.setInteger("count", contents.length);
 		backpackCompound.setTag("Items", NbtUtils.writeItems(contents));
 		if (backpack != null)
-			backpackCompound.setCompoundTag("Stack", backpack.writeToNBT(new NBTTagCompound()));
+			backpackCompound.setTag("Stack", backpack.writeToNBT(new NBTTagCompound()));
 		compound.setTag("Backpack", backpackCompound);
 	}
 	
@@ -62,7 +61,7 @@ public class PropertiesBackpack implements IExtendedEntityProperties {
 			NBTTagCompound backpackCompound = compound.getCompoundTag("Backpack");
 			backpack = ItemStack.loadItemStackFromNBT(backpackCompound.getCompoundTag("Stack"));
 			contents = new ItemStack[backpackCompound.getInteger("count")];
-			NbtUtils.readItems(contents, backpackCompound.getTagList("Items"));
+			NbtUtils.readItems(contents, backpackCompound.getTagList("Items", NBT.TAG_COMPOUND));
 		}
 	}
 	
@@ -78,7 +77,7 @@ public class PropertiesBackpack implements IExtendedEntityProperties {
 		if (!entity.worldObj.isRemote) {
 			
 			// Play sound when equipped backpack opens / closes.
-			String sound = Block.soundSnowFootstep.getStepSound();
+			String sound = Block.soundTypeSnow.getStepResourcePath();
 			if ((lidAngle > 0.0F) && (prevLidAngle <= 0.0F))
 				entity.worldObj.playSoundEffect(entity.posX, entity.posY, entity.posZ, sound, 1.0F, 0.6F);
 			if ((lidAngle < 0.2F) && (prevLidAngle >= 0.2F))

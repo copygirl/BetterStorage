@@ -9,10 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet132TileEntityData;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public abstract class TileEntityConnectable extends TileEntityContainer implements IInventory {
 	
@@ -42,7 +39,7 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 		if (isMain()) return this;
 		TileEntityConnectable connectable = getConnectedTileEntity();
 		if (connectable != null) return connectable;
-		BetterStorage.log.warning("getConnectedTileEntity() returned null.");
+		BetterStorage.log.warn("getConnectedTileEntity() returned null.");
 		return this;
 	}
 	
@@ -96,7 +93,7 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 		if (connectable != null) {
 			connectable.setConnected(ForgeDirection.UNKNOWN);
 			connectable.markForUpdate();
-		} else BetterStorage.log.warning("getConnectedTileEntity() returned null.");
+		} else BetterStorage.log.warn("getConnectedTileEntity() returned null.");
 	}
 	
 	// TileEntityContainer stuff
@@ -173,9 +170,9 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 	// IInventory stuff
 	
 	@Override
-	public String getInvName() { return getName(); }
+	public String getInventoryName() { return getName(); }
 	@Override
-	public boolean isInvNameLocalized() { return !shouldLocalizeTitle(); }
+	public boolean hasCustomInventoryName() { return !shouldLocalizeTitle(); }
 	@Override
 	public int getInventoryStackLimit() { return 64; }
 	@Override
@@ -205,9 +202,9 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 	@Override
 	public ItemStack getStackInSlotOnClosing(int slot) { return null; }
 	@Override
-	public void openChest() { if (isAccessible()) getPlayerInventory().openChest(); }
+	public void openInventory() { if (isAccessible()) getPlayerInventory().openInventory(); }
 	@Override
-	public void closeChest() { if (isAccessible()) getPlayerInventory().closeChest(); }
+	public void closeInventory() { if (isAccessible()) getPlayerInventory().closeInventory(); }
 	@Override
 	public void onInventoryChanged() { super.onInventoryChanged(); }
 	

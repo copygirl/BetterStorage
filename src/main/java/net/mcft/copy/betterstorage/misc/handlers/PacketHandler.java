@@ -1,5 +1,7 @@
 package net.mcft.copy.betterstorage.misc.handlers;
 
+import ibxm.Player;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -22,19 +24,16 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.network.IPacketHandler;
-import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class PacketHandler implements IPacketHandler {
+	
+	// FIXME
 	
 	public static final byte openGui = 0;
 	public static final byte backpackTeleport = 1;

@@ -1,9 +1,9 @@
 package net.mcft.copy.betterstorage.config.setting;
 
 import net.mcft.copy.betterstorage.config.Config;
-import net.minecraftforge.common.Configuration;
-import net.minecraftforge.common.Property;
-import net.minecraftforge.common.Property.Type;
+import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.common.config.Property;
+import net.minecraftforge.common.config.Property.Type;
 
 public abstract class SinglePropertySetting<T> extends Setting<T> {
 	

@@ -8,11 +8,13 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.IChatComponent;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
+
+import com.mojang.authlib.GameProfile;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -46,11 +48,11 @@ public class TileEntityArmorStandRenderer extends TileEntitySpecialRenderer {
 		GL11.glPopMatrix();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		
-		if (locker.worldObj == null) return;
+		if (locker.getWorldObj() == null) return;
 		
 		if (playerDummy == null) {
-			playerDummy = new AbstractClientPlayer(locker.worldObj, "I AM ERROR") {
-				@Override public void sendChatToPlayer(ChatMessageComponent chatmessagecomponent) { }
+			playerDummy = new AbstractClientPlayer(locker.getWorldObj(), new GameProfile("", "")) {
+				@Override public void addChatMessage(IChatComponent var1) {  }
 				@Override public ChunkCoordinates getPlayerCoordinates() { return null; }
 				@Override public boolean canCommandSenderUseCommand(int i, String s) { return false; }
 			};
@@ -58,7 +60,7 @@ public class TileEntityArmorStandRenderer extends TileEntitySpecialRenderer {
 		}
 		playerDummy.ticksExisted = locker.ticksExisted;
 		playerDummy.inventory.armorInventory = locker.armor;
-		playerDummy.worldObj = locker.worldObj;
+		playerDummy.worldObj = locker.getWorldObj();
 		playerDummy.renderYawOffset = playerDummy.prevRenderYawOffset = rotation;
 		playerDummy.rotationYawHead = playerDummy.prevRotationYawHead = rotation;
 		renderArmor.doRender(playerDummy, x + 0.5, y + 27 / 16.0, z + 0.5, rotation, par8);

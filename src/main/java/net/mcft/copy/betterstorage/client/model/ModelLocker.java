@@ -2,6 +2,7 @@ package net.mcft.copy.betterstorage.client.model;
 
 import net.mcft.copy.betterstorage.misc.Resources;
 import net.minecraft.client.model.ModelBase;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 
@@ -15,7 +16,7 @@ public class ModelLocker extends ModelBase {
 	
 	private IModelCustom model;
 	
-	protected String modelPath() { return Resources.modelLocker; }
+	protected ResourceLocation modelPath() { return Resources.modelLocker; }
 	
 	public ModelLocker() {
 		model = AdvancedModelLoader.loadModel(modelPath());

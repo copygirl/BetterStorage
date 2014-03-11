@@ -1,7 +1,8 @@
 package net.mcft.copy.betterstorage.entity;
 
-import net.mcft.copy.betterstorage.content.Tiles;
-import net.mcft.copy.betterstorage.misc.CurrentItem;
+import static net.minecraft.entity.monster.EntityEnderman.carriableBlocks;
+import net.mcft.copy.betterstorage.content.BetterStorageTiles;
+import net.mcft.copy.betterstorage.misc.EquipmentSlot;
 import net.mcft.copy.betterstorage.misc.handlers.PacketHandler;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityBackpack;
 import net.mcft.copy.betterstorage.utils.RandomUtils;
@@ -11,12 +12,11 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.packet.Packet;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.network.PacketDispatcher;
 
 // Note to anyone reading this:
 // First of all, this is more or less a "secret" feature in BetterStorage. If you
@@ -27,7 +27,7 @@ import cpw.mods.fml.common.network.PacketDispatcher;
 public class EntityFrienderman extends EntityEnderman {
 	
 	private static final boolean[] friendermanCarriable = new boolean[4096];
-	static { friendermanCarriable[Block.enderChest.blockID] = true; }
+	static { friendermanCarriable[Block.getIdFromBlock(Blocks.ender_chest)] = true; }
 	
 	public EntityFrienderman(World world) {
 		super(world);
@@ -96,9 +96,9 @@ public class EntityFrienderman extends EntityEnderman {
 		GameRules rules = worldObj.getGameRules();
 		String ruleBefore = rules.getGameRuleStringValue("mobGriefing");
 		boolean ruleChanged = false;
-		boolean hadEnderChest = (getCarried() == Block.enderChest.blockID);
-		boolean hasArmor = (getCurrentItemOrArmor(CurrentItem.CHEST) != null);
-		boolean canMoveStuff = ((getCarried() != 0) ^ ((worldObj.getBlockId(x, y, z) == 0) && hasArmor));
+		boolean hadEnderChest = (getCarried() == Block.getIdFromBlock(Blocks.ender_chest));
+		boolean hasArmor = (getEquipmentInSlot(EquipmentSlot.CHEST) != null);
+		boolean canMoveStuff = ((getCarried() != 0) ^ (worldObj.isAirBlock(x, y, z) && hasArmor));
 		
 		if (hadEnderChest || !canMoveStuff) {
 			if (ruleBefore.equalsIgnoreCase("true")) {
@@ -117,11 +117,12 @@ public class EntityFrienderman extends EntityEnderman {
 		if (ruleChanged)
 			rules.setOrCreateGameRule("mobGriefing", ruleBefore);
 		
-		if (!worldObj.isRemote && !hadEnderChest && (getCarried() == Block.enderChest.blockID)) {
+		if (!worldObj.isRemote && !hadEnderChest &&
+		    (getCarried() == Block.getIdFromBlock(Blocks.ender_chest))) {
 			setCurrentItemOrArmor(3, null);
-			worldObj.setBlock(x, y, z, Tiles.enderBackpack.blockID, RandomUtils.getInt(2, 6), 3);
+			worldObj.setBlock(x, y, z, BetterStorageTiles.enderBackpack, RandomUtils.getInt(2, 6), 3);
 			WorldUtils.get(worldObj, x, y, z, TileEntityBackpack.class).stack =
-					new ItemStack(Tiles.enderBackpack);
+					new ItemStack(BetterStorageTiles.enderBackpack);
 			double px = x + 0.5;
 			double py = y + 0.5;
 			double pz = z + 0.5;

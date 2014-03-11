@@ -4,7 +4,7 @@ import net.mcft.copy.betterstorage.tile.entity.TileEntityContainer;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
@@ -41,7 +41,7 @@ public class BetterStorageRenderingHandler implements ISimpleBlockRenderingHandl
 		this.scale = scale;
 		this.yOffset = yOffset;
 		
-		tileEntityRenderer.setTileEntityRenderer(TileEntityRenderer.instance);
+		tileEntityRenderer.func_147497_a(TileEntityRendererDispatcher.instance);
 		renderId = RenderingRegistry.getNextAvailableRenderId();
 	}
 	
@@ -63,7 +63,7 @@ public class BetterStorageRenderingHandler implements ISimpleBlockRenderingHandl
 	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) { return false; }
 	
 	@Override
-	public boolean shouldRender3DInInventory() { return render3dInInventory; }
+	public boolean shouldRender3DInInventory(int modelId) { return render3dInInventory; }
 	
 	@Override
 	public int getRenderId() { return renderId; }

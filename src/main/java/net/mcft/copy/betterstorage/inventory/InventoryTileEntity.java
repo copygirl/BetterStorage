@@ -39,9 +39,9 @@ public class InventoryTileEntity extends InventoryBetterStorage {
 	}
 	
 	@Override
-	public String getInvName() { return mainTileEntity.getContainerTitle(); }
+	public String getInventoryName() { return mainTileEntity.getContainerTitle(); }
 	@Override
-	public boolean isInvNameLocalized() { return !mainTileEntity.shouldLocalizeTitle(); }
+	public boolean hasCustomInventoryName() { return !mainTileEntity.shouldLocalizeTitle(); }
 	
 	@Override
 	public int getSizeInventory() { return inventory.getSizeInventory(); }
@@ -64,12 +64,12 @@ public class InventoryTileEntity extends InventoryBetterStorage {
 	}
 	
 	@Override
-	public void openChest() { mainTileEntity.onContainerOpened(); }
+	public void openInventory() { mainTileEntity.onContainerOpened(); }
 	@Override
-	public void closeChest() { mainTileEntity.onContainerClosed(); }
+	public void closeInventory() { mainTileEntity.onContainerClosed(); }
 	@Override
-	public void onInventoryChanged() {
-		inventory.onInventoryChanged();
+	public void markDirty() {
+		inventory.markDirty();
 		for (TileEntityContainer te : tileEntities)
 			te.onInventoryChanged();
 	}

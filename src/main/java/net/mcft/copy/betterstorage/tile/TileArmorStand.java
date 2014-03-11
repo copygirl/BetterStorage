@@ -7,8 +7,9 @@ import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.misc.SetBlockFlag;
 import net.mcft.copy.betterstorage.proxy.ClientProxy;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityArmorStand;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -17,19 +18,18 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class TileArmorStand extends TileContainerBetterStorage {
 	
-	public TileArmorStand(int id) {
-		super(id, Material.rock);
+	public TileArmorStand() {
+		super(Material.rock);
 		
 		setHardness(2.5f);
 		setBlockBounds(2 / 16.0F, 0, 2 / 16.0F, 14 / 16.0F, 2, 14 / 16.0F);
 		
-		MinecraftForge.setBlockHarvestLevel(this, "pickaxe", 0);
+		setHarvestLevel("pickaxe", 0);
 	}
 	
 	@Override
@@ -37,7 +37,7 @@ public class TileArmorStand extends TileContainerBetterStorage {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister iconRegister) {
+	public void registerBlockIcons(IIconRegister iconRegister) {
 		blockIcon = iconRegister.registerIcon("stone_slab_top");
 	}
 	
@@ -70,7 +70,7 @@ public class TileArmorStand extends TileContainerBetterStorage {
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
 		super.onBlockPlacedBy(world, x, y, z, player, stack);
 		// Set block above to armor stand with metadata 1.
-		world.setBlock(x, y + 1, z, blockID, 1, SetBlockFlag.DEFAULT);
+		world.setBlock(x, y + 1, z, this, 1, SetBlockFlag.DEFAULT);
 	}
 	
 	@Override
@@ -87,34 +87,30 @@ public class TileArmorStand extends TileContainerBetterStorage {
 	}
 	
 	@Override
-	public boolean removeBlockByPlayer(World world, EntityPlayer player, int x, int y, int z) {
+	public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z) {
 		return world.setBlockToAir(x, y, z);
 	}
 	@Override
-	public void breakBlock(World world, int x, int y, int z, int id, int meta) {
+	public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
 		if (meta > 0) return;
-		super.breakBlock(world, x, y, z, id, meta);
+		super.breakBlock(world, x, y, z, block, meta);
 	}
 	
 	@Override
-	public void onNeighborBlockChange(World world, int x, int y, int z, int id) {
+	public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
 		int metadata = world.getBlockMetadata(x, y, z);
 		int targetY = y + ((metadata == 0) ? 1 : -1);
 		int targetMeta = ((metadata == 0) ? 1 : 0);
-		if (world.getBlockId(x, targetY, z) == blockID &&
-		    world.getBlockMetadata(x, targetY, z) == targetMeta) return;
-		world.setBlock(x, y, z, 0);
+		if ((world.getBlock(x, targetY, z) == this) &&
+		    (world.getBlockMetadata(x, targetY, z) == targetMeta)) return;
+		world.setBlockToAir(x, y, z);
 		if (metadata == 0)
 			dropBlockAsItem(world, x, y, z, metadata, 0);
 	}
 	
 	@Override
-	public TileEntity createNewTileEntity(World world) {
-		return new TileEntityArmorStand();
-	}
-	@Override
 	public TileEntity createTileEntity(World world, int metadata) {
-		return ((metadata == 0) ? createNewTileEntity(world) : null);
+		return ((metadata == 0) ? new TileEntityArmorStand() : null);
 	}
 	
 	@Override

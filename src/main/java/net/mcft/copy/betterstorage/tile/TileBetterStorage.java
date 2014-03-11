@@ -13,13 +13,13 @@ public class TileBetterStorage extends Block {
 	
 	private String name;
 	
-	public TileBetterStorage(int id, Material material) {
+	public TileBetterStorage(Material material) {
 		
-		super(id, material);
+		super(material);
 		
 		setCreativeTab(BetterStorage.creativeTab);
 		
-		setUnlocalizedName(Constants.modId + "." + getTileName());
+		setBlockName(getTileName());
 		registerBlock();
 		
 	}
