@@ -1,11 +1,8 @@
 package net.mcft.copy.betterstorage.misc.handlers;
 
-import java.util.EnumSet;
-
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.config.GlobalConfig;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
-import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.misc.EquipmentSlot;
 import net.mcft.copy.betterstorage.network.packet.PacketBackpackOpen;
 import net.mcft.copy.betterstorage.network.packet.PacketDrinkingHelmetUse;
@@ -15,11 +12,14 @@ import net.minecraft.entity.player.EntityPlayer;
 
 import org.lwjgl.input.Keyboard;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.gameevent.InputEvent.KeyInputEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class KeyBindingHandler extends KeyHandler {
+public class KeyBindingHandler {
 	
 	public static final KeyBinding backpackOpen =
 			new KeyBinding("key.betterstorage.backpackOpen", Keyboard.KEY_B, "key.categories.gameplay");
@@ -30,27 +30,20 @@ public class KeyBindingHandler extends KeyHandler {
 	
 	public static boolean serverBackpackKeyEnabled = false;
 	
-	public KeyBindingHandler() { super(bindings, new boolean[bindings.length]); }
-	
-	@Override
-	public EnumSet<TickType> ticks() { return EnumSet.of(TickType.CLIENT); }
-	
-	@Override
-	public String getLabel() { return Constants.modName + ".KeyHandler"; }
-	
-	@Override
-	public void keyDown(EnumSet<TickType> types, KeyBinding kb, boolean tickEnd, boolean isRepeat) {
-		Minecraft mc = Minecraft.getMinecraft();
-		EntityPlayer player = mc.thePlayer;
-		if (!tickEnd || !mc.inGameHasFocus || (player == null)) return;
-		if ((kb == backpackOpen) && (ItemBackpack.getBackpack(player) != null) &&
-		    BetterStorage.globalConfig.getBoolean(GlobalConfig.enableBackpackOpen))
-			BetterStorage.networkChannel.sendToServer(new PacketBackpackOpen());
-		else if ((kb == drinkingHelmet) && (player.getEquipmentInSlot(EquipmentSlot.HEAD) != null))
-			BetterStorage.networkChannel.sendToServer(new PacketDrinkingHelmetUse());
+	public KeyBindingHandler() {
+		FMLCommonHandler.instance().bus().register(this);
 	}
 	
-	@Override
-	public void keyUp(EnumSet<TickType> types, KeyBinding kb, boolean tickEnd) {  }
+	@EventHandler
+	public void onKey(KeyInputEvent event) {
+		Minecraft mc = Minecraft.getMinecraft();
+		EntityPlayer player = mc.thePlayer;
+		if (!mc.inGameHasFocus || (player == null)) return;
+		if (backpackOpen.isPressed() && (ItemBackpack.getBackpack(player) != null) &&
+		    BetterStorage.globalConfig.getBoolean(GlobalConfig.enableBackpackOpen))
+			BetterStorage.networkChannel.sendToServer(new PacketBackpackOpen());
+		else if (drinkingHelmet.isPressed() && (player.getEquipmentInSlot(EquipmentSlot.HEAD) != null))
+			BetterStorage.networkChannel.sendToServer(new PacketDrinkingHelmetUse());
+	}
 	
 }

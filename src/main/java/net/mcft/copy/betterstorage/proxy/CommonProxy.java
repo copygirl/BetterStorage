@@ -1,7 +1,5 @@
 package net.mcft.copy.betterstorage.proxy;
 
-import java.util.EnumSet;
-
 import net.mcft.copy.betterstorage.attachment.EnumAttachmentInteraction;
 import net.mcft.copy.betterstorage.attachment.IHasAttachments;
 import net.mcft.copy.betterstorage.entity.EntityCluckington;
@@ -10,6 +8,7 @@ import net.mcft.copy.betterstorage.item.ItemBucketSlime;
 import net.mcft.copy.betterstorage.item.cardboard.ICardboardItem;
 import net.mcft.copy.betterstorage.item.cardboard.ItemCardboardSheet;
 import net.mcft.copy.betterstorage.misc.handlers.BackpackHandler;
+import net.mcft.copy.betterstorage.misc.handlers.CraftingHandler;
 import net.mcft.copy.betterstorage.tile.crate.CratePileCollection;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
@@ -29,22 +28,21 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import net.minecraftforge.event.world.WorldEvent.Save;
 import net.minecraftforge.event.world.WorldEvent.Unload;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.eventhandler.Event.Result;
-import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.gameevent.TickEvent.WorldTickEvent;
 import cpw.mods.fml.relauncher.Side;
 
-public class CommonProxy implements ITickHandler {
+public class CommonProxy {
 	
 	public void initialize() {
 		
 		MinecraftForge.EVENT_BUS.register(this);
+		FMLCommonHandler.instance().bus().register(this);
 		
-		BackpackHandler backpacks = new BackpackHandler();
-		MinecraftForge.EVENT_BUS.register(backpacks);
-		GameRegistry.registerPlayerTracker(backpacks);
-		TickRegistry.registerTickHandler(this, Side.SERVER);
-		
+		new BackpackHandler();
+		new CraftingHandler();
 	}
 	
 	@EventHandler
@@ -150,16 +148,9 @@ public class CommonProxy implements ITickHandler {
 		
 	}
 	
-	@Override
-	public String getLabel() { return "BetterStorage"; }
-	@Override
-	public EnumSet<TickType> ticks() { return EnumSet.of(TickType.WORLD); }
-	
-	@Override
-	public void tickStart(EnumSet<TickType> type, Object... tickData) {
-		CratePileCollection.getCollection((World)tickData[0]).onTick();
+	@EventHandler
+	public void onWorldTick(WorldTickEvent event) {
+		if (event.side == Side.SERVER)
+			CratePileCollection.getCollection(event.world).onTick();
 	}
-	@Override
-	public void tickEnd(EnumSet<TickType> type, Object... tickData) {  }
-	
 }

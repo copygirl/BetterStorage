@@ -3,34 +3,33 @@ package net.mcft.copy.betterstorage.misc.handlers;
 import net.mcft.copy.betterstorage.content.BetterStorageItems;
 import net.mcft.copy.betterstorage.item.locking.ItemKey;
 import net.mcft.copy.betterstorage.utils.InventoryUtils;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
 
 /** Handles key and lock crafting. */
-public class CraftingHandler implements ICraftingHandler {
+public class CraftingHandler {
 	
-	// FIXME
+	public CraftingHandler() {
+		FMLCommonHandler.instance().bus().register(this);
+	}
 	
-	@Override
-	public void onCrafting(EntityPlayer player, ItemStack item, IInventory craftMatrix) {
+	@EventHandler
+	public void onItemCrafted(ItemCraftedEvent event) {
 		// If item crafted is a key ...
-		if (item.getItem() instanceof ItemKey) {
+		if (event.crafting.getItem() instanceof ItemKey) {
 			
 			// See if a key was modified by checking if no gold was used in the recipe.
-			boolean modifyKey = !InventoryUtils.hasItem(craftMatrix, Items.gold_ingot);
+			boolean modifyKey = !InventoryUtils.hasItem(event.craftMatrix, Items.gold_ingot);
 			
 			// If it is, remove it from the crafting matrix.
 			if (modifyKey) {
-				int keyIndex = InventoryUtils.findItemSlot(craftMatrix, BetterStorageItems.key);
-				craftMatrix.setInventorySlotContents(keyIndex, null);
+				int keyIndex = InventoryUtils.findItemSlot(event.craftMatrix, BetterStorageItems.key);
+				event.craftMatrix.setInventorySlotContents(keyIndex, null);
 			}
 			
 		}
 	}
-	
-	@Override
-	public void onSmelting(EntityPlayer player, ItemStack item) {  }
 	
 }

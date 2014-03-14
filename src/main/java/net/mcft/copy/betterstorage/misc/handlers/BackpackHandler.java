@@ -21,7 +21,6 @@ import net.mcft.copy.betterstorage.network.packet.PacketSyncSetting;
 import net.mcft.copy.betterstorage.tile.TileEnderBackpack;
 import net.mcft.copy.betterstorage.utils.DirectionUtils;
 import net.mcft.copy.betterstorage.utils.EntityUtils;
-import net.mcft.copy.betterstorage.utils.MiscUtils;
 import net.mcft.copy.betterstorage.utils.NbtUtils;
 import net.mcft.copy.betterstorage.utils.RandomUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
@@ -42,8 +41,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.WeightedRandomChestContent;
+import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.ChestGenHooks;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
@@ -54,10 +55,13 @@ import net.minecraftforge.event.entity.living.LivingSpawnEvent.SpecialSpawn;
 import net.minecraftforge.event.entity.player.EntityInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.eventhandler.Event.Result;
+import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
 
-public class BackpackHandler implements IPlayerTracker {
+public class BackpackHandler {
 	
 	/** Random items to be found in a backpack. There's also
 	    chance the backpack will contain some dungeon loot. */
@@ -111,16 +115,19 @@ public class BackpackHandler implements IPlayerTracker {
 		return new WeightedRandomChestContent(item, damage, min, max, weight);
 	}
 	private static WeightedRandomChestContent makeWeightedContent(Item item, int min, int max, int weight) {
-		makeWeightedContent(item, 0, min, max, weight);
+		return makeWeightedContent(item, 0, min, max, weight);
 	}
 	private static WeightedRandomChestContent makeWeightedContent(Item item, int damage, int weight) {
-		makeWeightedContent(item, damage, 1, 1, weight);
+		return makeWeightedContent(item, damage, 1, 1, weight);
 	}
 	private static WeightedRandomChestContent makeWeightedContent(Block block, int min, int max, int weight) {
-		makeWeightedContent(Item.getItemFromBlock(block), min, max, weight);
+		return makeWeightedContent(Item.getItemFromBlock(block), min, max, weight);
 	}
 	
 	public BackpackHandler() {
+		MinecraftForge.EVENT_BUS.register(this);
+		FMLCommonHandler.instance().bus().register(this);
+		
 		BetterStorageBackpack.spawnWithBackpack(EntityZombie.class, 1.0 / 800);
 		BetterStorageBackpack.spawnWithBackpack(EntitySkeleton.class, 1.0 / 1200);
 		BetterStorageBackpack.spawnWithBackpack(EntityPigZombie.class, 1.0 / 1000);
@@ -171,6 +178,7 @@ public class BackpackHandler implements IPlayerTracker {
 		// When a mob spawns naturally, see if it has a chance to spawn with a backpack.
 		
 		EntityLivingBase entity = event.entityLiving;
+		World world = entity.worldObj;
 		double probability = 0.0;
 		
 		for (BetterStorageBackpack.BackpackSpawnEntry entry : BetterStorageBackpack.spawnWithBackpack) {
@@ -183,17 +191,18 @@ public class BackpackHandler implements IPlayerTracker {
 		
 		// If entity is a vanilla enderman, replace it with a friendly one.
 		if (entity.getClass().equals(EntityEnderman.class)) {
-			if (MiscUtils.isEnabled(BetterStorageTiles.enderBackpack) &&
-			    // Don't spawn friendly endermen in the end / end biomes, would make them too easy to get.
-			    (entity.worldObj.getBiomeGenForCoords((int)entity.posX, (int)entity.posZ) != BiomeGenBase.sky)) {
-				EntityFrienderman frienderman = new EntityFrienderman(entity.worldObj);
+			if ((BetterStorageTiles.enderBackpack != null) &&
+			    // Don't spawn friendly endermen in the end or end biome, would make them too easy to get.
+			    (world.provider.dimensionId != 1) &&
+			    (world.getBiomeGenForCoords((int)entity.posX, (int)entity.posZ) != BiomeGenBase.sky)) {
+				EntityFrienderman frienderman = new EntityFrienderman(world);
 				frienderman.setPositionAndRotation(entity.posX, entity.posY, entity.posZ, entity.rotationYaw, 0);
-				entity.worldObj.spawnEntityInWorld(frienderman);
+				world.spawnEntityInWorld(frienderman);
 				ItemBackpack.getBackpackData(frienderman).spawnsWithBackpack = true;
 				entity.setDead();
 			}
 		// Otherwise, just mark it to spawn with a backpack.
-		} else if (MiscUtils.isEnabled(BetterStorageTiles.backpack))
+		} else if (BetterStorageTiles.backpack != null)
 			ItemBackpack.getBackpackData(entity).spawnsWithBackpack = true;
 		
 	}
@@ -416,33 +425,27 @@ public class BackpackHandler implements IPlayerTracker {
 	
 	// IPlayerTracker implementation
 	
-	@Override
-	public void onPlayerLogin(EntityPlayer player) {
+	@EventHandler
+	public void onPlayerLogin(PlayerLoggedInEvent event) {
 		// Send player the information if the backpack open key is enabled on this server.
 		NBTTagCompound compound = new NBTTagCompound();
 		BetterStorage.globalConfig.write(compound);
-		BetterStorage.networkChannel.sendToPlayer(player, new PacketSyncSetting(BetterStorage.globalConfig));
+		BetterStorage.networkChannel.sendToPlayer(event.player, new PacketSyncSetting(BetterStorage.globalConfig));
 	}
 	
-	@Override
-	public void onPlayerLogout(EntityPlayer player) {  }
-	
-	@Override
-	public void onPlayerChangedDimension(EntityPlayer player) {  }
-	
-	@Override
-	public void onPlayerRespawn(EntityPlayer player) {
+	@EventHandler
+	public void onPlayerRespawn(PlayerRespawnEvent event) {
 		
 		// If the player dies when when keepInventory is on and respawns,
 		// retrieve the backpack items from eir persistent NBT tag.
 		
-		NBTTagCompound entityData = player.getEntityData();
+		NBTTagCompound entityData = event.player.getEntityData();
 		if (!entityData.hasKey(EntityPlayer.PERSISTED_NBT_TAG)) return;
 		NBTTagCompound persistent = entityData.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG);
 		
 		if (!persistent.hasKey("Backpack")) return;
 		NBTTagCompound compound = persistent.getCompoundTag("Backpack");
-		PropertiesBackpack backpackData = ItemBackpack.getBackpackData(player);
+		PropertiesBackpack backpackData = ItemBackpack.getBackpackData(event.player);
 		
 		int size = compound.getInteger("count");
 		ItemStack[] contents = new ItemStack[size];

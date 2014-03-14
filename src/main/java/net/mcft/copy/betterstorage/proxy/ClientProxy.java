@@ -28,7 +28,6 @@ import net.mcft.copy.betterstorage.tile.entity.TileEntityBackpack;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityLocker;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityReinforcedChest;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityReinforcedLocker;
-import net.mcft.copy.betterstorage.utils.MiscUtils;
 import net.mcft.copy.betterstorage.utils.RenderUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
@@ -37,6 +36,7 @@ import net.minecraft.client.renderer.entity.RenderChicken;
 import net.minecraft.client.renderer.entity.RendererLivingEntity;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -75,7 +75,7 @@ public class ClientProxy extends CommonProxy {
 		
 		super.initialize();
 		
-		KeyBindingRegistry.registerKeyBinding(new KeyBindingHandler());
+		new KeyBindingHandler();
 		
 		registerRenderers();
 		
@@ -102,8 +102,8 @@ public class ClientProxy extends CommonProxy {
 	}
 	
 	public static void registerItemRenderer(Block block, IItemRenderer renderer) {
-		if (MiscUtils.isEnabled(block))
-			MinecraftForgeClient.registerItemRenderer(block, renderer);
+		if (block != null)
+			MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(block), renderer);
 	}
 	
 	public static int registerTileEntityRenderer(Class<? extends TileEntity> tileEntityClass, TileEntitySpecialRenderer renderer,
@@ -125,7 +125,7 @@ public class ClientProxy extends CommonProxy {
 		EntityPlayer player = event.player;
 		World world = player.worldObj;
 		MovingObjectPosition target = WorldUtils.rayTrace(player, event.partialTicks);
-		if ((target == null) || (target.typeOfHit != MovingObjectType.TILE)) return;
+		if ((target == null) || (target.typeOfHit != MovingObjectType.BLOCK)) return;
 		int x = target.blockX;
 		int y = target.blockY;
 		int z = target.blockZ;
