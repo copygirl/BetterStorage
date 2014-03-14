@@ -1,12 +1,13 @@
 package net.mcft.copy.betterstorage.container;
 
-import ibxm.Player;
 import net.mcft.copy.betterstorage.inventory.InventoryCratePlayerView;
 import net.mcft.copy.betterstorage.tile.crate.CratePileData;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.play.server.S2FPacketSetSlot;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -74,7 +75,8 @@ public class ContainerCrate extends ContainerBetterStorage {
 			ItemStack overflow = playerView.data.addItems(slotStack);
 			slot.putStack(overflow);
 			// Send slot contents to player if it doesn't match the calculated overflow.
-			PacketDispatcher.sendPacketToPlayer(new Packet103SetSlot(player.openContainer.windowId, slotId, overflow), (Player)player);
+			((EntityPlayerMP)player).playerNetServerHandler.sendPacket(
+					new S2FPacketSetSlot(player.openContainer.windowId, slotId, overflow));
 			if (!success) return null;
 		}
 		return stackBefore;

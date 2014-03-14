@@ -6,7 +6,6 @@ import net.mcft.copy.betterstorage.attachment.Attachments;
 import net.mcft.copy.betterstorage.container.ContainerBetterStorage;
 import net.mcft.copy.betterstorage.inventory.InventoryTileEntity;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityContainer;
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -21,10 +20,17 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public final class WorldUtils {
 	
 	private WorldUtils() {  }
+	
+	@SideOnly(Side.CLIENT)
+	public static World getLocalWorld() {
+		return Minecraft.getMinecraft().theWorld;
+	}
 	
 	public static AxisAlignedBB getAABB(TileEntity entity, double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {
 		double x = entity.xCoord;
@@ -92,11 +98,6 @@ public final class WorldUtils {
 	}
 	
 	// TileEntity related functions
-	
-	/** Returns whether the Block at the position is the same as block. */
-	public static boolean is(IBlockAccess world, int x, int y, int z, Block block) {
-		return is(world, x, y, z, block);
-	}
 	
 	/** Returns whether the TileEntity at the position is an instance of tileClass. */
 	public static <T> boolean is(IBlockAccess world, int x, int y, int z, Class<T> tileClass) {

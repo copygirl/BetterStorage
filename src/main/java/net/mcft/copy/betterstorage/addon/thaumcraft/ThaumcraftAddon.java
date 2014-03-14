@@ -14,9 +14,17 @@ import net.mcft.copy.betterstorage.proxy.ClientProxy;
 import net.mcft.copy.betterstorage.tile.TileBackpack;
 import net.mcft.copy.betterstorage.utils.MiscUtils;
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.MinecraftForgeClient;
+import thaumcraft.api.ItemApi;
+import thaumcraft.api.ThaumcraftApi;
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.crafting.InfusionRecipe;
+import thaumcraft.api.research.ResearchItem;
+import thaumcraft.api.research.ResearchPage;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -61,7 +69,7 @@ public class ThaumcraftAddon extends Addon {
 		thaumiumBlock = ItemApi.getBlock("blockCosmeticSolid", 4);
 		fabric        = ItemApi.getItem("itemResource", 7);
 		
-		ItemStack oakWood = new ItemStack(Block.wood);
+		ItemStack log = new ItemStack(Blocks.log);
 		
 		// Thaumaturge's backpack recipe
 		if (MiscUtils.isEnabled(thaumcraftBackpack, BetterStorageTiles.backpack)) {
@@ -78,7 +86,7 @@ public class ThaumcraftAddon extends Addon {
 					new ItemStack(thaumiumChest), 4,
 					createAspectList(Aspect.METAL, 16, Aspect.VOID, 20, Aspect.MAGIC, 16),
 					new ItemStack(BetterStorageTiles.reinforcedChest),
-					new ItemStack[]{ thaumiumBlock, thaumium, oakWood, thaumium, oakWood, thaumium });
+					new ItemStack[]{ thaumiumBlock, thaumium, log, thaumium, log, thaumium });
 		}
 		
 	}

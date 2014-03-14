@@ -1,6 +1,6 @@
 package net.mcft.copy.betterstorage.utils;
 
-import ibxm.Player;
+import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.addon.thaumcraft.GuiThaumiumChest;
 import net.mcft.copy.betterstorage.client.gui.GuiBetterStorage;
 import net.mcft.copy.betterstorage.client.gui.GuiCraftingStation;
@@ -9,7 +9,7 @@ import net.mcft.copy.betterstorage.container.ContainerKeyring;
 import net.mcft.copy.betterstorage.inventory.InventoryCardboardBox;
 import net.mcft.copy.betterstorage.inventory.InventoryWrapper;
 import net.mcft.copy.betterstorage.misc.Constants;
-import net.mcft.copy.betterstorage.misc.handlers.PacketHandler;
+import net.mcft.copy.betterstorage.network.packet.PacketOpenGui;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,18 +24,21 @@ public final class PlayerUtils {
 	
 	private PlayerUtils() {  }
 	
+	@SideOnly(Side.CLIENT)
+	public static EntityPlayer getLocalPlayer() {
+		return Minecraft.getMinecraft().thePlayer;
+	}
+	
 	public static void openGui(EntityPlayer pl, String name, int columns, int rows, String title, Container container) {
 		
 		EntityPlayerMP player = (EntityPlayerMP)pl;
 		if (title == null) title = "";
 		
 		player.closeContainer();
-		player.incrementWindowID();
+		player.getNextWindowId();
 		
-		Packet packet = PacketHandler.makePacket(
-				PacketHandler.openGui, player.currentWindowId,
-				name, (byte)columns, (byte)rows, title);
-		PacketDispatcher.sendPacketToPlayer(packet, (Player)player);
+		BetterStorage.networkChannel.sendToPlayer(player,
+				new PacketOpenGui(player.currentWindowId, name, columns, rows, title));
 		
 		player.openContainer = container;
 		player.openContainer.windowId = player.currentWindowId;

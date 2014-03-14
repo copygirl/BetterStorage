@@ -1,6 +1,5 @@
 package net.mcft.copy.betterstorage.tile.entity;
 
-import ibxm.Player;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.entity.EntityLivingBase;
@@ -55,16 +54,18 @@ public class TileEntityArmorStand extends TileEntityContainer {
 			    ((playerArmor == null) || playerArmor.getItem().isValidArmor(playerArmor, 3 - slot, player))) {
 				armor[slot] = playerArmor;
 				player.inventory.armorInventory[slot] = item;
-				PacketDispatcher.sendPacketToPlayer(new Packet103SetSlot(0, 8 - slot, item), (Player)player);
+				// Shouldn't this be done automatically?
+				//((EntityPlayerMP)player).playerNetServerHandler.sendPacket(
+				//		new S2FPacketSetSlot(player.openContainer.windowId, 8 - slot, item));
 				markForUpdate();
-				onInventoryChanged();
+				markDirty();
 			}
 		} else if (((item != null) && (holding == null)) ||
 		           ((holding != null) && holding.getItem().isValidArmor(holding, 3 - slot, player))) {
 			armor[slot] = holding;
 			player.inventory.mainInventory[player.inventory.currentItem] = item;
 			markForUpdate();
-			onInventoryChanged();
+			markDirty();
 		}
 		
 		return true;

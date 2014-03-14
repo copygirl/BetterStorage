@@ -314,7 +314,6 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 	
 	// TileEntity synchronization
 	
-	get
 	@Override
 	public Packet getDescriptionPacket() {
 		NBTTagCompound compound = new NBTTagCompound();

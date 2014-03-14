@@ -12,6 +12,7 @@ import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.misc.CreativeTabBetterStorage;
 import net.mcft.copy.betterstorage.misc.DungeonLoot;
 import net.mcft.copy.betterstorage.misc.Recipes;
+import net.mcft.copy.betterstorage.network.ChannelHandler;
 import net.mcft.copy.betterstorage.proxy.CommonProxy;
 import net.minecraft.creativetab.CreativeTabs;
 
@@ -39,6 +40,8 @@ public class BetterStorage {
 	            clientSide = Constants.clientProxy)
 	public static CommonProxy proxy;
 	
+	public static ChannelHandler networkChannel;
+	
 	public static Logger log;
 	
 	public static CreativeTabs creativeTab;
@@ -48,6 +51,7 @@ public class BetterStorage {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		
+		networkChannel = new ChannelHandler();
 		log = event.getModLog();
 		creativeTab = new CreativeTabBetterStorage();
 		

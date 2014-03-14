@@ -7,6 +7,8 @@ import net.mcft.copy.betterstorage.config.GlobalConfig;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.misc.EquipmentSlot;
+import net.mcft.copy.betterstorage.network.packet.PacketBackpackOpen;
+import net.mcft.copy.betterstorage.network.packet.PacketDrinkingHelmetUse;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
@@ -43,9 +45,9 @@ public class KeyBindingHandler extends KeyHandler {
 		if (!tickEnd || !mc.inGameHasFocus || (player == null)) return;
 		if ((kb == backpackOpen) && (ItemBackpack.getBackpack(player) != null) &&
 		    BetterStorage.globalConfig.getBoolean(GlobalConfig.enableBackpackOpen))
-			PacketDispatcher.sendPacketToServer(PacketHandler.makePacket(PacketHandler.backpackOpen));
-		else if ((kb == drinkingHelmet) && (player.getCurrentItemOrArmor(EquipmentSlot.HEAD) != null))
-			PacketDispatcher.sendPacketToServer(PacketHandler.makePacket(PacketHandler.drinkingHelmet));
+			BetterStorage.networkChannel.sendToServer(new PacketBackpackOpen());
+		else if ((kb == drinkingHelmet) && (player.getEquipmentInSlot(EquipmentSlot.HEAD) != null))
+			BetterStorage.networkChannel.sendToServer(new PacketDrinkingHelmetUse());
 	}
 	
 	@Override

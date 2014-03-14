@@ -9,7 +9,7 @@ import net.mcft.copy.betterstorage.api.crafting.RecipeInputBase;
 import net.mcft.copy.betterstorage.api.crafting.StationCrafting;
 import net.mcft.copy.betterstorage.config.GlobalConfig;
 import net.mcft.copy.betterstorage.inventory.InventoryCraftingStation;
-import net.minecraft.client.Minecraft;
+import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
@@ -17,8 +17,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class VanillaStationCrafting extends StationCrafting {
 	
@@ -97,16 +95,13 @@ public class VanillaStationCrafting extends StationCrafting {
 	}
 	
 	public static VanillaStationCrafting findVanillaRecipe(InventoryCraftingStation inv) {
-		World world = ((inv.entity != null) ? inv.entity.getWorldObj() : getClientWorld());
+		World world = ((inv.entity != null) ? inv.entity.getWorldObj() : WorldUtils.getLocalWorld());
 		InventoryCrafting crafting = new InventoryCrafting(null, 3, 3);
 		crafting.stackList = inv.crafting;
 		IRecipe recipe = findRecipe(crafting, world);
 		if (recipe == null) return null;
 		return new VanillaStationCrafting(world, recipe, inv.crafting, recipe.getCraftingResult(crafting));
 	}
-	
-	@SideOnly(Side.CLIENT)
-	private static World getClientWorld() { return Minecraft.getMinecraft().theWorld; }
 	
 	private static IRecipe findRecipe(InventoryCrafting crafting, World world) {
 		for (IRecipe recipe : (List<IRecipe>)CraftingManager.getInstance().getRecipeList())

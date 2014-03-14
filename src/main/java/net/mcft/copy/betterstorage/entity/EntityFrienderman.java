@@ -1,9 +1,10 @@
 package net.mcft.copy.betterstorage.entity;
 
 import static net.minecraft.entity.monster.EntityEnderman.carriableBlocks;
+import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.content.BetterStorageTiles;
 import net.mcft.copy.betterstorage.misc.EquipmentSlot;
-import net.mcft.copy.betterstorage.misc.handlers.PacketHandler;
+import net.mcft.copy.betterstorage.network.packet.PacketBackpackTeleport;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityBackpack;
 import net.mcft.copy.betterstorage.utils.RandomUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
@@ -126,8 +127,9 @@ public class EntityFrienderman extends EntityEnderman {
 			double px = x + 0.5;
 			double py = y + 0.5;
 			double pz = z + 0.5;
-			Packet packet = PacketHandler.makePacket(PacketHandler.backpackTeleport, posX, posY + 1, posZ, x, y, z);
-			PacketDispatcher.sendPacketToAllAround(px, py, pz, 512.0, worldObj.provider.dimensionId, packet);
+			BetterStorage.networkChannel.sendToEveryoneNear(
+					worldObj, px, py, pz, 256,
+					new PacketBackpackTeleport(px, py, pz, x, y, z));
 			worldObj.playSoundEffect(px, py, pz, "mob.endermen.portal", 1.0F, 1.0F);
 		}
 		

@@ -1,7 +1,5 @@
 package net.mcft.copy.betterstorage.misc.handlers;
 
-import ibxm.Player;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -18,6 +16,8 @@ import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.item.ItemEnderBackpack;
 import net.mcft.copy.betterstorage.misc.EquipmentSlot;
 import net.mcft.copy.betterstorage.misc.PropertiesBackpack;
+import net.mcft.copy.betterstorage.network.packet.PacketClientSpawn;
+import net.mcft.copy.betterstorage.network.packet.PacketSyncSetting;
 import net.mcft.copy.betterstorage.tile.TileEnderBackpack;
 import net.mcft.copy.betterstorage.utils.DirectionUtils;
 import net.mcft.copy.betterstorage.utils.EntityUtils;
@@ -397,8 +397,7 @@ public class BackpackHandler implements IPlayerTracker {
 			// know about it, so it can sent any data of the entity.
 			
 			if (!(event.entity instanceof EntityLivingBase)) return;
-			Packet packet = PacketHandler.makePacket(PacketHandler.clientSpawn, event.entity.entityId);
-			PacketDispatcher.sendPacketToServer(packet);
+			BetterStorage.networkChannel.sendToServer(new PacketClientSpawn(event.entity.getEntityId()));
 		} else {
 			// If an ender backpack ever drops as an item,
 			// instead teleport it somewhere as a block.
@@ -422,8 +421,7 @@ public class BackpackHandler implements IPlayerTracker {
 		// Send player the information if the backpack open key is enabled on this server.
 		NBTTagCompound compound = new NBTTagCompound();
 		BetterStorage.globalConfig.write(compound);
-		Packet packet = PacketHandler.makePacket(PacketHandler.syncSettings, compound);
-		PacketDispatcher.sendPacketToPlayer(packet, (Player)player);
+		BetterStorage.networkChannel.sendToPlayer(player, new PacketSyncSetting(BetterStorage.globalConfig));
 	}
 	
 	@Override

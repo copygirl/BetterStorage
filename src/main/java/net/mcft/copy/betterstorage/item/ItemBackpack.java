@@ -1,7 +1,5 @@
 package net.mcft.copy.betterstorage.item;
 
-import ibxm.Player;
-
 import java.util.List;
 
 import net.mcft.copy.betterstorage.BetterStorage;
@@ -17,7 +15,8 @@ import net.mcft.copy.betterstorage.misc.EquipmentSlot;
 import net.mcft.copy.betterstorage.misc.PropertiesBackpack;
 import net.mcft.copy.betterstorage.misc.Resources;
 import net.mcft.copy.betterstorage.misc.handlers.KeyBindingHandler;
-import net.mcft.copy.betterstorage.misc.handlers.PacketHandler;
+import net.mcft.copy.betterstorage.network.packet.PacketBackpackHasItems;
+import net.mcft.copy.betterstorage.network.packet.PacketBackpackStack;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityBackpack;
 import net.mcft.copy.betterstorage.utils.DirectionUtils;
 import net.mcft.copy.betterstorage.utils.EntityUtils;
@@ -36,11 +35,13 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.play.server.S2FPacketSetSlot;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ISpecialArmor;
@@ -341,8 +342,7 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 		EntityPlayer player = (EntityPlayer)entity;
 		boolean hasItems = ((backpackData.contents != null) && !StackUtils.isEmpty(backpackData.contents));
 		if (backpackData.hasItems == hasItems) return;
-		Packet packet = PacketHandler.makePacket(PacketHandler.backpackHasItems, hasItems);
-		PacketDispatcher.sendPacketToPlayer(packet, (Player)player);
+		BetterStorage.networkChannel.sendToPlayer(player, new PacketBackpackHasItems(hasItems));
 		backpackData.hasItems = hasItems;
 	}
 	
@@ -381,7 +381,6 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 		ItemStack backpack = ItemBackpack.getBackpack(player);
 		if (backpack == null) return false;
 		
-		boolean hasChestplateBackpack = hasChestplateBackpackEquipped(player);
 		boolean success = false;
 		if (!ItemBackpack.isBackpackOpen(player)) {
 			// Try to place the backpack as if it was being held and used by the player.
@@ -393,11 +392,14 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 		}
 
 		// Make sure the client has the same information as the server.
-		if (!player.worldObj.isRemote)
-			PacketDispatcher.sendPacketToPlayer((hasChestplateBackpack
-						? new Packet103SetSlot(0, 6, backpack)
-						: PacketHandler.makePacket(PacketHandler.backpackStack, player.entityId, backpack)
-					), (Player)player);
+		if (!player.worldObj.isRemote) {
+			if (!hasChestplateBackpackEquipped(player))
+				BetterStorage.networkChannel.sendToPlayer(
+						player, new PacketBackpackStack(player.getEntityId(), backpack));
+			else if (player instanceof EntityPlayerMP)
+				((EntityPlayerMP)player).playerNetServerHandler.sendPacket(
+						new S2FPacketSetSlot(0, 6, backpack));
+		}
 		
 		if (success) player.swingItem();
 		return success;

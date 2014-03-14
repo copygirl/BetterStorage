@@ -1,7 +1,8 @@
 package net.mcft.copy.betterstorage.misc;
 
-import ibxm.Player;
-import net.mcft.copy.betterstorage.misc.handlers.PacketHandler;
+import net.mcft.copy.betterstorage.BetterStorage;
+import net.mcft.copy.betterstorage.network.packet.PacketBackpackIsOpen;
+import net.mcft.copy.betterstorage.network.packet.PacketBackpackStack;
 import net.mcft.copy.betterstorage.utils.NbtUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -85,13 +86,13 @@ public class PropertiesBackpack implements IExtendedEntityProperties {
 			
 			boolean isOpen = (playersUsing > 0);
 			if (isOpen != (prevPlayersUsing > 0)) {
-				Packet packet = PacketHandler.makePacket(PacketHandler.backpackIsOpen, entity.entityId, isOpen);
-				PacketHandler.sendToEveryoneTracking(entity, packet);
+				BetterStorage.networkChannel.sendToEveryoneNear(
+						entity, new PacketBackpackIsOpen(entity.getEntityId(), isOpen));
 				prevPlayersUsing = playersUsing;
 			}
 			if (!ItemStack.areItemStacksEqual(backpack, prevBackpack)) {
-				Packet packet = PacketHandler.makePacket(PacketHandler.backpackStack, entity.entityId, backpack);
-				PacketHandler.sendToEveryoneTracking(entity, packet);
+				BetterStorage.networkChannel.sendToEveryoneNear(
+						entity, new PacketBackpackStack(entity.getEntityId(), backpack));
 				prevBackpack = ItemStack.copyItemStack(backpack);
 			}
 			
@@ -103,14 +104,12 @@ public class PropertiesBackpack implements IExtendedEntityProperties {
 		// Called when the players sends a packet informing
 		// the server that an entity has spawned.
 		// Sends any backpack data to the player.
-		if (playersUsing > 0) {
-			Packet packet = PacketHandler.makePacket(PacketHandler.backpackIsOpen, entity.entityId, true);
-			PacketDispatcher.sendPacketToPlayer(packet, (Player)player);
-		}
-		if (backpack != null) {
-			Packet packet = PacketHandler.makePacket(PacketHandler.backpackStack, entity.entityId, backpack);
-			PacketDispatcher.sendPacketToPlayer(packet, (Player)player);
-		}
+		if (playersUsing > 0)
+			BetterStorage.networkChannel.sendToEveryoneNear(
+					entity, new PacketBackpackIsOpen(entity.getEntityId(), true));
+		if (backpack != null)
+			BetterStorage.networkChannel.sendToEveryoneNear(
+					entity, new PacketBackpackStack(entity.getEntityId(), backpack));
 	}
 	
 }

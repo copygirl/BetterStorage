@@ -1,10 +1,11 @@
 package net.mcft.copy.betterstorage.tile;
 
+import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.container.ContainerBetterStorage;
 import net.mcft.copy.betterstorage.inventory.InventoryTileEntity;
 import net.mcft.copy.betterstorage.item.ItemEnderBackpack;
 import net.mcft.copy.betterstorage.misc.Constants;
-import net.mcft.copy.betterstorage.misc.handlers.PacketHandler;
+import net.mcft.copy.betterstorage.network.packet.PacketBackpackTeleport;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityBackpack;
 import net.mcft.copy.betterstorage.utils.PlayerUtils;
 import net.mcft.copy.betterstorage.utils.RandomUtils;
@@ -75,10 +76,9 @@ public class TileEnderBackpack extends TileBackpack {
 			    !blockBelow.isSideSolid(world, x, y - 1, z, ForgeDirection.UP)) return false;
 		}
 		
-		Packet packet = PacketHandler.makePacket(PacketHandler.backpackTeleport,
-		                                         sourceX, sourceY, sourceZ, x, y, z);
-		PacketDispatcher.sendPacketToAllAround(sourceX + 0.5, sourceY + 0.5, sourceZ + 0.5, 512.0,
-		                                       world.provider.dimensionId, packet);
+		BetterStorage.networkChannel.sendToEveryoneNear(
+				world, sourceX + 0.5, sourceY + 0.5, sourceZ + 0.5, 256,
+				new PacketBackpackTeleport(sourceX, sourceY, sourceZ, x, y, z));
 		
 		world.playSoundEffect(sourceX + 0.5, sourceY + 0.5, sourceZ + 0.5,
 		                      "mob.endermen.portal", 1.0F, 1.0F);

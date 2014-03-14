@@ -15,13 +15,18 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import thaumcraft.api.IRepairable;
+import thaumcraft.api.IRepairableExtended;
+import thaumcraft.api.IVisDiscountGear;
+import thaumcraft.api.ThaumcraftApi;
+import thaumcraft.api.aspects.Aspect;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemThaumcraftBackpack extends ItemBackpack implements IRepairable, IVisDiscountGear {
 	
-	public ItemThaumcraftBackpack(int id) {
-		super(id, ItemBackpack.material);
+	public ItemThaumcraftBackpack() {
+		super(ItemBackpack.material);
 		setMaxDamage(288);
 	}
 	
