@@ -37,7 +37,7 @@ public class EntityFrienderman extends EntityEnderman {
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(40.0);
+		getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(40.0);
 	}
 	
 	@Override
@@ -49,11 +49,11 @@ public class EntityFrienderman extends EntityEnderman {
 	}
 	
 	@Override
-	public int getCarried() {
+	public Block func_146080_bZ() {
 		// Fix vanilla code so it works with block
 		// IDs from 0 to 255 instead of -128 to 127.
 		// (Needed because ender chests are ID 130.)
-		return ((super.getCarried() + 256) % 256);
+		return Block.getBlockById((this.dataWatcher.getWatchableObjectByte(16) + 256) % 256);
 	}
 	
 	@Override
@@ -97,9 +97,9 @@ public class EntityFrienderman extends EntityEnderman {
 		GameRules rules = worldObj.getGameRules();
 		String ruleBefore = rules.getGameRuleStringValue("mobGriefing");
 		boolean ruleChanged = false;
-		boolean hadEnderChest = (getCarried() == Block.getIdFromBlock(Blocks.ender_chest));
+		boolean hadEnderChest = (func_146080_bZ() == Blocks.ender_chest);
 		boolean hasArmor = (getEquipmentInSlot(EquipmentSlot.CHEST) != null);
-		boolean canMoveStuff = ((getCarried() != 0) ^ (worldObj.isAirBlock(x, y, z) && hasArmor));
+		boolean canMoveStuff = ((func_146080_bZ() != null) ^ (worldObj.isAirBlock(x, y, z) && hasArmor));
 		
 		if (hadEnderChest || !canMoveStuff) {
 			if (ruleBefore.equalsIgnoreCase("true")) {
@@ -119,7 +119,7 @@ public class EntityFrienderman extends EntityEnderman {
 			rules.setOrCreateGameRule("mobGriefing", ruleBefore);
 		
 		if (!worldObj.isRemote && !hadEnderChest &&
-		    (getCarried() == Block.getIdFromBlock(Blocks.ender_chest))) {
+		    (func_146080_bZ() == Blocks.ender_chest)) {
 			setCurrentItemOrArmor(3, null);
 			worldObj.setBlock(x, y, z, BetterStorageTiles.enderBackpack, RandomUtils.getInt(2, 6), 3);
 			WorldUtils.get(worldObj, x, y, z, TileEntityBackpack.class).stack =
