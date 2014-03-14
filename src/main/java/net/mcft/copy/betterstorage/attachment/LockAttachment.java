@@ -1,5 +1,6 @@
 package net.mcft.copy.betterstorage.attachment;
 
+import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.api.BetterStorageEnchantment;
 import net.mcft.copy.betterstorage.api.lock.EnumLockInteraction;
 import net.mcft.copy.betterstorage.api.lock.IKey;
@@ -7,7 +8,7 @@ import net.mcft.copy.betterstorage.api.lock.ILock;
 import net.mcft.copy.betterstorage.api.lock.ILockable;
 import net.mcft.copy.betterstorage.content.BetterStorageItems;
 import net.mcft.copy.betterstorage.item.ItemBetterStorage;
-import net.mcft.copy.betterstorage.network.ChannelHandler;
+import net.mcft.copy.betterstorage.network.packet.PacketLockHit;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.enchantment.Enchantment;
@@ -21,7 +22,6 @@ import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
-import net.minecraft.network.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import cpw.mods.fml.relauncher.Side;
@@ -118,8 +118,9 @@ public class LockAttachment extends ItemAttachment {
 				
 				((ILock)lock.getItem()).applyEffects(lock, lockable, player, EnumLockInteraction.ATTACK);
 			}
-			Packet packet = ChannelHandler.makePacket(ChannelHandler.lockHit, tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, canHurt);
-			ChannelHandler.sendToEveryoneNear(tileEntity.getWorldObj(), tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, 32, player, packet);
+			BetterStorage.networkChannel.sendToEveryoneNear(
+					tileEntity.getWorldObj(), tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, 32,
+					new PacketLockHit(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, canHurt));
 		} else hit(canHurt);
 		return true;
 	}
