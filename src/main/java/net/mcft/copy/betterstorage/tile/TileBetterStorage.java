@@ -7,6 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class TileBetterStorage extends Block {
@@ -39,10 +40,11 @@ public class TileBetterStorage extends Block {
 		if (ItemBlock.class.isAssignableFrom(itemClass)) {
 			GameRegistry.registerBlock(this, (Class<? extends ItemBlock>)itemClass, getTileName(), Constants.modId);
 		} else {
-			GameRegistry.registerBlock(this, ItemBlock.class, getTileName(), Constants.modId);
-			Item.itemsList[blockID] = null;
-			try { itemClass.getConstructor(int.class).newInstance(blockID); }
+			Block block = GameRegistry.registerBlock(this, null, getTileName(), Constants.modId);
+			Item item;
+			try { item = itemClass.getConstructor(int.class).newInstance(); }
 			catch (Exception e) { throw new RuntimeException(e); }
+			GameData.itemRegistry.add(Block.getIdFromBlock(block), getTileName(), item);
 		}
 	}
 	
