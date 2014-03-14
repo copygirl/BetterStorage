@@ -3,7 +3,6 @@ package net.mcft.copy.betterstorage.addon.thaumcraft;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.addon.Addon;
 import net.mcft.copy.betterstorage.client.renderer.ItemRendererBackpack;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityReinforcedChestRenderer;
@@ -52,8 +51,10 @@ public class ThaumcraftAddon extends Addon {
 	
 	@Override
 	public void setupConfig() {
+		/*
 		new TileIdSetting(BetterStorage.globalConfig, thaumcraftBackpackId, 2880);
 		new TileIdSetting(BetterStorage.globalConfig, thaumiumChestId, 2881);
+		*/
 	}
 	
 	@Override
@@ -72,7 +73,7 @@ public class ThaumcraftAddon extends Addon {
 		ItemStack log = new ItemStack(Blocks.log);
 		
 		// Thaumaturge's backpack recipe
-		if (MiscUtils.isEnabled(thaumcraftBackpack, BetterStorageTiles.backpack)) {
+		if ((thaumcraftBackpack != null) && (BetterStorageTiles.backpack != null)) {
 			thaumcraftBackpackRecipe = ThaumcraftApi.addInfusionCraftingRecipe("betterstorage.magicstorage",
 					new ItemStack(thaumcraftBackpack), 1,
 					createAspectList(Aspect.VOID, 16, Aspect.EXCHANGE, 12, Aspect.MAGIC, 10),
@@ -81,7 +82,7 @@ public class ThaumcraftAddon extends Addon {
 		}
 		
 		// Thaumium chest recipe
-		if (MiscUtils.isEnabled(thaumiumChest, BetterStorageTiles.reinforcedChest)) {
+		if ((thaumiumChest != null) && (BetterStorageTiles.reinforcedChest != null)) {
 			thaumiumChestRecipe = ThaumcraftApi.addInfusionCraftingRecipe("betterstorage.magicstorage",
 					new ItemStack(thaumiumChest), 4,
 					createAspectList(Aspect.METAL, 16, Aspect.VOID, 20, Aspect.MAGIC, 16),
@@ -122,11 +123,11 @@ public class ThaumcraftAddon extends Addon {
 	}
 	
 	private static void addAspectsFor(Block block, int meta, boolean add, Object... aspects) {
-		if (MiscUtils.isEnabled(block))
+		if (block != null)
 			addAspectsFor(block, meta, add, aspects);
 	}
 	private static void addAspectsFor(Item item, int meta, boolean add, Object... aspects) {
-		if (MiscUtils.isEnabled(item))
+		if (item != null)
 			addAspectsFor(item, meta, add, aspects);
 	}
 	private static void addAspectsFor(int id, int meta, boolean add, Object... aspects) {
@@ -154,8 +155,12 @@ public class ThaumcraftAddon extends Addon {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerRenderers() {
-		MinecraftForgeClient.registerItemRenderer(BetterStorage.globalConfig.getInteger(thaumcraftBackpackId), ItemRendererBackpack.instance);
-		thaumiumChestRenderId = ClientProxy.registerTileEntityRenderer(TileEntityThaumiumChest.class, new TileEntityReinforcedChestRenderer());
+		if (thaumcraftBackpack != null)
+			MinecraftForgeClient.registerItemRenderer(
+					Item.getItemFromBlock(thaumcraftBackpack), ItemRendererBackpack.instance);
+		if (thaumiumChest != null)
+			thaumiumChestRenderId = ClientProxy.registerTileEntityRenderer(
+					TileEntityThaumiumChest.class, new TileEntityReinforcedChestRenderer());
 	}
 	
 	@Override
@@ -164,14 +169,13 @@ public class ThaumcraftAddon extends Addon {
 		addItemAspects();
 		addEntityAspects();
 		
-		if (MiscUtils.isEnabled(thaumcraftBackpack) ||
-		    MiscUtils.isEnabled(thaumiumChest)) {
+		if ((thaumcraftBackpack != null) || (thaumiumChest != null)) {
 			
 			List<ResearchPage> pages = new ArrayList<ResearchPage>();
 			pages.add(new ResearchPage("tc.research_page.betterstorage.magicstorage.1"));
-			if (MiscUtils.isEnabled(thaumcraftBackpack))
+			if (thaumcraftBackpack != null)
 				pages.add(new ResearchPage(thaumcraftBackpackRecipe));
-			if (MiscUtils.isEnabled(thaumiumChest))
+			if (thaumiumChest != null)
 				pages.add(new ResearchPage(thaumiumChestRecipe));
 			
 			ResearchItem research = new ResearchItem(

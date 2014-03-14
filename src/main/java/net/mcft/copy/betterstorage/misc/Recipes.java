@@ -12,7 +12,6 @@ import net.mcft.copy.betterstorage.item.recipe.KeyRecipe;
 import net.mcft.copy.betterstorage.item.recipe.LockColorRecipe;
 import net.mcft.copy.betterstorage.item.recipe.LockRecipe;
 import net.mcft.copy.betterstorage.tile.ContainerMaterial;
-import net.mcft.copy.betterstorage.utils.MiscUtils;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -54,7 +53,7 @@ public final class Recipes {
 	private static void addTileRecipes() {
 		
 		// Crate recipe
-		if (MiscUtils.isEnabled(BetterStorageTiles.crate))
+		if (BetterStorageTiles.crate != null)
 			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BetterStorageTiles.crate),
 					"o/o",
 					"/ /",
@@ -62,14 +61,14 @@ public final class Recipes {
 					       '/', "stickWood"));
 		
 		// Reinforced chest recipes
-		if (MiscUtils.isEnabled(BetterStorageTiles.reinforcedChest))
+		if (BetterStorageTiles.reinforcedChest != null)
 			for (ContainerMaterial material : ContainerMaterial.getMaterials()) {
 				IRecipe recipe = material.getReinforcedRecipe(Blocks.chest, BetterStorageTiles.reinforcedChest);
 				if (recipe != null) GameRegistry.addRecipe(recipe);
 			}
 		
 		// Locker recipe
-		if (MiscUtils.isEnabled(BetterStorageTiles.locker)) {
+		if (BetterStorageTiles.locker != null) {
 			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BetterStorageTiles.locker),
 					"ooo",
 					"o |",
@@ -82,7 +81,7 @@ public final class Recipes {
 					       '|', Blocks.trapdoor));
 			
 			// Reinforced locker recipes
-			if (MiscUtils.isEnabled(BetterStorageTiles.reinforcedLocker))
+			if (BetterStorageTiles.reinforcedLocker != null)
 				for (ContainerMaterial material : ContainerMaterial.getMaterials()) {
 					IRecipe recipe = material.getReinforcedRecipe(BetterStorageTiles.locker, BetterStorageTiles.reinforcedLocker);
 					if (recipe != null) GameRegistry.addRecipe(recipe);
@@ -90,7 +89,7 @@ public final class Recipes {
 		}
 		
 		// Armor stand recipe
-		if (MiscUtils.isEnabled(BetterStorageTiles.armorStand))
+		if (BetterStorageTiles.armorStand != null)
 			GameRegistry.addShapedRecipe(new ItemStack(BetterStorageTiles.armorStand),
 					" i ",
 					"/i/",
@@ -99,7 +98,7 @@ public final class Recipes {
 					       '/', Items.stick);
 		
 		// Backpack recipe
-		if (MiscUtils.isEnabled(BetterStorageTiles.backpack))
+		if (BetterStorageTiles.backpack != null)
 			GameRegistry.addShapedRecipe(new ItemStack(BetterStorageTiles.backpack),
 					"#i#",
 					"#O#",
@@ -108,14 +107,15 @@ public final class Recipes {
 					       'i', Items.gold_ingot);
 		
 		// Cardboard box recipe
-		if (MiscUtils.isEnabled(BetterStorageTiles.cardboardBox, BetterStorageItems.cardboardSheet))
+		if ((BetterStorageTiles.cardboardBox != null) &&
+		    (BetterStorageItems.cardboardSheet != null))
 			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BetterStorageTiles.cardboardBox),
 					"ooo",
 					"o o",
 					"ooo", 'o', "sheetCardboard"));
 		
 		// Crafting Station recipe
-		if (MiscUtils.isEnabled(BetterStorageTiles.craftingStation))
+		if (BetterStorageTiles.craftingStation != null)
 			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BetterStorageTiles.craftingStation),
 					"B-B",
 					"PTP",
@@ -124,10 +124,10 @@ public final class Recipes {
 					       'P', Blocks.piston,
 					       'T', Blocks.crafting_table,
 					       'W', "plankWood",
-					       'C', (MiscUtils.isEnabled(BetterStorageTiles.crate) ? BetterStorageTiles.crate : Blocks.chest)));
+					       'C', ((BetterStorageTiles.crate != null) ? BetterStorageTiles.crate : Blocks.chest)));
 		
 		// Flint Block recipe
-		if (MiscUtils.isEnabled(BetterStorageTiles.flintBlock)) {
+		if (BetterStorageTiles.flintBlock != null) {
 			GameRegistry.addShapedRecipe(new ItemStack(BetterStorageTiles.flintBlock),
 					"ooo",
 					"ooo",
@@ -139,7 +139,7 @@ public final class Recipes {
 	
 	private static void addItemRecipes() {
 		
-		if (MiscUtils.isEnabled(BetterStorageItems.key)) {
+		if (BetterStorageItems.key != null) {
 			// Key recipe
 			GameRegistry.addRecipe(KeyRecipe.createKeyRecipe(
 					".o",
@@ -151,23 +151,23 @@ public final class Recipes {
 					"k", 'k', new ItemStack(BetterStorageItems.key, 1, OreDictionary.WILDCARD_VALUE)));
 		}
 		
-		if (MiscUtils.isEnabled(BetterStorageItems.lock)) {
+		if (BetterStorageItems.lock != null) {
 			// Lock recipe
-			if (MiscUtils.isEnabled(BetterStorageItems.key))
+			if (BetterStorageItems.key != null)
 				GameRegistry.addRecipe(LockRecipe.createLockRecipe());
 			// Lock color recipe
 			GameRegistry.addRecipe(LockColorRecipe.createLockColorRecipe());
 		}
 		
 		// Keyring recipe
-		if (MiscUtils.isEnabled(BetterStorageItems.keyring))
+		if (BetterStorageItems.keyring != null)
 			GameRegistry.addShapedRecipe(new ItemStack(BetterStorageItems.keyring),
 					"...",
 					". .",
 					"...", '.', Items.gold_nugget);
 
 		// Drinking helmet recipe
-		if (MiscUtils.isEnabled(BetterStorageItems.drinkingHelmet))
+		if (BetterStorageItems.drinkingHelmet != null)
 			GameRegistry.addRecipe(new DrinkingHelmetRecipe(BetterStorageItems.drinkingHelmet));
 		
 	}
@@ -175,7 +175,7 @@ public final class Recipes {
 	private static void addCardboardRecipes() {
 		
 		// Cardboard sheet recipe
-		if (MiscUtils.isEnabled(BetterStorageItems.cardboardSheet)) {
+		if (BetterStorageItems.cardboardSheet != null) {
 			GameRegistry.addShapelessRecipe(new ItemStack(BetterStorageItems.cardboardSheet, 4),
 					Items.paper, Items.paper, Items.paper,
 					Items.paper, Items.paper, Items.paper,
@@ -183,44 +183,44 @@ public final class Recipes {
 		}
 		
 		// Cardboard helmet recipe
-		if (MiscUtils.isEnabled(BetterStorageItems.cardboardHelmet))
+		if (BetterStorageItems.cardboardHelmet != null)
 			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BetterStorageItems.cardboardHelmet),
 					"ooo",
 					"o o", 'o', "sheetCardboard"));
 		// Cardboard chestplate recipe
-		if (MiscUtils.isEnabled(BetterStorageItems.cardboardChestplate))
+		if (BetterStorageItems.cardboardChestplate != null)
 			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BetterStorageItems.cardboardChestplate),
 					"o o",
 					"ooo",
 					"ooo", 'o', "sheetCardboard"));
 		// Cardboard leggings recipe
-		if (MiscUtils.isEnabled(BetterStorageItems.cardboardLeggings))
+		if (BetterStorageItems.cardboardLeggings != null)
 			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BetterStorageItems.cardboardLeggings),
 					"ooo",
 					"o o",
 					"o o", 'o', "sheetCardboard"));
 		// Cardboard boots recipe
-		if (MiscUtils.isEnabled(BetterStorageItems.cardboardBoots))
+		if (BetterStorageItems.cardboardBoots != null)
 			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BetterStorageItems.cardboardBoots),
 					"o o",
 					"o o", 'o', "sheetCardboard"));
 		
 		// Cardboard sword recipe
-		if (MiscUtils.isEnabled(BetterStorageItems.cardboardSword))
+		if (BetterStorageItems.cardboardSword != null)
 			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BetterStorageItems.cardboardSword),
 					"o",
 					"o",
 					"/", 'o', "sheetCardboard",
 					     '/', Items.stick));
 		// Cardboard pickaxe recipe
-		if (MiscUtils.isEnabled(BetterStorageItems.cardboardPickaxe))
+		if (BetterStorageItems.cardboardPickaxe != null)
 			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BetterStorageItems.cardboardPickaxe),
 					"ooo",
 					" / ",
 					" / ", 'o', "sheetCardboard",
 					       '/', Items.stick));
 		// Cardboard shovel recipe
-		if (MiscUtils.isEnabled(BetterStorageItems.cardboardShovel))
+		if (BetterStorageItems.cardboardShovel != null)
 			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BetterStorageItems.cardboardShovel),
 					"o",
 					"/",
@@ -228,7 +228,7 @@ public final class Recipes {
 					     '/', Items.stick));
 		
 		// Cardboard axe recipe
-		if (MiscUtils.isEnabled(BetterStorageItems.cardboardAxe)) {
+		if (BetterStorageItems.cardboardAxe != null) {
 			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BetterStorageItems.cardboardAxe),
 					"oo",
 					"o/",
@@ -242,7 +242,7 @@ public final class Recipes {
 		}
 		
 		// Cardboard hoe recipe
-		if (MiscUtils.isEnabled(BetterStorageItems.cardboardHoe)) {
+		if (BetterStorageItems.cardboardHoe != null) {
 			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BetterStorageItems.cardboardHoe),
 					"oo",
 					" /",
@@ -259,7 +259,7 @@ public final class Recipes {
 		BetterStorageCrafting.addStationRecipe(new CardboardEnchantmentRecipe());
 		
 		// Crafting Station: Add cardboard repair recipe
-		if (MiscUtils.isEnabled(BetterStorageItems.cardboardSheet))
+		if (BetterStorageItems.cardboardSheet != null)
 			BetterStorageCrafting.addStationRecipe(new CardboardRepairRecipe());
 		
 	}

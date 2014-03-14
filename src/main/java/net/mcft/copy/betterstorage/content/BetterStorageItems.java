@@ -44,35 +44,34 @@ public final class BetterStorageItems {
 	
 	public static void initialize() {
 		
-		key            = MiscUtils.conditionalNew(ItemKey.class, GlobalConfig.keyId);
-		lock           = MiscUtils.conditionalNew(ItemLock.class, GlobalConfig.lockId);
-		keyring        = MiscUtils.conditionalNew(ItemKeyring.class, GlobalConfig.keyringId);
-		cardboardSheet = MiscUtils.conditionalNew(ItemCardboardSheet.class, GlobalConfig.cardboardSheetId);
-		masterKey      = MiscUtils.conditionalNew(ItemMasterKey.class, GlobalConfig.masterKeyId);
-		drinkingHelmet = MiscUtils.conditionalNew(ItemDrinkingHelmet.class, GlobalConfig.drinkingHelmetId);
-		slimeBucket    = MiscUtils.conditionalNew(ItemBucketSlime.class, GlobalConfig.slimeBucketId);
+		key            = MiscUtils.conditionalNew(ItemKey.class, GlobalConfig.keyEnabled);
+		lock           = MiscUtils.conditionalNew(ItemLock.class, GlobalConfig.lockEnabled);
+		keyring        = MiscUtils.conditionalNew(ItemKeyring.class, GlobalConfig.keyringEnabled);
+		cardboardSheet = MiscUtils.conditionalNew(ItemCardboardSheet.class, GlobalConfig.cardboardSheetEnabled);
+		masterKey      = MiscUtils.conditionalNew(ItemMasterKey.class, GlobalConfig.masterKeyEnabled);
+		drinkingHelmet = MiscUtils.conditionalNew(ItemDrinkingHelmet.class, GlobalConfig.drinkingHelmetEnabled);
+		slimeBucket    = MiscUtils.conditionalNew(ItemBucketSlime.class, GlobalConfig.slimeBucketEnabled);
 		
-		cardboardHelmet     = conditionalNewArmor(GlobalConfig.cardboardHelmetId, 0);
-		cardboardChestplate = conditionalNewArmor(GlobalConfig.cardboardChestplateId, 1);
-		cardboardLeggings   = conditionalNewArmor(GlobalConfig.cardboardLeggingsId, 2);
-		cardboardBoots      = conditionalNewArmor(GlobalConfig.cardboardBootsId, 3);
+		cardboardHelmet     = conditionalNewArmor(GlobalConfig.cardboardHelmetEnabled, 0);
+		cardboardChestplate = conditionalNewArmor(GlobalConfig.cardboardChestplateEnabled, 1);
+		cardboardLeggings   = conditionalNewArmor(GlobalConfig.cardboardLeggingsEnabled, 2);
+		cardboardBoots      = conditionalNewArmor(GlobalConfig.cardboardBootsEnabled, 3);
 		
-		cardboardSword = MiscUtils.conditionalNew(ItemCardboardSword.class, GlobalConfig.cardboardSwordId);
-		cardboardPickaxe = MiscUtils.conditionalNew(ItemCardboardPickaxe.class, GlobalConfig.cardboardPickaxeId);
-		cardboardShovel = MiscUtils.conditionalNew(ItemCardboardShovel.class, GlobalConfig.cardboardShovelId);
-		cardboardAxe = MiscUtils.conditionalNew(ItemCardboardAxe.class, GlobalConfig.cardboardAxeId);
-		cardboardHoe = MiscUtils.conditionalNew(ItemCardboardHoe.class, GlobalConfig.cardboardHoeId);
+		cardboardSword = MiscUtils.conditionalNew(ItemCardboardSword.class, GlobalConfig.cardboardSwordEnabled);
+		cardboardPickaxe = MiscUtils.conditionalNew(ItemCardboardPickaxe.class, GlobalConfig.cardboardPickaxeEnabled);
+		cardboardShovel = MiscUtils.conditionalNew(ItemCardboardShovel.class, GlobalConfig.cardboardShovelEnabled);
+		cardboardAxe = MiscUtils.conditionalNew(ItemCardboardAxe.class, GlobalConfig.cardboardAxeEnabled);
+		cardboardHoe = MiscUtils.conditionalNew(ItemCardboardHoe.class, GlobalConfig.cardboardHoeEnabled);
 		
-		if (MiscUtils.isEnabled(cardboardSheet))
+		if (cardboardSheet != null)
 			OreDictionary.registerOre("sheetCardboard", cardboardSheet);
 		
 		Addon.initializeItemsAll();
 		
 	}
 	private static ItemCardboardArmor conditionalNewArmor(String configName, int armorType) {
-		int id = BetterStorage.globalConfig.getInteger(configName);
-		if (!MiscUtils.isEnabled(id)) return null;
-		return new ItemCardboardArmor(id, armorType);
+		if (!BetterStorage.globalConfig.getBoolean(configName)) return null;
+		return new ItemCardboardArmor(armorType);
 	}
 	
 }

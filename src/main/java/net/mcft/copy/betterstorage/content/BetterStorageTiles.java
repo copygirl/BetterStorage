@@ -31,16 +31,16 @@ public final class BetterStorageTiles {
 	
 	public static void initialize() {
 		
-		crate            = MiscUtils.conditionalNew(TileCrate.class, GlobalConfig.crateId);
-		reinforcedChest  = MiscUtils.conditionalNew(TileReinforcedChest.class, GlobalConfig.reinforcedChestId);
-		locker           = MiscUtils.conditionalNew(TileLocker.class, GlobalConfig.lockerId);
-		armorStand       = MiscUtils.conditionalNew(TileArmorStand.class, GlobalConfig.armorStandId);
-		backpack         = MiscUtils.conditionalNew(TileBackpack.class, GlobalConfig.backpackId);
-		enderBackpack    = MiscUtils.conditionalNew(TileEnderBackpack.class, GlobalConfig.enderBackpackId);
-		cardboardBox     = MiscUtils.conditionalNew(TileCardboardBox.class, GlobalConfig.cardboardBoxId);
-		reinforcedLocker = MiscUtils.conditionalNew(TileReinforcedLocker.class, GlobalConfig.reinforcedLockerId);
-		craftingStation  = MiscUtils.conditionalNew(TileCraftingStation.class, GlobalConfig.craftingStationId);
-		flintBlock       = MiscUtils.conditionalNew(TileFlintBlock.class, GlobalConfig.flintBlockId);
+		crate            = MiscUtils.conditionalNew(TileCrate.class, GlobalConfig.crateEnabled);
+		reinforcedChest  = MiscUtils.conditionalNew(TileReinforcedChest.class, GlobalConfig.reinforcedChestEnabled);
+		locker           = MiscUtils.conditionalNew(TileLocker.class, GlobalConfig.lockerEnabled);
+		armorStand       = MiscUtils.conditionalNew(TileArmorStand.class, GlobalConfig.armorStandEnabled);
+		backpack         = MiscUtils.conditionalNew(TileBackpack.class, GlobalConfig.backpackEnabled);
+		enderBackpack    = MiscUtils.conditionalNew(TileEnderBackpack.class, GlobalConfig.enderBackpackEnabled);
+		cardboardBox     = MiscUtils.conditionalNew(TileCardboardBox.class, GlobalConfig.cardboardBoxEnabled);
+		reinforcedLocker = MiscUtils.conditionalNew(TileReinforcedLocker.class, GlobalConfig.reinforcedLockerEnabled);
+		craftingStation  = MiscUtils.conditionalNew(TileCraftingStation.class, GlobalConfig.craftingStationEnabled);
+		flintBlock       = MiscUtils.conditionalNew(TileFlintBlock.class, GlobalConfig.flintBlockEnabled);
 		
 		Addon.initializeTilesAll();
 		

@@ -27,8 +27,8 @@ public class GuiThaumiumChest extends GuiBetterStorage {
 	
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-		fontRenderer.drawString(title, 8, 6, 0x303030);
-		fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8 + (xSize - 176) / 2, ySize - 94, 0x404040);
+		fontRendererObj.drawString(title, 8, 6, 0x303030);
+		fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8 + (xSize - 176) / 2, ySize - 94, 0x404040);
 	}
 	
 }

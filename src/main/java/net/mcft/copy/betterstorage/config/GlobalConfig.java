@@ -3,6 +3,7 @@ package net.mcft.copy.betterstorage.config;
 import java.io.File;
 
 import net.mcft.copy.betterstorage.config.setting.BooleanSetting;
+import net.mcft.copy.betterstorage.config.setting.EnchantmentIdSetting;
 import net.mcft.copy.betterstorage.config.setting.IntegerSetting;
 
 public class GlobalConfig extends Config {
@@ -12,94 +13,95 @@ public class GlobalConfig extends Config {
 	public static BooleanSetting enableStationAutoCraftingSetting;
 	public static IntegerSetting stationAutocraftDelaySetting;
 	
-	// TODO: Rename category to "tile"
-	public static final String crateId            = "block.crate";
-	public static final String reinforcedChestId  = "block.chest"; // TODO: Rename to "reinforcedChest"
-	public static final String lockerId           = "block.locker";
-	public static final String armorStandId       = "block.armorStand";
-	public static final String backpackId         = "block.backpack";
-	public static final String enderBackpackId    = "block.enderBackpack";
-	public static final String cardboardBoxId     = "block.cardboardBox";
-	public static final String reinforcedLockerId = "block.reinforcedLocker";
-	public static final String craftingStationId  = "block.craftingStation";
-	public static final String flintBlockId       = "block.flintBlock";
+	// Tiles
+	public static final String crateEnabled            = "tile.crate";
+	public static final String reinforcedChestEnabled  = "tile.reinforcedChest";
+	public static final String lockerEnabled           = "tile.locker";
+	public static final String armorStandEnabled       = "tile.armorStand";
+	public static final String backpackEnabled         = "tile.backpack";
+	public static final String enderBackpackEnabled    = "tile.enderBackpack";
+	public static final String cardboardBoxEnabled     = "tile.cardboardBox";
+	public static final String reinforcedLockerEnabled = "tile.reinforcedLocker";
+	public static final String craftingStationEnabled  = "tile.craftingStation";
+	public static final String flintBlockEnabled       = "tile.flintBlock";
 	
-	public static final String keyId            = "item.key";
-	public static final String lockId           = "item.lock";
-	public static final String keyringId        = "item.keyring";
-	public static final String cardboardSheetId = "item.cardboardSheet";
-	public static final String masterKeyId      = "item.masterKey";
-	public static final String drinkingHelmetId = "item.drinkingHelmet";
-	public static final String slimeBucketId    = "item.slimeBucket";
+	// Items
+	public static final String keyEnabled            = "item.key";
+	public static final String lockEnabled           = "item.lock";
+	public static final String keyringEnabled        = "item.keyring";
+	public static final String cardboardSheetEnabled = "item.cardboardSheet";
+	public static final String masterKeyEnabled      = "item.masterKey";
+	public static final String drinkingHelmetEnabled = "item.drinkingHelmet";
+	public static final String slimeBucketEnabled    = "item.slimeBucket";
 	
-	public static final String cardboardHelmetId     = "item.cardboardHelmet";
-	public static final String cardboardChestplateId = "item.cardboardChestplate";
-	public static final String cardboardLeggingsId   = "item.cardboardLeggings";
-	public static final String cardboardBootsId      = "item.cardboardBoots";
-	public static final String cardboardSwordId   = "item.cardboardSword";
-	public static final String cardboardPickaxeId = "item.cardboardPickaxe";
-	public static final String cardboardShovelId  = "item.cardboardShovel";
-	public static final String cardboardAxeId     = "item.cardboardAxe";
-	public static final String cardboardHoeId     = "item.cardboardHoe";
+	// Cardboard items
+	public static final String cardboardHelmetEnabled     = "item.cardboardHelmet";
+	public static final String cardboardChestplateEnabled = "item.cardboardChestplate";
+	public static final String cardboardLeggingsEnabled   = "item.cardboardLeggings";
+	public static final String cardboardBootsEnabled      = "item.cardboardBoots";
+	public static final String cardboardSwordEnabled   = "item.cardboardSword";
+	public static final String cardboardPickaxeEnabled = "item.cardboardPickaxe";
+	public static final String cardboardShovelEnabled  = "item.cardboardShovel";
+	public static final String cardboardAxeEnabled     = "item.cardboardAxe";
+	public static final String cardboardHoeEnabled     = "item.cardboardHoe";
 	
-	// TODO: Rename category to "enchantment"
-	public static final String enchUnlockingId   = "enchantments.unlocking";
-	public static final String enchLockpickingId = "enchantments.lockpicking";
-	public static final String enchMorphingId    = "enchantments.morphing";
-	public static final String enchPersistanceId = "enchantments.persistance";
-	public static final String enchSecurityId    = "enchantments.security";
-	public static final String enchShockId       = "enchantments.shock";
-	public static final String enchTriggerId     = "enchantments.trigger";
+	// Enchantments
+	public static final String enchUnlockingId   = "enchantment.unlocking";
+	public static final String enchLockpickingId = "enchantment.lockpicking";
+	public static final String enchMorphingId    = "enchantment.morphing";
+	public static final String enchPersistanceId = "enchantment.persistance";
+	public static final String enchSecurityId    = "enchantment.security";
+	public static final String enchShockId       = "enchantment.shock";
+	public static final String enchTriggerId     = "enchantment.trigger";
 	
-	// TODO: Rename category to "general"?
-	public static final String reinforcedColumns             = "settings.reinforcedColumns";
-	public static final String enableCrateInventoryInterface = "settings.enableCrateInventoryInterface";
-	public static final String backpackChestplate            = "settings.backpackChestplate";
-	public static final String backpackRows                  = "settings.backpackRows";
-	public static final String enableBackpackOpen            = "settings.enableBackpackOpen";
-	public static final String enableBackpackInteraction     = "settings.enableBackpackInteraction";
-	public static final String dropBackpackOnDeath           = "settings.dropBackpackOnDeath";
-	public static final String enableStationAutoCrafting     = "settings.enableStationAutoCrafting";
-	public static final String stationAutocraftDelay         = "settings.stationAutocraftDelay";
-	public static final String enableHelpTooltips            = "settings.enableHelpTooltips";
+	// General settings
+	public static final String reinforcedColumns             = "general.reinforcedColumns";
+	public static final String enableCrateInventoryInterface = "general.enableCrateInventoryInterface";
+	public static final String backpackChestplate            = "general.backpackChestplate";
+	public static final String backpackRows                  = "general.backpackRows";
+	public static final String enableBackpackOpen            = "general.enableBackpackOpen";
+	public static final String enableBackpackInteraction     = "general.enableBackpackInteraction";
+	public static final String dropBackpackOnDeath           = "general.dropBackpackOnDeath";
+	public static final String enableStationAutoCrafting     = "general.enableStationAutoCrafting";
+	public static final String stationAutocraftDelay         = "general.stationAutocraftDelay";
+	public static final String enableHelpTooltips            = "general.enableHelpTooltips";
 	
 	public GlobalConfig(File file) {
 		super(file);
 		
-		/* FIXME Disable items and blocks
-		// Block IDs
-		new TileIdSetting(this, crateId, 2830);
-		new TileIdSetting(this, reinforcedChestId, 2831);
-		new TileIdSetting(this, lockerId, 2832);
-		new TileIdSetting(this, armorStandId, 2833);
-		new TileIdSetting(this, backpackId, 2834);
-		new TileIdSetting(this, enderBackpackId, 2835);
-		new TileIdSetting(this, cardboardBoxId, 2836);
-		new TileIdSetting(this, reinforcedLockerId, 2837);
-		new TileIdSetting(this, craftingStationId, 2838);
-		new TileIdSetting(this, flintBlockId, 2839);
+		// Tiles
+		new BooleanSetting(this, crateEnabled, true);
+		new BooleanSetting(this, reinforcedChestEnabled, true);
+		new BooleanSetting(this, lockerEnabled, true);
+		new BooleanSetting(this, armorStandEnabled, true);
+		new BooleanSetting(this, backpackEnabled, true);
+		new BooleanSetting(this, enderBackpackEnabled, true);
+		new BooleanSetting(this, cardboardBoxEnabled, true);
+		new BooleanSetting(this, reinforcedLockerEnabled, true);
+		new BooleanSetting(this, craftingStationEnabled, true);
+		new BooleanSetting(this, flintBlockEnabled, true);
 		
-		// Item IDs
-		new ItemIdSetting(this, keyId, 28540);
-		new ItemIdSetting(this, lockId, 28541);
-		new ItemIdSetting(this, keyringId, 28542);
-		new ItemIdSetting(this, cardboardSheetId, 28543);
-		new ItemIdSetting(this, masterKeyId, 28544);
-		new ItemIdSetting(this, drinkingHelmetId, 28545);
-		new ItemIdSetting(this, slimeBucketId, 28546);
+		// Items
+		new BooleanSetting(this, keyEnabled, true);
+		new BooleanSetting(this, lockEnabled, true);
+		new BooleanSetting(this, keyringEnabled, true);
+		new BooleanSetting(this, cardboardSheetEnabled, true);
+		new BooleanSetting(this, masterKeyEnabled, true);
+		new BooleanSetting(this, drinkingHelmetEnabled, true);
+		new BooleanSetting(this, slimeBucketEnabled, true);
 		
-		// Cardboard item IDs
-		new ItemIdSetting(this, cardboardHelmetId, 28560);
-		new ItemIdSetting(this, cardboardChestplateId, 28561);
-		new ItemIdSetting(this, cardboardLeggingsId, 28562);
-		new ItemIdSetting(this, cardboardBootsId, 28563);
-		new ItemIdSetting(this, cardboardSwordId, 28564);
-		new ItemIdSetting(this, cardboardPickaxeId, 28565);
-		new ItemIdSetting(this, cardboardShovelId, 28566);
-		new ItemIdSetting(this, cardboardAxeId, 28567);
-		new ItemIdSetting(this, cardboardHoeId, 28568);
+		// Cardboard items
+		new BooleanSetting(this, cardboardHelmetEnabled, true);
+		new BooleanSetting(this, cardboardChestplateEnabled, true);
+		new BooleanSetting(this, cardboardLeggingsEnabled, true);
+		new BooleanSetting(this, cardboardBootsEnabled, true);
+		new BooleanSetting(this, cardboardSwordEnabled, true);
+		new BooleanSetting(this, cardboardPickaxeEnabled, true);
+		new BooleanSetting(this, cardboardShovelEnabled, true);
+		new BooleanSetting(this, cardboardAxeEnabled, true);
+		new BooleanSetting(this, cardboardHoeEnabled, true);
 		
-		// Enchantment IDs
+		// Enchantments
 		new EnchantmentIdSetting(this, enchUnlockingId, 170);
 		new EnchantmentIdSetting(this, enchLockpickingId, 171);
 		new EnchantmentIdSetting(this, enchMorphingId, 172);
@@ -107,7 +109,6 @@ public class GlobalConfig extends Config {
 		new EnchantmentIdSetting(this, enchSecurityId, 174);
 		new EnchantmentIdSetting(this, enchShockId, 175);
 		new EnchantmentIdSetting(this, enchTriggerId, 176);
-		*/
 		
 		// Reinforced chest settings
 		new IntegerSetting(this, reinforcedColumns, 13).setValidValues(9, 11, 13).setComment(

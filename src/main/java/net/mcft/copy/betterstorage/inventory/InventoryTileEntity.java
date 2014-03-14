@@ -71,7 +71,7 @@ public class InventoryTileEntity extends InventoryBetterStorage {
 	public void markDirty() {
 		inventory.markDirty();
 		for (TileEntityContainer te : tileEntities)
-			te.onInventoryChanged();
+			te.markDirty();
 	}
 	
 }
