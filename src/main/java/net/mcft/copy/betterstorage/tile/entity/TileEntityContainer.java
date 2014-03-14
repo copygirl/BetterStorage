@@ -191,12 +191,11 @@ public abstract class TileEntityContainer extends TileEntity {
 		return ((this instanceof IInventory) ? Container.calcRedstoneFromInventory((IInventory)this) : 0);
 	}
 	
-	/** Resets accessed and contents changed flags and updates nearby blocks.
-	 *  Returns if the crate was accessed by a comparator during the block update. */
+	/** Resets accessed and contents changed flags and updates nearby blocks. */
 	protected void comparatorUpdateAndReset() {
 		compAccessed = false;
 		compContentsChanged = false;
-		worldObj.func_96440_m(xCoord, yCoord, zCoord, 0);
+		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
 	}
 	
 	@Override

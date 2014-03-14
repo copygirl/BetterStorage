@@ -9,6 +9,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public abstract class TileEntityConnectable extends TileEntityContainer implements IInventory {
@@ -215,11 +218,11 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 		NBTTagCompound compound = new NBTTagCompound();
 		compound.setByte("orientation", (byte)getOrientation().ordinal());
 		compound.setByte("connected", (byte)getConnected().ordinal());
-        return new Packet132TileEntityData(xCoord, yCoord, zCoord, 0, compound);
+        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, compound);
 	}
 	@Override
-	public void onDataPacket(INetworkManager net, Packet132TileEntityData packet) {
-		NBTTagCompound compound = packet.data;
+	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
+		NBTTagCompound compound = packet.func_148857_g();
 		setOrientation(ForgeDirection.getOrientation(compound.getByte("orientation")));
 		setConnected(ForgeDirection.getOrientation(compound.getByte("connected")));
 	}

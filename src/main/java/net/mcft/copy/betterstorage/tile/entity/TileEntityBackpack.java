@@ -11,6 +11,9 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.util.MovingObjectPosition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -121,12 +124,12 @@ public class TileEntityBackpack extends TileEntityContainer {
 	@Override
 	public Packet getDescriptionPacket() {
 		NBTTagCompound compound = new NBTTagCompound();
-		compound.setCompoundTag("stack", stack.writeToNBT(new NBTTagCompound()));
-		return new Packet132TileEntityData(xCoord, yCoord, zCoord, 0, compound);
+		compound.setTag("stack", stack.writeToNBT(new NBTTagCompound()));
+		return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, compound);
 	}
 	@Override
-	public void onDataPacket(INetworkManager net, Packet132TileEntityData packet) {
-		NBTTagCompound compound = packet.data;
+	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
+		NBTTagCompound compound = packet.func_148857_g();
 		stack = ItemStack.loadItemStackFromNBT(compound.getCompoundTag("stack"));
 	}
 	

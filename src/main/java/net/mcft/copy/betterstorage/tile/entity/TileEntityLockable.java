@@ -15,6 +15,9 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
@@ -154,7 +157,7 @@ public abstract class TileEntityLockable extends TileEntityConnectable
 		TileEntityLockable main = (TileEntityLockable)getMainTileEntity();
 		main.setLockInternal(lock);
 		main.markForUpdate();
-		onInventoryChanged();
+		markDirty();
 	}
 	
 	@Override
@@ -222,23 +225,25 @@ public abstract class TileEntityLockable extends TileEntityConnectable
 	
 	@Override
 	public Packet getDescriptionPacket() {
-		Packet132TileEntityData packet = (Packet132TileEntityData)super.getDescriptionPacket();
+		S35PacketUpdateTileEntity packet = (S35PacketUpdateTileEntity)super.getDescriptionPacket();
+		NBTTagCompound compound = packet.func_148857_g();
 		if (canHaveMaterial())
-			packet.data.setString(ContainerMaterial.TAG_NAME, getMaterial().name);
+			compound.setString(ContainerMaterial.TAG_NAME, getMaterial().name);
 		if (canHaveLock()) {
 			ItemStack lock = getLockInternal();
-			if (lock != null) packet.data.setCompoundTag("lock", lock.writeToNBT(new NBTTagCompound()));
+			if (lock != null) compound.setTag("lock", lock.writeToNBT(new NBTTagCompound()));
 		}
         return packet;
 	}
 	@Override
-	public void onDataPacket(INetworkManager net, Packet132TileEntityData packet) {
+	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
 		super.onDataPacket(net, packet);
+		NBTTagCompound compound = packet.func_148857_g();
 		if (canHaveMaterial())
-			material = ContainerMaterial.get(packet.data.getString(ContainerMaterial.TAG_NAME));
+			material = ContainerMaterial.get(compound.getString(ContainerMaterial.TAG_NAME));
 		if (canHaveLock()) {
-			if (!packet.data.hasKey("lock")) setLockInternal(null);
-			else setLockInternal(ItemStack.loadItemStackFromNBT(packet.data.getCompoundTag("lock")));
+			if (!compound.hasKey("lock")) setLockInternal(null);
+			else setLockInternal(ItemStack.loadItemStackFromNBT(compound.getCompoundTag("lock")));
 		}
 	}
 	

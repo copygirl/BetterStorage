@@ -19,6 +19,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileEntityCrate extends TileEntityContainer implements IInventory, ICrateStorage, ICrateWatcher {
@@ -278,7 +281,7 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 		return getPileData().blockView.decrStackSize(slot, amount);
 	}
 	@Override
-	public void onInventoryChanged() {
+	public void markDirty() {
 		if (GlobalConfig.enableCrateInventoryInterfaceSetting.getValue())
 			getPileData().blockView.markDirty();
 	}
@@ -314,16 +317,17 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 	
 	// TileEntity synchronization
 	
+	
 	@Override
 	public Packet getDescriptionPacket() {
 		NBTTagCompound compound = new NBTTagCompound();
 		compound.setInteger("crateId", id);
-        return new Packet132TileEntityData(xCoord, yCoord, zCoord, 0, compound);
+        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, compound);
 	}
 	@Override
-	public void onDataPacket(INetworkManager net, Packet132TileEntityData packet) {
-		id = packet.data.getInteger("crateId");
-		worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
+	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
+		id = packet.func_148857_g().getInteger("crateId");
+		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	}
 	
 	// Reading from / writing to NBT

@@ -8,6 +8,9 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -69,15 +72,15 @@ public class TileEntityLocker extends TileEntityLockable {
 	
 	@Override
 	public Packet getDescriptionPacket() {
-		Packet132TileEntityData packet = (Packet132TileEntityData)super.getDescriptionPacket();
-		NBTTagCompound compound = packet.data;
+		S35PacketUpdateTileEntity packet = (S35PacketUpdateTileEntity)super.getDescriptionPacket();
+		NBTTagCompound compound = packet.func_148857_g();
 		compound.setBoolean("mirror", mirror);
         return packet;
 	}
 	@Override
-	public void onDataPacket(INetworkManager net, Packet132TileEntityData packet) {
+	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
 		super.onDataPacket(net, packet);
-		NBTTagCompound compound = packet.data;
+		NBTTagCompound compound = packet.func_148857_g();
 		mirror = compound.getBoolean("mirror");
 		setAttachmentPosition();
 	}
