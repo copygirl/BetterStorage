@@ -109,12 +109,11 @@ public class InventoryCrateBlockView extends InventoryBetterStorage implements I
 		if (!GlobalConfig.enableCrateInventoryInterfaceSetting.getValue() || !accessed) return;
 		accessed = false;
 		
-		// Check for modifications done to the inventory
-		// without onInventoryChanged being called.
+		// Check for modifications done to the inventory without markDirty() being called.
 		for (int i = 0; i < numStacksStored; i++)
 			if (!ItemStack.areItemStacksEqual(originalStacks[i], exposedStacks[i])) {
-				BetterStorage.log.warn("A crate inventory was modified without onInventoryChanged() being called afterwards.");
-				BetterStorage.log.warn("The crate Inventory interface will be disabled until the next restart, to minimize chances of issues.");
+				BetterStorage.log.warn("A crate inventory was modified without markDirty() being called afterwards.");
+				BetterStorage.log.warn("The crate inventory interface will be disabled until the next restart, to minimize chances of issues.");
 				BetterStorage.log.warn(String.format("You can find the crate pile at [%s,%s,%s] in dimension %s.",
 				                                     data.getCenterX(), data.getCenterY(), data.getCenterZ(), data.collection.dimension));
 				GlobalConfig.enableCrateInventoryInterfaceSetting.setSyncedValue(false);
