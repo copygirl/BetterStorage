@@ -15,6 +15,7 @@ import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Facing;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
@@ -118,7 +119,10 @@ public class ItemBucketSlime extends ItemBetterStorage {
 		if (slime.hasCustomNameTag())
 			StackUtils.set(stack, slime.getCustomNameTag(), "Slime", "name");
 		
-		player.setCurrentItemOrArmor(EquipmentSlot.HELD, stack);
+		if (--player.getCurrentEquippedItem().stackSize <= 0)
+			player.setCurrentItemOrArmor(EquipmentSlot.HELD, stack);
+		else player.dropPlayerItemWithRandomChoice(stack, true);
+		
 		slime.playSound("mob.slime.big", 1.2F, 0.8F);
 		slime.isDead = true;
 	}
@@ -133,9 +137,10 @@ public class ItemBucketSlime extends ItemBetterStorage {
 	
 	public static void setSlimeSize(EntityLiving slime, int size) {
 		String name = EntityList.getEntityString(slime);
-		if ((slime instanceof EntitySlime) ||
-		    name.equals("ThaumSlime") || name.equals("TConstruct.EdibleSlime"))
-			slime.getDataWatcher().updateObject(16, (byte)size);
+		NBTTagCompound compound = new NBTTagCompound();
+		slime.writeEntityToNBT(compound);
+		compound.setInteger("Size", size - 1);
+		slime.readFromNBT(compound);
 	}
 	
 }
