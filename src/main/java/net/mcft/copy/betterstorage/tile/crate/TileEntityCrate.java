@@ -1,6 +1,7 @@
 package net.mcft.copy.betterstorage.tile.crate;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
@@ -299,21 +300,45 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 	// ICrateStorage implementation
 	
 	@Override
-	public Object getInventoryIdentifier(ForgeDirection side) { return getPileData(); }
+	public Object getInventoryIdentifier(ForgeDirection side) {
+		return getPileData();
+	}
 	@Override
-	public List<ItemStack> getContents(ForgeDirection side) { return getPileData().getContents(); }
+	public List<ItemStack> getContents(ForgeDirection side) {
+		if (!GlobalConfig.enableCrateStorageInterfaceSetting.getValue())
+			return Collections.EMPTY_LIST;
+		return getPileData().getContents();
+	}
 	@Override
-	public int getItemCount(ForgeDirection side, ItemStack identifier) { return getPileData().getItemCount(identifier); }
+	public int getItemCount(ForgeDirection side, ItemStack identifier) {
+		if (!GlobalConfig.enableCrateStorageInterfaceSetting.getValue()) return 0;
+		return getPileData().getItemCount(identifier);
+	}
 	@Override
-	public int spaceForItem(ForgeDirection side, ItemStack identifier) { return getPileData().spaceForItem(identifier); }
+	public int spaceForItem(ForgeDirection side, ItemStack identifier) {
+		if (!GlobalConfig.enableCrateStorageInterfaceSetting.getValue()) return 0;
+		return getPileData().spaceForItem(identifier);
+	}
 	@Override
-	public ItemStack insertItems(ForgeDirection side, ItemStack stack) { return getPileData().addItems(stack); }
+	public ItemStack insertItems(ForgeDirection side, ItemStack stack) {
+		if (!GlobalConfig.enableCrateStorageInterfaceSetting.getValue()) return stack;
+		return getPileData().addItems(stack);
+	}
 	@Override
-	public ItemStack extractItems(ForgeDirection side, ItemStack stack) { return getPileData().removeItems(stack); }
+	public ItemStack extractItems(ForgeDirection side, ItemStack stack) {
+		if (!GlobalConfig.enableCrateStorageInterfaceSetting.getValue()) return null;
+		return getPileData().removeItems(stack);
+	}
 	@Override
-	public void registerCrateWatcher(ICrateWatcher watcher) { getPileData().addWatcher(watcher); }
+	public void registerCrateWatcher(ICrateWatcher watcher) {
+		if (GlobalConfig.enableCrateStorageInterfaceSetting.getValue())
+			getPileData().addWatcher(watcher);
+	}
 	@Override
-	public void unregisterCrateWatcher(ICrateWatcher watcher) { getPileData().removeWatcher(watcher); }
+	public void unregisterCrateWatcher(ICrateWatcher watcher) {
+		if (GlobalConfig.enableCrateStorageInterfaceSetting.getValue())
+			getPileData().removeWatcher(watcher);
+	}
 	
 	// TileEntity synchronization
 	

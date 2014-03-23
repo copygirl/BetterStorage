@@ -12,6 +12,7 @@ public class GlobalConfig extends Config {
 	
 	// Often accessed settings
 	public static BooleanSetting enableCrateInventoryInterfaceSetting;
+	public static BooleanSetting enableCrateStorageInterfaceSetting;
 	public static BooleanSetting enableStationAutoCraftingSetting;
 	public static IntegerSetting stationAutocraftDelaySetting;
 	
@@ -57,6 +58,7 @@ public class GlobalConfig extends Config {
 	// TODO: Rename category to "general"?
 	public static final String reinforcedColumns             = "settings.reinforcedColumns";
 	public static final String enableCrateInventoryInterface = "settings.enableCrateInventoryInterface";
+	public static final String enableCrateStorageInterface   = "settings.enableCrateStorageInterface";
 	public static final String backpackChestplate            = "settings.backpackChestplate";
 	public static final String backpackRows                  = "settings.backpackRows";
 	public static final String enableBackpackOpen            = "settings.enableBackpackOpen";
@@ -118,6 +120,9 @@ public class GlobalConfig extends Config {
 		enableCrateInventoryInterfaceSetting =
 		new BooleanSetting(this, enableCrateInventoryInterface, true).setComment(
 				"If enabled, exposes a special block view of crates, so items can be moved in and out by automated systems.");
+		enableCrateStorageInterfaceSetting =
+		new BooleanSetting(this, enableCrateStorageInterface, true).setComment(
+				"If disabled, prevents mods from using storage crates' special storage interface (like Applied Energistics).");
 		
 		// Backpack settings
 		new BooleanSetting(this, backpackChestplate, true).setSynced().setComment(
