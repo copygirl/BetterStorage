@@ -79,7 +79,7 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 		// the configuration file, update it here.
 		else if (backpackData.contents.length != size) {
 			ItemStack[] newContents = new ItemStack[size];
-			System.arraycopy(backpackData, 0, newContents, 0, Math.min(size, backpackData.contents.length));
+			System.arraycopy(backpackData.contents, 0, newContents, 0, Math.min(size, backpackData.contents.length));
 			backpackData.contents = newContents;
 		}
 		return new InventoryStacks(getBackpackName(), backpackData.contents);
