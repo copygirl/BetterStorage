@@ -428,8 +428,6 @@ public class BackpackHandler {
 	@EventHandler
 	public void onPlayerLogin(PlayerLoggedInEvent event) {
 		// Send player the information if the backpack open key is enabled on this server.
-		NBTTagCompound compound = new NBTTagCompound();
-		BetterStorage.globalConfig.write(compound);
 		BetterStorage.networkChannel.sendToPlayer(event.player, new PacketSyncSetting(BetterStorage.globalConfig));
 	}
 	

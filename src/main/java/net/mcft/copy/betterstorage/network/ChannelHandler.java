@@ -82,7 +82,8 @@ public class ChannelHandler extends FMLIndexedMessageToMessageCodec<AbstractPack
 	/** Sends a packet to everyone near this entity. */
 	public void sendToEveryoneNear(Entity entity, AbstractPacket packet) {
 		// TODO: In the best case, there should be a sendToEveryoneTracking.
-		// At the moment this is only possible using vanilla packets or through private fields.
+		// At the moment this is only possible using vanilla packets or through
+		// private fields and lots of custom code.
 		sendToEveryoneNear(entity.worldObj, entity.posX, entity.posY, entity.posZ, 128, packet);
 	}
 	
