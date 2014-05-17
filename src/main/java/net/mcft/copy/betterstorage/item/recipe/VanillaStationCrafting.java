@@ -25,7 +25,7 @@ public class VanillaStationCrafting extends StationCrafting {
 	private final boolean onCreatedOverridden;
 	
 	public VanillaStationCrafting(World world, IRecipe recipe, ItemStack[] input, ItemStack output) {
-		super(new ItemStack[]{ output }, createRecipeInput(world, recipe, input));
+		super(new ItemStack[]{ null, null, null, null, output }, createRecipeInput(world, recipe, input));
 		// Only run isOnCreatedOverridden when auto-crafting is enabled.
 		// Currently lots of mod items cause problems when accessed by reflection.
 		// This way, with auto-crafting disabled the game at least doesn't crash.
