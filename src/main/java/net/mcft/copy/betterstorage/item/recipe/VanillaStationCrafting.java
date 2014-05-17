@@ -53,6 +53,7 @@ public class VanillaStationCrafting extends StationCrafting {
 		private final int slot;
 		
 		private final InventoryCrafting crafting;
+		private final ItemStack expectedOutput;
 		
 		public VanillaRecipeInput(World world, IRecipe recipe, ItemStack[] input, int slot) {
 			this.world = world;
@@ -64,6 +65,8 @@ public class VanillaStationCrafting extends StationCrafting {
 				craftingStacks[i] = ItemStack.copyItemStack(input[i]);
 			crafting = new InventoryCrafting(null, 3, 3);
 			crafting.stackList = craftingStacks;
+			
+			expectedOutput = recipe.getCraftingResult(crafting).copy();
 		}
 		
 		@Override
@@ -71,8 +74,12 @@ public class VanillaStationCrafting extends StationCrafting {
 		
 		@Override
 		public boolean matches(ItemStack stack) {
+			ItemStack stackBefore = crafting.stackList[slot];
 			crafting.stackList[slot] = stack;
-			return recipe.matches(crafting, world);
+			boolean matches = (recipe.matches(crafting, world) &&
+			                   expectedOutput.equals(recipe.getCraftingResult(crafting)));
+			crafting.stackList[slot] = stackBefore;
+			return matches;
 		}
 		
 	}
