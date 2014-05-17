@@ -1,6 +1,5 @@
 package net.mcft.copy.betterstorage.item.recipe;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +13,7 @@ import net.mcft.copy.betterstorage.api.crafting.StationCrafting;
 import net.mcft.copy.betterstorage.config.GlobalConfig;
 import net.mcft.copy.betterstorage.inventory.InventoryCraftingStation;
 import net.mcft.copy.betterstorage.utils.ReflectionUtils;
+import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
@@ -81,7 +81,7 @@ public class VanillaStationCrafting extends StationCrafting {
 			ItemStack stackBefore = stackList[slot];
 			stackList[slot] = stack;
 			boolean matches = (recipe.matches(crafting, world) &&
-			                   expectedOutput.equals(recipe.getCraftingResult(crafting)));
+			                   StackUtils.matches(expectedOutput, recipe.getCraftingResult(crafting)));
 			stackList[slot] = stackBefore;
 			return matches;
 		}
@@ -110,9 +110,9 @@ public class VanillaStationCrafting extends StationCrafting {
 			} catch (NoSuchMethodException e) {
 				// Ignore this exception, try the next method name.
 			} catch (Throwable e) {
-				BetterStorage.log.severe("Failed to check if onCreated is overridden for " + itemClass.getName() + ".");
-				BetterStorage.log.severe("Please report this to the author who made the mod this item is from.");
-				BetterStorage.log.severe("Tell them to contact copygirl if anything is unclear. Thanks!");
+				BetterStorage.log.error("Failed to check if onCreated is overridden for {}.", itemClass.getName());
+				BetterStorage.log.error("Please report this to the author who made the mod this item is from.");
+				BetterStorage.log.error("Tell them to contact copygirl if anything is unclear. Thanks!");
 				e.printStackTrace();
 				overridden = true;
 				break;
