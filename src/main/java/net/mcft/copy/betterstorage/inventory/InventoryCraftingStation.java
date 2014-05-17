@@ -88,7 +88,7 @@ public class InventoryCraftingStation extends InventoryBetterStorage {
 		int requiredExperience = currentCrafting.getRequiredExperience();
 		if ((requiredExperience != 0) && (player != null) && !player.capabilities.isCreativeMode)
 			player.experienceLevel -= requiredExperience;
-		if (hasRequirements())
+		if (hasItemRequirements())
 			pullRequired(requiredInput, false);
 		outputIsReal = !outputEmpty();
 		progress = 0;
@@ -175,7 +175,7 @@ public class InventoryCraftingStation extends InventoryBetterStorage {
 		                         (currentCrafting.canCraft(new CraftingSourceTileEntity(entity, player))) &&
 		                         (progress >= currentCrafting.getCraftingTime()) && hasRequiredExperience(player) &&
 		                          ((player != null) || ((progress >= GlobalConfig.stationAutocraftDelaySetting.getValue()) &&
-		                                                hasRequirements()))));
+		                                                hasItemRequirements()))));
 	}
 	
 	private boolean hasRequiredExperience(EntityPlayer player) {
@@ -187,7 +187,7 @@ public class InventoryCraftingStation extends InventoryBetterStorage {
 	
 	/** Returns if the crafting station has the items
 	 *  required in its inventory to craft the recipe again. */
-	private boolean hasRequirements() {
+	public boolean hasItemRequirements() {
 		if (checkHasRequirements) {
 			hasRequirements = pullRequired(currentCrafting.getCraftRequirements(), true);
 			checkHasRequirements = false;
