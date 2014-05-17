@@ -12,6 +12,7 @@ import net.mcft.copy.betterstorage.api.crafting.RecipeInputBase;
 import net.mcft.copy.betterstorage.api.crafting.StationCrafting;
 import net.mcft.copy.betterstorage.config.GlobalConfig;
 import net.mcft.copy.betterstorage.inventory.InventoryCraftingStation;
+import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
@@ -78,7 +79,7 @@ public class VanillaStationCrafting extends StationCrafting {
 			ItemStack stackBefore = crafting.stackList[slot];
 			crafting.stackList[slot] = stack;
 			boolean matches = (recipe.matches(crafting, world) &&
-			                   expectedOutput.equals(recipe.getCraftingResult(crafting)));
+			                   StackUtils.matches(expectedOutput, recipe.getCraftingResult(crafting)));
 			crafting.stackList[slot] = stackBefore;
 			return matches;
 		}

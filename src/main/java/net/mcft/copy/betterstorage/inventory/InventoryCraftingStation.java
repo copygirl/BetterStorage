@@ -88,7 +88,8 @@ public class InventoryCraftingStation extends InventoryBetterStorage {
 		int requiredExperience = currentCrafting.getRequiredExperience();
 		if ((requiredExperience != 0) && (player != null) && !player.capabilities.isCreativeMode)
 			player.experienceLevel -= requiredExperience;
-		pullRequired(requiredInput, false);
+		if (hasRequirements())
+			pullRequired(requiredInput, false);
 		outputIsReal = !outputEmpty();
 		progress = 0;
 		inputChanged();
