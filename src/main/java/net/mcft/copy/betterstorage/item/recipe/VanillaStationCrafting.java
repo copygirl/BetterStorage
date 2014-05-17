@@ -1,8 +1,11 @@
 package net.mcft.copy.betterstorage.item.recipe;
 
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.api.crafting.ICraftingSource;
 import net.mcft.copy.betterstorage.api.crafting.IRecipeInput;
 import net.mcft.copy.betterstorage.api.crafting.RecipeInputBase;
@@ -86,20 +89,41 @@ public class VanillaStationCrafting extends StationCrafting {
 	
 	// Utility functions
 	
+	private static Map<Class, Boolean> isOverriddenMap = new HashMap<Class, Boolean>();
+	
 	/** Checks if an item's {@link Item#onCreated onCreated} is overridden.
 	 *  If this is the case, we need to call it before the item is pulled from
 	 *  the output slot, so it allows for the ItemStack to be modified. For this
 	 *  reason it is not possible for certain items to be crafted automatically. */
 	private static boolean isOnCreatedOverridden(ItemStack output) {
-		boolean overridden = false;
 		Class itemClass = output.getItem().getClass();
+		Boolean overridden = isOverriddenMap.get(itemClass);
+		// If there's already an entry in the map, return it.
+		if (overridden != null) return overridden;
+		
 		for (String name : new String[]{ "onCreated", "func_77622_d" }) {
 			try {
 				Method onCreatedMethod = itemClass.getMethod(name, ItemStack.class, World.class, EntityPlayer.class);
 				overridden = (onCreatedMethod.getDeclaringClass() != Item.class);
 				break;
-			} catch (Exception e) {  }
+			} catch (NoSuchMethodException e) {
+				// Ignore this exception, try the next method name.
+			} catch (Throwable e) {
+				BetterStorage.log.severe("Failed to check if onCreated is overridden for " + itemClass.getName() + ".");
+				BetterStorage.log.severe("Please report this to the author who made the mod this item is from.");
+				BetterStorage.log.severe("Tell them to contact copygirl if anything is unclear. Thanks!");
+				e.printStackTrace();
+				overridden = true;
+				break;
+			}
 		}
+		
+		// This shouldn't happen, unless the method names change, for
+		// example because of a Minecraft update, but check regardless.
+		if (overridden == null)
+			throw new Error("The item's onCreated method could not be found.");
+		
+		isOverriddenMap.put(itemClass, overridden);
 		return overridden;
 	}
 	
