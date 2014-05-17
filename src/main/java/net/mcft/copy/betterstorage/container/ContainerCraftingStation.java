@@ -60,7 +60,7 @@ public class ContainerCraftingStation extends ContainerBetterStorage {
 	}
 	
 	@Override
-	protected boolean inInventory(int slot) { return (super.inInventory(slot) && (slot >= 18)); }
+	protected boolean inInventory(int slot) { return (super.inInventory(slot) && (slot >= 9)); }
 	@Override
 	protected int transferStart(int slot) { return (!inInventory(slot) ? 18 : super.transferStart(slot)); }
 	
