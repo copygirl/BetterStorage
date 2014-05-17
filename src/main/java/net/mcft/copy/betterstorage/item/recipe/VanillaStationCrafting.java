@@ -53,6 +53,7 @@ public class VanillaStationCrafting extends StationCrafting {
 		private final int slot;
 		
 		private final InventoryCrafting crafting;
+		private final ItemStack expectedOutput;
 		
 		public VanillaRecipeInput(World world, IRecipe recipe, ItemStack[] input, int slot) {
 			this.world = world;
@@ -65,18 +66,25 @@ public class VanillaStationCrafting extends StationCrafting {
 			crafting = new InventoryCrafting(null, 3, 3);
 			
 			ReflectionUtils.set(InventoryCrafting.class, crafting, craftingStacks, "stackList");
+			
+			expectedOutput = recipe.getCraftingResult(crafting).copy();
 		}
 		
 		@Override
 		public int getAmount() { return 1; }
 		
 		@Override
-		public boolean matches(ItemStack stack) {		
-			ItemStack[] temp = (ItemStack[]) ReflectionUtils.get(InventoryCrafting.class, crafting, "stackList");
-			temp[slot] = stack;
-			ReflectionUtils.set(InventoryCrafting.class, crafting, temp, "stackList");
-			return recipe.matches(crafting, world);
-		}	
+		public boolean matches(ItemStack stack) {
+			// FIXME: ReflectionUtils is really slow, and this will be called a LOT.
+			ItemStack[] stackList = (ItemStack[])ReflectionUtils.get(InventoryCrafting.class, crafting, "stackList");
+			ItemStack stackBefore = stackList[slot];
+			stackList[slot] = stack;
+			boolean matches = (recipe.matches(crafting, world) &&
+			                   expectedOutput.equals(recipe.getCraftingResult(crafting)));
+			stackList[slot] = stackBefore;
+			return matches;
+		}
+		
 	}
 	
 	// Utility functions
