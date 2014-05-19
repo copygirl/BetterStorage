@@ -67,6 +67,7 @@ public class GlobalConfig extends Config {
 	public static final String enableStationAutoCrafting     = "settings.enableStationAutoCrafting";
 	public static final String stationAutocraftDelay         = "settings.stationAutocraftDelay";
 	public static final String enableHelpTooltips            = "settings.enableHelpTooltips";
+	public static final String enableWarningMessages         = "settings.enableWarningMessages";
 	
 	public GlobalConfig(File file) {
 		super(file);
@@ -147,6 +148,8 @@ public class GlobalConfig extends Config {
 		// Miscellaneous settings
 		new BooleanSetting(this, enableHelpTooltips, true).setComment(
 				"If enabled, shows tooltips on some items to help players who're new to the mod.");
+		new BooleanSetting(this, enableWarningMessages, true).setComment(
+				"If disabled, prevents certain warning messages from being logged to the console.");
 	
 	}
 	
