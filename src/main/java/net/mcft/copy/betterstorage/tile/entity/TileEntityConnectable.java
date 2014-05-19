@@ -44,7 +44,9 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 		TileEntityConnectable connectable = getConnectedTileEntity();
 		if (connectable != null) return connectable;
 		if (BetterStorage.globalConfig.getBoolean(GlobalConfig.enableWarningMessages))
-			BetterStorage.log.warning("getConnectedTileEntity() returned null.");
+			BetterStorage.log.warning(String.format(
+					"getConnectedTileEntity() returned null in getMainTileEntity(). " +
+					"Location: %s,%s,%s", xCoord, yCoord, zCoord));
 		return this;
 	}
 	
@@ -99,7 +101,9 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 			connectable.setConnected(ForgeDirection.UNKNOWN);
 			connectable.markForUpdate();
 		} else if (BetterStorage.globalConfig.getBoolean(GlobalConfig.enableWarningMessages))
-			BetterStorage.log.warning("getConnectedTileEntity() returned null.");
+			BetterStorage.log.warning(String.format(
+					"getConnectedTileEntity() returned null in disconnect(). " +
+					"Location: %s,%s,%s", xCoord, yCoord, zCoord));
 	}
 	
 	// TileEntityContainer stuff
