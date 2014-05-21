@@ -55,6 +55,13 @@ public final class NbtUtils {
 		return list;
 	}
 	
+	public static NBTTagCompound createCompound(String name, Object... nameValuePairs) {
+		NBTTagCompound compound = new NBTTagCompound(name);
+		for (int i = 0; i < nameValuePairs.length; i += 2)
+			compound.setTag((String)nameValuePairs[i], createTag(null, nameValuePairs[i + 1]));
+		return compound;
+	}
+	
 	public static void readItems(ItemStack[] contents, NBTTagList items) {
 		for (int i = 0; i < contents.length; i++)
 			contents[i] = null;
