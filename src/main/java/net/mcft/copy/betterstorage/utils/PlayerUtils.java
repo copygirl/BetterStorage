@@ -15,7 +15,6 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -57,19 +56,18 @@ public final class PlayerUtils {
 		boolean localized = !title.isEmpty();
 		if (!localized) title = name;
 		
-		if (name.equals(Constants.containerCrate)) {
+		if (name.equals(Constants.containerCrate))
 			return new GuiCrate(player, rows, title, localized);
-		} else if (name.equals(Constants.containerKeyring)) {
-			ContainerKeyring.setProtectedIndex(columns);
-			return new GuiBetterStorage(new ContainerKeyring(player, title));
-		} else if (name.startsWith(Constants.containerThaumiumChest)) {
+		else if (name.equals(Constants.containerKeyring))
+			return new GuiBetterStorage(new ContainerKeyring(player, title, columns));
+		else if (name.startsWith(Constants.containerThaumiumChest))
 			return new GuiThaumiumChest(player, columns, rows, title, localized);
-		} else if (name.equals(Constants.containerCardboardBox)) {
-			IInventory inventory = new InventoryWrapper(new InventoryCardboardBox(new ItemStack[9]), title, localized);
-			return new GuiBetterStorage(player, columns, rows, inventory);
-		} else if (name.equals(Constants.containerCraftingStation)) {
+		else if (name.equals(Constants.containerCardboardBox))
+			return new GuiBetterStorage(player, columns, rows, new InventoryWrapper(
+					new InventoryCardboardBox(new ItemStack[columns * rows]), title, localized));
+		else if (name.equals(Constants.containerCraftingStation))
 			return new GuiCraftingStation(player, title, localized);
-		} else return new GuiBetterStorage(player, columns, rows, title, localized);
+		else return new GuiBetterStorage(player, columns, rows, title, localized);
 		
 	}
 	
