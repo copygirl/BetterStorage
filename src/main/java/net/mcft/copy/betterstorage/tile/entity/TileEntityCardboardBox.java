@@ -3,6 +3,7 @@ package net.mcft.copy.betterstorage.tile.entity;
 import net.mcft.copy.betterstorage.content.Tiles;
 import net.mcft.copy.betterstorage.inventory.InventoryCardboardBox;
 import net.mcft.copy.betterstorage.inventory.InventoryTileEntity;
+import net.mcft.copy.betterstorage.item.tile.ItemCardboardBox;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
@@ -21,7 +22,7 @@ public class TileEntityCardboardBox extends TileEntityContainer {
 	public String getName() { return Constants.containerCardboardBox; }
 	
 	@Override
-	public int getRows() { return 1; }
+	public int getRows() { return ItemCardboardBox.getRows(); }
 	
 	@Override
 	public InventoryTileEntity makePlayerInventory() {
@@ -35,7 +36,8 @@ public class TileEntityCardboardBox extends TileEntityContainer {
 		if (!StackUtils.has(stack, "Items")) return;
 		ItemStack[] itemContents = StackUtils.getStackContents(stack, contents.length);
 		System.arraycopy(itemContents, 0, contents, 0, itemContents.length);
-		moved = true;
+		if (!ItemCardboardBox.isReusable())
+			moved = true;
 	}
 	
 	@Override

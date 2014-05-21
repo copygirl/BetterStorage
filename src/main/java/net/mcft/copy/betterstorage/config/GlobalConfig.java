@@ -57,15 +57,22 @@ public class GlobalConfig extends Config {
 	
 	// TODO: Rename category to "general"?
 	public static final String reinforcedColumns             = "settings.reinforcedColumns";
+	
 	public static final String enableCrateInventoryInterface = "settings.enableCrateInventoryInterface";
 	public static final String enableCrateStorageInterface   = "settings.enableCrateStorageInterface";
+	
 	public static final String backpackChestplate            = "settings.backpackChestplate";
 	public static final String backpackRows                  = "settings.backpackRows";
 	public static final String enableBackpackOpen            = "settings.enableBackpackOpen";
 	public static final String enableBackpackInteraction     = "settings.enableBackpackInteraction";
 	public static final String dropBackpackOnDeath           = "settings.dropBackpackOnDeath";
+	
+	public static final String cardboardBoxRows              = "settings.cardboardBoxRows";
+	public static final String cardboardBoxReusable          = "settings.cardboardBoxReusable";
+	
 	public static final String enableStationAutoCrafting     = "settings.enableStationAutoCrafting";
 	public static final String stationAutocraftDelay         = "settings.stationAutocraftDelay";
+	
 	public static final String enableHelpTooltips            = "settings.enableHelpTooltips";
 	public static final String enableWarningMessages         = "settings.enableWarningMessages";
 	
@@ -136,6 +143,12 @@ public class GlobalConfig extends Config {
 				"Allows equipped backpacks to be opened by other players by right clicking them.");
 		new BooleanSetting(this, dropBackpackOnDeath, true).setComment(
 				"If enabled, drops backpacks as block instead of spilling the items around.");
+		
+		// Cardboard box settings
+		new IntegerSetting(this, cardboardBoxRows, 1).setValidRange(1, 3).setComment(
+				"Number of rows in cardboard boxes. Valid values are 1 to 3.");
+		new BooleanSetting(this, cardboardBoxReusable, false).setSynced().setComment(
+				"If enabled, cardboard boxes can be moved around indefinitely, instead of just once.");
 		
 		// Crafting Station settings
 		enableStationAutoCraftingSetting =
