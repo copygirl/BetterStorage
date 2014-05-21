@@ -1,9 +1,7 @@
 package net.mcft.copy.betterstorage.utils;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import net.mcft.copy.betterstorage.api.IContainerItem;
@@ -212,31 +210,6 @@ public final class StackUtils {
 	 *  split into under normal circumstances. */
 	public static int calcNumStacks(ItemStack stack) {
 		return calcNumStacks(stack, stack.stackSize);
-	}
-	
-	/** Stacks items from the ItemStack array into the list. <br>
-	 *  Returns the number of stacks processed. */
-	public static int stackItems(ItemStack[] contents, List<ItemStack> items) {
-		int numStacks = 0;
-		outerLoop:
-		for (int i = 0; i < contents.length; i++) {
-			ItemStack contentStack = contents[i];
-			if (contentStack == null) continue;
-			numStacks++;
-			for (ItemStack itemsStack : items)
-				if (StackUtils.matches(contentStack, itemsStack)) {
-					itemsStack.stackSize += contentStack.stackSize;
-					continue outerLoop;
-				}
-			items.add(contentStack);
-		}
-		return numStacks;
-	}
-	/** Returns items from the ItemStack array stacked into a list. */
-	public static List<ItemStack> stackItems(ItemStack[] contents) {
-		List<ItemStack> items = new ArrayList<ItemStack>();
-		stackItems(contents, items);
-		return items;
 	}
 	
 	public static ItemStack[] getStackContents(ItemStack stack, int size) {

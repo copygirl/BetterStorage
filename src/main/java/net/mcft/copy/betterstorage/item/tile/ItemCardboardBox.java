@@ -1,8 +1,12 @@
 package net.mcft.copy.betterstorage.item.tile;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.api.IContainerItem;
@@ -12,6 +16,7 @@ import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -34,24 +39,35 @@ public class ItemCardboardBox extends ItemBlock implements IContainerItem {
 			// Using 27 instead of getRows() here because
 			// rows setting is not synced to the client.
 			ItemStack[] contents = StackUtils.getStackContents(stack, 27);
-			int limit = (advancedTooltips ? 9 : 3);
 			
-			List<ItemStack> items = StackUtils.stackItems(contents);
-			Collections.sort(items, new Comparator<ItemStack>() {
-				@Override public int compare(ItemStack a, ItemStack b) {
-					return (b.stackSize - a.stackSize); }
+			Map<String, Integer> map = new HashMap<String, Integer>();
+			for (ItemStack s : contents) {
+				if (s == null) continue;
+				String name = s.getDisplayName();
+				Integer amount = map.get(name);
+				map.put(name, ((amount != null) ? amount : 0) + s.stackSize);
+			}
+			List<Entry<String, Integer>> items =
+					new ArrayList<Entry<String, Integer>>(map.entrySet());
+			Collections.sort(items, new Comparator<Entry<String, Integer>>() {
+				@Override public int compare(Entry<String, Integer> a, Entry<String, Integer> b) {
+					return (b.getValue() - a.getValue()); }
 			});
 			
-			for (int i = 0; (i < items.size()) && (i < limit); i++) {
-				ItemStack item = items.get(i);
-				list.add(item.stackSize + "x " + item.getDisplayName());
+			int max = (advancedTooltips ? 8 : 3);
+			for (int i = 0; (i < items.size()) && (i < max); i++) {
+				Entry<String, Integer> entry = items.get(i);
+				list.add(entry.getValue() + "x " + entry.getKey());
 			}
 			
-			if (items.size() <= limit) return;
-			int count = 0;
-			for (int i = 3; i < items.size(); i++)
-				count += items.get(i).stackSize;
-			list.add(count + " more item" + ((count > 1) ? "s" : "") + " ...");
+			int more = 0;
+			for (int i = max; i < items.size(); i++)
+				more += items.get(i).getValue();
+			if (more > 0)
+				list.add(EnumChatFormatting.DARK_GRAY.toString() + EnumChatFormatting.ITALIC +
+						LanguageUtils.translateTooltip(
+								"cardboardBox.more." + ((more == 1) ? "1" : "x"),
+								"%X%", Integer.toString(more)));
 			
 		} else if (BetterStorage.globalConfig.getBoolean(GlobalConfig.enableHelpTooltips))
 			list.add(LanguageUtils.translateTooltip(
