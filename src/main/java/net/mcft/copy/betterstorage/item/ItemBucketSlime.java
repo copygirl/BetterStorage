@@ -38,6 +38,8 @@ public class ItemBucketSlime extends ItemBetterStorage {
 	
 	private static Map<String, Handler> handlers = new HashMap<String, Handler>();
 	
+	private Icon empty;
+	
 	public ItemBucketSlime(int id) {
 		super(id);
 		setContainerItem(bucketEmpty);
@@ -46,19 +48,31 @@ public class ItemBucketSlime extends ItemBetterStorage {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister iconRegister) {
+		empty = iconRegister.registerIcon(Constants.modId + ":bucketSlime_empty");
 		for (Handler handler : handlers.values())
 			handler.registerIcon(iconRegister);
 	}
 	
 	@Override
 	public Icon getIcon(ItemStack stack, int pass) {
-		Handler handler = getHandler(stack);
-		return ((handler != null) ? handler.icon : null);
+		if (pass == 0) {
+			Handler handler = getHandler(stack);
+			return ((handler != null) ? handler.icon : null);
+		} else return empty;
 	}
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getIconIndex(ItemStack stack) {
-		return getIcon(stack, 0);
+	public Icon getIconIndex(ItemStack stack) { return getIcon(stack, 0); }
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public boolean requiresMultipleRenderPasses() { return true; }
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public boolean hasEffect(ItemStack stack, int pass) {
+		return (stack.isItemEnchanted() ||
+		        ((pass == 0) && StackUtils.has(stack, "Effects")));
 	}
 	
 	@Override
@@ -302,8 +316,7 @@ public class ItemBucketSlime extends ItemBetterStorage {
 		
 		/** Returns the icon location to be used in registerIcons. */
 		public void registerIcon(IconRegister iconRegister) {
-			icon = iconRegister.registerIcon(Constants.modId + ":bucketSlime" +
-			                                 (name.equals("slime") ? "" : ("_" + name)));
+			icon = iconRegister.registerIcon(Constants.modId + ":bucketSlime_" + name);
 		}
 		
 		/** Returns the size of the slime. */
