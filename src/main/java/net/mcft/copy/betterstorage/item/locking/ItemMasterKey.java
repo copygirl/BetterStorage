@@ -32,7 +32,7 @@ public class ItemMasterKey extends ItemKey {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public boolean hasEffect(ItemStack stack, int pass) { return true; }
+	public boolean hasEffect(ItemStack stack, int pass) { return (pass == 0); }
 	
 	@Override
 	public void onCreated(ItemStack stack, World world, EntityPlayer player) {  }
