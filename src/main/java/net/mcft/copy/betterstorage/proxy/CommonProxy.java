@@ -4,6 +4,7 @@ import java.util.EnumSet;
 
 import net.mcft.copy.betterstorage.attachment.EnumAttachmentInteraction;
 import net.mcft.copy.betterstorage.attachment.IHasAttachments;
+import net.mcft.copy.betterstorage.content.Items;
 import net.mcft.copy.betterstorage.entity.EntityCluckington;
 import net.mcft.copy.betterstorage.item.IDyeableItem;
 import net.mcft.copy.betterstorage.item.ItemBucketSlime;
@@ -11,6 +12,7 @@ import net.mcft.copy.betterstorage.item.cardboard.ICardboardItem;
 import net.mcft.copy.betterstorage.item.cardboard.ItemCardboardSheet;
 import net.mcft.copy.betterstorage.misc.handlers.BackpackHandler;
 import net.mcft.copy.betterstorage.tile.crate.CratePileCollection;
+import net.mcft.copy.betterstorage.utils.MiscUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
@@ -146,7 +148,7 @@ public class CommonProxy implements ITickHandler {
 			
 		}
 		
-		if ((target instanceof EntityLiving) &&
+		if (MiscUtils.isEnabled(Items.slimeBucket) && (target instanceof EntityLiving) &&
 		    (holding != null) && (holding.getItem() == Item.bucketEmpty))
 			ItemBucketSlime.pickUpSlime(player, (EntityLiving)target);
 		
