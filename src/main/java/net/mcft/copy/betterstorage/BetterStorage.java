@@ -28,8 +28,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-@Mod(modid = Constants.modId,
-     name = Constants.modName,
+@Mod(modid = Constants.modId, name = Constants.modName, version = "@VERSION@",
      dependencies = "required-after:Forge; after:Thaumcraft")
 @NetworkMod(clientSideRequired = true,
             serverSideRequired = false,

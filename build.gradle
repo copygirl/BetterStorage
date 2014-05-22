@@ -17,7 +17,7 @@ buildscript {
 
 apply plugin: 'forge'
 
-project.ext.mod_version = "0.8.0.46-dev"
+project.ext.mod_version = "0.8.0.47"
 project.ext.minecraft_version = "1.6.4"
 project.ext.forge_version = "9.11.1.964"
 
@@ -28,6 +28,9 @@ archivesBaseName = "BetterStorage"
 minecraft {
     version = minecraft_version + "-" + forge_version
     assetDir = "eclipse/assets"
+    
+    replace '@VERSION@', project.mod_version
+    replaceIn 'BetterStorage.java'
 }
 
 processResources
@@ -36,13 +39,10 @@ processResources
     inputs.property "mcversion", project.minecraft_version
     
     from(sourceSets.main.resources.srcDirs) {
-        include '**/*.info'
-        expand ([
-            'version':project.mod_version,
-            'mcversion':project.minecraft_version
-        ])
+        include 'mcmod.info'
+        expand 'version':project.mod_version, 'mcversion':project.minecraft_version
     }
     from(sourceSets.main.resources.srcDirs) {
-        exclude '**/*.info'
+        exclude 'mcmod.info'
     }
 }
