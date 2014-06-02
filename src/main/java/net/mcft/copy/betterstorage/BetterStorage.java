@@ -31,8 +31,6 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
      dependencies = "required-after:Forge; after:Thaumcraft")
 public class BetterStorage {
 	
-	// FIXME: Register PacketHandler
-	
 	@Instance(Constants.modId)
 	public static BetterStorage instance;
 	

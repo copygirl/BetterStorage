@@ -55,7 +55,10 @@ public class BetterStorageRenderingHandler implements ISimpleBlockRenderingHandl
 		GL11.glTranslatef(0, yOffset, 0);
 		GL11.glRotatef(rotation, 0.0F, 1.0F, 0.0F);
 		GL11.glScalef(scale, scale, scale);
+		GL11.glPushMatrix();
+		GL11.glEnable(GL11.GL_ALPHA_TEST);	
 		tileEntityRenderer.renderTileEntityAt(tileEntity, -0.5, -0.5, -0.5, 0);
+		GL11.glPopMatrix();
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 	}
 	

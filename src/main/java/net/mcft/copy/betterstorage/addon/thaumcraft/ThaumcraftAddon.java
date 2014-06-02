@@ -123,17 +123,18 @@ public class ThaumcraftAddon extends Addon {
 	}
 	
 	private static void addAspectsFor(Block block, int meta, boolean add, Object... aspects) {
-		if (block != null)
-			addAspectsFor(block, meta, add, aspects);
+		if (block != null) {
+			AspectList list = createAspectList(aspects);
+			if (add) ThaumcraftApi.registerComplexObjectTag(new ItemStack(block, meta), list);
+			else ThaumcraftApi.registerObjectTag(new ItemStack(block, meta), list);
+		}
 	}
 	private static void addAspectsFor(Item item, int meta, boolean add, Object... aspects) {
-		if (item != null)
-			addAspectsFor(item, meta, add, aspects);
-	}
-	private static void addAspectsFor(int id, int meta, boolean add, Object... aspects) {
-		AspectList list = createAspectList(aspects);
-		if (add) ThaumcraftApi.registerComplexObjectTag(id, meta, list);
-		else ThaumcraftApi.registerObjectTag(id, meta, list);
+		if (item != null) {
+			AspectList list = createAspectList(aspects);
+			if (add) ThaumcraftApi.registerComplexObjectTag(new ItemStack(item, meta), list);
+			else ThaumcraftApi.registerObjectTag(new ItemStack(item, meta), list);
+		}
 	}
 	private static void addAspectsFor(String entityName, Object... aspects) {
 		ThaumcraftApi.registerEntityTag(entityName, createAspectList(aspects));

@@ -1,5 +1,6 @@
 package net.mcft.copy.betterstorage.item.recipe;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import net.mcft.copy.betterstorage.api.crafting.RecipeInputBase;
 import net.mcft.copy.betterstorage.api.crafting.StationCrafting;
 import net.mcft.copy.betterstorage.config.GlobalConfig;
 import net.mcft.copy.betterstorage.inventory.InventoryCraftingStation;
+import net.mcft.copy.betterstorage.utils.ReflectionUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
@@ -61,18 +63,20 @@ public class VanillaStationCrafting extends StationCrafting {
 			for (int i = 0; i < input.length; i++)
 				craftingStacks[i] = ItemStack.copyItemStack(input[i]);
 			crafting = new InventoryCrafting(null, 3, 3);
-			crafting.stackList = craftingStacks;
+			
+			ReflectionUtils.set(InventoryCrafting.class, crafting, craftingStacks, "stackList");
 		}
 		
 		@Override
 		public int getAmount() { return 1; }
 		
 		@Override
-		public boolean matches(ItemStack stack) {
-			crafting.stackList[slot] = stack;
+		public boolean matches(ItemStack stack) {		
+			ItemStack[] temp = (ItemStack[]) ReflectionUtils.get(InventoryCrafting.class, crafting, "stackList");
+			temp[slot] = stack;
+			ReflectionUtils.set(InventoryCrafting.class, crafting, temp, "stackList");
 			return recipe.matches(crafting, world);
-		}
-		
+		}	
 	}
 	
 	// Utility functions
@@ -97,7 +101,7 @@ public class VanillaStationCrafting extends StationCrafting {
 	public static VanillaStationCrafting findVanillaRecipe(InventoryCraftingStation inv) {
 		World world = ((inv.entity != null) ? inv.entity.getWorldObj() : WorldUtils.getLocalWorld());
 		InventoryCrafting crafting = new InventoryCrafting(null, 3, 3);
-		crafting.stackList = inv.crafting;
+		ReflectionUtils.set(InventoryCrafting.class, crafting, inv.crafting, "stackList");
 		IRecipe recipe = findRecipe(crafting, world);
 		if (recipe == null) return null;
 		return new VanillaStationCrafting(world, recipe, inv.crafting, recipe.getCraftingResult(crafting));

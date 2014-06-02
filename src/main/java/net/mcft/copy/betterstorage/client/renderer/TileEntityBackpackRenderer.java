@@ -1,9 +1,12 @@
 package net.mcft.copy.betterstorage.client.renderer;
 
+import java.lang.reflect.Field;
+
 import net.mcft.copy.betterstorage.client.model.ModelBackpack;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityBackpack;
 import net.mcft.copy.betterstorage.utils.DirectionUtils;
+import net.mcft.copy.betterstorage.utils.ReflectionUtils;
 import net.mcft.copy.betterstorage.utils.RenderUtils;
 import net.minecraft.client.renderer.entity.RendererLivingEntity;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -48,14 +51,14 @@ public class TileEntityBackpackRenderer extends TileEntitySpecialRenderer {
 		for (int pass = 0; pass < renderPasses; pass++) {
 			String type = ((pass == 0) ? null : "overlay");
 			bindTexture(new ResourceLocation(item.getArmorTexture(stack, null, 0, type)));
-            RenderUtils.setColorFromInt(item.getColorFromItemStack(stack, pass));
+			RenderUtils.setColorFromInt(item.getColorFromItemStack(stack, pass));
 			backpackModel.renderAll();
 		}
 		
 		if ((backpack.stack != null) &&
 		    (backpack.stack.isItemEnchanted())) {
 			float f9 = (backpack.ticksExisted + partialTicks) / 3;
-			bindTexture(RendererLivingEntity.RES_ITEM_GLINT);
+			bindTexture((ResourceLocation)ReflectionUtils.get(RendererLivingEntity.class, null, "RES_ITEM_GLINT"));
 			GL11.glEnable(GL11.GL_BLEND);
 			GL11.glColor4f(0.5F, 0.5F, 0.5F, 1.0F);
 			GL11.glDepthMask(false);

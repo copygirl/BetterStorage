@@ -12,7 +12,7 @@ public final class MiscUtils {
 	
 	public static <T> T conditionalNew(Class<T> theClass, String configName) {
 		if (!BetterStorage.globalConfig.getBoolean(configName)) return null;
-		try { return theClass.getConstructor(int.class).newInstance(); }
+		try { return theClass.getConstructor().newInstance(); }
 		catch (Exception e) { throw new RuntimeException(e); }
 	}
 	

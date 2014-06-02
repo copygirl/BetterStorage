@@ -1,5 +1,6 @@
 package net.mcft.copy.betterstorage.proxy;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,13 +29,16 @@ import net.mcft.copy.betterstorage.tile.entity.TileEntityBackpack;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityLocker;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityReinforcedChest;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityReinforcedLocker;
+import net.mcft.copy.betterstorage.utils.ReflectionUtils;
 import net.mcft.copy.betterstorage.utils.RenderUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderChicken;
+import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.entity.RendererLivingEntity;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -55,6 +59,7 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -119,7 +124,7 @@ public class ClientProxy extends CommonProxy {
 		return registerTileEntityRenderer(tileEntityClass, renderer, true, 90, 1, 0);
 	}
 	
-	@EventHandler
+	@SubscribeEvent
 	public void drawBlockHighlight(DrawBlockHighlightEvent event) {
 		
 		EntityPlayer player = event.player;
@@ -228,7 +233,7 @@ public class ClientProxy extends CommonProxy {
 		return attachment.getHighlightBox();
 	}
 	
-	@EventHandler
+	@SubscribeEvent
 	public void onRenderPlayerSpecialsPre(RenderPlayerEvent.Specials.Pre event) {
 		ItemStack backpack = ItemBackpack.getBackpackData(event.entityPlayer).backpack;
 		if (backpack != null) {
@@ -239,22 +244,22 @@ public class ClientProxy extends CommonProxy {
 			int color = backpackType.getColor(backpack);
 			ModelBackpackArmor model = (ModelBackpackArmor)backpackType.getArmorModel(player, backpack, 0);
 			
-			model.onGround = event.renderer.renderSwingProgress(player, partial);
+			model.onGround = (Float) ReflectionUtils.invoke(RenderPlayer.class, event.renderer, "renderSwingProgress", new Class[]{EntityLivingBase.class, float.class}, new Object[]{player, partial});
 			model.setLivingAnimations(player, 0, 0, partial);
 			
-			event.renderer.bindTexture(new ResourceLocation(backpackType.getArmorTexture(backpack, player, 0, null)));
+			ReflectionUtils.invoke(RenderPlayer.class, event.renderer, "bindTexture", new Class[]{ResourceLocation.class}, new Object[]{new ResourceLocation(backpackType.getArmorTexture(backpack, player, 0, null))});
 			RenderUtils.setColorFromInt((color >= 0) ? color : 0xFFFFFF);
 			model.render(player, 0, 0, 0, 0, 0, 0);
 			
 			if (color >= 0) {
-				event.renderer.bindTexture(new ResourceLocation(backpackType.getArmorTexture(backpack, player, 0, "overlay")));
+				ReflectionUtils.invoke(RenderPlayer.class, event.renderer, "bindTexture", new Class[]{ResourceLocation.class}, new Object[]{new ResourceLocation(backpackType.getArmorTexture(backpack, player, 0, "overlay"))});
 				GL11.glColor3f(1.0F, 1.0F, 1.0F);
 				model.render(player, 0, 0, 0, 0, 0, 0);
 			}
 			
 			if (backpack.isItemEnchanted()) {
 				float f9 = player.ticksExisted + partial;
-				event.renderer.bindTexture(RendererLivingEntity.RES_ITEM_GLINT);
+				ReflectionUtils.invoke(RenderPlayer.class, event.renderer, "bindTexture", new Class[]{ResourceLocation.class}, new Object[]{(ResourceLocation)ReflectionUtils.get(RendererLivingEntity.class, null, "RES_ITEM_GLINT")});
 				GL11.glEnable(GL11.GL_BLEND);
 				GL11.glColor4f(0.5F, 0.5F, 0.5F, 1.0F);
 				GL11.glDepthFunc(GL11.GL_EQUAL);

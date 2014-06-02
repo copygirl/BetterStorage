@@ -30,6 +30,7 @@ import net.minecraftforge.event.world.WorldEvent.Save;
 import net.minecraftforge.event.world.WorldEvent.Unload;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.gameevent.TickEvent.WorldTickEvent;
 import cpw.mods.fml.relauncher.Side;
@@ -45,17 +46,17 @@ public class CommonProxy {
 		new CraftingHandler();
 	}
 	
-	@EventHandler
+	@SubscribeEvent
 	public void onWorldSave(Save event) {
 		CratePileCollection.saveAll(event.world);
 	}
 	
-	@EventHandler
+	@SubscribeEvent
 	public void onWorldUnload(Unload event) {
 		CratePileCollection.unload(event.world);
 	}
 	
-	@EventHandler
+	@SubscribeEvent
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		
 		if (event.isCanceled()) return;
@@ -112,7 +113,7 @@ public class CommonProxy {
 		
 	}
 	
-	@EventHandler
+	@SubscribeEvent
 	public void onBreakSpeed(BreakSpeed event) {
 		// Stupid Forge not firing PlayerInteractEvent for left-clicks!
 		// This is a workaround to instead make blocks appear unbreakable.
@@ -123,7 +124,7 @@ public class CommonProxy {
 			event.newSpeed = -1;
 	}
 	
-	@EventHandler
+	@SubscribeEvent
 	public void onEntityInteract(EntityInteractEvent event) {
 		
 		if (event.entity.worldObj.isRemote || event.isCanceled()) return;
@@ -148,7 +149,7 @@ public class CommonProxy {
 		
 	}
 	
-	@EventHandler
+	@SubscribeEvent
 	public void onWorldTick(WorldTickEvent event) {
 		if (event.side == Side.SERVER)
 			CratePileCollection.getCollection(event.world).onTick();
