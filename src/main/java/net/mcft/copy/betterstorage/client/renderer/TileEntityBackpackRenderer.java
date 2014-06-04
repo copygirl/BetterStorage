@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 
 import net.mcft.copy.betterstorage.client.model.ModelBackpack;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
+import net.mcft.copy.betterstorage.tile.TileBackpack;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityBackpack;
 import net.mcft.copy.betterstorage.utils.DirectionUtils;
 import net.mcft.copy.betterstorage.utils.ReflectionUtils;
@@ -28,7 +29,7 @@ public class TileEntityBackpackRenderer extends TileEntitySpecialRenderer {
 	public void renderTileEntityAt(TileEntityBackpack backpack, double x, double y, double z, float partialTicks) {
 		
 		if ((backpack.getWorldObj() == null) && (backpack.blockType == null)) return;
-		ItemBackpack item = (ItemBackpack)Item.getItemFromBlock(backpack.getBlockType());
+		ItemBackpack item = ((TileBackpack)backpack.getBlockType()).getItemType();
 		ItemStack stack = ((backpack.stack != null) ? backpack.stack : new ItemStack(item));
 		ModelBackpack backpackModel = item.getModel();
 		

@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.mcft.copy.betterstorage.addon.Addon;
 import net.mcft.copy.betterstorage.client.renderer.ItemRendererBackpack;
+import net.mcft.copy.betterstorage.client.renderer.TileEntityBackpackRenderer;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityReinforcedChestRenderer;
 import net.mcft.copy.betterstorage.content.BetterStorageItems;
 import net.mcft.copy.betterstorage.content.BetterStorageTiles;
@@ -36,6 +37,8 @@ public class ThaumcraftAddon extends Addon {
 	public static TileBackpack thaumcraftBackpack;
 	public static TileThaumiumChest thaumiumChest;
 	
+	public static ItemThaumcraftBackpack itemThaumcraftBackpack;
+	
 	public static int thaumiumChestRenderId;
 	
 	public static ItemStack thaumium;
@@ -64,6 +67,11 @@ public class ThaumcraftAddon extends Addon {
 	}
 	
 	@Override
+	public void initializeItems() {
+		itemThaumcraftBackpack = MiscUtils.conditionalNew(ItemThaumcraftBackpack.class, thaumcraftBackpackId);
+	}
+
+	@Override
 	public void addRecipes() {
 		
 		thaumium      = ItemApi.getItem("itemResource", 2);
@@ -75,9 +83,9 @@ public class ThaumcraftAddon extends Addon {
 		// Thaumaturge's backpack recipe
 		if ((thaumcraftBackpack != null) && (BetterStorageTiles.backpack != null)) {
 			thaumcraftBackpackRecipe = ThaumcraftApi.addInfusionCraftingRecipe("betterstorage.magicstorage",
-					new ItemStack(thaumcraftBackpack), 1,
+					new ItemStack(itemThaumcraftBackpack), 1,
 					createAspectList(Aspect.VOID, 16, Aspect.EXCHANGE, 12, Aspect.MAGIC, 10),
-					new ItemStack(BetterStorageTiles.backpack),
+					new ItemStack(BetterStorageItems.itemBackpack),
 					new ItemStack[]{ thaumium, fabric, fabric, fabric });
 		}
 		
@@ -99,8 +107,8 @@ public class ThaumcraftAddon extends Addon {
 		addAspectsFor(BetterStorageTiles.reinforcedChest, -1, true, Aspect.VOID, 5, Aspect.METAL, 10, Aspect.ARMOR, 6);
 		addAspectsFor(BetterStorageTiles.craftingStation, -1, true, Aspect.CRAFT, 6, Aspect.MECHANISM, 4);
 		
-		addAspectsFor(BetterStorageTiles.backpack, -1, true, Aspect.VOID, 4, Aspect.EXCHANGE, 6);
-		addAspectsFor(BetterStorageTiles.enderBackpack, -1, true, Aspect.DARKNESS, 8, Aspect.VOID, 4, Aspect.EXCHANGE, 8,
+		addAspectsFor(BetterStorageItems.itemBackpack, -1, true, Aspect.VOID, 4, Aspect.EXCHANGE, 6);
+		addAspectsFor(BetterStorageItems.itemEnderBackpack, -1, true, Aspect.DARKNESS, 8, Aspect.VOID, 4, Aspect.EXCHANGE, 8,
 		                                             Aspect.TRAVEL, 4, Aspect.ELDRITCH, 4, Aspect.MAGIC, 4);
 		
 		addAspectsFor(BetterStorageItems.cardboardSheet, -1, false, Aspect.CRAFT, 1);
@@ -158,7 +166,7 @@ public class ThaumcraftAddon extends Addon {
 	public void registerRenderers() {
 		if (thaumcraftBackpack != null)
 			MinecraftForgeClient.registerItemRenderer(
-					Item.getItemFromBlock(thaumcraftBackpack), ItemRendererBackpack.instance);
+					itemThaumcraftBackpack, new ItemRendererBackpack(TileEntityThaumcraftBackpack.class));
 		if (thaumiumChest != null)
 			thaumiumChestRenderId = ClientProxy.registerTileEntityRenderer(
 					TileEntityThaumiumChest.class, new TileEntityReinforcedChestRenderer());

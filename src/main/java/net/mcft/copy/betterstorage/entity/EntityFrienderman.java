@@ -3,6 +3,7 @@ package net.mcft.copy.betterstorage.entity;
 import java.lang.reflect.Field;
 
 import net.mcft.copy.betterstorage.BetterStorage;
+import net.mcft.copy.betterstorage.content.BetterStorageItems;
 import net.mcft.copy.betterstorage.content.BetterStorageTiles;
 import net.mcft.copy.betterstorage.misc.EquipmentSlot;
 import net.mcft.copy.betterstorage.network.packet.PacketBackpackTeleport;
@@ -125,7 +126,7 @@ public class EntityFrienderman extends EntityEnderman {
 			setCurrentItemOrArmor(3, null);
 			worldObj.setBlock(x, y, z, BetterStorageTiles.enderBackpack, RandomUtils.getInt(2, 6), 3);
 			WorldUtils.get(worldObj, x, y, z, TileEntityBackpack.class).stack =
-					new ItemStack(BetterStorageTiles.enderBackpack);
+					new ItemStack(BetterStorageItems.itemEnderBackpack);
 			double px = x + 0.5;
 			double py = y + 0.5;
 			double pz = z + 0.5;

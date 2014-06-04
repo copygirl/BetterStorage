@@ -10,6 +10,7 @@ import java.util.List;
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.api.BetterStorageBackpack;
 import net.mcft.copy.betterstorage.config.GlobalConfig;
+import net.mcft.copy.betterstorage.content.BetterStorageItems;
 import net.mcft.copy.betterstorage.content.BetterStorageTiles;
 import net.mcft.copy.betterstorage.entity.EntityFrienderman;
 import net.mcft.copy.betterstorage.inventory.InventoryStacks;
@@ -230,11 +231,11 @@ public class BackpackHandler {
 				
 				ItemStack[] contents = null;
 				if (entity instanceof EntityFrienderman) {
-					backpack = new ItemStack(BetterStorageTiles.enderBackpack);
+					backpack = new ItemStack(BetterStorageItems.itemEnderBackpack);
 					// Remove drop chance for the backpack.
 					((EntityLiving)entity).setEquipmentDropChance(EquipmentSlot.CHEST, 0.0F);
 				} else {
-					backpack = new ItemStack(BetterStorageTiles.backpack, 1, RandomUtils.getInt(120, 240));
+					backpack = new ItemStack(BetterStorageItems.itemBackpack, 1, RandomUtils.getInt(120, 240));
 					ItemBackpack backpackType = (ItemBackpack)backpack.getItem();
 					if (RandomUtils.getBoolean(0.15)) {
 						// Give the backpack a random color.

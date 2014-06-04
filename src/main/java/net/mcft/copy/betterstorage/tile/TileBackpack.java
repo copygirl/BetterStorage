@@ -4,6 +4,7 @@ import java.util.Random;
 
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.config.GlobalConfig;
+import net.mcft.copy.betterstorage.content.BetterStorageItems;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.proxy.ClientProxy;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityBackpack;
@@ -12,6 +13,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.IBlockAccess;
@@ -37,7 +39,9 @@ public class TileBackpack extends TileContainerBetterStorage {
 	public int getBoundsDepth() { return 10; }
 	
 	@Override
-	public Class<? extends Item> getItemClass() { return ItemBackpack.class; }
+	public Class<? extends ItemBlock> getItemClass() { return null; }
+
+	public ItemBackpack getItemType() { return BetterStorageItems.itemBackpack; }
 	
 	@Override
 	@SideOnly(Side.CLIENT)

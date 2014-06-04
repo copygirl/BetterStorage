@@ -2,7 +2,9 @@ package net.mcft.copy.betterstorage.tile;
 
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.container.ContainerBetterStorage;
+import net.mcft.copy.betterstorage.content.BetterStorageItems;
 import net.mcft.copy.betterstorage.inventory.InventoryTileEntity;
+import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.item.ItemEnderBackpack;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.network.packet.PacketBackpackTeleport;
@@ -30,9 +32,6 @@ public class TileEnderBackpack extends TileBackpack {
 	}
 	
 	@Override
-	public Class<? extends Item> getItemClass() { return ItemEnderBackpack.class; }
-	
-	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
 		blockIcon = iconRegister.registerIcon("obsidian");
@@ -42,6 +41,9 @@ public class TileEnderBackpack extends TileBackpack {
 	public TileEntity createTileEntity(World world, int metadata) {
 		return new TileEntityBackpack();
 	}
+	
+	@Override
+	public ItemBackpack getItemType() { return BetterStorageItems.itemEnderBackpack; }
 	
 	@Override
 	public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z) {
@@ -85,7 +87,7 @@ public class TileEnderBackpack extends TileBackpack {
 		world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5,
 		                      "mob.endermen.portal", 1.0F, 1.0F);
 		
-		world.setBlock(x, y, z, Block.getBlockFromItem(stack.getItem()), RandomUtils.getInt(2, 6), 3);
+		world.setBlock(x, y, z, ((ItemBackpack)stack.getItem()).getBlockType(), RandomUtils.getInt(2, 6), 3);
 		TileEntityBackpack newBackpack = WorldUtils.get(world, x, y, z, TileEntityBackpack.class);
 		newBackpack.stack = stack;
 		

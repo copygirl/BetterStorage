@@ -18,6 +18,7 @@ import net.mcft.copy.betterstorage.client.renderer.TileEntityArmorStandRenderer;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityBackpackRenderer;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityLockerRenderer;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityReinforcedChestRenderer;
+import net.mcft.copy.betterstorage.content.BetterStorageItems;
 import net.mcft.copy.betterstorage.content.BetterStorageTiles;
 import net.mcft.copy.betterstorage.entity.EntityCluckington;
 import net.mcft.copy.betterstorage.entity.EntityFrienderman;
@@ -88,8 +89,9 @@ public class ClientProxy extends CommonProxy {
 	
 	private void registerRenderers() {
 		
-		registerItemRenderer(BetterStorageTiles.backpack, ItemRendererBackpack.instance);
-		registerItemRenderer(BetterStorageTiles.enderBackpack, ItemRendererBackpack.instance);
+		registerItemRenderer(BetterStorageItems.itemBackpack, new ItemRendererBackpack(TileEntityBackpack.class));
+		registerItemRenderer(BetterStorageItems.itemEnderBackpack, new ItemRendererBackpack(TileEntityBackpack.class));
+		
 		registerItemRenderer(BetterStorageTiles.reinforcedChest, new ItemRendererContainer(TileEntityReinforcedChest.class));
 		registerItemRenderer(BetterStorageTiles.reinforcedLocker, new ItemRendererContainer(TileEntityReinforcedLocker.class));
 		
@@ -109,6 +111,11 @@ public class ClientProxy extends CommonProxy {
 	public static void registerItemRenderer(Block block, IItemRenderer renderer) {
 		if (block != null)
 			MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(block), renderer);
+	}
+	
+	public static void registerItemRenderer(Item item, IItemRenderer renderer) {
+		if (item != null)
+			MinecraftForgeClient.registerItemRenderer(item, renderer);
 	}
 	
 	public static int registerTileEntityRenderer(Class<? extends TileEntity> tileEntityClass, TileEntitySpecialRenderer renderer,

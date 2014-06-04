@@ -99,7 +99,7 @@ public final class Recipes {
 		
 		// Backpack recipe
 		if (BetterStorageTiles.backpack != null)
-			GameRegistry.addShapedRecipe(new ItemStack(BetterStorageTiles.backpack),
+			GameRegistry.addShapedRecipe(new ItemStack(BetterStorageItems.itemBackpack),
 					"#i#",
 					"#O#",
 					"###", '#', Items.leather,
