@@ -1,6 +1,7 @@
 package net.mcft.copy.betterstorage.api;
 
 import net.mcft.copy.betterstorage.utils.StackUtils;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -14,7 +15,7 @@ public final class BetterStorageUtils {
 	 *  (If the match stack has an empty NBT compound it'll only match stacks without NBT data.) */
 	public static boolean wildcardMatch(ItemStack match, ItemStack stack) {
 		return ((match == null) ? (stack == null) :
-		        ((stack != null) && (match == stack) &&
+		        ((stack != null) && (Item.getIdFromItem(match.getItem()) == Item.getIdFromItem(stack.getItem())) &&
 		         ((StackUtils.getRealItemDamage(match) == OreDictionary.WILDCARD_VALUE) ||
 		          (StackUtils.getRealItemDamage(match) == StackUtils.getRealItemDamage(stack))) &&
 		         (!match.hasTagCompound() ||

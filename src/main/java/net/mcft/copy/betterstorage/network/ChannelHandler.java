@@ -78,9 +78,9 @@ public class ChannelHandler extends FMLIndexedMessageToMessageCodec<AbstractPack
 	public void sendToServer(AbstractPacket packet) {
 		FMLEmbeddedChannel channel = channels.get(Side.CLIENT);
 		channel.attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.TOSERVER);
-		channel.writeAndFlush(channel);
+		channel.writeAndFlush(packet);
 	}
-	
+
 	/** Sends a packet to a player. */
 	public void sendToPlayer(EntityPlayer player, AbstractPacket packet) {
 		FMLEmbeddedChannel channel = channels.get(Side.SERVER);
