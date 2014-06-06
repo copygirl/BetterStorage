@@ -4,6 +4,7 @@ import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.addon.Addon;
 import net.mcft.copy.betterstorage.entity.EntityCluckington;
 import net.mcft.copy.betterstorage.entity.EntityFrienderman;
+import net.minecraft.entity.EntityList;
 import cpw.mods.fml.common.registry.EntityRegistry;
 
 public final class BetterStorageEntities {

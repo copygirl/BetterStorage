@@ -1,11 +1,11 @@
 {
   "modInfoVersion": 2,
   "modList": [{
-    "modId": "betterstorage",
+    "modid": "betterstorage",
     "name": "BetterStorage",
     "description": "Adds more storage related blocks and items to the game.",
     "version": "${version}",
-    "mcversion": "${mcversion}",
+    "mcversion": "${mc_version}",
     "url": "http://copy.mcft.net/mc/BetterStorage/",
     "updateUrl": "",
     "authorList": [ "copygirl" ],

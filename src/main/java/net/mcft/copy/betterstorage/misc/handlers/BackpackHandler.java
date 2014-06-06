@@ -181,7 +181,6 @@ public class BackpackHandler {
 	public void onSpecialSpawn(SpecialSpawn event) {
 		
 		// When a mob spawns naturally, see if it has a chance to spawn with a backpack.
-		
 		EntityLivingBase entity = event.entityLiving;
 		World world = entity.worldObj;
 		double probability = 0.0;
@@ -192,7 +191,7 @@ public class BackpackHandler {
 			break;
 		}
 		
-		if (!RandomUtils.getBoolean(probability)) return;
+		if (!RandomUtils.getBoolean(probability) || entity.isChild()) return;
 		
 		// If entity is a vanilla enderman, replace it with a friendly one.
 		if (entity.getClass().equals(EntityEnderman.class)) {
