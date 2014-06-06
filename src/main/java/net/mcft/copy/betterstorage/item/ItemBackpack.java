@@ -8,6 +8,7 @@ import net.mcft.copy.betterstorage.client.model.ModelBackpackArmor;
 import net.mcft.copy.betterstorage.config.GlobalConfig;
 import net.mcft.copy.betterstorage.container.ContainerBetterStorage;
 import net.mcft.copy.betterstorage.container.SlotArmorBackpack;
+import net.mcft.copy.betterstorage.content.BetterStorageTiles;
 import net.mcft.copy.betterstorage.inventory.InventoryBackpackEquipped;
 import net.mcft.copy.betterstorage.inventory.InventoryStacks;
 import net.mcft.copy.betterstorage.misc.Constants;
@@ -17,6 +18,7 @@ import net.mcft.copy.betterstorage.misc.Resources;
 import net.mcft.copy.betterstorage.misc.handlers.KeyBindingHandler;
 import net.mcft.copy.betterstorage.network.packet.PacketBackpackHasItems;
 import net.mcft.copy.betterstorage.network.packet.PacketBackpackStack;
+import net.mcft.copy.betterstorage.tile.TileBackpack;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityBackpack;
 import net.mcft.copy.betterstorage.utils.DirectionUtils;
 import net.mcft.copy.betterstorage.utils.EntityUtils;
@@ -58,9 +60,6 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 	
 	protected ItemBackpack(ArmorMaterial material) { super(material, 0, 1); }
 	public ItemBackpack() { this(material); }
-	
-	@Override
-	public boolean isItemBlock() { return true; }
 	
 	public String getBackpackName() { return Constants.containerBackpack; }
 	
@@ -138,13 +137,11 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 	public void registerIcons(IIconRegister iconRegister) {  }
 	
 	@Override
-	public String getUnlocalizedName() { return Block.getBlockFromItem(this).getUnlocalizedName(); }
+	public String getUnlocalizedName() { return getBlockType().getUnlocalizedName(); }
 	@Override
 	public String getUnlocalizedName(ItemStack stack) { return getUnlocalizedName(); }
 	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public CreativeTabs getCreativeTab() { return Block.getBlockFromItem(this).getCreativeTabToDisplayOn(); }
+	public TileBackpack getBlockType() { return BetterStorageTiles.backpack; }
 	
 	@Override
 	public boolean isValidArmor(ItemStack stack, int armorType, Entity entity) { return false; }
@@ -394,9 +391,10 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 		// Make sure the client has the same information as the server.
 		if (!player.worldObj.isRemote) {
 			if (!hasChestplateBackpackEquipped(player))
-				BetterStorage.networkChannel.sendToPlayer(
+				//TODO: I don't know what this is supposed to do. Just letting it stay here in case it is something important. (Victorious3)
+				/*BetterStorage.networkChannel.sendToPlayer(
 						player, new PacketBackpackStack(player.getEntityId(), backpack));
-			else if (player instanceof EntityPlayerMP)
+			else if (player instanceof EntityPlayerMP)*/
 				((EntityPlayerMP)player).playerNetServerHandler.sendPacket(
 						new S2FPacketSetSlot(0, 6, backpack));
 		}
@@ -427,7 +425,7 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 		if (backpack.stackSize == 0) return false;
 		
 		World world = carrier.worldObj;
-		Block blockBackpack = Block.getBlockFromItem(backpack.getItem());
+		Block blockBackpack = ((ItemBackpack)backpack.getItem()).getBlockType();
 		
 		// Return false if there's block is too low or too high.
 		if ((y <= 0) || (y >= world.getHeight() - 1)) return false;

@@ -1,5 +1,7 @@
 package net.mcft.copy.betterstorage.addon.thaumcraft;
 
+import net.mcft.copy.betterstorage.content.BetterStorageItems;
+import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.tile.TileBackpack;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.Item;
@@ -11,9 +13,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class TileThaumcraftBackpack extends TileBackpack {
 	
 	@Override
-	public Class<? extends Item> getItemClass() { return ItemThaumcraftBackpack.class; }
-	
-	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
 		blockIcon = iconRegister.registerIcon("wool_colored_purple");
@@ -23,5 +22,8 @@ public class TileThaumcraftBackpack extends TileBackpack {
 	public TileEntity createTileEntity(World world, int metadata) {
 		return new TileEntityThaumcraftBackpack();
 	}
+	
+	@Override
+	public ItemBackpack getItemType() { return ThaumcraftAddon.itemThaumcraftBackpack; }
 	
 }

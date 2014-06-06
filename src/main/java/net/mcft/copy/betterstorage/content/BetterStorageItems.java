@@ -3,8 +3,10 @@ package net.mcft.copy.betterstorage.content;
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.addon.Addon;
 import net.mcft.copy.betterstorage.config.GlobalConfig;
+import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.item.ItemBucketSlime;
 import net.mcft.copy.betterstorage.item.ItemDrinkingHelmet;
+import net.mcft.copy.betterstorage.item.ItemEnderBackpack;
 import net.mcft.copy.betterstorage.item.cardboard.ItemCardboardArmor;
 import net.mcft.copy.betterstorage.item.cardboard.ItemCardboardAxe;
 import net.mcft.copy.betterstorage.item.cardboard.ItemCardboardHoe;
@@ -16,6 +18,8 @@ import net.mcft.copy.betterstorage.item.locking.ItemKey;
 import net.mcft.copy.betterstorage.item.locking.ItemKeyring;
 import net.mcft.copy.betterstorage.item.locking.ItemLock;
 import net.mcft.copy.betterstorage.item.locking.ItemMasterKey;
+import net.mcft.copy.betterstorage.tile.TileCardboardBox;
+import net.mcft.copy.betterstorage.tile.TileEnderBackpack;
 import net.mcft.copy.betterstorage.utils.MiscUtils;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -28,6 +32,9 @@ public final class BetterStorageItems {
 	public static ItemMasterKey masterKey;
 	public static ItemDrinkingHelmet drinkingHelmet;
 	public static ItemBucketSlime slimeBucket;
+	
+	public static ItemBackpack itemBackpack;
+	public static ItemEnderBackpack itemEnderBackpack;
 	
 	public static ItemCardboardArmor cardboardHelmet;
 	public static ItemCardboardArmor cardboardChestplate;
@@ -51,6 +58,9 @@ public final class BetterStorageItems {
 		masterKey      = MiscUtils.conditionalNew(ItemMasterKey.class, GlobalConfig.masterKeyEnabled);
 		drinkingHelmet = MiscUtils.conditionalNew(ItemDrinkingHelmet.class, GlobalConfig.drinkingHelmetEnabled);
 		slimeBucket    = MiscUtils.conditionalNew(ItemBucketSlime.class, GlobalConfig.slimeBucketEnabled);
+		
+		itemBackpack        = MiscUtils.conditionalNew(ItemBackpack.class, GlobalConfig.cardboardBoxEnabled);
+		itemEnderBackpack   = MiscUtils.conditionalNew(ItemEnderBackpack.class, GlobalConfig.enderBackpackEnabled);
 		
 		cardboardHelmet     = conditionalNewArmor(GlobalConfig.cardboardHelmetEnabled, 0);
 		cardboardChestplate = conditionalNewArmor(GlobalConfig.cardboardChestplateEnabled, 1);

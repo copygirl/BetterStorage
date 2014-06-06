@@ -51,7 +51,7 @@ public class TileEntityArmorStandRenderer extends TileEntitySpecialRenderer {
 		if (locker.getWorldObj() == null) return;
 		
 		if (playerDummy == null) {
-			playerDummy = new AbstractClientPlayer(locker.getWorldObj(), new GameProfile("", "")) {
+			playerDummy = new AbstractClientPlayer(locker.getWorldObj(), new GameProfile("", "PLAYER_DUMMY")) {
 				@Override public void addChatMessage(IChatComponent var1) {  }
 				@Override public ChunkCoordinates getPlayerCoordinates() { return null; }
 				@Override public boolean canCommandSenderUseCommand(int i, String s) { return false; }

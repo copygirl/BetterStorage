@@ -2,8 +2,10 @@ package net.mcft.copy.betterstorage.addon.thaumcraft;
 
 import java.util.List;
 
+import net.mcft.copy.betterstorage.content.BetterStorageTiles;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.misc.Constants;
+import net.mcft.copy.betterstorage.tile.TileBackpack;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -32,6 +34,9 @@ public class ItemThaumcraftBackpack extends ItemBackpack implements IRepairable,
 	
 	@Override
 	public String getBackpackName() { return Constants.containerThaumcraftBackpack; }
+	
+	@Override
+	public TileBackpack getBlockType() { return ThaumcraftAddon.thaumcraftBackpack; }
 	
 	@Override
 	public int getBackpackColumns() { return 13; }

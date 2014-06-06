@@ -1,12 +1,15 @@
 package net.mcft.copy.betterstorage.entity;
 
-import static net.minecraft.entity.monster.EntityEnderman.carriableBlocks;
+import java.lang.reflect.Field;
+
 import net.mcft.copy.betterstorage.BetterStorage;
+import net.mcft.copy.betterstorage.content.BetterStorageItems;
 import net.mcft.copy.betterstorage.content.BetterStorageTiles;
 import net.mcft.copy.betterstorage.misc.EquipmentSlot;
 import net.mcft.copy.betterstorage.network.packet.PacketBackpackTeleport;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityBackpack;
 import net.mcft.copy.betterstorage.utils.RandomUtils;
+import net.mcft.copy.betterstorage.utils.ReflectionUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -87,8 +90,8 @@ public class EntityFrienderman extends EntityEnderman {
 	@Override
 	public void onLivingUpdate() {
 		
-		boolean[] carriable = carriableBlocks;
-		carriableBlocks = friendermanCarriable;
+		boolean[] carriable = (boolean[]) ReflectionUtils.get(EntityEnderman.class, null, "carriableBlocks");
+		ReflectionUtils.set(EntityEnderman.class, null, friendermanCarriable, "carriableBlocks");
 		
 		int x = (int)Math.floor(posX);
 		int y = (int)(posY + 0.1);
@@ -123,7 +126,7 @@ public class EntityFrienderman extends EntityEnderman {
 			setCurrentItemOrArmor(3, null);
 			worldObj.setBlock(x, y, z, BetterStorageTiles.enderBackpack, RandomUtils.getInt(2, 6), 3);
 			WorldUtils.get(worldObj, x, y, z, TileEntityBackpack.class).stack =
-					new ItemStack(BetterStorageTiles.enderBackpack);
+					new ItemStack(BetterStorageItems.itemEnderBackpack);
 			double px = x + 0.5;
 			double py = y + 0.5;
 			double pz = z + 0.5;
@@ -133,8 +136,6 @@ public class EntityFrienderman extends EntityEnderman {
 			worldObj.playSoundEffect(px, py, pz, "mob.endermen.portal", 1.0F, 1.0F);
 		}
 		
-		carriableBlocks = carriable;
-		
+		ReflectionUtils.set(EntityEnderman.class, null, carriable, "carriableBlocks");
 	}
-	
 }

@@ -8,6 +8,7 @@ import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -32,7 +33,7 @@ public class TileReinforcedLocker extends TileLockable {
 	}
 	
 	@Override
-	public Class<? extends Item> getItemClass() { return ItemLockable.class; }
+	public Class<? extends ItemBlock> getItemClass() { return ItemLockable.class; }
 	
 	@Override
 	@SideOnly(Side.CLIENT)

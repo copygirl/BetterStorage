@@ -1,5 +1,6 @@
 package net.mcft.copy.betterstorage.misc.handlers;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -9,6 +10,7 @@ import java.util.List;
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.api.BetterStorageBackpack;
 import net.mcft.copy.betterstorage.config.GlobalConfig;
+import net.mcft.copy.betterstorage.content.BetterStorageItems;
 import net.mcft.copy.betterstorage.content.BetterStorageTiles;
 import net.mcft.copy.betterstorage.entity.EntityFrienderman;
 import net.mcft.copy.betterstorage.inventory.InventoryStacks;
@@ -23,6 +25,7 @@ import net.mcft.copy.betterstorage.utils.DirectionUtils;
 import net.mcft.copy.betterstorage.utils.EntityUtils;
 import net.mcft.copy.betterstorage.utils.NbtUtils;
 import net.mcft.copy.betterstorage.utils.RandomUtils;
+import net.mcft.copy.betterstorage.utils.ReflectionUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
@@ -37,6 +40,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -58,6 +62,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.eventhandler.Event.Result;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
 
@@ -134,7 +139,7 @@ public class BackpackHandler {
 		BetterStorageBackpack.spawnWithBackpack(EntityEnderman.class, 1.0 / 80);
 	}
 	
-	@EventHandler
+	@SubscribeEvent
 	public void onEntityConstructing(EntityConstructing event) {
 		// Initialize backpack data for every living entity.
 		// If the entity does have a backpack, it will be loaded automatically.
@@ -142,7 +147,7 @@ public class BackpackHandler {
 			ItemBackpack.initBackpackData((EntityLivingBase)event.entity);
 	}
 	
-	@EventHandler
+	@SubscribeEvent
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		if (event.isCanceled()) return;
 		// When player right clicks a block, attempt to place backpack.
@@ -153,7 +158,7 @@ public class BackpackHandler {
 			}
 	}
 	
-	@EventHandler
+	@SubscribeEvent
 	public void onEntityInteract(EntityInteractEvent event) {
 		
 		// Right clicking the back of an entity that
@@ -172,11 +177,10 @@ public class BackpackHandler {
 		
 	}
 	
-	@EventHandler
+	@SubscribeEvent
 	public void onSpecialSpawn(SpecialSpawn event) {
 		
 		// When a mob spawns naturally, see if it has a chance to spawn with a backpack.
-		
 		EntityLivingBase entity = event.entityLiving;
 		World world = entity.worldObj;
 		double probability = 0.0;
@@ -187,7 +191,7 @@ public class BackpackHandler {
 			break;
 		}
 		
-		if (!RandomUtils.getBoolean(probability)) return;
+		if (!RandomUtils.getBoolean(probability) || entity.isChild()) return;
 		
 		// If entity is a vanilla enderman, replace it with a friendly one.
 		if (entity.getClass().equals(EntityEnderman.class)) {
@@ -207,7 +211,7 @@ public class BackpackHandler {
 		
 	}
 	
-	@EventHandler
+	@SubscribeEvent
 	public void onLivingUpdate(LivingUpdateEvent event) {
 		
 		EntityLivingBase entity = event.entityLiving;
@@ -226,11 +230,11 @@ public class BackpackHandler {
 				
 				ItemStack[] contents = null;
 				if (entity instanceof EntityFrienderman) {
-					backpack = new ItemStack(BetterStorageTiles.enderBackpack);
+					backpack = new ItemStack(BetterStorageItems.itemEnderBackpack);
 					// Remove drop chance for the backpack.
 					((EntityLiving)entity).setEquipmentDropChance(EquipmentSlot.CHEST, 0.0F);
 				} else {
-					backpack = new ItemStack(BetterStorageTiles.backpack, 1, RandomUtils.getInt(120, 240));
+					backpack = new ItemStack(BetterStorageItems.itemBackpack, 1, RandomUtils.getInt(120, 240));
 					ItemBackpack backpackType = (ItemBackpack)backpack.getItem();
 					if (RandomUtils.getBoolean(0.15)) {
 						// Give the backpack a random color.
@@ -291,7 +295,7 @@ public class BackpackHandler {
 		
 	}
 	
-	@EventHandler
+	@SubscribeEvent
 	public void onLivingDeath(LivingDeathEvent event) {
 		
 		// If an entity wearing a backpack dies,
@@ -334,8 +338,8 @@ public class BackpackHandler {
 			// Attempt to place the backpack as a block instead of dropping the items.
 			if (BetterStorage.globalConfig.getBoolean(GlobalConfig.dropBackpackOnDeath)) {
 				
-				ForgeDirection orientation = DirectionUtils.getOrientation(entity);
-				boolean despawn = ((player == null) && (entity.recentlyHit <= 0));
+				ForgeDirection orientation = DirectionUtils.getOrientation(entity);		
+				boolean despawn = ((player == null) && ((Integer)ReflectionUtils.get(EntityLivingBase.class, entity, "recentlyHit") <= 0));
 				
 				List<BlockCoordinate> coords = new ArrayList<BlockCoordinate>();
 				for (int x = -2; x <= 2; x++)
@@ -398,7 +402,7 @@ public class BackpackHandler {
 		}
 	};
 	
-	@EventHandler
+	@SubscribeEvent
 	public void onEntityJoinWorldEvent(EntityJoinWorldEvent event) {
 		
 		if (event.world.isRemote) {
@@ -425,13 +429,13 @@ public class BackpackHandler {
 	
 	// IPlayerTracker implementation
 	
-	@EventHandler
+	@SubscribeEvent
 	public void onPlayerLogin(PlayerLoggedInEvent event) {
 		// Send player the information if the backpack open key is enabled on this server.
 		BetterStorage.networkChannel.sendToPlayer(event.player, new PacketSyncSetting(BetterStorage.globalConfig));
 	}
 	
-	@EventHandler
+	@SubscribeEvent
 	public void onPlayerRespawn(PlayerRespawnEvent event) {
 		
 		// If the player dies when when keepInventory is on and respawns,

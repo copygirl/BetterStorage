@@ -7,8 +7,17 @@ import java.util.EnumMap;
 import java.util.List;
 
 import net.mcft.copy.betterstorage.BetterStorage;
+import net.mcft.copy.betterstorage.misc.Constants;
+import net.mcft.copy.betterstorage.network.packet.PacketBackpackHasItems;
+import net.mcft.copy.betterstorage.network.packet.PacketBackpackIsOpen;
+import net.mcft.copy.betterstorage.network.packet.PacketBackpackOpen;
+import net.mcft.copy.betterstorage.network.packet.PacketBackpackStack;
 import net.mcft.copy.betterstorage.network.packet.PacketBackpackTeleport;
+import net.mcft.copy.betterstorage.network.packet.PacketClientSpawn;
+import net.mcft.copy.betterstorage.network.packet.PacketDrinkingHelmetUse;
+import net.mcft.copy.betterstorage.network.packet.PacketLockHit;
 import net.mcft.copy.betterstorage.network.packet.PacketOpenGui;
+import net.mcft.copy.betterstorage.network.packet.PacketSyncSetting;
 import net.mcft.copy.betterstorage.utils.PlayerUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -31,6 +40,16 @@ public class ChannelHandler extends FMLIndexedMessageToMessageCodec<AbstractPack
 	public ChannelHandler() {
 		addDiscriminator(0, PacketOpenGui.class);
 		addDiscriminator(1, PacketBackpackTeleport.class);
+		addDiscriminator(2, PacketBackpackHasItems.class);
+		addDiscriminator(3, PacketBackpackIsOpen.class);
+		addDiscriminator(4, PacketBackpackOpen.class);
+		addDiscriminator(5, PacketBackpackStack.class);
+		addDiscriminator(6, PacketClientSpawn.class);
+		addDiscriminator(7, PacketDrinkingHelmetUse.class);
+		addDiscriminator(8, PacketLockHit.class);
+		addDiscriminator(9, PacketSyncSetting.class);
+		
+		this.channels = NetworkRegistry.INSTANCE.newChannel(Constants.modId, this);
 	}
 	
 	@Override
@@ -46,7 +65,7 @@ public class ChannelHandler extends FMLIndexedMessageToMessageCodec<AbstractPack
 			BetterStorage.log.warn("Error decoding packet: %s", e);
 			return;
 		}
-		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
+		if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER) {
 			INetHandler netHandler = context.channel().attr(NetworkRegistry.NET_HANDLER).get();
 			EntityPlayer player = ((NetHandlerPlayServer)netHandler).playerEntity;
 			packet.handleServerSide(player);
@@ -59,9 +78,9 @@ public class ChannelHandler extends FMLIndexedMessageToMessageCodec<AbstractPack
 	public void sendToServer(AbstractPacket packet) {
 		FMLEmbeddedChannel channel = channels.get(Side.CLIENT);
 		channel.attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.TOSERVER);
-		channel.writeAndFlush(channel);
+		channel.writeAndFlush(packet);
 	}
-	
+
 	/** Sends a packet to a player. */
 	public void sendToPlayer(EntityPlayer player, AbstractPacket packet) {
 		FMLEmbeddedChannel channel = channels.get(Side.SERVER);

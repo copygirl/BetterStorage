@@ -4,11 +4,13 @@ import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S2FPacketSetSlot;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovingObjectPosition;
@@ -58,8 +60,8 @@ public class TileEntityArmorStand extends TileEntityContainer {
 				armor[slot] = playerArmor;
 				player.inventory.armorInventory[slot] = item;
 				// Shouldn't this be done automatically?
-				//((EntityPlayerMP)player).playerNetServerHandler.sendPacket(
-				//		new S2FPacketSetSlot(player.openContainer.windowId, 8 - slot, item));
+				((EntityPlayerMP)player).playerNetServerHandler.sendPacket(
+						new S2FPacketSetSlot(player.openContainer.windowId, 8 - slot, item));
 				markForUpdate();
 				markDirty();
 			}

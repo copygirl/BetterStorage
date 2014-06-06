@@ -13,6 +13,11 @@ import net.minecraft.world.World;
 
 public abstract class TileContainerBetterStorage extends TileBetterStorage {
 	
+	@Override
+	public boolean hasTileEntity(int metadata) {
+		return true;
+	}
+
 	protected TileContainerBetterStorage(Material material) {
 		super(material);
 		isBlockContainer = true;

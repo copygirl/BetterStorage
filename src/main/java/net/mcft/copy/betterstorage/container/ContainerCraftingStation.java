@@ -1,14 +1,20 @@
 package net.mcft.copy.betterstorage.container;
 
+import java.lang.reflect.Field;
+
 import net.mcft.copy.betterstorage.inventory.InventoryCraftingStation;
 import net.mcft.copy.betterstorage.inventory.InventoryTileEntity;
 import net.mcft.copy.betterstorage.item.recipe.VanillaStationCrafting;
+import net.mcft.copy.betterstorage.utils.ReflectionUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.MinecraftForge;
+import cpw.mods.fml.common.eventhandler.EventBus;
+import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -18,7 +24,7 @@ public class ContainerCraftingStation extends ContainerBetterStorage {
 	public InventoryCraftingStation inv;
 	
 	private InventoryCrafting craftMatrix;
-	private SlotCrafting slotCrafting;
+	private CustomSlotCrafting slotCrafting;
 	
 	private int lastOutputIsReal = 0;
 	private int lastProgress = 0;
@@ -36,8 +42,9 @@ public class ContainerCraftingStation extends ContainerBetterStorage {
 				? (InventoryCraftingStation)inventory
 				: ((InventoryCraftingStation)((InventoryTileEntity)inventory).inventory));
 		craftMatrix = new InventoryCrafting(this, 3, 3);
-		craftMatrix.stackList = inv.crafting;
-		slotCrafting = new SlotCrafting(player, null, null, 0, 0, 0);
+		
+		ReflectionUtils.set(InventoryCrafting.class, craftMatrix, inv.crafting, "stackList");
+		slotCrafting = new CustomSlotCrafting(player, null, null, 0, 0, 0);
 		
 		// Crafting
 		for (int y = 0; y < 3; y++)
@@ -90,7 +97,7 @@ public class ContainerCraftingStation extends ContainerBetterStorage {
 		    (inv.output[slotId - 9] != null) && inv.canTake(player)) {
 			// For full compatibility with vanilla, we do special stuff here.
 			if (inv.currentCrafting instanceof VanillaStationCrafting) {
-				GameRegistry.onItemCrafted(player, inv.output[slotId - 9], craftMatrix);
+				MinecraftForge.EVENT_BUS.post(new PlayerEvent.ItemCraftedEvent(player, inv.output[slotId - 9], craftMatrix));
 				slotCrafting.onCrafting(inv.output[slotId - 9]);
 			}
 			inv.craft(player);

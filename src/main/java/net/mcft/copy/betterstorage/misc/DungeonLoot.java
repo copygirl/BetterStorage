@@ -43,13 +43,13 @@ public final class DungeonLoot {
 		}
 		
 		if (BetterStorageTiles.backpack != null) {
-			ItemStack backpackSpecial1 = new ItemStack(BetterStorageTiles.backpack);
+			ItemStack backpackSpecial1 = new ItemStack(BetterStorageItems.itemBackpack);
 			backpackSpecial1.setStackDisplayName("Everlasting Backpack");
 			backpackSpecial1.addEnchantment(Enchantment.unbreaking, 4);
 			StackUtils.set(backpackSpecial1, 0x006622, "display", "color");
 			addMultiple(backpackSpecial1, ChestGenHooks.PYRAMID_JUNGLE_CHEST, 0.5);
 			
-			ItemStack backpackSpecial2 = new ItemStack(BetterStorageTiles.backpack);
+			ItemStack backpackSpecial2 = new ItemStack(BetterStorageItems.itemBackpack);
 			backpackSpecial2.setStackDisplayName("Shielding Backpack");
 			backpackSpecial2.addEnchantment(Enchantment.protection, 5);
 			StackUtils.set(backpackSpecial2, 0x0000BB, "display", "color");

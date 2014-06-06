@@ -8,6 +8,7 @@ import net.mcft.copy.betterstorage.tile.entity.TileEntityCardboardBox;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
@@ -27,7 +28,7 @@ public class TileCardboardBox extends TileContainerBetterStorage {
 	}
 	
 	@Override
-	public Class<? extends Item> getItemClass() { return ItemCardboardBox.class; }
+	public Class<? extends ItemBlock> getItemClass() { return ItemCardboardBox.class; }
 	
 	@Override
 	@SideOnly(Side.CLIENT)

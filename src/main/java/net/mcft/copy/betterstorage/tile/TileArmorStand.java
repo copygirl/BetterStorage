@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
@@ -33,7 +34,7 @@ public class TileArmorStand extends TileContainerBetterStorage {
 	}
 	
 	@Override
-	public Class<? extends Item> getItemClass() { return ItemArmorStand.class; }
+	public Class<? extends ItemBlock> getItemClass() { return ItemArmorStand.class; }
 	
 	@Override
 	@SideOnly(Side.CLIENT)

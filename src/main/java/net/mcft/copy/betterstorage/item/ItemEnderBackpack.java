@@ -1,9 +1,11 @@
 package net.mcft.copy.betterstorage.item;
 
+import net.mcft.copy.betterstorage.content.BetterStorageTiles;
 import net.mcft.copy.betterstorage.inventory.InventoryWrapper;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.misc.PropertiesBackpack;
 import net.mcft.copy.betterstorage.misc.Resources;
+import net.mcft.copy.betterstorage.tile.TileBackpack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,6 +27,9 @@ public class ItemEnderBackpack extends ItemBackpack {
 	
 	@Override
 	protected int getDefaultColor() { return -1; }
+	
+	@Override
+	public TileBackpack getBlockType() { return BetterStorageTiles.enderBackpack; }
 	
 	@Override
 	protected IInventory getBackpackItemsInternal(EntityLivingBase carrier, EntityPlayer player) {

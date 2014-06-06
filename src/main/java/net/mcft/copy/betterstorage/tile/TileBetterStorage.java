@@ -1,12 +1,16 @@
 package net.mcft.copy.betterstorage.tile;
 
+import java.util.BitSet;
+
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.MiscUtils;
+import net.mcft.copy.betterstorage.utils.ReflectionUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import cpw.mods.fml.common.registry.FMLControlledNamespacedRegistry;
 import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -20,7 +24,7 @@ public class TileBetterStorage extends Block {
 		
 		setCreativeTab(BetterStorage.creativeTab);
 		
-		setBlockName(getTileName());
+		setBlockName(Constants.modId + "." + getTileName());
 		registerBlock();
 		
 	}
@@ -30,21 +34,17 @@ public class TileBetterStorage extends Block {
 		return ((name != null) ? name : (name = MiscUtils.getName(this)));
 	}
 	
-	/** Returns the item class used for this block. <br>
-	 *  Doesn't have to be an ItemBlock. */
-	protected Class<? extends Item> getItemClass() { return ItemBlock.class; }
+	/** Returns the item class used for this block.*/
+	protected Class<? extends ItemBlock> getItemClass() { return ItemBlock.class; }
 	
 	/** Registers the block in the GameRegistry. */
 	protected void registerBlock() {
 		Class<? extends Item> itemClass = getItemClass();
-		if (ItemBlock.class.isAssignableFrom(itemClass)) {
+		
+		if (itemClass != null) {
 			GameRegistry.registerBlock(this, (Class<? extends ItemBlock>)itemClass, getTileName(), Constants.modId);
 		} else {
-			Block block = GameRegistry.registerBlock(this, null, getTileName(), Constants.modId);
-			Item item;
-			try { item = itemClass.getConstructor(int.class).newInstance(); }
-			catch (Exception e) { throw new RuntimeException(e); }
-			GameData.itemRegistry.add(Block.getIdFromBlock(block), getTileName(), item);
+			GameRegistry.registerBlock(this, null, getTileName(), Constants.modId);
 		}
 	}
 	
