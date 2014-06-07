@@ -1,6 +1,5 @@
 package net.mcft.copy.betterstorage.proxy;
 
-import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,6 +15,7 @@ import net.mcft.copy.betterstorage.client.renderer.ItemRendererContainer;
 import net.mcft.copy.betterstorage.client.renderer.RenderFrienderman;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityArmorStandRenderer;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityBackpackRenderer;
+import net.mcft.copy.betterstorage.client.renderer.TileEntityLockableDoorRenderer;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityLockerRenderer;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityReinforcedChestRenderer;
 import net.mcft.copy.betterstorage.content.BetterStorageItems;
@@ -23,10 +23,12 @@ import net.mcft.copy.betterstorage.content.BetterStorageTiles;
 import net.mcft.copy.betterstorage.entity.EntityCluckington;
 import net.mcft.copy.betterstorage.entity.EntityFrienderman;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
+import net.mcft.copy.betterstorage.misc.Resources;
 import net.mcft.copy.betterstorage.misc.handlers.KeyBindingHandler;
 import net.mcft.copy.betterstorage.tile.TileArmorStand;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityArmorStand;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityBackpack;
+import net.mcft.copy.betterstorage.tile.entity.TileEntityLockableDoor;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityLocker;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityReinforcedChest;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityReinforcedLocker;
@@ -37,7 +39,6 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderChicken;
 import net.minecraft.client.renderer.entity.RenderPlayer;
-import net.minecraft.client.renderer.entity.RendererLivingEntity;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -59,7 +60,6 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -72,6 +72,7 @@ public class ClientProxy extends CommonProxy {
 	public static int armorStandRenderId;
 	public static int backpackRenderId;
 	public static int reinforcedLockerRenderId;
+	public static int lockableDoorRenderId;
 	
 	public static final Map<Class<? extends TileEntity>, BetterStorageRenderingHandler> renderingHandlers =
 			new HashMap<Class<? extends TileEntity>, BetterStorageRenderingHandler>();
@@ -103,6 +104,7 @@ public class ClientProxy extends CommonProxy {
 		armorStandRenderId = registerTileEntityRenderer(TileEntityArmorStand.class, new TileEntityArmorStandRenderer(), false, 0, 1, 0);
 		backpackRenderId = registerTileEntityRenderer(TileEntityBackpack.class, new TileEntityBackpackRenderer(), true, -160, 1.5F, 0.14F);
 		reinforcedLockerRenderId = registerTileEntityRenderer(TileEntityReinforcedLocker.class, new TileEntityLockerRenderer());
+		lockableDoorRenderId = registerTileEntityRenderer(TileEntityLockableDoor.class, new TileEntityLockableDoorRenderer(), false, 0, 1, 0);
 		
 		Addon.registerRenderersAll();
 		
@@ -137,6 +139,7 @@ public class ClientProxy extends CommonProxy {
 		EntityPlayer player = event.player;
 		World world = player.worldObj;
 		MovingObjectPosition target = WorldUtils.rayTrace(player, event.partialTicks);
+		
 		if ((target == null) || (target.typeOfHit != MovingObjectType.BLOCK)) return;
 		int x = target.blockX;
 		int y = target.blockY;
@@ -266,7 +269,7 @@ public class ClientProxy extends CommonProxy {
 			
 			if (backpack.isItemEnchanted()) {
 				float f9 = player.ticksExisted + partial;
-				ReflectionUtils.invoke(RenderPlayer.class, event.renderer, "bindTexture", new Class[]{ResourceLocation.class}, new Object[]{(ResourceLocation)ReflectionUtils.get(RendererLivingEntity.class, null, "RES_ITEM_GLINT")});
+				ReflectionUtils.invoke(RenderPlayer.class, event.renderer, "bindTexture", new Class[]{ResourceLocation.class}, new Object[]{Resources.enchantedItem});
 				GL11.glEnable(GL11.GL_BLEND);
 				GL11.glColor4f(0.5F, 0.5F, 0.5F, 1.0F);
 				GL11.glDepthFunc(GL11.GL_EQUAL);

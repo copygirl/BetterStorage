@@ -24,6 +24,7 @@ public class GlobalConfig extends Config {
 	public static final String reinforcedLockerEnabled = "tile.reinforcedLocker";
 	public static final String craftingStationEnabled  = "tile.craftingStation";
 	public static final String flintBlockEnabled       = "tile.flintBlock";
+	public static final String lockableDoorEnabled     = "tile.lockableDoor";
 	
 	// Items
 	public static final String keyEnabled            = "item.key";
@@ -80,6 +81,7 @@ public class GlobalConfig extends Config {
 		new BooleanSetting(this, reinforcedLockerEnabled, true);
 		new BooleanSetting(this, craftingStationEnabled, true);
 		new BooleanSetting(this, flintBlockEnabled, true);
+		new BooleanSetting(this, lockableDoorEnabled, true);
 		
 		// Items
 		new BooleanSetting(this, keyEnabled, true);

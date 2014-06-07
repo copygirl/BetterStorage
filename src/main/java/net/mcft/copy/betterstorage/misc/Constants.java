@@ -23,6 +23,7 @@ public final class Constants {
 	public static final String containerThaumcraftBackpack = "container." + modId + ".thaumcraftBackpack";
 	public static final String containerThaumiumChest = "container." + modId + ".thaumiumChest";
 	
+	public static final String lockableDoor = modId + ".lockableDoor";
 	
 	private Constants() {  }
 	
