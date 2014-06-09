@@ -1,10 +1,13 @@
 package net.mcft.copy.betterstorage.tile.entity;
 
+import net.mcft.copy.betterstorage.api.lock.ILock;
 import net.mcft.copy.betterstorage.api.lock.ILockable;
 import net.mcft.copy.betterstorage.attachment.Attachments;
 import net.mcft.copy.betterstorage.attachment.IHasAttachments;
 import net.mcft.copy.betterstorage.attachment.LockAttachment;
+import net.mcft.copy.betterstorage.utils.DirectionUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -14,6 +17,7 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -21,6 +25,7 @@ public class TileEntityLockableDoor extends TileEntity implements ILockable, IHa
 
 	private Attachments attachments = new Attachments(this);	
 	private LockAttachment lockAttachment;
+	public ForgeDirection orientation;
 	
 	public float angle = 0F;
 	public float prevAngle = 0F;
@@ -30,6 +35,7 @@ public class TileEntityLockableDoor extends TileEntity implements ILockable, IHa
 		
 		lockAttachment = attachments.add(LockAttachment.class);
 		lockAttachment.setScale(0.5F, 1.5F);
+		lockAttachment.setBox(0, 2.5, 0.5, 5, 5, 1);
 	}
 	
 	@Override
@@ -50,8 +56,7 @@ public class TileEntityLockableDoor extends TileEntity implements ILockable, IHa
 
 	@Override
 	public boolean isLockValid(ItemStack lock) {
-		// TODO Auto-generated method stub
-		return false;
+		return (lock == null) || (lock.getItem() instanceof ILock);
 	}
 
 	@Override
@@ -75,6 +80,11 @@ public class TileEntityLockableDoor extends TileEntity implements ILockable, IHa
 	public void applyTrigger() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
+		orientation = DirectionUtils.getOrientation(player).getOpposite();
+		System.out.println(orientation);
 	}
 	
 	public void onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {	
@@ -114,6 +124,7 @@ public class TileEntityLockableDoor extends TileEntity implements ILockable, IHa
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
 		isOpen = compound.getBoolean("isOpen");
+		orientation = ForgeDirection.getOrientation(compound.getByte("orientation"));
 		if (compound.hasKey("lock")) lockAttachment.setItem(ItemStack.loadItemStackFromNBT(compound.getCompoundTag("lock")));
 	}
 	
@@ -121,6 +132,7 @@ public class TileEntityLockableDoor extends TileEntity implements ILockable, IHa
 	public void writeToNBT(NBTTagCompound compound) {
 		super.writeToNBT(compound);
 		compound.setBoolean("isOpen", isOpen);
+		compound.setByte("orientation", (byte) orientation.ordinal());
 		if (lockAttachment.getItem() != null) compound.setTag("lock", lockAttachment.getItem().writeToNBT(new NBTTagCompound()));
 	}
 
@@ -128,6 +140,7 @@ public class TileEntityLockableDoor extends TileEntity implements ILockable, IHa
 	public Packet getDescriptionPacket() {
 		NBTTagCompound compound = new NBTTagCompound();
 		compound.setBoolean("isOpen", isOpen);
+		compound.setByte("orientation", (byte) orientation.ordinal());
 		return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, compound);
 	}
 
@@ -135,6 +148,7 @@ public class TileEntityLockableDoor extends TileEntity implements ILockable, IHa
 	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
 		super.onDataPacket(net, pkt);
 		NBTTagCompound compound = pkt.func_148857_g();
+		orientation = ForgeDirection.getOrientation(compound.getByte("orientation"));
 		isOpen = compound.getBoolean("isOpen");
 		angle = isOpen ? 1.0F : 0.0F;
 		prevAngle = angle;

@@ -2,6 +2,7 @@ package net.mcft.copy.betterstorage.tile;
 
 import java.util.Random;
 
+import net.mcft.copy.betterstorage.attachment.IHasAttachments;
 import net.mcft.copy.betterstorage.misc.SetBlockFlag;
 import net.mcft.copy.betterstorage.proxy.ClientProxy;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityLockableDoor;
@@ -11,9 +12,11 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
@@ -34,16 +37,32 @@ public class TileLockableDoor extends TileBetterStorage {
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
 		int metadata = world.getBlockMetadata(x, y, z);
-		if (metadata == 0) {
-			TileEntityLockableDoor te = WorldUtils.get(world, x, y, z, TileEntityLockableDoor.class);
-			if (te != null && te.isOpen) setBlockBounds(0F, 0F, 0F, 1F, 2F, 3 / 16F);
-			else setBlockBounds(0F, 0F, 0F, 3 / 16F, 2F, 1F);
+		float offset = metadata == 0 ? 0F : -1F;
+		TileEntityLockableDoor te = WorldUtils.get(world, x, y + (int)offset, z, TileEntityLockableDoor.class);
+		
+		if (te == null) {
+			setBlockBounds(0F, 0F + offset, 0F, 3 / 16F, 2F + offset, 1F);
+			return;
 		}
-		else {
-			TileEntityLockableDoor te = WorldUtils.get(world, x, y - 1, z, TileEntityLockableDoor.class);
-			if (te != null && te.isOpen)setBlockBounds(0F, -1F, 0F, 1F, 1F, 3 / 16F);
-			else setBlockBounds(0F, -1F, 0F, 3 / 16F, 1F, 1F);
-		}
+		
+		switch (te.orientation) {
+		case WEST:
+			if (te.isOpen) setBlockBounds(0F, 0F + offset, 0F, 1F, 2F + offset, 3 / 16F);
+			else setBlockBounds(0F, 0F + offset, 0F, 3 / 16F, 2F + offset, 1F);
+			break;
+		case EAST:
+			if (te.isOpen) setBlockBounds(0F, 0F + offset, 13 / 16F, 1F, 2F + offset, 1F);
+			else setBlockBounds(13 / 16F, 0F + offset, 0F, 1F, 2F + offset, 1F);
+			break;
+		case SOUTH:
+			if (te.isOpen) setBlockBounds(0F, 0F + offset, 0F, 3 / 16F, 2F + offset, 1F);
+			else setBlockBounds(0F, 0F + offset, 13 / 16F, 1F, 2F + offset, 1F);
+			break;
+		default:
+			if (te.isOpen) setBlockBounds(13 / 16F, 0F + offset, 0F, 1F, 2F + offset, 1F);
+			else setBlockBounds(0F, 0F + offset, 0F, 1F, 2F + offset, 3 / 16F);
+			break;
+		}		
 	}
 
 	@Override
@@ -55,6 +74,8 @@ public class TileLockableDoor extends TileBetterStorage {
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
 		super.onBlockPlacedBy(world, x, y, z, player, stack);
+		TileEntityLockableDoor te = WorldUtils.get(world, x, y, z, TileEntityLockableDoor.class);
+		te.onBlockPlacedBy(world, x, y, z, player, stack);
 		world.setBlock(x, y + 1, z, this, 1, SetBlockFlag.DEFAULT);
 	}
 	
@@ -66,10 +87,22 @@ public class TileLockableDoor extends TileBetterStorage {
 
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
-		if (world.isRemote) return true;
+		if (world.isRemote) {
+			world.playAuxSFXAtEntity(player, 1003, x, y, z, 0);
+			return true;
+		}
+		
 		if (world.getBlockMetadata(x, y, z) > 0) { y -= 1; hitY += 1; }
 		WorldUtils.get(world, x, y, z, TileEntityLockableDoor.class).onBlockActivated(world, x, y, z, player, side, hitX, hitY, hitZ);	
 		return true;
+	}
+	
+	@Override
+	public MovingObjectPosition collisionRayTrace(World world, int x, int y, int z, Vec3 start, Vec3 end) {
+		int metadata = world.getBlockMetadata(x, y, z);
+		if (metadata > 0) y -= 1;
+		IHasAttachments te = WorldUtils.get(world, x, y, z, IHasAttachments.class);
+		return te != null ? te.getAttachments().rayTrace(world, x, y, z, start, end) : super.collisionRayTrace(world, x, y, z, start, end);
 	}
 	
 	@Override
@@ -94,11 +127,10 @@ public class TileLockableDoor extends TileBetterStorage {
 		int metadata = world.getBlockMetadata(x, y, z);
 		int targetY = y + ((metadata == 0) ? 1 : -1);
 		int targetMeta = ((metadata == 0) ? 1 : 0);
-		if ((world.getBlock(x, targetY, z) == this) &&
-		    (world.getBlockMetadata(x, targetY, z) == targetMeta)) return;
+		if (world.getBlock(x, y - 1, z) == Blocks.air && metadata == 0) world.setBlockToAir(x, y, z);
+		if ((world.getBlock(x, targetY, z) == this) && (world.getBlockMetadata(x, targetY, z) == targetMeta)) return;
 		world.setBlockToAir(x, y, z);
-		if (metadata == 0)
-			dropBlockAsItem(world, x, y, z, metadata, 0);
+		if (metadata == 0) dropBlockAsItem(world, x, y, z, metadata, 0);
 	}
 
 	@Override
@@ -113,7 +145,7 @@ public class TileLockableDoor extends TileBetterStorage {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public int getRenderType() { return ClientProxy.lockerRenderId; }
+	public int getRenderType() { return ClientProxy.lockableDoorRenderId; }
 	
 	@Override
 	public TileEntity createTileEntity(World world, int metadata) {

@@ -2,6 +2,7 @@ package net.mcft.copy.betterstorage.client.model;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class ModelLockableDoor extends ModelBase {
 
@@ -24,7 +25,7 @@ public class ModelLockableDoor extends ModelBase {
 		frameRight = new ModelRenderer(this, 39, 0);
 		
 		main.addBox(-0.5F, 1F, -13.5F, 1, 30, 14);
-		main.setRotationPoint(-6.5F,  -8F, 6.5F);
+		main.setRotationPoint(-6.5F, -8F, 6.5F);
 			
 		frameUpper.addBox(-1.5F, 0F, -13.5F, 3, 1, 14);
 		frameUpper.setRotationPoint(-6.5F, -8F, 6.5F);
@@ -48,6 +49,23 @@ public class ModelLockableDoor extends ModelBase {
 		frameLower.render(foo);
 		frameLeft.render(foo);
 		frameRight.render(foo);
+	}
+	
+	public void setOrientation(ForgeDirection orientation) {
+		float x, y, z;
+		
+		switch (orientation) {
+		case WEST: x = -6.5F; y = -8F; z = 6.5F; break;
+		case EAST: x = 6.5F; y = -8F; z = -6.5F; break;
+		case SOUTH: x = -6.5F; y = -8F; z = -6.5F; break;
+		default: x = 6.5F; y = -8F; z = 6.5F; break;
+		}
+		
+		main.setRotationPoint(x, y, z);
+		frameUpper.setRotationPoint(x, y, z);
+		frameLower.setRotationPoint(x, y, z);
+		frameLeft.setRotationPoint(x, y, z);
+		frameRight.setRotationPoint(x, y, z);
 	}
 	
 	public void setRotation(float rotation) {

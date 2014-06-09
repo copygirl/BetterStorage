@@ -28,7 +28,15 @@ public class TileEntityLockableDoorRenderer extends TileEntitySpecialRenderer {
 		angle = 1.0F - angle;
 		angle = 1.0F - angle * angle * angle;
 		
-		model.setRotation(angle * -90F);
+		switch (arg0.orientation) {
+		case WEST: angle *= -90F; break;
+		case EAST: angle *= -90F; angle += 180F; break;
+		case SOUTH: angle *= -90F; angle -= 90F; break;
+		default: angle = 1 - angle; angle *= 90F; break;
+		}
+		
+		model.setOrientation(arg0.orientation);
+		model.setRotation(angle);
 		model.renderAll();
 		
 		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
