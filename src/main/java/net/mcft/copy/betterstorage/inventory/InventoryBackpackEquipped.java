@@ -19,7 +19,7 @@ public class InventoryBackpackEquipped extends InventoryWrapper {
 	
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) {
-		boolean carriesBackpack = (ItemBackpack.getBackpackItems(carrier, player).equals(base)); 
+		boolean carriesBackpack = base.equals(ItemBackpack.getBackpackItems(carrier, player)); 
 		double distance = player.getDistanceToEntity(carrier);
 		double direction = DirectionUtils.angleDifference(carrier.renderYawOffset + 90.0F,
 		                                                  DirectionUtils.angleBetween(carrier, player));
