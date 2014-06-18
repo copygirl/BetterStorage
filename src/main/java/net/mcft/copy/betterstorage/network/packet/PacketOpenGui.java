@@ -1,7 +1,5 @@
 package net.mcft.copy.betterstorage.network.packet;
 
-import io.netty.channel.ChannelHandlerContext;
-
 import java.io.IOException;
 
 import net.mcft.copy.betterstorage.network.AbstractPacket;
@@ -10,7 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
 
 /** Opens a BetterStorage GUI on the client. */
-public class PacketOpenGui extends AbstractPacket {
+public class PacketOpenGui extends AbstractPacket<PacketOpenGui> {
 	
 	public int windowId;
 	public String name;
@@ -28,7 +26,7 @@ public class PacketOpenGui extends AbstractPacket {
 	}
 	
 	@Override
-	public void encode(ChannelHandlerContext context, PacketBuffer buffer) throws IOException {
+	public void encode(PacketBuffer buffer) throws IOException {
 		buffer.writeInt(windowId);
 		buffer.writeStringToBuffer(name);
 		buffer.writeByte(columns);
@@ -37,7 +35,7 @@ public class PacketOpenGui extends AbstractPacket {
 	}
 	
 	@Override
-	public void decode(ChannelHandlerContext context, PacketBuffer buffer) throws IOException {
+	public void decode(PacketBuffer buffer) throws IOException {
 		windowId = buffer.readInt();
 		name     = buffer.readStringFromBuffer(256);
 		columns  = buffer.readByte();
@@ -46,7 +44,7 @@ public class PacketOpenGui extends AbstractPacket {
 	}
 	
 	@Override
-	public void handleClientSide(EntityPlayer player) {
+	public void handle(EntityPlayer player) {
 		PlayerUtils.openGui(player, name, columns, rows, title);
 		player.openContainer.windowId = windowId;
 	}

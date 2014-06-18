@@ -76,9 +76,9 @@ public class TileEnderBackpack extends TileBackpack {
 			    !blockBelow.isSideSolid(world, x, y - 1, z, ForgeDirection.UP)) return false;
 		}
 		
-		BetterStorage.networkChannel.sendToEveryoneNear(
-				world, sourceX + 0.5, sourceY + 0.5, sourceZ + 0.5, 256,
-				new PacketBackpackTeleport(sourceX, sourceY, sourceZ, x, y, z));
+		BetterStorage.networkChannel.sendToAllAround(
+				new PacketBackpackTeleport(sourceX, sourceY, sourceZ, x, y, z),
+				world, sourceX + 0.5, sourceY + 0.5, sourceZ + 0.5, 256);
 		
 		world.playSoundEffect(sourceX + 0.5, sourceY + 0.5, sourceZ + 0.5,
 		                      "mob.endermen.portal", 1.0F, 1.0F);

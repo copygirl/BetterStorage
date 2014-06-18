@@ -36,8 +36,8 @@ public final class PlayerUtils {
 		player.closeContainer();
 		player.getNextWindowId();
 		
-		BetterStorage.networkChannel.sendToPlayer(player,
-				new PacketOpenGui(player.currentWindowId, name, columns, rows, title));
+		BetterStorage.networkChannel.sendTo(
+				new PacketOpenGui(player.currentWindowId, name, columns, rows, title), player);
 		
 		player.openContainer = container;
 		player.openContainer.windowId = player.currentWindowId;
