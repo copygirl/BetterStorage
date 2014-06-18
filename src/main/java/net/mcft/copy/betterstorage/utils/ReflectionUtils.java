@@ -5,6 +5,8 @@ import java.lang.reflect.Method;
 
 public class ReflectionUtils {
 	
+	// FIXME: I can do this with ReflectionHelper, right?
+	
 	public static void set(Class clazz, Object obj, Object value, String name) {
 		try {
 			Field f = clazz.getDeclaredField(name);

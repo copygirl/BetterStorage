@@ -4,7 +4,7 @@ import io.netty.buffer.ByteBuf;
 
 import java.io.IOException;
 
-import net.mcft.copy.core.util.ClientUtils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
@@ -38,7 +38,7 @@ public abstract class AbstractPacket<T extends AbstractPacket<T>> implements IMe
 	@Override
 	public final IMessage onMessage(T message, MessageContext context) {
 		message.handle(context.side.isServer() ? context.getServerHandler().playerEntity
-		                                       : ClientUtils.getLocalPlayer());
+		                                       : Minecraft.getMinecraft().thePlayer);
 		return null;
 	}
 	
