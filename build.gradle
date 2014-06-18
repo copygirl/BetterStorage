@@ -17,15 +17,9 @@ buildscript {
 
 apply plugin: 'forge'
 
-<<<<<<< HEAD
-project.ext.mod_version = "0.9.0.48"
+project.ext.mod_version = "0.9.0.100-dev"
 project.ext.minecraft_version = "1.7.2"
-project.ext.forge_version = "10.12.1.1060"
-=======
-project.ext.mod_version = "0.8.0.46"
-project.ext.minecraft_version = "1.6.4"
-project.ext.forge_version = "9.11.1.964"
->>>>>>> e0d2680... Crafting station: Shift-click = craft whole stack
+project.ext.forge_version = "10.12.2.1121"
 
 version = project.minecraft_version + "-" + project.mod_version
 group = "net.mcft.copy.betterstorage"
