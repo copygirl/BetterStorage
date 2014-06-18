@@ -18,8 +18,6 @@ import net.mcft.copy.betterstorage.item.locking.ItemKey;
 import net.mcft.copy.betterstorage.item.locking.ItemKeyring;
 import net.mcft.copy.betterstorage.item.locking.ItemLock;
 import net.mcft.copy.betterstorage.item.locking.ItemMasterKey;
-import net.mcft.copy.betterstorage.tile.TileCardboardBox;
-import net.mcft.copy.betterstorage.tile.TileEnderBackpack;
 import net.mcft.copy.betterstorage.utils.MiscUtils;
 import net.minecraftforge.oredict.OreDictionary;
 

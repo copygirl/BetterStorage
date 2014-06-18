@@ -1,7 +1,5 @@
 package net.mcft.copy.betterstorage.container;
 
-import java.lang.reflect.Field;
-
 import net.mcft.copy.betterstorage.inventory.InventoryCraftingStation;
 import net.mcft.copy.betterstorage.inventory.InventoryTileEntity;
 import net.mcft.copy.betterstorage.item.recipe.VanillaStationCrafting;
@@ -11,12 +9,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.inventory.Slot;
-import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
-import cpw.mods.fml.common.eventhandler.EventBus;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

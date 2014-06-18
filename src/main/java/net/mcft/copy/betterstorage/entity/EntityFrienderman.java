@@ -1,7 +1,5 @@
 package net.mcft.copy.betterstorage.entity;
 
-import java.lang.reflect.Field;
-
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.content.BetterStorageItems;
 import net.mcft.copy.betterstorage.content.BetterStorageTiles;

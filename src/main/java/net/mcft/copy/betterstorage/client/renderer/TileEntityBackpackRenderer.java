@@ -1,7 +1,5 @@
 package net.mcft.copy.betterstorage.client.renderer;
 
-import java.lang.reflect.Field;
-
 import net.mcft.copy.betterstorage.client.model.ModelBackpack;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.tile.TileBackpack;
@@ -11,7 +9,6 @@ import net.mcft.copy.betterstorage.utils.ReflectionUtils;
 import net.mcft.copy.betterstorage.utils.RenderUtils;
 import net.minecraft.client.renderer.entity.RendererLivingEntity;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
