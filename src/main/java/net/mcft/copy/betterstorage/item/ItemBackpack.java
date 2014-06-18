@@ -337,7 +337,7 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 		EntityPlayer player = (EntityPlayer)entity;
 		boolean hasItems = ((backpackData.contents != null) && !StackUtils.isEmpty(backpackData.contents));
 		if (backpackData.hasItems == hasItems) return;
-		BetterStorage.networkChannel.sendToPlayer(player, new PacketBackpackHasItems(hasItems));
+		BetterStorage.networkChannel.sendTo(new PacketBackpackHasItems(hasItems), player);
 		backpackData.hasItems = hasItems;
 	}
 	

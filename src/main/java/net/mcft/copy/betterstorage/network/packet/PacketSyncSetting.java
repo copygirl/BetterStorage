@@ -1,7 +1,5 @@
 package net.mcft.copy.betterstorage.network.packet;
 
-import io.netty.channel.ChannelHandlerContext;
-
 import java.io.IOException;
 
 import net.mcft.copy.betterstorage.BetterStorage;
@@ -26,17 +24,17 @@ public class PacketSyncSetting extends AbstractPacket {
 	}
 	
 	@Override
-	public void encode(ChannelHandlerContext context, PacketBuffer buffer) throws IOException {
+	public void encode(PacketBuffer buffer) throws IOException {
 		buffer.writeNBTTagCompoundToBuffer(data);
 	}
 	
 	@Override
-	public void decode(ChannelHandlerContext context, PacketBuffer buffer) throws IOException {
+	public void decode(PacketBuffer buffer) throws IOException {
 		data = buffer.readNBTTagCompoundFromBuffer();
 	}
 	
 	@Override
-	public void handleClientSide(EntityPlayer player) {
+	public void handle(EntityPlayer player) {
 		BetterStorage.globalConfig.read(data);
 	}
 	

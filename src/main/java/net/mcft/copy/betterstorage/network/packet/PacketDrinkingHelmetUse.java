@@ -1,7 +1,5 @@
 package net.mcft.copy.betterstorage.network.packet;
 
-import io.netty.channel.ChannelHandlerContext;
-
 import java.io.IOException;
 
 import net.mcft.copy.betterstorage.item.ItemDrinkingHelmet;
@@ -15,17 +13,17 @@ public class PacketDrinkingHelmetUse extends AbstractPacket {
 	public PacketDrinkingHelmetUse() {  }
 	
 	@Override
-	public void encode(ChannelHandlerContext context, PacketBuffer buffer) throws IOException {
+	public void encode(PacketBuffer buffer) throws IOException {
 		// No additional data.
 	}
 	
 	@Override
-	public void decode(ChannelHandlerContext context, PacketBuffer buffer) throws IOException {
+	public void decode(PacketBuffer buffer) throws IOException {
 		// No additional data.
 	}
 	
 	@Override
-	public void handleServerSide(EntityPlayer player) {
+	public void handle(EntityPlayer player) {
 		ItemDrinkingHelmet.use(player);
 	}
 	

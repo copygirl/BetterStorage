@@ -1,7 +1,5 @@
 package net.mcft.copy.betterstorage.network.packet;
 
-import io.netty.channel.ChannelHandlerContext;
-
 import java.io.IOException;
 
 import net.mcft.copy.betterstorage.network.AbstractPacket;
@@ -25,7 +23,7 @@ public class PacketLockHit extends AbstractPacket {
 	}
 	
 	@Override
-	public void encode(ChannelHandlerContext context, PacketBuffer buffer) throws IOException {
+	public void encode(PacketBuffer buffer) throws IOException {
 		buffer.writeInt(x);
 		buffer.writeInt(y);
 		buffer.writeInt(z);
@@ -33,7 +31,7 @@ public class PacketLockHit extends AbstractPacket {
 	}
 	
 	@Override
-	public void decode(ChannelHandlerContext context, PacketBuffer buffer) throws IOException {
+	public void decode(PacketBuffer buffer) throws IOException {
 		x = buffer.readInt();
 		y = buffer.readInt();
 		z = buffer.readInt();
@@ -41,7 +39,7 @@ public class PacketLockHit extends AbstractPacket {
 	}
 	
 	@Override
-	public void handleClientSide(EntityPlayer player) {
+	public void handle(EntityPlayer player) {
 		TileEntityLockable lockable = WorldUtils.get(player.worldObj, x, y, z, TileEntityLockable.class);
 		if (lockable != null)
 			lockable.lockAttachment.hit(damage);

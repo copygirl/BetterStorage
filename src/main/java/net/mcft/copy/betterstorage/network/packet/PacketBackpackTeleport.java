@@ -1,7 +1,5 @@
 package net.mcft.copy.betterstorage.network.packet;
 
-import io.netty.channel.ChannelHandlerContext;
-
 import java.io.IOException;
 
 import net.mcft.copy.betterstorage.network.AbstractPacket;
@@ -27,7 +25,7 @@ public class PacketBackpackTeleport extends AbstractPacket {
 	}
 	
 	@Override
-	public void encode(ChannelHandlerContext context, PacketBuffer buffer) throws IOException {
+	public void encode(PacketBuffer buffer) throws IOException {
 		buffer.writeDouble(sourceX);
 		buffer.writeDouble(sourceY);
 		buffer.writeDouble(sourceZ);
@@ -37,7 +35,7 @@ public class PacketBackpackTeleport extends AbstractPacket {
 	}
 	
 	@Override
-	public void decode(ChannelHandlerContext context, PacketBuffer buffer) throws IOException {
+	public void decode(PacketBuffer buffer) throws IOException {
 		sourceX = buffer.readDouble();
 		sourceY = buffer.readDouble();
 		sourceZ = buffer.readDouble();
@@ -47,7 +45,7 @@ public class PacketBackpackTeleport extends AbstractPacket {
 	}
 	
 	@Override
-	public void handleClientSide(EntityPlayer player) {
+	public void handle(EntityPlayer player) {
 		int amount = 128;
 		for (int i = 0; i < amount; i++) {
 			double a = i / (double)(amount - 1);

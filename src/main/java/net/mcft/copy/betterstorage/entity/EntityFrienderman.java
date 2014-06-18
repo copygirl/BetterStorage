@@ -128,9 +128,9 @@ public class EntityFrienderman extends EntityEnderman {
 			double px = x + 0.5;
 			double py = y + 0.5;
 			double pz = z + 0.5;
-			BetterStorage.networkChannel.sendToEveryoneNear(
-					worldObj, px, py, pz, 256,
-					new PacketBackpackTeleport(px, py, pz, x, y, z));
+			BetterStorage.networkChannel.sendToAllAround(
+					new PacketBackpackTeleport(px, py, pz, x, y, z),
+					worldObj, px, py, pz, 256);
 			worldObj.playSoundEffect(px, py, pz, "mob.endermen.portal", 1.0F, 1.0F);
 		}
 		

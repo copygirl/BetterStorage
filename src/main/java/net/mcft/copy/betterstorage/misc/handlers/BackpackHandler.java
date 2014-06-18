@@ -429,7 +429,7 @@ public class BackpackHandler {
 	@SubscribeEvent
 	public void onPlayerLogin(PlayerLoggedInEvent event) {
 		// Send player the information if the backpack open key is enabled on this server.
-		BetterStorage.networkChannel.sendToPlayer(event.player, new PacketSyncSetting(BetterStorage.globalConfig));
+		BetterStorage.networkChannel.sendTo(new PacketSyncSetting(BetterStorage.globalConfig), event.player);
 	}
 	
 	@SubscribeEvent

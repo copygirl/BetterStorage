@@ -1,7 +1,5 @@
 package net.mcft.copy.betterstorage.network.packet;
 
-import io.netty.channel.ChannelHandlerContext;
-
 import java.io.IOException;
 
 import net.mcft.copy.betterstorage.BetterStorage;
@@ -17,17 +15,17 @@ public class PacketBackpackOpen extends AbstractPacket {
 	public PacketBackpackOpen() {  }
 	
 	@Override
-	public void encode(ChannelHandlerContext context, PacketBuffer buffer) throws IOException {
+	public void encode(PacketBuffer buffer) throws IOException {
 		// No additional data.
 	}
 	
 	@Override
-	public void decode(ChannelHandlerContext context, PacketBuffer buffer) throws IOException {
+	public void decode(PacketBuffer buffer) throws IOException {
 		// No additional data.
 	}
 	
 	@Override
-	public void handleServerSide(EntityPlayer player) {
+	public void handle(EntityPlayer player) {
 		if (BetterStorage.globalConfig.getBoolean(GlobalConfig.enableBackpackOpen))
 			ItemBackpack.openBackpack(player, player);
 	}
