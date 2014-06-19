@@ -86,13 +86,13 @@ public class PropertiesBackpack implements IExtendedEntityProperties {
 			
 			boolean isOpen = (playersUsing > 0);
 			if (isOpen != (prevPlayersUsing > 0)) {
-				BetterStorage.networkChannel.sendToEveryoneNear(
-						entity, new PacketBackpackIsOpen(entity.getEntityId(), isOpen));
+				BetterStorage.networkChannel.sendToAllTracking(
+						new PacketBackpackIsOpen(entity.getEntityId(), isOpen), entity);
 				prevPlayersUsing = playersUsing;
 			}
 			if (!ItemStack.areItemStacksEqual(backpack, prevBackpack)) {
-				BetterStorage.networkChannel.sendToEveryoneNear(
-						entity, new PacketBackpackStack(entity.getEntityId(), backpack));
+				BetterStorage.networkChannel.sendToAllTracking(
+						new PacketBackpackStack(entity.getEntityId(), backpack), entity);
 				prevBackpack = ItemStack.copyItemStack(backpack);
 			}
 			
@@ -105,11 +105,11 @@ public class PropertiesBackpack implements IExtendedEntityProperties {
 		// the server that an entity has spawned.
 		// Sends any backpack data to the player.
 		if (playersUsing > 0)
-			BetterStorage.networkChannel.sendToEveryoneNear(
-					entity, new PacketBackpackIsOpen(entity.getEntityId(), true));
+			BetterStorage.networkChannel.sendToAllTracking(
+					new PacketBackpackIsOpen(entity.getEntityId(), true), entity);
 		if (backpack != null)
-			BetterStorage.networkChannel.sendToEveryoneNear(
-					entity, new PacketBackpackStack(entity.getEntityId(), backpack));
+			BetterStorage.networkChannel.sendToAllTracking(
+					new PacketBackpackStack(entity.getEntityId(), backpack), entity);
 	}
 	
 }

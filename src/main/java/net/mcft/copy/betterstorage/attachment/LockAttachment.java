@@ -118,9 +118,9 @@ public class LockAttachment extends ItemAttachment {
 				
 				((ILock)lock.getItem()).applyEffects(lock, lockable, player, EnumLockInteraction.ATTACK);
 			}
-			BetterStorage.networkChannel.sendToEveryoneNear(
-					tileEntity.getWorldObj(), tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, 32,
-					new PacketLockHit(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, canHurt));
+			BetterStorage.networkChannel.sendToAllAround(
+					new PacketLockHit(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, canHurt),
+					tileEntity.getWorldObj(), tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, 32);
 		} else hit(canHurt);
 		return true;
 	}

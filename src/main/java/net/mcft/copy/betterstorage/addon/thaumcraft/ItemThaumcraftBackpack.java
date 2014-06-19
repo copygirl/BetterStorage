@@ -2,7 +2,6 @@ package net.mcft.copy.betterstorage.addon.thaumcraft;
 
 import java.util.List;
 
-import net.mcft.copy.betterstorage.content.BetterStorageTiles;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.tile.TileBackpack;

@@ -2,6 +2,7 @@ package net.mcft.copy.betterstorage.proxy;
 
 import net.mcft.copy.betterstorage.attachment.EnumAttachmentInteraction;
 import net.mcft.copy.betterstorage.attachment.IHasAttachments;
+import net.mcft.copy.betterstorage.content.BetterStorageItems;
 import net.mcft.copy.betterstorage.entity.EntityCluckington;
 import net.mcft.copy.betterstorage.item.IDyeableItem;
 import net.mcft.copy.betterstorage.item.ItemBucketSlime;
@@ -29,9 +30,8 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import net.minecraftforge.event.world.WorldEvent.Save;
 import net.minecraftforge.event.world.WorldEvent.Unload;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.eventhandler.Event.Result;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.WorldTickEvent;
 import cpw.mods.fml.relauncher.Side;
 
@@ -143,7 +143,7 @@ public class CommonProxy {
 			
 		}
 		
-		if ((target instanceof EntityLiving) &&
+		if ((BetterStorageItems.slimeBucket != null) && (target instanceof EntityLiving) &&
 		    (holding != null) && (holding.getItem() == Items.bucket))
 			ItemBucketSlime.pickUpSlime(player, (EntityLiving)target);
 		

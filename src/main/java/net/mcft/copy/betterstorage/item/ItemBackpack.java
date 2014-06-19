@@ -17,7 +17,6 @@ import net.mcft.copy.betterstorage.misc.PropertiesBackpack;
 import net.mcft.copy.betterstorage.misc.Resources;
 import net.mcft.copy.betterstorage.misc.handlers.KeyBindingHandler;
 import net.mcft.copy.betterstorage.network.packet.PacketBackpackHasItems;
-import net.mcft.copy.betterstorage.network.packet.PacketBackpackStack;
 import net.mcft.copy.betterstorage.tile.TileBackpack;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityBackpack;
 import net.mcft.copy.betterstorage.utils.DirectionUtils;
@@ -31,7 +30,6 @@ import net.minecraft.block.Block;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.client.settings.GameSettings;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -79,7 +77,7 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 		// the configuration file, update it here.
 		else if (backpackData.contents.length != size) {
 			ItemStack[] newContents = new ItemStack[size];
-			System.arraycopy(backpackData, 0, newContents, 0, Math.min(size, backpackData.contents.length));
+			System.arraycopy(backpackData.contents, 0, newContents, 0, Math.min(size, backpackData.contents.length));
 			backpackData.contents = newContents;
 		}
 		return new InventoryStacks(getBackpackName(), backpackData.contents);
@@ -339,7 +337,7 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 		EntityPlayer player = (EntityPlayer)entity;
 		boolean hasItems = ((backpackData.contents != null) && !StackUtils.isEmpty(backpackData.contents));
 		if (backpackData.hasItems == hasItems) return;
-		BetterStorage.networkChannel.sendToPlayer(player, new PacketBackpackHasItems(hasItems));
+		BetterStorage.networkChannel.sendTo(new PacketBackpackHasItems(hasItems), player);
 		backpackData.hasItems = hasItems;
 	}
 	

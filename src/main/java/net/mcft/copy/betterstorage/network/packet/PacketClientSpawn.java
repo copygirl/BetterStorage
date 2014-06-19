@@ -1,7 +1,5 @@
 package net.mcft.copy.betterstorage.network.packet;
 
-import io.netty.channel.ChannelHandlerContext;
-
 import java.io.IOException;
 
 import net.mcft.copy.betterstorage.item.ItemBackpack;
@@ -13,7 +11,9 @@ import net.minecraft.network.PacketBuffer;
 
 /** Sent by the client when an entity spawns for them.
  *  Causes backpack information to be sent to that client. */
-public class PacketClientSpawn extends AbstractPacket {
+public class PacketClientSpawn extends AbstractPacket<PacketClientSpawn> {
+	
+	// FIXME: Not needed anymore. Use PlayerEvent.StartTracking.
 	
 	public int entityID;
 	
@@ -23,17 +23,17 @@ public class PacketClientSpawn extends AbstractPacket {
 	}
 	
 	@Override
-	public void encode(ChannelHandlerContext context, PacketBuffer buffer) throws IOException {
+	public void encode(PacketBuffer buffer) throws IOException {
 		buffer.writeInt(entityID);
 	}
 	
 	@Override
-	public void decode(ChannelHandlerContext context, PacketBuffer buffer) throws IOException {
+	public void decode(PacketBuffer buffer) throws IOException {
 		entityID = buffer.readInt();
 	}
 	
 	@Override
-	public void handleServerSide(EntityPlayer player) {
+	public void handle(EntityPlayer player) {
 		Entity entity = player.worldObj.getEntityByID(entityID);
 		if ((entity != null) && (entity instanceof EntityLivingBase))
 			ItemBackpack.getBackpackData((EntityLivingBase)entity).sendDataToPlayer((EntityLivingBase)entity, player);

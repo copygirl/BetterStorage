@@ -5,7 +5,6 @@ import net.mcft.copy.betterstorage.container.ContainerBetterStorage;
 import net.mcft.copy.betterstorage.content.BetterStorageItems;
 import net.mcft.copy.betterstorage.inventory.InventoryTileEntity;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
-import net.mcft.copy.betterstorage.item.ItemEnderBackpack;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.network.packet.PacketBackpackTeleport;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityBackpack;
@@ -17,7 +16,6 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -78,9 +76,9 @@ public class TileEnderBackpack extends TileBackpack {
 			    !blockBelow.isSideSolid(world, x, y - 1, z, ForgeDirection.UP)) return false;
 		}
 		
-		BetterStorage.networkChannel.sendToEveryoneNear(
-				world, sourceX + 0.5, sourceY + 0.5, sourceZ + 0.5, 256,
-				new PacketBackpackTeleport(sourceX, sourceY, sourceZ, x, y, z));
+		BetterStorage.networkChannel.sendToAllAround(
+				new PacketBackpackTeleport(sourceX, sourceY, sourceZ, x, y, z),
+				world, sourceX + 0.5, sourceY + 0.5, sourceZ + 0.5, 256);
 		
 		world.playSoundEffect(sourceX + 0.5, sourceY + 0.5, sourceZ + 0.5,
 		                      "mob.endermen.portal", 1.0F, 1.0F);

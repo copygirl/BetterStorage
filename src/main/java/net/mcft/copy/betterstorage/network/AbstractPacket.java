@@ -1,26 +1,45 @@
 package net.mcft.copy.betterstorage.network;
 
-import io.netty.channel.ChannelHandlerContext;
+import io.netty.buffer.ByteBuf;
 
 import java.io.IOException;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 
-public abstract class AbstractPacket {
+public abstract class AbstractPacket<T extends AbstractPacket<T>> implements IMessage, IMessageHandler<T, IMessage> {
 	
-	public abstract void encode(ChannelHandlerContext context, PacketBuffer buffer) throws IOException;
+	public abstract void encode(PacketBuffer buffer) throws IOException;
 	
-	public abstract void decode(ChannelHandlerContext context, PacketBuffer buffer) throws IOException;
+	public abstract void decode(PacketBuffer buffer) throws IOException;
 	
-	public void handleClientSide(EntityPlayer player) {
-		throw new UnsupportedOperationException(
-				"Received " + getClass().getSimpleName() + " on invalid side client");
+	public abstract void handle(EntityPlayer player);
+	
+	// IMessage implementation
+	
+	@Override
+	public final void fromBytes(ByteBuf buffer) {
+		try { decode(new PacketBuffer(buffer)); }
+		catch (IOException ex) { throw new RuntimeException(ex); }
 	}
 	
-	public void handleServerSide(EntityPlayer player) {
-		throw new UnsupportedOperationException(
-				"Received " + getClass().getSimpleName() + " on invalid side server");
+	@Override
+	public final void toBytes(ByteBuf buffer) {
+		try { encode(new PacketBuffer(buffer)); }
+		catch (IOException ex) { throw new RuntimeException(ex); }
+	}
+	
+	// IMessageHandler implementation
+	
+	@Override
+	public final IMessage onMessage(T message, MessageContext context) {
+		message.handle(context.side.isServer() ? context.getServerHandler().playerEntity
+		                                       : Minecraft.getMinecraft().thePlayer);
+		return null;
 	}
 	
 }

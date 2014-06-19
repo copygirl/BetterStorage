@@ -1,21 +1,17 @@
 package net.mcft.copy.betterstorage.container;
 
-import java.lang.reflect.Field;
-
 import net.mcft.copy.betterstorage.inventory.InventoryCraftingStation;
 import net.mcft.copy.betterstorage.inventory.InventoryTileEntity;
 import net.mcft.copy.betterstorage.item.recipe.VanillaStationCrafting;
 import net.mcft.copy.betterstorage.utils.ReflectionUtils;
+import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.inventory.Slot;
-import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
-import cpw.mods.fml.common.eventhandler.EventBus;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -67,7 +63,7 @@ public class ContainerCraftingStation extends ContainerBetterStorage {
 	}
 	
 	@Override
-	protected boolean inInventory(int slot) { return (super.inInventory(slot) && (slot >= 18)); }
+	protected boolean inInventory(int slot) { return (super.inInventory(slot) && (slot >= 9)); }
 	@Override
 	protected int transferStart(int slot) { return (!inInventory(slot) ? 18 : super.transferStart(slot)); }
 	
@@ -94,15 +90,42 @@ public class ContainerCraftingStation extends ContainerBetterStorage {
 	@Override
 	public ItemStack slotClick(int slotId, int button, int special, EntityPlayer player) {
 		if (!inv.outputIsReal && (inv.currentCrafting != null) && (slotId >= 9) && (slotId < 18) &&
-		    (inv.output[slotId - 9] != null) && inv.canTake(player)) {
-			// For full compatibility with vanilla, we do special stuff here.
-			if (inv.currentCrafting instanceof VanillaStationCrafting) {
-				MinecraftForge.EVENT_BUS.post(new PlayerEvent.ItemCraftedEvent(player, inv.output[slotId - 9], craftMatrix));
-				slotCrafting.onCrafting(inv.output[slotId - 9]);
-			}
-			inv.craft(player);
+		    (inv.output[slotId - 9] != null) && inv.canTake(player) && (special != 3)) {
+			ItemStack craftingStack = inv.output[slotId - 9];
+			int amount = craftingStack.stackSize;
+			// Shift-click: Craft up to one stack of items at once.
+			if ((special == 1) && inv.hasItemRequirements() && craftingStack.isStackable()) {
+				ItemStack stack;
+				int count = 0;
+				do {
+					count += amount;
+					craft(slotId - 9);
+					stack = super.slotClick(slotId, button, special, player);
+				} while (!inv.outputIsReal && (inv.currentCrafting != null) &&
+						(inv.output[slotId - 9] != null) && inv.canTake(player) &&
+						inv.hasItemRequirements() &&
+						(count + amount <= craftingStack.getMaxStackSize()));
+				return stack;
+			// Regular clicking: Craft once. 
+			} else if (special < 2) {
+				ItemStack holding = player.inventory.getItemStack();
+				if ((holding == null) || (StackUtils.matches(holding, craftingStack) &&
+				                          (holding.stackSize <= holding.getMaxStackSize() - amount)))
+					craft(slotId - 9);
+			// No fancy inventory mechanics in the crafting slots.
+			} else return craftingStack;
 		}
 		return super.slotClick(slotId, button, special, player);
+	}
+	
+	private void craft(int slotClicked) {
+		// For full compatibility with vanilla and mods that
+		// use this functionality, we do special stuff here.
+		if (inv.currentCrafting instanceof VanillaStationCrafting) {
+			MinecraftForge.EVENT_BUS.post(new PlayerEvent.ItemCraftedEvent(player, inv.output[slotClicked], craftMatrix));
+			slotCrafting.onCrafting(inv.output[slotClicked]);
+		}
+		inv.craft(player);
 	}
 	
 	@Override

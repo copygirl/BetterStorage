@@ -1,6 +1,7 @@
 package net.mcft.copy.betterstorage.tile.entity;
 
 import net.mcft.copy.betterstorage.BetterStorage;
+import net.mcft.copy.betterstorage.config.GlobalConfig;
 import net.mcft.copy.betterstorage.inventory.InventoryTileEntity;
 import net.mcft.copy.betterstorage.utils.DirectionUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
@@ -42,7 +43,10 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 		if (isMain()) return this;
 		TileEntityConnectable connectable = getConnectedTileEntity();
 		if (connectable != null) return connectable;
-		BetterStorage.log.warn("getConnectedTileEntity() returned null.");
+		if (BetterStorage.globalConfig.getBoolean(GlobalConfig.enableWarningMessages))
+			BetterStorage.log.warn(
+					"getConnectedTileEntity() returned null in getMainTileEntity(). " +
+					"Location: {},{},{}", xCoord, yCoord, zCoord);
 		return this;
 	}
 	
@@ -96,7 +100,10 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 		if (connectable != null) {
 			connectable.setConnected(ForgeDirection.UNKNOWN);
 			connectable.markForUpdate();
-		} else BetterStorage.log.warn("getConnectedTileEntity() returned null.");
+		} else if (BetterStorage.globalConfig.getBoolean(GlobalConfig.enableWarningMessages))
+			BetterStorage.log.warn(
+					"getConnectedTileEntity() returned null in disconnect(). " +
+					"Location: {},{},{}", xCoord, yCoord, zCoord);
 	}
 	
 	// TileEntityContainer stuff

@@ -10,6 +10,7 @@ public class GlobalConfig extends Config {
 	
 	// Often accessed settings
 	public static BooleanSetting enableCrateInventoryInterfaceSetting;
+	public static BooleanSetting enableCrateStorageInterfaceSetting;
 	public static BooleanSetting enableStationAutoCraftingSetting;
 	public static IntegerSetting stationAutocraftDelaySetting;
 	
@@ -57,15 +58,25 @@ public class GlobalConfig extends Config {
 	
 	// General settings
 	public static final String reinforcedColumns             = "general.reinforcedColumns";
+	
 	public static final String enableCrateInventoryInterface = "general.enableCrateInventoryInterface";
+	public static final String enableCrateStorageInterface   = "general.enableCrateStorageInterface";
+	
 	public static final String backpackChestplate            = "general.backpackChestplate";
 	public static final String backpackRows                  = "general.backpackRows";
 	public static final String enableBackpackOpen            = "general.enableBackpackOpen";
 	public static final String enableBackpackInteraction     = "general.enableBackpackInteraction";
 	public static final String dropBackpackOnDeath           = "general.dropBackpackOnDeath";
+	
+	public static final String cardboardBoxRows              = "general.cardboardBoxRows";
+	public static final String cardboardBoxReusable          = "general.cardboardBoxReusable";
+	
 	public static final String enableStationAutoCrafting     = "general.enableStationAutoCrafting";
 	public static final String stationAutocraftDelay         = "general.stationAutocraftDelay";
+	
 	public static final String enableHelpTooltips            = "general.enableHelpTooltips";
+	public static final String enableWarningMessages         = "general.enableWarningMessages";
+	
 	
 	public GlobalConfig(File file) {
 		super(file);
@@ -120,6 +131,9 @@ public class GlobalConfig extends Config {
 		enableCrateInventoryInterfaceSetting =
 		new BooleanSetting(this, enableCrateInventoryInterface, true).setComment(
 				"If enabled, exposes a special block view of crates, so items can be moved in and out by automated systems.");
+		enableCrateStorageInterfaceSetting =
+		new BooleanSetting(this, enableCrateStorageInterface, true).setComment(
+				"If disabled, prevents mods from using storage crates' special storage interface (like Applied Energistics).");
 		
 		// Backpack settings
 		new BooleanSetting(this, backpackChestplate, true).setSynced().setComment(
@@ -133,6 +147,12 @@ public class GlobalConfig extends Config {
 		new BooleanSetting(this, dropBackpackOnDeath, true).setComment(
 				"If enabled, drops backpacks as block instead of spilling the items around.");
 		
+		// Cardboard box settings
+		new IntegerSetting(this, cardboardBoxRows, 1).setValidRange(1, 3).setComment(
+				"Number of rows in cardboard boxes. Valid values are 1 to 3.");
+		new BooleanSetting(this, cardboardBoxReusable, false).setSynced().setComment(
+				"If enabled, cardboard boxes can be moved around indefinitely, instead of just once.");
+		
 		// Crafting Station settings
 		enableStationAutoCraftingSetting =
 		new BooleanSetting(this, enableStationAutoCrafting, false).setSynced().setComment(
@@ -144,6 +164,8 @@ public class GlobalConfig extends Config {
 		// Miscellaneous settings
 		new BooleanSetting(this, enableHelpTooltips, true).setComment(
 				"If enabled, shows tooltips on some items to help players who're new to the mod.");
+		new BooleanSetting(this, enableWarningMessages, true).setComment(
+				"If disabled, prevents certain warning messages from being logged to the console.");
 	
 	}
 	
