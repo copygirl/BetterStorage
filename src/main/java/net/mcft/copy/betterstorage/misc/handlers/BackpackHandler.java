@@ -335,8 +335,9 @@ public class BackpackHandler {
 			// Attempt to place the backpack as a block instead of dropping the items.
 			if (BetterStorage.globalConfig.getBoolean(GlobalConfig.dropBackpackOnDeath)) {
 				
-				ForgeDirection orientation = DirectionUtils.getOrientation(entity);		
-				boolean despawn = ((player == null) && ((Integer)ReflectionUtils.get(EntityLivingBase.class, entity, "recentlyHit") <= 0));
+				ForgeDirection orientation = DirectionUtils.getOrientation(entity);
+				int recentlyHit = ReflectionUtils.get(EntityLivingBase.class, entity, "field_70718_bc", "recentlyHit");
+				boolean despawn = ((player == null) && (recentlyHit <= 0));
 				
 				List<BlockCoordinate> coords = new ArrayList<BlockCoordinate>();
 				for (int x = -2; x <= 2; x++)

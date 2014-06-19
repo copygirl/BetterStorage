@@ -39,7 +39,7 @@ public class ContainerCraftingStation extends ContainerBetterStorage {
 				: ((InventoryCraftingStation)((InventoryTileEntity)inventory).inventory));
 		craftMatrix = new InventoryCrafting(this, 3, 3);
 		
-		ReflectionUtils.set(InventoryCrafting.class, craftMatrix, inv.crafting, "stackList");
+		ReflectionUtils.set(InventoryCrafting.class, craftMatrix, "field_70466_a", "stackList", inv.crafting);
 		slotCrafting = new CustomSlotCrafting(player, null, null, 0, 0, 0);
 		
 		// Crafting

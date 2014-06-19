@@ -2,12 +2,11 @@ package net.mcft.copy.betterstorage.client.renderer;
 
 import net.mcft.copy.betterstorage.client.model.ModelBackpack;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
+import net.mcft.copy.betterstorage.misc.Resources;
 import net.mcft.copy.betterstorage.tile.TileBackpack;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityBackpack;
 import net.mcft.copy.betterstorage.utils.DirectionUtils;
-import net.mcft.copy.betterstorage.utils.ReflectionUtils;
 import net.mcft.copy.betterstorage.utils.RenderUtils;
-import net.minecraft.client.renderer.entity.RendererLivingEntity;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -56,7 +55,7 @@ public class TileEntityBackpackRenderer extends TileEntitySpecialRenderer {
 		if ((backpack.stack != null) &&
 		    (backpack.stack.isItemEnchanted())) {
 			float f9 = (backpack.ticksExisted + partialTicks) / 3;
-			bindTexture((ResourceLocation)ReflectionUtils.get(RendererLivingEntity.class, null, "RES_ITEM_GLINT"));
+			RenderUtils.bindTexture(Resources.enchantedEffect);
 			GL11.glEnable(GL11.GL_BLEND);
 			GL11.glColor4f(0.5F, 0.5F, 0.5F, 1.0F);
 			GL11.glDepthMask(false);

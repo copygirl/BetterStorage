@@ -66,7 +66,7 @@ public class VanillaStationCrafting extends StationCrafting {
 				craftingStacks[i] = ItemStack.copyItemStack(input[i]);
 			crafting = new InventoryCrafting(null, 3, 3);
 			
-			ReflectionUtils.set(InventoryCrafting.class, crafting, craftingStacks, "stackList");
+			ReflectionUtils.set(InventoryCrafting.class, crafting, "field_70466_a", "stackList", craftingStacks);
 			
 			expectedOutput = recipe.getCraftingResult(crafting).copy();
 		}
@@ -77,7 +77,7 @@ public class VanillaStationCrafting extends StationCrafting {
 		@Override
 		public boolean matches(ItemStack stack) {
 			// FIXME: ReflectionUtils is really slow, and this will be called a LOT.
-			ItemStack[] stackList = (ItemStack[])ReflectionUtils.get(InventoryCrafting.class, crafting, "stackList");
+			ItemStack[] stackList = ReflectionUtils.get(InventoryCrafting.class, crafting, "field_70466_a", "stackList");
 			ItemStack stackBefore = stackList[slot];
 			stackList[slot] = stack;
 			boolean matches = (recipe.matches(crafting, world) &&
@@ -131,7 +131,7 @@ public class VanillaStationCrafting extends StationCrafting {
 	public static VanillaStationCrafting findVanillaRecipe(InventoryCraftingStation inv) {
 		World world = ((inv.entity != null) ? inv.entity.getWorldObj() : WorldUtils.getLocalWorld());
 		InventoryCrafting crafting = new InventoryCrafting(null, 3, 3);
-		ReflectionUtils.set(InventoryCrafting.class, crafting, inv.crafting, "stackList");
+		ReflectionUtils.set(InventoryCrafting.class, crafting, "field_70466_a", "stackList", inv.crafting);
 		IRecipe recipe = findRecipe(crafting, world);
 		if (recipe == null) return null;
 		return new VanillaStationCrafting(world, recipe, inv.crafting, recipe.getCraftingResult(crafting));

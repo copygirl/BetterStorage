@@ -104,4 +104,8 @@ public final class RenderUtils {
 		tess.draw();
 	}
 	
+	public static void bindTexture(ResourceLocation texture) {
+		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
+	}
+	
 }
