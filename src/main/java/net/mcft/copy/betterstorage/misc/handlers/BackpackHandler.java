@@ -17,7 +17,6 @@ import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.item.ItemEnderBackpack;
 import net.mcft.copy.betterstorage.misc.EquipmentSlot;
 import net.mcft.copy.betterstorage.misc.PropertiesBackpack;
-import net.mcft.copy.betterstorage.network.packet.PacketClientSpawn;
 import net.mcft.copy.betterstorage.network.packet.PacketSyncSetting;
 import net.mcft.copy.betterstorage.tile.TileEnderBackpack;
 import net.mcft.copy.betterstorage.utils.DirectionUtils;
@@ -55,6 +54,7 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent.SpecialSpawn;
 import net.minecraftforge.event.entity.player.EntityInteractEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -206,6 +206,15 @@ public class BackpackHandler {
 		} else if (BetterStorageTiles.backpack != null)
 			ItemBackpack.getBackpackData(entity).spawnsWithBackpack = true;
 		
+	}
+	
+	@SubscribeEvent
+	public void onPlayerStartTracking(PlayerEvent.StartTracking event) {
+		// When the entity is sent to a player,
+		// also send em the backpack data, if any.
+		if (event.target instanceof EntityLivingBase)
+			ItemBackpack.getBackpackData((EntityLivingBase)event.target)
+					.sendDataToPlayer((EntityLivingBase)event.target, event.entityPlayer);
 	}
 	
 	@SubscribeEvent
@@ -402,26 +411,19 @@ public class BackpackHandler {
 	
 	@SubscribeEvent
 	public void onEntityJoinWorldEvent(EntityJoinWorldEvent event) {
+		if (event.world.isRemote) return;
 		
-		if (event.world.isRemote) {
-			// When an entity spawns for the client, let the server
-			// know about it, so it can sent any data of the entity.
-			
-			if (!(event.entity instanceof EntityLivingBase)) return;
-			BetterStorage.networkChannel.sendToServer(new PacketClientSpawn(event.entity.getEntityId()));
-		} else {
-			// If an ender backpack ever drops as an item,
-			// instead teleport it somewhere as a block.
-			
-			if (!(event.entity instanceof EntityItem)) return;
-			EntityItem entity = (EntityItem)event.entity;
-			ItemStack stack = entity.getDataWatcher().getWatchableObjectItemStack(10);
-			if ((stack == null) || !(stack.getItem() instanceof ItemEnderBackpack)) return;
-			event.setCanceled(true);
-			for (int i = 0; i < 64; i++)
-				if (TileEnderBackpack.teleportRandomly(entity.worldObj, entity.posX, entity.posY, entity.posZ, (i > 48), stack))
-					break;
-		}
+		// If an ender backpack ever drops as an item,
+		// instead teleport it somewhere as a block.
+		
+		if (!(event.entity instanceof EntityItem)) return;
+		EntityItem entity = (EntityItem)event.entity;
+		ItemStack stack = entity.getDataWatcher().getWatchableObjectItemStack(10);
+		if ((stack == null) || !(stack.getItem() instanceof ItemEnderBackpack)) return;
+		event.setCanceled(true);
+		for (int i = 0; i < 64; i++)
+			if (TileEnderBackpack.teleportRandomly(entity.worldObj, entity.posX, entity.posY, entity.posZ, (i > 48), stack))
+				break;
 		
 	}
 	
