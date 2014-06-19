@@ -67,6 +67,15 @@ public final class Recipes {
 				if (recipe != null) GameRegistry.addRecipe(recipe);
 			}
 		
+		// Lockable Door recipie
+		if (BetterStorageTiles.lockableDoor != null)
+			GameRegistry.addShapedRecipe(new ItemStack(BetterStorageTiles.lockableDoor),
+					"ooo",
+					"odo",
+					"oOo", 'o', Items.iron_ingot,
+					       'O', Blocks.iron_block,
+					       'd', Items.wooden_door);
+		
 		// Locker recipe
 		if (BetterStorageTiles.locker != null) {
 			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BetterStorageTiles.locker),

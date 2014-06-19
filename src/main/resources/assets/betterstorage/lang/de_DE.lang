@@ -85,6 +85,7 @@ tile.betterstorage.reinforcedLocker.name=Verstärktes Schließfach
 tile.betterstorage.reinforcedLocker.name.full=Verstärktes %MATERIAL%schließfach
 tile.betterstorage.thaumcraftBackpack.name=Rucksack des Thaumaturgen
 tile.betterstorage.thaumiumChest.name=Thaumium-Truhe
+tile.betterstorage.lockableDoor.name=Verstärkte Tür
 
 # Tooltips
 tooltip.betterstorage.backpack.bound=Gebunden.

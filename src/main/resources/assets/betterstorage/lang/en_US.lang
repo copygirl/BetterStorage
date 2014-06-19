@@ -85,6 +85,7 @@ tile.betterstorage.reinforcedLocker.name=Reinforced Locker
 tile.betterstorage.reinforcedLocker.name.full=Reinforced %MATERIAL% Locker
 tile.betterstorage.thaumcraftBackpack.name=Thaumaturge's Backpack
 tile.betterstorage.thaumiumChest.name=Thaumium Chest
+tile.betterstorage.lockableDoor.name=Reinforced Door
 
 # Tooltips
 tooltip.betterstorage.backpack.bound=Bound backpack.

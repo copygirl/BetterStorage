@@ -3,6 +3,7 @@ package net.mcft.copy.betterstorage.tile;
 import java.util.Random;
 
 import net.mcft.copy.betterstorage.attachment.IHasAttachments;
+import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.misc.SetBlockFlag;
 import net.mcft.copy.betterstorage.proxy.ClientProxy;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityLockableDoor;
@@ -15,6 +16,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
@@ -33,6 +35,10 @@ public class TileLockableDoor extends TileBetterStorage {
 		setBlockBounds(0F, 0F, 0F, 3 / 16F, 2F, 1F);
 		setHarvestLevel("axe", 2);
 	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public String getItemIconName() { return Constants.modId + ":lockableDoor"; }
 	
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
@@ -63,6 +69,12 @@ public class TileLockableDoor extends TileBetterStorage {
 			else setBlockBounds(0F, 0F + offset, 0F, 1F, 2F + offset, 3 / 16F);
 			break;
 		}		
+	}
+
+	@Override
+	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
+		setBlockBoundsBasedOnState(world, x, y, z);
+		return super.getCollisionBoundingBoxFromPool(world, x, y, z);
 	}
 
 	@Override
@@ -105,6 +117,12 @@ public class TileLockableDoor extends TileBetterStorage {
 		return te != null ? te.getAttachments().rayTrace(world, x, y, z, start, end) : super.collisionRayTrace(world, x, y, z, start, end);
 	}
 	
+	@Override
+	public boolean canPlaceBlockAt(World world, int x, int y, int z) {
+		Block block = world.getBlock(x, y - 1, z);
+		return !world.isAirBlock(x, y - 1, z) && block != this;
+	}
+
 	@Override
 	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
 		if (world.getBlockMetadata(x, y, z) > 0) { y -= 1; }
