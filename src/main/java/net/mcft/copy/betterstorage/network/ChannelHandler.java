@@ -66,8 +66,17 @@ public class ChannelHandler extends SimpleNetworkWrapper {
 		}
 	}
 	
+	/** Sends a packet to everyone tracking an entity. */
 	public void sendToAllTracking(IMessage message, Entity entity) {
 		((WorldServer)entity.worldObj).getEntityTracker().func_151247_a(entity, getPacketFrom(message));
+	}
+	
+	/** Sends a packet to everyone tracking an entity,
+	 *  including the entity itself if it's a player. */
+	public void sendToAndAllTracking(IMessage message, Entity entity) {
+		sendToAllTracking(message, entity);
+		if (entity instanceof EntityPlayer)
+			sendTo(message, (EntityPlayer)entity);
 	}
 	
 }
