@@ -6,6 +6,7 @@ import net.mcft.copy.betterstorage.attachment.Attachments;
 import net.mcft.copy.betterstorage.container.ContainerBetterStorage;
 import net.mcft.copy.betterstorage.inventory.InventoryTileEntity;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityContainer;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -134,6 +135,18 @@ public final class WorldUtils {
 	/** Counts and returns the number of players who're accessing a tile entity. */
 	public static int syncPlayersUsing(TileEntityContainer te, int numUsingPlayers) {
 		return syncPlayersUsing(te, numUsingPlayers, te.getPlayerInventory());
+	}
+	
+	/** This will perform a {@link World#notifyBlockOfNeighborChange()} on every adjacent block including the block at x|y|z.*/
+	public static void notifyBlocksAround(World world, int x, int y, int z) {
+		Block block = world.getBlock(x, y, z);
+		world.notifyBlocksOfNeighborChange(x, y, z, block);
+		world.notifyBlocksOfNeighborChange(x + 1, y, z, block);
+		world.notifyBlocksOfNeighborChange(x - 1, y, z, block);
+		world.notifyBlocksOfNeighborChange(x, y + 1, z, block);
+		world.notifyBlocksOfNeighborChange(x, y - 1, z, block);
+		world.notifyBlocksOfNeighborChange(x, y, z + 1, block);
+		world.notifyBlocksOfNeighborChange(x, y, z - 1, block);	
 	}
 	
 	// Misc functions
