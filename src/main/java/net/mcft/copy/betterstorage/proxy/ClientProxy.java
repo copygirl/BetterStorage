@@ -38,7 +38,7 @@ import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderChicken;
-import net.minecraft.client.renderer.entity.RenderPlayer;
+import net.minecraft.client.renderer.entity.RendererLivingEntity;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -247,29 +247,33 @@ public class ClientProxy extends CommonProxy {
 	public void onRenderPlayerSpecialsPre(RenderPlayerEvent.Specials.Pre event) {
 		ItemStack backpack = ItemBackpack.getBackpackData(event.entityPlayer).backpack;
 		if (backpack != null) {
-
+			
 			EntityPlayer player = event.entityPlayer;
 			float partial = event.partialRenderTick;
 			ItemBackpack backpackType = (ItemBackpack)backpack.getItem();
 			int color = backpackType.getColor(backpack);
 			ModelBackpackArmor model = (ModelBackpackArmor)backpackType.getArmorModel(player, backpack, 0);
 			
-			model.onGround = (Float) ReflectionUtils.invoke(RenderPlayer.class, event.renderer, "renderSwingProgress", new Class[]{EntityLivingBase.class, float.class}, new Object[]{player, partial});
+			model.onGround = ReflectionUtils.invoke(
+					RendererLivingEntity.class, event.renderer, "func_77040_d", "renderSwingProgress",
+					EntityLivingBase.class, float.class, player, partial);
 			model.setLivingAnimations(player, 0, 0, partial);
 			
-			ReflectionUtils.invoke(RenderPlayer.class, event.renderer, "bindTexture", new Class[]{ResourceLocation.class}, new Object[]{new ResourceLocation(backpackType.getArmorTexture(backpack, player, 0, null))});
+			RenderUtils.bindTexture(new ResourceLocation(backpackType.getArmorTexture(backpack, player, 0, null)));
 			RenderUtils.setColorFromInt((color >= 0) ? color : 0xFFFFFF);
 			model.render(player, 0, 0, 0, 0, 0, 0);
 			
 			if (color >= 0) {
-				ReflectionUtils.invoke(RenderPlayer.class, event.renderer, "bindTexture", new Class[]{ResourceLocation.class}, new Object[]{new ResourceLocation(backpackType.getArmorTexture(backpack, player, 0, "overlay"))});
+				RenderUtils.bindTexture(new ResourceLocation(backpackType.getArmorTexture(backpack, player, 0, "overlay")));
 				GL11.glColor3f(1.0F, 1.0F, 1.0F);
 				model.render(player, 0, 0, 0, 0, 0, 0);
 			}
 			
 			if (backpack.isItemEnchanted()) {
 				float f9 = player.ticksExisted + partial;
-				ReflectionUtils.invoke(RenderPlayer.class, event.renderer, "bindTexture", new Class[]{ResourceLocation.class}, new Object[]{Resources.enchantedItem});
+				
+				RenderUtils.bindTexture(Resources.enchantedEffect);
+
 				GL11.glEnable(GL11.GL_BLEND);
 				GL11.glColor4f(0.5F, 0.5F, 0.5F, 1.0F);
 				GL11.glDepthFunc(GL11.GL_EQUAL);

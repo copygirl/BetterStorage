@@ -88,8 +88,8 @@ public class EntityFrienderman extends EntityEnderman {
 	@Override
 	public void onLivingUpdate() {
 		
-		boolean[] carriable = (boolean[]) ReflectionUtils.get(EntityEnderman.class, null, "carriableBlocks");
-		ReflectionUtils.set(EntityEnderman.class, null, friendermanCarriable, "carriableBlocks");
+		boolean[] carriable = ReflectionUtils.get(EntityEnderman.class, null, "field_70827_d", "carriableBlocks");
+		ReflectionUtils.set(EntityEnderman.class, null, "field_70827_d", "carriableBlocks", friendermanCarriable);
 		
 		int x = (int)Math.floor(posX);
 		int y = (int)(posY + 0.1);
@@ -134,6 +134,6 @@ public class EntityFrienderman extends EntityEnderman {
 			worldObj.playSoundEffect(px, py, pz, "mob.endermen.portal", 1.0F, 1.0F);
 		}
 		
-		ReflectionUtils.set(EntityEnderman.class, null, carriable, "carriableBlocks");
+		ReflectionUtils.set(EntityEnderman.class, null, "field_70827_d", "carriableBlocks", carriable);
 	}
 }

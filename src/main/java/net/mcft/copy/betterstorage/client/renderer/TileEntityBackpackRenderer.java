@@ -55,7 +55,9 @@ public class TileEntityBackpackRenderer extends TileEntitySpecialRenderer {
 		if ((backpack.stack != null) &&
 		    (backpack.stack.isItemEnchanted())) {
 			float f9 = (backpack.ticksExisted + partialTicks) / 3;
-			bindTexture(Resources.enchantedItem);
+
+			RenderUtils.bindTexture(Resources.enchantedEffect);
+
 			GL11.glEnable(GL11.GL_BLEND);
 			GL11.glColor4f(0.5F, 0.5F, 0.5F, 1.0F);
 			GL11.glDepthMask(false);

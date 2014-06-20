@@ -3,14 +3,17 @@ package net.mcft.copy.betterstorage.addon.thaumcraft;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.addon.Addon;
 import net.mcft.copy.betterstorage.client.renderer.ItemRendererBackpack;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityReinforcedChestRenderer;
+import net.mcft.copy.betterstorage.config.setting.BooleanSetting;
 import net.mcft.copy.betterstorage.content.BetterStorageItems;
 import net.mcft.copy.betterstorage.content.BetterStorageTiles;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.proxy.ClientProxy;
 import net.mcft.copy.betterstorage.tile.TileBackpack;
+import net.mcft.copy.betterstorage.tile.entity.TileEntityBackpack;
 import net.mcft.copy.betterstorage.utils.MiscUtils;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -30,8 +33,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ThaumcraftAddon extends Addon {
 	
-	public static final String thaumcraftBackpackId = "block.thaumcraftBackpack";
-	public static final String thaumiumChestId = "block.thaumiumChest";
+	public static final String thaumcraftBackpackEnabled = "tile.thaumcraftBackpack";
+	public static final String thaumiumChestEnabled = "tile.thaumiumChest";
 	
 	public static TileBackpack thaumcraftBackpack;
 	public static TileThaumiumChest thaumiumChest;
@@ -53,21 +56,21 @@ public class ThaumcraftAddon extends Addon {
 	
 	@Override
 	public void setupConfig() {
-		/*
-		new TileIdSetting(BetterStorage.globalConfig, thaumcraftBackpackId, 2880);
-		new TileIdSetting(BetterStorage.globalConfig, thaumiumChestId, 2881);
-		*/
+		
+		new BooleanSetting(BetterStorage.globalConfig, thaumcraftBackpackEnabled, true);
+		new BooleanSetting(BetterStorage.globalConfig, thaumiumChestEnabled, true);
+		
 	}
 	
 	@Override
 	public void initializeBlocks() {
-		thaumcraftBackpack = MiscUtils.conditionalNew(TileThaumcraftBackpack.class, thaumcraftBackpackId);
-		thaumiumChest = MiscUtils.conditionalNew(TileThaumiumChest.class, thaumiumChestId);
+		thaumcraftBackpack = MiscUtils.conditionalNew(TileThaumcraftBackpack.class, thaumcraftBackpackEnabled);
+		thaumiumChest = MiscUtils.conditionalNew(TileThaumiumChest.class, thaumiumChestEnabled);
 	}
 	
 	@Override
 	public void initializeItems() {
-		itemThaumcraftBackpack = MiscUtils.conditionalNew(ItemThaumcraftBackpack.class, thaumcraftBackpackId);
+		itemThaumcraftBackpack = MiscUtils.conditionalNew(ItemThaumcraftBackpack.class, thaumcraftBackpackEnabled);
 	}
 
 	@Override
@@ -165,7 +168,7 @@ public class ThaumcraftAddon extends Addon {
 	public void registerRenderers() {
 		if (thaumcraftBackpack != null)
 			MinecraftForgeClient.registerItemRenderer(
-					itemThaumcraftBackpack, new ItemRendererBackpack(TileEntityThaumcraftBackpack.class));
+					itemThaumcraftBackpack, new ItemRendererBackpack(TileEntityBackpack.class));
 		if (thaumiumChest != null)
 			thaumiumChestRenderId = ClientProxy.registerTileEntityRenderer(
 					TileEntityThaumiumChest.class, new TileEntityReinforcedChestRenderer());

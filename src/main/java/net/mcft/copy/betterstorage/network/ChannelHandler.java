@@ -8,7 +8,6 @@ import net.mcft.copy.betterstorage.network.packet.PacketBackpackIsOpen;
 import net.mcft.copy.betterstorage.network.packet.PacketBackpackOpen;
 import net.mcft.copy.betterstorage.network.packet.PacketBackpackStack;
 import net.mcft.copy.betterstorage.network.packet.PacketBackpackTeleport;
-import net.mcft.copy.betterstorage.network.packet.PacketClientSpawn;
 import net.mcft.copy.betterstorage.network.packet.PacketDrinkingHelmetUse;
 import net.mcft.copy.betterstorage.network.packet.PacketLockHit;
 import net.mcft.copy.betterstorage.network.packet.PacketOpenGui;
@@ -34,10 +33,9 @@ public class ChannelHandler extends SimpleNetworkWrapper {
 		register(3, Side.CLIENT, PacketBackpackIsOpen.class);
 		register(4, Side.SERVER, PacketBackpackOpen.class);
 		register(5, Side.CLIENT, PacketBackpackStack.class);
-		register(6, Side.SERVER, PacketClientSpawn.class);
-		register(7, Side.SERVER, PacketDrinkingHelmetUse.class);
-		register(8, Side.SERVER, PacketLockHit.class);
-		register(9, Side.CLIENT, PacketSyncSetting.class);
+		register(6, Side.SERVER, PacketDrinkingHelmetUse.class);
+		register(7, Side.SERVER, PacketLockHit.class);
+		register(8, Side.CLIENT, PacketSyncSetting.class);
 	}
 	
 	public <T extends IMessage & IMessageHandler<T, IMessage>> void register(int id, Side receivingSide, Class<T> messageClass) {
@@ -66,8 +64,17 @@ public class ChannelHandler extends SimpleNetworkWrapper {
 		}
 	}
 	
+	/** Sends a packet to everyone tracking an entity. */
 	public void sendToAllTracking(IMessage message, Entity entity) {
 		((WorldServer)entity.worldObj).getEntityTracker().func_151247_a(entity, getPacketFrom(message));
+	}
+	
+	/** Sends a packet to everyone tracking an entity,
+	 *  including the entity itself if it's a player. */
+	public void sendToAndAllTracking(IMessage message, Entity entity) {
+		sendToAllTracking(message, entity);
+		if (entity instanceof EntityPlayer)
+			sendTo(message, (EntityPlayer)entity);
 	}
 	
 }

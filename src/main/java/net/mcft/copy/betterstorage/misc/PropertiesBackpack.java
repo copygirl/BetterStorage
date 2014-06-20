@@ -86,12 +86,12 @@ public class PropertiesBackpack implements IExtendedEntityProperties {
 			
 			boolean isOpen = (playersUsing > 0);
 			if (isOpen != (prevPlayersUsing > 0)) {
-				BetterStorage.networkChannel.sendToAllTracking(
+				BetterStorage.networkChannel.sendToAndAllTracking(
 						new PacketBackpackIsOpen(entity.getEntityId(), isOpen), entity);
 				prevPlayersUsing = playersUsing;
 			}
 			if (!ItemStack.areItemStacksEqual(backpack, prevBackpack)) {
-				BetterStorage.networkChannel.sendToAllTracking(
+				BetterStorage.networkChannel.sendToAndAllTracking(
 						new PacketBackpackStack(entity.getEntityId(), backpack), entity);
 				prevBackpack = ItemStack.copyItemStack(backpack);
 			}
