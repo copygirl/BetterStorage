@@ -17,6 +17,7 @@ import net.mcft.copy.betterstorage.misc.PropertiesBackpack;
 import net.mcft.copy.betterstorage.misc.Resources;
 import net.mcft.copy.betterstorage.misc.handlers.KeyBindingHandler;
 import net.mcft.copy.betterstorage.network.packet.PacketBackpackHasItems;
+import net.mcft.copy.betterstorage.network.packet.PacketBackpackStack;
 import net.mcft.copy.betterstorage.tile.TileBackpack;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityBackpack;
 import net.mcft.copy.betterstorage.utils.DirectionUtils;
@@ -389,10 +390,9 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 		// Make sure the client has the same information as the server.
 		if (!player.worldObj.isRemote) {
 			if (!hasChestplateBackpackEquipped(player))
-				//TODO: I don't know what this is supposed to do. Just letting it stay here in case it is something important. (Victorious3)
-				/*BetterStorage.networkChannel.sendToPlayer(
-						player, new PacketBackpackStack(player.getEntityId(), backpack));
-			else if (player instanceof EntityPlayerMP)*/
+				BetterStorage.networkChannel.sendTo(
+						new PacketBackpackStack(player.getEntityId(), backpack), player);
+			else if (player instanceof EntityPlayerMP)
 				((EntityPlayerMP)player).playerNetServerHandler.sendPacket(
 						new S2FPacketSetSlot(0, 6, backpack));
 		}
