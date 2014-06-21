@@ -6,7 +6,6 @@ import net.mcft.copy.betterstorage.api.BetterStorageEnchantment;
 import net.mcft.copy.betterstorage.attachment.Attachments;
 import net.mcft.copy.betterstorage.attachment.EnumAttachmentInteraction;
 import net.mcft.copy.betterstorage.attachment.IHasAttachments;
-import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.misc.SetBlockFlag;
 import net.mcft.copy.betterstorage.proxy.ClientProxy;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityLockableDoor;
@@ -33,16 +32,13 @@ public class TileLockableDoor extends TileBetterStorage {
 	public TileLockableDoor() {
 		super(Material.wood);
 		
+		setCreativeTab(null);
 		setHardness(8.0F);
 		setResistance(20.0F);
 		setStepSound(soundTypeWood);	
 		setBlockBounds(0F, 0F, 0F, 3 / 16F, 2F, 1F);
 		setHarvestLevel("axe", 2);
 	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public String getItemIconName() { return Constants.modId + ":lockableDoor"; }
 	
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
@@ -183,7 +179,7 @@ public class TileLockableDoor extends TileBetterStorage {
 		if(meta == 0) {
 			TileEntityLockableDoor te = WorldUtils.get(world, x, y, z, TileEntityLockableDoor.class);
 			WorldUtils.dropStackFromBlock(te, te.getLock());
-			te.setLock(null);
+			te.setLockWithUpdate(null);
 		}
 		super.onBlockPreDestroy(world, x, y, z, meta);
 	}
@@ -204,7 +200,8 @@ public class TileLockableDoor extends TileBetterStorage {
 	@Override
 	public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int side) {
 		if (world.getBlockMetadata(x, y, z) > 0) y -= 1;
-		return (WorldUtils.get(world, x, y, z, TileEntityLockableDoor.class).isPowered() ? 15 : 0);
+		TileEntityLockableDoor te = WorldUtils.get(world, x, y, z, TileEntityLockableDoor.class);
+		return te == null ? 0 : (te.isPowered() ? 15 : 0);
 	}
 	@Override
 	public int isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int side) {

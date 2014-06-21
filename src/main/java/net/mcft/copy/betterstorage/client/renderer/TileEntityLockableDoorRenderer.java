@@ -23,9 +23,7 @@ public class TileEntityLockableDoorRenderer extends TileEntitySpecialRenderer {
 		GL11.glScalef(1.0F, -1.0F, -1.0F);
 		GL11.glTranslated(0.5F, 0.5F, 0.5F);
 		
-		float angle = arg0.prevAngle + (arg0.angle - arg0.prevAngle) * partialTicks;
-		angle = 1.0F - angle;
-		angle = 1.0F - angle * angle * angle;
+		float angle = arg0.isOpen ? 1F : 0F;
 		
 		switch (arg0.orientation) {
 		case WEST: angle *= -90F; break;
@@ -47,7 +45,7 @@ public class TileEntityLockableDoorRenderer extends TileEntitySpecialRenderer {
 		
 		GL11.glRotatef(-angle, 0, 1, 0);
 		GL11.glTranslatef(-0.5F - 3F / 16F, 0F, 0F);	
-		GL11.glScalef(1F, 1F, 2F);
+		GL11.glScalef(1F, 1F, 2.5F);
 		
 		LockAttachment a = arg0.lockAttachment;
 		a.getRenderer().render(a, partialTicks);

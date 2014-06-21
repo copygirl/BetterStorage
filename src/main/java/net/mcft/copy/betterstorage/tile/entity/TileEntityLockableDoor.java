@@ -6,10 +6,12 @@ import net.mcft.copy.betterstorage.api.lock.ILockable;
 import net.mcft.copy.betterstorage.attachment.Attachments;
 import net.mcft.copy.betterstorage.attachment.IHasAttachments;
 import net.mcft.copy.betterstorage.attachment.LockAttachment;
+import net.mcft.copy.betterstorage.misc.SetBlockFlag;
 import net.mcft.copy.betterstorage.utils.DirectionUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -26,13 +28,11 @@ public class TileEntityLockableDoor extends TileEntity implements ILockable, IHa
 
 	private Attachments attachments = new Attachments(this);	
 	public LockAttachment lockAttachment;
-	public ForgeDirection orientation;
+	public ForgeDirection orientation = ForgeDirection.NORTH;
 	
 	private boolean powered = false;
 	private boolean swing = false;
 	
-	public float angle = 0F;
-	public float prevAngle = 0F;
 	public boolean isOpen = false;
 	
 	public TileEntityLockableDoor() {
@@ -85,8 +85,21 @@ public class TileEntityLockableDoor extends TileEntity implements ILockable, IHa
 	}
 
 	@Override
-	public void setLock(ItemStack lock) {
+	public void setLock(ItemStack lock) {		
+		// Turn it back into a normal iron door
+		if(lock == null) {
+			lockAttachment.setItem(null);		
+			int rotation = orientation == ForgeDirection.WEST ? 0 : orientation == ForgeDirection.NORTH ? 1 : orientation == ForgeDirection.EAST ? 2 : 3;	
+			worldObj.setBlock(xCoord, yCoord, zCoord, Blocks.iron_door, rotation, SetBlockFlag.SEND_TO_CLIENT);
+			worldObj.setBlock(xCoord, yCoord + 1, zCoord, Blocks.iron_door, 8, SetBlockFlag.SEND_TO_CLIENT);
+			worldObj.notifyBlockChange(xCoord, yCoord, zCoord, Blocks.iron_door);
+			worldObj.notifyBlockChange(xCoord, yCoord + 1, zCoord, Blocks.iron_door);
+		} else setLockWithUpdate(lock);		
+	}
+	
+	public void setLockWithUpdate(ItemStack lock) {
 		lockAttachment.setItem(lock);
+		updateLockPosition();
 		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 		markDirty();
 	}
@@ -132,21 +145,7 @@ public class TileEntityLockableDoor extends TileEntity implements ILockable, IHa
 	@Override
 	public void updateEntity() 
 	{	
-		attachments.update();
-		prevAngle = angle;
-		if (swing) {
-			if (isOpen) {
-				angle = Math.min(1.0F, angle + 0.2F);
-				if (angle == 1.0F) {
-					swing = false;
-				}
-			} else {
-				angle = Math.max(0.0F, angle - 0.2F);
-				if (angle == 0.0F) {
-					swing = false;
-				}
-			}			
-		}	
+		attachments.update();	
 	}
 
 	@Override
@@ -183,8 +182,6 @@ public class TileEntityLockableDoor extends TileEntity implements ILockable, IHa
 		else lockAttachment.setItem(ItemStack.loadItemStackFromNBT(compound.getCompoundTag("lock")));
 		orientation = ForgeDirection.getOrientation(compound.getByte("orientation"));
 		isOpen = compound.getBoolean("isOpen");
-		angle = isOpen ? 1.0F : 0.0F;
-		prevAngle = angle;
 		updateLockPosition();
 	}
 

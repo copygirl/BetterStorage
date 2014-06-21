@@ -3,14 +3,17 @@ package net.mcft.copy.betterstorage.proxy;
 import net.mcft.copy.betterstorage.attachment.EnumAttachmentInteraction;
 import net.mcft.copy.betterstorage.attachment.IHasAttachments;
 import net.mcft.copy.betterstorage.content.BetterStorageItems;
+import net.mcft.copy.betterstorage.content.BetterStorageTiles;
 import net.mcft.copy.betterstorage.entity.EntityCluckington;
 import net.mcft.copy.betterstorage.item.IDyeableItem;
 import net.mcft.copy.betterstorage.item.ItemBucketSlime;
 import net.mcft.copy.betterstorage.item.cardboard.ICardboardItem;
 import net.mcft.copy.betterstorage.item.cardboard.ItemCardboardSheet;
+import net.mcft.copy.betterstorage.misc.SetBlockFlag;
 import net.mcft.copy.betterstorage.misc.handlers.BackpackHandler;
 import net.mcft.copy.betterstorage.misc.handlers.CraftingHandler;
 import net.mcft.copy.betterstorage.tile.crate.CratePileCollection;
+import net.mcft.copy.betterstorage.tile.entity.TileEntityLockableDoor;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
@@ -21,8 +24,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.entity.player.EntityInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -111,6 +118,66 @@ public class CommonProxy {
 		    !ItemCardboardSheet.isEffective(holding))
 			event.useItem = Result.DENY;
 		
+		if (!world.isRemote && BetterStorageTiles.lockableDoor != null && rightClick) {
+			
+			MovingObjectPosition target = WorldUtils.rayTrace(player, 1F);		
+			if(target != null && getIronDoorHightlightBox(player, world, x, y, z, target.hitVec, block) != null) {
+				
+				int meta = world.getBlockMetadata(x, y, z);
+				if (meta >= 8) {
+					y -= 1;
+					meta = world.getBlockMetadata(x, y, z);
+				}
+				
+				int rotation = meta & 3;
+				ForgeDirection orientation = rotation == 0 ? ForgeDirection.WEST : rotation == 1 ? ForgeDirection.NORTH : rotation == 2 ? ForgeDirection.EAST : ForgeDirection.SOUTH;
+				
+				world.setBlock(x, y, z, BetterStorageTiles.lockableDoor, 0, SetBlockFlag.SEND_TO_CLIENT);
+				world.setBlock(x, y + 1, z, BetterStorageTiles.lockableDoor, 1, SetBlockFlag.SEND_TO_CLIENT);
+			
+				TileEntityLockableDoor te = WorldUtils.get(world, x, y, z, TileEntityLockableDoor.class);
+				te.orientation = orientation;
+				te.setLock(holding);
+				
+				player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
+			}
+		}
+	}
+	
+	protected AxisAlignedBB getIronDoorHightlightBox(EntityPlayer player, World world, int x, int y, int z, Vec3 hitVec, Block block) {
+		if(!StackUtils.isLock(player.getCurrentEquippedItem())) return null;
+		
+		int meta = world.getBlockMetadata(x, y, z);
+		if(meta >= 8) {
+			y -= 1;
+			meta = world.getBlockMetadata(x, y, z);
+		}
+		
+		boolean isOpen = (meta & 4) == 4;
+		int rotation = (meta & 3);		
+		
+		//TODO Maybe change the bounding box of the doors somehow to match LockableDoor.
+		AxisAlignedBB box;
+		switch(rotation) {
+		case 0 :
+			if(!isOpen) box = AxisAlignedBB.getAABBPool().getAABB(x - 0.005 / 16F, y + 14.5 / 16F, z + 10 / 16F, x + 3.005 / 16F, y + 20.5 / 16F, z + 15 / 16F);
+			else box = AxisAlignedBB.getAABBPool().getAABB(x + 10 / 16F, y + 14.5 / 16F, z - 0.005 / 16F, x + 15 / 16F, y + 20.5 / 16F, z + 3.005 / 16F);
+			break;
+		case 1 :
+			if(!isOpen) box = AxisAlignedBB.getAABBPool().getAABB(x + 1 / 16F, y + 14.5 / 16F, z - 0.005 / 16F, x + 6 / 16F, y + 20.5 / 16F, z + 3.005 / 16F);
+			else box = AxisAlignedBB.getAABBPool().getAABB(x + 12.995 / 16F, y + 14.5 / 16F, z + 10 / 16F, x + 16.005 / 16F, y + 20.5 / 16F, z + 15 / 16F);
+			break;
+		case 2 :
+			if(!isOpen) box = AxisAlignedBB.getAABBPool().getAABB(x + 12.995 / 16F, y + 14.5 / 16F, z + 1 / 16F, x + 16.005 / 16F, y + 20.5 / 16F, z + 6 / 16F);
+			else box = AxisAlignedBB.getAABBPool().getAABB(x + 1 / 16F, y + 14.5 / 16F, z + 12.995 / 16F, x + 6 / 16F, y + 20.5 / 16F, z + 16.005 / 16F);
+			break;
+		default :
+			if(!isOpen) box = AxisAlignedBB.getAABBPool().getAABB(x + 10 / 16F, y + 14.5 / 16F, z + 12.995 / 16F, x + 15 / 16F, y + 20.5 / 16F, z + 16.005 / 16F);
+			else box = AxisAlignedBB.getAABBPool().getAABB(x + 0.005 / 16F, y + 14.5 / 16F, z + 1 / 16F, x + 3.005 / 16F, y + 20.5 / 16F, z + 6 / 16F);
+			break;
+		}
+		
+		return box.isVecInside(hitVec) ? box : null;
 	}
 	
 	@SubscribeEvent

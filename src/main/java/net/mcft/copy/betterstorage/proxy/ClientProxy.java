@@ -42,6 +42,7 @@ import net.minecraft.client.renderer.entity.RendererLivingEntity;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -151,6 +152,8 @@ public class ClientProxy extends CommonProxy {
 		
 		if (block instanceof TileArmorStand)
 			box = getArmorStandHighlightBox(player, world, x, y, z, target.hitVec);
+		else if (block == Blocks.iron_door)
+			box = getIronDoorHightlightBox(player, world, x, y, z, target.hitVec, block);
 		else if (tileEntity instanceof IHasAttachments)
 			box = getAttachmentPointsHighlightBox(player, tileEntity, target);
 		
@@ -201,7 +204,7 @@ public class ClientProxy extends CommonProxy {
 		event.setCanceled(true);
 		
 	}
-	
+
 	private AxisAlignedBB getArmorStandHighlightBox(EntityPlayer player, World world, int x, int y, int z, Vec3 hitVec) {
 		
 		int metadata = world.getBlockMetadata(x, y, z);
