@@ -7,9 +7,7 @@ import net.mcft.copy.betterstorage.attachment.Attachments;
 import net.mcft.copy.betterstorage.attachment.IHasAttachments;
 import net.mcft.copy.betterstorage.attachment.LockAttachment;
 import net.mcft.copy.betterstorage.misc.SetBlockFlag;
-import net.mcft.copy.betterstorage.utils.DirectionUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -106,7 +104,7 @@ public class TileEntityLockableDoor extends TileEntity implements ILockable, IHa
 
 	@Override
 	public boolean canUse(EntityPlayer player) {
-		return isOpen || getLock() == null;
+		return isOpen;
 	}
 
 	@Override
@@ -119,11 +117,6 @@ public class TileEntityLockableDoor extends TileEntity implements ILockable, IHa
 	@Override
 	public void applyTrigger() {
 		setPowered(true);
-	}
-	
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
-		orientation = DirectionUtils.getOrientation(player).getOpposite();
-		updateLockPosition();
 	}
 	
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {

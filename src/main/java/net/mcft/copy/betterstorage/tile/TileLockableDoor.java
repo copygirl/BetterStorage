@@ -6,7 +6,6 @@ import net.mcft.copy.betterstorage.api.BetterStorageEnchantment;
 import net.mcft.copy.betterstorage.attachment.Attachments;
 import net.mcft.copy.betterstorage.attachment.EnumAttachmentInteraction;
 import net.mcft.copy.betterstorage.attachment.IHasAttachments;
-import net.mcft.copy.betterstorage.misc.SetBlockFlag;
 import net.mcft.copy.betterstorage.proxy.ClientProxy;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityLockableDoor;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
@@ -14,9 +13,9 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -80,7 +79,7 @@ public class TileLockableDoor extends TileBetterStorage {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
-		blockIcon = iconRegister.registerIcon("planks_oak");
+		blockIcon = iconRegister.registerIcon("door_iron_lower");
 	}
 	
 	@Override
@@ -101,14 +100,6 @@ public class TileLockableDoor extends TileBetterStorage {
 			if (persistance > 0) modifier += Math.pow(2, persistance);
 		}
 		return super.getExplosionResistance(entity) * modifier;
-	}
-	
-	@Override
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
-		super.onBlockPlacedBy(world, x, y, z, player, stack);
-		TileEntityLockableDoor te = WorldUtils.get(world, x, y, z, TileEntityLockableDoor.class);
-		te.onBlockPlacedBy(world, x, y, z, player, stack);
-		world.setBlock(x, y + 1, z, this, 1, SetBlockFlag.DEFAULT);
 	}
 	
 	@Override
@@ -139,17 +130,10 @@ public class TileLockableDoor extends TileBetterStorage {
 		IHasAttachments te = WorldUtils.get(world, x, y, z, IHasAttachments.class);
 		return te != null ? te.getAttachments().rayTrace(world, x, y, z, start, end) : super.collisionRayTrace(world, x, y, z, start, end);
 	}
-	
-	@Override
-	public boolean canPlaceBlockAt(World world, int x, int y, int z) {
-		Block block = world.getBlock(x, y - 1, z);
-		return !world.isAirBlock(x, y - 1, z) && block != this;
-	}
 
 	@Override
 	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
-		if (world.getBlockMetadata(x, y, z) > 0) y -= 1;
-		return super.getPickBlock(target, world, x, y, z);
+		return new ItemStack(Items.iron_door);
 	}
 	
 	@Override
@@ -171,7 +155,7 @@ public class TileLockableDoor extends TileBetterStorage {
 		if (world.getBlock(x, y - 1, z) == Blocks.air && metadata == 0) world.setBlockToAir(x, y, z);
 		if ((world.getBlock(x, targetY, z) == this) && (world.getBlockMetadata(x, targetY, z) == targetMeta)) return;
 		world.setBlockToAir(x, y, z);
-		if (metadata == 0) dropBlockAsItem(world, x, y, z, metadata, 0);
+		if (metadata == 0) WorldUtils.spawnItem(world, x, y, z, new ItemStack(Items.iron_door));
 	}
 	
 	@Override
