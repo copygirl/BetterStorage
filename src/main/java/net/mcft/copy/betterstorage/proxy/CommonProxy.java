@@ -118,7 +118,7 @@ public class CommonProxy {
 		    !ItemCardboardSheet.isEffective(holding))
 			event.useItem = Result.DENY;
 		
-		if (!world.isRemote && BetterStorageTiles.lockableDoor != null && rightClick) {
+		if (!world.isRemote && BetterStorageTiles.lockableDoor != null && rightClick && block == Blocks.iron_door) {
 			
 			MovingObjectPosition target = WorldUtils.rayTrace(player, 1F);		
 			if(target != null && getIronDoorHightlightBox(player, world, x, y, z, target.hitVec, block) != null) {
