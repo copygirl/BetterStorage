@@ -389,7 +389,7 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 
 		// Make sure the client has the same information as the server.
 		if (!player.worldObj.isRemote) {
-			if (!hasChestplateBackpackEquipped(player))
+			if (hasChestplateBackpackEquipped(player))
 				BetterStorage.networkChannel.sendTo(
 						new PacketBackpackStack(player.getEntityId(), backpack), player);
 			else if (player instanceof EntityPlayerMP)
