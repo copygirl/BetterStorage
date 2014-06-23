@@ -7,7 +7,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public final class Resources {
 	
-	public static final ResourceLocation textureEmpty = new BetterStorageResource("textures/empty.png");
+	public static final ResourceLocation textureEmpty  = new BetterStorageResource("textures/empty.png");
+	public static final ResourceLocation enchantedItem = new ResourceLocation("minecraft", "textures/misc/enchanted_item_glint.png");
 	
 	public static final ResourceLocation enchantedEffect = new ResourceLocation("textures/misc/enchanted_item_glint.png");
 	
@@ -25,7 +26,8 @@ public final class Resources {
 	public static final ResourceLocation textureCardboardArmor   = new BetterStorageResource("textures/models/cardboardArmor.png");
 	public static final ResourceLocation textureCardboardLeggins = new BetterStorageResource("textures/models/cardboardArmor_leggings.png");
 	public static final ResourceLocation textureCluckOverlay     = new BetterStorageResource("textures/models/cluck.png");
-	
+	public static final ResourceLocation textureLockableDoor     = new BetterStorageResource("textures/models/lockableDoor.png");
+
 	
 	public static final ResourceLocation modelLocker      = new BetterStorageResource("models/locker.obj");
 	public static final ResourceLocation modelLockerLarge = new BetterStorageResource("models/locker_large.obj");

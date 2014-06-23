@@ -15,6 +15,7 @@ import net.mcft.copy.betterstorage.client.renderer.ItemRendererContainer;
 import net.mcft.copy.betterstorage.client.renderer.RenderFrienderman;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityArmorStandRenderer;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityBackpackRenderer;
+import net.mcft.copy.betterstorage.client.renderer.TileEntityLockableDoorRenderer;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityLockerRenderer;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityReinforcedChestRenderer;
 import net.mcft.copy.betterstorage.content.BetterStorageItems;
@@ -27,6 +28,7 @@ import net.mcft.copy.betterstorage.misc.handlers.KeyBindingHandler;
 import net.mcft.copy.betterstorage.tile.TileArmorStand;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityArmorStand;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityBackpack;
+import net.mcft.copy.betterstorage.tile.entity.TileEntityLockableDoor;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityLocker;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityReinforcedChest;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityReinforcedLocker;
@@ -40,6 +42,7 @@ import net.minecraft.client.renderer.entity.RendererLivingEntity;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -70,6 +73,7 @@ public class ClientProxy extends CommonProxy {
 	public static int armorStandRenderId;
 	public static int backpackRenderId;
 	public static int reinforcedLockerRenderId;
+	public static int lockableDoorRenderId;
 	
 	public static final Map<Class<? extends TileEntity>, BetterStorageRenderingHandler> renderingHandlers =
 			new HashMap<Class<? extends TileEntity>, BetterStorageRenderingHandler>();
@@ -101,6 +105,7 @@ public class ClientProxy extends CommonProxy {
 		armorStandRenderId = registerTileEntityRenderer(TileEntityArmorStand.class, new TileEntityArmorStandRenderer(), false, 0, 1, 0);
 		backpackRenderId = registerTileEntityRenderer(TileEntityBackpack.class, new TileEntityBackpackRenderer(), true, -160, 1.5F, 0.14F);
 		reinforcedLockerRenderId = registerTileEntityRenderer(TileEntityReinforcedLocker.class, new TileEntityLockerRenderer());
+		lockableDoorRenderId = registerTileEntityRenderer(TileEntityLockableDoor.class, new TileEntityLockableDoorRenderer(), false, 0, 1, 0);
 		
 		Addon.registerRenderersAll();
 		
@@ -135,6 +140,7 @@ public class ClientProxy extends CommonProxy {
 		EntityPlayer player = event.player;
 		World world = player.worldObj;
 		MovingObjectPosition target = WorldUtils.rayTrace(player, event.partialTicks);
+		
 		if ((target == null) || (target.typeOfHit != MovingObjectType.BLOCK)) return;
 		int x = target.blockX;
 		int y = target.blockY;
@@ -146,6 +152,8 @@ public class ClientProxy extends CommonProxy {
 		
 		if (block instanceof TileArmorStand)
 			box = getArmorStandHighlightBox(player, world, x, y, z, target.hitVec);
+		else if (block == Blocks.iron_door)
+			box = getIronDoorHightlightBox(player, world, x, y, z, target.hitVec, block);
 		else if (tileEntity instanceof IHasAttachments)
 			box = getAttachmentPointsHighlightBox(player, tileEntity, target);
 		
@@ -196,7 +204,7 @@ public class ClientProxy extends CommonProxy {
 		event.setCanceled(true);
 		
 	}
-	
+
 	private AxisAlignedBB getArmorStandHighlightBox(EntityPlayer player, World world, int x, int y, int z, Vec3 hitVec) {
 		
 		int metadata = world.getBlockMetadata(x, y, z);
@@ -266,7 +274,9 @@ public class ClientProxy extends CommonProxy {
 			
 			if (backpack.isItemEnchanted()) {
 				float f9 = player.ticksExisted + partial;
+				
 				RenderUtils.bindTexture(Resources.enchantedEffect);
+
 				GL11.glEnable(GL11.GL_BLEND);
 				GL11.glColor4f(0.5F, 0.5F, 0.5F, 1.0F);
 				GL11.glDepthFunc(GL11.GL_EQUAL);

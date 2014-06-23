@@ -60,7 +60,6 @@ public class BetterStorage {
 		globalConfig.load();
 		globalConfig.save();
 		
-		BetterStorage.log.info(Constants.modName + " will overwrite some of its own items. Don't worry, this is normal.");
 		BetterStorageTiles.initialize();
 		BetterStorageItems.initialize();
 		
