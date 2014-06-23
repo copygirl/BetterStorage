@@ -2,7 +2,6 @@ package net.mcft.copy.betterstorage.addon;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 
 import net.mcft.copy.betterstorage.addon.thaumcraft.ThaumcraftAddon;
 import cpw.mods.fml.common.Loader;
@@ -12,15 +11,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 public abstract class Addon {
 	
 	private static final List<Addon> addons = new ArrayList<Addon>();
-	private static final Addon thaumcraft = new ThaumcraftAddon();
 	
 	public static void initialize() {
-		ListIterator<Addon> iter = addons.listIterator();
-		while (iter.hasNext()) {
-			Addon addon = iter.next();
-			if (!Loader.isModLoaded(addon.modName))
-				iter.remove();
-		}
+		if (Loader.isModLoaded("Thaumcraft")) new ThaumcraftAddon();
 	}
 	
 	public static void setupConfigsAll() {
