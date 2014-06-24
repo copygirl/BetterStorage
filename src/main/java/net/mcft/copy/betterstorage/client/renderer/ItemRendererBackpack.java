@@ -32,8 +32,10 @@ public class ItemRendererBackpack implements IItemRenderer {
 			else GL11.glTranslatef(0.0F, 0.0F, 0.85F);
 			GL11.glRotatef((equippedThirdPerson ? 200.0F : 75.0F), 0.0F, 1.0F, 0.0F);
 		}
-		if (entity || equippedThirdPerson)
+		if (equippedThirdPerson)
 			GL11.glScalef(1.2F, 1.2F, 1.2F);
+		else if (entity)
+			GL11.glScalef(0.75F, 0.75F, 0.75F);
 		
 		if (renderingHandler == null)
 			renderingHandler = ClientProxy.renderingHandlers.get(tileEntityClass);
