@@ -234,7 +234,7 @@ public class ClientProxy extends CommonProxy {
 		double maxY = y + slot / 2.0 + 0.5;
 		double maxZ = z + 14 / 16.0;
 		
-		return AxisAlignedBB.getAABBPool().getAABB(minX, minY, minZ, maxX, maxY, maxZ);
+		return AxisAlignedBB.getBoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
 		
 	}
 	

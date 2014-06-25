@@ -37,7 +37,7 @@ public final class WorldUtils {
 		double x = entity.xCoord;
 		double y = entity.yCoord;
 		double z = entity.zCoord;
-		return AxisAlignedBB.getAABBPool().getAABB(x - minX, y - minY, z - minZ, x + maxX + 1, y + maxY + 1, z + maxZ + 1);
+		return AxisAlignedBB.getBoundingBox(x - minX, y - minY, z - minZ, x + maxX + 1, y + maxY + 1, z + maxZ + 1);
 	}
 	public static AxisAlignedBB getAABB(TileEntity entity, double radius) {
 		return getAABB(entity, radius, radius, radius, radius, radius, radius);
@@ -156,7 +156,7 @@ public final class WorldUtils {
 		double range = ((player.worldObj.isRemote)
 				? Minecraft.getMinecraft().playerController.getBlockReachDistance()
 				: ((EntityPlayerMP)player).theItemInWorldManager.getBlockReachDistance());
-		Vec3 start = player.worldObj.getWorldVec3Pool().getVecFromPool(player.posX, player.posY + 1.62 - player.yOffset, player.posZ);
+		Vec3 start = Vec3.createVectorHelper(player.posX, player.posY + 1.62 - player.yOffset, player.posZ);
 		Vec3 look = player.getLook(1.0F);
 		Vec3 end = start.addVector(look.xCoord * range, look.yCoord * range, look.zCoord * range);
 		MovingObjectPosition target = player.worldObj.rayTraceBlocks(start, end);

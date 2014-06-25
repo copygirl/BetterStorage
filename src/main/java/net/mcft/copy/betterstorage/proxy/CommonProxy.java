@@ -160,20 +160,20 @@ public class CommonProxy {
 		AxisAlignedBB box;
 		switch(rotation) {
 		case 0 :
-			if(!isOpen) box = AxisAlignedBB.getAABBPool().getAABB(x - 0.005 / 16F, y + 14.5 / 16F, z + 10 / 16F, x + 3.005 / 16F, y + 20.5 / 16F, z + 15 / 16F);
-			else box = AxisAlignedBB.getAABBPool().getAABB(x + 10 / 16F, y + 14.5 / 16F, z - 0.005 / 16F, x + 15 / 16F, y + 20.5 / 16F, z + 3.005 / 16F);
+			if(!isOpen) box = AxisAlignedBB.getBoundingBox(x - 0.005 / 16F, y + 14.5 / 16F, z + 10 / 16F, x + 3.005 / 16F, y + 20.5 / 16F, z + 15 / 16F);
+			else box = AxisAlignedBB.getBoundingBox(x + 10 / 16F, y + 14.5 / 16F, z - 0.005 / 16F, x + 15 / 16F, y + 20.5 / 16F, z + 3.005 / 16F);
 			break;
 		case 1 :
-			if(!isOpen) box = AxisAlignedBB.getAABBPool().getAABB(x + 1 / 16F, y + 14.5 / 16F, z - 0.005 / 16F, x + 6 / 16F, y + 20.5 / 16F, z + 3.005 / 16F);
-			else box = AxisAlignedBB.getAABBPool().getAABB(x + 12.995 / 16F, y + 14.5 / 16F, z + 10 / 16F, x + 16.005 / 16F, y + 20.5 / 16F, z + 15 / 16F);
+			if(!isOpen) box = AxisAlignedBB.getBoundingBox(x + 1 / 16F, y + 14.5 / 16F, z - 0.005 / 16F, x + 6 / 16F, y + 20.5 / 16F, z + 3.005 / 16F);
+			else box = AxisAlignedBB.getBoundingBox(x + 12.995 / 16F, y + 14.5 / 16F, z + 10 / 16F, x + 16.005 / 16F, y + 20.5 / 16F, z + 15 / 16F);
 			break;
 		case 2 :
-			if(!isOpen) box = AxisAlignedBB.getAABBPool().getAABB(x + 12.995 / 16F, y + 14.5 / 16F, z + 1 / 16F, x + 16.005 / 16F, y + 20.5 / 16F, z + 6 / 16F);
-			else box = AxisAlignedBB.getAABBPool().getAABB(x + 1 / 16F, y + 14.5 / 16F, z + 12.995 / 16F, x + 6 / 16F, y + 20.5 / 16F, z + 16.005 / 16F);
+			if(!isOpen) box = AxisAlignedBB.getBoundingBox(x + 12.995 / 16F, y + 14.5 / 16F, z + 1 / 16F, x + 16.005 / 16F, y + 20.5 / 16F, z + 6 / 16F);
+			else box = AxisAlignedBB.getBoundingBox(x + 1 / 16F, y + 14.5 / 16F, z + 12.995 / 16F, x + 6 / 16F, y + 20.5 / 16F, z + 16.005 / 16F);
 			break;
 		default :
-			if(!isOpen) box = AxisAlignedBB.getAABBPool().getAABB(x + 10 / 16F, y + 14.5 / 16F, z + 12.995 / 16F, x + 15 / 16F, y + 20.5 / 16F, z + 16.005 / 16F);
-			else box = AxisAlignedBB.getAABBPool().getAABB(x + 0.005 / 16F, y + 14.5 / 16F, z + 1 / 16F, x + 3.005 / 16F, y + 20.5 / 16F, z + 6 / 16F);
+			if(!isOpen) box = AxisAlignedBB.getBoundingBox(x + 10 / 16F, y + 14.5 / 16F, z + 12.995 / 16F, x + 15 / 16F, y + 20.5 / 16F, z + 16.005 / 16F);
+			else box = AxisAlignedBB.getBoundingBox(x + 0.005 / 16F, y + 14.5 / 16F, z + 1 / 16F, x + 3.005 / 16F, y + 20.5 / 16F, z + 6 / 16F);
 			break;
 		}
 		

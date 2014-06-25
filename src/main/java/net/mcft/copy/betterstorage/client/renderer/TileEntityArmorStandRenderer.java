@@ -3,18 +3,13 @@ package net.mcft.copy.betterstorage.client.renderer;
 import net.mcft.copy.betterstorage.client.model.ModelArmorStand;
 import net.mcft.copy.betterstorage.misc.Resources;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityArmorStand;
-import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.IChatComponent;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-
-import com.mojang.authlib.GameProfile;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -50,14 +45,17 @@ public class TileEntityArmorStandRenderer extends TileEntitySpecialRenderer {
 		
 		if (locker.getWorldObj() == null) return;
 		
-		if (playerDummy == null) {
-			playerDummy = new AbstractClientPlayer(locker.getWorldObj(), new GameProfile("", "PLAYER_DUMMY")) {
-				@Override public void addChatMessage(IChatComponent var1) {  }
-				@Override public ChunkCoordinates getPlayerCoordinates() { return null; }
-				@Override public boolean canCommandSenderUseCommand(int i, String s) { return false; }
-			};
-			playerDummy.setInvisible(true);
-		}
+		//FIXME Can't import AbstractClientPlayer
+		
+//		if (playerDummy == null) {
+//			playerDummy = new AbstractClientPlayer(locker.getWorldObj(), new GameProfile("", "PLAYER_DUMMY")) {
+//				@Override public void addChatMessage(IChatComponent var1) {  }
+//				@Override public ChunkCoordinates getPlayerCoordinates() { return null; }
+//				@Override public boolean canCommandSenderUseCommand(int i, String s) { return false; }
+//			};
+//			playerDummy.setInvisible(true);
+//		}
+		
 		playerDummy.ticksExisted = locker.ticksExisted;
 		playerDummy.inventory.armorInventory = locker.armor;
 		playerDummy.worldObj = locker.getWorldObj();
