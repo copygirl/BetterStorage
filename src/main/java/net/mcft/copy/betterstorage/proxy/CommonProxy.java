@@ -141,7 +141,7 @@ public class CommonProxy {
 						ForgeDirection.EAST) : orientation;
 				
 				world.setBlock(x, y, z, BetterStorageTiles.lockableDoor, 0, SetBlockFlag.SEND_TO_CLIENT);
-				world.setBlock(x, y + 1, z, BetterStorageTiles.lockableDoor, 1, SetBlockFlag.SEND_TO_CLIENT);
+				world.setBlock(x, y + 1, z, BetterStorageTiles.lockableDoor, 8, SetBlockFlag.SEND_TO_CLIENT);
 			
 				TileEntityLockableDoor te = WorldUtils.get(world, x, y, z, TileEntityLockableDoor.class);
 				te.orientation = orientation;

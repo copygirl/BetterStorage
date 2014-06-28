@@ -134,6 +134,7 @@ public class TileEntityLockableDoor extends TileEntity implements ILockable, IHa
 		swing = true;
 		isOpen = par == 1;
 		updateLockPosition();
+		worldObj.markBlockRangeForRenderUpdate(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
 		return true;
 	}
 

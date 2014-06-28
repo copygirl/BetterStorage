@@ -11,6 +11,7 @@ import net.mcft.copy.betterstorage.tile.entity.TileEntityLockableDoor;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.IconFlipped;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,6 +20,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
@@ -28,6 +30,11 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class TileLockableDoor extends TileBetterStorage {
 
+	private IIcon iconUpper;
+	private IIcon iconLower;
+	private IIcon iconUpperFlipped;
+	private IIcon iconLowerFlipped;
+	
 	public TileLockableDoor() {
 		super(Material.wood);
 		
@@ -35,7 +42,6 @@ public class TileLockableDoor extends TileBetterStorage {
 		setHardness(8.0F);
 		setResistance(20.0F);
 		setStepSound(soundTypeWood);	
-		setBlockBounds(0F, 0F, 0F, 3 / 16F, 2F, 1F);
 		setHarvestLevel("axe", 2);
 	}
 	
@@ -45,27 +51,24 @@ public class TileLockableDoor extends TileBetterStorage {
 		float offset = metadata == 0 ? 0F : -1F;
 		TileEntityLockableDoor te = WorldUtils.get(world, x, y + (int)offset, z, TileEntityLockableDoor.class);
 		
-		if (te == null) {
-			setBlockBounds(0F, 0F + offset, 0F, 3 / 16F, 2F + offset, 1F);
-			return;
-		}
+		if (te == null) return;
 		
 		switch (te.orientation) {
 		case WEST:
-			if (te.isOpen) setBlockBounds(0F, 0F + offset, 1 / 16F, 1F, 2F + offset, 2 / 16F);
-			else setBlockBounds(1 / 16F, 0F + offset, 0F, 2 / 16F, 2F + offset, 1F);
+			if (te.isOpen) setBlockBounds(0F, 0F, 0.005F / 16F, 1F, 1F, 2.995F / 16F);
+			else setBlockBounds(0.005F / 16F, 0F, 0F, 2.995F / 16F, 1F, 1F);
 			break;
 		case EAST:
-			if (te.isOpen) setBlockBounds(0F, 0F + offset, 14 / 16F, 1F, 2F + offset, 15 / 16F);
-			else setBlockBounds(14 / 16F, 0F + offset, 0F, 15 / 16F, 2F + offset, 1F);
+			if (te.isOpen) setBlockBounds(0F, 0F, 13.005F / 16F, 1F, 1F, 15.995F / 16F);
+			else setBlockBounds(13.005F / 16F, 0F, 0F, 15.995F / 16F, 1F, 1F);
 			break;
 		case SOUTH:
-			if (te.isOpen) setBlockBounds(1 / 16F, 0F + offset, 0F, 2 / 16F, 2F + offset, 1F);
-			else setBlockBounds(0F, 0F + offset, 14 / 16F, 1F, 2F + offset, 15 / 16F);
+			if (te.isOpen) setBlockBounds(0.005F / 16F, 0F, 0F, 2.995F / 16F, 1F, 1F);
+			else setBlockBounds(0F, 0F, 13.005F / 16F, 1F, 1F, 15.995F / 16F);
 			break;
 		default:
-			if (te.isOpen) setBlockBounds(14 / 16F, 0F + offset, 0F, 15 / 16F, 2F + offset, 1F);
-			else setBlockBounds(0F, 0F + offset, 1 / 16F, 1F, 2F + offset, 2 / 16F);
+			if (te.isOpen) setBlockBounds(13.005F / 16F, 0F, 0F, 15.995F / 16F, 1F, 1F);
+			else setBlockBounds(0F, 0F, 0.005F / 16F, 1F, 1F, 2.995F / 16F);
 			break;
 		}		
 	}
@@ -79,9 +82,20 @@ public class TileLockableDoor extends TileBetterStorage {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
-		blockIcon = iconRegister.registerIcon("door_iron_lower");
+		iconUpper = iconRegister.registerIcon("door_iron_upper");
+		iconLower = iconRegister.registerIcon("door_iron_lower");
+		iconUpperFlipped = new IconFlipped(iconUpper, true, false);
+		iconLowerFlipped = new IconFlipped(iconLower, true, false);
 	}
-	
+
+	@Override
+	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int face) {
+		int meta = world.getBlockMetadata(x, y, z);
+		if (meta > 0) y -= 1;
+		TileEntityLockableDoor lockable = WorldUtils.get(world, x, y, z, TileEntityLockableDoor.class);
+		return lockable.isMirrored ? (meta == 0 ? iconLowerFlipped : iconUpperFlipped) : (meta == 0 ? iconLower : iconUpper);
+	}
+
 	@Override
 	public float getBlockHardness(World world, int x, int y, int z) {
 		if (world.getBlockMetadata(x, y, z) > 0) y -= 1;
@@ -126,9 +140,10 @@ public class TileLockableDoor extends TileBetterStorage {
 	@Override
 	public MovingObjectPosition collisionRayTrace(World world, int x, int y, int z, Vec3 start, Vec3 end) {
 		int metadata = world.getBlockMetadata(x, y, z);
-		if (metadata > 0) y -= 1;
-		IHasAttachments te = WorldUtils.get(world, x, y, z, IHasAttachments.class);
-		return te != null ? te.getAttachments().rayTrace(world, x, y, z, start, end) : super.collisionRayTrace(world, x, y, z, start, end);
+		IHasAttachments te = WorldUtils.get(world, x, y - (metadata > 0 ? 1 : 0), z, IHasAttachments.class);
+		if(te == null) return super.collisionRayTrace(world, x, y, z, start, end);
+		MovingObjectPosition pos = te.getAttachments().rayTrace(world, x, y - (metadata > 0 ? 1 : 0), z, start, end);
+		return pos != null ? pos : super.collisionRayTrace(world, x, y, z, start, end);
 	}
 
 	@Override
@@ -151,7 +166,7 @@ public class TileLockableDoor extends TileBetterStorage {
 	public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
 		int metadata = world.getBlockMetadata(x, y, z);
 		int targetY = y + ((metadata == 0) ? 1 : -1);
-		int targetMeta = ((metadata == 0) ? 1 : 0);
+		int targetMeta = ((metadata == 0) ? 8 : 0);
 		if (world.getBlock(x, y - 1, z) == Blocks.air && metadata == 0) world.setBlockToAir(x, y, z);
 		if ((world.getBlock(x, targetY, z) == this) && (world.getBlockMetadata(x, targetY, z) == targetMeta)) return;
 		world.setBlockToAir(x, y, z);
@@ -172,7 +187,12 @@ public class TileLockableDoor extends TileBetterStorage {
 	public boolean isOpaqueCube() { return false; }
 	@Override
 	public boolean renderAsNormalBlock() { return false; }
-	
+
+	@Override
+	public int getRenderType() {
+		return ClientProxy.lockableDoorRenderId;
+	}
+
 	@Override
 	public int quantityDropped(int meta, int fortune, Random random) {
 		return ((meta == 0) ? 1 : 0);
@@ -197,10 +217,6 @@ public class TileLockableDoor extends TileBetterStorage {
 		if(world.getBlockMetadata(x, y, z) != 0) return;
 		WorldUtils.get(world, x, y, z, TileEntityLockableDoor.class).setPowered(false);
 	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public int getRenderType() { return ClientProxy.lockableDoorRenderId; }
 	
 	@Override
 	public TileEntity createTileEntity(World world, int metadata) {

@@ -1,8 +1,6 @@
 package net.mcft.copy.betterstorage.client.renderer;
 
 import net.mcft.copy.betterstorage.attachment.LockAttachment;
-import net.mcft.copy.betterstorage.client.model.ModelLockableDoor;
-import net.mcft.copy.betterstorage.misc.Resources;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityLockableDoor;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
@@ -12,8 +10,6 @@ import org.lwjgl.opengl.GL12;
 
 public class TileEntityLockableDoorRenderer extends TileEntitySpecialRenderer {
 
-	private ModelLockableDoor model = new ModelLockableDoor();
-	
 	public void renderTileEntityAt(TileEntityLockableDoor arg0, double x, double y, double z, float partialTicks) {
 		
 		GL11.glPushMatrix();
@@ -32,7 +28,6 @@ public class TileEntityLockableDoorRenderer extends TileEntitySpecialRenderer {
 		default: angle = 1 - angle; angle *= 90F; break;
 		}
 		
-		GL11.glPushMatrix();
 		GL11.glRotatef(180F, 1, 0, 0);
 		GL11.glRotatef(90F, 0, 1, 0);
 		
@@ -49,17 +44,6 @@ public class TileEntityLockableDoorRenderer extends TileEntitySpecialRenderer {
 		
 		LockAttachment a = arg0.lockAttachment;
 		a.getRenderer().render(a, partialTicks);
-		GL11.glPopMatrix();
-		
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		bindTexture(Resources.textureLockableDoor);
-		
-		GL11.glPushMatrix();
-		model.setOrientation(arg0.orientation);
-		model.setRotation(angle);
-		model.renderAll();
-		GL11.glPopMatrix();
-	
 		GL11.glPopMatrix();
 	}
 
