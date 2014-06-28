@@ -60,8 +60,6 @@ public class TileEntityLockableDoorRenderer extends TileEntitySpecialRenderer {
 		model.renderAll();
 		GL11.glPopMatrix();
 	
-		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glPopMatrix();
 	}
 

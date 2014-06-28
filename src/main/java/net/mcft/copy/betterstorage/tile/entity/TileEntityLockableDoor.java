@@ -32,6 +32,7 @@ public class TileEntityLockableDoor extends TileEntity implements ILockable, IHa
 	private boolean swing = false;
 	
 	public boolean isOpen = false;
+	public boolean isMirrored = false;
 	
 	public TileEntityLockableDoor() {
 		
@@ -87,9 +88,10 @@ public class TileEntityLockableDoor extends TileEntity implements ILockable, IHa
 		// Turn it back into a normal iron door
 		if(lock == null) {
 			lockAttachment.setItem(null);		
-			int rotation = orientation == ForgeDirection.WEST ? 0 : orientation == ForgeDirection.NORTH ? 1 : orientation == ForgeDirection.EAST ? 2 : 3;	
+			int rotation = orientation == ForgeDirection.WEST ? 0 : orientation == ForgeDirection.NORTH ? 1 : orientation == ForgeDirection.EAST ? 2 : 3;
+			rotation = isMirrored ? (rotation == 0 ? 1 : rotation == 1 ? 2 : rotation == 2 ? 3 : 0) : rotation;
 			worldObj.setBlock(xCoord, yCoord, zCoord, Blocks.iron_door, rotation, SetBlockFlag.SEND_TO_CLIENT);
-			worldObj.setBlock(xCoord, yCoord + 1, zCoord, Blocks.iron_door, 8, SetBlockFlag.SEND_TO_CLIENT);
+			worldObj.setBlock(xCoord, yCoord + 1, zCoord, Blocks.iron_door, isMirrored ? 9 : 8, SetBlockFlag.SEND_TO_CLIENT);
 			worldObj.notifyBlockChange(xCoord, yCoord, zCoord, Blocks.iron_door);
 			worldObj.notifyBlockChange(xCoord, yCoord + 1, zCoord, Blocks.iron_door);
 		} else setLockWithUpdate(lock);		
@@ -104,7 +106,7 @@ public class TileEntityLockableDoor extends TileEntity implements ILockable, IHa
 
 	@Override
 	public boolean canUse(EntityPlayer player) {
-		return isOpen;
+		return false;
 	}
 
 	@Override
@@ -145,6 +147,7 @@ public class TileEntityLockableDoor extends TileEntity implements ILockable, IHa
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
 		isOpen = compound.getBoolean("isOpen");
+		isMirrored = compound.getBoolean("isMirrored");
 		orientation = ForgeDirection.getOrientation(compound.getByte("orientation"));
 		if (compound.hasKey("lock")) lockAttachment.setItem(ItemStack.loadItemStackFromNBT(compound.getCompoundTag("lock")));
 		updateLockPosition();
@@ -154,6 +157,7 @@ public class TileEntityLockableDoor extends TileEntity implements ILockable, IHa
 	public void writeToNBT(NBTTagCompound compound) {
 		super.writeToNBT(compound);
 		compound.setBoolean("isOpen", isOpen);
+		compound.setBoolean("isMirrored", isMirrored);
 		compound.setByte("orientation", (byte) orientation.ordinal());
 		if (lockAttachment.getItem() != null) compound.setTag("lock", lockAttachment.getItem().writeToNBT(new NBTTagCompound()));
 	}
@@ -162,6 +166,7 @@ public class TileEntityLockableDoor extends TileEntity implements ILockable, IHa
 	public Packet getDescriptionPacket() {
 		NBTTagCompound compound = new NBTTagCompound();
 		compound.setBoolean("isOpen", isOpen);
+		compound.setBoolean("isMirrored", isMirrored);
 		compound.setByte("orientation", (byte) orientation.ordinal());
 		if (lockAttachment.getItem() != null) compound.setTag("lock", lockAttachment.getItem().writeToNBT(new NBTTagCompound()));
 		return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, compound);
@@ -175,6 +180,7 @@ public class TileEntityLockableDoor extends TileEntity implements ILockable, IHa
 		else lockAttachment.setItem(ItemStack.loadItemStackFromNBT(compound.getCompoundTag("lock")));
 		orientation = ForgeDirection.getOrientation(compound.getByte("orientation"));
 		isOpen = compound.getBoolean("isOpen");
+		isMirrored = compound.getBoolean("isMirrored");
 		updateLockPosition();
 	}
 

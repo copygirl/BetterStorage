@@ -124,19 +124,29 @@ public class CommonProxy {
 			if(target != null && getIronDoorHightlightBox(player, world, x, y, z, target.hitVec, block) != null) {
 				
 				int meta = world.getBlockMetadata(x, y, z);
-				if (meta >= 8) {
+				boolean isMirrored;
+				if(meta >= 8) {
+					isMirrored = meta == 9;
 					y -= 1;
 					meta = world.getBlockMetadata(x, y, z);
 				}
+				else isMirrored = world.getBlockMetadata(x, y + 1, z) == 9;
 				
 				int rotation = meta & 3;
 				ForgeDirection orientation = rotation == 0 ? ForgeDirection.WEST : rotation == 1 ? ForgeDirection.NORTH : rotation == 2 ? ForgeDirection.EAST : ForgeDirection.SOUTH;
+				orientation = isMirrored ? (
+						orientation == ForgeDirection.WEST ? ForgeDirection.SOUTH : 
+						orientation == ForgeDirection.NORTH ? ForgeDirection.WEST : 
+						orientation == ForgeDirection.EAST ? ForgeDirection.NORTH : 
+						ForgeDirection.EAST) : orientation;
 				
 				world.setBlock(x, y, z, BetterStorageTiles.lockableDoor, 0, SetBlockFlag.SEND_TO_CLIENT);
 				world.setBlock(x, y + 1, z, BetterStorageTiles.lockableDoor, 1, SetBlockFlag.SEND_TO_CLIENT);
 			
 				TileEntityLockableDoor te = WorldUtils.get(world, x, y, z, TileEntityLockableDoor.class);
 				te.orientation = orientation;
+				te.isOpen = isMirrored;
+				te.isMirrored = isMirrored;
 				te.setLock(holding);
 				
 				player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
@@ -148,14 +158,19 @@ public class CommonProxy {
 		if(!StackUtils.isLock(player.getCurrentEquippedItem())) return null;
 		
 		int meta = world.getBlockMetadata(x, y, z);
+		boolean isMirrored;
 		if(meta >= 8) {
+			isMirrored = meta == 9;
 			y -= 1;
 			meta = world.getBlockMetadata(x, y, z);
 		}
+		else isMirrored = world.getBlockMetadata(x, y + 1, z) == 9;
 		
 		boolean isOpen = (meta & 4) == 4;
-		int rotation = (meta & 3);		
-		
+		int rotation = (meta & 3);	
+		rotation = isMirrored ? (rotation == 0 ? 3 : rotation == 1 ? 0 : rotation == 2 ? 1 : 2) : rotation;
+		isOpen = isMirrored ? !isOpen : isOpen;
+
 		//TODO Maybe change the bounding box of the doors somehow to match LockableDoor.
 		AxisAlignedBB box;
 		switch(rotation) {
@@ -173,7 +188,7 @@ public class CommonProxy {
 			break;
 		default :
 			if(!isOpen) box = AxisAlignedBB.getBoundingBox(x + 10 / 16F, y + 14.5 / 16F, z + 12.995 / 16F, x + 15 / 16F, y + 20.5 / 16F, z + 16.005 / 16F);
-			else box = AxisAlignedBB.getBoundingBox(x + 0.005 / 16F, y + 14.5 / 16F, z + 1 / 16F, x + 3.005 / 16F, y + 20.5 / 16F, z + 6 / 16F);
+			else box = AxisAlignedBB.getBoundingBox(x - 0.005 / 16F, y + 14.5 / 16F, z + 1 / 16F, x + 3.005 / 16F, y + 20.5 / 16F, z + 6 / 16F);
 			break;
 		}
 		
