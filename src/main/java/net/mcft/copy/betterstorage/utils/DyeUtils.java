@@ -37,11 +37,14 @@ public final class DyeUtils {
 	 *  If it's not a dye, it will return -1. */
 	public static int getDyeColor(ItemStack stack) {
 		if (stack == null) return -1;
-		int ore = OreDictionary.getOreID(stack);
-		if (ore < 0) return -1;
-		String name = OreDictionary.getOreName(ore);
-		if (!name.startsWith("dye")) return -1;
-		Integer color = dyes.get(name);
+		int[] ores = OreDictionary.getOreIDs(stack);
+		Integer color = null;
+		for(int ore : ores) {
+			if (ore < 0) return -1;
+			String name = OreDictionary.getOreName(ore);
+			if (!name.startsWith("dye")) continue;
+			color = dyes.get(name);
+		}
 		return ((color != null) ? color : -1);
 	}
 	
