@@ -86,6 +86,7 @@ public class TileLockableDoor extends TileBetterStorage {
 		iconLower = iconRegister.registerIcon("door_iron_lower");
 		iconUpperFlipped = new IconFlipped(iconUpper, true, false);
 		iconLowerFlipped = new IconFlipped(iconLower, true, false);
+		blockIcon = iconUpper;
 	}
 
 	@Override
@@ -93,7 +94,35 @@ public class TileLockableDoor extends TileBetterStorage {
 		int meta = world.getBlockMetadata(x, y, z);
 		if (meta > 0) y -= 1;
 		TileEntityLockableDoor lockable = WorldUtils.get(world, x, y, z, TileEntityLockableDoor.class);
-		return lockable.isMirrored ? (meta == 0 ? iconLowerFlipped : iconUpperFlipped) : (meta == 0 ? iconLower : iconUpper);
+		
+		boolean flip = false;
+		IIcon icon = iconUpper;
+		
+		if(meta == 0 || face == 1) {
+			icon = iconLower;
+		}
+		
+		switch(lockable.orientation) {
+		case WEST: 
+			if(face == 3 && !lockable.isOpen) flip = true;
+			else if(face == 2 && lockable.isOpen) flip = true;
+			break;
+		case EAST:
+			if(face == 4 && !lockable.isOpen) flip = true;
+			else if(face == 3 && lockable.isOpen) flip = true;
+			break;
+		case SOUTH:
+			if(face == 2 && !lockable.isOpen) flip = true;
+			else if(face == 4 && lockable.isOpen) flip = true;
+			break;
+		default: 
+			if(face == 3 && !lockable.isOpen) flip = true;
+			else if(face == 5 && lockable.isOpen) flip = true;
+			break;
+		}
+
+		icon = flip ? (icon == iconLower ? iconLowerFlipped : iconUpperFlipped) : icon;
+		return icon;
 	}
 
 	@Override
