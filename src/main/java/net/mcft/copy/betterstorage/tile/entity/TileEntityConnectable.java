@@ -220,13 +220,17 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 	
 	// Tile entity synchronization
 	
-	@Override
-	public Packet getDescriptionPacket() {
-		NBTTagCompound compound = new NBTTagCompound();
+	public NBTTagCompound getDescriptionPacketData(NBTTagCompound compound) {
 		compound.setByte("orientation", (byte)getOrientation().ordinal());
 		compound.setByte("connected", (byte)getConnected().ordinal());
-        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, compound);
+		return compound;
 	}
+	
+	@Override
+	public Packet getDescriptionPacket() {
+        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, getDescriptionPacketData(new NBTTagCompound()));
+	}
+	
 	@Override
 	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
 		NBTTagCompound compound = packet.func_148857_g();
