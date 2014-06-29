@@ -17,7 +17,7 @@ buildscript {
 
 apply plugin: 'forge'
 
-project.ext.mod_version = "0.9.1.104-dev"
+project.ext.mod_version = "0.9.1.105-dev"
 project.ext.minecraft_version = "1.7.10_pre4"
 project.ext.forge_version = "10.12.2.1149-prerelease"
 

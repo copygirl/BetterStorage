@@ -16,7 +16,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -224,17 +223,17 @@ public abstract class TileEntityLockable extends TileEntityConnectable
 	// TileEntity synchronization
 	
 	@Override
-	public Packet getDescriptionPacket() {
-		S35PacketUpdateTileEntity packet = (S35PacketUpdateTileEntity)super.getDescriptionPacket();
-		NBTTagCompound compound = packet.func_148857_g();
+	public NBTTagCompound getDescriptionPacketData(NBTTagCompound compound) {	
+		compound = super.getDescriptionPacketData(compound);	
 		if (canHaveMaterial())
 			compound.setString(ContainerMaterial.TAG_NAME, getMaterial().name);
 		if (canHaveLock()) {
 			ItemStack lock = getLockInternal();
 			if (lock != null) compound.setTag("lock", lock.writeToNBT(new NBTTagCompound()));
 		}
-        return packet;
+		return compound;
 	}
+	
 	@Override
 	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
 		super.onDataPacket(net, packet);
