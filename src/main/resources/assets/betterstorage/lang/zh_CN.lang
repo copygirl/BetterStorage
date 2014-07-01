@@ -28,6 +28,7 @@ enchantment.betterstorage.lock.trigger=报信锁
 entity.BetterStorage.Frienderman.name=末影人
 
 # Items
+item.betterstorage.bucketSlime.name=桶中史莱姆
 item.betterstorage.cardboardAxe.name=纸板斧
 item.betterstorage.cardboardBoots.name=纸盒靴
 item.betterstorage.cardboardChestplate.name=纸盒胸甲
@@ -59,6 +60,7 @@ material.betterstorage.emerald=绿宝石
 material.betterstorage.copper=铜
 material.betterstorage.tin=锡
 material.betterstorage.silver=银
+material.betterstorage.steel=钢
 material.betterstorage.zinc=锌
 
 # Thaumcraft
@@ -75,6 +77,7 @@ tile.betterstorage.backpack.name=背包
 tile.betterstorage.cardboardBox.name=纸箱
 tile.betterstorage.crate.name=货箱
 tile.betterstorage.enderBackpack.name=末影背包
+tile.betterstorage.flintBlock.name=燧石块
 tile.betterstorage.locker.name=柜子
 tile.betterstorage.reinforcedChest.name=强化箱子
 tile.betterstorage.reinforcedChest.name.full=强化%MATERIAL%箱子
@@ -92,6 +95,12 @@ tooltip.betterstorage.backpack.openHint=装备时按住%KEY%打开背包界面.
 tooltip.betterstorage.backpack.unequipHint=空手情况下对着空地按住潜行#并右击地面来卸下背包.
 tooltip.betterstorage.backpack.unequipHint.extended=%INFO%空手情况下对着空地按住潜行#并右击地面来卸下背包.
 tooltip.betterstorage.backpack.used=背包当前正在被玩家翻开.
+tooltip.betterstorage.bucketSlime.more.1=能再添加1个效果 ...
+tooltip.betterstorage.bucketSlime.more.x=能再添加%X% 个效果...
+tooltip.betterstorage.cardboardBox.more.1=能再添加1个物品 ...
+tooltip.betterstorage.cardboardBox.more.x=能再添加%X% 个物品...
+tooltip.betterstorage.cardboardBox.useHint=一次性可携带存储工具.
+tooltip.betterstorage.cardboardBox.useHint.reusable=可以重复使用的存储工具.
 tooltip.betterstorage.drinkingHelmet.craftHint=与两瓶药水合成.
 tooltip.betterstorage.drinkingHelmet.useHint=按下%KEY%小啜一口.
 tooltip.betterstorage.drinkingHelmet.uses=剩余次数: %USES%
