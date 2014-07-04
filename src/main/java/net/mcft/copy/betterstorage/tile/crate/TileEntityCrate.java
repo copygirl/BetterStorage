@@ -268,8 +268,10 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 	}
 	@Override
 	public void setInventorySlotContents(int slot, ItemStack stack) {
-		if (GlobalConfig.enableCrateInventoryInterfaceSetting.getValue())
+		if (GlobalConfig.enableCrateInventoryInterfaceSetting.getValue()) {
 			getPileData().blockView.setInventorySlotContents(slot, stack);
+			markDirty();
+		}
 	}
 	@Override
 	public ItemStack getStackInSlotOnClosing(int slot) {
@@ -279,6 +281,7 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 	@Override
 	public ItemStack decrStackSize(int slot, int amount) {
 		if (!GlobalConfig.enableCrateInventoryInterfaceSetting.getValue()) return null;
+		markDirty();
 		return getPileData().blockView.decrStackSize(slot, amount);
 	}
 	@Override
