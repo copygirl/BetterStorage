@@ -2,10 +2,13 @@ package net.mcft.copy.betterstorage.config.setting;
 
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.config.Config;
+import net.mcft.copy.betterstorage.misc.Constants;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.config.Configuration;
+import cpw.mods.fml.client.config.ConfigGuiType;
+import cpw.mods.fml.client.config.DummyConfigElement;
 
-public abstract class Setting<T> {
+public abstract class Setting<T> extends DummyConfigElement<T> {
 	
 	/** The config object for this setting. */
 	public final Config config;
@@ -24,7 +27,9 @@ public abstract class Setting<T> {
 	protected String comment = null;
 	private boolean synced = false;
 	
-	public Setting(Config config, String fullName, T defaultValue) {
+	public Setting(Config config, String fullName, T defaultValue, ConfigGuiType type) {
+		super(fullName, defaultValue, type, "config." + Constants.modId + "." + fullName);
+		
 		this.config = config;
 		this.defaultValue = defaultValue;
 		
@@ -98,5 +103,17 @@ public abstract class Setting<T> {
 	
 	protected abstract T readInternal(NBTTagCompound compound);
 	protected abstract void writeInternal(NBTTagCompound compound, T value);
-	
+
+	@Override
+	public Object get() {
+		return getInternalValue();
+	}
+
+	@Override
+	public void set(T value) {
+		setValue(value);
+		validate();
+		save(config.forgeConfig);
+		config.forgeConfig.save();
+	}
 }

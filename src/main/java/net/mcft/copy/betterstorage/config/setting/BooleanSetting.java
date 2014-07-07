@@ -4,13 +4,14 @@ import net.mcft.copy.betterstorage.config.Config;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property.Type;
+import cpw.mods.fml.client.config.ConfigGuiType;
 
 public class BooleanSetting extends SinglePropertySetting<Boolean> {
 	
 	public BooleanSetting(Config config, String fullName, Boolean defaultValue) {
-		super(config, fullName, defaultValue);
+		super(config, fullName, defaultValue, ConfigGuiType.BOOLEAN);
 	}
-	public BooleanSetting(Config config, String fullName) {
+	public BooleanSetting(Config config, String fullName, String langKey) {
 		this(config, fullName, false);
 	}
 	

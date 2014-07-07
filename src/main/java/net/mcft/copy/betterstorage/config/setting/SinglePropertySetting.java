@@ -4,13 +4,14 @@ import net.mcft.copy.betterstorage.config.Config;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import net.minecraftforge.common.config.Property.Type;
+import cpw.mods.fml.client.config.ConfigGuiType;
 
 public abstract class SinglePropertySetting<T> extends Setting<T> {
 	
 	private Property property;
 	
-	public SinglePropertySetting(Config config, String fullName, T defaultValue) {
-		super(config, fullName, defaultValue);
+	public SinglePropertySetting(Config config, String fullName, T defaultValue, ConfigGuiType type) {
+		super(config, fullName, defaultValue, type);
 	}
 	
 	protected Property getProperty(Configuration config) {

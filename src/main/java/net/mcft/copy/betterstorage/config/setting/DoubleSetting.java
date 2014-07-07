@@ -4,6 +4,7 @@ import net.mcft.copy.betterstorage.config.Config;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property.Type;
+import cpw.mods.fml.client.config.ConfigGuiType;
 
 public class DoubleSetting extends SinglePropertySetting<Double> {
 	
@@ -11,7 +12,7 @@ public class DoubleSetting extends SinglePropertySetting<Double> {
 	protected double maxValue = Double.MAX_VALUE;
 	
 	public DoubleSetting(Config config, String fullName, Double defaultValue) {
-		super(config, fullName, defaultValue);
+		super(config, fullName, defaultValue, ConfigGuiType.DOUBLE);
 	}
 	public DoubleSetting(Config config, String fullName) {
 		this(config, fullName, 0.0);
@@ -56,4 +57,14 @@ public class DoubleSetting extends SinglePropertySetting<Double> {
 	@Override
 	protected void writeInternal(NBTTagCompound compound, Double value) { compound.setDouble(fullName, value); }
 	
+	@Override
+	public Double getMinValue() {
+		return minValue;
+	}
+	
+	@Override
+	public Double getMaxValue() {
+		return maxValue;
+	}
+
 }

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import net.mcft.copy.betterstorage.config.setting.BooleanSetting;
 import net.mcft.copy.betterstorage.config.setting.DoubleSetting;
@@ -15,7 +16,7 @@ import net.minecraftforge.common.config.Configuration;
 
 public class Config {
 	
-	private final Configuration forgeConfig;
+	public final Configuration forgeConfig;
 	
 	private final Map<String, Setting> settings = new HashMap<String, Setting>();
 	private final List<Setting> syncedSettings = new ArrayList<Setting>();
@@ -24,6 +25,18 @@ public class Config {
 		forgeConfig = new Configuration(file);
 	}
 	
+	public Map<String, Setting> getSettings() {
+		return settings;
+	}
+	
+	public Map<String, Setting> getSettings(String category) {
+		HashMap<String, Setting> tmp = new HashMap<String, Setting>();
+		for(Entry<String, Setting> entry : getSettings().entrySet()) {
+			if(entry.getValue().category.equals(category)) tmp.put(entry.getKey(), entry.getValue());
+		}
+		return tmp;
+	}
+
 	/** Adds a setting to the config. */
 	public void add(Setting setting) {
 		settings.put(setting.fullName, setting);

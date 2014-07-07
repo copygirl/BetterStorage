@@ -9,6 +9,8 @@ import net.minecraftforge.common.config.Property.Type;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import cpw.mods.fml.client.config.ConfigGuiType;
+
 public class IntegerSetting extends SinglePropertySetting<Integer> {
 	
 	protected int minValue = Integer.MIN_VALUE;
@@ -16,7 +18,7 @@ public class IntegerSetting extends SinglePropertySetting<Integer> {
 	protected int[] validValues = null;
 	
 	public IntegerSetting(Config config, String fullName, Integer defaultValue) {
-		super(config, fullName, defaultValue);
+		super(config, fullName, defaultValue, ConfigGuiType.INTEGER);
 	}
 	public IntegerSetting(Config config, String fullName) {
 		this(config, fullName, 0);
@@ -68,5 +70,15 @@ public class IntegerSetting extends SinglePropertySetting<Integer> {
 	protected Integer readInternal(NBTTagCompound compound) { return compound.getInteger(fullName); }
 	@Override
 	protected void writeInternal(NBTTagCompound compound, Integer value) { compound.setInteger(fullName, value); }
+	
+	@Override
+	public Integer getMinValue() {
+		return minValue;
+	}
+	
+	@Override
+	public Integer getMaxValue() {
+		return maxValue;
+	}	
 	
 }

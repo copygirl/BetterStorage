@@ -28,7 +28,8 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 @Mod(modid = Constants.modId,
      name = Constants.modName,
-     dependencies = "required-after:Forge; after:Thaumcraft")
+     dependencies = "required-after:Forge; after:Thaumcraft",
+     guiFactory = "net.mcft.copy.betterstorage.client.gui.BetterStorageGuiFactory")
 public class BetterStorage {
 	
 	@Instance(Constants.modId)
