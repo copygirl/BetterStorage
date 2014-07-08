@@ -20,8 +20,17 @@ public class IntegerSetting extends SinglePropertySetting<Integer> {
 	public IntegerSetting(Config config, String fullName, Integer defaultValue) {
 		super(config, fullName, defaultValue, ConfigGuiType.INTEGER);
 	}
+	
+	public IntegerSetting(Config config, String fullName, Integer defaultValue, String langKey) {
+		super(config, fullName, defaultValue, ConfigGuiType.INTEGER, langKey);
+	}
+	
 	public IntegerSetting(Config config, String fullName) {
 		this(config, fullName, 0);
+	}
+	
+	public IntegerSetting(Config config, String fullName, String langKey) {
+		this(config, fullName, 0, langKey);
 	}
 	
 	@Override

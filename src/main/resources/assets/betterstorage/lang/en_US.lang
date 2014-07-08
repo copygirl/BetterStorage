@@ -85,6 +85,7 @@ tile.betterstorage.reinforcedLocker.name=Reinforced Locker
 tile.betterstorage.reinforcedLocker.name.full=Reinforced %MATERIAL% Locker
 tile.betterstorage.thaumcraftBackpack.name=Thaumaturge's Backpack
 tile.betterstorage.thaumiumChest.name=Thaumium Chest
+tile.betterstorage.lockableDoor.name=Locked Iron Door
 
 # Tooltips
 tooltip.betterstorage.backpack.bound=Bound backpack.
@@ -102,3 +103,40 @@ tooltip.betterstorage.cardboardBox.useHint.reusable=Reusable portable storage.
 tooltip.betterstorage.drinkingHelmet.craftHint=Craft with a potion on either side.
 tooltip.betterstorage.drinkingHelmet.useHint=Press %KEY% to take a sip.
 tooltip.betterstorage.drinkingHelmet.uses=Remaining uses: %USES%
+
+# Config
+config.betterstorage.category.item=Items
+config.betterstorage.category.item.tooltip=Change whether a certain Item is active.
+config.betterstorage.category.tile=Blocks
+config.betterstorage.category.tile.tooltip=Change whether a certain Block is active.
+config.betterstorage.category.enchantment=Enchantments
+config.betterstorage.category.enchantment.tooltip=Change the IDs for Enchantments
+
+config.betterstorage.general.reinforcedColumns=Reinforced Columns
+config.betterstorage.general.reinforcedColumns.tooltip=Number of columns in reinforced chests and lockers. Valid values are 9, 11 and 13.
+config.betterstorage.general.enableCrateInventoryInterface=Crate Inventory Interface
+config.betterstorage.general.enableCrateInventoryInterface.tooltip=If enabled, exposes a special block view of crates, so items can be moved in and out by automated systems.
+config.betterstorage.general.enableCrateStorageInterface=Crate Storage Interface
+config.betterstorage.general.enableCrateStorageInterface.tooltip=If disabled, prevents mods from using storage crates' special storage interface (like Applied Energistics).
+config.betterstorage.general.backpackChestplate=Backpack Chestplate
+config.betterstorage.general.backpackChestplate.tooltip=If disabled, backpacks don't take up the player's chestplate armor slot.
+config.betterstorage.general.backpackRows=Backpack Rows
+config.betterstorage.general.backpackRows.tooltip=Number of rows in backpacks.
+config.betterstorage.general.enableBackpackOpen=Backpack Open
+config.betterstorage.general.enableBackpackOpen.tooltip=Allows equipped backpacks to be opened by pressing a key.
+config.betterstorage.general.enableBackpackInteraction=Backpack Interaction
+config.betterstorage.general.enableBackpackInteraction.tooltip=Allows equipped backpacks to be opened by other players by right clicking them.
+config.betterstorage.general.dropBackpackOnDeath=Backpack Drop
+config.betterstorage.general.dropBackpackOnDeath.tooltip=If enabled, drops backpacks as block instead of spilling the items around.
+config.betterstorage.general.cardboardBoxRows=Cardboard Box Rows
+config.betterstorage.general.cardboardBoxRows.tooltip=Number of rows in cardboard boxes.
+config.betterstorage.general.cardboardBoxReusable=Cardboard Box Reuseability
+config.betterstorage.general.cardboardBoxReusable.tooltip=If enabled, cardboard boxes can be moved around indefinitely, instead of just once.
+config.betterstorage.general.enableStationAutoCrafting=Crafting Station Auto Crafting
+config.betterstorage.general.enableStationAutoCrafting.tooltip=If enabled, automated systems can pull out of crafting stations and therefore auto-craft items.
+config.betterstorage.general.stationAutocraftDelay=Auto Crafting Delay
+config.betterstorage.general.stationAutocraftDelay.tooltip=Delay between recipes being autocrafted in the crafting station, in ticks.
+config.betterstorage.general.enableHelpTooltips=Tooltips
+config.betterstorage.general.enableHelpTooltips.tooltip=If enabled, shows tooltips on some items to help players who're new to the mod.
+config.betterstorage.general.enableWarningMessages=Debug Messages
+config.betterstorage.general.enableWarningMessages.tooltip=If disabled, prevents certain warning messages from being logged to the console.

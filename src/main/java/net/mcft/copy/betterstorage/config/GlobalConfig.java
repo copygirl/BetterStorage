@@ -82,46 +82,46 @@ public class GlobalConfig extends Config {
 		super(file);
 		
 		// Tiles
-		new BooleanSetting(this, crateEnabled, true);
-		new BooleanSetting(this, reinforcedChestEnabled, true);
-		new BooleanSetting(this, lockerEnabled, true);
-		new BooleanSetting(this, armorStandEnabled, true);
-		new BooleanSetting(this, backpackEnabled, true);
-		new BooleanSetting(this, enderBackpackEnabled, true);
-		new BooleanSetting(this, cardboardBoxEnabled, true);
-		new BooleanSetting(this, reinforcedLockerEnabled, true);
-		new BooleanSetting(this, craftingStationEnabled, true);
-		new BooleanSetting(this, flintBlockEnabled, true);
-		new BooleanSetting(this, lockableDoorEnabled, true);
+		new BooleanSetting(this, crateEnabled, true, "tile.betterstorage.crate.name").setHasComment(false).setRequiresMcRestart(true);
+		new BooleanSetting(this, reinforcedChestEnabled, true, "tile.betterstorage.reinforcedChest.name").setHasComment(false).setRequiresMcRestart(true);
+		new BooleanSetting(this, lockerEnabled, true, "tile.betterstorage.locker.name").setHasComment(false).setRequiresMcRestart(true);
+		new BooleanSetting(this, armorStandEnabled, true, "tile.betterstorage.armorStand.name").setHasComment(false).setRequiresMcRestart(true);
+		new BooleanSetting(this, backpackEnabled, true, "tile.betterstorage.backpack.name").setHasComment(false).setRequiresMcRestart(true);
+		new BooleanSetting(this, enderBackpackEnabled, true, "tile.betterstorage.enderBackpack.name").setHasComment(false).setRequiresMcRestart(true);
+		new BooleanSetting(this, cardboardBoxEnabled, true, "tile.betterstorage.cardboardBox.name").setHasComment(false).setRequiresMcRestart(true);
+		new BooleanSetting(this, reinforcedLockerEnabled, true, "tile.betterstorage.reinforcedLocker.name").setHasComment(false).setRequiresMcRestart(true);
+		new BooleanSetting(this, craftingStationEnabled, true, "tile.betterstorage.craftingStation.name").setHasComment(false).setRequiresMcRestart(true);
+		new BooleanSetting(this, flintBlockEnabled, true, "tile.betterstorage.flintBlock.name").setHasComment(false).setRequiresMcRestart(true);
+		new BooleanSetting(this, lockableDoorEnabled, true, "tile.betterstorage.lockableDoor.name").setHasComment(false).setRequiresMcRestart(true);
 		
 		// Items
-		new BooleanSetting(this, keyEnabled, true);
-		new BooleanSetting(this, lockEnabled, true);
-		new BooleanSetting(this, keyringEnabled, true);
-		new BooleanSetting(this, cardboardSheetEnabled, true);
-		new BooleanSetting(this, masterKeyEnabled, true);
-		new BooleanSetting(this, drinkingHelmetEnabled, true);
-		new BooleanSetting(this, slimeBucketEnabled, true);
+		new BooleanSetting(this, keyEnabled, true, "item.betterstorage.key.name").setHasComment(false).setRequiresMcRestart(true);
+		new BooleanSetting(this, lockEnabled, true, "item.betterstorage.lock.name").setHasComment(false).setRequiresMcRestart(true);
+		new BooleanSetting(this, keyringEnabled, true, "item.betterstorage.keyring.name").setHasComment(false).setRequiresMcRestart(true);
+		new BooleanSetting(this, cardboardSheetEnabled, true, "item.betterstorage.cardboardSheet.name").setHasComment(false).setRequiresMcRestart(true);
+		new BooleanSetting(this, masterKeyEnabled, true, "item.betterstorage.masterKey.name").setHasComment(false).setRequiresMcRestart(true);
+		new BooleanSetting(this, drinkingHelmetEnabled, true, "item.betterstorage.drinkingHelmet.name").setHasComment(false).setRequiresMcRestart(true);
+		new BooleanSetting(this, slimeBucketEnabled, true, "item.betterstorage.bucketSlime.name").setHasComment(false).setRequiresMcRestart(true);
 		
 		// Cardboard items
-		new BooleanSetting(this, cardboardHelmetEnabled, true);
-		new BooleanSetting(this, cardboardChestplateEnabled, true);
-		new BooleanSetting(this, cardboardLeggingsEnabled, true);
-		new BooleanSetting(this, cardboardBootsEnabled, true);
-		new BooleanSetting(this, cardboardSwordEnabled, true);
-		new BooleanSetting(this, cardboardPickaxeEnabled, true);
-		new BooleanSetting(this, cardboardShovelEnabled, true);
-		new BooleanSetting(this, cardboardAxeEnabled, true);
-		new BooleanSetting(this, cardboardHoeEnabled, true);
+		new BooleanSetting(this, cardboardHelmetEnabled, true, "item.betterstorage.cardboardHelmet.name").setHasComment(false).setRequiresMcRestart(true);
+		new BooleanSetting(this, cardboardChestplateEnabled, true, "item.betterstorage.cardboardChestplate.name").setHasComment(false).setRequiresMcRestart(true);
+		new BooleanSetting(this, cardboardLeggingsEnabled, true, "item.betterstorage.cardboardLeggings.name").setHasComment(false).setRequiresMcRestart(true);
+		new BooleanSetting(this, cardboardBootsEnabled, true, "item.betterstorage.cardboardBoots.name").setHasComment(false).setRequiresMcRestart(true);
+		new BooleanSetting(this, cardboardSwordEnabled, true, "item.betterstorage.cardboardSword.name").setHasComment(false).setRequiresMcRestart(true);
+		new BooleanSetting(this, cardboardPickaxeEnabled, true, "item.betterstorage.cardboardPickaxe.name").setHasComment(false).setRequiresMcRestart(true);
+		new BooleanSetting(this, cardboardShovelEnabled, true, "item.betterstorage.cardboardShovel.name").setHasComment(false).setRequiresMcRestart(true);
+		new BooleanSetting(this, cardboardAxeEnabled, true, "item.betterstorage.cardboardAxe.name").setHasComment(false).setRequiresMcRestart(true);
+		new BooleanSetting(this, cardboardHoeEnabled, true, "item.betterstorage.cardboardHoe.name").setHasComment(false).setRequiresMcRestart(true);
 		
 		// Enchantments
-		new EnchantmentIdSetting(this, enchUnlockingId, 170);
-		new EnchantmentIdSetting(this, enchLockpickingId, 171);
-		new EnchantmentIdSetting(this, enchMorphingId, 172);
-		new EnchantmentIdSetting(this, enchPersistanceId, 173);
-		new EnchantmentIdSetting(this, enchSecurityId, 174);
-		new EnchantmentIdSetting(this, enchShockId, 175);
-		new EnchantmentIdSetting(this, enchTriggerId, 176);
+		new EnchantmentIdSetting(this, enchUnlockingId, 170, "enchantment.betterstorage.key.unlocking");
+		new EnchantmentIdSetting(this, enchLockpickingId, 171, "enchantment.betterstorage.key.lockpicking");
+		new EnchantmentIdSetting(this, enchMorphingId, 172, "enchantment.betterstorage.key.morphing");
+		new EnchantmentIdSetting(this, enchPersistanceId, 173, "enchantment.betterstorage.lock.persistance");
+		new EnchantmentIdSetting(this, enchSecurityId, 174, "enchantment.betterstorage.lock.security");
+		new EnchantmentIdSetting(this, enchShockId, 175, "enchantment.betterstorage.lock.shock");
+		new EnchantmentIdSetting(this, enchTriggerId, 176, "enchantment.betterstorage.lock.trigger");
 		
 		// Reinforced chest settings
 		new IntegerSetting(this, reinforcedColumns, 13).setValidValues(9, 11, 13).setComment(

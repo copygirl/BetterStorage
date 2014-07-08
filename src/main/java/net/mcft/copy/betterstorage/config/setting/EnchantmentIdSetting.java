@@ -6,9 +6,11 @@ import net.minecraft.enchantment.Enchantment;
 
 public class EnchantmentIdSetting extends IntegerSetting {
 	
-	public EnchantmentIdSetting(Config config, String fullName, Integer defaultId) {
-		super(config, fullName, defaultId);
+	public EnchantmentIdSetting(Config config, String fullName, Integer defaultId, String langKey) {
+		super(config, fullName, defaultId, langKey);
 		setValidRange(0, 255);
+		setHasComment(false);
+		setRequiresMcRestart(true);
 	}
 	
 	public int getFreeId() {

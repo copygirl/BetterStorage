@@ -14,8 +14,17 @@ public class DoubleSetting extends SinglePropertySetting<Double> {
 	public DoubleSetting(Config config, String fullName, Double defaultValue) {
 		super(config, fullName, defaultValue, ConfigGuiType.DOUBLE);
 	}
+	
+	public DoubleSetting(Config config, String fullName, Double defaultValue, String langKey) {
+		super(config, fullName, defaultValue, ConfigGuiType.DOUBLE, langKey);
+	}
+	
 	public DoubleSetting(Config config, String fullName) {
 		this(config, fullName, 0.0);
+	}
+	
+	public DoubleSetting(Config config, String fullName, String langKey) {
+		this(config, fullName, 0.0, langKey);
 	}
 	
 	@Override

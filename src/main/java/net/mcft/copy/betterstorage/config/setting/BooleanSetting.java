@@ -11,8 +11,17 @@ public class BooleanSetting extends SinglePropertySetting<Boolean> {
 	public BooleanSetting(Config config, String fullName, Boolean defaultValue) {
 		super(config, fullName, defaultValue, ConfigGuiType.BOOLEAN);
 	}
-	public BooleanSetting(Config config, String fullName, String langKey) {
+	
+	public BooleanSetting(Config config, String fullName, Boolean defaultValue, String langKey) {
+		super(config, fullName, defaultValue, ConfigGuiType.BOOLEAN, langKey);
+	}
+	
+	public BooleanSetting(Config config, String fullName) {
 		this(config, fullName, false);
+	}
+	
+	public BooleanSetting(Config config, String fullName, String langKey) {
+		this(config, fullName, false, langKey);
 	}
 	
 	@Override

@@ -10,6 +10,10 @@ public abstract class SinglePropertySetting<T> extends Setting<T> {
 	
 	private Property property;
 	
+	public SinglePropertySetting(Config config, String fullName, T defaultValue, ConfigGuiType type, String langKey) {
+		super(config, fullName, defaultValue, type, langKey);
+	}
+	
 	public SinglePropertySetting(Config config, String fullName, T defaultValue, ConfigGuiType type) {
 		super(config, fullName, defaultValue, type);
 	}

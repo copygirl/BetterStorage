@@ -2,7 +2,6 @@ package net.mcft.copy.betterstorage.config.setting;
 
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.config.Config;
-import net.mcft.copy.betterstorage.misc.Constants;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.config.Configuration;
 import cpw.mods.fml.client.config.ConfigGuiType;
@@ -27,8 +26,14 @@ public abstract class Setting<T> extends DummyConfigElement<T> {
 	protected String comment = null;
 	private boolean synced = false;
 	
+	private boolean hasComment = true;
+	
 	public Setting(Config config, String fullName, T defaultValue, ConfigGuiType type) {
-		super(fullName, defaultValue, type, "config." + Constants.modId + "." + fullName);
+		this(config, fullName, defaultValue, type, "config.betterstorage." + fullName);
+	}
+	
+	public Setting(Config config, String fullName, T defaultValue, ConfigGuiType type, String langKey) {
+		super(fullName, defaultValue, type, langKey);
 		
 		this.config = config;
 		this.defaultValue = defaultValue;
@@ -104,6 +109,11 @@ public abstract class Setting<T> extends DummyConfigElement<T> {
 	protected abstract T readInternal(NBTTagCompound compound);
 	protected abstract void writeInternal(NBTTagCompound compound, T value);
 
+	public Setting setHasComment(boolean hasComment) {
+		this.hasComment = hasComment;
+		return this;
+	}
+	
 	@Override
 	public Object get() {
 		return getInternalValue();
@@ -115,5 +125,10 @@ public abstract class Setting<T> extends DummyConfigElement<T> {
 		validate();
 		save(config.forgeConfig);
 		config.forgeConfig.save();
+	}
+
+	@Override
+	public String getComment() {
+		return hasComment ? super.getComment() : null;
 	}
 }
