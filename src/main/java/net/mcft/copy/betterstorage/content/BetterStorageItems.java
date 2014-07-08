@@ -57,7 +57,7 @@ public final class BetterStorageItems {
 		drinkingHelmet = MiscUtils.conditionalNew(ItemDrinkingHelmet.class, GlobalConfig.drinkingHelmetEnabled);
 		slimeBucket    = MiscUtils.conditionalNew(ItemBucketSlime.class, GlobalConfig.slimeBucketEnabled);
 		
-		itemBackpack        = MiscUtils.conditionalNew(ItemBackpack.class, GlobalConfig.cardboardBoxEnabled);
+		itemBackpack        = MiscUtils.conditionalNew(ItemBackpack.class, GlobalConfig.backpackEnabled);
 		itemEnderBackpack   = MiscUtils.conditionalNew(ItemEnderBackpack.class, GlobalConfig.enderBackpackEnabled);
 		
 		cardboardHelmet     = conditionalNewArmor(GlobalConfig.cardboardHelmetEnabled, 0);
