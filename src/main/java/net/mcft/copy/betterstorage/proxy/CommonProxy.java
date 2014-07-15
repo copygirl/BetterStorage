@@ -1,14 +1,18 @@
 package net.mcft.copy.betterstorage.proxy;
 
+import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.attachment.EnumAttachmentInteraction;
 import net.mcft.copy.betterstorage.attachment.IHasAttachments;
+import net.mcft.copy.betterstorage.config.GlobalConfig;
 import net.mcft.copy.betterstorage.content.BetterStorageItems;
 import net.mcft.copy.betterstorage.content.BetterStorageTiles;
 import net.mcft.copy.betterstorage.entity.EntityCluckington;
 import net.mcft.copy.betterstorage.item.IDyeableItem;
+import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.item.ItemBucketSlime;
 import net.mcft.copy.betterstorage.item.cardboard.ICardboardItem;
 import net.mcft.copy.betterstorage.item.cardboard.ItemCardboardSheet;
+import net.mcft.copy.betterstorage.misc.EquipmentSlot;
 import net.mcft.copy.betterstorage.misc.SetBlockFlag;
 import net.mcft.copy.betterstorage.misc.handlers.BackpackHandler;
 import net.mcft.copy.betterstorage.misc.handlers.CraftingHandler;
@@ -39,6 +43,8 @@ import net.minecraftforge.event.world.WorldEvent.Unload;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.Phase;
+import cpw.mods.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.WorldTickEvent;
 import cpw.mods.fml.relauncher.Side;
 
@@ -171,7 +177,6 @@ public class CommonProxy {
 		rotation = isMirrored ? (rotation == 0 ? 3 : rotation == 1 ? 0 : rotation == 2 ? 1 : 2) : rotation;
 		isOpen = isMirrored ? !isOpen : isOpen;
 
-		//TODO Maybe change the bounding box of the doors somehow to match LockableDoor.
 		AxisAlignedBB box;
 		switch(rotation) {
 		case 0 :
@@ -235,5 +240,28 @@ public class CommonProxy {
 	public void onWorldTick(WorldTickEvent event) {
 		if (event.side == Side.SERVER)
 			CratePileCollection.getCollection(event.world).onTick();
+	}
+	
+	@SubscribeEvent
+	public void onPlayerTick(PlayerTickEvent event) {
+		if (event.side == Side.SERVER && event.phase == Phase.END) {
+			//Cleanup in case the backpack is not equipped correctly, due to changing the backpackChestplate setting.
+			ItemStack stack = event.player.getEquipmentInSlot(EquipmentSlot.CHEST);
+			if(stack != null && stack.getItem() instanceof ItemBackpack && !BetterStorage.globalConfig.getBoolean(GlobalConfig.backpackChestplate)) {
+				//First thing that never should happen...
+				event.player.setCurrentItemOrArmor(EquipmentSlot.CHEST, null);
+				ItemBackpack.setBackpack(event.player, stack, ItemBackpack.getBackpackData(event.player).contents);
+			} else if((stack == null || (stack.getItem() != null && !(stack.getItem() instanceof ItemBackpack))) && ItemBackpack.getBackpackData(event.player).backpack != null && BetterStorage.globalConfig.getBoolean(GlobalConfig.backpackChestplate)) {
+				//And that.
+				ItemStack backpack = ItemBackpack.getBackpack(event.player);
+				//Not really a good practice, I'd say.
+				ItemBackpack.getBackpackData(event.player).backpack = null;
+				if(stack != null) {
+					//Drop the armor if the player had some and decided to switch the setting anyways.
+					WorldUtils.dropStackFromEntity(event.player, stack, 4.0F);
+				}
+				event.player.setCurrentItemOrArmor(EquipmentSlot.CHEST, backpack);
+			}
+		}
 	}
 }

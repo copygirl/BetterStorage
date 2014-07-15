@@ -24,5 +24,4 @@ public abstract class ItemArmorBetterStorage extends ItemArmor {
 	public String getItemName() {
 		return ((name != null) ? name : (name = MiscUtils.getName(this)));
 	}
-	
 }
