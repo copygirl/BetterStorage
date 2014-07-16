@@ -218,6 +218,7 @@ public class TileLockableDoor extends TileBetterStorage {
 	public boolean renderAsNormalBlock() { return false; }
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public int getRenderType() {
 		return ClientProxy.lockableDoorRenderId;
 	}
