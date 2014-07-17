@@ -386,7 +386,7 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 			}
 		}
 
-		// Make sure the client has the same information as the server. It does not sync when backpackChestplate is disabled because there shall 
+		// Make sure the client has the same information as the server. It does not sync when backpackChestplate is disabled because there are no changes to the slot in that case.
 		if (!player.worldObj.isRemote && success && player instanceof EntityPlayerMP && BetterStorage.globalConfig.getBoolean(GlobalConfig.backpackChestplate)) {	
 			((EntityPlayerMP)player).playerNetServerHandler.sendPacket(new S2FPacketSetSlot(0, 6, backpack));
 		}

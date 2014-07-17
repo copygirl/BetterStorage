@@ -12,8 +12,8 @@ I'd appreciate if you talk to me first. You can reach me on the forums, via
 [email](mailto:halfnerd.copygirl@gmail.com) or on [IRC](irc://irc.esper.net/#obsidian).
 
 If you want to work with or compile BetterStorage yourself, you will need to grab
-[Thaumcraft's API](http://www.minecraftforum.net/topic/2011841-/), as it's not included
-in this repository.
+[Thaumcraft's API](http://www.minecraftforum.net/topic/2011841-/) and [Inventory Tweak's API](https://github.com/Kobata/inventory-tweaks/tree/develop/src/main/java/invtweaks/api), as 
+they are both not included in this repository.
 
 Localizations
 -------------

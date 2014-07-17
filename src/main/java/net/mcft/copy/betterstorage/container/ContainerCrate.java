@@ -1,5 +1,6 @@
 package net.mcft.copy.betterstorage.container;
 
+import invtweaks.api.container.InventoryContainer;
 import net.mcft.copy.betterstorage.inventory.InventoryCratePlayerView;
 import net.mcft.copy.betterstorage.tile.crate.CratePileData;
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,6 +12,7 @@ import net.minecraft.network.play.server.S2FPacketSetSlot;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+@InventoryContainer
 public class ContainerCrate extends ContainerBetterStorage {
 	
 	private InventoryCratePlayerView playerView;
