@@ -1,5 +1,7 @@
 package net.mcft.copy.betterstorage.entity;
 
+import java.util.IdentityHashMap;
+
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.content.BetterStorageItems;
 import net.mcft.copy.betterstorage.content.BetterStorageTiles;
@@ -20,16 +22,14 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 
-// Note to anyone reading this:
-// First of all, this is more or less a "secret" feature in BetterStorage. If you
-// found this, please don't ruin the surprise for others by telling them about it.
-// Second, if you do talk about it, please don't call the mob "Frienderman", it's
-// just the name of the class. It's just a friendly enderman with a backpack.
+// In case anyone reads this: Even though this class is called "Frienderman"
+// I would prefer it if you called the mob "friendly enderman". In my opinion,
+// "Frienderman" implies friendship, whereas this mob is just friendly.
 
 public class EntityFrienderman extends EntityEnderman {
 	
-	private static final boolean[] friendermanCarriable = new boolean[4096];
-	static { friendermanCarriable[Block.getIdFromBlock(Blocks.ender_chest)] = true; }
+	public static IdentityHashMap<Block, Boolean> friendermanCarriable = new IdentityHashMap<Block, Boolean>(1);
+	static { friendermanCarriable.put(Blocks.ender_chest, true); }
 	
 	public EntityFrienderman(World world) {
 		super(world);
@@ -87,27 +87,34 @@ public class EntityFrienderman extends EntityEnderman {
 	
 	@Override
 	public void onLivingUpdate() {
-		
-		boolean[] carriable = ReflectionUtils.get(EntityEnderman.class, null, "field_70827_d", "carriableBlocks");
-		ReflectionUtils.set(EntityEnderman.class, null, "field_70827_d", "carriableBlocks", friendermanCarriable);
+		if (worldObj.isRemote) {
+			super.onLivingUpdate();
+			return;
+		}
 		
 		int x = (int)Math.floor(posX);
-		int y = (int)(posY + 0.1);
+		int y = (int)(posY + 0.6);
 		int z = (int)Math.floor(posZ);
 		
 		GameRules rules = worldObj.getGameRules();
 		String ruleBefore = rules.getGameRuleStringValue("mobGriefing");
 		boolean ruleChanged = false;
-		boolean hadEnderChest = (func_146080_bZ() == Blocks.ender_chest);
-		boolean hasArmor = (getEquipmentInSlot(EquipmentSlot.CHEST) != null);
-		boolean canMoveStuff = ((func_146080_bZ() != null) ^ (worldObj.isAirBlock(x, y, z) && hasArmor));
+		boolean hasEnderChest = (func_146080_bZ() == Blocks.ender_chest);
+		boolean hasBackpack = (getEquipmentInSlot(EquipmentSlot.CHEST) != null);
 		
-		if (hadEnderChest || !canMoveStuff) {
+		// Temporarily change the blocks which endermen can carry.
+		// TODO: Make a pull request to Forge which allows us to do this by overriding a method instead.
+		IdentityHashMap<Block, Boolean> carriable = ReflectionUtils.get(EntityEnderman.class, null, "carriable", "");
+		ReflectionUtils.set(EntityEnderman.class, null, "carriable", "", friendermanCarriable);
+		
+		// Temporarily change mobGriefing gamerule to allow pickup and
+		// prevent dropping of enderchests regardless of the gamerule.
+		if (hasEnderChest) {
 			if (ruleBefore.equalsIgnoreCase("true")) {
 				rules.setOrCreateGameRule("mobGriefing", "false");
 				ruleChanged = true;
 			}
-		} else if (canMoveStuff) {
+		} else if (hasBackpack && worldObj.isAirBlock(x, y, z)) {
 			if (ruleBefore.equalsIgnoreCase("false")) {
 				rules.setOrCreateGameRule("mobGriefing", "true");
 				ruleChanged = true;
@@ -116,11 +123,13 @@ public class EntityFrienderman extends EntityEnderman {
 		
 		super.onLivingUpdate();
 		
+		// Reset carriable blocks and gamerule.
+		ReflectionUtils.set(EntityEnderman.class, null, "carriable", "", carriable);
 		if (ruleChanged)
 			rules.setOrCreateGameRule("mobGriefing", ruleBefore);
 		
-		if (!worldObj.isRemote && !hadEnderChest &&
-		    (func_146080_bZ() == Blocks.ender_chest)) {
+		// If ender chest was picked up, remove ender backpack and place it on the ground.
+		if (!hasEnderChest && (func_146080_bZ() == Blocks.ender_chest)) {
 			setCurrentItemOrArmor(3, null);
 			worldObj.setBlock(x, y, z, BetterStorageTiles.enderBackpack, RandomUtils.getInt(2, 6), 3);
 			WorldUtils.get(worldObj, x, y, z, TileEntityBackpack.class).stack =
@@ -133,7 +142,5 @@ public class EntityFrienderman extends EntityEnderman {
 					worldObj, px, py, pz, 256);
 			worldObj.playSoundEffect(px, py, pz, "mob.endermen.portal", 1.0F, 1.0F);
 		}
-		
-		ReflectionUtils.set(EntityEnderman.class, null, "field_70827_d", "carriableBlocks", carriable);
 	}
 }
