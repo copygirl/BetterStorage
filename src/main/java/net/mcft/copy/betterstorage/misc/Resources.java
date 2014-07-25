@@ -8,8 +8,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 public final class Resources {
 	
 	public static final ResourceLocation textureEmpty  = new BetterStorageResource("textures/empty.png");
-	public static final ResourceLocation enchantedItem = new ResourceLocation("minecraft", "textures/misc/enchanted_item_glint.png");
-	
 	public static final ResourceLocation enchantedEffect = new ResourceLocation("textures/misc/enchanted_item_glint.png");
 	
 	public static final ResourceLocation containerCrate           = new BetterStorageResource("textures/gui/crate.png");

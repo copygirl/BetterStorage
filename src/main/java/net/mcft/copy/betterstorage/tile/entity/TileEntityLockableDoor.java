@@ -112,7 +112,7 @@ public class TileEntityLockableDoor extends TileEntity implements ILockable, IHa
 	@Override
 	public void useUnlocked(EntityPlayer player) {
 		isOpen = !isOpen;
-		player.worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), 0, isOpen ? 1 : 0);
+		worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), 0, isOpen ? 1 : 0);
 		updateLockPosition();
 	}
 
