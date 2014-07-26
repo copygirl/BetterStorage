@@ -16,10 +16,13 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import vazkii.botania.api.mana.ILaputaImmobile;
+import cpw.mods.fml.common.Optional.Interface;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class TileCrate extends TileContainerBetterStorage {
+@Interface(modid = "Botania", iface = "vazkii.botania.api.mana.ILaputaImmobile", striprefs = true)
+public class TileCrate extends TileContainerBetterStorage implements ILaputaImmobile{
 	
 	private ConnectedTexture texture = new ConnectedTextureCrate();
 	
@@ -87,5 +90,9 @@ public class TileCrate extends TileContainerBetterStorage {
 			return (crate.getID() == connectedCrate.getID());
 		}
 	}
-	
+
+	@Override
+	public boolean canMove(World world, int x, int y, int z) {
+		return false;
+	}
 }
