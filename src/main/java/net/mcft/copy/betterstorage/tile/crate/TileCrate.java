@@ -22,7 +22,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @Interface(modid = "Botania", iface = "vazkii.botania.api.mana.ILaputaImmobile", striprefs = true)
-public class TileCrate extends TileContainerBetterStorage implements ILaputaImmobile{
+public class TileCrate extends TileContainerBetterStorage implements ILaputaImmobile {
 	
 	private ConnectedTexture texture = new ConnectedTextureCrate();
 	
