@@ -1,0 +1,142 @@
+# Containers
+container.betterstorage.craftingStation=Arbejdsstation
+container.betterstorage.backpack=Rygsæk
+container.betterstorage.cardboardBox=Papkasse
+container.betterstorage.crate=Kasse
+container.betterstorage.enderBackpack=Ender-taske
+container.betterstorage.keyring=Nøglering
+container.betterstorage.locker=Pengeskab
+container.betterstorage.lockerLarge=Stort Pengeskab
+container.betterstorage.reinforcedChest=Sikret Kiste
+container.betterstorage.reinforcedChestLarge=Stor Sikret Kiste
+container.betterstorage.reinforcedLocker=Sikret Pengeskab
+container.betterstorage.reinforcedLockerLarge=Stort Sikret Pengeskab
+container.betterstorage.thaumcraftBackpack=Thaumaturge's Taske
+container.betterstorage.thaumiumChest=Thaumium Kiste
+container.betterstorage.thaumiumChestLarge=Stor Thaumium Kiste
+
+# Enchantments
+enchantment.betterstorage.key.lockpicking=Låsedirkning
+enchantment.betterstorage.key.morphing=Morphing
+enchantment.betterstorage.key.unlocking=Oplåsning
+enchantment.betterstorage.lock.persistance=Persistens
+enchantment.betterstorage.lock.security=Sikkerhed
+enchantment.betterstorage.lock.shock=Stød
+enchantment.betterstorage.lock.trigger=Udløsning
+
+# Entities
+entity.betterstorage.Frienderman.name=Enderman
+
+# Items
+item.betterstorage.bucketSlime.name=Slim i en Spand
+item.betterstorage.cardboardAxe.name=Papøkse
+item.betterstorage.cardboardBoots.name=Papstøver
+item.betterstorage.cardboardChestplate.name=Paptrøje
+item.betterstorage.cardboardHelmet.name=Paphjelm
+item.betterstorage.cardboardHoe.name=Paple
+item.betterstorage.cardboardLeggings.name=Papbukser
+item.betterstorage.cardboardPickaxe.name=Paphakke
+item.betterstorage.cardboardSheet.name=Pap
+item.betterstorage.cardboardShovel.name=Papskovl
+item.betterstorage.cardboardSword.name=Papsværd
+item.betterstorage.drinkingHelmet.name=Drikkehjelm
+item.betterstorage.key.name=Nøgle
+item.betterstorage.keyring.name=Nøglering
+item.betterstorage.lock.name=Lås
+item.betterstorage.masterKey.name=Mester Nøgle
+
+# Creative tab
+itemGroup.betterstorage=BetterStorage
+
+# Keys
+key.betterstorage.backpackOpen=[BetterStorage] Åben Taske
+key.betterstorage.drinkingHelmet=[BetterStorage] Brug Drikkehjelm
+
+# Container materials
+material.betterstorage.iron=Jern
+material.betterstorage.gold=Guld
+material.betterstorage.diamond=Diamand
+material.betterstorage.emerald=Smaragd
+material.betterstorage.copper=Kopper
+material.betterstorage.tin=Tin
+material.betterstorage.silver=Sølv
+material.betterstorage.steel=Stål
+material.betterstorage.zinc=Zink
+
+# Thaumcraft
+tc.research_name.betterstorage.magicstorage=Magisk Opbevaring
+tc.research_text.betterstorage.magicstorage=Fortryller dine containere
+tc.research_page.betterstorage.magicstorage.1=Tilføring af magi på en taske, vil gøre dens kvalitet bedre og den kan holde mere. Ting i den med reparer fortryllelsen vil stadig reparerer dem selv, men langsommere.<BR>En lignende ting er muligt ved at smide en jernkiste og en masse thaumium sammen, hvilket vil resulterer i en endnu mere holdbar kiste som også kan opbevare flere ting.
+
+# Blocks
+tile.betterstorage.craftingStation.name=Arbejdsstation
+tile.betterstorage.armorStand.name=Rustningsholder
+tile.betterstorage.backpack.cantEquip.backpack=Du har allerede en taske på.
+tile.betterstorage.backpack.cantEquip.chestplate=Du kan ikke tage taske på samtidig med en brystplade.
+tile.betterstorage.backpack.name=Taske
+tile.betterstorage.cardboardBox.name=Papkasse
+tile.betterstorage.crate.name=Kasse
+tile.betterstorage.enderBackpack.name=Ender-taske
+tile.betterstorage.flintBlock.name=Flintblok
+tile.betterstorage.locker.name=Pengeskab
+tile.betterstorage.reinforcedChest.name=Sikret Kiste
+tile.betterstorage.reinforcedChest.name.full=Sikret %MATERIAL% Kiste
+tile.betterstorage.reinforcedLocker.name=Sikret Pengeskab
+tile.betterstorage.reinforcedLocker.name.full=Sikret %MATERIAL% Pengeskab
+tile.betterstorage.thaumcraftBackpack.name=Thaumaturge's Taske
+tile.betterstorage.thaumiumChest.name=Thaumium Kiste
+tile.betterstorage.lockableDoor.name=Låst Jerndør
+
+# Tooltips
+tooltip.betterstorage.backpack.bound=Bundet taske.
+tooltip.betterstorage.backpack.containsItems=Indeholder ting.
+tooltip.betterstorage.backpack.equipHint=Placer og ødelæg#mens du sniger for at tage på.
+tooltip.betterstorage.backpack.equipHint.extended=Snig og ødelæg for at tage på.#Snig og højreklik jorden#med tom hand for at tage på.
+tooltip.betterstorage.backpack.openHint=Tryk %KEY% for at åbne når du har den på.
+tooltip.betterstorage.backpack.unequipHint=Snig og højreklik jorden#med tom hånd for at tage af.
+tooltip.betterstorage.backpack.unequipHint.extended=%INFO% Snig og højreklik jorden#med tom hånd for at tage af.
+tooltip.betterstorage.backpack.used=Bliver brugt at en spiller.
+tooltip.betterstorage.bucketSlime.more.1=1 effekt mere ...
+tooltip.betterstorage.bucketSlime.more.x=%X% effekter mere ...
+tooltip.betterstorage.cardboardBox.useHint=Engangs portabel opbevaring.
+tooltip.betterstorage.cardboardBox.useHint.reusable=Genanvendelig portabel opbevaring.
+tooltip.betterstorage.drinkingHelmet.craftHint=Lav med en potion på en af sidderne.
+tooltip.betterstorage.drinkingHelmet.useHint=Tryk %KEY% for at tage en slurk.
+tooltip.betterstorage.drinkingHelmet.uses=Slurke tilbage: %USES%
+
+# Config
+config.betterstorage.category.item=Ting
+config.betterstorage.category.item.tooltip=Vælg om en ting er aktiv.
+config.betterstorage.category.tile=Blokke
+config.betterstorage.category.tile.tooltip=Vælg om en blok er aktiv.
+config.betterstorage.category.enchantment=Fortryldelser
+config.betterstorage.category.enchantment.tooltip=Vælg IDerne for fortryldelser
+
+config.betterstorage.general.reinforcedColumns=Sikrede kolonner
+config.betterstorage.general.reinforcedColumns.tooltip=Antallet af kolonner i sikrede kister og pengeskabe. Gyldige værdier er 9, 11 og 13.
+config.betterstorage.general.enableCrateInventoryInterface=Kasse Inventar Grænseflade
+config.betterstorage.general.enableCrateInventoryInterface.tooltip=Hvis slået til, viser et specielt vindue af blokke, så ting kan blive flyttet ind og ud af automatiserede systemer.
+config.betterstorage.general.enableCrateStorageInterface=Kasse Opbevarings Grænseflade
+config.betterstorage.general.enableCrateStorageInterface.tooltip=Hvis slået fra, forhindre mods i at bruge kassers speciele opbevarings grænseflade(som Applied Energistics).
+config.betterstorage.general.backpackChestplate=Taske Brystplade
+config.betterstorage.general.backpackChestplate.tooltip=Hvis slået fra, tasker tager ikke brystpladens plads.
+config.betterstorage.general.backpackRows=Taske Rækker
+config.betterstorage.general.backpackRows.tooltip=Antal af rækker i taske.
+config.betterstorage.general.enableBackpackOpen=Taske Åben
+config.betterstorage.general.enableBackpackOpen.tooltip=Tillader tasker, man har på, at blive åbnet ved at trykke på en knap.
+config.betterstorage.general.enableBackpackInteraction=Taske Interaktion
+config.betterstorage.general.enableBackpackInteraction.tooltip=Tillader tasker, man har på, at blive åbnet af andre spillere.
+config.betterstorage.general.dropBackpackOnDeath=Smid Taske
+config.betterstorage.general.dropBackpackOnDeath.tooltip=Hvis slået til, smider tasken som en block i stedet for at kaste indholdet ud over det hele.
+config.betterstorage.general.cardboardBoxRows=Papkasse Rækker
+config.betterstorage.general.cardboardBoxRows.tooltip=Antallet af rækker i papkasser.
+config.betterstorage.general.cardboardBoxReusable=Papkasse Genbrugelighed
+config.betterstorage.general.cardboardBoxReusable.tooltip=Hvis slået til, papkasser kan blive flyttet rundt hele tiden, i stedet for bare en gang.
+config.betterstorage.general.enableStationAutoCrafting=Arbejdsstation Automatisk Fremstilling
+config.betterstorage.general.enableStationAutoCrafting.tooltip=Hvis slået til, automatiserede systemer kan trække ud af Arbejdsstationer og derfor auto-fremstille ting.
+config.betterstorage.general.stationAutocraftDelay=Automatisk Fremstilling Ventetid
+config.betterstorage.general.stationAutocraftDelay.tooltip=Ventetid mellem opskrifter der bliver auto-fremstillet på Arbejdsstationen, i ticks.
+config.betterstorage.general.enableHelpTooltips=Værktøjstip
+config.betterstorage.general.enableHelpTooltips.tooltip=Hvis slået til, viser værktøjstip på nogle ting for at hjælpe spillere som er nye til moddet.
+config.betterstorage.general.enableWarningMessages=Debug Beskeder
+config.betterstorage.general.enableWarningMessages.tooltip=Hvis slået fra, forhindre bestemte advarsler i at blivet logget til konsolen.
