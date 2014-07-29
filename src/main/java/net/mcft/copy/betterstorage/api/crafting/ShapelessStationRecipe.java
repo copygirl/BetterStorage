@@ -39,7 +39,7 @@ public class ShapelessStationRecipe implements IStationRecipe {
 	// IStationRecipe implementation
 	
 	@Override
-	public StationCrafting checkMatch(ItemStack[] input) {
+	public StationCrafting checkMatch(ItemStack[] input, RecipeBounds bounds) {
 		IRecipeInput[] requiredInput = new IRecipeInput[9];
 		List<IRecipeInput> checklist = new LinkedList<IRecipeInput>(Arrays.asList(recipeInput));
 		inputLoop:

@@ -2,7 +2,6 @@ package net.mcft.copy.betterstorage.inventory;
 
 import java.util.List;
 
-import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.api.ICrateWatcher;
 import net.mcft.copy.betterstorage.config.GlobalConfig;
 import net.mcft.copy.betterstorage.misc.Constants;

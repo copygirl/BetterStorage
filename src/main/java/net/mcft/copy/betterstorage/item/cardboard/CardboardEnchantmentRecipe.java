@@ -5,6 +5,7 @@ import java.util.Map;
 
 import net.mcft.copy.betterstorage.api.crafting.IRecipeInput;
 import net.mcft.copy.betterstorage.api.crafting.IStationRecipe;
+import net.mcft.copy.betterstorage.api.crafting.RecipeBounds;
 import net.mcft.copy.betterstorage.api.crafting.RecipeInputItemStack;
 import net.mcft.copy.betterstorage.api.crafting.StationCrafting;
 import net.mcft.copy.betterstorage.utils.StackUtils;
@@ -15,7 +16,7 @@ import net.minecraft.item.ItemStack;
 public class CardboardEnchantmentRecipe implements IStationRecipe {
 	
 	@Override
-	public StationCrafting checkMatch(ItemStack[] input) {
+	public StationCrafting checkMatch(ItemStack[] input, RecipeBounds bounds) {
 		
 		// Quick check if input matches the recipe.
 		

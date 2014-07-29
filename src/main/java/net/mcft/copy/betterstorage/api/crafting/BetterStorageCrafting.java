@@ -18,8 +18,9 @@ public final class BetterStorageCrafting {
 	
 	/** Creates and returns a crafting matching the input, or null if none was found. */
 	public static StationCrafting findMatchingStationCrafting(ItemStack[] input) {
+		RecipeBounds bounds = new RecipeBounds(input);
 		for (IStationRecipe recipe : recipes) {
-			StationCrafting crafting = recipe.checkMatch(input);
+			StationCrafting crafting = recipe.checkMatch(input, bounds);
 			if (crafting != null) return crafting;
 		}
 		return null;

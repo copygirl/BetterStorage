@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import net.mcft.copy.betterstorage.api.crafting.IRecipeInput;
 import net.mcft.copy.betterstorage.api.crafting.IStationRecipe;
+import net.mcft.copy.betterstorage.api.crafting.RecipeBounds;
 import net.mcft.copy.betterstorage.api.crafting.RecipeInputItemStack;
 import net.mcft.copy.betterstorage.api.crafting.RecipeInputOreDict;
 import net.mcft.copy.betterstorage.api.crafting.StationCrafting;
@@ -18,7 +19,7 @@ public class CardboardRepairRecipe implements IStationRecipe {
 	private static final IRecipeInput sheetUnused = new RecipeInputOreDict("sheetCardboard", 0);
 	
 	@Override
-	public StationCrafting checkMatch(ItemStack[] input) {
+	public StationCrafting checkMatch(ItemStack[] input, RecipeBounds bounds) {
 		
 		// Quick check if input matches the recipe.
 		

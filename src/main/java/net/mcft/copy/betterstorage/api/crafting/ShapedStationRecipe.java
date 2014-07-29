@@ -75,6 +75,9 @@ public class ShapedStationRecipe implements IStationRecipe {
 		recipeWidth = width;
 		recipeHeight = height;
 	}
+	public ShapedStationRecipe(ItemStack output, Object... input) {
+		this(new ItemStack[]{ null, null, null, null, output }, input);
+	}
 	
 	public ShapedStationRecipe setRequiredExperience(int experience) {
 		requiredExperience = experience;
@@ -88,36 +91,23 @@ public class ShapedStationRecipe implements IStationRecipe {
 	// IStationRecipe implementation
 	
 	@Override
-	public StationCrafting checkMatch(ItemStack[] input) {
-		// Find out boundaries of items in input.
-		int minX = 0, maxX = 2, minY = 0, maxY = 2;
-		for (int x = minX; x <= maxX; x++)
-			for (int y = minY; y <= maxY; y++)
-				if (input[x + y * 3] != null) { minX = x; break; }
-		for (int x = maxX; x > minX; x++)
-			for (int y = minY; y <= maxY; y++)
-				if (input[x + y * 3] != null) { maxX = x; break; }
-		for (int y = minY; y <= maxY; y++)
-			for (int x = minX; x <= maxX; x++)
-				if (input[x + y * 3] != null) { minY = y; break; }
-		for (int y = maxY; y > minY; y++)
-			for (int x = minX; x <= maxX; x++)
-				if (input[x + y * 3] != null) { maxY = y; break; }
-		
+	public StationCrafting checkMatch(ItemStack[] input, RecipeBounds bounds) {
 		// Check if boundaries match recipe size.
-		if ((recipeWidth  != (maxX - minX + 1)) ||
-		    (recipeHeight != (maxY - minY + 1))) return null;
+		if ((recipeWidth  != bounds.getWidth()) ||
+		    (recipeHeight != bounds.getHeight())) return null;
 		
 		IRecipeInput[] requiredInput = new IRecipeInput[9];
 		for (int y = 0; y < recipeHeight; y++) {
 			System.arraycopy(recipeInput, y * recipeWidth, requiredInput,
-			                minX + (minY + y) * 3, recipeWidth);
+			                bounds.minX + (bounds.minY + y) * 3, recipeWidth);
 			for (int x = 0; x < recipeWidth; x++) {
-				int adjustedIndex = (minX + x) + (minY + y) * 3;
+				int adjustedIndex = (bounds.minX + x) + (bounds.minY + y) * 3;
 				IRecipeInput recipeStack = recipeInput[x + y * recipeWidth];
 				ItemStack inputStack = input[adjustedIndex];
-				if (!recipeStack.matches(inputStack) ||
-				    (inputStack.stackSize < recipeStack.getAmount())) return null;
+				if ((recipeStack == null) ? (inputStack != null)
+						: (!recipeStack.matches(inputStack) ||
+						   (inputStack.stackSize < recipeStack.getAmount())))
+					return null;
 			}
 		}
 		return new StationCrafting(recipeOutput, requiredInput, requiredExperience, craftingTime);
