@@ -85,6 +85,7 @@ tile.betterstorage.reinforcedLocker.name=Укреплённый шкаф
 tile.betterstorage.reinforcedLocker.name.full=Укреплённый %MATERIAL% шкаф
 tile.betterstorage.thaumcraftBackpack.name=Рюкзак тауматурга
 tile.betterstorage.thaumiumChest.name=Таум-сундук
+tile.betterstorage.lockableDoor.name=Закрытая железная дверь
 
 # Tooltips
 tooltip.betterstorage.backpack.bound=Связанный рюкзак.
@@ -97,10 +98,45 @@ tooltip.betterstorage.backpack.unequipHint.extended=%INFO% Присядьте и
 tooltip.betterstorage.backpack.used=В настоящее время используется игроком.
 tooltip.betterstorage.bucketSlime.more.1=Ещё 1 эффект ...
 tooltip.betterstorage.bucketSlime.more.x=Ещё %X% эффектовs ...
-tooltip.betterstorage.cardboardBox.more.1=Ещё 1 предмет ...
-tooltip.betterstorage.cardboardBox.more.x=Ещё %X% предметов ...
-tooltip.betterstorage.cardboardBox.useHint=One-time use portable storage.
-tooltip.betterstorage.cardboardBox.useHint.reusable=Reusable portable storage.
+tooltip.betterstorage.cardboardBox.useHint=Переносное хранилище одноразового использования.
+tooltip.betterstorage.cardboardBox.useHint.reusable=Переносное хранилище многоразового использования.
 tooltip.betterstorage.drinkingHelmet.craftHint=Создаётся с 2 зельями.
 tooltip.betterstorage.drinkingHelmet.useHint=Нажмите %KEY%, чтобы сделать глоток.
 tooltip.betterstorage.drinkingHelmet.uses=Осталось глотков: %USES%
+
+# Config
+config.betterstorage.category.item=Предметы
+config.betterstorage.category.item.tooltip=Изменение активности определённого предмета.
+config.betterstorage.category.tile=Блоки
+config.betterstorage.category.tile.tooltip=Изменение активности определённого блока.
+config.betterstorage.category.enchantment=Зачарования
+config.betterstorage.category.enchantment.tooltip=Изменение ID для зачарований
+
+config.betterstorage.general.reinforcedColumns=Укреплённые столбики
+config.betterstorage.general.reinforcedColumns.tooltip=Число столбиков в укреплённых сундуках и шкафах. Доступные значения 9, 11 и 13.
+config.betterstorage.general.enableCrateInventoryInterface=Интерфейс инвентаря ящика
+config.betterstorage.general.enableCrateInventoryInterface.tooltip=Если включен, предоставляет специальный вид блока ящикам, поэтому предметы могут быть помещены внутрь и вытащены автоматизированными системами.
+config.betterstorage.general.enableCrateStorageInterface=Интерфейс хранилища ящика
+config.betterstorage.general.enableCrateStorageInterface.tooltip=Если отключен, запрещает модам использовать специальный интерфейс хранилища ящиков хранения (как в Applied Energistics).
+config.betterstorage.general.backpackChestplate=Рюкзак в слот кирасы
+config.betterstorage.general.backpackChestplate.tooltip=Если отключен, рюкзаки не занимают слот кирасы у игроков.
+config.betterstorage.general.backpackRows=Ряды в рюкзаке
+config.betterstorage.general.backpackRows.tooltip=Число рядов в рюкзаке.
+config.betterstorage.general.enableBackpackOpen=Открытие рюкзака
+config.betterstorage.general.enableBackpackOpen.tooltip=Позволяет открывать экипированные рюкзаки по нажатию кнопки.
+config.betterstorage.general.enableBackpackInteraction=Взаимодействие с рюкзаком
+config.betterstorage.general.enableBackpackInteraction.tooltip=Позволяет открывать экипированные рюкзаки другими игроками по нажатию ПКМ.
+config.betterstorage.general.dropBackpackOnDeath=Сброс рюкзака
+config.betterstorage.general.dropBackpackOnDeath.tooltip=Если включен, рюкзак сбрасывается как блок, вместо разброса предметов вокруг.
+config.betterstorage.general.cardboardBoxRows=Ряды в картонной коробке
+config.betterstorage.general.cardboardBoxRows.tooltip=Число рядов в картонной коробке.
+config.betterstorage.general.cardboardBoxReusable=Многократное использование картонной коробки
+config.betterstorage.general.cardboardBoxReusable.tooltip=Если включено, картонные коробки могут перемещаться бесконечно, вместо одного раза.
+config.betterstorage.general.enableStationAutoCrafting=Авто-создание в станции создания
+config.betterstorage.general.enableStationAutoCrafting.tooltip=Если включено, автоматизированные системы могут забирать предметы станций созданий и, следовательно, автоматически создавать предметы.
+config.betterstorage.general.stationAutocraftDelay=Задержка авто-создания
+config.betterstorage.general.stationAutocraftDelay.tooltip=Задержка между рецептами, которые будут созданы в станции создания, в тиках.
+config.betterstorage.general.enableHelpTooltips=Подсказки
+config.betterstorage.general.enableHelpTooltips.tooltip=Если включены, подсказки показываются на некоторых предметах, чтобы помочь игрокам, которые впервые играют с этим модом.
+config.betterstorage.general.enableWarningMessages=Отладочные сообщения
+config.betterstorage.general.enableWarningMessages.tooltip=Если отключены, предупреждающие сообщения не записываются в консоль.
