@@ -79,6 +79,7 @@ public class InventoryCraftingStation extends InventoryBetterStorage {
 	/** Called when an item is removed from the output
 	 *  slot while it doesn't store any real items. */
 	public void craft(EntityPlayer player) {
+		boolean hasRequirements = hasItemRequirements();
 		ICraftingSource source = new CraftingSourceTileEntity(entity, player);
 		currentCrafting.craft(source);
 		IRecipeInput[] requiredInput = currentCrafting.getCraftRequirements();
@@ -88,7 +89,7 @@ public class InventoryCraftingStation extends InventoryBetterStorage {
 		int requiredExperience = currentCrafting.getRequiredExperience();
 		if ((requiredExperience != 0) && (player != null) && !player.capabilities.isCreativeMode)
 			player.experienceLevel -= requiredExperience;
-		if (hasItemRequirements())
+		if (hasRequirements)
 			pullRequired(requiredInput, false);
 		outputIsReal = !outputEmpty();
 		progress = 0;
