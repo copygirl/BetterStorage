@@ -6,7 +6,7 @@ import java.util.Map.Entry;
 
 import net.minecraft.item.ItemStack;
 
-public class ShapedStationRecipe implements IStationRecipe {
+public class ShapedStationRecipe implements IStaticStationRecipe {
 	
 	public final IRecipeInput[] recipeInput;
 	public final ItemStack[] recipeOutput;
@@ -140,6 +140,26 @@ public class ShapedStationRecipe implements IStationRecipe {
 		int height = (maxY - minY + 1);
 		
 		return new int[]{ minX, minY, width, height };
+	}
+
+	@Override
+	public IRecipeInput[] getRecipeInput() {
+		return recipeInput;
+	}
+
+	@Override
+	public ItemStack[] getRecipeOutput() {
+		return recipeOutput;
+	}
+
+	@Override
+	public int getRequiredExperience() {
+		return requiredExperience;
+	}
+
+	@Override
+	public int getCraftingTime() {
+		return craftingTime;
 	}
 	
 }

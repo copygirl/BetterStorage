@@ -7,7 +7,7 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 
-public class ShapelessStationRecipe implements IStationRecipe {
+public class ShapelessStationRecipe implements IStaticStationRecipe {
 	
 	public final IRecipeInput[] recipeInput;
 	public final ItemStack[] recipeOutput;
@@ -58,4 +58,23 @@ public class ShapelessStationRecipe implements IStationRecipe {
 		return new StationCrafting(recipeOutput, recipeInput, requiredExperience, craftingTime);
 	}
 	
+	@Override
+	public IRecipeInput[] getRecipeInput() {
+		return recipeInput;
+	}
+
+	@Override
+	public ItemStack[] getRecipeOutput() {
+		return recipeOutput;
+	}
+
+	@Override
+	public int getRequiredExperience() {
+		return requiredExperience;
+	}
+
+	@Override
+	public int getCraftingTime() {
+		return craftingTime;
+	}
 }

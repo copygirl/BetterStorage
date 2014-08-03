@@ -3,6 +3,7 @@ package net.mcft.copy.betterstorage.addon;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.mcft.copy.betterstorage.addon.nei.NEIAddon;
 import net.mcft.copy.betterstorage.addon.thaumcraft.ThaumcraftAddon;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
@@ -14,6 +15,7 @@ public abstract class Addon {
 	
 	public static void initialize() {
 		if (Loader.isModLoaded("Thaumcraft")) new ThaumcraftAddon();
+		if (Loader.isModLoaded("NotEnoughItems")) new NEIAddon();
 	}
 	
 	public static void setupConfigsAll() {
