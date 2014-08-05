@@ -1,6 +1,5 @@
 package net.mcft.copy.betterstorage.addon.nei;
 
-
 import net.mcft.copy.betterstorage.addon.Addon;
 import net.mcft.copy.betterstorage.client.gui.GuiCraftingStation;
 import net.mcft.copy.betterstorage.content.BetterStorageTiles;
@@ -14,13 +13,20 @@ public class NEIAddon extends Addon {
 	public NEIAddon() {
 		super("NotEnoughItems");
 	}
-
+	
 	@Override
 	public void postInitialize() {	
 		
-		API.hideItem(new ItemStack(BetterStorageTiles.lockableDoor));
-		API.registerRecipeHandler(new NEIRecipeHandler());
+		NEIRecipeHandler handler = new NEIRecipeHandler();
+		API.registerRecipeHandler(handler);
+		API.registerUsageHandler(handler);
+		
 		API.registerGuiOverlay(GuiCraftingStation.class, Constants.modId + ".craftingStation");
-		API.registerGuiOverlayHandler(GuiCraftingStation.class, new DefaultOverlayHandler(), Constants.modId + ".craftingStation");
+		API.registerGuiOverlayHandler(GuiCraftingStation.class, new DefaultOverlayHandler(),
+		                              Constants.modId + ".craftingStation");
+		
+		API.hideItem(new ItemStack(BetterStorageTiles.lockableDoor));
+		
 	}
+	
 }

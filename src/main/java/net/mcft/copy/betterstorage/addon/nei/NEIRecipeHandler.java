@@ -2,67 +2,52 @@ package net.mcft.copy.betterstorage.addon.nei;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import net.mcft.copy.betterstorage.api.crafting.BetterStorageCrafting;
 import net.mcft.copy.betterstorage.api.crafting.IRecipeInput;
-import net.mcft.copy.betterstorage.api.crafting.IStaticStationRecipe;
 import net.mcft.copy.betterstorage.api.crafting.IStationRecipe;
-import net.mcft.copy.betterstorage.api.crafting.RecipeInputItemStack;
-import net.mcft.copy.betterstorage.api.crafting.RecipeInputOreDict;
-import net.mcft.copy.betterstorage.api.crafting.ShapedStationRecipe;
+import net.mcft.copy.betterstorage.api.crafting.RecipeBounds;
+import net.mcft.copy.betterstorage.api.crafting.StationCrafting;
 import net.mcft.copy.betterstorage.client.gui.GuiCraftingStation;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.misc.Resources;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 import org.lwjgl.opengl.GL11;
 
 import codechicken.lib.gui.GuiDraw;
+import codechicken.nei.NEIClientUtils;
+import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.RecipeInfo;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 
 public class NEIRecipeHandler extends TemplateRecipeHandler {
-
-	private static HashMap<RecipeInputItemStack, ArrayList<IStaticStationRecipe>> cachedRecipes = 
-			new HashMap<RecipeInputItemStack, ArrayList<IStaticStationRecipe>>();
 	
-	//Used because the recipes have to be cached after every other mod has loaded.
-	private static boolean initialized = false;
+	@Override
+	public String getRecipeName() { return "Crafting Station"; }
 	
-	private static void initialize() {
-		for (IStationRecipe recipe : BetterStorageCrafting.recipes) {
-			if (recipe instanceof IStaticStationRecipe) {
-				IStaticStationRecipe r2 = (IStaticStationRecipe) recipe;
-				for (ItemStack res : r2.getRecipeOutput()) {
-					if (res == null) continue;
-					ArrayList<IStaticStationRecipe> rlist = 
-							cachedRecipes.get(res) == null ? new ArrayList<IStaticStationRecipe>() : cachedRecipes.get(res);
-					rlist.add(r2);
-					cachedRecipes.put(new RecipeInputItemStack(res, true), rlist);
-				}
-			}
-		}
-	}
+	@Override
+	public String getOverlayIdentifier() { return Constants.modId + ".craftingStation"; }
+	
+	@Override
+	public Class<? extends GuiContainer> getGuiClass() { return GuiCraftingStation.class; }
+	
+	@Override
+	public String getGuiTexture() { return Resources.containerCraftingStation.toString(); }
 	
 	@Override
 	public void loadTransferRects() {
 		transferRects.add(new RecipeTransferRect(new Rectangle(71, 23, 24, 18), getOverlayIdentifier()));
 	}
-
+	
 	@Override
-	public String getRecipeName() {
-		return "Crafting Station";
-	}
-
-	@Override
-	public String getGuiTexture() {
-		return Resources.containerCraftingStation.toString();
+	public boolean hasOverlay(GuiContainer gui, Container container, int recipe) {
+		return (RecipeInfo.hasDefaultOverlay(gui, getOverlayIdentifier()) ||
+		        RecipeInfo.hasOverlayHandler(gui, getOverlayIdentifier()));
 	}
 	
 	@Override
@@ -71,139 +56,176 @@ public class NEIRecipeHandler extends TemplateRecipeHandler {
 		GuiDraw.changeTexture(getGuiTexture());
 		GuiDraw.drawTexturedModalRect(0, 0, 5, 11, 166, 64);
 	}
-
-	@Override
-	public boolean hasOverlay(GuiContainer gui, Container container, int recipe) {
-		return RecipeInfo.hasDefaultOverlay(gui, getOverlayIdentifier()) || RecipeInfo.hasOverlayHandler(gui, getOverlayIdentifier());
-	}
 	
 	@Override
-	public String getOverlayIdentifier() {
-		return Constants.modId + ".craftingStation";
-	}
-
-	@Override
-	public void drawExtras(int recipe) 
-	{
-		CachedCraftingStationRecipe cached = (CachedCraftingStationRecipe) arecipes.get(recipe);
-		if(cached.recipe.getRequiredExperience() > 0) {
-			String lvl = String.valueOf(cached.recipe.getRequiredExperience());
+	public void drawExtras(int recipe) {
+		super.drawExtras(recipe);
+		CachedStationRecipe cached = (CachedStationRecipe)arecipes.get(recipe);
+		if (cached.requiredExperience > 0) {
+			String lvl = String.valueOf(cached.requiredExperience);
 			int width = GuiDraw.fontRenderer.getStringWidth(lvl);
 			int x = 71 + 25 / 2 - width / 2;
 			GuiDraw.fontRenderer.drawString(lvl, x - 1, 10, 0);
 			GuiDraw.fontRenderer.drawString(lvl, x + 1, 10, 0);
 			GuiDraw.fontRenderer.drawString(lvl, x, 10 - 1, 0);
 			GuiDraw.fontRenderer.drawString(lvl, x, 10 + 1, 0);
-			GuiDraw.fontRenderer.drawString(lvl, x, 10, 0x80FF20);	
+			GuiDraw.fontRenderer.drawString(lvl, x, 10, 0x80FF20);
 		}
 		GL11.glColor4f(1, 1, 1, 1);
 		GuiDraw.changeTexture("textures/gui/container/furnace.png");
-		int delay = 20;//cached.recipe.getCraftingTime();
-		if(delay >= 20) {
-			drawProgressBar(72, 24, 176, 14, 24, 16, delay, 0);
-			int sec = (int)(delay * 5 / 100) % 60;
-			int min = (int)((delay * 5 / (100) / 60));
+		if (cached.craftingTime >= 20) {
+			drawProgressBar(72, 24, 176, 14, 24, 16, cached.craftingTime, 0);
+			int sec = cached.craftingTime * 5 / 100 % 60;
+			int min = ((cached.craftingTime * 5 / (100) / 60));
 			String s = String.format("%1$02d", min) + ":" + String.format("%1$02d", sec);
 			int width = GuiDraw.fontRenderer.getStringWidth(s);
 			int x = 71 + 25 / 2 - width / 2;
 			GuiDraw.fontRenderer.drawString(s, x, 45, 0x444444);
 		}
-		
-		super.drawExtras(recipe);
 	}
-
-	@Override
-	public void loadCraftingRecipes(ItemStack result) {
-		System.out.println(result);
-		for (RecipeInputItemStack input : cachedRecipes.keySet()) {
-			if(input.matches(result)) {
-				for (IStaticStationRecipe recipe : cachedRecipes.get(input)) {
-					arecipes.add(new CachedCraftingStationRecipe(recipe));
-				}
-			}
-		}
-	}
-
+	
 	@Override
 	public void loadCraftingRecipes(String outputId, Object... results) {
-		
-		if (!initialized) {
-			//Cache the recipes if they haven't been yet.
-			initialize();
-			initialized = true;
-		}
-		
-		if (outputId.equals("item")) loadCraftingRecipes((ItemStack) results[0]);
-		else if(outputId.equals(getOverlayIdentifier())) {
-			for (RecipeInputItemStack input : cachedRecipes.keySet()) {
-				for (IStaticStationRecipe recipe : cachedRecipes.get(input)) {
-					arecipes.add(new CachedCraftingStationRecipe(recipe));
-				}
-			}
-		}
+		if (outputId.equals(getOverlayIdentifier()))
+			arecipes.addAll(getRecipes());
+		else super.loadCraftingRecipes(outputId, results);
 	}
-
+	
 	@Override
-	public Class<? extends GuiContainer> getGuiClass() 
-	{
-		return GuiCraftingStation.class;
+	public void loadCraftingRecipes(ItemStack result) {
+		for (CachedStationRecipe recipe : getRecipes())
+			if (recipe.outputs(result))
+				arecipes.add(recipe);
 	}
-
-	public class CachedCraftingStationRecipe extends CachedRecipe {
-
-		int height = 3;
-		int width = 3;
-		
-		IStaticStationRecipe recipe;
-		List<PositionedStack> ingridients;
-		List<PositionedStack> output;
-		
-		public CachedCraftingStationRecipe(IStaticStationRecipe recipe) {
-			
-			this.recipe = recipe;
-			if (recipe instanceof ShapedStationRecipe) {
-				height = ((ShapedStationRecipe) recipe).recipeHeight;
-				width = ((ShapedStationRecipe) recipe).recipeWidth;
+	
+	@Override
+	public void loadUsageRecipes(ItemStack ingredient) {
+		for (CachedStationRecipe recipe : getRecipes())
+			if (recipe.uses(ingredient))
+				arecipes.add(recipe);
+	}
+	
+	@Override
+	public void onUpdate() {
+		if (!NEIClientUtils.shiftKey() && ((++cycleticks % 20) == 0))
+			for (CachedRecipe recipe : arecipes)
+				((CachedStationRecipe)recipe).cycle();
+	}
+	
+	private List<CachedStationRecipe> cachedRecipes = null;
+	public List<CachedStationRecipe> getRecipes() {
+		if (cachedRecipes == null) {
+			cachedRecipes = new ArrayList<CachedStationRecipe>();
+			for (IStationRecipe recipe : BetterStorageCrafting.recipes) {
+				List<IRecipeInput[]> sampleInput = recipe.getSampleInputs();
+				if (sampleInput == null) continue;
+				cachedRecipes.add(new CachedStationRecipe(recipe));
 			}
-			ingridients = new ArrayList<PositionedStack>();
+		}
+		return cachedRecipes;
+	}
+	
+	public class CachedStationRecipe extends CachedRecipe {
+		
+		private final IStationRecipe recipe;
+		
+		private final List<PositionedStack> ingridients = new ArrayList<PositionedStack>();
+		private final List<PositionedStack> output = new ArrayList<PositionedStack>();
+		
+		private final List<IRecipeInput[]> sampleInput;
+		private List<IRecipeInput> possibleInputs;
+		private List<ItemStack> possibleOutputs;
+		
+		private int requiredExperience;
+		private int craftingTime;
+		
+		int cycleIndex = 0;
+		
+		public CachedStationRecipe(IStationRecipe recipe) {
+			this.recipe = recipe;
+			sampleInput = recipe.getSampleInputs();
+			possibleInputs = recipe.getPossibleInputs();
+			possibleOutputs = recipe.getPossibleOutputs();
 			
-			outer:
-			for (int x = 0; x < width; x++) {
-				for (int y = 0; y < height; y++) {
-					int index = x + y * width;
-					if (index >= recipe.getRecipeInput().length) break outer;
-					IRecipeInput input = recipe.getRecipeInput()[index];
-					if (input instanceof RecipeInputItemStack) {
-						ingridients.add(new PositionedStack(((RecipeInputItemStack) input).stack, x * 18 + 12, y * 18 + 6));
-					} else if (input instanceof RecipeInputOreDict) {
-						ingridients.add(new PositionedStack(OreDictionary.getOres(((RecipeInputOreDict) input).name), x * 18 + 12, y * 18 + 6));
-					}
+			if (possibleInputs == null) {
+				possibleInputs = new ArrayList<IRecipeInput>();
+				for (IRecipeInput[] inputArray : sampleInput)
+					for (IRecipeInput input : inputArray)
+						if (input != null)
+							possibleInputs.add(input);
+			}
+			
+			if (possibleOutputs == null) {
+				possibleOutputs = new ArrayList<ItemStack>();
+				for (IRecipeInput[] inputArray : sampleInput) {
+					ItemStack[] stackArray = new ItemStack[inputArray.length];
+					for (int i = 0; i < inputArray.length; i++)
+						if (inputArray[i] != null)
+							stackArray[i] = inputArray[i].getPossibleMatches().get(0);
+					for (ItemStack stack : recipe.checkMatch(stackArray, new RecipeBounds(stackArray)).getOutput())
+						if (stack != null)
+							possibleOutputs.add(stack);
 				}
 			}
 			
-			output = new ArrayList<PositionedStack>();
-			for (int i = 0; i < 9; i++) {
-				if(i >= recipe.getRecipeOutput().length) break;
-				ItemStack stack = recipe.getRecipeOutput()[i];
-				if(stack == null) continue;
-				int i2 = i++;
-				output.add(new PositionedStack(stack, (i2 - i2 / 3 * 3) * 18 + 102, i2 / 3 * 18 + 6));
-			}
+			cycle();
 		}
-
-		@Override
-		public List<PositionedStack> getIngredients() {
-			return ingridients;
+		
+		public void cycle() {
+			cycleIndex = (cycleIndex + 1) % sampleInput.size();
+			IRecipeInput[] inputArray = sampleInput.get(cycleIndex);
+			ItemStack[] stackArray = new ItemStack[inputArray.length];
+			
+			ingridients.clear();
+			for (int x = 0; x < 3; x++)
+				for (int y = 0; y < 3; y++) {
+					int index = x + y * 3;
+					IRecipeInput input = inputArray[index];
+					if (input == null) continue;
+					List<ItemStack> possibleMatches = input.getPossibleMatches();
+					ingridients.add(new PositionedStack(possibleMatches, x * 18 + 12, y * 18 + 6));
+					stackArray[index] = possibleMatches.get(0);
+				}
+			
+			StationCrafting crafting = recipe.checkMatch(stackArray, new RecipeBounds(stackArray));
+			if (crafting == null)
+				throw new Error("Recipe " + recipe.getClass().getSimpleName() + " didn't match sample input.");
+			requiredExperience = crafting.getRequiredExperience();
+			craftingTime = crafting.getCraftingTime();
+			
+			output.clear();
+			ItemStack[] outputArray = crafting.getOutput();
+			for (int x = 0; x < 3; x++)
+				for (int y = 0; y < 3; y++)
+					if (((x + y * 3) < outputArray.length) &&
+					    (outputArray[x + y * 3] != null))
+						output.add(new PositionedStack(outputArray[x + y * 3], x * 18 + 102, y * 18 + 6));
 		}
 		
 		@Override
-		public List<PositionedStack> getOtherStacks() {
-			return output;
-		}
+		public PositionedStack getResult() { return null; }
 		
 		@Override
-		public PositionedStack getResult() {
-			return null;
+		public List<PositionedStack> getIngredients() { return getCycledIngredients(cycleticks / 20, ingridients); }
+		
+		@Override
+		public List<PositionedStack> getOtherStacks() { return output; }
+		
+		
+		public boolean outputs(ItemStack result) {
+			for (ItemStack output : possibleOutputs)
+				if (NEIServerUtils.areStacksSameTypeCrafting(output, result))
+					return true;
+			return false;
 		}
+		
+		public boolean uses(ItemStack ingredient) {
+			for (IRecipeInput input : possibleInputs)
+				if (input.matches(ingredient))
+					return true;
+			return false;
+		}
+		
 	}
+	
 }

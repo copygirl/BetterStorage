@@ -1,8 +1,14 @@
 package net.mcft.copy.betterstorage.api.crafting;
 
+import java.util.Arrays;
+import java.util.List;
+
 import net.mcft.copy.betterstorage.api.BetterStorageUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.oredict.OreDictionary;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class RecipeInputItemStack extends RecipeInputBase {
 	
@@ -29,5 +35,15 @@ public class RecipeInputItemStack extends RecipeInputBase {
 	
 	@Override
 	public boolean matches(ItemStack stack) { return BetterStorageUtils.wildcardMatch(this.stack, stack); }
+	
+	private List<ItemStack> list = null;
+	@Override
+	@SideOnly(Side.CLIENT)
+	public List<ItemStack> getPossibleMatches() {
+		ItemStack stack = this.stack.copy();
+		if (stack.getItemDamage() == OreDictionary.WILDCARD_VALUE)
+			stack.setItemDamage(0);
+		return Arrays.asList(stack);
+	}
 	
 }

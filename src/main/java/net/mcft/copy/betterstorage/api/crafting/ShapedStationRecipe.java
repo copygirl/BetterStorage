@@ -1,12 +1,16 @@
 package net.mcft.copy.betterstorage.api.crafting;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import net.minecraft.item.ItemStack;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
-public class ShapedStationRecipe implements IStaticStationRecipe {
+public class ShapedStationRecipe implements IStationRecipe {
 	
 	public final IRecipeInput[] recipeInput;
 	public final ItemStack[] recipeOutput;
@@ -88,6 +92,26 @@ public class ShapedStationRecipe implements IStaticStationRecipe {
 		return this;
 	}
 	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public List<IRecipeInput[]> getSampleInputs() {
+		IRecipeInput[] input;
+		if ((recipeWidth != 3) || (recipeHeight != 3)) {
+			input = new IRecipeInput[9];
+			for (int y = 0; y < recipeHeight; y++)
+				System.arraycopy(recipeInput, y * recipeWidth, input, y * 3, recipeWidth);
+		} else input = recipeInput;
+		return Arrays.asList(new IRecipeInput[][]{ input });
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public List<IRecipeInput> getPossibleInputs() { return null; }
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public List<ItemStack> getPossibleOutputs() { return null; }
+	
 	// IStationRecipe implementation
 	
 	@Override
@@ -140,26 +164,6 @@ public class ShapedStationRecipe implements IStaticStationRecipe {
 		int height = (maxY - minY + 1);
 		
 		return new int[]{ minX, minY, width, height };
-	}
-
-	@Override
-	public IRecipeInput[] getRecipeInput() {
-		return recipeInput;
-	}
-
-	@Override
-	public ItemStack[] getRecipeOutput() {
-		return recipeOutput;
-	}
-
-	@Override
-	public int getRequiredExperience() {
-		return requiredExperience;
-	}
-
-	@Override
-	public int getCraftingTime() {
-		return craftingTime;
 	}
 	
 }

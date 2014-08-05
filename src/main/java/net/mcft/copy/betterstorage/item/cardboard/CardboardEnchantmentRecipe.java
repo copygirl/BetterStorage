@@ -1,17 +1,27 @@
 package net.mcft.copy.betterstorage.item.cardboard;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
+import net.mcft.copy.betterstorage.api.crafting.BetterStorageCrafting;
 import net.mcft.copy.betterstorage.api.crafting.IRecipeInput;
 import net.mcft.copy.betterstorage.api.crafting.IStationRecipe;
 import net.mcft.copy.betterstorage.api.crafting.RecipeBounds;
 import net.mcft.copy.betterstorage.api.crafting.RecipeInputItemStack;
 import net.mcft.copy.betterstorage.api.crafting.StationCrafting;
+import net.mcft.copy.betterstorage.content.BetterStorageItems;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils.StackEnchantment;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemEnchantedBook;
 import net.minecraft.item.ItemStack;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class CardboardEnchantmentRecipe implements IStationRecipe {
 	
@@ -88,6 +98,51 @@ public class CardboardEnchantmentRecipe implements IStationRecipe {
 		return new StationCrafting(output, requiredInput, experienceCost);
 		
 	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public List<IRecipeInput[]> getSampleInputs() {
+		return Arrays.asList(
+				makeInput(BetterStorageItems.cardboardHelmet, BetterStorageItems.cardboardChestplate, null,
+				          BetterStorageItems.cardboardLeggings, BetterStorageItems.cardboardBoots,
+				          makeEnchantedBook(Enchantment.protection, 4)),
+				makeInput(null, BetterStorageItems.cardboardPickaxe, null,
+				          null, BetterStorageItems.cardboardShovel, makeEnchantedBook(Enchantment.efficiency, 5),
+				          null, BetterStorageItems.cardboardAxe),
+				makeInput(null, null, null,
+				          BetterStorageItems.cardboardSword,
+				          BetterStorageItems.cardboardAxe,
+				          makeEnchantedBook(Enchantment.sharpness, 5)),
+				makeInput(BetterStorageItems.cardboardChestplate, BetterStorageItems.cardboardLeggings, null,
+				          BetterStorageItems.cardboardSword, BetterStorageItems.cardboardPickaxe,
+				          makeEnchantedBook(Enchantment.unbreaking, 3),
+				          BetterStorageItems.cardboardShovel, BetterStorageItems.cardboardHoe)
+			);
+	}
+	private IRecipeInput[] makeInput(Object... obj) {
+		IRecipeInput[] input = new IRecipeInput[9];
+		for (int i = 0; i < obj.length; i++)
+			if (obj[i] != null)
+				input[i] = BetterStorageCrafting.makeInput(obj[i]);
+		return input;
+	}
+	private ItemStack makeEnchantedBook(Enchantment ench, int level) {
+		ItemStack book = new ItemStack(Items.enchanted_book);
+		((ItemEnchantedBook)book.getItem()).addEnchantment(book, new EnchantmentData(ench, level));
+		return book;
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public List<IRecipeInput> getPossibleInputs() {
+		return Arrays.<IRecipeInput>asList(
+				RecipeInputCardboard.instance,
+				RecipeInputEnchantedBook.instance);
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public List<ItemStack> getPossibleOutputs() { return Collections.emptyList(); }
 	
 	// Utility functions
 	

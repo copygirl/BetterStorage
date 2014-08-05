@@ -6,8 +6,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
-public class ShapelessStationRecipe implements IStaticStationRecipe {
+public class ShapelessStationRecipe implements IStationRecipe {
 	
 	public final IRecipeInput[] recipeInput;
 	public final ItemStack[] recipeOutput;
@@ -36,6 +38,22 @@ public class ShapelessStationRecipe implements IStaticStationRecipe {
 		return this;
 	}
 	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public List<IRecipeInput[]> getSampleInputs() {
+		IRecipeInput[] input = new IRecipeInput[9];
+		System.arraycopy(recipeInput, 0, input, 0, recipeInput.length);
+		return Arrays.asList(new IRecipeInput[][]{ input });
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public List<IRecipeInput> getPossibleInputs() { return null; }
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public List<ItemStack> getPossibleOutputs() { return null; }
+	
 	// IStationRecipe implementation
 	
 	@Override
@@ -58,23 +76,4 @@ public class ShapelessStationRecipe implements IStaticStationRecipe {
 		return new StationCrafting(recipeOutput, recipeInput, requiredExperience, craftingTime);
 	}
 	
-	@Override
-	public IRecipeInput[] getRecipeInput() {
-		return recipeInput;
-	}
-
-	@Override
-	public ItemStack[] getRecipeOutput() {
-		return recipeOutput;
-	}
-
-	@Override
-	public int getRequiredExperience() {
-		return requiredExperience;
-	}
-
-	@Override
-	public int getCraftingTime() {
-		return craftingTime;
-	}
 }

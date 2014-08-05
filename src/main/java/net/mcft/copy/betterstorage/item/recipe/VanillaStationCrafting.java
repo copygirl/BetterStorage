@@ -22,6 +22,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class VanillaStationCrafting extends StationCrafting {
 	
@@ -85,6 +87,10 @@ public class VanillaStationCrafting extends StationCrafting {
 			stackList[slot] = stackBefore;
 			return matches;
 		}
+		
+		@Override
+		@SideOnly(Side.CLIENT)
+		public List<ItemStack> getPossibleMatches() { return null; }
 		
 	}
 	
