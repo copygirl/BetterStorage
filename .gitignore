@@ -4,6 +4,7 @@
 /eclipse/
 /build/
 /bin/
+/libs/
 
 /.classpath
 /.project

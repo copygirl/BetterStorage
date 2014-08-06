@@ -8,6 +8,7 @@ import net.mcft.copy.betterstorage.misc.Constants;
 import net.minecraft.item.ItemStack;
 import codechicken.nei.api.API;
 import codechicken.nei.recipe.DefaultOverlayHandler;
+import cpw.mods.fml.common.FMLCommonHandler;
 
 public class NEIAddon extends Addon {
 	
@@ -17,6 +18,7 @@ public class NEIAddon extends Addon {
 
 	@Override
 	public void postInitialize() {	
+		if (FMLCommonHandler.instance().getEffectiveSide().isServer()) return;
 		
 		NEIRecipeHandler handler = new NEIRecipeHandler();
 		API.registerRecipeHandler(handler);
