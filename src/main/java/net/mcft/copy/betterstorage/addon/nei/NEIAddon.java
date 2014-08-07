@@ -17,7 +17,7 @@ public class NEIAddon extends Addon {
 	public NEIAddon() {
 		super("NotEnoughItems");
 	}
-
+	
 	@Override
 	public void postInitialize() {	
 		if (FMLCommonHandler.instance().getEffectiveSide().isServer()) return;
@@ -29,24 +29,22 @@ public class NEIAddon extends Addon {
 		API.registerGuiOverlay(GuiCraftingStation.class, Constants.modId + ".craftingStation");
 		API.registerGuiOverlay(GuiCraftingStation.class, "crafting", -8, 11);
 		
-		API.registerGuiOverlayHandler(GuiCraftingStation.class, new DefaultOverlayHandler() {
-			
-			@Override
-			public boolean canMoveFrom(Slot slot, GuiContainer gui) {
-				return slot.slotNumber >= 18;
-			}
-			
-		}, Constants.modId + ".craftingStation");
-		
-		API.registerGuiOverlayHandler(GuiCraftingStation.class, new DefaultOverlayHandler(-8, 11) {
-			
-			@Override
-			public boolean canMoveFrom(Slot slot, GuiContainer gui) {
-				return slot.slotNumber >= 18;
-			}
-			
-		}, "crafting");
+		API.registerGuiOverlayHandler(GuiCraftingStation.class,
+				new StationOverlayHandler(), Constants.modId + ".craftingStation");
+		API.registerGuiOverlayHandler(GuiCraftingStation.class,
+				new StationOverlayHandler(-8, 11), "crafting");
 		
 		API.hideItem(new ItemStack(BetterStorageTiles.lockableDoor));
 	}
+	
+	private static class StationOverlayHandler extends DefaultOverlayHandler {
+		public StationOverlayHandler() {  }
+		public StationOverlayHandler(int x, int y) { super(x, y); }
+		
+		@Override
+		public boolean canMoveFrom(Slot slot, GuiContainer gui) {
+			return (slot.slotNumber >= 18);
+		}
+	}
+	
 }

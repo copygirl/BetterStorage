@@ -38,7 +38,7 @@ public class NEIRecipeHandler extends TemplateRecipeHandler {
 	
 	@Override
 	public String getGuiTexture() { return Resources.containerCraftingStation.toString(); }
-
+	
 	@Override
 	public void loadTransferRects() {
 		transferRects.add(new RecipeTransferRect(new Rectangle(71, 23, 24, 18), getOverlayIdentifier()));
