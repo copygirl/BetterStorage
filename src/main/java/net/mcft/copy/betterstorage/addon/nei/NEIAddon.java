@@ -11,8 +11,8 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 import codechicken.nei.api.API;
 import codechicken.nei.recipe.DefaultOverlayHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -28,13 +28,6 @@ public class NEIAddon extends Addon {
 	public void postInitialize() {	
 		if (FMLCommonHandler.instance().getEffectiveSide().isServer()) return;
 		
-		//Fake key recipe
-		GameRegistry.addRecipe(new FakedShapedRecipe(2, 3, new ItemStack[]{
-				new ItemStack(Items.gold_nugget), new ItemStack(Items.gold_ingot),
-				new ItemStack(Items.gold_nugget), new ItemStack(Items.gold_ingot),
-				null, new ItemStack(Items.gold_ingot)}, 
-				new ItemStack(BetterStorageItems.key)));
-		
 		NEIRecipeHandler handler = new NEIRecipeHandler();
 		API.registerRecipeHandler(handler);
 		API.registerUsageHandler(handler);
@@ -48,6 +41,19 @@ public class NEIAddon extends Addon {
 				new StationOverlayHandler(-8, 11), "crafting");
 		
 		API.hideItem(new ItemStack(BetterStorageTiles.lockableDoor));
+		
+		// Fake key recipes
+		GameRegistry.addRecipe(new FakeShapedRecipe(new ItemStack(BetterStorageItems.key),
+				".o",
+				".o",
+				" o", 'o', Items.gold_ingot,
+				      '.', Items.gold_nugget));
+		GameRegistry.addRecipe(new FakeShapedRecipe(new ItemStack(BetterStorageItems.key),
+				".o ",
+				".o ",
+				" ok", 'o', Items.gold_ingot,
+				       '.', Items.gold_nugget,
+				       'k', BetterStorageItems.key));
 	}
 	
 	private static class StationOverlayHandler extends DefaultOverlayHandler {
@@ -60,11 +66,9 @@ public class NEIAddon extends Addon {
 		}
 	}
 	
-	private static class FakedShapedRecipe extends ShapedRecipes {
-		public FakedShapedRecipe(int width, int height, ItemStack[] input, ItemStack output) {
-			super(width, height, input, output);
-		}
-
+	private static class FakeShapedRecipe extends ShapedOreRecipe {
+		public FakeShapedRecipe(ItemStack result, Object... recipe) { super(result, recipe); }
+		
 		@Override
 		public boolean matches(InventoryCrafting crafting, World world) { return false; }
 	}

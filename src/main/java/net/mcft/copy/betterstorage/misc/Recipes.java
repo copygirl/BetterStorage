@@ -16,7 +16,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.RecipeSorter.Category;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -141,6 +140,7 @@ public final class Recipes {
 		
 		if (BetterStorageItems.key != null) {
 			// Key recipe
+			// TODO: Add support for ore dictionary gold ingots / nuggets.
 			GameRegistry.addRecipe(KeyRecipe.createKeyRecipe(
 					".o",
 					".o",
@@ -148,7 +148,7 @@ public final class Recipes {
 					      '.', Items.gold_nugget));
 			// Key modify recipe
 			GameRegistry.addRecipe(KeyRecipe.createKeyRecipe(
-					"k", 'k', new ItemStack(BetterStorageItems.key, 1, OreDictionary.WILDCARD_VALUE)));
+					"k", 'k', new ItemStack(BetterStorageItems.key)));
 		}
 		
 		if (BetterStorageItems.lock != null) {
