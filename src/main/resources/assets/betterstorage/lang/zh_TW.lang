@@ -1,0 +1,143 @@
+# Containers
+container.betterstorage.craftingStation=合成站
+container.betterstorage.backpack=背包
+container.betterstorage.cardboardBox=紙箱
+container.betterstorage.crate=倉儲貨箱
+container.betterstorage.enderBackpack=末影背包
+container.betterstorage.keyring=鑰匙鏈
+container.betterstorage.locker=柜子
+container.betterstorage.lockerLarge=大型柜子
+container.betterstorage.reinforcedChest=強化箱子
+container.betterstorage.reinforcedChestLarge=大型強化箱子
+container.betterstorage.reinforcedLocker=強化柜子
+container.betterstorage.reinforcedLockerLarge=大型強化柜子
+container.betterstorage.thaumcraftBackpack=神秘使背包
+container.betterstorage.thaumiumChest=神秘箱子
+container.betterstorage.thaumiumChestLarge=大型神秘箱子
+
+# Enchantments
+enchantment.betterstorage.key.lockpicking=撬鎖鑰匙
+enchantment.betterstorage.key.morphing=匙齒變形
+enchantment.betterstorage.key.unlocking=解鎖鑰匙
+enchantment.betterstorage.lock.persistance=防爆鎖
+enchantment.betterstorage.lock.security=安全鎖
+enchantment.betterstorage.lock.shock=電擊鎖
+enchantment.betterstorage.lock.trigger=報信鎖
+
+# Entities
+entity.BetterStorage.Frienderman.name=末影人
+
+# Items
+item.betterstorage.bucketSlime.name=桶中史萊姆
+item.betterstorage.cardboardAxe.name=紙板斧
+item.betterstorage.cardboardBoots.name=紙盒靴
+item.betterstorage.cardboardChestplate.name=紙盒胸甲
+item.betterstorage.cardboardHelmet.name=紙盒頭盔
+item.betterstorage.cardboardHoe.name=紙板鋤
+item.betterstorage.cardboardLeggings.name=紙盒護腿
+item.betterstorage.cardboardPickaxe.name=紙板稿
+item.betterstorage.cardboardSheet.name=紙箱板
+item.betterstorage.cardboardShovel.name=紙板鏟
+item.betterstorage.cardboardSword.name=紙板劍
+item.betterstorage.drinkingHelmet.name=嗜飲頭盔
+item.betterstorage.key.name=鑰匙
+item.betterstorage.keyring.name=鑰匙鏈
+item.betterstorage.lock.name=鎖
+item.betterstorage.masterKey.name=萬能鑰匙
+
+# Creative tab
+itemGroup.betterstorage=更好存儲
+
+# Keys
+key.betterstorage.backpackOpen=[更好存儲] 打開背包
+key.betterstorage.drinkingHelmet=[更好存儲] 使用嗜飲頭盔
+
+# Container materials
+material.betterstorage.iron=鐵
+material.betterstorage.gold=金
+material.betterstorage.diamond=鉆石
+material.betterstorage.emerald=綠寶石
+material.betterstorage.copper=銅
+material.betterstorage.tin=錫
+material.betterstorage.silver=銀
+material.betterstorage.steel=鋼
+material.betterstorage.zinc=鋅
+
+# Thaumcraft
+tc.research_name.betterstorage.magicstorage=魔力存儲
+tc.research_text.betterstorage.magicstorage=附魔你的儲物容器
+tc.research_page.betterstorage.magicstorage.1=用自然屬性的魔力和材料對背包注魔能增加背包的耐用性以及容量.被施加過修復附魔的物品即使裝入這個背包也能回復耐久,雖然會比正常回復速度稍慢.<BR>用神秘錠改造的神秘箱子具有類似功能,你將得到了一個可以容納更多物品也更加耐用的箱子. 
+
+# Blocks
+tile.betterstorage.craftingStation.name=合成站
+tile.betterstorage.armorStand.name=裝備架
+tile.betterstorage.backpack.cantEquip.backpack=你已經背著背包了
+tile.betterstorage.backpack.cantEquip.chestplate=穿著胸甲的時候背不了背包
+tile.betterstorage.backpack.name=背包
+tile.betterstorage.cardboardBox.name=紙箱
+tile.betterstorage.crate.name=貨箱
+tile.betterstorage.enderBackpack.name=末影背包
+tile.betterstorage.flintBlock.name=燧石塊
+tile.betterstorage.locker.name=柜子
+tile.betterstorage.reinforcedChest.name=強化箱子
+tile.betterstorage.reinforcedChest.name.full=強化%MATERIAL%箱子
+tile.betterstorage.reinforcedLocker.name=強化柜子
+tile.betterstorage.reinforcedLocker.name.full=強化%MATERIAL%柜子
+tile.betterstorage.thaumcraftBackpack.name=神秘使背包
+tile.betterstorage.thaumiumChest.name=神秘箱子
+
+# Tooltips
+tooltip.betterstorage.backpack.bound=用以綁定背包.
+tooltip.betterstorage.backpack.containsItems=用以容納物品.
+tooltip.betterstorage.backpack.equipHint=放置狀態下按住潛行#然后打掉就能裝備上.
+tooltip.betterstorage.backpack.equipHint.extended=潛行打掉就能裝備.#空手時潛行右擊地面#就能將其脫下.
+tooltip.betterstorage.backpack.openHint=裝備時按住%KEY%打開背包界面.
+tooltip.betterstorage.backpack.unequipHint=空手情況下對著空地按住潛行#并右擊地面來卸下背包.
+tooltip.betterstorage.backpack.unequipHint.extended=%INFO%空手情況下對著空地按住潛行#并右擊地面來卸下背包.
+tooltip.betterstorage.backpack.used=背包當前正在被玩家翻開.
+tooltip.betterstorage.bucketSlime.more.1=能再添加1個效果...
+tooltip.betterstorage.bucketSlime.more.x=能再添加%X%個效果...
+tooltip.betterstorage.cardboardBox.more.1=能再添加1個物品...
+tooltip.betterstorage.cardboardBox.more.x=能再添加%X%個物品...
+tooltip.betterstorage.cardboardBox.useHint=一次性可攜帶存儲工具.
+tooltip.betterstorage.cardboardBox.useHint.reusable=可以重復使用的存儲工具.
+tooltip.betterstorage.drinkingHelmet.craftHint=與兩瓶藥水合成.
+tooltip.betterstorage.drinkingHelmet.useHint=按下%KEY%小啜一口.
+tooltip.betterstorage.drinkingHelmet.uses=剩余次數: %USES%
+
+# Config
+config.betterstorage.category.item=物品
+config.betterstorage.category.item.tooltip=切換某種物品是否激活.
+config.betterstorage.category.tile=方塊
+config.betterstorage.category.tile.tooltip=切換某種方塊是否激活.
+config.betterstorage.category.enchantment=附魔
+config.betterstorage.category.enchantment.tooltip=變更附魔id
+
+config.betterstorage.general.reinforcedColumns=高級箱子列數
+config.betterstorage.general.reinforcedColumns.tooltip=強化箱子和柜子界面內物品欄的列數,有效值包括9,11和13.
+config.betterstorage.general.enableCrateInventoryInterface倉儲貨箱物品欄界面
+config.betterstorage.general.enableCrateInventoryInterface.tooltip=激活后會顯露出一個特殊觀察方塊,通過它能夠實現自動輸入輸出物品.
+config.betterstorage.general.enableCrateStorageInterface=倉儲貨箱儲物界面
+config.betterstorage.general.enableCrateStorageInterface.tooltip=禁用后阻止模組(比如AE)使用倉儲貨箱.
+config.betterstorage.general.backpackChestplate=背包護甲
+config.betterstorage.general.backpackChestplate.tooltip=停用後背包將不占用裝備欄.
+config.betterstorage.general.backpackRows=背包行數
+config.betterstorage.general.backpackRows.tooltip=背包內物品欄的行數.
+config.betterstorage.general.enableBackpackOpen=背包開啟
+config.betterstorage.general.enableBackpackOpen.tooltip=允許按下A鍵開啟已裝備背包的物品欄界面.
+config.betterstorage.general.enableBackpackInteraction=背包互動
+config.betterstorage.general.enableBackpackInteraction.tooltip=允許其他玩家右擊打開背包.
+config.betterstorage.general.dropBackpackOnDeath=背包掉落
+config.betterstorage.general.dropBackpackOnDeath.tooltip=啟用後掉落的背包將視為容器方塊,而不會暴出一地物品.
+config.betterstorage.general.cardboardBoxRows=紙箱行數
+config.betterstorage.general.cardboardBoxRows.tooltip=紙箱內物品欄行數
+config.betterstorage.general.cardboardBoxReusable=紙箱重復使用
+config.betterstorage.general.cardboardBoxReusable.tooltip=激活后紙箱可以無限使用而不再是一次性消耗品.
+config.betterstorage.general.enableStationAutoCrafting=合成站自動合成
+config.betterstorage.general.enableStationAutoCrafting.tooltip=激活后可以連接自動化系統實現自動合成物品.
+config.betterstorage.general.stationAutocraftDelay=自動合成延遲
+config.betterstorage.general.stationAutocraftDelay.tooltip=合成站中兩次合成之間所需的冷卻時間,單位為ticks.
+config.betterstorage.general.enableHelpTooltips=提示
+config.betterstorage.general.enableHelpTooltips.tooltip=啟用後在物品下顯示信息幫助新玩家了解用法.
+config.betterstorage.general.enableWarningMessages=調試信息
+config.betterstorage.general.enableWarningMessages.tooltip=激活后禁止某些信息顯示到控制臺中.
