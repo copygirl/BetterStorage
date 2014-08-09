@@ -255,12 +255,14 @@ public final class Recipes {
 					      '/', Items.stick));
 		}
 		
-		// Crafting Station: Add cardboard enchantment recipe
-		BetterStorageCrafting.addStationRecipe(new CardboardEnchantmentRecipe());
-		
-		// Crafting Station: Add cardboard repair recipe
-		if (BetterStorageItems.cardboardSheet != null)
-			BetterStorageCrafting.addStationRecipe(new CardboardRepairRecipe());
+		if (BetterStorageItems.anyCardboardItemsEnabled) {
+			// Crafting Station: Add cardboard enchantment recipe
+			BetterStorageCrafting.addStationRecipe(new CardboardEnchantmentRecipe());
+			
+			// Crafting Station: Add cardboard repair recipe
+			if (BetterStorageItems.cardboardSheet != null)
+				BetterStorageCrafting.addStationRecipe(new CardboardRepairRecipe());
+		}
 		
 	}
 	

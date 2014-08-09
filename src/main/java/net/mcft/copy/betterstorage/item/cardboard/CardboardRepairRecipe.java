@@ -1,5 +1,6 @@
 package net.mcft.copy.betterstorage.item.cardboard;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -16,6 +17,7 @@ import net.mcft.copy.betterstorage.content.BetterStorageItems;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils.StackEnchantment;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.relauncher.Side;
@@ -91,34 +93,45 @@ public class CardboardRepairRecipe implements IStationRecipe {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public List<IRecipeInput[]> getSampleInputs() {
-		ItemStack stack = new ItemStack(BetterStorageItems.cardboardPickaxe, 1, 32);
-		stack.addEnchantment(Enchantment.efficiency, 5);
-		stack.addEnchantment(Enchantment.unbreaking, 3);
-		return Arrays.asList(
-				makeInput(stack, BetterStorageItems.cardboardSheet),
-				makeInput(new ItemStack(BetterStorageItems.cardboardPickaxe, 1, 32), BetterStorageItems.cardboardSheet),
-				makeInput(new ItemStack(BetterStorageItems.cardboardHelmet, 1, 11),
-				          new ItemStack(BetterStorageItems.cardboardChestplate, 1, 16), BetterStorageItems.cardboardSheet,
-				          new ItemStack(BetterStorageItems.cardboardLeggings, 1, 15),
-				          new ItemStack(BetterStorageItems.cardboardBoots, 1, 13)),
-				makeInput(new ItemStack(BetterStorageItems.cardboardHelmet, 1, 11 * 2),
-				          new ItemStack(BetterStorageItems.cardboardChestplate, 1, 16 * 2), BetterStorageItems.cardboardSheet,
-				          new ItemStack(BetterStorageItems.cardboardLeggings, 1, 15 * 2),
-				          new ItemStack(BetterStorageItems.cardboardBoots, 1, 13 * 2), BetterStorageItems.cardboardSheet),
-				makeInput(new ItemStack(BetterStorageItems.cardboardHelmet, 1, 11 * 3),
-				          new ItemStack(BetterStorageItems.cardboardChestplate, 1, 16 * 3), BetterStorageItems.cardboardSheet,
-				          new ItemStack(BetterStorageItems.cardboardLeggings, 1, 15 * 3),
-				          new ItemStack(BetterStorageItems.cardboardBoots, 1, 13 * 3), BetterStorageItems.cardboardSheet,
-				          new ItemStack(BetterStorageItems.cardboardShovel, 1, 32),
-				          new ItemStack(BetterStorageItems.cardboardHoe, 1, 32), BetterStorageItems.cardboardSheet)
-			);
+		List<IRecipeInput[]> sampleInputs = new ArrayList<IRecipeInput[]>();
+		if (BetterStorageItems.cardboardPickaxe != null) {
+			ItemStack stack = new ItemStack(BetterStorageItems.cardboardPickaxe, 1, 32);
+			stack.addEnchantment(Enchantment.efficiency, 5);
+			stack.addEnchantment(Enchantment.unbreaking, 3);
+			makeInput(sampleInputs, stack, BetterStorageItems.cardboardSheet);
+		}
+		makeInput(sampleInputs, new ItemStack(BetterStorageItems.cardboardPickaxe, 1, 32), BetterStorageItems.cardboardSheet);
+		makeInput(sampleInputs, new ItemStack(BetterStorageItems.cardboardHelmet, 1, 11),
+		                        new ItemStack(BetterStorageItems.cardboardChestplate, 1, 16), BetterStorageItems.cardboardSheet,
+		                        new ItemStack(BetterStorageItems.cardboardLeggings, 1, 15),
+		                        new ItemStack(BetterStorageItems.cardboardBoots, 1, 13));
+		makeInput(sampleInputs, new ItemStack(BetterStorageItems.cardboardHelmet, 1, 11 * 2),
+		                        new ItemStack(BetterStorageItems.cardboardChestplate, 1, 16 * 2), BetterStorageItems.cardboardSheet,
+		                        new ItemStack(BetterStorageItems.cardboardLeggings, 1, 15 * 2),
+		                        new ItemStack(BetterStorageItems.cardboardBoots, 1, 13 * 2), BetterStorageItems.cardboardSheet);
+		makeInput(sampleInputs, new ItemStack(BetterStorageItems.cardboardHelmet, 1, 11 * 3),
+		                        new ItemStack(BetterStorageItems.cardboardChestplate, 1, 16 * 3), BetterStorageItems.cardboardSheet,
+		                        new ItemStack(BetterStorageItems.cardboardLeggings, 1, 15 * 3),
+		                        new ItemStack(BetterStorageItems.cardboardBoots, 1, 13 * 3), BetterStorageItems.cardboardSheet,
+		                        new ItemStack(BetterStorageItems.cardboardShovel, 1, 32),
+		                        new ItemStack(BetterStorageItems.cardboardHoe, 1, 32), BetterStorageItems.cardboardSheet);
+		return sampleInputs;
 	}
-	private IRecipeInput[] makeInput(Object... obj) {
+	private void makeInput(List<IRecipeInput[]> sampleInputs, Object... obj) {
 		IRecipeInput[] input = new IRecipeInput[9];
+		boolean hasCardboardItem = false;
 		for (int i = 0; i < obj.length; i++)
-			if (obj[i] != null)
+			if (obj[i] != null) {
+				if (obj[i] instanceof ItemStack) {
+					Item item = ((ItemStack)obj[i]).getItem();
+					if (item == null) continue;
+					if (item instanceof ICardboardItem)
+						hasCardboardItem = true;
+				}
 				input[i] = BetterStorageCrafting.makeInput(obj[i]);
-		return input;
+			}
+		if (hasCardboardItem)
+			sampleInputs.add(input);
 	}
 	
 	@Override

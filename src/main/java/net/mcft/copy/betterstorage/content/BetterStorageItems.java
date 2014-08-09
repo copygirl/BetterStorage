@@ -45,6 +45,8 @@ public final class BetterStorageItems {
 	public static ItemCardboardAxe cardboardAxe;
 	public static ItemCardboardHoe cardboardHoe;
 	
+	public static boolean anyCardboardItemsEnabled;
+	
 	private BetterStorageItems() {  }
 	
 	public static void initialize() {
@@ -70,6 +72,16 @@ public final class BetterStorageItems {
 		cardboardShovel = MiscUtils.conditionalNew(ItemCardboardShovel.class, GlobalConfig.cardboardShovelEnabled);
 		cardboardAxe = MiscUtils.conditionalNew(ItemCardboardAxe.class, GlobalConfig.cardboardAxeEnabled);
 		cardboardHoe = MiscUtils.conditionalNew(ItemCardboardHoe.class, GlobalConfig.cardboardHoeEnabled);
+		
+		anyCardboardItemsEnabled = ((BetterStorageItems.cardboardHelmet != null) ||
+		                            (BetterStorageItems.cardboardChestplate != null) ||
+		                            (BetterStorageItems.cardboardLeggings != null) ||
+		                            (BetterStorageItems.cardboardBoots != null) ||
+		                            (BetterStorageItems.cardboardSword != null) ||
+		                            (BetterStorageItems.cardboardPickaxe != null) ||
+		                            (BetterStorageItems.cardboardAxe != null) ||
+		                            (BetterStorageItems.cardboardShovel != null) ||
+		                            (BetterStorageItems.cardboardHoe != null));
 		
 		if (cardboardSheet != null)
 			OreDictionary.registerOre("sheetCardboard", cardboardSheet);
