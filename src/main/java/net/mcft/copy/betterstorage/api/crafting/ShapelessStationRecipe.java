@@ -28,6 +28,9 @@ public class ShapelessStationRecipe implements IStationRecipe {
 		for (int i = 0; i < input.length; i++)
 			recipeInput[i] = BetterStorageCrafting.makeInput(input[i]);
 	}
+	public ShapelessStationRecipe(ItemStack output, Object... input) {
+		this(new ItemStack[]{ null, null, null, null, output }, input);
+	}
 	
 	public ShapelessStationRecipe setRequiredExperience(int experience) {
 		requiredExperience = experience;
@@ -73,7 +76,7 @@ public class ShapelessStationRecipe implements IStationRecipe {
 			return null;
 		}
 		if (!checklist.isEmpty()) return null;
-		return new StationCrafting(recipeOutput, recipeInput, requiredExperience, craftingTime);
+		return new StationCrafting(recipeOutput, requiredInput, requiredExperience, craftingTime);
 	}
 	
 }
