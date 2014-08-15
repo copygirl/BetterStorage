@@ -2,9 +2,7 @@ package net.mcft.copy.betterstorage.tile.crate;
 
 import java.io.File;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.utils.RandomUtils;
@@ -24,10 +22,6 @@ public class CratePileCollection {
 	
 	private int count = RandomUtils.getInt(maxCount);
 	private Map<Integer, CratePileData> pileDataMap = new HashMap<Integer, CratePileData>();
-	private Set<CratePileData> dirtyPiles = new HashSet<CratePileData>();
-	
-	/** Hands out the set of dirty piles */
-	public Set<CratePileData> getDirtyPiles() { return dirtyPiles; }
 	
 	public CratePileCollection(World world) {
 		this.world = world;
@@ -68,10 +62,9 @@ public class CratePileCollection {
 		return pileData;
 	}
 	
-	/** Removes the crate pile from the collection. */
+	/** Removes the crate pile from the collection, deletes the pile's file. */
 	public void removeCratePile(CratePileData pileData) {
 		pileDataMap.remove(pileData.id);
-		dirtyPiles.remove(pileData);
 		getSaveFile(pileData.id).delete();
 		if (pileDataMap.size() <= 0)
 			collectionMap.remove(dimension);
@@ -119,21 +112,6 @@ public class CratePileCollection {
 	}
 	private File getTempSaveFile(int id) {
 		return new File(getSaveDirectory(), id + ".tmp");
-	}
-	
-	/** Marks the pile data as dirty so it gets saved. */
-	public void markDirty(CratePileData pileData) {
-		dirtyPiles.add(pileData);
-	}
-	
-	/** Saves all piles which are marked as dirty. */
-	public static void saveAll(World world) {
-		int dimension = world.provider.dimensionId;
-		if (!collectionMap.containsKey(dimension)) return;
-		CratePileCollection collection = getCollection(world);
-		for (CratePileData pileData : collection.dirtyPiles)
-			collection.save(pileData);
-		collection.dirtyPiles.clear();
 	}
 	
 	/** Called when the world unloads, removes the

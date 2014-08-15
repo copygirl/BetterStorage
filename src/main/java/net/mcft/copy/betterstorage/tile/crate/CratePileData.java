@@ -10,7 +10,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.api.ICrateWatcher;
+import net.mcft.copy.betterstorage.config.GlobalConfig;
 import net.mcft.copy.betterstorage.inventory.InventoryCrateBlockView;
 import net.mcft.copy.betterstorage.misc.ItemIdentifier;
 import net.mcft.copy.betterstorage.misc.Region;
@@ -36,6 +38,7 @@ public class CratePileData implements Iterable<ItemStack> {
 	private int numCrates = 0;
 	private int numSlots = 0;
 	private boolean destroyed = false;
+	private boolean dirty = false;
 	private CratePileMap map;
 	
 	private Set<ICrateWatcher> watchers = new HashSet<ICrateWatcher>();
@@ -68,6 +71,39 @@ public class CratePileData implements Iterable<ItemStack> {
 		this.collection = collection;
 		this.id = id;
 		this.numCrates = numCrates;
+	}
+	
+	// Saving related
+	
+	/** Returns if the crate pile is marked as dirty. */
+	public boolean isDirty() { return dirty; }
+	
+	/** Marks the crate pile as dirty. */
+	public void markDirty() {
+		if (isDirty() || destroyed) return;
+		dirty = true;
+		if (BetterStorage.globalConfig.getBoolean(GlobalConfig.crateDebugMessages))
+			BetterStorage.log.info(String.format("[CRATE DEBUG] Marked crate pile at [%s,%s,%s] as dirty.",
+			                                     getCenterX(), getCenterY(), getCenterZ()));
+	}
+	
+	/** Saves the crate pile to disk if it's been marked as dirty. */
+	public void save() {
+		if (!isDirty()) return;
+		collection.save(this);
+		dirty = false;
+		if (BetterStorage.globalConfig.getBoolean(GlobalConfig.crateDebugMessages))
+			BetterStorage.log.info(String.format("[CRATE DEBUG] Saved crate pile at [%s,%s,%s].",
+			                                     getCenterX(), getCenterY(), getCenterZ()));
+	}
+	
+	/** Removes this (empty) crate pile from the collection. */
+	public void remove() {
+		destroyed = true;
+		collection.removeCratePile(this);
+		if (BetterStorage.globalConfig.getBoolean(GlobalConfig.crateDebugMessages))
+			BetterStorage.log.info(String.format("[CRATE DEBUG] Removed empty crate pile at [%s,%s,%s].",
+			                                     getCenterX(), getCenterY(), getCenterZ()));
 	}
 	
 	// CrateMap related functions
@@ -120,14 +156,11 @@ public class CratePileData implements Iterable<ItemStack> {
 	/** Removes a crate from the crate pile, decreasing the number
 	 *  of crates and removing it from the crate pile map. */
 	public void removeCrate(TileEntityCrate crate) {
-		if (--numCrates <= 0) {
-			collection.removeCratePile(this);
-			destroyed = true;
-		} else {
+		if (--numCrates > 0) {
 			if (map != null)
 				map.remove(crate);
 			markDirty();
-		}
+		} else remove();
 	}
 	
 	/** Returns if there's a crate from the crate pile at that position. */
@@ -356,12 +389,6 @@ public class CratePileData implements Iterable<ItemStack> {
 		if ((contentsArray == null) || (contentsArray.length > getNumItems() * 2 + 16))
 			contentsArray = new ItemStack[getNumItems() + 16];
 		contentsArray = contents.values().toArray(contentsArray);
-	}
-	
-	/** Marks the pile data as dirty so it gets saved. */
-	private void markDirty() {
-		if (destroyed) return;
-		collection.markDirty(this);
 	}
 	
 	// NBT related functions

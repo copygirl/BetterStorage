@@ -38,7 +38,6 @@ import net.minecraftforge.event.entity.player.EntityInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
-import net.minecraftforge.event.world.WorldEvent.Save;
 import net.minecraftforge.event.world.WorldEvent.Unload;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.Event.Result;
@@ -57,11 +56,6 @@ public class CommonProxy {
 		
 		new BackpackHandler();
 		new CraftingHandler();
-	}
-	
-	@SubscribeEvent
-	public void onWorldSave(Save event) {
-		CratePileCollection.saveAll(event.world);
 	}
 	
 	@SubscribeEvent
