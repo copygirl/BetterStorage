@@ -2,9 +2,10 @@ package net.mcft.copy.betterstorage.inventory;
 
 import java.util.List;
 
-import net.mcft.copy.betterstorage.api.ICrateWatcher;
+import net.mcft.copy.betterstorage.api.crate.ICrateWatcher;
 import net.mcft.copy.betterstorage.config.GlobalConfig;
 import net.mcft.copy.betterstorage.misc.Constants;
+import net.mcft.copy.betterstorage.misc.ItemIdentifier;
 import net.mcft.copy.betterstorage.tile.crate.CratePileData;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.entity.player.EntityPlayer;
@@ -39,7 +40,7 @@ public class InventoryCrateBlockView extends InventoryBetterStorage implements I
 	
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
-		return ((slot > 0) || (data.spaceForItem(stack) >= stack.stackSize));
+		return ((slot > 0) || (data.getSpaceForItem(stack) >= stack.stackSize));
 	}
 	
 	@Override
@@ -82,7 +83,7 @@ public class InventoryCrateBlockView extends InventoryBetterStorage implements I
 		amount = Math.min(amount, stack.stackSize);
 		originalStacks[slot - 1].stackSize = exposedStacks[slot - 1].stackSize -= amount;
 		isModifying = true;
-		ItemStack result = data.removeItems(stack, amount);
+		ItemStack result = data.removeItems(new ItemIdentifier(stack), amount);
 		isModifying = false;
 		return result;
 	}
@@ -116,7 +117,7 @@ public class InventoryCrateBlockView extends InventoryBetterStorage implements I
 		
 		if (changed) {
 			// Pick a new set of random stacks from the crate.
-			List<ItemStack> picked = data.pickItemStacks(numStacksStored);
+			List<ItemStack> picked = data.getContents().getRandomStacks(numStacksStored);
 			for (int i = 0; i < numStacksStored; i++) {
 				exposedStacks[i] = ((i < picked.size()) ? picked.get(i) : null);
 				originalStacks[i] = ItemStack.copyItemStack(exposedStacks[i]);

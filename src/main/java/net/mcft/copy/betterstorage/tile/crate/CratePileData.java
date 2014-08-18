@@ -1,22 +1,14 @@
 package net.mcft.copy.betterstorage.tile.crate;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import net.mcft.copy.betterstorage.BetterStorage;
-import net.mcft.copy.betterstorage.api.ICrateWatcher;
+import net.mcft.copy.betterstorage.api.crate.ICrateWatcher;
 import net.mcft.copy.betterstorage.config.GlobalConfig;
 import net.mcft.copy.betterstorage.inventory.InventoryCrateBlockView;
 import net.mcft.copy.betterstorage.misc.ItemIdentifier;
 import net.mcft.copy.betterstorage.misc.Region;
-import net.mcft.copy.betterstorage.utils.RandomUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -26,17 +18,16 @@ import net.minecraftforge.common.util.Constants.NBT;
 
 /** Holds data for a single crate pile, a multi-block
  *  structure made from individual crate blocks */
-public class CratePileData implements Iterable<ItemStack> {
+public class CratePileData {
 	
 	private static final int maxCratePileSize = 8192;
 	
 	public final CratePileCollection collection;
 	public final int id;
 	
-	private Map<ItemIdentifier, ItemStack> contents = new HashMap<ItemIdentifier, ItemStack>();
-	private ItemStack[] contentsArray = new ItemStack[0];
+	private CrateItems contents = new CrateItems();
+	
 	private int numCrates = 0;
-	private int numSlots = 0;
 	private boolean destroyed = false;
 	private boolean dirty = false;
 	private CratePileMap map;
@@ -46,17 +37,18 @@ public class CratePileData implements Iterable<ItemStack> {
 	/** An inventory interface built for machines accessing the crate pile. */
 	public final InventoryCrateBlockView blockView = new InventoryCrateBlockView(this);
 	
+	/** Returns the items in this crate pile. */
+	public CrateItems getContents() { return contents; }
+	
 	/** Returns the number of crates attached. */
 	public int getNumCrates() { return numCrates; }
-	
-	/** Returns the items in this crate pile as a list. */
-	public List<ItemStack> getContents() { return Arrays.asList(contentsArray); }
 	/** Returns the maximum number of slots. */
 	public int getCapacity() { return numCrates * TileEntityCrate.slotsPerCrate; }
+	
 	/** Returns the number of unique items. */
-	public int getNumItems() { return contents.size(); }
+	public int getUniqueItems() { return contents.getUniqueItems(); }
 	/** Returns the number of slots occupied. */
-	public int getOccupiedSlots() { return numSlots; }
+	public int getOccupiedSlots() { return contents.getTotalStacks(); }
 	/** Returns the number of slots free. Negative if there's any overflow. */
 	public int getFreeSlots() { return getCapacity() - getOccupiedSlots(); }
 	
@@ -168,107 +160,29 @@ public class CratePileData implements Iterable<ItemStack> {
 		return map.get(x, y, z);
 	}
 	
-	// Getting items
-	
-	// For safety reasons, these functions don't
-	// return the original item stacks publicly.
-	/** Returns an ItemStack from the contents, null if none was found. */
-	private ItemStack getItemStack(ItemIdentifier item, boolean copy) {
-		if (item == null) return null;
-		ItemStack stack = contents.get(item);
-		return (copy ? ItemStack.copyItemStack(stack) : stack);
-	}
-	/** Returns an ItemStack from the contents, null if none was found. */
-	public ItemStack getItemStack(ItemIdentifier item) {
-		return getItemStack(item, true);
-	}
-	
-	/** Returns an ItemStack from the contents, null if none was found. */
-	private ItemStack getItemStack(ItemStack item, boolean copy) {
-		if (item == null) return null;
-		return getItemStack(new ItemIdentifier(item), copy);
-	}
-	/** Returns an ItemStack from the contents, null if none was found. */
-	public ItemStack getItemStack(ItemStack item) {
-		return getItemStack(item, true);
-	}
-	
-	/** Returns an ItemStack from the contents. */
-	public ItemStack getItemStack(int index) {
-		if (index < 0 || index >= getNumItems()) return null;
-		return contentsArray[index];
-	}
-	
-	// Getting item count
-	
-	/** Returns the number of items of this type in the contents. */
-	public int getItemCount(ItemIdentifier item) {
-		ItemStack stack = getItemStack(item, false);
-		return ((stack != null) ? stack.stackSize : 0);
-	}
-	/** Returns the number of items of this type in the contents. */
-	public int getItemCount(ItemStack item) {
-		return getItemCount(new ItemIdentifier(item));
-	}
-	
 	// Adding items
 	
 	/** Tries to add a stack to the contents. <br>
-	 *  Returns what could not be added, null if there was no overflow. <br>
-	 *  If dirty is false, doesn't mark the crate pile as dirty so
-	 *  it doesn't get saved (useful for adding items when loading). */
-	private ItemStack addItems(ItemStack stack, boolean dirty) {
+	 *  Returns what could not be added, null if there was no overflow. */
+	public ItemStack addItems(ItemStack stack) {
 		if (stack == null) return null;
 		ItemStack overflow = null;
 		
-		int space = spaceForItem(stack);
+		int space = getSpaceForItem(stack);
 		if (space > 0) {
 			
 			if (space < stack.stackSize)
 				overflow = stack.splitStack(stack.stackSize - space);
+			
 			ItemIdentifier item = new ItemIdentifier(stack);
-			ItemStack contentsStack = getItemStack(item, false);
-			
-			int stacksBefore;
-			// If there's no such item in contents yet, add it.
-			if (contentsStack == null) {
-				stacksBefore = 0;
-				contentsStack = item.createStack(stack.stackSize);
-				contents.put(item, contentsStack);
-				updateContentsArray();
-			// Otherwise just increase the stack size.
-			} else {
-				stacksBefore = StackUtils.calcNumStacks(contentsStack);
-				contentsStack.stackSize += stack.stackSize;
-			}
-			
-			int stacksAfter = StackUtils.calcNumStacks(contentsStack);
-			numSlots += (stacksAfter - stacksBefore);
+			getContents().set(item, getContents().get(item) + stack.stackSize);
 			
 			for (ICrateWatcher watcher : watchers)
 				watcher.onCrateItemsModified(stack);
 			
 		} else overflow = stack;
 		
-		if (dirty) markDirty();
-		
-		return overflow;
-	}
-	/** Tries to add a stack to the contents. <br>
-	 *  Returns what could not be added, null if there was no overflow. */
-	public ItemStack addItems(ItemStack stack) {
-		return addItems(stack, true);
-	}
-	
-	/** Tries to add some stacks to the contents. <br>
-	 *  Returns what could not be added. */
-	public List<ItemStack> addItems(Collection<ItemStack> stacks) {
-		List<ItemStack> overflow = new ArrayList<ItemStack>();
-		for (ItemStack stack : stacks) {
-			ItemStack overflowStack = addItems(stack);
-			if (overflowStack != null)
-				overflow.add(overflowStack);
-		}
+		markDirty();
 		return overflow;
 	}
 	
@@ -278,97 +192,45 @@ public class CratePileData implements Iterable<ItemStack> {
 	 *  Returns less than the requested amount when there's
 	 *  not enough, or null if there's none at all. */
 	public ItemStack removeItems(ItemIdentifier item, int amount) {
-		ItemStack stack = getItemStack(item, false);
-		if ((stack == null) || (amount <= 0)) return null;
+		int currentAmount = getContents().get(item);
+		amount = Math.min(amount, currentAmount);
+		if (amount <= 0) return null;
 		
-		int stacksBefore = StackUtils.calcNumStacks(stack);
-		int stacksAfter;
+		getContents().set(item, currentAmount - amount);
 		
-		if (amount < stack.stackSize) {
-			stack.stackSize -= amount;
-			stacksAfter = StackUtils.calcNumStacks(stack);
-			stack = StackUtils.copyStack(stack, amount);
-		} else {
-			contents.remove(item);
-			updateContentsArray();
-			stacksAfter = 0;
-		}
-		
-		numSlots -= (stacksBefore - stacksAfter);
-		
-		ItemStack removedStack = StackUtils.copyStack(stack, -stack.stackSize, false);
+		ItemStack removedStack = item.createStack(-amount);
 		for (ICrateWatcher watcher : watchers)
 			watcher.onCrateItemsModified(removedStack);
 		
 		markDirty();
-		return stack;
+		return item.createStack(amount);
 	}
-	
-	/** Removes and returns a specific amount of items. <br>
-	 *  Returns less than the requested amount when there's
-	 *  not enough, or null if there's none at all. */
-	public ItemStack removeItems(ItemStack item, int amount) {
-		if (item == null) return null;
-		return removeItems(new ItemIdentifier(item), amount);
-	}
-	
 	/** Removes and returns a specific amount of items. <br>
 	 *  Returns less than the requested amount when there's
 	 *  not enough, or null if there's none at all. */
 	public ItemStack removeItems(ItemStack stack) {
-		if (stack == null) return null;
-		return removeItems(stack, stack.stackSize);
+		return removeItems(new ItemIdentifier(stack), stack.stackSize);
 	}
+	
 	
 	// Checking space
 	
 	/** Returns how much space there is left for a specific item. */
-	public int spaceForItem(ItemIdentifier item) {
+	public int getSpaceForItem(ItemIdentifier item) {
 		if (item == null) return 0;
-		int maxStackSize = item.createStack(1).getMaxStackSize();
+		int amount = getContents().get(item);
+		ItemStack testStack = item.createStack(amount);
+		
+		int maxStackSize = testStack.getMaxStackSize();
 		int space = getFreeSlots() * maxStackSize;
-		ItemStack stack = getItemStack(item);
-		if (stack != null)
-			space += (StackUtils.calcNumStacks(stack) * maxStackSize) - stack.stackSize;
+		if (amount > 0)
+			space += (StackUtils.calcNumStacks(testStack) * maxStackSize) - testStack.stackSize;
 		return space;
 	}
-	
 	/** Returns how much space there is left for a specific item. */
-	public int spaceForItem(ItemStack item) {
+	public int getSpaceForItem(ItemStack item) {
 		if (item == null) return 0;
-		return spaceForItem(new ItemIdentifier(item));
-	}
-	
-	// Picking random items
-	
-	/** Picks random items from the pile. <br>
-	 *  Each stack has a chance to get picked. */
-	public List<ItemStack> pickItemStacks(int amount) {
-		amount = Math.min(amount, getOccupiedSlots());
-		if (amount <= 0) return new ArrayList<ItemStack>();
-		int totalStacks = 0;
-		List<ItemStack> stacks = new ArrayList<ItemStack>();
-		for (ItemStack contentsStack : this) {
-			int numStacks = StackUtils.calcNumStacks(contentsStack);
-			for (int i = 0; i < numStacks; i++) {
-				int maxStackSize = contentsStack.getMaxStackSize();
-				int max = Math.min(contentsStack.stackSize - maxStackSize * i, maxStackSize);
-				stacks.add(StackUtils.copyStack(contentsStack, Math.min(contentsStack.stackSize, max)));
-			}
-			totalStacks += numStacks;
-		}
-		List<ItemStack> resultStacks = new ArrayList<ItemStack>();
-		for (int i = 0; i < amount; i++)
-			resultStacks.add(stacks.remove(RandomUtils.getInt(stacks.size())));
-		return resultStacks;
-	}
-	/** Picks and removes random items from the pile. <br>
-	 *  Each stack has a chance to get picked. */
-	public List<ItemStack> pickAndRemoveItemStacks(int amount) {
-		List<ItemStack> stacks = pickItemStacks(amount);
-		for (ItemStack stack : stacks)
-			removeItems(stack);
-		return stacks;
+		return getSpaceForItem(new ItemIdentifier(item));
 	}
 	
 	// Crate watcher related functions
@@ -383,21 +245,13 @@ public class CratePileData implements Iterable<ItemStack> {
 		watchers.remove(watcher);
 	}
 	
-	// Misc functions
-	
-	private void updateContentsArray() {
-		if ((contentsArray == null) || (contentsArray.length > getNumItems() * 2 + 16))
-			contentsArray = new ItemStack[getNumItems() + 16];
-		contentsArray = contents.values().toArray(contentsArray);
-	}
-	
 	// NBT related functions
 	
 	public NBTTagCompound toCompound() {
 		NBTTagCompound compound = new NBTTagCompound();
 		compound.setShort("numCrates", (short)getNumCrates());
 		NBTTagList stacks = new NBTTagList();
-		for (ItemStack stack : this) {
+		for (ItemStack stack : getContents().getItems()) {
 			NBTTagCompound stackCompound = new NBTTagCompound();
 			stackCompound.setShort("id", (short)Item.getIdFromItem(stack.getItem()));
 			stackCompound.setInteger("Count", stack.stackSize);
@@ -425,18 +279,11 @@ public class CratePileData implements Iterable<ItemStack> {
 			if (stackCompound.hasKey("tag"))
 				stack.stackTagCompound = stackCompound.getCompoundTag("tag");
 			if (stack.getItem() != null)
-				pileData.addItems(stack, false);
+				pileData.getContents().set(new ItemIdentifier(stack), stack.stackSize);
 		}
 		if (compound.hasKey("map"))
 			pileData.map = CratePileMap.fromCompound(compound.getCompoundTag("map"));
 		return pileData;
-	}
-	
-	// IIterable implementation
-	
-	@Override
-	public Iterator<ItemStack> iterator() {
-		return contents.values().iterator();
 	}
 	
 }

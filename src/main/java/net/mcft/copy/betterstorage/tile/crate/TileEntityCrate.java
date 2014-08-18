@@ -5,14 +5,15 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
-import net.mcft.copy.betterstorage.api.ICrateStorage;
-import net.mcft.copy.betterstorage.api.ICrateWatcher;
+import net.mcft.copy.betterstorage.api.crate.ICrateStorage;
+import net.mcft.copy.betterstorage.api.crate.ICrateWatcher;
 import net.mcft.copy.betterstorage.config.GlobalConfig;
 import net.mcft.copy.betterstorage.container.ContainerBetterStorage;
 import net.mcft.copy.betterstorage.container.ContainerCrate;
 import net.mcft.copy.betterstorage.content.BetterStorageTiles;
 import net.mcft.copy.betterstorage.inventory.InventoryCratePlayerView;
 import net.mcft.copy.betterstorage.misc.Constants;
+import net.mcft.copy.betterstorage.misc.ItemIdentifier;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityContainer;
 import net.mcft.copy.betterstorage.utils.PlayerUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
@@ -122,8 +123,10 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 					}
 					// Move some of the items over to the new crate pile.
 					int count = numCrates * data.getOccupiedSlots() / (data.getNumCrates() + numCrates);
-					List<ItemStack> stacks = data.pickAndRemoveItemStacks(count);
-					stacks = newPileData.addItems(stacks);
+					for (ItemStack stack : data.getContents().getRandomStacks(count)) {
+						data.removeItems(stack);
+						newPileData.addItems(stack);
+					}
 				}
 				// Trim the original map to the size it actually is.
 				// This is needed because the crates may not be removed in
@@ -184,7 +187,10 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 	 *  crate pile after a crate got destroyed. */
 	private void dropOverflowContents(CratePileData data) {
 		int amount = -data.getFreeSlots();
-		dropItems(data.pickAndRemoveItemStacks(amount));
+		if (amount <= 0) return;
+		List<ItemStack> items = data.getContents().getRandomStacks(amount);
+		for (ItemStack stack : items) data.removeItems(stack);
+		dropItems(items);
 	}
 	
 	// TileEntityContainer stuff
@@ -302,46 +308,51 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 	
 	// ICrateStorage implementation
 	
+	private static boolean isEnabled() {
+		return GlobalConfig.enableCrateStorageInterfaceSetting.getValue();
+	}
+	
 	@Override
-	public Object getInventoryIdentifier(ForgeDirection side) {
-		return getPileData();
+	public Object getCrateIdentifier() { return getPileData(); }
+	
+	@Override
+	public int getCapacity() { return (isEnabled() ? getPileData().getCapacity() : 0); }
+	@Override
+	public int getOccupiedSlots() { return (isEnabled() ? getPileData().getOccupiedSlots() : 0); }
+	@Override
+	public int getUniqueItems() { return (isEnabled() ? getPileData().getUniqueItems() : 0);  }
+	
+	@Override
+	public Iterable<ItemStack> getContents() {
+		return (isEnabled() ? getPileData().getContents().getItems() : Collections.EMPTY_LIST);
 	}
 	@Override
-	public List<ItemStack> getContents(ForgeDirection side) {
-		if (!GlobalConfig.enableCrateStorageInterfaceSetting.getValue())
-			return Collections.EMPTY_LIST;
-		return getPileData().getContents();
+	public Iterable<ItemStack> getRandomStacks() {
+		return (isEnabled() ? getPileData().getContents().getRandomStacks() : Collections.EMPTY_LIST);
+	}
+	
+	@Override
+	public int getItemCount(ItemStack identifier) {
+		return (isEnabled() ? getPileData().getContents().get(new ItemIdentifier(identifier)) : 0);
 	}
 	@Override
-	public int getItemCount(ForgeDirection side, ItemStack identifier) {
-		if (!GlobalConfig.enableCrateStorageInterfaceSetting.getValue()) return 0;
-		return getPileData().getItemCount(identifier);
+	public int getSpaceForItem(ItemStack identifier) {
+		return (isEnabled() ? getPileData().getSpaceForItem(identifier) : 0);
+	}
+	
+	@Override
+	public ItemStack insertItems(ItemStack stack) {
+		return (isEnabled() ? getPileData().addItems(stack) : stack);
 	}
 	@Override
-	public int spaceForItem(ForgeDirection side, ItemStack identifier) {
-		if (!GlobalConfig.enableCrateStorageInterfaceSetting.getValue()) return 0;
-		return getPileData().spaceForItem(identifier);
+	public ItemStack extractItems(ItemStack identifier, int amount) {
+		return (isEnabled() ? getPileData().removeItems(new ItemIdentifier(identifier), amount) : null);
 	}
+	
 	@Override
-	public ItemStack insertItems(ForgeDirection side, ItemStack stack) {
-		if (!GlobalConfig.enableCrateStorageInterfaceSetting.getValue()) return stack;
-		return getPileData().addItems(stack);
-	}
+	public void registerCrateWatcher(ICrateWatcher watcher) { if (isEnabled()) getPileData().addWatcher(watcher); }
 	@Override
-	public ItemStack extractItems(ForgeDirection side, ItemStack stack) {
-		if (!GlobalConfig.enableCrateStorageInterfaceSetting.getValue()) return null;
-		return getPileData().removeItems(stack);
-	}
-	@Override
-	public void registerCrateWatcher(ICrateWatcher watcher) {
-		if (GlobalConfig.enableCrateStorageInterfaceSetting.getValue())
-			getPileData().addWatcher(watcher);
-	}
-	@Override
-	public void unregisterCrateWatcher(ICrateWatcher watcher) {
-		if (GlobalConfig.enableCrateStorageInterfaceSetting.getValue())
-			getPileData().removeWatcher(watcher);
-	}
+	public void unregisterCrateWatcher(ICrateWatcher watcher) { if (isEnabled()) getPileData().removeWatcher(watcher); }
 	
 	// TileEntity synchronization
 	
@@ -369,6 +380,7 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 	public void writeToNBT(NBTTagCompound compound) {
 		super.writeToNBT(compound);
 		compound.setInteger("crateId", id);
+		// TODO: This might not be the best place to save the crate data.
 		getPileData().save();
 	}
 	

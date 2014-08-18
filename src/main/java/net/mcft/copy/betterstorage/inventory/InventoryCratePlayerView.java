@@ -3,18 +3,17 @@ package net.mcft.copy.betterstorage.inventory;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 import java.util.Queue;
 
-import net.mcft.copy.betterstorage.api.ICrateWatcher;
+import net.mcft.copy.betterstorage.api.crate.ICrateWatcher;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.misc.ItemIdentifier;
 import net.mcft.copy.betterstorage.tile.crate.CratePileData;
 import net.mcft.copy.betterstorage.tile.crate.TileEntityCrate;
-import net.mcft.copy.betterstorage.utils.RandomUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -45,29 +44,15 @@ public class InventoryCratePlayerView extends InventoryBetterStorage implements 
 		tempContents = new ItemStack[size];
 		
 		// Fill temp contents with some random items from the crate pile.
-		int totalStacks = data.getOccupiedSlots();
-		LinkedList<ItemStack> stacks = new LinkedList<ItemStack>();
-		for (ItemStack contentsStack : data)
-			stacks.add(contentsStack.copy());
 		List<Integer> slotAccess = new ArrayList<Integer>(size);
 		for (int i = 0; i < size; i++) slotAccess.add(i);
-		if (totalStacks < size)
-			Collections.shuffle(slotAccess);
-		for (int slot = 0; (totalStacks > 0) && (slot < size); slot++) {
-			int randomStack = RandomUtils.getInt(totalStacks--);
-			for (ListIterator<ItemStack> iter = stacks.listIterator(); iter.hasNext(); ) {
-				ItemStack contentsStack = iter.next();
-				int numStacks = StackUtils.calcNumStacks(contentsStack);
-				if (randomStack < numStacks) {
-					ItemStack stack = contentsStack.copy();
-					stack.stackSize = Math.min(stack.stackSize, stack.getMaxStackSize());
-					getMapData(stack).itemCount += stack.stackSize;
-					tempContents[slotAccess.get(slot)] = stack;
-					if ((contentsStack.stackSize -= stack.stackSize) <= 0) iter.remove();
-					break;
-				}
-				randomStack -= numStacks;
-			}
+		if (data.getOccupiedSlots() < size) Collections.shuffle(slotAccess);
+		
+		Iterator<ItemStack> iter = data.getContents().getRandomStacks().iterator();
+		for (int slot = 0; ((slot < size) && iter.hasNext()); slot++) {
+			ItemStack stack = iter.next();
+			getMapData(stack).itemCount += stack.stackSize;
+			tempContents[slotAccess.get(slot)] = stack;
 		}
 	}
 	
@@ -101,13 +86,14 @@ public class InventoryCratePlayerView extends InventoryBetterStorage implements 
 		ItemStack oldStack = getStackInSlot(slot);
 		ignoreModifiedItems = true;
 		if (oldStack != null) {
-			getMapData(oldStack).itemCount -= oldStack.stackSize;
-			data.removeItems(oldStack);
+			ItemIdentifier item = new ItemIdentifier(oldStack);
+			getMapData(item).itemCount -= oldStack.stackSize;
+			data.removeItems(item, oldStack.stackSize);
 		}
 		if (stack != null) {
 			int amount = Math.min(stack.stackSize,
-			                      Math.min(data.spaceForItem(stack),
-			                               stack.getMaxStackSize()));
+					Math.min(data.getSpaceForItem(stack),
+					         stack.getMaxStackSize()));
 			if (amount <= 0) return;
 			stack = StackUtils.copyStack(stack.copy(), amount);
 			getMapData(stack).itemCount += amount;
@@ -204,26 +190,14 @@ public class InventoryCratePlayerView extends InventoryBetterStorage implements 
 		
 		if (emptySlots <= data.getFreeSlots()) return;
 		
-		int size = data.getNumItems();
-		List<Integer> randomIndexList = new ArrayList<Integer>(size);
-		for (int i = 0; i < size; i++) randomIndexList.add(i);
-		
-		while ((emptySlots > data.getFreeSlots()) && (randomIndexList.size() > 0)) {
-			
-			int randomIndex = RandomUtils.getInt(randomIndexList.size());
-			int index = randomIndexList.get(randomIndex);
-			
-			ItemStack stack = data.getItemStack(index);
+		for (ItemStack stack : data.getContents().getItems()) {
 			ItemIdentifier item = new ItemIdentifier(stack);
 			MapData itemData = getMapData(item);
 			
 			int count = (stack.stackSize - itemData.itemCount);
 			if (count <= 0) continue;
 			setItemsInSlot(slot, item, itemData, count);
-			break;
-			
 		}
-		
 	}
 	
 	private int modifyItemsInSlot(int slot, ItemStack stack, MapData itemData, int amount) {
