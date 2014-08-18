@@ -32,14 +32,19 @@ public interface ICrateStorage {
 	public Object getCrateIdentifier();
 	
 	
-	/** Returns the number of stacks this crate pile can hold. */
+	/** Returns the number of slots in this crate pile. */
 	public int getCapacity();
 	
-	/** Returns the number of slots that are occupied. */
+	/** Returns the number of slots that are occupied by items. This is
+	 *  also the number of stacks that will be returned by getRandomStacks(). */
 	public int getOccupiedSlots();
 	
-	/** Returns the number of different unique items. This is also the
-	 *  number of items that will be returned by the getContents methods. */
+	// You can calculate the number of free slots by subtracting the
+	// capacity by the number of occupied slots. Note that even if this
+	// is 0, there might still be space for items in occupied slots.
+	
+	/** Returns the number of different unique items. This is also
+	 *  the number of items that will be returned by getContents(). */
 	public int getUniqueItems();
 	
 	
@@ -47,9 +52,9 @@ public interface ICrateStorage {
 	 *  stack sizes above their usual limit. */
 	public Iterable<ItemStack> getContents();
 	
-	/** Returns a randomized stream of stacks from the crate pile.
-	 *  It's not recommended to use this to iterate over the whole
-	 *  inventory, especially for crates storing lots of items. */
+	/** Returns a randomized stream of stacks from the crate pile. This
+	 *  works best if used to look at a few items. If the intention is to
+	 *  look at the whole inventory, getContents() should be used instead. */
 	public Iterable<ItemStack> getRandomStacks();
 	
 	
