@@ -32,14 +32,18 @@ public class GuiCraftingStation extends GuiBetterStorage {
 		int x = (width - xSize) / 2;
 		int y = (height - ySize) / 2;
 		int maxProgress = ((inv.currentCrafting != null) ? Math.max(inv.currentCrafting.getCraftingTime(), 1) : 1);
-		int progress = ((inv.progress <= maxProgress) ? (inv.progress * 28 / maxProgress) : 0);
-		drawTexturedModalRect(x + 74, y + 34, 176, 0, progress, 18);
+		int progress = ((inv.progress <= maxProgress) ? (inv.progress * 24 / maxProgress) : 0);
+		drawTexturedModalRect(x + 76, y + 34, 176, 0, progress, 18);
 		int requiredExperience = ((inv.currentCrafting != null) ? inv.currentCrafting.getRequiredExperience() : 0);
 		if (requiredExperience != 0) {
 			String str = Integer.toString(requiredExperience);
-			int strX = x + (xSize - mc.fontRenderer.getStringWidth(str)) / 2;
-			int strY = y + 58 - mc.fontRenderer.FONT_HEIGHT / 2;
-			mc.fontRenderer.drawStringWithShadow(str, strX, strY, 0x80FF20);
+			int strX = x + (xSize - fontRendererObj.getStringWidth(str)) / 2;
+			int strY = y + 58 - fontRendererObj.FONT_HEIGHT / 2;
+			fontRendererObj.drawString(str, strX - 1, strY, 0x444444);
+			fontRendererObj.drawString(str, strX + 1, strY, 0x444444);
+			fontRendererObj.drawString(str, strX, strY - 1, 0x444444);
+			fontRendererObj.drawString(str, strX, strY + 1, 0x444444);
+			fontRendererObj.drawString(str, strX, strY, 0x80FF20);
 		}
 	}
 	
@@ -60,9 +64,9 @@ public class GuiCraftingStation extends GuiBetterStorage {
 				float a = ((inv.progress < inv.currentCrafting.getCraftingTime()) ? 0.5F : 1.0F);
 				GL11.glColor4f(a, a, a, 0.6F);
 				mc.renderEngine.bindTexture(getResource());
-				int slotX = slot.xDisplayPosition - 1;
-				int slotY = slot.yDisplayPosition - 1;
-				RenderUtils.drawTexturedModalRect(slotX, slotY, slotX, slotY, 18, 18, 0,
+				int slotX = slot.xDisplayPosition;
+				int slotY = slot.yDisplayPosition;
+				RenderUtils.drawTexturedModalRect(slotX, slotY, slotX, slotY, 16, 16, 0,
 				                                  getTextureWidth(), getTextureHeight());
 				
 				GL11.glDisable(GL11.GL_BLEND);

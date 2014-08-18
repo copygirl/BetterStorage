@@ -12,13 +12,14 @@ import net.mcft.copy.betterstorage.api.crafting.StationCrafting;
 import net.mcft.copy.betterstorage.client.gui.GuiCraftingStation;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.misc.Resources;
+import net.mcft.copy.betterstorage.utils.RenderUtils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 
 import org.lwjgl.opengl.GL11;
 
-import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.NEIClientUtils;
 import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
@@ -26,6 +27,8 @@ import codechicken.nei.recipe.RecipeInfo;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 
 public class NEIRecipeHandler extends TemplateRecipeHandler {
+	
+	private final Minecraft mc = Minecraft.getMinecraft();
 	
 	@Override
 	public String getRecipeName() { return "Crafting Station"; }
@@ -53,34 +56,38 @@ public class NEIRecipeHandler extends TemplateRecipeHandler {
 	@Override
 	public void drawBackground(int recipe) {
 		GL11.glColor4f(1, 1, 1, 1);
-		GuiDraw.changeTexture(getGuiTexture());
-		GuiDraw.drawTexturedModalRect(0, 0, 5, 11, 166, 64);
+		mc.getTextureManager().bindTexture(Resources.containerCraftingStation);
+		RenderUtils.drawTexturedModalRect(0, 0, 5, 11, 166, 64, 0, 256, 256);
 	}
 	
 	@Override
 	public void drawExtras(int recipe) {
 		super.drawExtras(recipe);
 		CachedStationRecipe cached = (CachedStationRecipe)arecipes.get(recipe);
-		if (cached.requiredExperience > 0) {
-			String lvl = String.valueOf(cached.requiredExperience);
-			int width = GuiDraw.fontRenderer.getStringWidth(lvl);
-			int x = 71 + 25 / 2 - width / 2;
-			GuiDraw.fontRenderer.drawString(lvl, x - 1, 10, 0);
-			GuiDraw.fontRenderer.drawString(lvl, x + 1, 10, 0);
-			GuiDraw.fontRenderer.drawString(lvl, x, 10 - 1, 0);
-			GuiDraw.fontRenderer.drawString(lvl, x, 10 + 1, 0);
-			GuiDraw.fontRenderer.drawString(lvl, x, 10, 0x80FF20);
-		}
+		
 		GL11.glColor4f(1, 1, 1, 1);
-		GuiDraw.changeTexture("textures/gui/container/furnace.png");
-		if (cached.craftingTime >= 20) {
-			drawProgressBar(72, 24, 176, 14, 24, 16, cached.craftingTime, 0);
-			int sec = cached.craftingTime * 5 / 100 % 60;
-			int min = ((cached.craftingTime * 5 / (100) / 60));
-			String s = String.format("%1$02d", min) + ":" + String.format("%1$02d", sec);
-			int width = GuiDraw.fontRenderer.getStringWidth(s);
-			int x = 71 + 25 / 2 - width / 2;
-			GuiDraw.fontRenderer.drawString(s, x, 45, 0x444444);
+		int craftingTime = 100; //cached.craftingTime;
+		if (craftingTime >= 20) {
+			drawProgressBar(71, 22, 176, 0, 24, 18, craftingTime, 0);
+			int min = craftingTime / 20 / 60;
+			int sec = craftingTime / 20 % 60;
+			String str = "";
+			if (min > 0) str += min + "m";
+			if (sec > 0) str += sec + "s";
+			int strX = (168 - mc.fontRenderer.getStringWidth(str)) / 2;
+			int strY = 17 - mc.fontRenderer.FONT_HEIGHT / 2;
+			mc.fontRenderer.drawString(str, strX, strY, 0x444444);
+		}
+		
+		if (cached.requiredExperience > 0) {
+			String str = Integer.toString(cached.requiredExperience);
+			int strX = (168 - mc.fontRenderer.getStringWidth(str)) / 2;
+			int strY = 47 - mc.fontRenderer.FONT_HEIGHT / 2;
+			mc.fontRenderer.drawString(str, strX - 1, strY, 0x444444);
+			mc.fontRenderer.drawString(str, strX + 1, strY, 0x444444);
+			mc.fontRenderer.drawString(str, strX, strY - 1, 0x444444);
+			mc.fontRenderer.drawString(str, strX, strY + 1, 0x444444);
+			mc.fontRenderer.drawString(str, strX, strY, 0x80FF20);
 		}
 	}
 	
