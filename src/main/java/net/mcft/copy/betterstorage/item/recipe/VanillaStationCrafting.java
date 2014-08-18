@@ -16,6 +16,7 @@ import net.mcft.copy.betterstorage.utils.ReflectionUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -63,12 +64,9 @@ public class VanillaStationCrafting extends StationCrafting {
 			this.recipe = recipe;
 			this.slot = slot;
 			
-			ItemStack[] craftingStacks = new ItemStack[input.length];
+			crafting = new InventoryCrafting(new FakeContainer(), 3, 3);
 			for (int i = 0; i < input.length; i++)
-				craftingStacks[i] = ItemStack.copyItemStack(input[i]);
-			crafting = new InventoryCrafting(null, 3, 3);
-			
-			ReflectionUtils.set(InventoryCrafting.class, crafting, "field_70466_a", "stackList", craftingStacks);
+				crafting.setInventorySlotContents(i, ItemStack.copyItemStack(input[i]));
 			
 			expectedOutput = recipe.getCraftingResult(crafting).copy();
 		}
@@ -78,19 +76,22 @@ public class VanillaStationCrafting extends StationCrafting {
 		
 		@Override
 		public boolean matches(ItemStack stack) {
-			// FIXME: ReflectionUtils is really slow, and this will be called a LOT.
-			ItemStack[] stackList = ReflectionUtils.get(InventoryCrafting.class, crafting, "field_70466_a", "stackList");
-			ItemStack stackBefore = stackList[slot];
-			stackList[slot] = stack;
+			ItemStack stackBefore = crafting.getStackInSlot(slot);
+			crafting.setInventorySlotContents(slot, stack);
 			boolean matches = (recipe.matches(crafting, world) &&
 			                   StackUtils.matches(expectedOutput, recipe.getCraftingResult(crafting)));
-			stackList[slot] = stackBefore;
+			crafting.setInventorySlotContents(slot, stackBefore);
 			return matches;
 		}
 		
 		@Override
 		@SideOnly(Side.CLIENT)
 		public List<ItemStack> getPossibleMatches() { return null; }
+		
+		private static class FakeContainer extends Container {
+			@Override
+			public boolean canInteractWith(EntityPlayer player) { return false; }
+		}
 		
 	}
 	
