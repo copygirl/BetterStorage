@@ -79,7 +79,7 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 		if ((data.getNumCrates() > 0) && (y == data.getRegion().minY)) {
 			List<HashSet<TileEntityCrate>> crateSets =
 					new ArrayList<HashSet<TileEntityCrate>>();
-			int checkedChecks = 0;
+			int checkedCrates = 0;
 			neighborLoop: // Suck it :P
 			for (ForgeDirection dir : sideDirections) {
 				int nx = x + dir.offsetX;
@@ -87,7 +87,8 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 				// Continue if this neighbor block is not part of the crate pile.
 				// TODO: Use data.hasCrate before?
 				TileEntityCrate neighborCrate = WorldUtils.get(worldObj, nx, y, nz, TileEntityCrate.class);
-				if ((neighborCrate == null) || (neighborCrate.id != id)) continue;
+				if ((neighborCrate == null) ||
+				    (neighborCrate.data != data)) continue;
 				// See if the neighbor crate is already in a crate set,
 				// in that case continue with the next neighbor block.
 				for (HashSet<TileEntityCrate> set : crateSets)
@@ -99,8 +100,8 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 					checkConnections(nx + ndir.offsetX, y, nz + ndir.offsetZ, set);
 				crateSets.add(set);
 				// If we checked all crates, stop the loop.
-				checkedChecks += set.size();
-				if (checkedChecks == data.getNumCrates()) break;
+				checkedCrates += set.size();
+				if (checkedCrates == data.getNumCrates()) break;
 			}
 			// If there's more than one crate set, they need to split.
 			if (crateSets.size() > 0) {
