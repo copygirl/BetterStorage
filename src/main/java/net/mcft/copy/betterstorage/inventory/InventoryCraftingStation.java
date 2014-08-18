@@ -63,6 +63,7 @@ public class InventoryCraftingStation extends InventoryBetterStorage {
 	
 	/** Called whenever the crafting input changes. */
 	public void inputChanged() {
+		progress = 0;
 		currentCrafting = BetterStorageCrafting.findMatchingStationCrafting(crafting);
 		if (currentCrafting == null)
 			currentCrafting = VanillaStationCrafting.findVanillaRecipe(this);
