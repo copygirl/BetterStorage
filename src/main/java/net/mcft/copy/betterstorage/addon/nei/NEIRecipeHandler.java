@@ -66,11 +66,10 @@ public class NEIRecipeHandler extends TemplateRecipeHandler {
 		CachedStationRecipe cached = (CachedStationRecipe)arecipes.get(recipe);
 		
 		GL11.glColor4f(1, 1, 1, 1);
-		int craftingTime = 100; //cached.craftingTime;
-		if (craftingTime >= 20) {
-			drawProgressBar(71, 22, 176, 0, 24, 18, craftingTime, 0);
-			int min = craftingTime / 20 / 60;
-			int sec = craftingTime / 20 % 60;
+		if (cached.craftingTime >= 20) {
+			drawProgressBar(71, 22, 176, 0, 24, 18, cached.craftingTime, 0);
+			int min = cached.craftingTime / 20 / 60;
+			int sec = cached.craftingTime / 20 % 60;
 			String str = "";
 			if (min > 0) str += min + "m";
 			if (sec > 0) str += sec + "s";
