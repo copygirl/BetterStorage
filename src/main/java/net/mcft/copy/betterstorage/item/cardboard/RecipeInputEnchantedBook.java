@@ -44,7 +44,7 @@ public class RecipeInputEnchantedBook implements IRecipeInput {
 			for (Enchantment ench : Enchantment.enchantmentsList) {
 				if ((ench == null) || !ench.isAllowedOnBooks()) continue;
 				for (ItemStack item : items)
-					if (ench.canApply(item)) {
+					if (item.getItem() != null && ench.canApply(item)) {
 						validEnchantments.add(ench);
 						break;
 					}
