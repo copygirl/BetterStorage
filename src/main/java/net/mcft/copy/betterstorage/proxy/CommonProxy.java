@@ -49,6 +49,8 @@ import cpw.mods.fml.relauncher.Side;
 
 public class CommonProxy {
 	
+	private boolean preventSlimeBucketUse = false;
+	
 	public void initialize() {
 		
 		MinecraftForge.EVENT_BUS.register(this);
@@ -65,8 +67,6 @@ public class CommonProxy {
 	
 	@SubscribeEvent
 	public void onPlayerInteract(PlayerInteractEvent event) {
-		
-		if (event.isCanceled()) return;
 		
 		World world = event.entity.worldObj;
 		int x = event.x;
@@ -118,8 +118,8 @@ public class CommonProxy {
 		    !ItemCardboardSheet.isEffective(holding))
 			event.useItem = Result.DENY;
 		
+		// Attach locks to iron doors.
 		if (!world.isRemote && BetterStorageTiles.lockableDoor != null && rightClick && block == Blocks.iron_door) {
-			
 			MovingObjectPosition target = WorldUtils.rayTrace(player, 1F);		
 			if(target != null && getIronDoorHightlightBox(player, world, x, y, z, target.hitVec, block) != null) {
 				
@@ -152,6 +152,13 @@ public class CommonProxy {
 				player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
 			}
 		}
+		
+		// Prevent eating of slime buckets after capturing them.
+		if (preventSlimeBucketUse) {
+			event.setCanceled(true);
+			preventSlimeBucketUse = false;
+		}
+		
 	}
 	
 	protected AxisAlignedBB getIronDoorHightlightBox(EntityPlayer player, World world, int x, int y, int z, Vec3 hitVec, Block block) {
@@ -225,8 +232,11 @@ public class CommonProxy {
 		}
 		
 		if ((BetterStorageItems.slimeBucket != null) && (target instanceof EntityLiving) &&
-		    (holding != null) && (holding.getItem() == Items.bucket))
+		    (holding != null) && (holding.getItem() == Items.bucket)) {
 			ItemBucketSlime.pickUpSlime(player, (EntityLiving)target);
+			if (player.getCurrentEquippedItem().getItem() instanceof ItemBucketSlime)
+				preventSlimeBucketUse = true;
+		}
 		
 	}
 	
