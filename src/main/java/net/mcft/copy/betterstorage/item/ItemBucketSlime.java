@@ -276,7 +276,7 @@ public class ItemBucketSlime extends ItemBetterStorage {
 				player.addPotionEffect(new PotionEffect(Potion.field_76434_w.id, (potionEffects ? 40 : 60) * 20, 4));
 			}
 		});
-		registerHandler(new Handler("thaumicSlime", "ThaumSlime") {
+		registerHandler(new Handler("thaumicSlime", "Thaumcraft.ThaumSlime") {
 			private int potionFluxId = -1;
 			@Override public float durationMultiplier() { return 1.0F; }
 			@Override public void onEaten(EntityPlayer player, boolean potionEffects) {
