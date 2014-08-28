@@ -283,8 +283,9 @@ public class ItemBucketSlime extends ItemBetterStorage {
 				if (potionFluxId == -1) {
 					// Look for flux potion effect.
 					for (Potion potion : Potion.potionTypes)
-						if (potion.getName() == "potion.fluxtaint") {
-							potionFluxId = potion.id; break; }
+						if (potion != null)
+							if (potion.getName() == "potion.fluxtaint") {
+								potionFluxId = potion.id; break; }
 					// If not found, just use wither.
 					if (potionFluxId == -1)
 						potionFluxId = Potion.wither.id;
