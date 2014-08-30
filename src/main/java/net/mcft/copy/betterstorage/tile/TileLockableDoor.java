@@ -153,7 +153,6 @@ public class TileLockableDoor extends TileBetterStorage {
 
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
-		//TODO It will place a block in front of the bottom block when shift clicking the upper block.
 		if (world.getBlockMetadata(x, y, z) > 0) y -= 1;
 		TileEntityLockableDoor te = WorldUtils.get(world, x, y, z, TileEntityLockableDoor.class);
 		return te.onBlockActivated(world, x, y, z, player, side, hitX, hitY, hitZ);
