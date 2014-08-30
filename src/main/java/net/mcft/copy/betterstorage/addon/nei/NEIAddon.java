@@ -43,17 +43,19 @@ public class NEIAddon extends Addon {
 		API.hideItem(new ItemStack(BetterStorageTiles.lockableDoor));
 		
 		// Fake key recipes
-		GameRegistry.addRecipe(new FakeShapedRecipe(new ItemStack(BetterStorageItems.key),
-				".o",
-				".o",
-				" o", 'o', Items.gold_ingot,
-				      '.', Items.gold_nugget));
-		GameRegistry.addRecipe(new FakeShapedRecipe(new ItemStack(BetterStorageItems.key),
-				".o ",
-				".o ",
-				" ok", 'o', Items.gold_ingot,
-				       '.', Items.gold_nugget,
-				       'k', BetterStorageItems.key));
+		if (BetterStorageItems.key != null) {
+			GameRegistry.addRecipe(new FakeShapedRecipe(new ItemStack(BetterStorageItems.key),
+					".o",
+					".o",
+					" o", 'o', Items.gold_ingot,
+					      '.', Items.gold_nugget));
+			GameRegistry.addRecipe(new FakeShapedRecipe(new ItemStack(BetterStorageItems.key),
+					".o ",
+					".o ",
+					" ok", 'o', Items.gold_ingot,
+					       '.', Items.gold_nugget,
+					       'k', BetterStorageItems.key));
+		}
 	}
 	
 	private static class StationOverlayHandler extends DefaultOverlayHandler {
