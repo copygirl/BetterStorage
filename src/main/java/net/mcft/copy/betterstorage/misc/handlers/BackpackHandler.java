@@ -60,6 +60,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerChangedDimensionEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
 
@@ -215,6 +216,12 @@ public class BackpackHandler {
 		if (event.target instanceof EntityLivingBase)
 			ItemBackpack.getBackpackData((EntityLivingBase)event.target)
 					.sendDataToPlayer((EntityLivingBase)event.target, event.entityPlayer);
+	}
+	
+	@SubscribeEvent
+	public void onPlayerChangedDimensionEvent(PlayerChangedDimensionEvent event) {
+		// When a player changes dimensions, resend the backpack data.
+		ItemBackpack.getBackpackData(event.player).sendDataToPlayer(event.player, event.player);
 	}
 	
 	@SubscribeEvent

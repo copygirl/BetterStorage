@@ -30,8 +30,6 @@ public class KeyBindingHandler {
 	
 	private static final KeyBinding[] bindings = new KeyBinding[]{ backpackOpen, drinkingHelmet };
 	
-	public static boolean serverBackpackKeyEnabled = false;
-	
 	public KeyBindingHandler() {
 		MinecraftForge.EVENT_BUS.register(this);
 		FMLCommonHandler.instance().bus().register(this);

@@ -101,15 +101,13 @@ public class PropertiesBackpack implements IExtendedEntityProperties {
 	}
 	
 	public void sendDataToPlayer(EntityLivingBase entity, EntityPlayer player) {
-		// Called when the players sends a packet informing
-		// the server that an entity has spawned.
 		// Sends any backpack data to the player.
 		if (playersUsing > 0)
-			BetterStorage.networkChannel.sendToAllTracking(
-					new PacketBackpackIsOpen(entity.getEntityId(), true), entity);
+			BetterStorage.networkChannel.sendTo(
+					new PacketBackpackIsOpen(entity.getEntityId(), true), player);
 		if (backpack != null)
-			BetterStorage.networkChannel.sendToAllTracking(
-					new PacketBackpackStack(entity.getEntityId(), backpack), entity);
+			BetterStorage.networkChannel.sendTo(
+					new PacketBackpackStack(entity.getEntityId(), backpack), player);
 	}
 	
 }
