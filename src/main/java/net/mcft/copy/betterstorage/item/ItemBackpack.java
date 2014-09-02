@@ -182,7 +182,7 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 			                                                 : "backpack.equipHint.extended"));
 			// If the backpack doesn't get equipped to the chestplate slot,
 			// let players know they can open it in the regular item tooltip.
-			if (!chestplate) {
+			if (!chestplate && BetterStorage.globalConfig.getBoolean(GlobalConfig.enableBackpackOpen)) {
 				String str = GameSettings.getKeyDisplayString(KeyBindingHandler.backpackOpen.getKeyCode());
 				LanguageUtils.translateTooltip(list, "backpack.openHint", "%KEY%", str);
 			}
