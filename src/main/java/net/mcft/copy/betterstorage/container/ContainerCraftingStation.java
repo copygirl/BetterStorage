@@ -111,7 +111,7 @@ public class ContainerCraftingStation extends ContainerBetterStorage {
 			ItemStack craftingStack = inv.output[slotId - 9];
 			int amount = craftingStack.stackSize;
 			// Shift-click: Craft up to one stack of items at once.
-			if ((special == 1) && inv.hasItemRequirements() && craftingStack.isStackable()) {
+			if (special == 1) {
 				ItemStack stack;
 				int count = 0;
 				do {
@@ -119,9 +119,8 @@ public class ContainerCraftingStation extends ContainerBetterStorage {
 					craft(slotId - 9);
 					stack = super.slotClick(slotId, button, special, player);
 				} while (!inv.outputIsReal && (inv.currentCrafting != null) &&
-						(inv.output[slotId - 9] != null) && inv.canTake(player) &&
-						inv.hasItemRequirements() &&
-						(count + amount <= craftingStack.getMaxStackSize()));
+				         (inv.output[slotId - 9] != null) && inv.canTake(player) &&
+				         inv.hasItemRequirements() && (count + amount <= craftingStack.getMaxStackSize()));
 				return stack;
 			// Regular clicking: Craft once. 
 			} else if (special < 2) {
