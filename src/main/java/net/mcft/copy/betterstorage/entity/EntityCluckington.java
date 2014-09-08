@@ -1,6 +1,7 @@
 package net.mcft.copy.betterstorage.entity;
 
 import net.mcft.copy.betterstorage.utils.StackUtils;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
@@ -11,6 +12,7 @@ import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
 public class EntityCluckington extends EntityChicken {
@@ -38,7 +40,8 @@ public class EntityCluckington extends EntityChicken {
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
 		getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30.0);
-		getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(2.0);
+		getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.35);
+		getAttributeMap().registerAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(2.0);
 	}
 	
 	@Override
@@ -59,6 +62,12 @@ public class EntityCluckington extends EntityChicken {
 			healTimer = 0;
 			heal(1.0F);
 		}
+	}
+	
+	@Override
+	public boolean attackEntityAsMob(Entity target) {
+		return target.attackEntityFrom(DamageSource.causeMobDamage(this),
+				(float)getEntityAttribute(SharedMonsterAttributes.attackDamage).getBaseValue());
 	}
 	
 	public static void spawn(EntityChicken target) {
