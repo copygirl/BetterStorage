@@ -2,6 +2,8 @@ package net.mcft.copy.betterstorage.network.packet;
 
 import java.io.IOException;
 
+import net.mcft.copy.betterstorage.BetterStorage;
+import net.mcft.copy.betterstorage.config.GlobalConfig;
 import net.mcft.copy.betterstorage.network.AbstractPacket;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityLockable;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
@@ -41,6 +43,7 @@ public class PacketLockHit extends AbstractPacket<PacketLockHit> {
 	@Override
 	public void handle(EntityPlayer player) {
 		TileEntityLockable lockable = WorldUtils.get(player.worldObj, x, y, z, TileEntityLockable.class);
+		damage &= BetterStorage.globalConfig.getBoolean(GlobalConfig.lockBreakable);
 		if (lockable != null)
 			lockable.lockAttachment.hit(damage);
 	}

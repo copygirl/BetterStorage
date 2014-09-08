@@ -6,6 +6,7 @@ import net.mcft.copy.betterstorage.api.lock.EnumLockInteraction;
 import net.mcft.copy.betterstorage.api.lock.IKey;
 import net.mcft.copy.betterstorage.api.lock.ILock;
 import net.mcft.copy.betterstorage.api.lock.ILockable;
+import net.mcft.copy.betterstorage.config.GlobalConfig;
 import net.mcft.copy.betterstorage.content.BetterStorageItems;
 import net.mcft.copy.betterstorage.item.ItemBetterStorage;
 import net.mcft.copy.betterstorage.network.packet.PacketLockHit;
@@ -174,7 +175,8 @@ public class LockAttachment extends ItemAttachment {
 	}
 	
 	private boolean canHurtLock(ItemStack stack) {
-		if (stack == null) return false;
+		if ((stack == null) || !BetterStorage.globalConfig.getBoolean(
+				GlobalConfig.lockBreakable)) return false;
 		Item item = stack.getItem();
 		return ((item instanceof ItemSword) ||
 		        (item instanceof ItemPickaxe) ||

@@ -74,6 +74,8 @@ public class GlobalConfig extends Config {
 	public static final String enableStationAutoCrafting     = "general.enableStationAutoCrafting";
 	public static final String stationAutocraftDelay         = "general.stationAutocraftDelay";
 	
+	public static final String lockBreakable                 = "general.lockBreakable";
+	
 	public static final String enableHelpTooltips            = "general.enableHelpTooltips";
 	public static final String enableWarningMessages         = "general.enableWarningMessages";
 	public static final String crateDebugMessages            = "general.crateDebugMessages";
@@ -161,6 +163,10 @@ public class GlobalConfig extends Config {
 		stationAutocraftDelaySetting =
 		new IntegerSetting(this, stationAutocraftDelay, 10).setValidRange(0, Integer.MAX_VALUE).setComment(
 				"Delay between recipes being autocrafted in the crafting station, in ticks. (Default: 10)");
+		
+		// Key / Lock settings
+		new BooleanSetting(this, lockBreakable, true).setSynced().setComment(
+				"If disabled, turns off the ability to break locks off of locked containers using tools.");
 		
 		// Miscellaneous settings
 		new BooleanSetting(this, enableHelpTooltips, true).setComment(
