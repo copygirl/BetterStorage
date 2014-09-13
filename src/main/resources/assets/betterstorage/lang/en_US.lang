@@ -66,7 +66,7 @@ material.betterstorage.zinc=Zinc
 # Thaumcraft
 tc.research_name.betterstorage.magicstorage=Magical Storage
 tc.research_text.betterstorage.magicstorage=Enchanting your containers
-tc.research_page.betterstorage.magicstorage.1=Infusing a backpack with magic and materials of magical nature will increase its overall durability and storage capacity. Items inside it with the repair enchantment will still be able to repair themselves, at a slower rate.<BR>A similar thing is possible when throwing together a reinforced iron chest and a bunch of thaumium, which will result in an even more durable chest which can also store more items.
+tc.research_page.betterstorage.magicstorage.1=Infusing a backpack with magic and materials of magical nature will increase its overall durability, enchantability and storage capacity. While worn, items stored inside will still be able to repair, though much slower, unless the backpack itself also has the repair enchantment.<BR>It is also possible to throw together a reinforced iron chest and a bunch of thaumium, which will result in an even more durable chest which can also store more items.
 
 # Blocks
 tile.betterstorage.craftingStation.name=Crafting Station

@@ -1,5 +1,6 @@
 package net.mcft.copy.betterstorage.addon.thaumcraft;
 
+import java.lang.reflect.Method;
 import java.util.List;
 
 import net.mcft.copy.betterstorage.item.ItemBackpack;
@@ -12,12 +13,10 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.EnumRarity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import thaumcraft.api.IRepairable;
-import thaumcraft.api.IRepairableExtended;
 import thaumcraft.api.IVisDiscountGear;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
@@ -112,24 +111,32 @@ public class ItemThaumcraftBackpack extends ItemBackpack implements IRepairable,
 	}
 	*/
 	
-	public void repairItems(ItemStack stack, EntityPlayer player) {
+	public void repairItems(ItemStack backpack, EntityPlayer player) {
 		
-		int time = 30 * 20;
 		IInventory backpackInventory = ItemBackpack.getBackpackItems(player);
-		int backpackRepair = EnchantmentHelper.getEnchantmentLevel(ThaumcraftApi.enchantRepair, stack);
-		if ((backpackRepair <= 0) || ((player.ticksExisted % time) > 0)) return;
+		int repair = EnchantmentHelper.getEnchantmentLevel(ThaumcraftApi.enchantRepair, backpack);
+		int time = ((repair > 0) ? (15 - Math.min(repair, 2) * 5) : 30) * 20;
+		if ((player.ticksExisted % time) > 0) return;
 		
 		for (int i = 0; i < backpackInventory.getSizeInventory(); i++) {
-			ItemStack itemStack = backpackInventory.getStackInSlot(i);
-			if (itemStack == null) continue;
-			Item item = itemStack.getItem();
-			int repair = EnchantmentHelper.getEnchantmentLevel(ThaumcraftApi.enchantRepair, itemStack);
-			if (!(item instanceof IRepairable) || (repair <= 0) ||
-			    ((item instanceof IRepairableExtended) &&
-			     !((IRepairableExtended)item).doRepair(itemStack, player, repair))) continue;
-			itemStack.setItemDamage(Math.max(itemStack.getItemDamage() - repair, 0));
+			ItemStack stack = backpackInventory.getStackInSlot(i);
+			if ((stack != null) && (stack.getItem() instanceof IRepairable) &&
+			    (EnchantmentHelper.getEnchantmentLevel(ThaumcraftApi.enchantRepair, stack) > 0))
+				repairItem(stack, player);
 		}
 		
+	}
+	
+	private static Method doRepairMethod = null;
+	private static void repairItem(ItemStack stack, EntityPlayer player) {
+		if (doRepairMethod == null) {
+			try {
+				Class clazz = Class.forName("thaumcraft.common.lib.events.EventHandlerEntity");
+				doRepairMethod = clazz.getMethod("doRepair", ItemStack.class, EntityPlayer.class);
+			} catch (Exception ex) { ex.printStackTrace(); return; }
+		}
+		try { doRepairMethod.invoke(null, stack, player); }
+		catch (Exception ex) { ex.printStackTrace(); }
 	}
 	
 	// IVisDiscountGear implementation
