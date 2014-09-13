@@ -61,6 +61,7 @@ public class GlobalConfig extends Config {
 	
 	public static final String enableCrateInventoryInterface = "general.enableCrateInventoryInterface";
 	public static final String enableCrateStorageInterface   = "general.enableCrateStorageInterface";
+	public static final String crateDebugMessages            = "general.crateDebugMessages";
 	
 	public static final String backpackChestplate            = "general.backpackChestplate";
 	public static final String backpackRows                  = "general.backpackRows";
@@ -78,7 +79,6 @@ public class GlobalConfig extends Config {
 	
 	public static final String enableHelpTooltips            = "general.enableHelpTooltips";
 	public static final String enableWarningMessages         = "general.enableWarningMessages";
-	public static final String crateDebugMessages            = "general.crateDebugMessages";
 	
 	
 	public GlobalConfig(File file) {
@@ -137,6 +137,8 @@ public class GlobalConfig extends Config {
 		enableCrateStorageInterfaceSetting =
 		new BooleanSetting(this, enableCrateStorageInterface, true).setComment(
 				"If disabled, prevents mods from using storage crates' special storage interface (like Applied Energistics).");
+		new BooleanSetting(this, crateDebugMessages).setComment(
+				"If enabled, logs crate related debug messages (like them saving).");
 		
 		// Backpack settings
 		new BooleanSetting(this, backpackChestplate, true).setSynced().setComment(
@@ -173,8 +175,6 @@ public class GlobalConfig extends Config {
 				"If enabled, shows tooltips on some items to help players who're new to the mod.");
 		new BooleanSetting(this, enableWarningMessages, true).setComment(
 				"If disabled, prevents certain warning messages from being logged to the console.");
-		new BooleanSetting(this, crateDebugMessages).setComment(
-				"If enabled, logs debug messages related to crate related things (like them saving).");
 	
 	}
 	
