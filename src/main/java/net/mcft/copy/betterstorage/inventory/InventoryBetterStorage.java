@@ -1,6 +1,6 @@
 package net.mcft.copy.betterstorage.inventory;
 
-import net.mcft.copy.betterstorage.utils.InventoryUtils;
+import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 
@@ -25,7 +25,15 @@ public abstract class InventoryBetterStorage implements IInventory {
 	
 	@Override
 	public ItemStack decrStackSize(int slot, int amount) {
-		return InventoryUtils.unsafeDecreaseStackSize(this, slot, amount);
+		ItemStack stack = getStackInSlot(slot);
+		if (stack == null) return null;
+		amount = Math.min(amount, stack.stackSize);
+		if (amount < stack.stackSize) {
+			stack.stackSize -= amount;
+			stack = StackUtils.copyStack(stack, amount);
+			markDirty();
+		} else setInventorySlotContents(slot, null);
+		return stack;
 	}
 	
 	@Override

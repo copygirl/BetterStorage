@@ -11,19 +11,6 @@ public final class InventoryUtils {
 	
 	private InventoryUtils() {  }
 	
-	/** Standard decrStackSize which modifies stackSize directly. */
-	public static ItemStack unsafeDecreaseStackSize(IInventory inventory, int slot, int amount) {
-		ItemStack stack = inventory.getStackInSlot(slot);
-		if (stack == null) return null;
-		amount = Math.min(amount, stack.stackSize);
-		if (amount < stack.stackSize) {
-			stack.stackSize -= amount;
-			stack = StackUtils.copyStack(stack, amount);
-			inventory.markDirty();
-		} else inventory.setInventorySlotContents(slot, null);
-		return stack;
-	}
-	
 	/** Returns if the inventory has a specific item. */
 	public static boolean hasItem(IInventory inventory, Item item) {
 		for (int i = 0; i < inventory.getSizeInventory(); i++) {
