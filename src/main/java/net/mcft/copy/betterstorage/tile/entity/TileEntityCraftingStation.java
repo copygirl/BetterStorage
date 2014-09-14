@@ -57,6 +57,10 @@ public class TileEntityCraftingStation extends TileEntityContainer
 		super.dropContents();
 	}
 	
+	/** Calls the TileEntity.markDirty function without affecting the attached
+	 *  inventory. This marks the chunk this tile entity is in to be saved. */
+	public void markDirtySuper() { super.markDirty(); }
+	
 	// IInventory implementation
 	
 	@Override
@@ -87,10 +91,7 @@ public class TileEntityCraftingStation extends TileEntityContainer
 	@Override
 	public ItemStack getStackInSlotOnClosing(int slot) { return null; }
 	@Override
-	public void markDirty() {
-		super.markDirty();
-		stationInventory.markDirty();
-	}
+	public void markDirty() { stationInventory.markDirty(); }
 	@Override
 	public void openInventory() {  }
 	@Override

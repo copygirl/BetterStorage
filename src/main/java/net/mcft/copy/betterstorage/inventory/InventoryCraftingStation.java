@@ -48,11 +48,8 @@ public class InventoryCraftingStation extends InventoryBetterStorage {
 		this.crafting = crafting;
 		this.output = output;
 		this.contents = contents;
-		
 		lastOutput = new ItemStack[output.length];
-		updateLastOutput();
-		
-		markDirty();
+		inputChanged();
 	}
 	
 	public void update() {
@@ -73,8 +70,8 @@ public class InventoryCraftingStation extends InventoryBetterStorage {
 				for (int i = 0; i < output.length; i++)
 					output[i] = ((i < craftingOutput.length) ? ItemStack.copyItemStack(craftingOutput[i]) : null);
 			} else Arrays.fill(output, null);
+			updateLastOutput();
 		}
-		updateLastOutput();
 	}
 	
 	/** Called when an item is removed from the output
@@ -215,6 +212,7 @@ public class InventoryCraftingStation extends InventoryBetterStorage {
 		else if (slot < crafting.length + output.length)
 			output[slot - crafting.length] = stack;
 		else contents[slot - (crafting.length + output.length)] = stack;
+		markDirty();
 	}
 	
 	@Override
@@ -228,32 +226,28 @@ public class InventoryCraftingStation extends InventoryBetterStorage {
 	@Override
 	public void markDirty() {
 		
-		boolean updateLastOutput = false;
+		if (entity != null)
+			entity.markDirtySuper();
 		
-		// See if items were taken out from the output.
-		if (outputChanged()) {
-			// If the output is ghost items, there is a recipe and we're
-			// on the server, craft the items and decrement the input.
-			if (!outputIsReal && (currentCrafting != null) && (entity != null))
-				craft(null);
-			updateLastOutput = true;
-		}
+		// Craft the items if the ghost output was changed.
+		if (outputChanged() && !outputIsReal &&
+		    (currentCrafting != null) && (entity != null))
+			craft(null);
 		
+		// If the output is empty..
 		if (outputEmpty()) {
-			// Otherwise set the output to not be real.
+			// ..set the output to not contain any real items.
 			outputIsReal = false;
 			if (currentCrafting != null) {
-				// Fill it with ghost output from the recipe.
+				// ..fill the output with ghost output from the recipe.
 				ItemStack[] recipeOutput = currentCrafting.getOutput();
 				for (int i = 0; i < recipeOutput.length; i++)
 					output[i] = ItemStack.copyItemStack(recipeOutput[i]);
 			}
-			updateLastOutput = true;
+			updateLastOutput();
 		}
 		
 		checkHasRequirements = true;
-		if (updateLastOutput)
-			updateLastOutput();
 		
 	}
 	
