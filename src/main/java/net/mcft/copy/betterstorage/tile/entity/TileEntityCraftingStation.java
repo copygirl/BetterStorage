@@ -120,7 +120,6 @@ public class TileEntityCraftingStation extends TileEntityContainer
 		stationInventory.outputIsReal = compound.hasKey("Output");
 		// Update the inventory, causes ghost output to be initialized.
 		stationInventory.inputChanged();
-		stationInventory.markDirty();
 	}
 	@Override
 	public void writeToNBT(NBTTagCompound compound) {
