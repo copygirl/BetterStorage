@@ -19,6 +19,7 @@ public final class InventoryUtils {
 		if (amount < stack.stackSize) {
 			stack.stackSize -= amount;
 			stack = StackUtils.copyStack(stack, amount);
+			inventory.markDirty();
 		} else inventory.setInventorySlotContents(slot, null);
 		return stack;
 	}
