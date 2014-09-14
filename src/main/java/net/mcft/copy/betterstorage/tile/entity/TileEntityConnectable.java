@@ -216,7 +216,7 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 	@Override
 	public void closeInventory() { if (isAccessible()) getPlayerInventory().closeInventory(); }
 	@Override
-	public void markDirty() { super.markDirty(); }
+	public void markDirty() { if (isAccessible()) getPlayerInventory().markDirty(); }
 	
 	// Tile entity synchronization
 	

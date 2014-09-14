@@ -198,12 +198,18 @@ public abstract class TileEntityContainer extends TileEntity {
 		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
 	}
 	
-	@Override
-	public void markDirty() {
+	/** Calls the TileEntity.markDirty function without affecting the
+	 *  attached inventory (if any). Marks the tile entity to be saved. */
+	public void markDirtySuper() {
 		if (worldObj.isRemote) return;
 		worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
 		if (hasComparatorAccessed())
 			markContentsChanged();
+	}
+	
+	@Override
+	public void markDirty() {
+		markDirtySuper();
 	}
 	
 	@Override

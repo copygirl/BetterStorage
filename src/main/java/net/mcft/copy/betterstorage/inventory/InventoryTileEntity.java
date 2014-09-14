@@ -49,7 +49,9 @@ public class InventoryTileEntity extends InventoryBetterStorage {
 	public ItemStack getStackInSlot(int slot) { return inventory.getStackInSlot(slot); }
 	@Override
 	public void setInventorySlotContents(int slot, ItemStack stack) {
-		inventory.setInventorySlotContents(slot, stack); }
+		inventory.setInventorySlotContents(slot, stack);
+		markDirty();
+	}
 
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
@@ -71,7 +73,7 @@ public class InventoryTileEntity extends InventoryBetterStorage {
 	public void markDirty() {
 		inventory.markDirty();
 		for (TileEntityContainer te : tileEntities)
-			te.markDirty();
+			te.markDirtySuper();
 	}
 	
 }
