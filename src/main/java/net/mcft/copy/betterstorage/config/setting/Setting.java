@@ -94,20 +94,14 @@ public abstract class Setting<T> extends DummyConfigElement<T> {
 	}
 	
 	/** Loads the setting's value from the config. */
-	public void load(Configuration config) { setValue(loadInternal(config)); }
+	public abstract void load(Configuration config);
 	/** Saves the setting's value to the config. */
-	public void save(Configuration config) { saveInternal(config, getInternalValue()); }
+	public abstract void save(Configuration config);
 	
 	/** Reads the setting's synced value from the compound tag. */
-	public void read(NBTTagCompound compound) { setSyncedValue(readInternal(compound)); }
+	public abstract void read(NBTTagCompound compound);
 	/** Writes the setting's value to the compound tag. */
-	public void write(NBTTagCompound compound) { writeInternal(compound, getInternalValue()); }
-	
-	protected abstract T loadInternal(Configuration config);
-	protected abstract void saveInternal(Configuration config, T value);
-	
-	protected abstract T readInternal(NBTTagCompound compound);
-	protected abstract void writeInternal(NBTTagCompound compound, T value);
+	public abstract void write(NBTTagCompound compound);
 
 	public Setting setHasComment(boolean hasComment) {
 		this.hasComment = hasComment;

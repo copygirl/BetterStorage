@@ -49,7 +49,7 @@ public class BetterStorageRenderingHandler implements ISimpleBlockRenderingHandl
 	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
 		tileEntity.blockType = block;
 		tileEntity.blockMetadata = metadata;
-		if (tileEntity instanceof TileEntityContainer)
+		if (tileEntity instanceof TileEntityContainer && (Minecraft.getMinecraft().thePlayer != null))
 			((TileEntityContainer)tileEntity).ticksExisted =
 				Minecraft.getMinecraft().thePlayer.ticksExisted;
 		GL11.glTranslatef(0, yOffset, 0);

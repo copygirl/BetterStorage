@@ -34,12 +34,12 @@ public class BooleanSetting extends SinglePropertySetting<Boolean> {
 		super.setSynced();
 		return this;
 	}
-	
+
 	@Override
 	protected Type getPropertyType() { return Type.BOOLEAN; }
 	
 	@Override
-	protected Boolean loadInternal(Configuration config) { return getProperty(config).getBoolean(defaultValue); }
+	protected Boolean loadInternal(Configuration config) { return getProperty(config).getBoolean((Boolean) defaultValue); }
 	@Override
 	protected void saveInternal(Configuration config, Boolean value) { getProperty(config).set(value); }
 	

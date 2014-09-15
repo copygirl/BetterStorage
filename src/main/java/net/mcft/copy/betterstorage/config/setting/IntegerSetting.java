@@ -38,6 +38,7 @@ public class IntegerSetting extends SinglePropertySetting<Integer> {
 		super.setComment(comment);
 		return this;
 	}
+	
 	@Override
 	public IntegerSetting setSynced() {
 		super.setSynced();

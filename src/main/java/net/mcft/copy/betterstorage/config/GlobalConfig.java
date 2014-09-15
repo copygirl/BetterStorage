@@ -5,6 +5,7 @@ import java.io.File;
 import net.mcft.copy.betterstorage.config.setting.BooleanSetting;
 import net.mcft.copy.betterstorage.config.setting.EnchantmentIdSetting;
 import net.mcft.copy.betterstorage.config.setting.IntegerSetting;
+import net.mcft.copy.betterstorage.config.setting.ItemArraySetting;
 
 public class GlobalConfig extends Config {
 	
@@ -79,6 +80,8 @@ public class GlobalConfig extends Config {
 	public static final String enableHelpTooltips            = "general.enableHelpTooltips";
 	public static final String enableWarningMessages         = "general.enableWarningMessages";
 	public static final String crateDebugMessages            = "general.crateDebugMessages";
+	
+	public static final String blacklistedBackpackItems      = "general.blacklistedBackpackItems";
 	
 	
 	public GlobalConfig(File file) {
@@ -175,7 +178,9 @@ public class GlobalConfig extends Config {
 				"If disabled, prevents certain warning messages from being logged to the console.");
 		new BooleanSetting(this, crateDebugMessages).setComment(
 				"If enabled, logs debug messages related to crate related things (like them saving).");
-	
+		
+		new ItemArraySetting(this, blacklistedBackpackItems, false, -1).setComment(
+				"List of item names that can not be placed inside backpacks.");
 	}
 	
 }
