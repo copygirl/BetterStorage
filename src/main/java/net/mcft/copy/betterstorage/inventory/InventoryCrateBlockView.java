@@ -81,7 +81,8 @@ public class InventoryCrateBlockView extends InventoryBetterStorage implements I
 		ItemStack stack = getStackInSlot(slot);
 		if (stack == null) return null;
 		amount = Math.min(amount, stack.stackSize);
-		originalStacks[slot - 1].stackSize = exposedStacks[slot - 1].stackSize -= amount;
+		if (stack.stackSize <= amount) originalStacks[slot - 1] = exposedStacks[slot - 1] = null;
+		else originalStacks[slot - 1].stackSize = exposedStacks[slot - 1].stackSize -= amount;
 		isModifying = true;
 		ItemStack result = data.removeItems(new ItemIdentifier(stack), amount);
 		isModifying = false;
