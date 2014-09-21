@@ -71,7 +71,7 @@ public class ShapedStationRecipe implements IStationRecipe {
 		
 		recipeInput = new IRecipeInput[width * height];
 		recipeOutput = output;
-
+		
 		for (int x = 0; x < width; x++)
 			for (int y = 0; y < height; y++)
 				recipeInput[x + y * width] = inputMap.get(((String)input[y]).charAt(x));

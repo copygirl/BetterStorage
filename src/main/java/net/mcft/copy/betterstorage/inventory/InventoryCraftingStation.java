@@ -49,7 +49,6 @@ public class InventoryCraftingStation extends InventoryBetterStorage {
 		this.output = output;
 		this.contents = contents;
 		lastOutput = new ItemStack[output.length];
-		inputChanged();
 	}
 	
 	public void update() {
