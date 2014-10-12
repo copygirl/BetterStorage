@@ -122,39 +122,42 @@ public class TileEntityArmorStand extends TileEntityContainer {
 			markForUpdate();
 			markDirty();
 		} else {
-			Object armor = getFirstArmorPiece(slot);
+			ItemStack armor = vanillaArmor[slot];
+			int a1 = awArmor[slot];
+			int a2 = awArmor[4];
 			ItemStack holding = player.getCurrentEquippedItem();
-			boolean replaced = false;
 			
-			boolean isAWArmor = false;
-			if(AWAddon.isLoaded && holding != null) {
-				if (AWAddon.dataHandler.hasItemStackGotEquipmentData(holding))
-					isAWArmor = true;	
-			}
-			
-			if (armor instanceof ItemStack && !isAWArmor) {
-				vanillaArmor[slot] = null;
-				player.inventory.mainInventory[player.inventory.currentItem] = (ItemStack) armor;
-				replaced = true;
-			}
-			else if (armor instanceof Integer && AWAddon.isLoaded && (isAWArmor || holding == null)) {
-				EnumEquipmentType type = AWAddon.dataHandler.getEquipmentType((Integer) armor);
-				if (type == EnumEquipmentType.SKIRT) awArmor[4] = 0;
-				else awArmor[slot] = 0;
-				player.inventory.mainInventory[player.inventory.currentItem] = AWAddon.dataHandler.getCustomEquipmentItemStack((Integer) armor);
-				replaced = true;
-			}
-			if ((holding != null) && AWAddon.validateArmor(player, holding, slot)) {
-				if (isAWArmor) {
+			if (holding != null && AWAddon.validateArmor(player, holding, slot)) {
+				if(AWAddon.isLoaded && AWAddon.dataHandler.hasItemStackGotEquipmentData(holding)) {
 					int id = AWAddon.dataHandler.getEquipmentIdFromItemStack(holding);
 					EnumEquipmentType type = AWAddon.dataHandler.getEquipmentType(id);
-					if (type == EnumEquipmentType.SKIRT) awArmor[4] = id;
-					else awArmor[slot] = id;		
+					if(type == EnumEquipmentType.SKIRT) {
+						awArmor[4] = id;
+						player.inventory.mainInventory[player.inventory.currentItem] = a2 != 0 ? 
+							AWAddon.dataHandler.getCustomEquipmentItemStack(a2) : null;
+					} else {
+						awArmor[slot] = id;
+						player.inventory.mainInventory[player.inventory.currentItem] = a1 != 0 ? 
+							AWAddon.dataHandler.getCustomEquipmentItemStack(a1) : null;
+					}
 				}
-				else vanillaArmor[slot] = holding;
-				if(!replaced) player.inventory.mainInventory[player.inventory.currentItem] = null;
+				else {
+					vanillaArmor[slot] = holding;
+					player.inventory.mainInventory[player.inventory.currentItem] = armor;
+				}
 			}
-			
+			else if (holding == null) {
+				if(AWAddon.isLoaded && slot == 1 && a2 != 0) {
+					player.inventory.mainInventory[player.inventory.currentItem] = AWAddon.dataHandler.getCustomEquipmentItemStack(a2);
+					awArmor[4] = 0;
+				} else if (AWAddon.isLoaded && a1 != 0) {
+					player.inventory.mainInventory[player.inventory.currentItem] = AWAddon.dataHandler.getCustomEquipmentItemStack(a1);
+					awArmor[slot] = 0;
+				} else if (armor != null) {
+					player.inventory.mainInventory[player.inventory.currentItem] = armor;
+					vanillaArmor[slot] = null;
+				}
+			}
 			markForUpdate();
 			markDirty();
 		}	
