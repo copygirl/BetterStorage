@@ -2,6 +2,7 @@ package net.mcft.copy.betterstorage.client.renderer;
 
 import java.util.UUID;
 
+import net.mcft.copy.betterstorage.addon.armourersworkshop.AWAddon;
 import net.mcft.copy.betterstorage.client.model.ModelArmorStand;
 import net.mcft.copy.betterstorage.misc.Resources;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityArmorStand;
@@ -62,12 +63,25 @@ public class TileEntityArmorStandRenderer extends TileEntitySpecialRenderer {
 		}
 		
 		playerDummy.ticksExisted = locker.ticksExisted;
-		playerDummy.inventory.armorInventory = locker.armor;
+		playerDummy.inventory.armorInventory = locker.getVanillaArmor();
 		playerDummy.worldObj = locker.getWorldObj();
 		playerDummy.renderYawOffset = playerDummy.prevRenderYawOffset = rotation;
 		playerDummy.rotationYawHead = playerDummy.prevRotationYawHead = rotation;
 		renderArmor.doRender(playerDummy, x + 0.5, y + 27 / 16.0, z + 0.5, rotation, par8);
 		
+		if (AWAddon.isLoaded) {
+			GL11.glPushMatrix();
+			GL11.glTranslated(x, y, z);
+			GL11.glRotatef(180, 0, 0, 1);
+			GL11.glTranslatef(-0.5F, -1.5F, 0.5F);
+			GL11.glRotatef(rotation, 0, 1, 0);
+			int[] eqid = locker.getAWArmor();
+			for(int i = 0; i < 5; i++) {
+				int id = eqid[i];
+				if(id != 0) AWAddon.renderHandler.renderCustomEquipment(id, null);
+			}
+			GL11.glPopMatrix();
+		}
 	}
 	
 	@Override

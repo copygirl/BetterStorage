@@ -28,7 +28,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 @Mod(modid = Constants.modId,
      name = Constants.modName,
-     dependencies = "required-after:Forge; after:Thaumcraft; after:NotEnoughItems;",
+     dependencies = "required-after:Forge; after:Thaumcraft; after:NotEnoughItems; after:armourersWorkshop",
      guiFactory = "net.mcft.copy.betterstorage.client.gui.BetterStorageGuiFactory")
 public class BetterStorage {
 	

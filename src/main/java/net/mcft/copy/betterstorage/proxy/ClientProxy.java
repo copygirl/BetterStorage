@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.mcft.copy.betterstorage.addon.Addon;
+import net.mcft.copy.betterstorage.addon.armourersworkshop.AWAddon;
 import net.mcft.copy.betterstorage.attachment.Attachment;
 import net.mcft.copy.betterstorage.attachment.Attachments;
 import net.mcft.copy.betterstorage.attachment.IHasAttachments;
@@ -191,17 +192,17 @@ public class ClientProxy extends CommonProxy {
 		if (armorStand == null) return null;
 		int slot = Math.min(3, (int)((hitVec.yCoord - y) * 2));
 		
-		ItemStack item = armorStand.armor[slot];
+		Object item = armorStand.getFirstArmorPiece(slot);
 		ItemStack holding = player.getCurrentEquippedItem();
-		ItemStack armor = player.inventory.armorInventory[slot];
+		Object armor = AWAddon.getArmorInSlot(player, slot);
 		
 		if (player.isSneaking()) {
 			if ((holding != null) ||
 			    ((item == null) && (armor == null)) ||
-			    ((armor != null) && !armor.getItem().isValidArmor(armor, 3 - slot, player)))
+			    ((armor != null) && !AWAddon.validateArmor(player, armor, slot)))
 				return null;
 		} else if (!((item != null) && (holding == null)) &&
-		           !((holding != null) && holding.getItem().isValidArmor(holding, 3 - slot, player)))
+		           !((holding != null) && AWAddon.validateArmor(player, holding, slot)))
 			return null;
 		
 		double minX = x + 2 / 16.0;
