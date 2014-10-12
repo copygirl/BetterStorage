@@ -124,6 +124,7 @@ public class TileEntityArmorStand extends TileEntityContainer {
 		} else {
 			Object armor = getFirstArmorPiece(slot);
 			ItemStack holding = player.getCurrentEquippedItem();
+			boolean replaced = false;
 			
 			boolean isAWArmor = false;
 			if(AWAddon.isLoaded && holding != null) {
@@ -134,15 +135,15 @@ public class TileEntityArmorStand extends TileEntityContainer {
 			if (armor instanceof ItemStack && !isAWArmor) {
 				vanillaArmor[slot] = null;
 				player.inventory.mainInventory[player.inventory.currentItem] = (ItemStack) armor;
+				replaced = true;
 			}
 			else if (armor instanceof Integer && AWAddon.isLoaded && (isAWArmor || holding == null)) {
 				EnumEquipmentType type = AWAddon.dataHandler.getEquipmentType((Integer) armor);
 				if (type == EnumEquipmentType.SKIRT) awArmor[4] = 0;
 				else awArmor[slot] = 0;
 				player.inventory.mainInventory[player.inventory.currentItem] = AWAddon.dataHandler.getCustomEquipmentItemStack((Integer) armor);
+				replaced = true;
 			}
-			else player.inventory.mainInventory[player.inventory.currentItem] = null;
-			
 			if ((holding != null) && AWAddon.validateArmor(player, holding, slot)) {
 				if (isAWArmor) {
 					int id = AWAddon.dataHandler.getEquipmentIdFromItemStack(holding);
@@ -151,6 +152,7 @@ public class TileEntityArmorStand extends TileEntityContainer {
 					else awArmor[slot] = id;		
 				}
 				else vanillaArmor[slot] = holding;
+				if(!replaced) player.inventory.mainInventory[player.inventory.currentItem] = null;
 			}
 			
 			markForUpdate();
