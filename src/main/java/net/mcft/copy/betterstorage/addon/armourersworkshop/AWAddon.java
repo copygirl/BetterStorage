@@ -60,7 +60,6 @@ public class AWAddon extends Addon {
 			    EnumEquipmentType type = dataHandler.getEquipmentTypeFromStack(stack);
 			    
 			    if (type != EnumEquipmentType.NONE) {
-			        System.out.println(type);
 			        return type.getSlotId() == 3 - slot; 
 			    }
 
