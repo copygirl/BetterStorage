@@ -56,11 +56,13 @@ public class AWAddon extends Addon {
 		if (armor instanceof ItemStack) {
 			ItemStack stack = (ItemStack) armor;
 			if (isLoaded) {
-				if (dataHandler.hasItemStackGotEquipmentData(stack)) {
-					int id = dataHandler.getEquipmentIdFromItemStack(stack);
-					EnumEquipmentType type = dataHandler.getEquipmentType(id);
-					return type.getSlotId() == 3 - slot;
-				}
+			    
+			    EnumEquipmentType type = dataHandler.getEquipmentTypeFromStack(stack);
+			    
+			    if (type != EnumEquipmentType.NONE) {
+			        return type.getSlotId() == 3 - slot; 
+			    }
+
 			}
 			return stack.getItem().isValidArmor((ItemStack) armor, 3 - slot, player);
 		}
