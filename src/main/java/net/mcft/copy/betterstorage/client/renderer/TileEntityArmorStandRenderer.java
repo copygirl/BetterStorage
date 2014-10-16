@@ -73,7 +73,8 @@ public class TileEntityArmorStandRenderer extends TileEntitySpecialRenderer {
 			GL11.glPushMatrix();
 			GL11.glTranslated(x, y, z);
 			GL11.glRotatef(180, 0, 0, 1);
-			GL11.glTranslatef(-0.5F, -1.5F, 0.5F);
+			GL11.glRotatef(180, 0, 1, 0);
+			GL11.glTranslatef(0.5F, -1.5F, -0.5F);
 			GL11.glRotatef(rotation, 0, 1, 0);
 			int[] eqid = locker.getAWArmor();
 			for(int i = 0; i < 5; i++) {
