@@ -16,9 +16,7 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 
 public class TileEntityCardboardBox extends TileEntityContainer {
 	
-	/** Whether this cardboard box was picked up and placed down again. <br>
-	 *  If so, the box won't drop any more, as it's only usable once. */
-	public boolean moved = false;
+	public int uses = 1;
 	public int color = -1;
 	
 	// TileEntityContainer stuff
@@ -41,18 +39,20 @@ public class TileEntityCardboardBox extends TileEntityContainer {
 		if (StackUtils.has(stack, "Items")) {
 			ItemStack[] itemContents = StackUtils.getStackContents(stack, contents.length);
 			System.arraycopy(itemContents, 0, contents, 0, itemContents.length);
-			if (!ItemCardboardBox.isReusable())
-				moved = true;
 		}
+		int maxUses = ItemCardboardBox.getUses();
+		if (maxUses > 0) uses = StackUtils.get(stack, maxUses, "uses");
 		color = StackUtils.get(stack, -1, "display", "color");
 	}
 	
 	@Override
 	public void onBlockDestroyed() {
-		if (!moved) {
-			boolean empty = StackUtils.isEmpty(contents);
+		boolean empty = StackUtils.isEmpty(contents);
+		if (!empty) uses--;
+		if (uses >= 0) {
 			ItemStack stack = new ItemStack(BetterStorageTiles.cardboardBox);
 			if (!empty) StackUtils.setStackContents(stack, contents);
+			if (ItemCardboardBox.getUses() > 0) StackUtils.set(stack, uses, "uses");
 			if (color >= 0) StackUtils.set(stack, color, "display", "color");
 			if (getCustomTitle() != null) stack.setStackDisplayName(getCustomTitle());
 			// Don't drop an empty cardboard box in creative.
@@ -64,7 +64,7 @@ public class TileEntityCardboardBox extends TileEntityContainer {
 	
 	@Override
 	public void dropContents() {
-		if (moved) super.dropContents();
+		if (uses < 0) super.dropContents();
 	}
 	
 	// Tile entity synchronization
@@ -86,13 +86,13 @@ public class TileEntityCardboardBox extends TileEntityContainer {
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
-		moved = compound.getBoolean("moved");
+		uses = (compound.hasKey("uses") ? compound.getInteger("uses") : ItemCardboardBox.getUses());
 		color = (compound.hasKey("color") ? compound.getInteger("color") : -1);
 	}
 	@Override
 	public void writeToNBT(NBTTagCompound compound) {
 		super.writeToNBT(compound);
-		if (moved) compound.setBoolean("moved", true);
+		if (ItemCardboardBox.getUses() > 0) compound.setInteger("uses", uses);
 		if (color >= 0) compound.setInteger("color", color);
 	}
 	

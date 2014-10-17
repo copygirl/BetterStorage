@@ -70,7 +70,7 @@ public class GlobalConfig extends Config {
 	public static final String dropBackpackOnDeath           = "general.dropBackpackOnDeath";
 	
 	public static final String cardboardBoxRows              = "general.cardboardBoxRows";
-	public static final String cardboardBoxReusable          = "general.cardboardBoxReusable";
+	public static final String cardboardBoxUses              = "general.cardboardBoxUses";
 	
 	public static final String enableStationAutoCrafting     = "general.enableStationAutoCrafting";
 	public static final String stationAutocraftDelay         = "general.stationAutocraftDelay";
@@ -155,8 +155,8 @@ public class GlobalConfig extends Config {
 		// Cardboard box settings
 		new IntegerSetting(this, cardboardBoxRows, 1).setValidRange(1, 3).setComment(
 				"Number of rows in cardboard boxes. Valid values are 1 to 3.");
-		new BooleanSetting(this, cardboardBoxReusable, false).setSynced().setComment(
-				"If enabled, cardboard boxes can be moved around indefinitely, instead of just once.");
+		new IntegerSetting(this, cardboardBoxUses, 4).setValidRange(0, Integer.MAX_VALUE).setSynced().setComment(
+				"Number of times cardboard boxes can be picked up with items before they break. Use 0 for infinite uses.");
 		
 		// Crafting Station settings
 		enableStationAutoCraftingSetting =

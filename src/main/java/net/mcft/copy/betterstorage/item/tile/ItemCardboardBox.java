@@ -14,6 +14,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -27,6 +28,18 @@ public class ItemCardboardBox extends ItemBlock implements IContainerItem, IDyea
 	// Item stuff
 	
 	@Override
+	public boolean showDurabilityBar(ItemStack stack) {
+		int maxUses = getUses();
+		return ((maxUses > 1) && (StackUtils.get(stack, maxUses, "uses") < maxUses));
+	}
+	
+	@Override
+	public double getDurabilityForDisplay(ItemStack stack) {
+		int maxUses = getUses();
+		return (1 - (float)StackUtils.get(stack, maxUses, "uses") / maxUses);
+	}
+	
+	@Override
 	@SideOnly(Side.CLIENT)
 	public int getColorFromItemStack(ItemStack stack, int renderPass) {
 		return StackUtils.get(stack, 0x705030, "display", "color");
@@ -38,35 +51,42 @@ public class ItemCardboardBox extends ItemBlock implements IContainerItem, IDyea
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advancedTooltips) {
+		int maxUses = getUses();
+		boolean hasItems = StackUtils.has(stack, "Items");
 		
+		if (!hasItems && BetterStorage.globalConfig.getBoolean(GlobalConfig.enableHelpTooltips))
+			list.add(LanguageUtils.translateTooltip("cardboardBox.useHint" + ((maxUses > 0) ? ".reusable" : 0)));
+		
+		if (maxUses > 1)
+			list.add(EnumChatFormatting.DARK_GRAY.toString() + EnumChatFormatting.ITALIC +
+					LanguageUtils.translateTooltip("cardboardBox.uses",
+							"%USES%", StackUtils.get(stack, maxUses, "uses").toString()));
+		
+		if (!hasItems) return;
 		// Show the contents in the cardboard box as tooltip.
-		if (StackUtils.has(stack, "Items")) {
-			
-			// Using 27 instead of getRows() here because
-			// rows setting is not synced to the client.
-			ItemStack[] contents = StackUtils.getStackContents(stack, 27);
-			int limit = (advancedTooltips ? 9 : 3);
-			
-			List<ItemStack> items = StackUtils.stackItems(contents);
-			Collections.sort(items, new Comparator<ItemStack>() {
-				@Override public int compare(ItemStack a, ItemStack b) {
-					return (b.stackSize - a.stackSize); }
-			});
-			
-			for (int i = 0; (i < items.size()) && (i < limit); i++) {
-				ItemStack item = items.get(i);
-				list.add(item.stackSize + "x " + item.getDisplayName());
-			}
-			
-			if (items.size() <= limit) return;
-			int count = 0;
-			for (int i = 3; i < items.size(); i++)
-				count += items.get(i).stackSize;
-			list.add(count + " more item" + ((count > 1) ? "s" : "") + " ...");
-			
-		} else if (BetterStorage.globalConfig.getBoolean(GlobalConfig.enableHelpTooltips))
-			list.add(LanguageUtils.translateTooltip(
-					"cardboardBox.useHint" + (isReusable() ? ".reusable" : "")));
+		
+		// Using 27 instead of getRows() here because
+		// rows setting is not synced to the client.
+		ItemStack[] contents = StackUtils.getStackContents(stack, 27);
+		int limit = (advancedTooltips ? 9 : 3);
+		
+		List<ItemStack> items = StackUtils.stackItems(contents);
+		Collections.sort(items, new Comparator<ItemStack>() {
+			@Override public int compare(ItemStack a, ItemStack b) {
+				return (b.stackSize - a.stackSize); }
+		});
+		
+		for (int i = 0; (i < items.size()) && (i < limit); i++) {
+			ItemStack item = items.get(i);
+			list.add(item.stackSize + "x " + item.getDisplayName());
+		}
+		
+		if (items.size() <= limit) return;
+		
+		int count = 0;
+		for (int i = 3; i < items.size(); i++)
+			count += items.get(i).stackSize;
+		list.add(count + " more item" + ((count > 1) ? "s" : "") + " ...");
 		
 	}
 	
@@ -92,8 +112,8 @@ public class ItemCardboardBox extends ItemBlock implements IContainerItem, IDyea
 	}
 	
 	/** Returns if cardboard boxes are reusable. */
-	public static boolean isReusable() {
-		return BetterStorage.globalConfig.getBoolean(GlobalConfig.cardboardBoxReusable);
+	public static int getUses() {
+		return BetterStorage.globalConfig.getInteger(GlobalConfig.cardboardBoxUses);
 	}
 	
 }
