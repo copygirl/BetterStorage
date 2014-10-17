@@ -11,6 +11,7 @@ import net.mcft.copy.betterstorage.client.model.ModelBackpackArmor;
 import net.mcft.copy.betterstorage.client.model.ModelCluckington;
 import net.mcft.copy.betterstorage.client.renderer.BetterStorageRenderingHandler;
 import net.mcft.copy.betterstorage.client.renderer.ItemRendererBackpack;
+import net.mcft.copy.betterstorage.client.renderer.ItemRendererCardboardBox;
 import net.mcft.copy.betterstorage.client.renderer.ItemRendererContainer;
 import net.mcft.copy.betterstorage.client.renderer.RenderFrienderman;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityArmorStandRenderer;
@@ -97,6 +98,8 @@ public class ClientProxy extends CommonProxy {
 		
 		registerItemRenderer(BetterStorageTiles.reinforcedChest, new ItemRendererContainer(TileEntityReinforcedChest.class));
 		registerItemRenderer(BetterStorageTiles.reinforcedLocker, new ItemRendererContainer(TileEntityReinforcedLocker.class));
+		
+		registerItemRenderer(BetterStorageTiles.cardboardBox, new ItemRendererCardboardBox(BetterStorageTiles.cardboardBox));
 		
 		RenderingRegistry.registerEntityRenderingHandler(EntityFrienderman.class, new RenderFrienderman());
 		RenderingRegistry.registerEntityRenderingHandler(EntityCluckington.class, new RenderChicken(new ModelCluckington(), 0.4F));

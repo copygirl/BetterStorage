@@ -7,6 +7,7 @@ import java.util.List;
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.api.IContainerItem;
 import net.mcft.copy.betterstorage.config.GlobalConfig;
+import net.mcft.copy.betterstorage.item.IDyeableItem;
 import net.mcft.copy.betterstorage.utils.LanguageUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.block.Block;
@@ -16,7 +17,7 @@ import net.minecraft.item.ItemStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemCardboardBox extends ItemBlock implements IContainerItem {
+public class ItemCardboardBox extends ItemBlock implements IContainerItem, IDyeableItem {
 	
 	public ItemCardboardBox(Block block) {
 		super(block);
@@ -24,6 +25,15 @@ public class ItemCardboardBox extends ItemBlock implements IContainerItem {
 	}
 	
 	// Item stuff
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public int getColorFromItemStack(ItemStack stack, int renderPass) {
+		return StackUtils.get(stack, 0x705030, "display", "color");
+	}
+	
+	@Override
+	public boolean canDye(ItemStack stack) { return true; }
 	
 	@Override
 	@SideOnly(Side.CLIENT)

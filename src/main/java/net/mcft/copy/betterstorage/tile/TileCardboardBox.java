@@ -5,11 +5,13 @@ import java.util.Random;
 import net.mcft.copy.betterstorage.item.tile.ItemCardboardBox;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityCardboardBox;
+import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -40,6 +42,13 @@ public class TileCardboardBox extends TileContainerBetterStorage {
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int side, int meta) {
 		return ((side < 2) ? blockIcon : sideIcon);
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public int colorMultiplier(IBlockAccess world, int x, int y, int z) {
+		TileEntityCardboardBox box = WorldUtils.get(world, x, y, z, TileEntityCardboardBox.class);
+		return (((box != null) && (box.color >= 0)) ? box.color : 0x705030);
 	}
 	
 	@Override
