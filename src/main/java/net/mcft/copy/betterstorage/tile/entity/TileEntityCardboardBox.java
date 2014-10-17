@@ -54,6 +54,7 @@ public class TileEntityCardboardBox extends TileEntityContainer {
 			ItemStack stack = new ItemStack(BetterStorageTiles.cardboardBox);
 			if (!empty) StackUtils.setStackContents(stack, contents);
 			if (color >= 0) StackUtils.set(stack, color, "display", "color");
+			if (getCustomTitle() != null) stack.setStackDisplayName(getCustomTitle());
 			// Don't drop an empty cardboard box in creative.
 			if (!empty || !brokenInCreative)
 				WorldUtils.dropStackFromBlock(this, stack);
