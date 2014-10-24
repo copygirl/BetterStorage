@@ -138,7 +138,7 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 	}
 	private void checkConnections(int x, int y, int z, HashSet<TileEntityCrate> set) {
 		TileEntityCrate crate = WorldUtils.get(worldObj, x, y, z, TileEntityCrate.class);
-		if ((crate == null) || set.contains(crate)) return;
+		if ((crate == null) || (data != crate.data) || set.contains(crate)) return;
 		set.add(crate);
 		for (ForgeDirection ndir : sideDirections)
 			checkConnections(x + ndir.offsetX, y, z + ndir.offsetZ, set);
