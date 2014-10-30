@@ -1,6 +1,8 @@
 package net.mcft.copy.betterstorage.proxy;
 
 import net.mcft.copy.betterstorage.BetterStorage;
+import net.mcft.copy.betterstorage.api.stand.BetterStorageArmorStand;
+import net.mcft.copy.betterstorage.api.stand.EnumArmorStandRegion;
 import net.mcft.copy.betterstorage.attachment.EnumAttachmentInteraction;
 import net.mcft.copy.betterstorage.attachment.IHasAttachments;
 import net.mcft.copy.betterstorage.config.GlobalConfig;
@@ -18,6 +20,7 @@ import net.mcft.copy.betterstorage.misc.handlers.BackpackHandler;
 import net.mcft.copy.betterstorage.misc.handlers.CraftingHandler;
 import net.mcft.copy.betterstorage.tile.crate.CratePileCollection;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityLockableDoor;
+import net.mcft.copy.betterstorage.tile.stand.VanillaArmorStandEquipHandler;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
@@ -58,6 +61,22 @@ public class CommonProxy {
 		
 		new BackpackHandler();
 		new CraftingHandler();
+		
+		registerArmorStandHandlers();
+	}
+	
+	protected void registerArmorStandHandlers() {
+		
+		BetterStorageArmorStand.helmet     = new VanillaArmorStandEquipHandler(EnumArmorStandRegion.HEAD);
+		BetterStorageArmorStand.chestplate = new VanillaArmorStandEquipHandler(EnumArmorStandRegion.CHEST);
+		BetterStorageArmorStand.leggins    = new VanillaArmorStandEquipHandler(EnumArmorStandRegion.LEGS);
+		BetterStorageArmorStand.boots      = new VanillaArmorStandEquipHandler(EnumArmorStandRegion.FEET);
+		
+		BetterStorageArmorStand.registerEquipHandler(BetterStorageArmorStand.helmet);
+		BetterStorageArmorStand.registerEquipHandler(BetterStorageArmorStand.chestplate);
+		BetterStorageArmorStand.registerEquipHandler(BetterStorageArmorStand.leggins);
+		BetterStorageArmorStand.registerEquipHandler(BetterStorageArmorStand.boots);
+		
 	}
 	
 	@SubscribeEvent

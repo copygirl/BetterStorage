@@ -1,22 +1,17 @@
 package net.mcft.copy.betterstorage.client.renderer;
 
-import java.util.UUID;
-
+import net.mcft.copy.betterstorage.api.stand.BetterStorageArmorStand;
+import net.mcft.copy.betterstorage.api.stand.ClientArmorStandPlayer;
+import net.mcft.copy.betterstorage.api.stand.IArmorStandRenderHandler;
 import net.mcft.copy.betterstorage.client.model.ModelArmorStand;
 import net.mcft.copy.betterstorage.misc.Resources;
-import net.mcft.copy.betterstorage.tile.entity.TileEntityArmorStand;
-import net.minecraft.client.entity.AbstractClientPlayer;
+import net.mcft.copy.betterstorage.tile.stand.TileEntityArmorStand;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.IChatComponent;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-
-import com.mojang.authlib.GameProfile;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -24,14 +19,14 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class TileEntityArmorStandRenderer extends TileEntitySpecialRenderer {
 	
-	private EntityPlayer playerDummy = null;
+	private ClientArmorStandPlayer playerDummy = null;
 	private RenderArmor renderArmor = new RenderArmor(RenderManager.instance);
 	
 	private ModelArmorStand armorStandModel = new ModelArmorStand();
 	
-	public void renderTileEntityAt(TileEntityArmorStand locker, double x, double y, double z, float par8) {
+	public void renderTileEntityAt(TileEntityArmorStand armorStand, double x, double y, double z, float par8) {
 		
-		int rotation = locker.rotation * 360 / 16;
+		int rotation = armorStand.rotation * 360 / 16;
 		
 		ModelArmorStand model = armorStandModel;
 		bindTexture(Resources.textureArmorStand);
@@ -50,23 +45,23 @@ public class TileEntityArmorStandRenderer extends TileEntitySpecialRenderer {
 		GL11.glPopMatrix();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		
-		if (locker.getWorldObj() == null) return;
+		if (armorStand.getWorldObj() == null) return;
 		
-		if (playerDummy == null) {
-			playerDummy = new AbstractClientPlayer(locker.getWorldObj(), new GameProfile(UUID.randomUUID(), "PLAYER_DUMMY")) {
-				@Override public void addChatMessage(IChatComponent var1) {  }
-				@Override public ChunkCoordinates getPlayerCoordinates() { return null; }
-				@Override public boolean canCommandSenderUseCommand(int i, String s) { return false; }
-			};
-			playerDummy.setInvisible(true);
-		}
+		if (playerDummy == null)
+			playerDummy = new ClientArmorStandPlayer(armorStand.getWorldObj());
 		
-		playerDummy.ticksExisted = locker.ticksExisted;
-		playerDummy.inventory.armorInventory = locker.armor;
-		playerDummy.worldObj = locker.getWorldObj();
+		playerDummy.ticksExisted = armorStand.ticksExisted;
+		playerDummy.worldObj = armorStand.getWorldObj();
 		playerDummy.renderYawOffset = playerDummy.prevRenderYawOffset = rotation;
 		playerDummy.rotationYawHead = playerDummy.prevRotationYawHead = rotation;
+		
+		for (IArmorStandRenderHandler handler : BetterStorageArmorStand.getRenderHandlers())
+			handler.onPreRender(armorStand, playerDummy);
+		
 		renderArmor.doRender(playerDummy, x + 0.5, y + 27 / 16.0, z + 0.5, rotation, par8);
+		
+		for (IArmorStandRenderHandler handler : BetterStorageArmorStand.getRenderHandlers())
+			handler.onPostRender(armorStand, playerDummy);
 		
 	}
 	

@@ -1,12 +1,11 @@
-package net.mcft.copy.betterstorage.tile;
+package net.mcft.copy.betterstorage.tile.stand;
 
 import java.util.Random;
 
-import net.mcft.copy.betterstorage.item.tile.ItemArmorStand;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.misc.SetBlockFlag;
 import net.mcft.copy.betterstorage.proxy.ClientProxy;
-import net.mcft.copy.betterstorage.tile.entity.TileEntityArmorStand;
+import net.mcft.copy.betterstorage.tile.TileContainerBetterStorage;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;

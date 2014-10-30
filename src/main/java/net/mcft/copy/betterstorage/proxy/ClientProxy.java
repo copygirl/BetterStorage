@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.mcft.copy.betterstorage.addon.Addon;
+import net.mcft.copy.betterstorage.api.stand.ArmorStandEquipHandler;
+import net.mcft.copy.betterstorage.api.stand.BetterStorageArmorStand;
+import net.mcft.copy.betterstorage.api.stand.EnumArmorStandRegion;
 import net.mcft.copy.betterstorage.attachment.Attachment;
 import net.mcft.copy.betterstorage.attachment.Attachments;
 import net.mcft.copy.betterstorage.attachment.IHasAttachments;
@@ -27,13 +30,14 @@ import net.mcft.copy.betterstorage.entity.EntityFrienderman;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.misc.Resources;
 import net.mcft.copy.betterstorage.misc.handlers.KeyBindingHandler;
-import net.mcft.copy.betterstorage.tile.TileArmorStand;
-import net.mcft.copy.betterstorage.tile.entity.TileEntityArmorStand;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityBackpack;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityLockableDoor;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityLocker;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityReinforcedChest;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityReinforcedLocker;
+import net.mcft.copy.betterstorage.tile.stand.TileArmorStand;
+import net.mcft.copy.betterstorage.tile.stand.TileEntityArmorStand;
+import net.mcft.copy.betterstorage.tile.stand.VanillaArmorStandRenderHandler;
 import net.mcft.copy.betterstorage.utils.ReflectionUtils;
 import net.mcft.copy.betterstorage.utils.RenderUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
@@ -89,6 +93,12 @@ public class ClientProxy extends CommonProxy {
 		
 		registerRenderers();
 		
+	}
+	
+	@Override
+	protected void registerArmorStandHandlers() {
+		super.registerArmorStandHandlers();
+		BetterStorageArmorStand.registerRenderHandler(new VanillaArmorStandRenderHandler());
 	}
 	
 	private void registerRenderers() {
@@ -192,20 +202,8 @@ public class ClientProxy extends CommonProxy {
 		
 		TileEntityArmorStand armorStand = WorldUtils.get(world, x, y, z, TileEntityArmorStand.class);
 		if (armorStand == null) return null;
-		int slot = Math.min(3, (int)((hitVec.yCoord - y) * 2));
 		
-		ItemStack item = armorStand.armor[slot];
-		ItemStack holding = player.getCurrentEquippedItem();
-		ItemStack armor = player.inventory.armorInventory[slot];
-		
-		if (player.isSneaking()) {
-			if ((holding != null) ||
-			    ((item == null) && (armor == null)) ||
-			    ((armor != null) && !armor.getItem().isValidArmor(armor, 3 - slot, player)))
-				return null;
-		} else if (!((item != null) && (holding == null)) &&
-		           !((holding != null) && holding.getItem().isValidArmor(holding, 3 - slot, player)))
-			return null;
+		int slot = Math.max(0, Math.min(3, (int)((hitVec.yCoord - y) * 2)));
 		
 		double minX = x + 2 / 16.0;
 		double minY = y + slot / 2.0;
@@ -214,7 +212,27 @@ public class ClientProxy extends CommonProxy {
 		double maxY = y + slot / 2.0 + 0.5;
 		double maxZ = z + 14 / 16.0;
 		
-		return AxisAlignedBB.getBoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
+		EnumArmorStandRegion region = EnumArmorStandRegion.values()[slot];
+		for (ArmorStandEquipHandler handler : BetterStorageArmorStand.getEquipHandlers(region)) {
+			ItemStack item = armorStand.getItem(handler);
+			if (player.isSneaking()) {
+				// Check if we can swap the player's equipped armor with armor stand's.
+				ItemStack equipped = handler.getEquipment(player);
+				if (((item == null) && (equipped == null)) ||
+				    ((item != null) && !handler.isValidItem(player, item)) ||
+				    ((equipped != null) && !handler.isValidItem(player, equipped)) ||
+				    !handler.canSetEquipment(player, item)) continue;
+				return AxisAlignedBB.getBoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
+			} else {
+				// Check if we can swap the player's held item with armor stand's.
+				ItemStack holding = player.getCurrentEquippedItem();
+				if (((item == null) && (holding == null)) ||
+				    ((holding != null) && !handler.isValidItem(player, holding))) continue;
+				return AxisAlignedBB.getBoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
+			}
+		}
+		
+		return AxisAlignedBB.getBoundingBox(minX, y, minZ, maxX, y + 2, maxZ);
 		
 	}
 	

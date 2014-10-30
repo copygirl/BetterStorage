@@ -2,7 +2,6 @@ package net.mcft.copy.betterstorage.content;
 
 import net.mcft.copy.betterstorage.addon.Addon;
 import net.mcft.copy.betterstorage.config.GlobalConfig;
-import net.mcft.copy.betterstorage.tile.TileArmorStand;
 import net.mcft.copy.betterstorage.tile.TileBackpack;
 import net.mcft.copy.betterstorage.tile.TileCardboardBox;
 import net.mcft.copy.betterstorage.tile.TileCraftingStation;
@@ -13,6 +12,7 @@ import net.mcft.copy.betterstorage.tile.TileLocker;
 import net.mcft.copy.betterstorage.tile.TileReinforcedChest;
 import net.mcft.copy.betterstorage.tile.TileReinforcedLocker;
 import net.mcft.copy.betterstorage.tile.crate.TileCrate;
+import net.mcft.copy.betterstorage.tile.stand.TileArmorStand;
 import net.mcft.copy.betterstorage.utils.MiscUtils;
 
 public final class BetterStorageTiles {

@@ -1,4 +1,4 @@
-package net.mcft.copy.betterstorage.item.tile;
+package net.mcft.copy.betterstorage.tile.stand;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
