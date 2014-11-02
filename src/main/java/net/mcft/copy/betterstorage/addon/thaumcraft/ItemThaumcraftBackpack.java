@@ -120,7 +120,7 @@ public class ItemThaumcraftBackpack extends ItemBackpack implements IRepairable,
 		
 		for (int i = 0; i < backpackInventory.getSizeInventory(); i++) {
 			ItemStack stack = backpackInventory.getStackInSlot(i);
-			if ((stack != null) && (stack.getItem() instanceof IRepairable) &&
+			if ((stack != null) && (stack.isItemDamaged()) && (stack.getItem() instanceof IRepairable) &&
 			    (EnchantmentHelper.getEnchantmentLevel(ThaumcraftApi.enchantRepair, stack) > 0))
 				repairItem(stack, player);
 		}
