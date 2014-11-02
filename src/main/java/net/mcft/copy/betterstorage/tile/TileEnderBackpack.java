@@ -69,12 +69,8 @@ public class TileEnderBackpack extends TileBackpack {
 		
 		if (!world.blockExists(x, y, z)) return false;
 		Block block = world.getBlock(x, y, z);
-		if (block.isAir(world, x, y, z) && !block.isReplaceable(world, x, y, z)) return false;
-		if (!canFloat) {
-			Block blockBelow = world.getBlock(x, y - 1, z);
-			if (blockBelow.isAir(world, x, y, z) ||
-			    !blockBelow.isSideSolid(world, x, y - 1, z, ForgeDirection.UP)) return false;
-		}
+		if (!block.isReplaceable(world, x, y, z)) return false;
+		if (!canFloat && !world.isSideSolid(x, y - 1, z, ForgeDirection.UP)) return false;
 		
 		BetterStorage.networkChannel.sendToAllAround(
 				new PacketBackpackTeleport(sourceX, sourceY, sourceZ, x, y, z),
