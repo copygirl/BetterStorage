@@ -1,0 +1,147 @@
+# Containers
+container.betterstorage.craftingStation=Estação de Construção
+container.betterstorage.backpack=Mochila
+container.betterstorage.cardboardBox=Caixa de Papelão
+container.betterstorage.crate=Caixote
+container.betterstorage.enderBackpack=Mochila de ´Ender´
+container.betterstorage.keyring=Chaveiro
+container.betterstorage.locker=Armário
+container.betterstorage.lockerLarge=Armário Grande
+container.betterstorage.reinforcedChest=Baú Reforçado
+container.betterstorage.reinforcedChestLarge=Baú Grande Reforçado
+container.betterstorage.reinforcedLocker=Armário Reforçado
+container.betterstorage.reinforcedLockerLarge=Armário Grande Reforçado
+container.betterstorage.thaumcraftBackpack=Mochila do Taumaturgo
+container.betterstorage.thaumiumChest=Baú de ´Thaumium´
+container.betterstorage.thaumiumChestLarge=Baú Grande de ´Thaumium´
+
+# Enchantments
+enchantment.betterstorage.key.lockpicking=Abre Tranca
+enchantment.betterstorage.key.morphing=Modelador
+enchantment.betterstorage.key.unlocking=Destravar
+enchantment.betterstorage.lock.persistance=Persistência
+enchantment.betterstorage.lock.security=Segurança
+enchantment.betterstorage.lock.shock=Choque
+enchantment.betterstorage.lock.trigger=Gatilho
+
+# Entities
+entity.betterstorage.Frienderman.name=Enderman
+
+# Items
+item.betterstorage.bucketSlime.name=Gosma em um Balde
+item.betterstorage.cardboardAxe.name=Machado de Papelão
+item.betterstorage.cardboardBoots.name=Botas de Papelão
+item.betterstorage.cardboardChestplate.name=Peitoral de Papelão
+item.betterstorage.cardboardHelmet.name=Elmo de Papelão
+item.betterstorage.cardboardHoe.name=Pá de Papelão
+item.betterstorage.cardboardLeggings.name=Calças de Papelão
+item.betterstorage.cardboardPickaxe.name=Picareta de Papelão
+item.betterstorage.cardboardSheet.name=Folha de Papelão
+item.betterstorage.cardboardShovel.name=Enxada de Papelão
+item.betterstorage.cardboardSword.name=Espada de Papelão
+item.betterstorage.drinkingHelmet.name=Capacete de Beber
+item.betterstorage.key.name=Chave
+item.betterstorage.keyring.name=Chaveiro
+item.betterstorage.lock.name=Cadeado
+item.betterstorage.masterKey.name=Chave Mestra
+
+# Creative tab
+itemGroup.betterstorage=BetterStorage
+
+# Keys
+key.betterstorage.backpackOpen=[BetterStorage] Abrir Mochila
+key.betterstorage.drinkingHelmet=[BetterStorage] Usar Capacete de Beber
+
+# Container materials
+material.betterstorage.iron=Ferro
+material.betterstorage.gold=Ouro
+material.betterstorage.diamond=Diamante
+material.betterstorage.emerald=Esmeralda
+material.betterstorage.copper=Cobre
+material.betterstorage.tin=Estanho
+material.betterstorage.silver=Prata
+material.betterstorage.steel=Aço
+material.betterstorage.zinc=Zinco
+
+# Thaumcraft
+tc.research_name.betterstorage.magicstorage=Depósito Mágico
+tc.research_text.betterstorage.magicstorage=Encantando seus depósitos
+tc.research_page.betterstorage.magicstorage.1=A infusão de uma mochila com magia e materiais de natureza mágica vai aumentar sua capacidade total de armazenamento, durabilidade e encantabilidade. Mesmo gastos, os itens armazenados ainda serão capazes de se reparar, embora muito mais lentamente, a não ser que a própria mochila também tenha o encantamento de reparação. <BR>Também é possível colocar em um baú de ferro reforçado um monte de thaumium, o que resultará em uma caixa ainda mais durável que também pode armazenar mais itens.
+
+# Blocks
+tile.betterstorage.craftingStation.name=Estação de Construção
+tile.betterstorage.armorStand.name=Suporte de Armadura
+tile.betterstorage.backpack.cantEquip.backpack=Você já está equipado com uma mochila
+tile.betterstorage.backpack.cantEquip.chestplate=Você não pode equipar uma mochila enquanto usa um peitoral
+tile.betterstorage.backpack.name=Mochila
+tile.betterstorage.cardboardBox.name=Caixa de Papelão
+tile.betterstorage.crate.name=Caixote
+tile.betterstorage.enderBackpack.name=Mochila do ´Ender´
+tile.betterstorage.flintBlock.name=Bloco de Pederneira
+tile.betterstorage.locker.name=Armário
+tile.betterstorage.reinforcedChest.name=Baú Reforçado
+tile.betterstorage.reinforcedChest.name.full=Baú Reforçado de %MATERIAL%
+tile.betterstorage.reinforcedLocker.name=Armário Reforçado
+tile.betterstorage.reinforcedLocker.name.full=Armário Grande Reforçado de %MATERIAL%
+tile.betterstorage.thaumcraftBackpack.name=Mochila do Taumaturgo
+tile.betterstorage.thaumiumChest.name=Baú de ´Thaumium´
+tile.betterstorage.lockableDoor.name=Porta de Ferro com Cadeado
+
+# Tooltips
+tooltip.betterstorage.backpack.bound=Mochila equipada.
+tooltip.betterstorage.backpack.containsItems=Contém itens.
+tooltip.betterstorage.backpack.equipHint=Esgueirar e quebrar para equipar-se.
+tooltip.betterstorage.backpack.equipHint.extended=Esgueirar e quebrar para equipar#Esgueire e clique direito no chão#com a mão vazia para desequipar.
+tooltip.betterstorage.backpack.openHint=Pressione %KEY% para abrir quando equipado.
+tooltip.betterstorage.backpack.unequipHint=Esgueirar e clique direito#com a mão vazia no chão para desequipar.
+tooltip.betterstorage.backpack.unequipHint.extended=%INFO% Esgueirar e clique direito#com a mão vazia no chão para desequipar.
+tooltip.betterstorage.backpack.used=Atualmente está sendo usado por um jogador.
+tooltip.betterstorage.bucketSlime.more.1=Mais 1 efeito...
+tooltip.betterstorage.bucketSlime.more.x=Mais %X% efeitos...
+tooltip.betterstorage.cardboardBox.useHint=Armazenamento portátil descartável.
+tooltip.betterstorage.cardboardBox.useHint.reusable=Armazenamento portátil reutilizável.
+tooltip.betterstorage.cardboardBox.uses=Usos Restantes: %USES%
+tooltip.betterstorage.drinkingHelmet.craftHint=Coloque uma porção em cada lado do capacete...
+tooltip.betterstorage.drinkingHelmet.useHint=Pressione %KEY% para tomar um gole.
+tooltip.betterstorage.drinkingHelmet.uses=Usos Restantes: %USES%
+
+# Config
+config.betterstorage.category.item=Itens
+config.betterstorage.category.item.tooltip=Mudar se um determinado item está ativo.
+config.betterstorage.category.tile=Blocos
+config.betterstorage.category.tile.tooltip=Mudar se um determinado bloco está ativo.
+config.betterstorage.category.enchantment=Encantamentos
+config.betterstorage.category.enchantment.tooltip=Mudar os IDs dos encantamentos
+
+config.betterstorage.general.reinforcedColumns=Colunas Reforçadas
+config.betterstorage.general.reinforcedColumns.tooltip=Número de colunas em baús e armários reforçados. Os valores válidos são 9, 11 e 13.
+config.betterstorage.general.enableCrateInventoryInterface=Interface do Inventário do Caixote
+config.betterstorage.general.enableCrateInventoryInterface.tooltip=Se ativado, habilita um função especial nos blocos de armazenamento, para que os itens possão ser manipulados por sistemas automatizados.
+config.betterstorage.general.enableCrateStorageInterface=Interface de Estocagem do Caixote
+config.betterstorage.general.enableCrateStorageInterface.tooltip=Se desativado, impede os mods de usar a interface de armazenamento especial (tipo ´Applied Energistics´).
+config.betterstorage.general.crateDebugMessages=Mensagens de Debud dos Caixotes
+config.betterstorage.general.crateDebugMessages.tooltip=Se ativado, registra as mensagens de depuração relacionadas aos caixotes (like them saving).
+config.betterstorage.general.backpackChestplate=Mochila no Peitoral
+config.betterstorage.general.backpackChestplate.tooltip=Se desativado, mochilas não ocupam o slot do peitoral do jogador.
+config.betterstorage.general.backpackRows=Linhas da Mochila
+config.betterstorage.general.backpackRows.tooltip=Número de linhas na mochila.
+config.betterstorage.general.enableBackpackOpen=Mochila Aberta
+config.betterstorage.general.enableBackpackOpen.tooltip=Permite que a mochila equipada seja aberta pressionando uma tecla.
+config.betterstorage.general.enableBackpackInteraction=Mochila com Interação
+config.betterstorage.general.enableBackpackInteraction.tooltip=Permite mochilas equipadas sejam abertas por outros jogadores quando clicadas por eles com o botão direito.
+config.betterstorage.general.dropBackpackOnDeath=Soltar Mochila
+config.betterstorage.general.dropBackpackOnDeath.tooltip=Se ativado, solta a mochila com um bloco.
+config.betterstorage.general.cardboardBoxRows=Linhas da Caixa de Papelão
+config.betterstorage.general.cardboardBoxRows.tooltip=Número de linhas das caixas de papelão.
+config.betterstorage.general.cardboardBoxUses=Usos da Caixa de Papelão
+config.betterstorage.general.cardboardBoxUses.tooltip=Número de vezes que as as caixas de papelão podem ser usadas antes de ´rasgar´. Use 0 para infinitas utilizações.
+config.betterstorage.general.enableStationAutoCrafting=Estação de Construção Automática
+config.betterstorage.general.enableStationAutoCrafting.tooltip=Se ativado, sistemas automatizados podem retirar das estações de construção e, portanto, criar itens automaticamente.
+config.betterstorage.general.stationAutocraftDelay=Atraso da Construção Automática
+config.betterstorage.general.stationAutocraftDelay.tooltip=Atraso, em ticks, entre as receitas que estão sendo automatizadas na estação de construção.
+config.betterstorage.general.lockBreakable=Cadeados Quebráveis
+config.betterstorage.general.lockBreakable.tooltip=Se desativado, desliga a habilidade de quebrar cadeados das caixas usando ferramentas.
+config.betterstorage.general.enableHelpTooltips=Dicas
+config.betterstorage.general.enableHelpTooltips.tooltip=Se ativado, mostra dicas sobre alguns itens para ajudar os jogadores novatos do mod.
+config.betterstorage.general.enableWarningMessages=Mensagens de Debug
+config.betterstorage.general.enableWarningMessages.tooltip=Se desativado, impede que certas mensagens de aviso sejam registradas no console.
