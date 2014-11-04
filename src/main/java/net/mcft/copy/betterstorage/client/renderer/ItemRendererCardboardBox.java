@@ -6,6 +6,8 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 
+import org.lwjgl.opengl.GL11;
+
 public class ItemRendererCardboardBox implements IItemRenderer {
 	
 	// This custom item renderer is only necessary because of a bug in Vanilla.
@@ -33,6 +35,9 @@ public class ItemRendererCardboardBox implements IItemRenderer {
 		RenderUtils.setColorFromInt(color);
 		RenderBlocks render = RenderBlocks.getInstance();
 		render.useInventoryTint = false;
+		if ((type == ItemRenderType.EQUIPPED) ||
+		    (type == ItemRenderType.EQUIPPED_FIRST_PERSON))
+			GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 		render.renderBlockAsItem(block, item.getItemDamage(), 1.0F);
 		render.useInventoryTint = true;
 	}
