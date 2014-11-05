@@ -1,7 +1,7 @@
 package net.mcft.copy.betterstorage.item.tile;
 
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import net.mcft.copy.betterstorage.BetterStorage;
@@ -68,18 +68,21 @@ public class ItemCardboardBox extends ItemBlock implements IContainerItem, IDyea
 		// Using 27 instead of getRows() here because
 		// rows setting is not synced to the client.
 		ItemStack[] contents = StackUtils.getStackContents(stack, 27);
-		int limit = (advancedTooltips ? 9 : 3);
+		int limit = (advancedTooltips ? 6 : 3);
 		
-		List<ItemStack> items = StackUtils.stackItems(contents);
-		Collections.sort(items, new Comparator<ItemStack>() {
-			@Override public int compare(ItemStack a, ItemStack b) {
-				return (b.stackSize - a.stackSize); }
-		});
-		
-		for (int i = 0; (i < items.size()) && (i < limit); i++) {
-			ItemStack item = items.get(i);
-			list.add(item.stackSize + "x " + item.getDisplayName());
+		List<DisplayNameStack> items = new ArrayList<DisplayNameStack>();
+		for (int i = 0; i < contents.length; i++) {
+			ItemStack contentStack = contents[i];
+			if (contentStack == null) continue;
+			for (DisplayNameStack itemsStack : items)
+				if (itemsStack.matchAndAdd(contentStack))
+					continue;
+			items.add(new DisplayNameStack(contentStack));
 		}
+		
+		Collections.sort(items);
+		for (int i = 0; (i < items.size()) && (i < limit); i++)
+			list.add(items.get(i).toString());
 		
 		if (items.size() <= limit) return;
 		
@@ -114,6 +117,30 @@ public class ItemCardboardBox extends ItemBlock implements IContainerItem, IDyea
 	/** Returns if cardboard boxes are reusable. */
 	public static int getUses() {
 		return BetterStorage.globalConfig.getInteger(GlobalConfig.cardboardBoxUses);
+	}
+	
+	
+	private static class DisplayNameStack implements Comparable<DisplayNameStack> {
+		public final String name;
+		public int stackSize;
+		public DisplayNameStack(ItemStack stack) {
+			name = stack.getItem().getItemStackDisplayName(stack);
+			stackSize = stack.stackSize;
+		}
+		public boolean matchAndAdd(ItemStack stack) {
+			if (name.equals(stack.getItem().getItemStackDisplayName(stack))) {
+				stackSize += stack.stackSize;
+				return true;
+			} else return false;
+		}
+		@Override
+		public String toString() {
+			return (stackSize + "x " + name);
+		}
+		@Override
+		public int compareTo(DisplayNameStack other) {
+			return (other.stackSize - stackSize);
+		}
 	}
 	
 }
