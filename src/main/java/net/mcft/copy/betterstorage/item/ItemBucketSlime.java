@@ -15,6 +15,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
@@ -220,7 +221,9 @@ public class ItemBucketSlime extends ItemBetterStorage {
 		
 		if (--player.getCurrentEquippedItem().stackSize <= 0)
 			player.setCurrentItemOrArmor(EquipmentSlot.HELD, stack);
-		else player.dropPlayerItemWithRandomChoice(stack, true);
+		else if (!player.inventory.addItemStackToInventory(stack))
+			player.dropPlayerItemWithRandomChoice(stack, true);
+		else ((EntityPlayerMP)player).inventoryContainer.detectAndSendChanges();
 		
 		slime.playSound("mob.slime.big", 1.2F, 0.8F);
 		slime.isDead = true;
