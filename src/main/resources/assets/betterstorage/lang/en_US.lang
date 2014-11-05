@@ -89,7 +89,7 @@ tile.betterstorage.lockableDoor.name=Locked Iron Door
 
 # Tooltips
 tooltip.betterstorage.backpack.bound=Bound backpack.
-tooltip.betterstorage.backpack.containsItems=Contains Items.
+tooltip.betterstorage.backpack.containsItems=Contains items.
 tooltip.betterstorage.backpack.equipHint=Place down and break#while sneaking to equip.
 tooltip.betterstorage.backpack.equipHint.extended=Sneak and break to equip.#Sneak and right click ground#with empty hand to unequip.
 tooltip.betterstorage.backpack.openHint=Press %KEY% to open while equipped.
@@ -101,6 +101,7 @@ tooltip.betterstorage.bucketSlime.more.x=%X% more effects ...
 tooltip.betterstorage.cardboardBox.useHint=One-time use portable storage.
 tooltip.betterstorage.cardboardBox.useHint.reusable=Reusable portable storage.
 tooltip.betterstorage.cardboardBox.uses=Remaining uses: %USES%
+tooltip.betterstorage.cardboardBox.containsItems=Contains items.
 tooltip.betterstorage.drinkingHelmet.craftHint=Craft with a potion on either side.
 tooltip.betterstorage.drinkingHelmet.useHint=Press %KEY% to take a sip.
 tooltip.betterstorage.drinkingHelmet.uses=Remaining uses: %USES%
@@ -135,6 +136,8 @@ config.betterstorage.general.cardboardBoxRows=Cardboard Box Rows
 config.betterstorage.general.cardboardBoxRows.tooltip=Number of rows in cardboard boxes.
 config.betterstorage.general.cardboardBoxUses=Cardboard Box Uses
 config.betterstorage.general.cardboardBoxUses.tooltip=Number of times cardboard boxes can be picked up with items before they break. Use 0 for infinite uses.
+config.betterstorage.general.cardboardBoxShowContents=Cardboard Box Show Contents
+config.betterstorage.general.cardboardBoxShowContents.tooltip=If disabled, doesn't show cardboard box contents in their tooltips.
 config.betterstorage.general.enableStationAutoCrafting=Crafting Station Auto Crafting
 config.betterstorage.general.enableStationAutoCrafting.tooltip=If enabled, automated systems can pull out of crafting stations and therefore auto-craft items.
 config.betterstorage.general.stationAutocraftDelay=Auto Crafting Delay

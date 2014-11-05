@@ -12,19 +12,16 @@ public class BetterStorageGuiFactory implements IModGuiFactory {
 	public void initialize(Minecraft minecraftInstance) {
 		GuiBetterStorageConfig.initialize(minecraftInstance);
 	}
-
+	
 	@Override
 	public Class<? extends GuiScreen> mainConfigGuiClass() {
 		return GuiBetterStorageConfig.class;
 	}
-
+	
 	@Override
-	public Set<RuntimeOptionCategoryElement> runtimeGuiCategories() {
-		return null;
-	}
-
+	public Set<RuntimeOptionCategoryElement> runtimeGuiCategories() { return null; }
+	
 	@Override
-	public RuntimeOptionGuiHandler getHandlerFor(RuntimeOptionCategoryElement element) {
-		return null;
-	}
+	public RuntimeOptionGuiHandler getHandlerFor(RuntimeOptionCategoryElement element) { return null; }
+	
 }

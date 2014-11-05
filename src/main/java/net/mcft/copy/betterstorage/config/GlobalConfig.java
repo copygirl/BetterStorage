@@ -71,6 +71,7 @@ public class GlobalConfig extends Config {
 	
 	public static final String cardboardBoxRows              = "general.cardboardBoxRows";
 	public static final String cardboardBoxUses              = "general.cardboardBoxUses";
+	public static final String cardboardBoxShowContents      = "general.cardboardBoxShowContents";
 	
 	public static final String enableStationAutoCrafting     = "general.enableStationAutoCrafting";
 	public static final String stationAutocraftDelay         = "general.stationAutocraftDelay";
@@ -157,6 +158,8 @@ public class GlobalConfig extends Config {
 				"Number of rows in cardboard boxes. Valid values are 1 to 3.");
 		new IntegerSetting(this, cardboardBoxUses, 4).setValidRange(0, Integer.MAX_VALUE).setSynced().setComment(
 				"Number of times cardboard boxes can be picked up with items before they break. Use 0 for infinite uses.");
+		new BooleanSetting(this, cardboardBoxShowContents, true).setComment(
+				"If disabled, doesn't show cardboard box contents in their tooltips.");
 		
 		// Crafting Station settings
 		enableStationAutoCraftingSetting =

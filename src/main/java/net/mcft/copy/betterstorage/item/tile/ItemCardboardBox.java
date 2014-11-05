@@ -63,6 +63,10 @@ public class ItemCardboardBox extends ItemBlock implements IContainerItem, IDyea
 							"%USES%", StackUtils.get(stack, maxUses, "uses").toString()));
 		
 		if (!hasItems) return;
+		if (!BetterStorage.globalConfig.getBoolean(GlobalConfig.cardboardBoxShowContents)) {
+			list.add(LanguageUtils.translateTooltip("cardboardBox.containsItems"));
+			return;
+		}
 		// Show the contents in the cardboard box as tooltip.
 		
 		// Using 27 instead of getRows() here because
@@ -90,7 +94,6 @@ public class ItemCardboardBox extends ItemBlock implements IContainerItem, IDyea
 		for (int i = 3; i < items.size(); i++)
 			count += items.get(i).stackSize;
 		list.add(count + " more item" + ((count > 1) ? "s" : "") + " ...");
-		
 	}
 	
 	// IContainerItem implementation
