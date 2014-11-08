@@ -75,12 +75,13 @@ public class ItemCardboardBox extends ItemBlock implements IContainerItem, IDyea
 		int limit = (advancedTooltips ? 6 : 3);
 		
 		List<DisplayNameStack> items = new ArrayList<DisplayNameStack>();
+		outerLoop:
 		for (int i = 0; i < contents.length; i++) {
 			ItemStack contentStack = contents[i];
 			if (contentStack == null) continue;
 			for (DisplayNameStack itemsStack : items)
 				if (itemsStack.matchAndAdd(contentStack))
-					continue;
+					continue outerLoop;
 			items.add(new DisplayNameStack(contentStack));
 		}
 		
