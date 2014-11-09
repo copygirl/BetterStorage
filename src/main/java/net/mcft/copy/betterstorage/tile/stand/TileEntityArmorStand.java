@@ -125,7 +125,7 @@ public class TileEntityArmorStand extends TileEntityContainer implements IArmorS
 	}
 	@Override
 	public ItemStack onPickBlock(ItemStack block, MovingObjectPosition target) {
-		int slot = Math.max(0, Math.min(3, (int)(target.hitVec.yCoord * 2)));
+		int slot = Math.max(0, Math.min(3, (int)((target.hitVec.yCoord - yCoord) * 2)));
 		EnumArmorStandRegion region = EnumArmorStandRegion.values()[slot];
 		
 		ItemStack item;
