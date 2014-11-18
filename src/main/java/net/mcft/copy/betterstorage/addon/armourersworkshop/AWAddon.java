@@ -57,15 +57,15 @@ public class AWAddon extends Addon implements IArmorStandRenderHandler {
 	public <T extends TileEntity & IArmorStand> void onPostRender(T armorStand, ClientArmorStandPlayer player) {
 		GL11.glTranslatef(0, 3 / 16F, 0);
 		if(armorStand.getItem(eqHandlerHead) != null) 
-			renderHandler.renderCustomEquipmentFromStack(armorStand.getItem(eqHandlerHead));
+			renderHandler.renderCustomEquipmentFromStack(armorStand.getItem(eqHandlerHead), 0, 0, 0, 0, 0);
 		if(armorStand.getItem(eqHandlerChest) != null)
-			renderHandler.renderCustomEquipmentFromStack(armorStand.getItem(eqHandlerChest));
+			renderHandler.renderCustomEquipmentFromStack(armorStand.getItem(eqHandlerChest), 0, 0, 0, 0, 0);
 		if(armorStand.getItem(eqHandlerSkirt) != null)
-			renderHandler.renderCustomEquipmentFromStack(armorStand.getItem(eqHandlerSkirt));
+			renderHandler.renderCustomEquipmentFromStack(armorStand.getItem(eqHandlerSkirt), 0, 0, 0, 0, 0);
 		if(armorStand.getItem(eqHandlerLegs) != null)
-			renderHandler.renderCustomEquipmentFromStack(armorStand.getItem(eqHandlerLegs));
+			renderHandler.renderCustomEquipmentFromStack(armorStand.getItem(eqHandlerLegs), 0, 0, 0, 0, 0);
 		if(armorStand.getItem(eqHandlerFeet) != null)
-			renderHandler.renderCustomEquipmentFromStack(armorStand.getItem(eqHandlerFeet));
+			renderHandler.renderCustomEquipmentFromStack(armorStand.getItem(eqHandlerFeet), 0, 0, 0, 0, 0);
 		GL11.glTranslatef(0, -3 / 16F, 0);
 	}
 	

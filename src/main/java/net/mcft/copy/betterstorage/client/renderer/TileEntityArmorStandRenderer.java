@@ -60,9 +60,13 @@ public class TileEntityArmorStandRenderer extends TileEntitySpecialRenderer {
 		
 		renderArmor.doRender(playerDummy, x + 0.5, y + 27 / 16.0, z + 0.5, rotation, par8);
 		
+		GL11.glPushMatrix();
+		GL11.glTranslated(x + 0.5, y + 27 / 16.0, z + 0.5);
+		GL11.glRotatef(180, 1, 0, 0);
+		GL11.glRotatef(rotation, 0, 1, 0);
 		for (IArmorStandRenderHandler handler : BetterStorageArmorStand.getRenderHandlers())
 			handler.onPostRender(armorStand, playerDummy);
-		
+		GL11.glPopMatrix();
 	}
 	
 	@Override
