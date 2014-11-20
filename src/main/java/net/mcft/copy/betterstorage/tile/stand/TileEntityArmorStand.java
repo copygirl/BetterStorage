@@ -116,6 +116,7 @@ public class TileEntityArmorStand extends TileEntityContainer implements IArmorS
 				
 				setItem(handler, holding);
 				player.setCurrentItemOrArmor(EquipmentSlot.HELD, item);
+				break;
 				
 			}
 		}
