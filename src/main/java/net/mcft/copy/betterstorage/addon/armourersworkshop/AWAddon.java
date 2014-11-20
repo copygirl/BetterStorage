@@ -2,19 +2,14 @@ package net.mcft.copy.betterstorage.addon.armourersworkshop;
 
 import net.mcft.copy.betterstorage.addon.Addon;
 import net.mcft.copy.betterstorage.api.stand.BetterStorageArmorStand;
-import net.mcft.copy.betterstorage.api.stand.ClientArmorStandPlayer;
-import net.mcft.copy.betterstorage.api.stand.IArmorStand;
-import net.mcft.copy.betterstorage.api.stand.IArmorStandRenderHandler;
-import net.minecraft.tileentity.TileEntity;
-
-import org.lwjgl.opengl.GL11;
-
 import riskyken.armourersWorkshop.api.client.render.IEquipmentRenderHandler;
 import riskyken.armourersWorkshop.api.common.equipment.EnumEquipmentType;
 import riskyken.armourersWorkshop.api.common.equipment.IEquipmentDataHandler;
 import cpw.mods.fml.common.event.FMLInterModComms;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
-public class AWAddon extends Addon implements IArmorStandRenderHandler {
+public class AWAddon extends Addon {
 	
 	public static IEquipmentDataHandler dataHandler;
 	public static IEquipmentRenderHandler renderHandler;
@@ -31,6 +26,7 @@ public class AWAddon extends Addon implements IArmorStandRenderHandler {
 	
 	@Override
 	public void setupConfig() {
+		
 		FMLInterModComms.sendMessage("armourersWorkshop", "register", "net.mcft.copy.betterstorage.addon.armourersworkshop.AWDataManager");
 		
 		eqHandlerHead  = new AWEquipmentHandler(EnumEquipmentType.HEAD, 1);
@@ -45,28 +41,12 @@ public class AWAddon extends Addon implements IArmorStandRenderHandler {
 		BetterStorageArmorStand.registerEquipHandler(eqHandlerLegs);
 		BetterStorageArmorStand.registerEquipHandler(eqHandlerFeet);
 		
-		BetterStorageArmorStand.registerRenderHandler(this);
 	}
-
+	
 	@Override
-	public <T extends TileEntity & IArmorStand> void onPreRender(T armorStand, ClientArmorStandPlayer player) { 
-		
-	}
-
-	@Override
-	public <T extends TileEntity & IArmorStand> void onPostRender(T armorStand, ClientArmorStandPlayer player) {
-		GL11.glTranslatef(0, 3 / 16F, 0);
-		if(armorStand.getItem(eqHandlerHead) != null) 
-			renderHandler.renderCustomEquipmentFromStack(armorStand.getItem(eqHandlerHead), 0, 0, 0, 0, 0);
-		if(armorStand.getItem(eqHandlerChest) != null)
-			renderHandler.renderCustomEquipmentFromStack(armorStand.getItem(eqHandlerChest), 0, 0, 0, 0, 0);
-		if(armorStand.getItem(eqHandlerSkirt) != null)
-			renderHandler.renderCustomEquipmentFromStack(armorStand.getItem(eqHandlerSkirt), 0, 0, 0, 0, 0);
-		if(armorStand.getItem(eqHandlerLegs) != null)
-			renderHandler.renderCustomEquipmentFromStack(armorStand.getItem(eqHandlerLegs), 0, 0, 0, 0, 0);
-		if(armorStand.getItem(eqHandlerFeet) != null)
-			renderHandler.renderCustomEquipmentFromStack(armorStand.getItem(eqHandlerFeet), 0, 0, 0, 0, 0);
-		GL11.glTranslatef(0, -3 / 16F, 0);
+	@SideOnly(Side.CLIENT)
+	public void registerRenderers() {
+		BetterStorageArmorStand.registerRenderHandler(new AWRenderHandler());
 	}
 	
 }
