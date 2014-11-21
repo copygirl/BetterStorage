@@ -68,80 +68,92 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 	 *  each pile gets their own CratePileData object. */
 	private void checkPileConnections(CratePileData data) {
 		int x = xCoord, y = yCoord, z = zCoord;
+		
 		// Destroy all crates above.
 		TileEntityCrate crateAbove = WorldUtils.get(worldObj, x, y + 1, z, TileEntityCrate.class);
 		if ((crateAbove != null) && (crateAbove.data == data)) {
 			worldObj.setBlockToAir(x, y + 1, z);
 			crateAbove.dropItem(new ItemStack(BetterStorageTiles.crate));
 		}
+		
 		// If there's still some crates left and this is a
 		// base crate, see which crates are still connected.
-		if ((data.getNumCrates() > 0) && (y == data.getRegion().minY)) {
-			List<HashSet<TileEntityCrate>> crateSets =
-					new ArrayList<HashSet<TileEntityCrate>>();
-			int checkedCrates = 0;
-			neighborLoop: // Suck it :P
-			for (ForgeDirection dir : sideDirections) {
-				int nx = x + dir.offsetX;
-				int nz = z + dir.offsetZ;
-				// Continue if this neighbor block is not part of the crate pile.
-				// TODO: Use data.hasCrate before?
-				TileEntityCrate neighborCrate = WorldUtils.get(worldObj, nx, y, nz, TileEntityCrate.class);
-				if ((neighborCrate == null) ||
-				    (neighborCrate.data != data)) continue;
-				// See if the neighbor crate is already in a crate set,
-				// in that case continue with the next neighbor block.
-				for (HashSet<TileEntityCrate> set : crateSets)
-					if (set.contains(neighborCrate)) continue neighborLoop;
-				// Create a new set of crates and fill it with all connecting crates.
-				HashSet<TileEntityCrate> set = new HashSet<TileEntityCrate>();
-				set.add(neighborCrate);
-				for (ForgeDirection ndir : sideDirections)
-					checkConnections(nx + ndir.offsetX, y, nz + ndir.offsetZ, set);
-				crateSets.add(set);
-				// If we checked all crates, stop the loop.
-				checkedCrates += set.size();
-				if (checkedCrates == data.getNumCrates()) break;
-			}
-			// If there's more than one crate set, they need to split.
-			if (crateSets.size() > 0) {
-				// The first crate set will keep the original pile data.
-				// All other sets will get new pile data objects.
-				for (int i = 1; i < crateSets.size(); i++) {
-					HashSet<TileEntityCrate> set = crateSets.get(i);
-					CratePileData newPileData = data.collection.createCratePile();
-					int numCrates = set.size();
-					// Add the base crates from the set.
-					for (TileEntityCrate newPileCrate : set) {
-						newPileCrate.setPileData(newPileData, true);
-						// Add all crates above the base crate.
-						while (true) {
-							newPileCrate = WorldUtils.get(worldObj, newPileCrate.xCoord, newPileCrate.yCoord + 1, newPileCrate.zCoord, TileEntityCrate.class);
-							if (newPileCrate == null) break;
-							newPileCrate.setPileData(newPileData, true);
-							numCrates++;
-						}
-					}
-					// Move some of the items over to the new crate pile.
-					int count = numCrates * data.getOccupiedSlots() / (data.getNumCrates() + numCrates);
-					for (ItemStack stack : data.getContents().getRandomStacks(count)) {
-						data.removeItems(stack);
-						newPileData.addItems(stack);
-					}
+		if ((data.getNumCrates() <= 0) || (y != data.getRegion().minY)) return;
+		
+		// If there's more than one crate set, they need to split.
+		List<HashSet<TileEntityCrate>> crateSets = getCrateSets(x, y, z, data);
+		if (crateSets.size() <= 1) return;
+		
+		// The first crate set will keep the original pile data.
+		// All other sets will get new pile data objects.
+		for (int i = 1; i < crateSets.size(); i++) {
+			HashSet<TileEntityCrate> set = crateSets.get(i);
+			CratePileData newPileData = data.collection.createCratePile();
+			int numCrates = set.size();
+			// Add the base crates from the set.
+			for (TileEntityCrate newPileCrate : set) {
+				newPileCrate.setPileData(newPileData, true);
+				// Add all crates above the base crate.
+				while (true) {
+					newPileCrate = WorldUtils.get(worldObj, newPileCrate.xCoord, newPileCrate.yCoord + 1, newPileCrate.zCoord, TileEntityCrate.class);
+					if (newPileCrate == null) break;
+					newPileCrate.setPileData(newPileData, true);
+					numCrates++;
 				}
-				// Trim the original map to the size it actually is.
-				// This is needed because the crates may not be removed in
-				// order, from outside to inside.
-				data.trimMap();
+			}
+			// Move some of the items over to the new crate pile.
+			int count = numCrates * data.getOccupiedSlots() / (data.getNumCrates() + numCrates);
+			for (ItemStack stack : data.getContents().getRandomStacks(count)) {
+				data.removeItems(stack);
+				newPileData.addItems(stack);
 			}
 		}
+		
+		// Trim the original map to the size it actually is.
+		// This is needed because the crates may not be removed in
+		// order, from outside to inside.
+		data.trimMap();
 	}
-	private void checkConnections(int x, int y, int z, HashSet<TileEntityCrate> set) {
+	
+	private List<HashSet<TileEntityCrate>> getCrateSets(int x, int y, int z, CratePileData data) {
+		List<HashSet<TileEntityCrate>> crateSets = new ArrayList<HashSet<TileEntityCrate>>();
+		int checkedCrates = 0;
+		
+		neighborLoop: // Suck it :P
+		for (ForgeDirection dir : sideDirections) {
+			int nx = x + dir.offsetX;
+			int nz = z + dir.offsetZ;
+			
+			// Continue if this neighbor block is not part of the crate pile.
+			TileEntityCrate neighborCrate = WorldUtils.get(worldObj, nx, y, nz, TileEntityCrate.class);
+			if ((neighborCrate == null) || (neighborCrate.data != data)) continue;
+			
+			// See if the neighbor crate is already in a crate set,
+			// in that case continue with the next neighbor block.
+			for (HashSet<TileEntityCrate> set : crateSets)
+				if (set.contains(neighborCrate)) continue neighborLoop;
+			
+			// Create a new set of crates and fill it with all connecting crates.
+			HashSet<TileEntityCrate> set = new HashSet<TileEntityCrate>();
+			set.add(neighborCrate);
+			for (ForgeDirection ndir : sideDirections)
+				checkConnections(nx + ndir.offsetX, y, nz + ndir.offsetZ, data, set);
+			crateSets.add(set);
+			
+			// If we checked all crates, stop the loop.
+			checkedCrates += set.size();
+			if (checkedCrates >= data.getNumCrates()) break;
+		}
+		
+		return crateSets;
+	}
+	
+	private void checkConnections(int x, int y, int z, CratePileData data, HashSet<TileEntityCrate> set) {
 		TileEntityCrate crate = WorldUtils.get(worldObj, x, y, z, TileEntityCrate.class);
 		if ((crate == null) || (data != crate.data) || set.contains(crate)) return;
 		set.add(crate);
 		for (ForgeDirection ndir : sideDirections)
-			checkConnections(x + ndir.offsetX, y, z + ndir.offsetZ, set);
+			checkConnections(x + ndir.offsetX, y, z + ndir.offsetZ, data, set);
 	}
 	
 	@Override
