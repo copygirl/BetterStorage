@@ -17,31 +17,46 @@ buildscript {
 
 apply plugin: 'forge'
 
-project.ext.mod_version = "0.10.5.119"
-project.ext.minecraft_version = "1.7.10"
-project.ext.forge_version = "10.13.0.1187"
-
-version = project.minecraft_version + "-" + project.mod_version
+version = minecraft_version + "-" + mod_version
 group = "net.mcft.copy.betterstorage"
 archivesBaseName = "BetterStorage"
 
-sourceSets {
-    main {
-        java {
-            srcDir 'src/api'
-       }
-   }
-}
-
 minecraft {
     version = minecraft_version + "-" + forge_version
-    assetDir = "eclipse/assets"
+    runDir = "eclipse"
+}
+
+repositories {
+    maven {
+        name "RX14"
+        url "http://mvn.rx14.co.uk/repo/"
+    }
+    ivy {
+        name "stupid-invtweaks"
+        artifactPattern "http://mvn.rx14.co.uk/repo/[organisation]/[module]/[revision]/[artifact](-[classifier])-[revision].[ext]"
+    }
+    ivy {
+        name "Thaumcraft"
+        artifactPattern "http://addons.curse.cursecdn.com/files/2215/791/[module]-[revision](-[classifier]).[ext]"
+    }
+    ivy {
+        name "Botania"
+        artifactPattern "http://vazkii.us/mod/Botania/files/deobf/[module] [revision]-[classifier].[ext]"
+    }
+}
+
+dependencies {
+    compile group: 'inventorytweaks', name: 'InventoryTweaks', version: invtweaks_version, classifier: "api"
+    compile group: "riskyken.armourersWorkshop", name: "Armourers-Workshop", version: aw_version, classifier: "api"
+    compile group: "codechicken", name: "NotEnoughItems", version: nei_version, classifier: "dev"
+    compile name: "Thaumcraft", version: tc_version, classifier: "api", ext: "zip"
+    compile name: "Botania", version: botania_version, classifier: "deobf", ext: "jar"
 }
 
 processResources {
     inputs.property "version", project.version
     inputs.property "mcversion", project.minecraft.version
-    
+
     from(sourceSets.main.resources.srcDirs) {
         include '**/*.info'
         expand ([
@@ -52,4 +67,26 @@ processResources {
     from(sourceSets.main.resources.srcDirs) {
         exclude '**/*.info'
     }
+}
+
+task apiJar(type: Jar, dependsOn: classes) {
+    from sourceSets.main.output
+    include 'net/mcft/copy/betterstorage/api/**'
+    classifier = 'api'
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+
+task deobfJar(type: Jar) {
+    from sourceSets.main.output
+    classifier = 'deobf'
+}
+
+artifacts {
+    archives sourcesJar
+    archives apiJar
+    archives deobfJar
 }
