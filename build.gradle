@@ -68,3 +68,25 @@ processResources {
         exclude '**/*.info'
     }
 }
+
+task apiJar(type: Jar, dependsOn: classes) {
+    from sourceSets.main.output
+    include 'net/mcft/copy/betterstorage/api/**'
+    classifier = 'api'
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+
+task deobfJar(type: Jar) {
+    from sourceSets.main.output
+    classifier = 'deobf'
+}
+
+artifacts {
+    archives sourcesJar
+    archives apiJar
+    archives deobfJar
+}
