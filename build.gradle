@@ -38,7 +38,7 @@ repositories {
 }
 
 dependencies {
-    compile name: 'InventoryTweaks'   , group: 'inventorytweaks', version: invtweaks_version, classifier: "api"
+    compile name: "InventoryTweaks"   , group: "inventorytweaks", version: invtweaks_version, classifier: "api"
     compile name: "Armourers-Workshop", group: "riskyken.armourersWorkshop", version: aw_version, classifier: "api"
     compile name: "NotEnoughItems"    , group: "codechicken", version: nei_version, classifier: "dev"
     compile name: "Thaumcraft"        , version: tc_version, classifier: "api", ext: "zip"
