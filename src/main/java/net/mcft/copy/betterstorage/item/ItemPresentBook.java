@@ -10,6 +10,7 @@ import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreenBook;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemEditableBook;
 import net.minecraft.item.ItemStack;
@@ -114,11 +115,15 @@ public class ItemPresentBook extends ItemEditableBook {
 				
 			);
 		
+		showBookScreen(player, pages);
+		return stack;
+	}
+	
+	@SideOnly(Side.CLIENT)
+	public static void showBookScreen(EntityPlayer player, NBTTagList pages) {
+		ItemStack stack = new ItemStack(Items.written_book);
 		StackUtils.set(stack, pages, "pages");
 		Minecraft.getMinecraft().displayGuiScreen(new GuiScreenBook(player, stack, false));
-		StackUtils.remove(stack, "pages");
-		
-		return stack;
 	}
 	
 }
