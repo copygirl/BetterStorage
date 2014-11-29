@@ -232,7 +232,7 @@ public class ItemBucketSlime extends ItemBetterStorage {
 	
 	/** Returns the slime ID from a slime bucket. */
 	public static String getSlimeId(ItemStack stack) {
-		return StackUtils.get(stack, "slime", "Slime", "id");
+		return StackUtils.get(stack, "Slime", "Slime", "id");
 	}
 	
 	/** Registers a slime handler. */
