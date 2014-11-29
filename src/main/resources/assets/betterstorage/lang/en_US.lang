@@ -86,6 +86,7 @@ tile.betterstorage.reinforcedLocker.name.full=Reinforced %MATERIAL% Locker
 tile.betterstorage.thaumcraftBackpack.name=Thaumaturge's Backpack
 tile.betterstorage.thaumiumChest.name=Thaumium Chest
 tile.betterstorage.lockableDoor.name=Locked Iron Door
+tile.betterstorage.present.name=Present
 
 # Tooltips
 tooltip.betterstorage.backpack.bound=Bound backpack.
@@ -148,3 +149,5 @@ config.betterstorage.general.enableHelpTooltips=Tooltips
 config.betterstorage.general.enableHelpTooltips.tooltip=If enabled, shows tooltips on some items to help players who're new to the mod.
 config.betterstorage.general.enableWarningMessages=Debug Messages
 config.betterstorage.general.enableWarningMessages.tooltip=If disabled, prevents certain warning messages from being logged to the console.
+config.betterstorage.general.enableChristmasEvent=Christmas Event
+config.betterstorage.general.enableChristmasEvent.tooltip=If disabled, prevents the christmas event from happening. You monster.

@@ -51,14 +51,18 @@ public final class NbtUtils {
 	public static NBTTagList createList(Object... values) {
 		NBTTagList list = new NBTTagList();
 		for (Object value : values)
-			list.appendTag(createTag(value));
+			list.appendTag((value instanceof NBTBase)
+					? (NBTBase)value : createTag(value));
 		return list;
 	}
 	
 	public static NBTTagCompound createCompound(Object... nameValuePairs) {
 		NBTTagCompound compound = new NBTTagCompound();
-		for (int i = 0; i < nameValuePairs.length; i += 2)
-			compound.setTag((String)nameValuePairs[i], createTag(nameValuePairs[i + 1]));
+		for (int i = 0; i < nameValuePairs.length; i += 2) {
+			String key = (String)nameValuePairs[i];
+			Object value = nameValuePairs[i + 1];
+			compound.setTag(key, (value instanceof NBTBase) ? (NBTBase)value : createTag(value));
+		}
 		return compound;
 	}
 	

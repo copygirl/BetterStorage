@@ -7,6 +7,7 @@ import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.item.ItemBucketSlime;
 import net.mcft.copy.betterstorage.item.ItemDrinkingHelmet;
 import net.mcft.copy.betterstorage.item.ItemEnderBackpack;
+import net.mcft.copy.betterstorage.item.ItemPresentBook;
 import net.mcft.copy.betterstorage.item.cardboard.ItemCardboardArmor;
 import net.mcft.copy.betterstorage.item.cardboard.ItemCardboardAxe;
 import net.mcft.copy.betterstorage.item.cardboard.ItemCardboardHoe;
@@ -30,6 +31,7 @@ public final class BetterStorageItems {
 	public static ItemMasterKey masterKey;
 	public static ItemDrinkingHelmet drinkingHelmet;
 	public static ItemBucketSlime slimeBucket;
+	public static ItemPresentBook presentBook;
 	
 	public static ItemBackpack itemBackpack;
 	public static ItemEnderBackpack itemEnderBackpack;
@@ -58,6 +60,7 @@ public final class BetterStorageItems {
 		masterKey      = MiscUtils.conditionalNew(ItemMasterKey.class, GlobalConfig.masterKeyEnabled);
 		drinkingHelmet = MiscUtils.conditionalNew(ItemDrinkingHelmet.class, GlobalConfig.drinkingHelmetEnabled);
 		slimeBucket    = MiscUtils.conditionalNew(ItemBucketSlime.class, GlobalConfig.slimeBucketEnabled);
+		presentBook    = new ItemPresentBook();
 		
 		itemBackpack        = MiscUtils.conditionalNew(ItemBackpack.class, GlobalConfig.backpackEnabled);
 		itemEnderBackpack   = MiscUtils.conditionalNew(ItemEnderBackpack.class, GlobalConfig.enderBackpackEnabled);

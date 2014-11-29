@@ -21,6 +21,7 @@ import net.mcft.copy.betterstorage.client.renderer.TileEntityArmorStandRenderer;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityBackpackRenderer;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityLockableDoorRenderer;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityLockerRenderer;
+import net.mcft.copy.betterstorage.client.renderer.TileEntityPresentRenderer;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityReinforcedChestRenderer;
 import net.mcft.copy.betterstorage.client.renderer.TileLockableDoorRenderingHandler;
 import net.mcft.copy.betterstorage.content.BetterStorageItems;
@@ -33,6 +34,7 @@ import net.mcft.copy.betterstorage.misc.handlers.KeyBindingHandler;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityBackpack;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityLockableDoor;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityLocker;
+import net.mcft.copy.betterstorage.tile.entity.TileEntityPresent;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityReinforcedChest;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityReinforcedLocker;
 import net.mcft.copy.betterstorage.tile.stand.TileArmorStand;
@@ -80,6 +82,7 @@ public class ClientProxy extends CommonProxy {
 	public static int backpackRenderId;
 	public static int reinforcedLockerRenderId;
 	public static int lockableDoorRenderId;
+	public static int presentRenderId;
 	
 	public static final Map<Class<? extends TileEntity>, BetterStorageRenderingHandler> renderingHandlers =
 			new HashMap<Class<? extends TileEntity>, BetterStorageRenderingHandler>();
@@ -110,6 +113,7 @@ public class ClientProxy extends CommonProxy {
 		registerItemRenderer(BetterStorageTiles.reinforcedLocker, new ItemRendererContainer(TileEntityReinforcedLocker.class));
 		
 		registerItemRenderer(BetterStorageTiles.cardboardBox, new ItemRendererCardboardBox(BetterStorageTiles.cardboardBox));
+		registerItemRenderer(BetterStorageTiles.present, new ItemRendererContainer(TileEntityPresent.class));
 		
 		RenderingRegistry.registerEntityRenderingHandler(EntityFrienderman.class, new RenderFrienderman());
 		RenderingRegistry.registerEntityRenderingHandler(EntityCluckington.class, new RenderChicken(new ModelCluckington(), 0.4F));
@@ -120,6 +124,7 @@ public class ClientProxy extends CommonProxy {
 		backpackRenderId = registerTileEntityRenderer(TileEntityBackpack.class, new TileEntityBackpackRenderer(), true, -160, 1.5F, 0.14F);
 		reinforcedLockerRenderId = registerTileEntityRenderer(TileEntityReinforcedLocker.class, new TileEntityLockerRenderer());
 		lockableDoorRenderId = registerTileEntityRenderer(TileEntityLockableDoor.class, new TileEntityLockableDoorRenderer());
+		presentRenderId = registerTileEntityRenderer(TileEntityPresent.class, new TileEntityPresentRenderer());
 		RenderingRegistry.registerBlockHandler(new TileLockableDoorRenderingHandler());
 		Addon.registerRenderersAll();
 		

@@ -434,8 +434,6 @@ public class BackpackHandler {
 		
 	}
 	
-	// IPlayerTracker implementation
-	
 	@SubscribeEvent
 	public void onPlayerLogin(PlayerLoggedInEvent event) {
 		// Send player the information if the backpack open key is enabled on this server.

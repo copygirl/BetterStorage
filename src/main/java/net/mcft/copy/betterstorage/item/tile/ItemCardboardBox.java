@@ -11,6 +11,7 @@ import net.mcft.copy.betterstorage.item.IDyeableItem;
 import net.mcft.copy.betterstorage.utils.LanguageUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.block.Block;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -72,7 +73,7 @@ public class ItemCardboardBox extends ItemBlock implements IContainerItem, IDyea
 		// Using 27 instead of getRows() here because
 		// rows setting is not synced to the client.
 		ItemStack[] contents = StackUtils.getStackContents(stack, 27);
-		int limit = (advancedTooltips ? 6 : 3);
+		int limit = ((advancedTooltips || GuiScreen.isShiftKeyDown()) ? 6 : 3);
 		
 		List<DisplayNameStack> items = new ArrayList<DisplayNameStack>();
 		outerLoop:
@@ -92,7 +93,7 @@ public class ItemCardboardBox extends ItemBlock implements IContainerItem, IDyea
 		if (items.size() <= limit) return;
 		
 		int count = 0;
-		for (int i = 3; i < items.size(); i++)
+		for (int i = limit; i < items.size(); i++)
 			count += items.get(i).stackSize;
 		list.add(count + " more item" + ((count > 1) ? "s" : "") + " ...");
 	}
@@ -118,7 +119,7 @@ public class ItemCardboardBox extends ItemBlock implements IContainerItem, IDyea
 		return BetterStorage.globalConfig.getInteger(GlobalConfig.cardboardBoxRows);
 	}
 	
-	/** Returns if cardboard boxes are reusable. */
+	/** Returns how many times cardboard boxes can be reused. */
 	public static int getUses() {
 		return BetterStorage.globalConfig.getInteger(GlobalConfig.cardboardBoxUses);
 	}

@@ -9,6 +9,7 @@ import net.mcft.copy.betterstorage.tile.TileEnderBackpack;
 import net.mcft.copy.betterstorage.tile.TileFlintBlock;
 import net.mcft.copy.betterstorage.tile.TileLockableDoor;
 import net.mcft.copy.betterstorage.tile.TileLocker;
+import net.mcft.copy.betterstorage.tile.TilePresent;
 import net.mcft.copy.betterstorage.tile.TileReinforcedChest;
 import net.mcft.copy.betterstorage.tile.TileReinforcedLocker;
 import net.mcft.copy.betterstorage.tile.crate.TileCrate;
@@ -28,6 +29,7 @@ public final class BetterStorageTiles {
 	public static TileCraftingStation craftingStation;
 	public static TileFlintBlock flintBlock;
 	public static TileLockableDoor lockableDoor;
+	public static TilePresent present;
 	
 	private BetterStorageTiles() {  }
 	
@@ -44,6 +46,7 @@ public final class BetterStorageTiles {
 		craftingStation  = MiscUtils.conditionalNew(TileCraftingStation.class, GlobalConfig.craftingStationEnabled);
 		flintBlock       = MiscUtils.conditionalNew(TileFlintBlock.class, GlobalConfig.flintBlockEnabled);
 		lockableDoor     = MiscUtils.conditionalNew(TileLockableDoor.class, GlobalConfig.lockableDoorEnabled);
+		present          = MiscUtils.conditionalNew(TilePresent.class, GlobalConfig.presentEnabled);
 		
 		Addon.initializeTilesAll();
 		

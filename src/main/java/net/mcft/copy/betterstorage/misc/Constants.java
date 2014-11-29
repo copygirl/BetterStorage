@@ -17,6 +17,7 @@ public final class Constants {
 	public static final String containerEnderBackpack = "container." + modId + ".enderBackpack";
 	public static final String containerCardboardBox = "container." + modId + ".cardboardBox";
 	public static final String containerCraftingStation = "container." + modId + ".craftingStation";
+	public static final String containerPresent = "container." + modId + ".present";
 	
 	public static final String containerKeyring = "container." + modId + ".keyring";
 
@@ -24,6 +25,7 @@ public final class Constants {
 	public static final String containerThaumiumChest = "container." + modId + ".thaumiumChest";
 	
 	public static final String lockableDoor = modId + ".lockableDoor";
+	
 	
 	private Constants() {  }
 	

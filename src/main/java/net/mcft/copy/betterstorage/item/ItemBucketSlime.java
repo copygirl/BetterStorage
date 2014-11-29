@@ -10,6 +10,7 @@ import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.misc.EquipmentSlot;
 import net.mcft.copy.betterstorage.utils.LanguageUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -56,7 +57,7 @@ public class ItemBucketSlime extends ItemBetterStorage {
 	public IIcon getIcon(ItemStack stack, int pass) {
 		if (pass == 0) {
 			Handler handler = getHandler(stack);
-			return ((handler != null) ? handler.icon : null);
+			return ((handler != null) ? handler.icon : empty);
 		} else return empty;
 	}
 	@Override
@@ -87,7 +88,7 @@ public class ItemBucketSlime extends ItemBetterStorage {
 		
 		NBTTagList effectList = (NBTTagList)StackUtils.getTag(stack, "Effects");
 		if ((effectList != null) && (handler != null)) {
-			int max = (advancedTooltips ? 8 : 3);
+			int max = ((advancedTooltips || GuiScreen.isShiftKeyDown()) ? 6 : 3);
 			
 			for (int i = 0; i < Math.min(effectList.tagCount(), max); i++) {
 				PotionEffect effect = PotionEffect.readCustomPotionEffectFromNBT(
@@ -231,7 +232,7 @@ public class ItemBucketSlime extends ItemBetterStorage {
 	
 	/** Returns the slime ID from a slime bucket. */
 	public static String getSlimeId(ItemStack stack) {
-		return StackUtils.get(stack, "Slime", "Slime", "id");
+		return StackUtils.get(stack, "slime", "Slime", "id");
 	}
 	
 	/** Registers a slime handler. */

@@ -11,6 +11,7 @@ import net.mcft.copy.betterstorage.network.packet.PacketBackpackTeleport;
 import net.mcft.copy.betterstorage.network.packet.PacketDrinkingHelmetUse;
 import net.mcft.copy.betterstorage.network.packet.PacketLockHit;
 import net.mcft.copy.betterstorage.network.packet.PacketOpenGui;
+import net.mcft.copy.betterstorage.network.packet.PacketPresentOpen;
 import net.mcft.copy.betterstorage.network.packet.PacketSyncSetting;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -36,6 +37,7 @@ public class ChannelHandler extends SimpleNetworkWrapper {
 		register(6, Side.SERVER, PacketDrinkingHelmetUse.class);
 		register(7, Side.SERVER, PacketLockHit.class);
 		register(8, Side.CLIENT, PacketSyncSetting.class);
+		register(9, Side.CLIENT, PacketPresentOpen.class);
 	}
 	
 	public <T extends IMessage & IMessageHandler<T, IMessage>> void register(int id, Side receivingSide, Class<T> messageClass) {

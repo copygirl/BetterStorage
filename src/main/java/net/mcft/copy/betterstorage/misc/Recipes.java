@@ -11,6 +11,8 @@ import net.mcft.copy.betterstorage.item.recipe.DyeRecipe;
 import net.mcft.copy.betterstorage.item.recipe.KeyRecipe;
 import net.mcft.copy.betterstorage.item.recipe.LockColorRecipe;
 import net.mcft.copy.betterstorage.item.recipe.LockRecipe;
+import net.mcft.copy.betterstorage.item.recipe.PresentRecipe;
+import net.mcft.copy.betterstorage.item.recipe.PresentRemoveNametagRecipe;
 import net.mcft.copy.betterstorage.tile.ContainerMaterial;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -124,6 +126,13 @@ public final class Recipes {
 					       'T', Blocks.crafting_table,
 					       'W', "plankWood",
 					       'C', ((BetterStorageTiles.crate != null) ? BetterStorageTiles.crate : Blocks.chest)));
+		
+		// Present recipe
+		if ((BetterStorageTiles.present != null) &&
+		    (BetterStorageTiles.cardboardBox != null)) {
+			GameRegistry.addRecipe(new PresentRecipe());
+			BetterStorageCrafting.addStationRecipe(new PresentRemoveNametagRecipe());
+		}
 		
 		// Flint Block recipe
 		if (BetterStorageTiles.flintBlock != null) {

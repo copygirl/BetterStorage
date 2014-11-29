@@ -26,6 +26,7 @@ public class GlobalConfig extends Config {
 	public static final String craftingStationEnabled  = "tile.craftingStation";
 	public static final String flintBlockEnabled       = "tile.flintBlock";
 	public static final String lockableDoorEnabled     = "tile.lockableDoor";
+	public static final String presentEnabled          = "tile.present";
 	
 	// Items
 	public static final String keyEnabled            = "item.key";
@@ -80,6 +81,7 @@ public class GlobalConfig extends Config {
 	
 	public static final String enableHelpTooltips            = "general.enableHelpTooltips";
 	public static final String enableWarningMessages         = "general.enableWarningMessages";
+	public static final String enableChristmasEvent          = "general.enableChristmasEvent";
 	
 	
 	public GlobalConfig(File file) {
@@ -97,6 +99,7 @@ public class GlobalConfig extends Config {
 		new BooleanSetting(this, craftingStationEnabled, true, "tile.betterstorage.craftingStation.name").setHasComment(false).setRequiresMcRestart(true);
 		new BooleanSetting(this, flintBlockEnabled, true, "tile.betterstorage.flintBlock.name").setHasComment(false).setRequiresMcRestart(true);
 		new BooleanSetting(this, lockableDoorEnabled, true, "tile.betterstorage.lockableDoor.name").setHasComment(false).setRequiresMcRestart(true);
+		new BooleanSetting(this, presentEnabled, true, "tile.betterstorage.present.name").setHasComment(false).setRequiresMcRestart(true);
 		
 		// Items
 		new BooleanSetting(this, keyEnabled, true, "item.betterstorage.key.name").setHasComment(false).setRequiresMcRestart(true);
@@ -178,6 +181,8 @@ public class GlobalConfig extends Config {
 				"If enabled, shows tooltips on some items to help players who're new to the mod.");
 		new BooleanSetting(this, enableWarningMessages, true).setComment(
 				"If disabled, prevents certain warning messages from being logged to the console.");
+		new BooleanSetting(this, enableChristmasEvent, true).setComment(
+				"If disabled, prevents the christmas event from happening. You monster.");
 	
 	}
 	

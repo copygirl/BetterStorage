@@ -1,6 +1,5 @@
 package net.mcft.copy.betterstorage.addon.nei;
 
-
 import net.mcft.copy.betterstorage.addon.Addon;
 import net.mcft.copy.betterstorage.client.gui.GuiCraftingStation;
 import net.mcft.copy.betterstorage.content.BetterStorageItems;
@@ -41,6 +40,8 @@ public class NEIAddon extends Addon {
 				new StationOverlayHandler(-8, 11), "crafting");
 		
 		API.hideItem(new ItemStack(BetterStorageTiles.lockableDoor));
+		API.hideItem(new ItemStack(BetterStorageTiles.present));
+		API.hideItem(new ItemStack(BetterStorageItems.presentBook));
 		
 		// Fake key recipes
 		if (BetterStorageItems.key != null) {

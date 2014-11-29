@@ -14,6 +14,7 @@ import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.item.ItemBucketSlime;
 import net.mcft.copy.betterstorage.item.cardboard.ICardboardItem;
 import net.mcft.copy.betterstorage.item.cardboard.ItemCardboardSheet;
+import net.mcft.copy.betterstorage.misc.ChristmasEventHandler;
 import net.mcft.copy.betterstorage.misc.EquipmentSlot;
 import net.mcft.copy.betterstorage.misc.SetBlockFlag;
 import net.mcft.copy.betterstorage.misc.handlers.BackpackHandler;
@@ -61,6 +62,9 @@ public class CommonProxy {
 		
 		new BackpackHandler();
 		new CraftingHandler();
+		
+		if (BetterStorage.globalConfig.getBoolean(GlobalConfig.enableChristmasEvent))
+			new ChristmasEventHandler();
 		
 		registerArmorStandHandlers();
 	}

@@ -8,6 +8,7 @@ import net.mcft.copy.betterstorage.tile.entity.TileEntityCardboardBox;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityCraftingStation;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityLockableDoor;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityLocker;
+import net.mcft.copy.betterstorage.tile.entity.TileEntityPresent;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityReinforcedChest;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityReinforcedLocker;
 import net.mcft.copy.betterstorage.tile.stand.TileEntityArmorStand;
@@ -27,6 +28,7 @@ public final class BetterStorageTileEntities {
 		GameRegistry.registerTileEntity(TileEntityCardboardBox.class, Constants.containerCardboardBox);
 		GameRegistry.registerTileEntity(TileEntityReinforcedLocker.class, Constants.containerReinforcedLocker);
 		GameRegistry.registerTileEntity(TileEntityCraftingStation.class, Constants.containerCraftingStation);
+		GameRegistry.registerTileEntity(TileEntityPresent.class, Constants.containerPresent);
 		GameRegistry.registerTileEntity(TileEntityLockableDoor.class, Constants.lockableDoor);
 
 		Addon.registerTileEntitesAll();

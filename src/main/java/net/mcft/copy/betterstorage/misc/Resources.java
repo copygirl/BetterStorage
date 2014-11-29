@@ -24,9 +24,12 @@ public final class Resources {
 	public static final ResourceLocation textureCardboardArmor   = new BetterStorageResource("textures/models/cardboardArmor.png");
 	public static final ResourceLocation textureCardboardLeggins = new BetterStorageResource("textures/models/cardboardArmor_leggings.png");
 	public static final ResourceLocation textureCluckOverlay     = new BetterStorageResource("textures/models/cluck.png");
+	public static final ResourceLocation texturePresentOverlay   = new BetterStorageResource("textures/models/present_overlay.png");
 	
 	public static final ResourceLocation modelLocker      = new BetterStorageResource("models/locker.obj");
 	public static final ResourceLocation modelLockerLarge = new BetterStorageResource("models/locker_large.obj");
+	
+	public static final ResourceLocation modelPresent     = new BetterStorageResource("models/present.obj");
 	
 	
 	private Resources() {  }

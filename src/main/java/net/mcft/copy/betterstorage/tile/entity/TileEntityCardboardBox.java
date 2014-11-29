@@ -18,6 +18,19 @@ public class TileEntityCardboardBox extends TileEntityContainer {
 	
 	public int uses = 1;
 	public int color = -1;
+	public boolean destroyed = false;
+	
+	protected boolean canPickUp() { return (uses >= 0); }
+	
+	protected ItemStack getItemDropped() {
+		return new ItemStack(BetterStorageTiles.cardboardBox);
+	}
+	
+	protected void onItemDropped(ItemStack stack) {
+		if (ItemCardboardBox.getUses() > 0) StackUtils.set(stack, uses, "uses");
+		if (color >= 0) StackUtils.set(stack, color, "display", "color");
+		if (getCustomTitle() != null) stack.setStackDisplayName(getCustomTitle());
+	}
 	
 	// TileEntityContainer stuff
 	
@@ -47,24 +60,23 @@ public class TileEntityCardboardBox extends TileEntityContainer {
 	
 	@Override
 	public void onBlockDestroyed() {
+		if (!canPickUp() || destroyed) return;
 		boolean empty = StackUtils.isEmpty(contents);
-		if (!empty) uses--;
-		if (uses >= 0) {
-			ItemStack stack = new ItemStack(BetterStorageTiles.cardboardBox);
-			if (!empty) StackUtils.setStackContents(stack, contents);
-			if (ItemCardboardBox.getUses() > 0) StackUtils.set(stack, uses, "uses");
-			if (color >= 0) StackUtils.set(stack, color, "display", "color");
-			if (getCustomTitle() != null) stack.setStackDisplayName(getCustomTitle());
-			// Don't drop an empty cardboard box in creative.
-			if (!empty || !brokenInCreative)
-				WorldUtils.dropStackFromBlock(this, stack);
+		if (!empty) {
+			uses--;
+			if (!canPickUp()) {
+				destroyed = true;
+				dropContents();
+				return;
+			}
 		}
-		super.onBlockDestroyed();
-	}
-	
-	@Override
-	public void dropContents() {
-		if (uses < 0) super.dropContents();
+		ItemStack stack = getItemDropped();
+		if (!empty)
+			StackUtils.setStackContents(stack, contents);
+		onItemDropped(stack);
+		// Don't drop an empty cardboard box in creative.
+		if (!empty || !brokenInCreative)
+			WorldUtils.dropStackFromBlock(this, stack);
 	}
 	
 	// Tile entity synchronization
@@ -79,6 +91,7 @@ public class TileEntityCardboardBox extends TileEntityContainer {
 	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
 		NBTTagCompound compound = packet.func_148857_g();
 		color = (compound.hasKey("color") ? compound.getInteger("color") : -1);
+		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	}
 	
 	// Reading from / writing to NBT
