@@ -7,7 +7,7 @@ import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.client.renderer.entity.RenderEnderman;
 import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
@@ -22,7 +22,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class RenderFrienderman extends RenderEnderman {
 	
 	@Override
-	protected int shouldRenderPass(EntityLivingBase entity, int slot, float partialTicks) {
+	protected int shouldRenderPass(EntityEnderman entity, int slot, float partialTicks) {
 		
 		if (slot == 0) {
 			setRenderPassModel(mainModel);
