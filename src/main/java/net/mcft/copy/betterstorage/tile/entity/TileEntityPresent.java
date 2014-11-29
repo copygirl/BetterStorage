@@ -164,14 +164,14 @@ public class TileEntityPresent extends TileEntityCardboardBox {
 	
 	@Override
 	public Packet getDescriptionPacket() {
-		S35PacketUpdateTileEntity packet = (S35PacketUpdateTileEntity)super.getDescriptionPacket();
-		NBTTagCompound compound = packet.func_148857_g();
+		NBTTagCompound compound = new NBTTagCompound();
+		if (color >= 0) compound.setInteger("color", color);
 		compound.setByte(TAG_COLOR_INNER, (byte)colorInner);
 		compound.setByte(TAG_COLOR_OUTER, (byte)colorOuter);
 		compound.setBoolean(TAG_SKOJANZA_MODE, skojanzaMode);
 		if (nameTag != null)
 			compound.setString(TAG_NAMETAG, nameTag);
-		return packet;
+		return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, compound);
 	}
 	@Override
 	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
