@@ -86,6 +86,7 @@ tile.betterstorage.reinforcedLocker.name.full=Укреплённый %MATERIAL% 
 tile.betterstorage.thaumcraftBackpack.name=Рюкзак тауматурга
 tile.betterstorage.thaumiumChest.name=Таум-сундук
 tile.betterstorage.lockableDoor.name=Закрытая железная дверь
+tile.betterstorage.present.name=Подарок
 
 # Tooltips
 tooltip.betterstorage.backpack.bound=Связанный рюкзак.
@@ -148,3 +149,5 @@ config.betterstorage.general.enableHelpTooltips=Подсказки
 config.betterstorage.general.enableHelpTooltips.tooltip=Если включены, подсказки показываются на некоторых предметах, чтобы помочь игрокам, которые впервые играют с этим модом.
 config.betterstorage.general.enableWarningMessages=Отладочные сообщения
 config.betterstorage.general.enableWarningMessages.tooltip=Если отключены, предупреждающие сообщения не записываются в консоль.
+config.betterstorage.general.enableChristmasEvent=Зимние праздники
+config.betterstorage.general.enableChristmasEvent.tooltip=Осли отключено, убирает все подарки и способы их получения. Вы монстр.
