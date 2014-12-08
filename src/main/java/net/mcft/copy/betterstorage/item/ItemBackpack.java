@@ -66,7 +66,7 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 	/** Returns the number of rows this backpack has. */
 	public int getBackpackRows() { return BetterStorage.globalConfig.getInteger(GlobalConfig.backpackRows); }
 	
-	protected int getDefaultColor() { return 0xA06540; }
+	protected int getDefaultColor() { return 0x805038; }
 	
 	protected IInventory getBackpackItemsInternal(EntityLivingBase carrier, EntityPlayer player) {
 		PropertiesBackpack backpackData = getBackpackData(carrier);
