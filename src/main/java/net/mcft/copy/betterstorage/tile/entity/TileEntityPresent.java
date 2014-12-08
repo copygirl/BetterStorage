@@ -70,14 +70,11 @@ public class TileEntityPresent extends TileEntityCardboardBox {
 	@Override
 	public void onBlockPlaced(EntityLivingBase player, ItemStack stack) {
 		super.onBlockPlaced(player, stack);
-		NBTTagCompound compound = stack.getTagCompound();
-		colorInner = ((compound != null) ? compound.getByte(TAG_COLOR_INNER) : 14);
-		colorOuter = ((compound != null) ? compound.getByte(TAG_COLOR_OUTER) : 0);
-		skojanzaMode = ((compound != null) ? compound.getBoolean(TAG_SKOJANZA_MODE) : false);
-		nameTag = (((compound != null) && compound.hasKey(TAG_NAMETAG))
-				? compound.getString(TAG_NAMETAG) : null);
-		color = (((compound != null) && compound.hasKey("color"))
-				? compound.getInteger("color") : -1);
+		colorInner = StackUtils.get(stack, (byte)14, TAG_COLOR_INNER);
+		colorOuter = StackUtils.get(stack, (byte)0, TAG_COLOR_OUTER);
+		skojanzaMode = (StackUtils.get(stack, (byte)0, TAG_SKOJANZA_MODE) > 0);
+		nameTag = StackUtils.get(stack, (String)null, TAG_NAMETAG);
+		color = StackUtils.get(stack, -1, "color");
 		worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, colorInner, SetBlockFlag.SEND_TO_CLIENT);
 	}
 	
@@ -153,11 +150,10 @@ public class TileEntityPresent extends TileEntityCardboardBox {
 	@SideOnly(Side.CLIENT)
 	public void onBlockRenderAsItem(ItemStack stack) {
 		NBTTagCompound compound = stack.getTagCompound();
-		colorInner = ((compound != null) ? compound.getByte(TAG_COLOR_INNER) : 14);
-		colorOuter = ((compound != null) ? compound.getByte(TAG_COLOR_OUTER) : 0);
-		skojanzaMode = ((compound != null) ? compound.getBoolean(TAG_SKOJANZA_MODE) : false);
-		nameTag = (((compound != null) && compound.hasKey(TAG_NAMETAG))
-				? compound.getString(TAG_NAMETAG) : null);
+		colorInner = StackUtils.get(stack, (byte)14, TAG_COLOR_INNER);
+		colorOuter = StackUtils.get(stack, (byte)0, TAG_COLOR_OUTER);
+		skojanzaMode = (StackUtils.get(stack, (byte)0, TAG_SKOJANZA_MODE) > 0);
+		nameTag = StackUtils.get(stack, (String)null, TAG_NAMETAG);
 	}
 	
 	// Tile entity synchronization
