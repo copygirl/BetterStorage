@@ -40,11 +40,12 @@ public class ItemThaumcraftBackpack extends ItemBackpack implements IRepairable,
 	public int getBackpackColumns() { return 13; }
 	
 	@Override
-	protected int getDefaultColor() { return -1; }
+	protected int getDefaultColor() { return 0x6C2CA8; }
 	
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
-		return ThaumcraftResources.thaumcraftBackpackTexture.toString();
+		return ((type == "overlay") ? ThaumcraftResources.thaumcraftBackpackTextureOverlay
+		                            : ThaumcraftResources.thaumcraftBackpackTexture).toString();
 	}
 	
 	@Override
