@@ -2,18 +2,17 @@ package net.mcft.copy.betterstorage.tile.stand;
 
 import java.util.Random;
 
-import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.misc.SetBlockFlag;
 import net.mcft.copy.betterstorage.proxy.ClientProxy;
 import net.mcft.copy.betterstorage.tile.TileContainerBetterStorage;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -34,15 +33,6 @@ public class TileArmorStand extends TileContainerBetterStorage {
 	@Override
 	public Class<? extends ItemBlock> getItemClass() { return ItemArmorStand.class; }
 	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister iconRegister) {
-		blockIcon = iconRegister.registerIcon("stone_slab_top");
-	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public String getItemIconName() { return Constants.modId + ":armorStand"; }
 	
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
@@ -53,8 +43,8 @@ public class TileArmorStand extends TileContainerBetterStorage {
 	
 	@Override
 	public boolean isOpaqueCube() { return false; }
-	@Override
-	public boolean renderAsNormalBlock() { return false; }
+	
+	
 	
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -96,7 +86,7 @@ public class TileArmorStand extends TileContainerBetterStorage {
 	}
 	
 	@Override
-	public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
+	public void onNeighborBlockChange(World world, BlockPos pos, int z, Block block) {
 		int metadata = world.getBlockMetadata(x, y, z);
 		int targetY = y + ((metadata == 0) ? 1 : -1);
 		int targetMeta = ((metadata == 0) ? 1 : 0);

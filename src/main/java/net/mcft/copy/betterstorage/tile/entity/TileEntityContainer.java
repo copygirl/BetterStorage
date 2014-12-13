@@ -12,6 +12,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.Constants.NBT;
@@ -137,7 +138,7 @@ public abstract class TileEntityContainer extends TileEntity {
 	public void dropContents() {
 		if (contents != null)
 			for (ItemStack stack : contents)
-				WorldUtils.dropStackFromBlock(worldObj, xCoord, yCoord, zCoord, stack);
+				WorldUtils.dropStackFromBlock(worldObj, this.getPos(), stack);
 	}
 	
 	/** Called before the tile entity is being rendered as an item.
@@ -158,8 +159,8 @@ public abstract class TileEntityContainer extends TileEntity {
 	/** Helper function. Returns the comparator signal strength of
 	 *  the container at this position, or 0 if there is no container
 	 *  or the function is called on client-side. */
-	public static int getContainerComparatorSignalStrength(IBlockAccess world, int x, int y, int z) {
-		TileEntityContainer container = WorldUtils.get(world, x, y, z, TileEntityContainer.class);
+	public static int getContainerComparatorSignalStrength(IBlockAccess world, BlockPos pos) {
+		TileEntityContainer container = WorldUtils.get(world, pos, TileEntityContainer.class);
 		return ((container != null) ? container.getComparatorSignalStrength() : 0);
 	}
 	
@@ -195,14 +196,14 @@ public abstract class TileEntityContainer extends TileEntity {
 	protected void comparatorUpdateAndReset() {
 		compAccessed = false;
 		compContentsChanged = false;
-		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
+		worldObj.notifyBlockOfStateChange(this.getPos(), getBlockType());
 	}
 	
 	/** Calls the TileEntity.markDirty function without affecting the
 	 *  attached inventory (if any). Marks the tile entity to be saved. */
 	public void markDirtySuper() {
 		if (worldObj.isRemote) return;
-		worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
+		worldObj.markTileEntityChunkModified(this.getPos(), this);
 		if (hasComparatorAccessed())
 			markContentsChanged();
 	}
@@ -227,13 +228,13 @@ public abstract class TileEntityContainer extends TileEntity {
 	/** Returns if the container should synchronize playersUsing over the network, called each tick. */
 	protected boolean syncPlayersUsing() {
 		return (!worldObj.isRemote && doesSyncPlayers() &&
-		        (((ticksExisted + xCoord + yCoord + zCoord) & 0xFF) == 0) &&
-		        worldObj.doChunksNearChunkExist(xCoord, yCoord, zCoord, 16));
+		        (((ticksExisted + pos.getX() + pos.getY() + pos.getZ()) & 0xFF) == 0) &&
+		        worldObj.doChunksNearChunkExist(this.getPos(), 16));
 	}
 	/** Synchronizes playersUsing over the network. */
 	private void doSyncPlayersUsing(int playersUsing) {
 		if (!doesSyncPlayers()) return;
-		worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), 0, playersUsing);
+		worldObj.addBlockEvent(this.getPos(), getBlockType(), 0, playersUsing);
 	}
 	
 	@Override
@@ -304,7 +305,7 @@ public abstract class TileEntityContainer extends TileEntity {
 	/** Marks the block for an update, which will cause
 	 *  a description packet to be send to players. */
 	public void markForUpdate() {
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		worldObj.markBlockForUpdate(this.getPos());
 		markDirty();
 	}
 	

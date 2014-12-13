@@ -19,7 +19,7 @@ public class TileBetterStorage extends Block {
 		
 		setCreativeTab(BetterStorage.creativeTab);
 		
-		setBlockName(Constants.modId + "." + getTileName());
+		this.setUnlocalizedName(Constants.modId + "." + getTileName());
 		registerBlock();
 		
 	}
