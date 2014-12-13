@@ -81,7 +81,7 @@ public class ChristmasEventHandler {
 					
 					ItemStack[] contents = new ItemStack[ItemCardboardBox.getRows() * 9];
 					for (int j = 0; ((j < contents.length) && !items.isEmpty()); j++)
-						if (RandomUtils.getBoolean(1.0 / (contents.length - items.size() - j + 1)))
+						if (RandomUtils.getBoolean((double)items.size() / (contents.length - j)))
 							contents[j] = items.remove(RandomUtils.getInt(items.size()));
 					StackUtils.setStackContents(present, contents);
 					
