@@ -1,19 +1,15 @@
 package net.mcft.copy.betterstorage.client.renderer;
 
-import net.mcft.copy.betterstorage.proxy.ClientProxy;
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.fml.client.registry.ISimpleBlockRenderingHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class TileLockableDoorRenderingHandler implements ISimpleBlockRenderingHandler {
+@Deprecated
+public class TileLockableDoorRenderingHandler /*implements ISimpleBlockRenderingHandler*/ {
 
 	public static TileLockableDoorRenderingHandler instance = new TileLockableDoorRenderingHandler();
 	
-	@Override
+	/*@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {}
 
 	@Override
@@ -31,5 +27,5 @@ public class TileLockableDoorRenderingHandler implements ISimpleBlockRenderingHa
 	public int getRenderId() {
 		return ClientProxy.lockableDoorRenderId;
 	}
-	
+	*/
 }

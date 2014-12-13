@@ -13,29 +13,30 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 public abstract class TileEntityConnectable extends TileEntityContainer implements IInventory {
+
+	//TODO (1.8): This will most likely crash somewhere now.
+	private EnumFacing orientation = null; //TODO (1.8): EnumFacing.UNKNOWN? Mojang knows everything!
+	private EnumFacing connected = null;
 	
-	private ForgeDirection orientation = ForgeDirection.UNKNOWN;
-	private ForgeDirection connected = ForgeDirection.UNKNOWN;
+	public EnumFacing getOrientation() { return orientation; }
+	public void setOrientation(EnumFacing orientation) { this.orientation = orientation; }
 	
-	public ForgeDirection getOrientation() { return orientation; }
-	public void setOrientation(ForgeDirection orientation) { this.orientation = orientation; }
-	
-	public ForgeDirection getConnected() { return connected; }
-	public void setConnected(ForgeDirection connected) { this.connected = connected; }
+	public EnumFacing getConnected() { return connected; }
+	public void setConnected(EnumFacing connected) { this.connected = connected; }
 	
 	/** Returns the possible directions the container can connect to. */
-	public abstract ForgeDirection[] getPossibleNeighbors();
+	public abstract EnumFacing[] getPossibleNeighbors();
 	
 	/** Returns if this container is connected to another one. */
-	public boolean isConnected() { return (getConnected() != ForgeDirection.UNKNOWN); }
+	public boolean isConnected() { return (getConnected() != null); }
 	
 	/** Returns if this container is the main container, or not connected to another container. */
 	public boolean isMain() {
-		ForgeDirection connected = getConnected();
-		return (!isConnected() || connected.offsetX + connected.offsetY + connected.offsetZ > 0);
+		EnumFacing connected = getConnected();
+		return (!isConnected() || connected.getFrontOffsetX() + connected.getFrontOffsetY() + connected.getFrontOffsetZ() > 0);
 	}
 	
 	/** Returns the main container. */
@@ -46,18 +47,14 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 		if (BetterStorage.globalConfig.getBoolean(GlobalConfig.enableWarningMessages))
 			BetterStorage.log.warn(
 					"getConnectedTileEntity() returned null in getMainTileEntity(). " +
-					"Location: {},{},{}", xCoord, yCoord, zCoord);
+					"Position: {}", getPos());
 		return this;
 	}
 	
 	/** Returns the connected container. */
 	public TileEntityConnectable getConnectedTileEntity() {
 		if (!isConnected()) return null;
-		ForgeDirection connected = getConnected();
-		int x = xCoord + connected.offsetX;
-		int y = yCoord + connected.offsetY;
-		int z = zCoord + connected.offsetZ;
-		return WorldUtils.get(worldObj, x, y, z, TileEntityConnectable.class);
+		return WorldUtils.get(worldObj, getPos().offset(getConnected()), TileEntityConnectable.class);
 	}
 	
 	/** Returns if the container can connect to the other container. */
@@ -73,12 +70,9 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 	public void checkForConnections() {
 		if (worldObj.isRemote) return;
 		TileEntityConnectable connectableFound = null;
-		ForgeDirection dirFound = ForgeDirection.UNKNOWN;
-		for (ForgeDirection dir : getPossibleNeighbors()) {
-			int x = xCoord + dir.offsetX;
-			int y = yCoord + dir.offsetY;
-			int z = zCoord + dir.offsetZ;
-			TileEntityConnectable connectable = WorldUtils.get(worldObj, x, y, z, TileEntityConnectable.class);
+		EnumFacing dirFound = null;
+		for (EnumFacing dir : getPossibleNeighbors()) {
+			TileEntityConnectable connectable = WorldUtils.get(worldObj, getPos().offset(dir), TileEntityConnectable.class);
 			if (!canConnect(connectable)) continue;
 			if (connectableFound != null) return;
 			connectableFound = connectable;
@@ -86,7 +80,7 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 		}
 		if (connectableFound == null) return;
 		setConnected(dirFound);
-		connectableFound.setConnected(dirFound.getOpposite());
+		connectableFound.setConnected(dirFound == null ? null : dirFound.getOpposite());
 		// Mark the block for an update, sends description packet to players.
 		markForUpdate();
 		connectableFound.markForUpdate();
@@ -96,14 +90,14 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 	public void disconnect() {
 		if (!isConnected()) return;
 		TileEntityConnectable connectable = getConnectedTileEntity();
-		setConnected(ForgeDirection.UNKNOWN);
+		setConnected(null);
 		if (connectable != null) {
-			connectable.setConnected(ForgeDirection.UNKNOWN);
+			connectable.setConnected(null);
 			connectable.markForUpdate();
 		} else if (BetterStorage.globalConfig.getBoolean(GlobalConfig.enableWarningMessages))
 			BetterStorage.log.warn(
 					"getConnectedTileEntity() returned null in disconnect(). " +
-					"Location: {},{},{}", xCoord, yCoord, zCoord);
+					"Position: {}", getPos());
 	}
 	
 	// TileEntityContainer stuff
@@ -153,16 +147,16 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 	public void updateEntity() {
 		super.updateEntity();
 		
-		double x = xCoord + 0.5;
-		double y = yCoord + 0.5;
-		double z = zCoord + 0.5;
+		double x = getPos().getX() + 0.5;
+		double y = getPos().getY() + 0.5;
+		double z = getPos().getZ() + 0.5;
 		
 		if (isConnected()) {
 			if (!isMain()) return;
 			TileEntityConnectable connectable = getConnectedTileEntity();
 			if (connectable != null) {
-				x = (x + connectable.xCoord + 0.5) / 2;
-				z = (z + connectable.zCoord + 0.5) / 2;
+				x = (x + connectable.getPos().getX() + 0.5) / 2;
+				z = (z + connectable.getPos().getZ() + 0.5) / 2;
 				lidAngle = Math.max(lidAngle, connectable.lidAngle);
 			}
 		}
@@ -180,9 +174,7 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 	// IInventory stuff
 	
 	@Override
-	public String getInventoryName() { return getName(); }
-	@Override
-	public boolean hasCustomInventoryName() { return !shouldLocalizeTitle(); }
+	public boolean hasCustomName() { return !shouldLocalizeTitle(); }
 	@Override
 	public int getInventoryStackLimit() { return 64; }
 	@Override
@@ -212,9 +204,9 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 	@Override
 	public ItemStack getStackInSlotOnClosing(int slot) { return null; }
 	@Override
-	public void openInventory() { if (isAccessible()) getPlayerInventory().openInventory(); }
+	public void openInventory(EntityPlayer player) { if (isAccessible()) getPlayerInventory().openInventory(player); }
 	@Override
-	public void closeInventory() { if (isAccessible()) getPlayerInventory().closeInventory(); }
+	public void closeInventory(EntityPlayer player) { if (isAccessible()) getPlayerInventory().closeInventory(player); }
 	@Override
 	public void markDirty() { if (isAccessible()) getPlayerInventory().markDirty(); }
 	
@@ -228,14 +220,14 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 	
 	@Override
 	public Packet getDescriptionPacket() {
-        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, getDescriptionPacketData(new NBTTagCompound()));
+        return new S35PacketUpdateTileEntity(getPos(), 0, getDescriptionPacketData(new NBTTagCompound()));
 	}
 	
 	@Override
 	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
-		NBTTagCompound compound = packet.func_148857_g();
-		setOrientation(ForgeDirection.getOrientation(compound.getByte("orientation")));
-		setConnected(ForgeDirection.getOrientation(compound.getByte("connected")));
+		NBTTagCompound compound = packet.getNbtCompound();
+		setOrientation(EnumFacing.getFront(compound.getByte("orientation")));
+		setConnected(EnumFacing.getFront(compound.getByte("connected")));
 	}
 	
 	// Reading from / writing to NBT
@@ -243,8 +235,8 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
-		setOrientation(ForgeDirection.getOrientation(compound.getByte("orientation")));
-		setConnected(ForgeDirection.getOrientation(compound.getByte("connected")));
+		setOrientation(EnumFacing.getFront(compound.getByte("orientation")));
+		setConnected(EnumFacing.getFront(compound.getByte("connected")));
 	}
 	
 	@Override

@@ -27,7 +27,7 @@ public class ItemIdentifier {
 	public ItemStack createStack(int size) {
 		ItemStack stack = new ItemStack(item, size, damage);
 		if (data != null)
-			stack.stackTagCompound = (NBTTagCompound)data.copy();
+			stack.setTagCompound((NBTTagCompound)data.copy());
 		return stack;
 	}
 	
@@ -37,7 +37,7 @@ public class ItemIdentifier {
 	}
 	/** Returns if this item identifier matches the ItemStack. */
 	public boolean matches(ItemStack stack) {
-		return matches(stack.getItem(), StackUtils.getRealItemDamage(stack), stack.stackTagCompound);
+		return matches(stack.getItem(), StackUtils.getRealItemDamage(stack), stack.getTagCompound());
 	}
 	
 	@Override

@@ -28,10 +28,10 @@ public class PacketOpenGui extends AbstractPacket<PacketOpenGui> {
 	@Override
 	public void encode(PacketBuffer buffer) throws IOException {
 		buffer.writeInt(windowId);
-		buffer.writeStringToBuffer(name);
+		buffer.writeString(name);
 		buffer.writeByte(columns);
 		buffer.writeByte(rows);
-		buffer.writeStringToBuffer(title);
+		buffer.writeString(title);
 	}
 	
 	@Override

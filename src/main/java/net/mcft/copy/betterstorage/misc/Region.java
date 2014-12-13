@@ -3,8 +3,9 @@ package net.mcft.copy.betterstorage.misc;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
+@Deprecated
 public class Region {
-	
+	//TODO (1.8): Should be replaced by AxisAlignedBB and a helper class
 	public int minX, minY, minZ;
 	public int maxX, maxY, maxZ;
 	
@@ -14,13 +15,16 @@ public class Region {
 	
 	public int volume() { return width() * depth() * height(); }
 
+	@Deprecated
 	public Region(int minX, int minY, int minZ,
 	              int maxX, int maxY, int maxZ) {
 		set(minX, minY, minZ, maxX, maxY, maxZ);
 	}
+	
+	@Deprecated
 	public Region(TileEntity entity) {
-		this(entity.xCoord, entity.yCoord, entity.zCoord,
-		     entity.xCoord, entity.yCoord, entity.zCoord);
+		this(entity.getPos().getX(), entity.getPos().getY(), entity.getPos().getZ(),
+				entity.getPos().getX(), entity.getPos().getY(), entity.getPos().getZ());
 	}
 	
 	public void set(int minX, int minY, int minZ,
@@ -51,7 +55,7 @@ public class Region {
 		        (x <= maxX) && (y <= maxY) && (z <= maxZ));
 	}
 	public boolean contains(TileEntity entity) {
-		return contains(entity.xCoord, entity.yCoord, entity.zCoord);
+		return contains(entity.getPos().getX(), entity.getPos().getY(), entity.getPos().getZ());
 	}
 	
 	public void expandToContain(int x, int y, int z) {
@@ -63,7 +67,7 @@ public class Region {
 		maxZ = Math.max(maxZ, z);
 	}
 	public void expandToContain(TileEntity entity) {
-		expandToContain(entity.xCoord, entity.yCoord, entity.zCoord);
+		expandToContain(entity.getPos().getX(), entity.getPos().getY(), entity.getPos().getZ());
 	}
 	
 	public NBTTagCompound toCompound() {

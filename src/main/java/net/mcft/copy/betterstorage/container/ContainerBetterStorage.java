@@ -1,6 +1,5 @@
 package net.mcft.copy.betterstorage.container;
 
-import invtweaks.api.container.ChestContainer;
 import net.mcft.copy.betterstorage.client.gui.GuiBetterStorage;
 import net.mcft.copy.betterstorage.inventory.InventoryTileEntity;
 import net.mcft.copy.betterstorage.utils.StackUtils;
@@ -13,7 +12,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@ChestContainer(isLargeChest = true)
+//TODO (1.8): Inventory Tweaks API
+//@ChestContainer(isLargeChest = true)
 public class ContainerBetterStorage extends Container {
 	
 	private final int columns;
@@ -28,7 +28,7 @@ public class ContainerBetterStorage extends Container {
 	@SideOnly(Side.CLIENT)
 	public GuiBetterStorage updateGui;
 	
-	@ChestContainer.RowSizeCallback
+//	@ChestContainer.RowSizeCallback
 	public int getColumns() { return columns; }
 	public int getRows() { return rows; }
 	
@@ -41,7 +41,7 @@ public class ContainerBetterStorage extends Container {
 		
 		setupInventoryContainer();
 		setupInventoryPlayer();
-		inventory.openInventory();
+		inventory.openInventory(player);
 	}
 	public ContainerBetterStorage(EntityPlayer player, IInventory inventory, int columns, int rows) {
 		this(player, inventory, columns, rows, 14);
@@ -226,7 +226,7 @@ public class ContainerBetterStorage extends Container {
 	@Override
 	public void onContainerClosed(EntityPlayer player) {
 		super.onContainerClosed(player);
-		inventory.closeInventory();
+		inventory.closeInventory(player);
 	}
 	
 	@Override

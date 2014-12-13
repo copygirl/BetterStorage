@@ -6,25 +6,24 @@ import net.mcft.copy.betterstorage.api.stand.IArmorStandRenderHandler;
 import net.mcft.copy.betterstorage.client.model.ModelArmorStand;
 import net.mcft.copy.betterstorage.misc.Resources;
 import net.mcft.copy.betterstorage.tile.stand.TileEntityArmorStand;
-import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class TileEntityArmorStandRenderer extends TileEntitySpecialRenderer {
 	
 	private ClientArmorStandPlayer playerDummy = null;
-	private RenderArmor renderArmor = new RenderArmor(RenderManager.instance);
+	private RenderArmor renderArmor = new RenderArmor(Minecraft.getMinecraft().getRenderManager());
 	
 	private ModelArmorStand armorStandModel = new ModelArmorStand();
 	
-	public void renderTileEntityAt(TileEntityArmorStand armorStand, double x, double y, double z, float par8) {
+	public void renderTileEntityAt(TileEntityArmorStand armorStand, double x, double y, double z, float par8, int par9) {
 		
 		int rotation = armorStand.rotation * 360 / 16;
 		
@@ -45,13 +44,13 @@ public class TileEntityArmorStandRenderer extends TileEntitySpecialRenderer {
 		GL11.glPopMatrix();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		
-		if (armorStand.getWorldObj() == null) return;
+		if (armorStand.getWorld() == null) return;
 		
 		if (playerDummy == null)
-			playerDummy = new ClientArmorStandPlayer(armorStand.getWorldObj());
+			playerDummy = new ClientArmorStandPlayer(armorStand.getWorld());
 		
 		playerDummy.ticksExisted = armorStand.ticksExisted;
-		playerDummy.worldObj = armorStand.getWorldObj();
+		playerDummy.worldObj = armorStand.getWorld();
 		playerDummy.renderYawOffset = playerDummy.prevRenderYawOffset = rotation;
 		playerDummy.rotationYawHead = playerDummy.prevRotationYawHead = rotation;
 		
@@ -70,8 +69,8 @@ public class TileEntityArmorStandRenderer extends TileEntitySpecialRenderer {
 	}
 	
 	@Override
-	public void renderTileEntityAt(TileEntity entity, double x, double y, double z, float par8) {
-		renderTileEntityAt((TileEntityArmorStand)entity, x, y, z, par8);
+	public void renderTileEntityAt(TileEntity entity, double x, double y, double z, float par8, int par9) {
+		renderTileEntityAt((TileEntityArmorStand)entity, x, y, z, par8, par9);
 	}
 	
 }

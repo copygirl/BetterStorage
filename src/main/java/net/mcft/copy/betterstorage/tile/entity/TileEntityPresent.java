@@ -3,7 +3,6 @@ package net.mcft.copy.betterstorage.tile.entity;
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.content.BetterStorageTiles;
 import net.mcft.copy.betterstorage.item.tile.ItemCardboardBox;
-import net.mcft.copy.betterstorage.misc.SetBlockFlag;
 import net.mcft.copy.betterstorage.network.packet.PacketPresentOpen;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
@@ -78,7 +77,8 @@ public class TileEntityPresent extends TileEntityCardboardBox {
 				? compound.getString(TAG_NAMETAG) : null);
 		color = (((compound != null) && compound.hasKey("color"))
 				? compound.getInteger("color") : -1);
-		worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, colorInner, SetBlockFlag.SEND_TO_CLIENT);
+		//TODO (1.8): Meta? What's meta again?
+//		worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, colorInner, SetBlockFlag.SEND_TO_CLIENT);
 	}
 	
 	@Override
@@ -89,7 +89,7 @@ public class TileEntityPresent extends TileEntityCardboardBox {
 			
 			if (breakPause > 0) return false;
 			breakPause = 10 - breakProgress / 10;
-			if ((nameTag != null) && !player.getCommandSenderName().equalsIgnoreCase(nameTag)) {
+			if ((nameTag != null) && !player.getName().equalsIgnoreCase(nameTag)) {
 				breakPause = 40;
 				if (!worldObj.isRemote)
 					((EntityPlayerMP)player).addChatMessage(new ChatComponentText(
@@ -100,32 +100,34 @@ public class TileEntityPresent extends TileEntityCardboardBox {
 				destroyed = true;
 			if (worldObj.isRemote) return true;
 			
-			double x = xCoord + 0.5;
-			double y = yCoord + 0.5;
-			double z = zCoord + 0.5;
+			double x = getPos().getX() + 0.5;
+			double y = getPos().getY() + 0.5;
+			double z = getPos().getZ() + 0.5;
 			
 			String sound = Block.soundTypeCloth.getBreakSound();
 			worldObj.playSoundEffect(x, y, z, sound, 0.75F, 0.8F + breakProgress / 80.0F);
-			worldObj.playSoundEffect(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, sound, 1.0F, 0.4F + breakProgress / 160.0F);
+			//TODO (1.8): Maybe an utility function for that? Seen it quite a few times.
+//			worldObj.playSoundEffect(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, sound, 1.0F, 0.4F + breakProgress / 160.0F);
 			
 			BetterStorage.networkChannel.sendToAllAround(
-					new PacketPresentOpen(xCoord, yCoord, zCoord, destroyed),
+					new PacketPresentOpen(getPos(), destroyed),
 					worldObj, x, y, z, 64);
 			
 			if (!destroyed)
 				return true;
 			
 			if (BetterStorageTiles.cardboardBox != null) {
-				if (worldObj.setBlock(xCoord, yCoord, zCoord, BetterStorageTiles.cardboardBox)) {
-					TileEntityCardboardBox box = WorldUtils.get(worldObj, xCoord, yCoord, zCoord, TileEntityCardboardBox.class);
+				//TODO (1.8): I'm still not sure how that setBlockState thing is working, but setBlock is gone...
+				if (worldObj.setBlockState(getPos(), BetterStorageTiles.cardboardBox.getDefaultState())) {
+					TileEntityCardboardBox box = WorldUtils.get(worldObj, getPos(), TileEntityCardboardBox.class);
 					box.uses = ItemCardboardBox.getUses();
 					box.color = color;
 					System.arraycopy(contents, 0, box.contents, 0, contents.length);
 				} else for (ItemStack stack : contents)
-					WorldUtils.dropStackFromBlock(worldObj, xCoord, yCoord, zCoord, stack);
-			} else if (worldObj.setBlockToAir(xCoord, yCoord, zCoord))
+					WorldUtils.dropStackFromBlock(worldObj, getPos(), stack);
+			} else if (worldObj.setBlockToAir(getPos()))
 				for (ItemStack stack : contents)
-					WorldUtils.dropStackFromBlock(worldObj, xCoord, yCoord, zCoord, stack);
+					WorldUtils.dropStackFromBlock(worldObj, getPos(), stack);
 			return true;
 			
 		} else if ((holding.getItem() == Items.name_tag) &&
@@ -171,12 +173,12 @@ public class TileEntityPresent extends TileEntityCardboardBox {
 		compound.setBoolean(TAG_SKOJANZA_MODE, skojanzaMode);
 		if (nameTag != null)
 			compound.setString(TAG_NAMETAG, nameTag);
-		return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, compound);
+		return new S35PacketUpdateTileEntity(getPos(), 0, compound);
 	}
 	@Override
 	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
 		super.onDataPacket(net, packet);
-		NBTTagCompound compound = packet.func_148857_g();
+		NBTTagCompound compound = packet.getNbtCompound();
 		colorInner = compound.getByte(TAG_COLOR_INNER);
 		colorOuter = compound.getByte(TAG_COLOR_OUTER);
 		skojanzaMode = compound.getBoolean(TAG_SKOJANZA_MODE);

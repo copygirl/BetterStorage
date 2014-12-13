@@ -59,5 +59,16 @@ public class DyeRecipe implements IRecipe {
 		StackUtils.set(armor, newColor, "display", "color");
 		return armor;
 	}
-	
+
+	@Override
+	public ItemStack[] func_179532_b(InventoryCrafting p_179532_1_) {
+		//TODO (1.8): Copy-pasted from a random recipe, seems to be the same for every implementor. Forge intervention needed?
+		ItemStack[] aitemstack = new ItemStack[p_179532_1_.getSizeInventory()];
+
+		for (int i = 0; i < aitemstack.length; ++i) {
+			ItemStack itemstack = p_179532_1_.getStackInSlot(i);
+			aitemstack[i] = net.minecraftforge.common.ForgeHooks.getContainerItem(itemstack);
+		}
+		return aitemstack;
+	}
 }

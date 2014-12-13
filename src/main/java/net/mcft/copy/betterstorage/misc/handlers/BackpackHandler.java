@@ -1,6 +1,7 @@
 package net.mcft.copy.betterstorage.misc.handlers;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -41,13 +42,14 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Constants.NBT;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -68,7 +70,7 @@ public class BackpackHandler {
 	
 	/** Random items to be found in a backpack. There's also
 	    chance the backpack will contain some dungeon loot. */
-	private static final WeightedRandomChestContent[] randomBackpackItems = new WeightedRandomChestContent[]{
+	private static final List<WeightedRandomChestContent> randomBackpackItems = Arrays.asList(new WeightedRandomChestContent[]{
 		
 		makeWeightedContent(Items.stick, 8, 20, 100),
 		makeWeightedContent(Blocks.planks, 2, 10, 100),
@@ -102,7 +104,7 @@ public class BackpackHandler {
 		makeWeightedContent(Items.carrot, 1, 2, 8),
 		makeWeightedContent(Items.potato, 1, 2, 5),
 		makeWeightedContent(Items.fish, 1, 4, 5),
-		makeWeightedContent(Items.cooked_fished, 1, 2, 4),
+		makeWeightedContent(Items.cooked_fish, 1, 2, 4),
 		
 		makeWeightedContent(Items.coal, 3, 9, 20),
 		makeWeightedContent(Items.coal, 20, 32, 5),
@@ -112,7 +114,7 @@ public class BackpackHandler {
 		makeWeightedContent(Items.diamond, 1, 2, 1),
 		makeWeightedContent(Items.emerald, 1, 1, 1),
 		
-	};
+	});
 
 	private static WeightedRandomChestContent makeWeightedContent(Item item, int damage, int min, int max, int weight) {
 		return new WeightedRandomChestContent(item, damage, min, max, weight);
@@ -150,7 +152,7 @@ public class BackpackHandler {
 		if (event.isCanceled()) return;
 		// When player right clicks a block, attempt to place backpack.
 		if (event.action == Action.RIGHT_CLICK_BLOCK)
-			if (ItemBackpack.onPlaceBackpack(event.entityPlayer, event.x, event.y, event.z, event.face)) {
+			if (ItemBackpack.onPlaceBackpack(event.entityPlayer, event.pos, event.face)) {
 				event.useBlock = Result.DENY;
 				event.useItem = Result.DENY;
 			}
@@ -195,8 +197,8 @@ public class BackpackHandler {
 		if (entity.getClass().equals(EntityEnderman.class)) {
 			if ((BetterStorageTiles.enderBackpack != null) &&
 			    // Don't spawn friendly endermen in the end or end biome, would make them too easy to get.
-			    (world.provider.dimensionId != 1) &&
-			    (world.getBiomeGenForCoords((int)entity.posX, (int)entity.posZ) != BiomeGenBase.sky)) {
+			    (world.provider.getDimensionId() != 1) &&
+			    (world.getBiomeGenForCoords(entity.getPosition()) != BiomeGenBase.sky)) {
 				EntityFrienderman frienderman = new EntityFrienderman(world);
 				frienderman.setPositionAndRotation(entity.posX, entity.posY, entity.posZ, entity.rotationYaw, 0);
 				world.spawnEntityInWorld(frienderman);
@@ -351,7 +353,7 @@ public class BackpackHandler {
 			// Attempt to place the backpack as a block instead of dropping the items.
 			if (BetterStorage.globalConfig.getBoolean(GlobalConfig.dropBackpackOnDeath)) {
 				
-				ForgeDirection orientation = DirectionUtils.getOrientation(entity);
+				EnumFacing orientation = DirectionUtils.getOrientation(entity);
 				int recentlyHit = ReflectionUtils.get(EntityLivingBase.class, entity, "field_70718_bc", "recentlyHit");
 				boolean despawn = ((player == null) && (recentlyHit <= 0));
 				
@@ -367,14 +369,14 @@ public class BackpackHandler {
 					Iterator<BlockCoordinate> iter = coords.iterator();
 					while (iter.hasNext()) {
 						BlockCoordinate coord = iter.next();
-						if (ItemBackpack.placeBackpack(entity, player, backpack,
-						                               coord.x, coord.y, coord.z, 1,
-						                               orientation, despawn, true)) {
+						BlockPos pos = new BlockPos(coord.x, coord.y, coord.z);
+						if (ItemBackpack.placeBackpack(entity, player, backpack, pos, 1, orientation, despawn, true)) {
 							ItemBackpack.setBackpack(entity, null, null);
 							return;
 						}
-						boolean replacable = entity.worldObj.getBlock(coord.x, coord.y, coord.z)
-								.isReplaceable(entity.worldObj, coord.x, coord.y, coord.z);
+						
+						boolean replacable = entity.worldObj.getChunkFromBlockCoords(pos).getBlock(pos)
+								.isReplaceable(entity.worldObj, pos);
 						coord.y += (replacable ? -1 : 1);
 						coord.moved += (replacable ? 1 : 5);
 						if ((coord.y <= 0) || (coord.y > entity.worldObj.getHeight()) ||
@@ -395,10 +397,15 @@ public class BackpackHandler {
 		}
 		
 	}
+	
+	//TODO (1.8): Investigate if this could be done by the vanilla BlockPos
+	@Deprecated
 	private static class BlockCoordinate {
 		public int x, y, z;
 		public double distance;
 		public int moved = 0;
+		
+		@Deprecated
 		public BlockCoordinate(double ex, double ey, double ez, int x, int y, int z) {
 			this.x = (int)ex + x;
 			this.y = (int)ey + y;
@@ -408,6 +415,8 @@ public class BackpackHandler {
 			                     Math.pow(this.z + 0.5 - ez, 2));
 		}
 	}
+	
+	@Deprecated
 	private static Comparator<BlockCoordinate> blockDistanceComparator = new Comparator<BlockCoordinate>() {
 		@Override public int compare(BlockCoordinate o1, BlockCoordinate o2) {
 			if (o1.distance < o2.distance) return -1;

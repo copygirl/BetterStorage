@@ -17,11 +17,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MovingObjectPosition;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+//TODO (1.8): Is missing a few methods that shouldn't be abstract.
 public abstract class TileEntityLockable extends TileEntityConnectable
                                          implements ILockable, IHasAttachments {
 	
@@ -61,13 +62,13 @@ public abstract class TileEntityLockable extends TileEntityConnectable
 	}
 	
 	@Override
-	public void setOrientation(ForgeDirection orientation) {
+	public void setOrientation(EnumFacing orientation) {
 		super.setOrientation(orientation);
 		if (canHaveLock())
 			lockAttachment.setDirection(orientation);
 	}
 	@Override
-	public void setConnected(ForgeDirection connected) {
+	public void setConnected(EnumFacing connected) {
 		super.setConnected(connected);
 		if (canHaveLock())
 			setAttachmentPosition();
@@ -190,8 +191,9 @@ public abstract class TileEntityLockable extends TileEntityConnectable
 		this.powered = powered;
 		
 		Block block = getBlockType();
+		//TODO (1.8): Gah. No, I'll do that later.
 		// Schedule a block update to turn the redstone signal back off.
-		if (powered) worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, block, 10);
+		/*if (powered) worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, block, 10);
 		
 		// Notify nearby blocks
 		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, block);
@@ -216,7 +218,7 @@ public abstract class TileEntityLockable extends TileEntityConnectable
 			worldObj.notifyBlocksOfNeighborChange(xCoord - 1, yCoord, zCoord + 1, block);
 			worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord + 1, zCoord + 1, block);
 			worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord - 1, zCoord + 1, block);
-		}
+		}*/
 		
 	}
 	
@@ -237,7 +239,7 @@ public abstract class TileEntityLockable extends TileEntityConnectable
 	@Override
 	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
 		super.onDataPacket(net, packet);
-		NBTTagCompound compound = packet.func_148857_g();
+		NBTTagCompound compound = packet.getNbtCompound();
 		if (canHaveMaterial())
 			material = ContainerMaterial.get(compound.getString(ContainerMaterial.TAG_NAME));
 		if (canHaveLock()) {

@@ -3,6 +3,7 @@ package net.mcft.copy.betterstorage.tile.crate;
 import net.mcft.copy.betterstorage.misc.Region;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 
 /** Keeps track of the crates in a crate pile and its bounding box. */
 public class CratePileMap {
@@ -73,21 +74,24 @@ public class CratePileMap {
 	}
 	
 	/** Returns if the cuboid contains this position and all values are not set. */
+	@Deprecated
+	//TODO (1.8): No.
 	private boolean checkCuboid(int minX, int minY, int minZ,
 	                            int maxX, int maxY, int maxZ) {
 		for (int x = minX; x <= maxX; x++)
 			for (int y = minY; y <= maxY; y++)
-				for (int z = minZ; z <= maxZ; z++)
-					if (get(x, y, z)) return false;
+				for (int z = minZ; z <= maxZ; z++);
+//					if (get(x, y, z)) return false;
 		return true;
 	}
 	
-	public boolean get(int x, int y, int z) {
-		if (!region.contains(x, y, z)) return false;
-		return internalGet(x - mapRegion.minX, y - mapRegion.minY * 8, z - mapRegion.minZ);
+	public boolean get(BlockPos pos) {
+//		if (!region.contains(pos)) return false;
+//		return internalGet(x - mapRegion.minX, y - mapRegion.minY * 8, z - mapRegion.minZ);
+		return false;
 	}
-	public void set(int x, int y, int z, boolean value) {
-		if (region.contains(x, y, z)) {
+	public void set(BlockPos pos, boolean value) {
+		/*if (region.contains(pos)) {
 			internalSet(x - mapRegion.minX, y - mapRegion.minY * 8, z - mapRegion.minZ, value);
 			if (!value) {
 				int minX = region.minX, minY = region.minY, minZ = region.minZ;
@@ -108,14 +112,14 @@ public class CratePileMap {
 			if (!mapRegion.contains(x, y / 8, z))
 				resize();
 			internalSet(x - mapRegion.minX, y - mapRegion.minY * 8, z - mapRegion.minZ, value);
-		}
+		}*/
 	}
 	
 	public void add(TileEntity entity) {
-		set(entity.xCoord, entity.yCoord, entity.zCoord, true);
+		set(entity.getPos(), true);
 	}
 	public void remove(TileEntity entity) {
-		set(entity.xCoord, entity.yCoord, entity.zCoord, false);
+		set(entity.getPos(), false);
 	}
 	
 	/** Trims the bounding box to the actual size of the crate pile. <br>

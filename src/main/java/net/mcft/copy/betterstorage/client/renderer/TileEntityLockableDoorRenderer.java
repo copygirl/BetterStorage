@@ -10,8 +10,11 @@ import org.lwjgl.opengl.GL12;
 
 public class TileEntityLockableDoorRenderer extends TileEntitySpecialRenderer {
 
-	public void renderTileEntityAt(TileEntityLockableDoor arg0, double x, double y, double z, float partialTicks) {
+	public void renderTileEntityAt(TileEntityLockableDoor arg0, double x, double y, double z, float partialTicks, int arg5) {
 		
+		//TODO (1.8): Did you know that the GlStateManager can also pushMatrix()? It calls GL11.glPushMatrix();
+		//right: GlStateManager.pushMatrix();
+		//wrong:
 		GL11.glPushMatrix();
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -48,8 +51,8 @@ public class TileEntityLockableDoorRenderer extends TileEntitySpecialRenderer {
 	}
 
 	@Override
-	public void renderTileEntityAt(TileEntity arg0, double arg1, double arg2, double arg3, float arg4) {
-		renderTileEntityAt((TileEntityLockableDoor)arg0, arg1, arg2, arg3, arg4);
+	public void renderTileEntityAt(TileEntity arg0, double arg1, double arg2, double arg3, float arg4, int arg5) {
+		renderTileEntityAt((TileEntityLockableDoor)arg0, arg1, arg2, arg3, arg4, arg5);
 	}
 
 }

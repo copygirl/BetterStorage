@@ -7,12 +7,11 @@ import net.mcft.copy.betterstorage.tile.entity.TileEntityLocker;
 import net.mcft.copy.betterstorage.utils.DirectionUtils;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class TileEntityLockerRenderer extends TileEntitySpecialRenderer {
@@ -20,7 +19,7 @@ public class TileEntityLockerRenderer extends TileEntitySpecialRenderer {
 	private ModelLocker lockerModel = new ModelLocker();
 	private ModelLocker largeLockerModel = new ModelLargeLocker();
 	
-	public void renderTileEntityAt(TileEntityLocker locker, double x, double y, double z, float partialTicks) {
+	public void renderTileEntityAt(TileEntityLocker locker, double x, double y, double z, float partialTicks, int par9) {
 		
 		float scale = 1.0F / 16;
 		
@@ -68,8 +67,8 @@ public class TileEntityLockerRenderer extends TileEntitySpecialRenderer {
 	}
 	
 	@Override
-	public void renderTileEntityAt(TileEntity entity, double x, double y, double z, float par8) {
-		renderTileEntityAt((TileEntityLocker)entity, x, y, z, par8);
+	public void renderTileEntityAt(TileEntity entity, double x, double y, double z, float par8, int par9) {
+		renderTileEntityAt((TileEntityLocker)entity, x, y, z, par8, par9);
 	}
 	
 }

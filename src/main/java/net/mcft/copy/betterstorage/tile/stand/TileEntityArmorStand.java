@@ -126,7 +126,7 @@ public class TileEntityArmorStand extends TileEntityContainer implements IArmorS
 	}
 	@Override
 	public ItemStack onPickBlock(ItemStack block, MovingObjectPosition target) {
-		int slot = Math.max(0, Math.min(3, (int)((target.hitVec.yCoord - yCoord) * 2)));
+		int slot = Math.max(0, Math.min(3, (int)((target.hitVec.yCoord - getPos().getY()) * 2)));
 		EnumArmorStandRegion region = EnumArmorStandRegion.values()[slot];
 		
 		ItemStack item;
@@ -143,7 +143,7 @@ public class TileEntityArmorStand extends TileEntityContainer implements IArmorS
 		for (EnumArmorStandRegion region : EnumArmorStandRegion.values())
 			for (ArmorStandEquipHandler handler : BetterStorageArmorStand.getEquipHandlers(region))
 				if ((item = getItem(handler)) != null)
-					WorldUtils.dropStackFromBlock(worldObj, xCoord, yCoord, zCoord, item);
+					WorldUtils.dropStackFromBlock(worldObj, getPos(), item);
 		clearItems();
 	}
 	
@@ -162,11 +162,11 @@ public class TileEntityArmorStand extends TileEntityContainer implements IArmorS
 	public Packet getDescriptionPacket() {
 		NBTTagCompound compound = new NBTTagCompound();
 		write(compound);
-        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, compound);
+        return new S35PacketUpdateTileEntity(getPos(), 0, compound);
 	}
 	@Override
 	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
-		read(packet.func_148857_g());
+		read(packet.getNbtCompound());
 	}
 	
 	// Reading from / writing to NBT
@@ -208,7 +208,7 @@ public class TileEntityArmorStand extends TileEntityContainer implements IArmorS
 			NBTTagCompound items = (NBTTagCompound)itemsTag;
 			for (EnumArmorStandRegion region : EnumArmorStandRegion.values()) {
 				NBTTagCompound regionItems = items.getCompoundTag(region.toString());
-				for (String id : (Set<String>)regionItems.func_150296_c()) {
+				for (String id : (Set<String>)regionItems.getKeySet()) {
 					ItemStack item = ItemStack.loadItemStackFromNBT(regionItems.getCompoundTag(id));
 					ArmorStandEquipHandler handler = BetterStorageArmorStand.getEquipHandler(region, id);
 					setItem(handler, item);

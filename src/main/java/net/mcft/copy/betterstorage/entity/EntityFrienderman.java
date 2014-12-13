@@ -1,25 +1,6 @@
 package net.mcft.copy.betterstorage.entity;
 
-import java.util.IdentityHashMap;
-
-import net.mcft.copy.betterstorage.BetterStorage;
-import net.mcft.copy.betterstorage.content.BetterStorageItems;
-import net.mcft.copy.betterstorage.content.BetterStorageTiles;
-import net.mcft.copy.betterstorage.misc.EquipmentSlot;
-import net.mcft.copy.betterstorage.network.packet.PacketBackpackTeleport;
-import net.mcft.copy.betterstorage.tile.entity.TileEntityBackpack;
-import net.mcft.copy.betterstorage.utils.RandomUtils;
-import net.mcft.copy.betterstorage.utils.ReflectionUtils;
-import net.mcft.copy.betterstorage.utils.WorldUtils;
-import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityEnderman;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
-import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 
 // In case anyone reads this: Even though this class is called "Frienderman"
@@ -28,13 +9,14 @@ import net.minecraft.world.World;
 
 public class EntityFrienderman extends EntityEnderman {
 	
-	public static IdentityHashMap<Block, Boolean> friendermanCarriable = new IdentityHashMap<Block, Boolean>(1);
-	static { friendermanCarriable.put(Blocks.ender_chest, true); }
+	//TODO (1.8): Probably needs a complete rewrite.
+	/*public static IdentityHashMap<Block, Boolean> friendermanCarriable = new IdentityHashMap<Block, Boolean>(1);
+	static { friendermanCarriable.put(Blocks.ender_chest, true); }*/
 	
 	public EntityFrienderman(World world) {
 		super(world);
 	}
-	
+	/*
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
@@ -46,7 +28,7 @@ public class EntityFrienderman extends EntityEnderman {
 	
 	@Override
 	public void setScreaming(boolean screaming) {
-		/* Friendly endermen don't scream. */
+//		 Friendly endermen don't scream.
 	}
 	
 	@Override
@@ -142,5 +124,5 @@ public class EntityFrienderman extends EntityEnderman {
 					worldObj, px, py, pz, 256);
 			worldObj.playSoundEffect(px, py, pz, "mob.endermen.portal", 1.0F, 1.0F);
 		}
-	}
+	}*/
 }

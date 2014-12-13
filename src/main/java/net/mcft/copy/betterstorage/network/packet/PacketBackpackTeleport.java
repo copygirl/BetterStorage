@@ -6,6 +6,7 @@ import net.mcft.copy.betterstorage.network.AbstractPacket;
 import net.mcft.copy.betterstorage.utils.RandomUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.EnumParticleTypes;
 
 /** Spawns the particles caused from ender backpacks being teleported. */
 public class PacketBackpackTeleport extends AbstractPacket<PacketBackpackTeleport> {
@@ -55,7 +56,7 @@ public class PacketBackpackTeleport extends AbstractPacket<PacketBackpackTelepor
 			double pX = sourceX + (targetX - sourceX) * a + RandomUtils.getDouble(0.3, 0.7);
 			double pY = sourceY + (targetY - sourceY) * a + RandomUtils.getDouble(-0.5, 0.0) + a / 2;
 			double pZ = sourceZ + (targetZ - sourceZ) * a + RandomUtils.getDouble(0.3, 0.7);
-			player.worldObj.spawnParticle("portal", pX, pY, pZ, vX, vY, vZ);
+			player.worldObj.spawnParticle(EnumParticleTypes.PORTAL, pX, pY, pZ, vX, vY, vZ);
 		}
 	}
 	

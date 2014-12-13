@@ -51,7 +51,7 @@ public class ChannelHandler extends SimpleNetworkWrapper {
 	}
 	
 	public void sendToAllAround(IMessage message, World world, double x, double y, double z, double distance) {
-		sendToAllAround(message, new NetworkRegistry.TargetPoint(world.provider.dimensionId, x, y, z, distance));
+		sendToAllAround(message, new NetworkRegistry.TargetPoint(world.provider.getDimensionId(), x, y, z, distance));
 	}
 	
 	public void sendToAllAround(IMessage message, World world, double x, double y, double z,
@@ -68,7 +68,8 @@ public class ChannelHandler extends SimpleNetworkWrapper {
 	
 	/** Sends a packet to everyone tracking an entity. */
 	public void sendToAllTracking(IMessage message, Entity entity) {
-		((WorldServer)entity.worldObj).getEntityTracker().func_151247_a(entity, getPacketFrom(message));
+		//TODO (1.8): Not sure if func_151248_b is the proper replacement for func_151247_a.
+		((WorldServer)entity.worldObj).getEntityTracker().func_151248_b(entity, getPacketFrom(message));
 	}
 	
 	/** Sends a packet to everyone tracking an entity,

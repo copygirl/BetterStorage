@@ -136,7 +136,7 @@ public class VanillaStationCrafting extends StationCrafting {
 	}
 	
 	public static VanillaStationCrafting findVanillaRecipe(InventoryCraftingStation inv) {
-		World world = ((inv.entity != null) ? inv.entity.getWorldObj() : WorldUtils.getLocalWorld());
+		World world = ((inv.entity != null) ? inv.entity.getWorld() : WorldUtils.getLocalWorld());
 		InventoryCrafting crafting = new InventoryCrafting(null, 3, 3);
 		ReflectionUtils.set(InventoryCrafting.class, crafting, "field_70466_a", "stackList", inv.crafting);
 		IRecipe recipe = findRecipe(crafting, world);

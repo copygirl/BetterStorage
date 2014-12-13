@@ -9,11 +9,10 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
-
-import org.lwjgl.opengl.GL11;
-
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class GuiBetterStorage extends GuiContainer {
@@ -32,8 +31,8 @@ public class GuiBetterStorage extends GuiContainer {
 		
 		this.container = container;
 		IInventory inv = container.inventory;
-		title = (inv.hasCustomInventoryName() ? inv.getInventoryName()
-		                                      : StatCollector.translateToLocal(inv.getInventoryName()));
+		title = (inv.hasCustomName() ? inv.getName()
+		                                      : StatCollector.translateToLocal(inv.getName()));
 		columns = container.getColumns();
 		rows = container.getRows();
 		

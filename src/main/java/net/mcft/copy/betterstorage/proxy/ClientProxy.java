@@ -4,9 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.mcft.copy.betterstorage.addon.Addon;
-import net.mcft.copy.betterstorage.api.stand.ArmorStandEquipHandler;
 import net.mcft.copy.betterstorage.api.stand.BetterStorageArmorStand;
-import net.mcft.copy.betterstorage.api.stand.EnumArmorStandRegion;
 import net.mcft.copy.betterstorage.attachment.Attachment;
 import net.mcft.copy.betterstorage.attachment.Attachments;
 import net.mcft.copy.betterstorage.attachment.IHasAttachments;
@@ -23,7 +21,6 @@ import net.mcft.copy.betterstorage.client.renderer.TileEntityLockableDoorRendere
 import net.mcft.copy.betterstorage.client.renderer.TileEntityLockerRenderer;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityPresentRenderer;
 import net.mcft.copy.betterstorage.client.renderer.TileEntityReinforcedChestRenderer;
-import net.mcft.copy.betterstorage.client.renderer.TileLockableDoorRenderingHandler;
 import net.mcft.copy.betterstorage.content.BetterStorageItems;
 import net.mcft.copy.betterstorage.content.BetterStorageTiles;
 import net.mcft.copy.betterstorage.entity.EntityCluckington;
@@ -37,26 +34,21 @@ import net.mcft.copy.betterstorage.tile.entity.TileEntityLocker;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityPresent;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityReinforcedChest;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityReinforcedLocker;
-import net.mcft.copy.betterstorage.tile.stand.TileArmorStand;
 import net.mcft.copy.betterstorage.tile.stand.TileEntityArmorStand;
 import net.mcft.copy.betterstorage.tile.stand.VanillaArmorStandRenderHandler;
-import net.mcft.copy.betterstorage.utils.ReflectionUtils;
 import net.mcft.copy.betterstorage.utils.RenderUtils;
-import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderGlobal;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderChicken;
-import net.minecraft.client.renderer.entity.RendererLivingEntity;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
@@ -64,14 +56,12 @@ import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
-
-import org.lwjgl.opengl.GL11;
-
-import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy {
@@ -115,8 +105,9 @@ public class ClientProxy extends CommonProxy {
 		registerItemRenderer(BetterStorageTiles.cardboardBox, new ItemRendererCardboardBox(BetterStorageTiles.cardboardBox));
 		registerItemRenderer(BetterStorageTiles.present, new ItemRendererContainer(TileEntityPresent.class));
 		
-		RenderingRegistry.registerEntityRenderingHandler(EntityFrienderman.class, new RenderFrienderman());
-		RenderingRegistry.registerEntityRenderingHandler(EntityCluckington.class, new RenderChicken(new ModelCluckington(), 0.4F));
+		RenderManager manager = Minecraft.getMinecraft().getRenderManager();
+		RenderingRegistry.registerEntityRenderingHandler(EntityFrienderman.class, new RenderFrienderman(manager));
+		RenderingRegistry.registerEntityRenderingHandler(EntityCluckington.class, new RenderChicken(manager, new ModelCluckington(), 0.4F));
 		
 		reinforcedChestRenderId = registerTileEntityRenderer(TileEntityReinforcedChest.class, new TileEntityReinforcedChestRenderer());
 		lockerRenderId = registerTileEntityRenderer(TileEntityLocker.class, new TileEntityLockerRenderer());
@@ -125,7 +116,7 @@ public class ClientProxy extends CommonProxy {
 		reinforcedLockerRenderId = registerTileEntityRenderer(TileEntityReinforcedLocker.class, new TileEntityLockerRenderer());
 		lockableDoorRenderId = registerTileEntityRenderer(TileEntityLockableDoor.class, new TileEntityLockableDoorRenderer());
 		presentRenderId = registerTileEntityRenderer(TileEntityPresent.class, new TileEntityPresentRenderer());
-		RenderingRegistry.registerBlockHandler(new TileLockableDoorRenderingHandler());
+//		RenderingRegistry.registerBlockHandler(new TileLockableDoorRenderingHandler());
 		Addon.registerRenderersAll();
 		
 	}
@@ -140,14 +131,16 @@ public class ClientProxy extends CommonProxy {
 			MinecraftForgeClient.registerItemRenderer(item, renderer);
 	}
 	
+	@Deprecated
 	public static int registerTileEntityRenderer(Class<? extends TileEntity> tileEntityClass, TileEntitySpecialRenderer renderer,
 	                                             boolean render3dInInventory, float rotation, float scale, float yOffset) {
-		ClientRegistry.bindTileEntitySpecialRenderer(tileEntityClass, renderer);
+		/*ClientRegistry.bindTileEntitySpecialRenderer(tileEntityClass, renderer);
 		BetterStorageRenderingHandler renderingHandler =
 			new BetterStorageRenderingHandler(tileEntityClass, renderer, render3dInInventory, rotation, scale, yOffset);
 		RenderingRegistry.registerBlockHandler(renderingHandler);
 		renderingHandlers.put(tileEntityClass, renderingHandler);
-		return renderingHandler.getRenderId();
+		return renderingHandler.getRenderId();*/
+		return 0;
 	}
 	public static int registerTileEntityRenderer(Class<? extends TileEntity> tileEntityClass, TileEntitySpecialRenderer renderer) {
 		return registerTileEntityRenderer(tileEntityClass, renderer, true, 90, 1, 0);
@@ -156,23 +149,22 @@ public class ClientProxy extends CommonProxy {
 	@SubscribeEvent
 	public void drawBlockHighlight(DrawBlockHighlightEvent event) {
 		
-		EntityPlayer player = event.player;
+		//TODO (1.8): Probably needs some severe changes.
+		/*EntityPlayer player = event.player;
 		World world = player.worldObj;
 		MovingObjectPosition target = WorldUtils.rayTrace(player, event.partialTicks);
 		
 		if ((target == null) || (target.typeOfHit != MovingObjectType.BLOCK)) return;
-		int x = target.blockX;
-		int y = target.blockY;
-		int z = target.blockZ;
+		BlockPos pos = target.func_178782_a();
 		
 		AxisAlignedBB box = null;
-		Block block = world.getBlock(x, y, z);
-		TileEntity tileEntity = world.getTileEntity(x, y, z);
+		Block block = world.getChunkFromBlockCoords(pos).getBlock(pos);
+		TileEntity tileEntity = world.getTileEntity(pos);
 		
 		if (block instanceof TileArmorStand)
-			box = getArmorStandHighlightBox(player, world, x, y, z, target.hitVec);
+			box = getArmorStandHighlightBox(player, world, pos, target.hitVec);
 		else if (block == Blocks.iron_door)
-			box = getIronDoorHightlightBox(player, world, x, y, z, target.hitVec, block);
+			box = getIronDoorHightlightBox(player, world, pos, target.hitVec, block);
 		else if (tileEntity instanceof IHasAttachments)
 			box = getAttachmentPointsHighlightBox(player, tileEntity, target);
 		
@@ -196,13 +188,13 @@ public class ClientProxy extends CommonProxy {
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		GL11.glDisable(GL11.GL_BLEND);
 		
-		event.setCanceled(true);
+		event.setCanceled(true);*/
 		
 	}
 
-	private AxisAlignedBB getArmorStandHighlightBox(EntityPlayer player, World world, int x, int y, int z, Vec3 hitVec) {
+	private AxisAlignedBB getArmorStandHighlightBox(EntityPlayer player, World world, BlockPos pos, Vec3 hitVec) {
 		
-		int metadata = world.getBlockMetadata(x, y, z);
+		/*int metadata = world.getBlockMetadata(x, y, z);
 		if (metadata > 0) y -= 1;
 		
 		TileEntityArmorStand armorStand = WorldUtils.get(world, x, y, z, TileEntityArmorStand.class);
@@ -238,7 +230,8 @@ public class ClientProxy extends CommonProxy {
 		}
 		
 		return AxisAlignedBB.getBoundingBox(minX, y, minZ, maxX, y + 2, maxZ);
-		
+		*/
+		return null;
 	}
 	
 	private AxisAlignedBB getAttachmentPointsHighlightBox(EntityPlayer player, TileEntity tileEntity,
@@ -260,9 +253,10 @@ public class ClientProxy extends CommonProxy {
 			int color = backpackType.getColor(backpack);
 			ModelBackpackArmor model = (ModelBackpackArmor)backpackType.getArmorModel(player, backpack, 0);
 			
-			model.onGround = ReflectionUtils.invoke(
+			//TODO (1.8): The reflection won't work anyways :P
+			/*model.onGround = ReflectionUtils.invoke(
 					RendererLivingEntity.class, event.renderer, "func_77040_d", "renderSwingProgress",
-					EntityLivingBase.class, float.class, player, partial);
+					EntityLivingBase.class, float.class, player, partial);*/
 			model.setLivingAnimations(player, 0, 0, partial);
 			
 			RenderUtils.bindTexture(new ResourceLocation(backpackType.getArmorTexture(backpack, player, 0, null)));

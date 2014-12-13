@@ -3,10 +3,6 @@ package net.mcft.copy.betterstorage.addon;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.mcft.copy.betterstorage.addon.armourersworkshop.AWAddon;
-import net.mcft.copy.betterstorage.addon.nei.NEIAddon;
-import net.mcft.copy.betterstorage.addon.thaumcraft.ThaumcraftAddon;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -15,9 +11,9 @@ public abstract class Addon {
 	private static final List<Addon> addons = new ArrayList<Addon>();
 	
 	public static void initialize() {
-		if (Loader.isModLoaded("Thaumcraft")) new ThaumcraftAddon();
-		if (Loader.isModLoaded("NotEnoughItems")) new NEIAddon();
-		if (Loader.isModLoaded("armourersWorkshop")) new AWAddon();
+//		if (Loader.isModLoaded("Thaumcraft")) new ThaumcraftAddon();
+//		if (Loader.isModLoaded("NotEnoughItems")) new NEIAddon();
+//		if (Loader.isModLoaded("armourersWorkshop")) new AWAddon();
 	}
 	
 	public static void setupConfigsAll() {

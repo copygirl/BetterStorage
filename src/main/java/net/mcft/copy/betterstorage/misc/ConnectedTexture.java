@@ -1,16 +1,10 @@
 package net.mcft.copy.betterstorage.misc;
 
-import java.util.HashMap;
-import java.util.Map;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.common.util.ForgeDirection;
-
-ConnectedTexture {
+//TODO (1.8): IIcons? What's that?
+public class ConnectedTexture {
 	
-	private static final String[] iconNames = {
+	/*private static final String[] iconNames = {
 		"all", "none",
 		"t", "b", "l", "r",
 		"tl", "tr", "bl", "br",
@@ -54,5 +48,5 @@ ConnectedTexture {
 	}
 	
 	public abstract boolean canConnect(IBlockAccess world, int x, int y, int z, ForgeDirection side, ForgeDirection connected);
-	
+	*/
 }

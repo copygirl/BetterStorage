@@ -38,11 +38,12 @@ repositories {
 }
 
 dependencies {
-    compile name: "InventoryTweaks"   , group: "inventorytweaks", version: invtweaks_version, classifier: "api"
-    compile name: "Armourers-Workshop", group: "riskyken.armourersWorkshop", version: aw_version, classifier: "api"
-    compile name: "NotEnoughItems"    , group: "codechicken", version: nei_version, classifier: "dev"
-    compile name: "Thaumcraft"        , version: tc_version, classifier: "api", ext: "zip"
-    compile name: "Botania"           , group: "vazkii.botania", version: botania_version, classifier: "deobf"
+    //Temporarily disabled due to 1.8
+    //compile name: "InventoryTweaks"   , group: "inventorytweaks", version: invtweaks_version, classifier: "api"
+    //compile name: "Armourers-Workshop", group: "riskyken.armourersWorkshop", version: aw_version, classifier: "api"
+    //compile name: "NotEnoughItems"    , group: "codechicken", version: nei_version, classifier: "dev"
+    //compile name: "Thaumcraft"        , version: tc_version, classifier: "api", ext: "zip"
+    //compile name: "Botania"           , group: "vazkii.botania", version: botania_version, classifier: "deobf"
 }
 
 processResources {

@@ -17,7 +17,7 @@ public abstract class RecipeInputBase implements IRecipeInput {
 
 		Item item = input.getItem();
 		ItemStack containerItem = item.getContainerItem(input.copy());
-		//FIXME investigate if this is needed anymore
+		//TODO (1.8): investigate if this is needed anymore
 //		boolean doesLeaveCrafting = item.doesContainerItemLeaveCraftingGrid(input);
 		containerInfo.set(containerItem, true);
 		

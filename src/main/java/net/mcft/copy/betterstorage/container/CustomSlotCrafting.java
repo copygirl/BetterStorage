@@ -2,13 +2,14 @@ package net.mcft.copy.betterstorage.container;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
 
 public class CustomSlotCrafting extends SlotCrafting {
 
 	public CustomSlotCrafting(EntityPlayer par1EntityPlayer,
-			IInventory par2iInventory, IInventory par3iInventory, int par4,
+			InventoryCrafting par2iInventory, IInventory par3iInventory, int par4,
 			int par5, int par6) {
 		super(par1EntityPlayer, par2iInventory, par3iInventory, par4, par5, par6);
 	}

@@ -1,27 +1,19 @@
 package net.mcft.copy.betterstorage.client.renderer;
 
-import net.mcft.copy.betterstorage.misc.EquipmentSlot;
-import net.mcft.copy.betterstorage.utils.RenderUtils;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.client.renderer.entity.RenderEnderman;
-import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.entity.monster.EntityEnderman;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemArmor;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.client.ForgeHooksClient;
-
-import org.lwjgl.opengl.GL11;
-
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class RenderFrienderman extends RenderEnderman {
 	
-	@Override
+	public RenderFrienderman(RenderManager manager) {
+		super(manager);
+	}
+
+	//TODO (1.8): Find a proper replacement. Not sure what this is doing in the first place.
+	/*@Override
 	protected int shouldRenderPass(EntityEnderman entity, int slot, float partialTicks) {
 		
 		if (slot == 0) {
@@ -57,6 +49,6 @@ public class RenderFrienderman extends RenderEnderman {
 		
 		return (stack.isItemEnchanted() ? 15 : 1);
 		
-	}
+	}*/
 	
 }

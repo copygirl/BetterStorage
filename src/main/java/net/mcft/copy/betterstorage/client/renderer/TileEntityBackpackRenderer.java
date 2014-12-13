@@ -10,21 +10,20 @@ import net.mcft.copy.betterstorage.utils.RenderUtils;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
 @SideOnly(Side.CLIENT)
 public class TileEntityBackpackRenderer extends TileEntitySpecialRenderer {
 	
-	public void renderTileEntityAt(TileEntityBackpack backpack, double x, double y, double z, float partialTicks) {
+	public void renderTileEntityAt(TileEntityBackpack backpack, double x, double y, double z, float partialTicks, int par9) {
 		
-		if ((backpack.getWorldObj() == null) && (backpack.blockType == null)) return;
+		if ((backpack.getWorld() == null) && (backpack.getBlockType() == null)) return;
 		ItemBackpack item = ((TileBackpack)backpack.getBlockType()).getItemType();
 		ItemStack stack = ((backpack.stack != null) ? backpack.stack : new ItemStack(item));
 		ModelBackpack backpackModel = item.getModel();
@@ -35,7 +34,7 @@ public class TileEntityBackpackRenderer extends TileEntitySpecialRenderer {
 		GL11.glScalef(1.0F, -1.0F, -1.0F);
 		GL11.glTranslated(0.5, 0.5, 0.5);
 		
-		ForgeDirection orientation = ForgeDirection.getOrientation(backpack.getBlockMetadata());
+		EnumFacing orientation = EnumFacing.getFront(backpack.getBlockMetadata());
 		int rotation = DirectionUtils.getRotation(orientation);
 		GL11.glRotatef(rotation, 0.0F, 1.0F, 0.0F);
 		
@@ -57,7 +56,7 @@ public class TileEntityBackpackRenderer extends TileEntitySpecialRenderer {
 			float f9 = (backpack.ticksExisted + partialTicks) / 3;
 
 			RenderUtils.bindTexture(Resources.enchantedEffect);
-
+			//TODO (1.8): Use the GLStateManager. It's here, so we have to use it. Greetings by LexManos.
 			GL11.glEnable(GL11.GL_BLEND);
 			GL11.glColor4f(0.5F, 0.5F, 0.5F, 1.0F);
 			GL11.glDepthMask(false);
@@ -96,8 +95,8 @@ public class TileEntityBackpackRenderer extends TileEntitySpecialRenderer {
 	}
 	
 	@Override
-	public void renderTileEntityAt(TileEntity entity, double x, double y, double z, float par8) {
-		renderTileEntityAt((TileEntityBackpack)entity, x, y, z, par8);
+	public void renderTileEntityAt(TileEntity entity, double x, double y, double z, float par8, int par9) {
+		renderTileEntityAt((TileEntityBackpack)entity, x, y, z, par8, par9);
 	}
 	
 }

@@ -10,7 +10,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class RenderArmor extends RenderPlayer {
 	
 	public RenderArmor(RenderManager renderManager) {
-		setRenderManager(renderManager);
+		super(renderManager);
 	}
 	
 	@Override

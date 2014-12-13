@@ -1,11 +1,10 @@
 package net.mcft.copy.betterstorage.container;
 
-import invtweaks.api.container.InventoryContainer;
 import net.mcft.copy.betterstorage.inventory.InventoryKeyring;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 
-@InventoryContainer
+//@InventoryContainer
 public class ContainerKeyring extends ContainerBetterStorage {
 	
 	private final int protectedIndex;

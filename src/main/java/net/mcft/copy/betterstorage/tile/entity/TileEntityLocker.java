@@ -11,14 +11,15 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TileEntityLocker extends TileEntityLockable {
 	
-	private static final ForgeDirection[] neighbors = { ForgeDirection.DOWN, ForgeDirection.UP };
+	private static final EnumFacing[] neighbors = { EnumFacing.DOWN, EnumFacing.UP };
 	
 	public boolean mirror = false;
 	
@@ -41,7 +42,7 @@ public class TileEntityLocker extends TileEntityLockable {
 	public void setAttachmentPosition() {  }
 	
 	@Override
-	public ForgeDirection[] getPossibleNeighbors() { return neighbors; }
+	public EnumFacing[] getPossibleNeighbors() { return neighbors; }
 	@Override
 	protected String getConnectableName() { return Constants.containerLocker; }
 	
@@ -79,7 +80,7 @@ public class TileEntityLocker extends TileEntityLockable {
 	@Override
 	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
 		super.onDataPacket(net, packet);
-		NBTTagCompound compound = packet.func_148857_g();
+		NBTTagCompound compound = packet.getNbtCompound();
 		mirror = compound.getBoolean("mirror");
 		setAttachmentPosition();
 	}
@@ -96,6 +97,36 @@ public class TileEntityLocker extends TileEntityLockable {
 	public void writeToNBT(NBTTagCompound compound) {
 		super.writeToNBT(compound);
 		compound.setBoolean("mirror", mirror);
+	}
+
+	@Override
+	public int getField(int id) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void setField(int id, int value) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int getFieldCount() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void clear() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public IChatComponent getDisplayName() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

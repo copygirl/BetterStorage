@@ -28,7 +28,6 @@ import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -42,11 +41,12 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.server.S2FPacketSetSlot;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.common.util.EnumHelper;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -370,7 +370,7 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 	
 	/** Places an equipped backpack when the player right clicks
 	 *  on the ground while sneaking and holding nothing. */
-	public static boolean onPlaceBackpack(EntityPlayer player, int x, int y, int z, int side) {
+	public static boolean onPlaceBackpack(EntityPlayer player, BlockPos pos, EnumFacing face) {
 		
 		if (player.getCurrentEquippedItem() != null || !player.isSneaking()) return false;
 		ItemStack backpack = ItemBackpack.getBackpack(player);
@@ -379,7 +379,7 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 		boolean success = false;
 		if (!ItemBackpack.isBackpackOpen(player)) {
 			// Try to place the backpack as if it was being held and used by the player.
-			success = backpack.getItem().onItemUse(backpack, player, player.worldObj, x, y, z, side, 0, 0, 0);
+			success = backpack.getItem().onItemUse(backpack, player, player.worldObj, pos, face, 0, 0, 0);
 			if (backpack.stackSize <= 0) {
 				ItemBackpack.setBackpack(player, null, null);
 				backpack = null;
@@ -410,8 +410,8 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 	 * @param deathDrop True if the backpack is dropped on death.
 	 *                  Will not check for block solidity or entities.
 	 * @return If the backpack was placed successfully. */
-	public static boolean placeBackpack(EntityLivingBase carrier, EntityPlayer player, ItemStack backpack,
-	                                    int x, int y, int z, int side, ForgeDirection orientation,
+	public static boolean placeBackpack(EntityLivingBase carrier, EntityPlayer player, ItemStack backpack, 
+										BlockPos pos, int side, EnumFacing orientation,
 	                                    boolean despawn, boolean deathDrop) {
 		
 		if (backpack.stackSize == 0) return false;

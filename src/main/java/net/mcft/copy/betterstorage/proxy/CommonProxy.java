@@ -3,48 +3,36 @@ package net.mcft.copy.betterstorage.proxy;
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.api.stand.BetterStorageArmorStand;
 import net.mcft.copy.betterstorage.api.stand.EnumArmorStandRegion;
-import net.mcft.copy.betterstorage.attachment.EnumAttachmentInteraction;
-import net.mcft.copy.betterstorage.attachment.IHasAttachments;
 import net.mcft.copy.betterstorage.config.GlobalConfig;
 import net.mcft.copy.betterstorage.content.BetterStorageItems;
-import net.mcft.copy.betterstorage.content.BetterStorageTiles;
 import net.mcft.copy.betterstorage.entity.EntityCluckington;
-import net.mcft.copy.betterstorage.item.IDyeableItem;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.item.ItemBucketSlime;
 import net.mcft.copy.betterstorage.item.cardboard.ICardboardItem;
 import net.mcft.copy.betterstorage.item.cardboard.ItemCardboardSheet;
 import net.mcft.copy.betterstorage.misc.ChristmasEventHandler;
 import net.mcft.copy.betterstorage.misc.EquipmentSlot;
-import net.mcft.copy.betterstorage.misc.SetBlockFlag;
 import net.mcft.copy.betterstorage.misc.handlers.BackpackHandler;
 import net.mcft.copy.betterstorage.misc.handlers.CraftingHandler;
 import net.mcft.copy.betterstorage.tile.crate.CratePileCollection;
-import net.mcft.copy.betterstorage.tile.entity.TileEntityLockableDoor;
 import net.mcft.copy.betterstorage.tile.stand.VanillaArmorStandEquipHandler;
-import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.entity.player.EntityInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import net.minecraftforge.event.world.WorldEvent.Unload;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
@@ -91,7 +79,8 @@ public class CommonProxy {
 	@SubscribeEvent
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		
-		World world = event.entity.worldObj;
+		//TODO (1.8): More severe changes.
+		/*World world = event.entity.worldObj;
 		int x = event.x;
 		int y = event.y;
 		int z = event.z;
@@ -146,6 +135,7 @@ public class CommonProxy {
 			MovingObjectPosition target = WorldUtils.rayTrace(player, 1F);		
 			if(target != null && getIronDoorHightlightBox(player, world, x, y, z, target.hitVec, block) != null) {
 				
+				//TODO (1.8): Metadata? What's that?
 				int meta = world.getBlockMetadata(x, y, z);
 				boolean isMirrored;
 				if(meta >= 8) {
@@ -181,11 +171,12 @@ public class CommonProxy {
 			event.setCanceled(true);
 			preventSlimeBucketUse = false;
 		}
-		
+		*/
 	}
 	
 	protected AxisAlignedBB getIronDoorHightlightBox(EntityPlayer player, World world, int x, int y, int z, Vec3 hitVec, Block block) {
-		if(!StackUtils.isLock(player.getCurrentEquippedItem())) return null;
+		//TODO (1.8): This was really ugly in the first place, might have a better method now.
+		/*if(!StackUtils.isLock(player.getCurrentEquippedItem())) return null;
 		
 		int meta = world.getBlockMetadata(x, y, z);
 		boolean isMirrored;
@@ -221,7 +212,8 @@ public class CommonProxy {
 			break;
 		}
 		
-		return box.isVecInside(hitVec) ? box : null;
+		return box.isVecInside(hitVec) ? box : null;*/
+		return null;
 	}
 	
 	@SubscribeEvent
