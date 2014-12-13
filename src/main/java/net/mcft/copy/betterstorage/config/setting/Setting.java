@@ -7,7 +7,7 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.config.ConfigGuiType;
 import net.minecraftforge.fml.client.config.DummyConfigElement;
 
-public abstract class Setting<T> extends DummyConfigElement<T> {
+public abstract class Setting<T> extends DummyConfigElement {
 	
 	/** The config object for this setting. */
 	public final Config config;
@@ -120,8 +120,8 @@ public abstract class Setting<T> extends DummyConfigElement<T> {
 	}
 
 	@Override
-	public void set(T value) {
-		setValue(value);
+	public void set(Object value) {
+		setValue((T) value);
 		validate();
 		save(config.forgeConfig);
 		config.forgeConfig.save();

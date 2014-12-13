@@ -50,20 +50,20 @@ public class InventoryStacks extends InventoryBetterStorage {
 	public boolean isUseableByPlayer(EntityPlayer player) { return false; }
 	@Override
 	public void markDirty() {  }
-	@Override
-	public void openInventory() {  }
-	@Override
-	public void closeInventory() {  }
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof InventoryStacks)) return false;
 		InventoryStacks inv = (InventoryStacks)obj;
-		if ((getInventoryName() != inv.getInventoryName()) ||
+		if ((getName() != inv.getName()) ||
 		    (allContents.length != inv.allContents.length)) return false;
 		for (int i = 0; i < allContents.length; i++)
 			if (allContents[i] != inv.allContents[i]) return false;
 		return true;
 	}
 	
+	@Override
+	public void clear() {
+		
+	}
 }

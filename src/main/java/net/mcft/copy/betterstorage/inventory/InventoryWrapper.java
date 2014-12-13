@@ -3,6 +3,7 @@ package net.mcft.copy.betterstorage.inventory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IChatComponent;
 
 public class InventoryWrapper implements IInventory {
 	
@@ -23,9 +24,9 @@ public class InventoryWrapper implements IInventory {
 	}
 	
 	@Override
-	public String getInventoryName() { return (overwriteName ? title : base.getInventoryName()); }
+	public String getName() { return (overwriteName ? title : base.getName()); }
 	@Override
-	public boolean hasCustomInventoryName() { return (overwriteName ? localized : base.hasCustomInventoryName()); }
+	public boolean hasCustomName() { return (overwriteName ? localized : base.hasCustomName()); }
 	
 	@Override
 	public int getSizeInventory() { return base.getSizeInventory(); }
@@ -48,9 +49,20 @@ public class InventoryWrapper implements IInventory {
 	@Override
 	public void markDirty() { base.markDirty(); }
 	@Override
-	public void openInventory() { base.openInventory(); }
+	public void openInventory(EntityPlayer player) { base.openInventory(player); }
 	@Override
-	public void closeInventory() { base.closeInventory(); }
+	public void closeInventory(EntityPlayer player) { base.closeInventory(player); }
+	
+	@Override
+	public IChatComponent getDisplayName() { return base.getDisplayName(); }
+	@Override
+	public int getField(int id) { return base.getField(id); }
+	@Override
+	public void setField(int id, int value) { base.setField(id, value); }
+	@Override
+	public int getFieldCount() { return base.getFieldCount(); }
+	@Override
+	public void clear() { base.clear(); }
 	
 	@Override
 	public boolean equals(Object obj) {

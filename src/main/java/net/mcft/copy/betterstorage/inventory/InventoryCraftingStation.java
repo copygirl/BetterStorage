@@ -123,7 +123,7 @@ public class InventoryCraftingStation extends InventoryBetterStorage {
 		if ((containerItem != null) && !simulate) {
 			// Try to add the container item to the internal storage, or spawn the item in the world.
 			if (!InventoryUtils.tryAddItemToInventory(containerItem, new InventoryStacks(contents), true) && (entity != null))
-				WorldUtils.spawnItem(entity.getWorldObj(), entity.xCoord + 0.5, entity.yCoord + 0.5, entity.zCoord + 0.5, containerItem);
+				WorldUtils.spawnItem(entity.getWorld(), entity.getPos().getX() + 0.5, entity.getPos().getY() + 0.5, entity.getPos().getZ() + 0.5, containerItem);
 		}
 		return stack;
 	}
@@ -205,6 +205,7 @@ public class InventoryCraftingStation extends InventoryBetterStorage {
 			return output[slot - crafting.length];
 		else return contents[slot - (crafting.length + output.length)];
 	}
+	
 	@Override
 	public void setInventorySlotContents(int slot, ItemStack stack) {
 		if (slot < crafting.length) crafting[slot] = stack;
@@ -216,12 +217,7 @@ public class InventoryCraftingStation extends InventoryBetterStorage {
 	
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) { return true; }
-	
-	@Override
-	public void openInventory() {  }
-	@Override
-	public void closeInventory() {  }
-	
+
 	@Override
 	public void markDirty() {
 		
@@ -256,16 +252,25 @@ public class InventoryCraftingStation extends InventoryBetterStorage {
 		for (int i = 0; i < output.length; i++)
 			lastOutput[i] = ItemStack.copyItemStack(output[i]);
 	}
+	
 	private boolean outputChanged() {
 		for (int i = 0; i < output.length; i++)
 			if (!ItemStack.areItemStacksEqual(output[i], lastOutput[i]))
 				return true;
 		return false;
 	}
+	
 	private boolean outputEmpty() {
 		for (int i = 0; i < output.length; i++)
 			if (output[i] != null) return false;
 		return true;
 	}
 	
+	@Override
+	public void clear() {
+		Arrays.fill(crafting, null);
+		Arrays.fill(output, null);
+		Arrays.fill(contents, null);
+		Arrays.fill(lastOutput, null);
+	}
 }

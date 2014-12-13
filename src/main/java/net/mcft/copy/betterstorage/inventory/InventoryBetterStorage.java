@@ -1,8 +1,11 @@
 package net.mcft.copy.betterstorage.inventory;
 
 import net.mcft.copy.betterstorage.utils.StackUtils;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.IChatComponent;
 
 /** Basic IInventory with name and default
  *  decrStackSize and getStackInSlotOnClosing, */
@@ -18,7 +21,12 @@ public abstract class InventoryBetterStorage implements IInventory {
 	}
 	
 	@Override
-	public String getInventoryName() { return name; }
+	public String getName() { return name; }
+	
+	@Override
+	public IChatComponent getDisplayName() {
+		return new ChatComponentText(getName());
+	}
 	
 	@Override
 	public int getInventoryStackLimit() { return 64; }
@@ -45,9 +53,27 @@ public abstract class InventoryBetterStorage implements IInventory {
 	}
 	
 	@Override
-	public boolean hasCustomInventoryName() { return false; }
+	public boolean hasCustomName() { return false; }
 	
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) { return true; }
 	
+	@Override
+	public void openInventory(EntityPlayer playerIn) { }
+	
+	@Override
+	public void closeInventory(EntityPlayer playerIn) { }
+	
+	@Override
+	public int getField(int id) {
+		return 0;
+	}
+	
+	@Override
+	public void setField(int id, int value) {}
+	
+	@Override
+	public int getFieldCount() {
+		return 0;
+	}
 }

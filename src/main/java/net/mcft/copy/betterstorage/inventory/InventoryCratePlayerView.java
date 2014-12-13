@@ -130,11 +130,8 @@ public class InventoryCratePlayerView extends InventoryBetterStorage implements 
 	
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) {
-		int x = crate.xCoord;
-		int y = crate.yCoord;
-		int z = crate.zCoord;
-		return ((player.worldObj.getTileEntity(x, y, z) == crate) &&
-				(player.getDistanceSq(x + 0.5, y + 0.5, z + 0.5) < 64.0) &&
+		return ((player.worldObj.getTileEntity(crate.getPos()) == crate) &&
+				(player.getDistanceSqToCenter(crate.getPos()) < 64.0) &&
 				(getSizeInventory() <= data.getCapacity()));
 	}
 	
@@ -142,9 +139,9 @@ public class InventoryCratePlayerView extends InventoryBetterStorage implements 
 	public void markDirty() { }
 	
 	@Override
-	public void openInventory() { data.addWatcher(this); }
+	public void openInventory(EntityPlayer player) { data.addWatcher(this); }
 	@Override
-	public void closeInventory() { data.removeWatcher(this); }
+	public void closeInventory(EntityPlayer player) { data.removeWatcher(this); }
 	
 	// ICrateWatcher implementation
 	
@@ -214,5 +211,9 @@ public class InventoryCratePlayerView extends InventoryBetterStorage implements 
 		itemData.itemCount += size;
 		return size;
 	}
-	
+
+	@Override
+	public void clear() {
+		
+	}
 }

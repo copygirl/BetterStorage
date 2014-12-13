@@ -34,8 +34,8 @@ public class InventoryBackpackEquipped extends InventoryWrapper {
 	}
 	
 	@Override
-	public void openInventory() { ItemBackpack.getBackpackData(carrier).playersUsing++; }
+	public void openInventory(EntityPlayer player) { ItemBackpack.getBackpackData(carrier).playersUsing++; }
 	@Override
-	public void closeInventory() { ItemBackpack.getBackpackData(carrier).playersUsing--; }
+	public void closeInventory(EntityPlayer player) { ItemBackpack.getBackpackData(carrier).playersUsing--; }
 	
 }

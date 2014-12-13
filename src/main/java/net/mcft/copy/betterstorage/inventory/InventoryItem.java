@@ -22,13 +22,13 @@ public class InventoryItem extends InventoryStacks {
 	}
 	
 	@Override
-	public String getInventoryName() { return title; }
+	public String getName() { return title; }
 	
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) { return true; }
 	
 	@Override
-	public void closeInventory() {
+	public void closeInventory(EntityPlayer player) {
 		updateStack();
 	}
 	

@@ -39,9 +39,9 @@ public class InventoryTileEntity extends InventoryBetterStorage {
 	}
 	
 	@Override
-	public String getInventoryName() { return mainTileEntity.getContainerTitle(); }
+	public String getName() { return mainTileEntity.getContainerTitle(); }
 	@Override
-	public boolean hasCustomInventoryName() { return !mainTileEntity.shouldLocalizeTitle(); }
+	public boolean hasCustomName() { return !mainTileEntity.shouldLocalizeTitle(); }
 	
 	@Override
 	public int getSizeInventory() { return inventory.getSizeInventory(); }
@@ -66,9 +66,9 @@ public class InventoryTileEntity extends InventoryBetterStorage {
 	}
 	
 	@Override
-	public void openInventory() { mainTileEntity.onContainerOpened(); }
+	public void openInventory(EntityPlayer player) { mainTileEntity.onContainerOpened(); }
 	@Override
-	public void closeInventory() { mainTileEntity.onContainerClosed(); }
+	public void closeInventory(EntityPlayer player) { mainTileEntity.onContainerClosed(); }
 	@Override
 	public void markDirty() {
 		inventory.markDirty();
@@ -76,4 +76,8 @@ public class InventoryTileEntity extends InventoryBetterStorage {
 			te.markDirtySuper();
 	}
 	
+	@Override
+	public void clear() {
+		inventory.clear();
+	}
 }

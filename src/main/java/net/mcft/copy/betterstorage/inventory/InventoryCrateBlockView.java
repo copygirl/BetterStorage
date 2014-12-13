@@ -99,12 +99,6 @@ public class InventoryCrateBlockView extends InventoryBetterStorage implements I
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) { return true; }
 	
-	@Override
-	public void openInventory() { }
-	@Override
-	public void closeInventory() { }
-	
-	
 	public void onUpdate() {
 		if (!GlobalConfig.enableCrateInventoryInterfaceSetting.getValue() || !accessed) return;
 		accessed = false;
@@ -131,5 +125,9 @@ public class InventoryCrateBlockView extends InventoryBetterStorage implements I
 	public void onCrateItemsModified(ItemStack stack) {
 		if (!isModifying) changed = true;
 	}
-	
+
+	@Override
+	public void clear() {
+		
+	}
 }
