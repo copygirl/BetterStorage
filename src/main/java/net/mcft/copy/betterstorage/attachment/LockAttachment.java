@@ -56,7 +56,7 @@ public class LockAttachment extends ItemAttachment {
 	public void update() {
 		hit = Math.max(-20, hit - 1);
 		if (hit <= -20) breakProgress = Math.max(0, breakProgress - 1);
-		if (tileEntity.getWorldObj().isRemote) {
+		if (tileEntity.getWorld().isRemote) {
 			wiggle++;
 			wiggleStrength = Math.max(0.0F, wiggleStrength * 0.9F - 0.1F);
 		}
@@ -98,7 +98,7 @@ public class LockAttachment extends ItemAttachment {
 				hit = 10;
 				
 				int damage = (int)((AttributeModifier)holding.getAttributeModifiers().get(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName()).iterator().next()).getAmount();
-				int sharpness = EnchantmentHelper.getEnchantmentLevel(Enchantment.sharpness.effectId, holding);
+				int sharpness = EnchantmentHelper.getEnchantmentLevel(Enchantment.field_180314_l.effectId, holding); //sharpness
 				int efficiency = EnchantmentHelper.getEnchantmentLevel(Enchantment.efficiency.effectId, holding);
 				breakProgress += Math.min(damage, 10) / 2 + Math.min(Math.max(sharpness, efficiency), 5);
 				
@@ -111,7 +111,7 @@ public class LockAttachment extends ItemAttachment {
 						double x = (box.minX + box.maxX) / 2;
 						double y = (box.minY + box.maxY) / 2;
 						double z = (box.minZ + box.maxZ) / 2;
-						EntityItem item = WorldUtils.spawnItem(tileEntity.getWorldObj(), x, y, z, lock);
+						EntityItem item = WorldUtils.spawnItem(tileEntity.getWorld(), x, y, z, lock);
 					}
 					lockable.setLock(null);
 					breakProgress = 0;
@@ -120,8 +120,8 @@ public class LockAttachment extends ItemAttachment {
 				((ILock)lock.getItem()).applyEffects(lock, lockable, player, EnumLockInteraction.ATTACK);
 			}
 			BetterStorage.networkChannel.sendToAllAround(
-					new PacketLockHit(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, canHurt),
-					tileEntity.getWorldObj(), tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, 32);
+					new PacketLockHit(tileEntity.getPos(), canHurt),
+					tileEntity.getWorld(), tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), 32);
 		} else hit(canHurt);
 		return true;
 	}
@@ -135,7 +135,7 @@ public class LockAttachment extends ItemAttachment {
 			double x = (box.minX + box.maxX) / 2;
 			double y = (box.minY + box.maxY) / 2;
 			double z = (box.minZ + box.maxZ) / 2;
-			tileEntity.getWorldObj().playSound(x, y, z, "random.break", 0.5F, 2.5F, false);
+			tileEntity.getWorld().playSound(x, y, z, "random.break", 0.5F, 2.5F, false);
 		}
 	}
 	

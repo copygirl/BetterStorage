@@ -15,6 +15,7 @@ import net.mcft.copy.betterstorage.misc.Constants;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.EnumHelper;
 
 public class EnchantmentBetterStorage extends Enchantment {
@@ -34,9 +35,10 @@ public class EnchantmentBetterStorage extends Enchantment {
 		if (BetterStorageItems.key != null) {
 			EnumEnchantmentType key = EnumHelper.addEnchantmentType("key");
 			
-			EnchantmentBetterStorage unlocking   = conditialNew("unlocking",   key, GlobalConfig.enchUnlockingId,   8, 5,  5, 10, 30, 0);
-			EnchantmentBetterStorage lockpicking = conditialNew("lockpicking", key, GlobalConfig.enchLockpickingId, 6, 5,  5,  8, 30, 0);
-			EnchantmentBetterStorage morphing    = conditialNew("morphing",    key, GlobalConfig.enchMorphingId,    1, 5, 10, 12, 30, 0);
+			//TODO Investigate what the ResourceLocation is used for and if we need it
+			EnchantmentBetterStorage unlocking   = conditialNew("unlocking",   key, null, GlobalConfig.enchUnlockingId,   8, 5,  5, 10, 30, 0);
+			EnchantmentBetterStorage lockpicking = conditialNew("lockpicking", key, null, GlobalConfig.enchLockpickingId, 6, 5,  5,  8, 30, 0);
+			EnchantmentBetterStorage morphing    = conditialNew("morphing",    key, null, GlobalConfig.enchMorphingId,    1, 5, 10, 12, 30, 0);
 			
 			if (lockpicking != null)
 				lockpicking.setIncompatible(morphing);
@@ -54,10 +56,10 @@ public class EnchantmentBetterStorage extends Enchantment {
 		if (BetterStorageItems.lock != null) {
 			EnumEnchantmentType lock = EnumHelper.addEnchantmentType("lock");
 			
-			EnchantmentBetterStorage persistance = conditialNew("persistance", lock, GlobalConfig.enchPersistanceId, 20, 5,  1,  8, 30, 0);
-			EnchantmentBetterStorage security    = conditialNew("security",    lock, GlobalConfig.enchSecurityId,    16, 5,  1, 10, 30, 0);
-			EnchantmentBetterStorage shock       = conditialNew("shock",       lock, GlobalConfig.enchShockId,        5, 3,  5, 15, 30, 0);
-			EnchantmentBetterStorage trigger     = conditialNew("trigger",     lock, GlobalConfig.enchTriggerId,     10, 1, 15,  0, 30, 0);
+			EnchantmentBetterStorage persistance = conditialNew("persistance", lock, null, GlobalConfig.enchPersistanceId, 20, 5,  1,  8, 30, 0);
+			EnchantmentBetterStorage security    = conditialNew("security",    lock, null, GlobalConfig.enchSecurityId,    16, 5,  1, 10, 30, 0);
+			EnchantmentBetterStorage shock       = conditialNew("shock",       lock, null, GlobalConfig.enchShockId,        5, 3,  5, 15, 30, 0);
+			EnchantmentBetterStorage trigger     = conditialNew("trigger",     lock, null, GlobalConfig.enchTriggerId,     10, 1, 15,  0, 30, 0);
 			
 			types.put("lock", lock);
 	
@@ -68,16 +70,16 @@ public class EnchantmentBetterStorage extends Enchantment {
 		}
 		
 	}
-	private static EnchantmentBetterStorage conditialNew(String name, EnumEnchantmentType type, String configName, int weight, int maxLevel,
+	private static EnchantmentBetterStorage conditialNew(String name, EnumEnchantmentType type, ResourceLocation loc, String configName, int weight, int maxLevel,
 	                                                     int minBase, int minScaling, int maxBase, int maxScaling) {
 		int id = BetterStorage.globalConfig.getInteger(configName);
 		if (id <= 0) return null;
-		return new EnchantmentBetterStorage(name, type, id, weight, maxLevel, minBase, minScaling, maxBase, maxScaling);
+		return new EnchantmentBetterStorage(name, type, loc, id, weight, maxLevel, minBase, minScaling, maxBase, maxScaling);
 	}
 	
-	public EnchantmentBetterStorage(String name, EnumEnchantmentType type, int id, int weight, int maxLevel,
+	public EnchantmentBetterStorage(String name, EnumEnchantmentType type, ResourceLocation loc, int id, int weight, int maxLevel,
 	                                int minBase, int minScaling, int maxBase, int maxScaling) {
-		super(id, weight, type);
+		super(id, loc, weight, type);
 		setName(Constants.modId + "." + type.toString() + "." + name);
 		this.maxLevel   = maxLevel;
 		this.minBase    = minBase;

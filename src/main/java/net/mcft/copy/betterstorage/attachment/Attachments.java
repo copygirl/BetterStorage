@@ -11,14 +11,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-
-import org.lwjgl.opengl.GL11;
-
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import org.lwjgl.opengl.GL11;
 
 public class Attachments implements Iterable<Attachment> {
 	
@@ -45,9 +45,9 @@ public class Attachments implements Iterable<Attachment> {
 	}
 	
 	// Called in Block.collisionRayTrace.
-	public MovingObjectPosition rayTrace(World world, int x, int y, int z, Vec3 start, Vec3 end) {
+	public MovingObjectPosition rayTrace(World world, BlockPos pos, Vec3 start, Vec3 end) {
 		
-		AxisAlignedBB aabb = tileEntity.getBlockType().getCollisionBoundingBoxFromPool(world, x, y, z);
+		AxisAlignedBB aabb = tileEntity.getBlockType().getCollisionBoundingBox(world, pos, tileEntity.getWorld().getBlockState(pos));
 		MovingObjectPosition target = aabb.calculateIntercept(start, end);
 		EntityPlayer player = playerLocal.get();
 		
@@ -65,9 +65,7 @@ public class Attachments implements Iterable<Attachment> {
 		}
 		
 		if (target != null) {
-			target.blockX = x;
-			target.blockY = y;
-			target.blockZ = z;
+			target = new MovingObjectPosition(target.typeOfHit, target.hitVec, target.field_178784_b, pos);
 		}
 		return target;
 		

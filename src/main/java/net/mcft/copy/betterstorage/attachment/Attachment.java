@@ -5,7 +5,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -16,8 +16,8 @@ public abstract class Attachment {
 	
 	private double x, y, z;
 	private double width, height, depth;
-	private AxisAlignedBB box = AxisAlignedBB.getBoundingBox(0, 0, 0, 0, 0, 0);
-	private ForgeDirection direction = ForgeDirection.NORTH;
+	private AxisAlignedBB box = AxisAlignedBB.fromBounds(0, 0, 0, 0, 0, 0);
+	private EnumFacing direction = EnumFacing.NORTH;
 	
 	public double getX() { return x; }
 	public double getY() { return y; }
@@ -30,7 +30,7 @@ public abstract class Attachment {
 	public float getRotation() { return DirectionUtils.getRotation(direction); }
 	
 	public AxisAlignedBB getHighlightBox() {
-		return box.copy().offset(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord);
+		return box.offset(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ());
 	}
 	
 	public Attachment(TileEntity tileEntity, int subId) {
@@ -53,7 +53,7 @@ public abstract class Attachment {
 		setBox(x, y, z, width, height, depth, 1 / 16.0F);
 	}
 	
-	public void setDirection(ForgeDirection direction) {
+	public void setDirection(EnumFacing direction) {
 		this.direction = direction;
 		updateBox();
 	}
@@ -79,7 +79,7 @@ public abstract class Attachment {
 				maxX = x + width / 2; maxZ = z + depth / 2;
 				break;
 		}
-		box.setBounds(minX, minY, minZ, maxX, maxY, maxZ);
+		box = new AxisAlignedBB(minX, minY, minZ, maxX, maxY, maxZ);
 	}
 	
 	public void update() {  }

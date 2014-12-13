@@ -56,7 +56,7 @@ public class ChristmasEventHandler {
 			
 			StackUtils.set(book, getYear(), "year");
 			StackUtils.set(book, event.player.getUniqueID().toString(), "uuid");
-			StackUtils.set(book, event.player.getCommandSenderName(), "name");
+			StackUtils.set(book, event.player.getName(), "name");
 			
 			event.player.inventory.addItemStackToInventory(book);
 			properties.year = getYear();
@@ -72,7 +72,7 @@ public class ChristmasEventHandler {
 					ItemStack present = new ItemStack(BetterStorageTiles.present);
 					
 					present.setStackDisplayName("Christmas Present " + getYear());
-					StackUtils.set(present, event.player.getCommandSenderName(), TileEntityPresent.TAG_NAMETAG);
+					StackUtils.set(present, event.player.getName(), TileEntityPresent.TAG_NAMETAG);
 					
 					int color = DyeUtils.getDyeColor(new ItemStack(Items.dye, 1, 1));
 					StackUtils.set(present, color, "color");
@@ -85,7 +85,7 @@ public class ChristmasEventHandler {
 							contents[j] = items.remove(RandomUtils.getInt(items.size()));
 					StackUtils.setStackContents(present, contents);
 					
-					if (event.player.getCommandSenderName().equalsIgnoreCase("xXxCJxXx")) {
+					if (event.player.getName().equalsIgnoreCase("xXxCJxXx")) {
 						StackUtils.set(present, (byte)1, TileEntityPresent.TAG_SKOJANZA_MODE);
 						StackUtils.set(present, NbtUtils.createList(
 								"Just for you!",
@@ -136,10 +136,10 @@ public class ChristmasEventHandler {
 		
 		ItemStack sword = new ItemStack((BetterStorageItems.cardboardSword != null)
 				? BetterStorageItems.cardboardSword : Items.wooden_sword);
-		sword.addEnchantment(Enchantment.baneOfArthropods, 5);
-		sword.addEnchantment(Enchantment.knockback, 3);
+		sword.addEnchantment(Enchantment.field_180312_n, 5); //baneOfArthropods
+		sword.addEnchantment(Enchantment.field_180313_o, 3); //knockback
 		if (BetterStorageItems.cardboardSword != null) {
-			sword.setStackDisplayName(player.getCommandSenderName() + "'s Magical Sword");
+			sword.setStackDisplayName(player.getName() + "'s Magical Sword");
 			sword.addEnchantment(Enchantment.unbreaking, 2);
 			int color = DyeUtils.getDyeColor(new ItemStack(Items.dye, 1, 5));
 			StackUtils.set(sword, color, "display", "color");
@@ -158,10 +158,10 @@ public class ChristmasEventHandler {
 		
 		ItemStack chestplate = new ItemStack((BetterStorageItems.cardboardChestplate != null)
 				? BetterStorageItems.cardboardChestplate : Items.leather_chestplate);
-		chestplate.addEnchantment(Enchantment.protection, 4);
+		chestplate.addEnchantment(Enchantment.field_180310_c, 4); //protection
 		chestplate.addEnchantment(Enchantment.thorns, 3);
 		if (BetterStorageItems.cardboardChestplate != null) {
-			chestplate.setStackDisplayName(player.getCommandSenderName() + "'s Magical Chestpiece");
+			chestplate.setStackDisplayName(player.getName() + "'s Magical Chestpiece");
 			chestplate.addEnchantment(Enchantment.unbreaking, 2);
 			int color = DyeUtils.getDyeColor(new ItemStack(Items.dye, 1, 5));
 			StackUtils.set(chestplate, color, "display", "color");
@@ -181,8 +181,8 @@ public class ChristmasEventHandler {
 		if (BetterStorageItems.drinkingHelmet != null) {
 			ItemStack drinkingHelmet = new ItemStack(BetterStorageItems.drinkingHelmet);
 			drinkingHelmet.setStackDisplayName("Splash Drinking Helmet");
-			drinkingHelmet.addEnchantment(Enchantment.protection, 5);
-			drinkingHelmet.addEnchantment(Enchantment.respiration, 3);
+			drinkingHelmet.addEnchantment(Enchantment.field_180310_c, 5); //protection
+			drinkingHelmet.addEnchantment(Enchantment.field_180317_h, 3); //respiration
 			ItemStack speedPotion = new ItemStack(Items.potionitem, 1, 16418);
 			StackUtils.set(speedPotion, NbtUtils.createList(
 					NbtUtils.createCompound("Id", 1, "Amplifier", 3, "Duration", 2000),

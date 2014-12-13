@@ -9,40 +9,35 @@ import net.mcft.copy.betterstorage.tile.entity.TileEntityLockable;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.BlockPos;
 
 /** Lets other clients know about a lock being hit. */
 public class PacketLockHit extends AbstractPacket<PacketLockHit> {
 	
-	public int x, y, z;
+	public BlockPos pos;
 	public boolean damage;
 	
 	public PacketLockHit() {  }
-	public PacketLockHit(int x, int y, int z, boolean damage) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
+	public PacketLockHit(BlockPos pos, boolean damage) {
+		this.pos = pos;
 		this.damage = damage;
 	}
 	
 	@Override
 	public void encode(PacketBuffer buffer) throws IOException {
-		buffer.writeInt(x);
-		buffer.writeInt(y);
-		buffer.writeInt(z);
+		buffer.writeBlockPos(pos);
 		buffer.writeBoolean(damage);
 	}
 	
 	@Override
 	public void decode(PacketBuffer buffer) throws IOException {
-		x = buffer.readInt();
-		y = buffer.readInt();
-		z = buffer.readInt();
+		pos = buffer.readBlockPos();
 		damage = buffer.readBoolean();
 	}
 	
 	@Override
 	public void handle(EntityPlayer player) {
-		TileEntityLockable lockable = WorldUtils.get(player.worldObj, x, y, z, TileEntityLockable.class);
+		TileEntityLockable lockable = WorldUtils.get(player.worldObj, pos, TileEntityLockable.class);
 		damage &= BetterStorage.globalConfig.getBoolean(GlobalConfig.lockBreakable);
 		if (lockable != null)
 			lockable.lockAttachment.hit(damage);

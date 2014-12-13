@@ -8,7 +8,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public abstract class ConnectedTexture {
+ConnectedTexture {
 	
 	private static final String[] iconNames = {
 		"all", "none",

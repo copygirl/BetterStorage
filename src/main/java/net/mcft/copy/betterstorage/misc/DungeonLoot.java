@@ -51,7 +51,7 @@ public final class DungeonLoot {
 			
 			ItemStack backpackSpecial2 = new ItemStack(BetterStorageItems.itemBackpack);
 			backpackSpecial2.setStackDisplayName("Shielding Backpack");
-			backpackSpecial2.addEnchantment(Enchantment.protection, 5);
+			backpackSpecial2.addEnchantment(Enchantment.field_180310_c, 5); //protection
 			StackUtils.set(backpackSpecial2, 0x0000BB, "display", "color");
 			addMultiple(backpackSpecial2, ChestGenHooks.PYRAMID_DESERT_CHEST, 0.4);
 		}

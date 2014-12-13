@@ -13,7 +13,7 @@ public class CraftingSourceTileEntity implements ICraftingSource {
 	public CraftingSourceTileEntity(TileEntity entity, EntityPlayer player) {
 		this.entity = entity;
 		this.player = player;
-		this.world = ((entity != null) ? entity.getWorldObj() : ((player != null) ? player.worldObj : null));
+		this.world = ((entity != null) ? entity.getWorld() : ((player != null) ? player.worldObj : null));
 	}
 	
 	@Override
@@ -23,10 +23,10 @@ public class CraftingSourceTileEntity implements ICraftingSource {
 	public World getWorld() { return world; }
 	
 	@Override
-	public double getX() { return ((entity != null) ? (entity.xCoord + 0.5) : 0); }
+	public double getX() { return ((entity != null) ? (entity.getPos().getX() + 0.5) : 0); }
 	@Override
-	public double getY() { return ((entity != null) ? (entity.yCoord + 0.5) : 0); }
+	public double getY() { return ((entity != null) ? (entity.getPos().getY() + 0.5) : 0); }
 	@Override
-	public double getZ() { return ((entity != null) ? (entity.zCoord + 0.5) : 0); }
+	public double getZ() { return ((entity != null) ? (entity.getPos().getZ() + 0.5) : 0); }
 	
 }
