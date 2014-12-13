@@ -12,7 +12,7 @@ import net.mcft.copy.betterstorage.tile.entity.TileEntityPresent;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityReinforcedChest;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityReinforcedLocker;
 import net.mcft.copy.betterstorage.tile.stand.TileEntityArmorStand;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public final class BetterStorageTileEntities {
 	

@@ -73,20 +73,20 @@ public class NEIRecipeHandler extends TemplateRecipeHandler {
 			String str = "";
 			if (min > 0) str += min + "m";
 			if (sec > 0) str += sec + "s";
-			int strX = (168 - mc.fontRenderer.getStringWidth(str)) / 2;
-			int strY = 17 - mc.fontRenderer.FONT_HEIGHT / 2;
-			mc.fontRenderer.drawString(str, strX, strY, 0x444444);
+			int strX = (168 - mc.fontRendererObj.getStringWidth(str)) / 2;
+			int strY = 17 - mc.fontRendererObj.FONT_HEIGHT / 2;
+			mc.fontRendererObj.drawString(str, strX, strY, 0x444444);
 		}
 		
 		if (cached.requiredExperience > 0) {
 			String str = Integer.toString(cached.requiredExperience);
-			int strX = (168 - mc.fontRenderer.getStringWidth(str)) / 2;
-			int strY = 47 - mc.fontRenderer.FONT_HEIGHT / 2;
-			mc.fontRenderer.drawString(str, strX - 1, strY, 0x444444);
-			mc.fontRenderer.drawString(str, strX + 1, strY, 0x444444);
-			mc.fontRenderer.drawString(str, strX, strY - 1, 0x444444);
-			mc.fontRenderer.drawString(str, strX, strY + 1, 0x444444);
-			mc.fontRenderer.drawString(str, strX, strY, 0x80FF20);
+			int strX = (168 - mc.fontRendererObj.getStringWidth(str)) / 2;
+			int strY = 47 - mc.fontRendererObj.FONT_HEIGHT / 2;
+			mc.fontRendererObj.drawString(str, strX - 1, strY, 0x444444);
+			mc.fontRendererObj.drawString(str, strX + 1, strY, 0x444444);
+			mc.fontRendererObj.drawString(str, strX, strY - 1, 0x444444);
+			mc.fontRendererObj.drawString(str, strX, strY + 1, 0x444444);
+			mc.fontRendererObj.drawString(str, strX, strY, 0x80FF20);
 		}
 	}
 	

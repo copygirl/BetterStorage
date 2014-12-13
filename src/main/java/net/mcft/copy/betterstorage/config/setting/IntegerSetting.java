@@ -9,7 +9,7 @@ import net.minecraftforge.common.config.Property.Type;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-import cpw.mods.fml.client.config.ConfigGuiType;
+import net.minecraftforge.fml.client.config.ConfigGuiType;
 
 public class IntegerSetting extends SinglePropertySetting<Integer> {
 	

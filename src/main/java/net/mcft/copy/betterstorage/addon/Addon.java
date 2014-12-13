@@ -6,9 +6,9 @@ import java.util.List;
 import net.mcft.copy.betterstorage.addon.armourersworkshop.AWAddon;
 import net.mcft.copy.betterstorage.addon.nei.NEIAddon;
 import net.mcft.copy.betterstorage.addon.thaumcraft.ThaumcraftAddon;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class Addon {
 	

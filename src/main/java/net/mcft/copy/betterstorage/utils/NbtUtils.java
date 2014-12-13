@@ -22,15 +22,15 @@ public final class NbtUtils {
 	
 	/** Returns the value of a tag. The type is determined by the generic type of the function. */
 	public static <T> T getTagValue(NBTBase tag) {
-		if (tag instanceof NBTTagByte)      return (T)(Object)((NBTTagByte)tag).func_150290_f();
-		if (tag instanceof NBTTagShort)     return (T)(Object)((NBTTagShort)tag).func_150289_e();
-		if (tag instanceof NBTTagInt)       return (T)(Object)((NBTTagInt)tag).func_150287_d();
-		if (tag instanceof NBTTagLong)      return (T)(Object)((NBTTagLong)tag).func_150291_c();
-		if (tag instanceof NBTTagFloat)     return (T)(Object)((NBTTagFloat)tag).func_150288_h();
-		if (tag instanceof NBTTagDouble)    return (T)(Object)((NBTTagDouble)tag).func_150286_g();
-		if (tag instanceof NBTTagString)    return (T)((NBTTagString)tag).func_150285_a_();
-		if (tag instanceof NBTTagByteArray) return (T)((NBTTagByteArray)tag).func_150292_c();
-		if (tag instanceof NBTTagIntArray)  return (T)((NBTTagIntArray)tag).func_150302_c();
+		if (tag instanceof NBTTagByte)      return (T)(Object)((NBTTagByte)tag).getByte();
+		if (tag instanceof NBTTagShort)     return (T)(Object)((NBTTagShort)tag).getShort();
+		if (tag instanceof NBTTagInt)       return (T)(Object)((NBTTagInt)tag).getInt();
+		if (tag instanceof NBTTagLong)      return (T)(Object)((NBTTagLong)tag).getLong();
+		if (tag instanceof NBTTagFloat)     return (T)(Object)((NBTTagFloat)tag).getFloat();
+		if (tag instanceof NBTTagDouble)    return (T)(Object)((NBTTagDouble)tag).getDouble();
+		if (tag instanceof NBTTagString)    return (T)((NBTTagString)tag).getString();
+		if (tag instanceof NBTTagByteArray) return (T)((NBTTagByteArray)tag).getByteArray();
+		if (tag instanceof NBTTagIntArray)  return (T)((NBTTagIntArray)tag).getIntArray();
 		return null;
 	}
 	

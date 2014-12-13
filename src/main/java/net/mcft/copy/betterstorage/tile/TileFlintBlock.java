@@ -3,8 +3,8 @@ package net.mcft.copy.betterstorage.tile;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TileFlintBlock extends TileBetterStorage {
 	

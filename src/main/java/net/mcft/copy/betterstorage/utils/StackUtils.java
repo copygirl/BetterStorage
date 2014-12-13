@@ -42,7 +42,7 @@ public final class StackUtils {
 	 *  Returns null if the tag doesn't exist. */
 	public static String getType(ItemStack stack, String... tags) {
 		NBTBase tag = getTag(stack, tags);
-		return ((tag != null) ? NBTBase.NBTTypes[tag.getId()] : null);
+		return ((tag != null) ? NBTBase.NBT_TYPES[tag.getId()] : null);
 	}
 	/** Gets a value from the ItemStack's custom NBT data. Example: <br>
 	 *  <code> int color = ItemUtils.get(stack, -1, "display", "color"); </code> <br>
@@ -122,8 +122,8 @@ public final class StackUtils {
 	public static ItemStack copyStack(ItemStack stack, int stackSize, boolean checkSize) {
 		if ((stack == null) || (checkSize && (stackSize <= 0))) return null;
 		ItemStack copy = new ItemStack(stack.getItem(), stackSize, getRealItemDamage(stack));
-		if (stack.stackTagCompound != null)
-			copy.stackTagCompound = (NBTTagCompound)stack.stackTagCompound.copy();
+		if (stack.getTagCompound() != null)
+			copy.setTagCompound((NBTTagCompound)stack.getTagCompound().copy());
 		return copy;
 	}
 	

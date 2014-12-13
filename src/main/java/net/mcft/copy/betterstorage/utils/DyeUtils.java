@@ -4,8 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.minecraft.block.BlockColored;
-import net.minecraft.entity.passive.EntitySheep;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -80,13 +79,9 @@ public final class DyeUtils {
 	}
 	
 	private static void addColorFromTable(String name) {
-		int dye = BlockColored.func_150031_c(dyes.size());
-		float[] values = EntitySheep.fleeceColorTable[dye];
-		int r = (int)(values[0] * 255);
-		int g = (int)(values[1] * 255);
-		int b = (int)(values[2] * 255);
-		int color = ((r << 16) | (g << 8) | b);
-		dyes.put(name, color);
+		int dye = ~dyes.size() & 15;
+		EnumDyeColor color = EnumDyeColor.func_176766_a(dye);
+		dyes.put(name, color.func_176768_e().colorValue);
 	}
 	
 }

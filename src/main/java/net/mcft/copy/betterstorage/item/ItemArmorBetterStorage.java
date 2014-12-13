@@ -4,7 +4,7 @@ import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.MiscUtils;
 import net.minecraft.item.ItemArmor;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public abstract class ItemArmorBetterStorage extends ItemArmor {
 	

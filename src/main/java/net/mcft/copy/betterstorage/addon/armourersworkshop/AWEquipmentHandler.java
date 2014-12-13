@@ -1,14 +1,9 @@
 package net.mcft.copy.betterstorage.addon.armourersworkshop;
 
-import net.mcft.copy.betterstorage.api.stand.ArmorStandEquipHandler;
-import net.mcft.copy.betterstorage.api.stand.EnumArmorStandRegion;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import riskyken.armourersWorkshop.api.common.equipment.EnumEquipmentType;
 
-public class AWEquipmentHandler extends ArmorStandEquipHandler {
+public class AWEquipmentHandler /*extends ArmorStandEquipHandler*/ {
 
-	public final EnumEquipmentType type;
+	/*public final EnumEquipmentType type;
 	
 	public AWEquipmentHandler(EnumEquipmentType type, int priority) {
 		super("ArmourersWorkshop " + priority, EnumArmorStandRegion.values()[3 - type.getVanillaSlotId()], priority);
@@ -36,5 +31,5 @@ public class AWEquipmentHandler extends ArmorStandEquipHandler {
 		if(item != null) AWAddon.dataHandler.setCustomEquipmentOnPlayer(player, item);
 		else AWAddon.dataHandler.clearCustomEquipmentFromPlayer(player, type);
 	}
-
+	*/
 }

@@ -16,13 +16,14 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public final class WorldUtils {
 	
@@ -34,10 +35,11 @@ public final class WorldUtils {
 	}
 	
 	public static AxisAlignedBB getAABB(TileEntity entity, double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {
-		double x = entity.xCoord;
-		double y = entity.yCoord;
-		double z = entity.zCoord;
-		return AxisAlignedBB.getBoundingBox(x - minX, y - minY, z - minZ, x + maxX + 1, y + maxY + 1, z + maxZ + 1);
+		BlockPos pos = entity.getPos();
+		double x = pos.getX();
+		double y = pos.getY();
+		double z = pos.getZ();
+		return AxisAlignedBB.fromBounds(x - minX, y - minY, z - minZ, x + maxX + 1, y + maxY + 1, z + maxZ + 1);
 	}
 	public static AxisAlignedBB getAABB(TileEntity entity, double radius) {
 		return getAABB(entity, radius, radius, radius, radius, radius, radius);
@@ -64,15 +66,15 @@ public final class WorldUtils {
 	}
 	
 	/** Spawn an ItemStack dropping from a destroyed block. */
-	public static EntityItem dropStackFromBlock(World world, int x, int y, int z, ItemStack stack) {
-		float itemX = x + RandomUtils.getFloat(0.1F, 0.9F);
-		float itemY = y + RandomUtils.getFloat(0.1F, 0.9F);
-		float itemZ = z + RandomUtils.getFloat(0.1F, 0.9F);
+	public static EntityItem dropStackFromBlock(World world, BlockPos pos, ItemStack stack) {
+		float itemX = pos.getX() + RandomUtils.getFloat(0.1F, 0.9F);
+		float itemY = pos.getY() + RandomUtils.getFloat(0.1F, 0.9F);
+		float itemZ = pos.getZ() + RandomUtils.getFloat(0.1F, 0.9F);
 		return spawnItemWithMotion(world, itemX, itemY, itemZ, stack);
 	}
 	/** Spawn an ItemStack dropping from a destroyed block. */
 	public static EntityItem dropStackFromBlock(TileEntity te, ItemStack stack) {
-		return dropStackFromBlock(te.getWorldObj(), te.xCoord, te.yCoord, te.zCoord, stack);
+		return dropStackFromBlock(te.getWorld(), te.getPos(), stack);
 	}
 	
 	/** Spawns an ItemStack as if it was dropped from an entity on death. */
@@ -83,7 +85,7 @@ public final class WorldUtils {
 			double y = entity.posY + entity.getEyeHeight() - 0.3;
 			item = spawnItem(entity.worldObj, entity.posX, y, entity.posZ, stack);
 			if (item == null) return null;
-			item.delayBeforeCanPickup = 40;
+			item.setPickupDelay(40);
 			float f1 = RandomUtils.getFloat(0.5F);
 			float f2 = RandomUtils.getFloat((float)Math.PI * 2.0F);
 			item.motionX = -MathHelper.sin(f2) * f1;
@@ -101,26 +103,26 @@ public final class WorldUtils {
 	// TileEntity related functions
 	
 	/** Returns whether the TileEntity at the position is an instance of tileClass. */
-	public static <T> boolean is(IBlockAccess world, int x, int y, int z, Class<T> tileClass) {
-		return tileClass.isInstance(world.getTileEntity(x, y, z));
+	public static <T> boolean is(IBlockAccess world, BlockPos pos, Class<T> tileClass) {
+		return tileClass.isInstance(world.getTileEntity(pos));
 	}
 	/** Returns the TileEntity at the position if it's an instance of tileClass, null if not. */
-	public static <T> T get(IBlockAccess world, int x, int y, int z, Class<T> tileClass) {
-		TileEntity t = world.getTileEntity(x, y, z);
+	public static <T> T get(IBlockAccess world, BlockPos pos, Class<T> tileClass) {
+		TileEntity t = world.getTileEntity(pos);
 		return (tileClass.isInstance(t) ? (T)t : null);
 	}
 	
 	/** Returns if the TileEntity can be used by this player. */
 	public static boolean isTileEntityUsableByPlayer(TileEntity entity, EntityPlayer player) {
-		return (entity.getWorldObj().getTileEntity(entity.xCoord, entity.yCoord, entity.zCoord) == entity &&
-		        player.getDistanceSq(entity.xCoord + 0.5, entity.yCoord + 0.5, entity.zCoord + 0.5) <= 64.0);
+		return (entity.getWorld().getTileEntity(entity.getPos()) == entity &&
+		        player.getDistanceSqToCenter(entity.getPos()) <= 64.0);
 	}
 	
 	/** Counts and returns the number of players who're accessing a tile entity. */
 	public static int syncPlayersUsing(TileEntity te, int playersUsing, IInventory playerInventory) {
-		if (!te.getWorldObj().isRemote && (playersUsing != 0)) {
+		if (!te.getWorld().isRemote && (playersUsing != 0)) {
 			playersUsing = 0;
-			List<EntityPlayer> players = te.getWorldObj().getEntitiesWithinAABB(EntityPlayer.class, getAABB(te, 5));
+			List<EntityPlayer> players = te.getWorld().getEntitiesWithinAABB(EntityPlayer.class, getAABB(te, 5));
 			for (EntityPlayer player : players) {
 				if (player.openContainer instanceof ContainerBetterStorage) {
 					IInventory inventory = ((ContainerBetterStorage)player.openContainer).inventory;
@@ -138,15 +140,15 @@ public final class WorldUtils {
 	}
 	
 	/** This will perform a {@link World#notifyBlockOfNeighborChange()} on every adjacent block including the block at x|y|z.*/
-	public static void notifyBlocksAround(World world, int x, int y, int z) {
-		Block block = world.getBlock(x, y, z);
-		world.notifyBlocksOfNeighborChange(x, y, z, block);
-		world.notifyBlocksOfNeighborChange(x + 1, y, z, block);
-		world.notifyBlocksOfNeighborChange(x - 1, y, z, block);
-		world.notifyBlocksOfNeighborChange(x, y + 1, z, block);
-		world.notifyBlocksOfNeighborChange(x, y - 1, z, block);
-		world.notifyBlocksOfNeighborChange(x, y, z + 1, block);
-		world.notifyBlocksOfNeighborChange(x, y, z - 1, block);	
+	public static void notifyBlocksAround(World world, BlockPos pos) {
+		Block block = world.getChunkFromBlockCoords(pos).getBlock(pos);
+		world.notifyBlockOfStateChange(pos, block);
+		world.notifyBlockOfStateChange(pos.offsetDown(), block);
+		world.notifyBlockOfStateChange(pos.offsetUp(), block);
+		world.notifyBlockOfStateChange(pos.offsetNorth(), block);
+		world.notifyBlockOfStateChange(pos.offsetEast(), block);
+		world.notifyBlockOfStateChange(pos.offsetSouth(), block);
+		world.notifyBlockOfStateChange(pos.offsetWest(), block);
 	}
 	
 	// Misc functions
@@ -156,12 +158,23 @@ public final class WorldUtils {
 		double range = ((player.worldObj.isRemote)
 				? Minecraft.getMinecraft().playerController.getBlockReachDistance()
 				: ((EntityPlayerMP)player).theItemInWorldManager.getBlockReachDistance());
-		Vec3 start = Vec3.createVectorHelper(player.posX, player.posY + 1.62 - player.yOffset, player.posZ);
+		Vec3 start = getPositionVector(player, partialTicks);
 		Vec3 look = player.getLook(1.0F);
 		Vec3 end = start.addVector(look.xCoord * range, look.yCoord * range, look.zCoord * range);
 		MovingObjectPosition target = player.worldObj.rayTraceBlocks(start, end);
 		Attachments.playerLocal.remove();
 		return target;
+	}
+	
+	public static Vec3 getPositionVector(EntityPlayer player, float partialTicks) {
+		double d0 = player.prevPosX + (player.posX - player.prevPosX) * partialTicks;
+		double d1 = player.prevPosY + (player.posY - player.prevPosY) * partialTicks + player.getEyeHeight();
+		double d2 = player.prevPosZ + (player.posZ - player.prevPosZ) * partialTicks;
+		
+		if(!(player instanceof EntityPlayerMP))
+			d1 -= player.getDefaultEyeHeight();
+		
+		return new Vec3(d0, d1, d2);
 	}
 	
 }

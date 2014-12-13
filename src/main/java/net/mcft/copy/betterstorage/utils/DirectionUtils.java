@@ -1,29 +1,29 @@
 package net.mcft.copy.betterstorage.utils;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public final class DirectionUtils {
 	
 	private DirectionUtils() {  }
 	
 	/** Gets the ForgeDirection from the direction an entity is facing. */
-	public static ForgeDirection getOrientation(Entity entity) {
+	public static EnumFacing getOrientation(Entity entity) {
 		int dir = MathHelper.floor_double(entity.rotationYaw * 4.0 / 360.0 + 0.5) & 3;
 		switch (dir) {
-			case 1: return ForgeDirection.WEST;
-			case 2: return ForgeDirection.NORTH;
-			case 3: return ForgeDirection.EAST;
-			default: return ForgeDirection.SOUTH;
+			case 1: return EnumFacing.WEST;
+			case 2: return EnumFacing.NORTH;
+			case 3: return EnumFacing.EAST;
+			default: return EnumFacing.SOUTH;
 		}
 	}
 	
 	/** Gets the direction from a ForgeDirection in degrees. */
-	public static int getRotation(ForgeDirection dir) {
-		if (dir == ForgeDirection.WEST) return 90;
-		else if (dir == ForgeDirection.NORTH) return 180;
-		else if (dir == ForgeDirection.EAST) return 270;
+	public static int getRotation(EnumFacing dir) {
+		if (dir == EnumFacing.WEST) return 90;
+		else if (dir == EnumFacing.NORTH) return 180;
+		else if (dir == EnumFacing.EAST) return 270;
 		else return 0;
 	}
 	

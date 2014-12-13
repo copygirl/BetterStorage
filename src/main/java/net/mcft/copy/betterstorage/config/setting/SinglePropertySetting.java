@@ -4,7 +4,7 @@ import net.mcft.copy.betterstorage.config.Config;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import net.minecraftforge.common.config.Property.Type;
-import cpw.mods.fml.client.config.ConfigGuiType;
+import net.minecraftforge.fml.client.config.ConfigGuiType;
 
 public abstract class SinglePropertySetting<T> extends Setting<T> {
 	

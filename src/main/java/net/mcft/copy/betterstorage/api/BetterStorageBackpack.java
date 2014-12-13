@@ -6,8 +6,8 @@ import java.util.List;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.Loader;
+import net.minecraftforge.fml.common.FMLLog;
+import net.minecraftforge.fml.common.Loader;
 
 public final class BetterStorageBackpack {
 	

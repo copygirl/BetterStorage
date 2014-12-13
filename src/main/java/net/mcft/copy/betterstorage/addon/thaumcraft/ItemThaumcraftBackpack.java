@@ -16,12 +16,12 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import thaumcraft.api.IRepairable;
 import thaumcraft.api.IVisDiscountGear;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemThaumcraftBackpack extends ItemBackpack implements IRepairable, IVisDiscountGear {
 	
@@ -49,7 +49,7 @@ public class ItemThaumcraftBackpack extends ItemBackpack implements IRepairable,
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public EnumRarity getRarity(ItemStack stack) { return EnumRarity.uncommon; }
+	public EnumRarity getRarity(ItemStack stack) { return EnumRarity.UNCOMMON; }
 	
 	@Override
 	@SideOnly(Side.CLIENT)
