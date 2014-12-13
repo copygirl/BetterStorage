@@ -7,12 +7,14 @@ import net.mcft.copy.betterstorage.proxy.ClientProxy;
 import net.mcft.copy.betterstorage.tile.TileContainerBetterStorage;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -56,50 +58,45 @@ public class TileArmorStand extends TileContainerBetterStorage {
 	}
 	
 	@Override
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
-		super.onBlockPlacedBy(world, x, y, z, player, stack);
-		// Set block above to armor stand with metadata 1.
-		world.setBlock(x, y + 1, z, this, 1, SetBlockFlag.DEFAULT);
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+		super.onBlockPlacedBy(world, pos, state, placer, stack);
+		world.setBlockState(pos.add(0, 1, 0), state, SetBlockFlag.DEFAULT);
 	}
 	
 	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player,
-	                                int side, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ){
 		if (world.isRemote) return true;
 		if (world.getBlockMetadata(x, y, z) > 0) { y -= 1; hitY += 1; }
-		return super.onBlockActivated(world, x, y, z, player, side, hitX, hitY, hitZ);
+		return super.onBlockActivated(world, pos, state, playerIn, side, hitX, hitY, hitZ);
 	}
 	@Override
-	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
+	public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos) {
 		if (world.getBlockMetadata(x, y, z) > 0) { y -= 1; }
-		return super.getPickBlock(target, world, x, y, z);
+		return super.getPickBlock(target, world, pos);
 	}
 	
 	@Override
-	public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z) {
-		return world.setBlockToAir(x, y, z);
-	}
-	@Override
-	public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
+	public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
 		if (meta > 0) return;
-		super.breakBlock(world, x, y, z, block, meta);
+		super.breakBlock(worldIn, pos, state);
 	}
 	
 	@Override
-	public void onNeighborBlockChange(World world, BlockPos pos, int z, Block block) {
+	public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighborBlock) {
 		int metadata = world.getBlockMetadata(x, y, z);
-		int targetY = y + ((metadata == 0) ? 1 : -1);
+		int yModifier = ((metadata == 0) ? 1 : -1);
 		int targetMeta = ((metadata == 0) ? 1 : 0);
-		if ((world.getBlock(x, targetY, z) == this) &&
+		if ((world.getBlockState(pos.add(0, yModifier, 0)).getBlock() == this) &&
 		    (world.getBlockMetadata(x, targetY, z) == targetMeta)) return;
-		world.setBlockToAir(x, y, z);
+		world.setBlockToAir(pos);
 		if (metadata == 0)
-			dropBlockAsItem(world, x, y, z, metadata, 0);
+			dropBlockAsItem(world, pos, state, 0);
 	}
 	
 	@Override
-	public TileEntity createTileEntity(World world, int metadata) {
-		return ((metadata == 0) ? new TileEntityArmorStand() : null);
+	public TileEntity createTileEntity(World world, IBlockState state)
+	{
+		return new TileEntityArmorStand();
 	}
 	
 	@Override
