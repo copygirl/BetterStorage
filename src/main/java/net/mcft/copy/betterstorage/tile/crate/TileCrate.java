@@ -13,11 +13,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.Optional.Interface;
-import vazkii.botania.api.mana.ILaputaImmobile;
 
-@Interface(modid = "Botania", iface = "vazkii.botania.api.mana.ILaputaImmobile", striprefs = true)
-public class TileCrate extends TileContainerBetterStorage implements ILaputaImmobile {
+//TODO (1.8): Botania
+//@Interface(modid = "Botania", iface = "vazkii.botania.api.mana.ILaputaImmobile", striprefs = true)
+public class TileCrate extends TileContainerBetterStorage /*implements ILaputaImmobile*/ {
 	
 	//private ConnectedTexture texture = new ConnectedTextureCrate();
 	
@@ -89,8 +88,8 @@ public class TileCrate extends TileContainerBetterStorage implements ILaputaImmo
 	}
 	*/
 
-	@Override
+	/*@Override
 	public boolean canMove(World world, int x, int y, int z) {
 		return false;
-	}
+	}*/
 }

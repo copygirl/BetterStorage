@@ -21,11 +21,7 @@ public class TileBetterStorage extends Block {
 		
 		setCreativeTab(BetterStorage.creativeTab);
 		
-<<<<<<< HEAD
 		setUnlocalizedName(Constants.modId + "." + getTileName());
-=======
-		this.setUnlocalizedName(Constants.modId + "." + getTileName());
->>>>>>> refs/remotes/Thog92/1.8
 		registerBlock();
 		
 	}

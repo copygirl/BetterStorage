@@ -1,27 +1,13 @@
 package net.mcft.copy.betterstorage.addon.nei;
 
 import net.mcft.copy.betterstorage.addon.Addon;
-import net.mcft.copy.betterstorage.client.gui.GuiCraftingStation;
-import net.mcft.copy.betterstorage.content.BetterStorageItems;
-import net.mcft.copy.betterstorage.content.BetterStorageTiles;
-import net.mcft.copy.betterstorage.misc.Constants;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.init.Items;
-import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import codechicken.nei.api.API;
-import codechicken.nei.recipe.DefaultOverlayHandler;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class NEIAddon extends Addon {
 	
 	public NEIAddon() {
 		super("NotEnoughItems");
 	}
+	/*
 	
 	@Override
 	public void postInitialize() {	
@@ -74,5 +60,5 @@ public class NEIAddon extends Addon {
 		
 		@Override
 		public boolean matches(InventoryCrafting crafting, World world) { return false; }
-	}
+	}*/
 }

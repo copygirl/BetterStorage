@@ -16,11 +16,6 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentTranslation;
-<<<<<<< HEAD
-import net.minecraft.util.EnumFacing;
-import net.minecraft.world.IBlockAccess;
-=======
->>>>>>> refs/remotes/Thog92/1.8
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -46,18 +41,13 @@ public class TileBackpack extends TileContainerBetterStorage {
 
 	public ItemBackpack getItemType() { return BetterStorageItems.itemBackpack; }
 	
-<<<<<<< HEAD
 	//TODO (1.8): Moved to betterstorage.backpack.json, left here for reference.
-	/*@Override
-=======
-	
 	/*
 	@Override
->>>>>>> refs/remotes/Thog92/1.8
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
 		blockIcon = iconRegister.registerIcon("wool_colored_brown");
-	}*/
+	}
 	
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess world, BlockPos pos) {

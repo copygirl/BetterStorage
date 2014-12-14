@@ -1,34 +1,9 @@
 package net.mcft.copy.betterstorage.addon.nei;
 
-import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.List;
 
-import net.mcft.copy.betterstorage.api.crafting.BetterStorageCrafting;
-import net.mcft.copy.betterstorage.api.crafting.IRecipeInput;
-import net.mcft.copy.betterstorage.api.crafting.IStationRecipe;
-import net.mcft.copy.betterstorage.api.crafting.RecipeBounds;
-import net.mcft.copy.betterstorage.api.crafting.StationCrafting;
-import net.mcft.copy.betterstorage.client.gui.GuiCraftingStation;
-import net.mcft.copy.betterstorage.misc.Constants;
-import net.mcft.copy.betterstorage.misc.Resources;
-import net.mcft.copy.betterstorage.utils.RenderUtils;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.inventory.Container;
-import net.minecraft.item.ItemStack;
-
-import org.lwjgl.opengl.GL11;
-
-import codechicken.nei.NEIClientUtils;
-import codechicken.nei.NEIServerUtils;
-import codechicken.nei.PositionedStack;
-import codechicken.nei.recipe.RecipeInfo;
-import codechicken.nei.recipe.TemplateRecipeHandler;
-
-public class NEIRecipeHandler extends TemplateRecipeHandler {
+public class NEIRecipeHandler /*extends TemplateRecipeHandler*/ {
 	
-	private final Minecraft mc = Minecraft.getMinecraft();
+	/*private final Minecraft mc = Minecraft.getMinecraft();
 	
 	@Override
 	public String getRecipeName() { return "Crafting Station"; }
@@ -232,6 +207,6 @@ public class NEIRecipeHandler extends TemplateRecipeHandler {
 			return false;
 		}
 		
-	}
+	}*/
 	
 }

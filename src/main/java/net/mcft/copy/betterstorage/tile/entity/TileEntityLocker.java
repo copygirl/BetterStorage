@@ -63,8 +63,8 @@ public class TileEntityLocker extends TileEntityLockable {
 	}
 	
 	@Override
-	public boolean onBlockActivated(EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
-		if (getOrientation().ordinal() != side) return true;
+	public boolean onBlockActivated(EntityPlayer player, EnumFacing side, float hitX, float hitY, float hitZ) {
+		if (getOrientation() != side) return true;
 		return super.onBlockActivated(player, side, hitX, hitY, hitZ);
 	}
 	
@@ -116,6 +116,8 @@ public class TileEntityLocker extends TileEntityLockable {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	
+	//TODO (1.8): Rest of the new IInventory stuff.
 
 	@Override
 	public void clear() {

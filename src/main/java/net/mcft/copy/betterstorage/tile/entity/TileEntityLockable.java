@@ -83,7 +83,7 @@ public abstract class TileEntityLockable extends TileEntityConnectable
 	// TileEntityContainer stuff
 	
 	@Override
-	public boolean onBlockActivated(EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(EntityPlayer player, EnumFacing side, float hitX, float hitY, float hitZ) {
 		if (!worldObj.isRemote && canHaveLock() &&!canPlayerUseContainer(player))
 			((ILock)getLock().getItem()).applyEffects(getLock(), this, player, EnumLockInteraction.OPEN);
 		return super.onBlockActivated(player, side, hitX, hitY, hitZ);
