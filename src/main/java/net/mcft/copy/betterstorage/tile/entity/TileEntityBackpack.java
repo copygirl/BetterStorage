@@ -98,11 +98,11 @@ public class TileEntityBackpack extends TileEntityContainer {
 	public void updateEntity() {
 		super.updateEntity();
 		
-		double x = xCoord + 0.5;
-		double y = yCoord + 0.5;
-		double z = zCoord + 0.5;
+		double x = getPos().getX() + 0.5;
+		double y = getPos().getY() + 0.5;
+		double z = getPos().getZ() + 0.5;
 		
-		String sound = Block.soundTypeSnow.getStepResourcePath();
+		String sound = Block.soundTypeSnow.getStepSound();
 		// Play sound when opening
 		if ((lidAngle > 0.0F) && (prevLidAngle <= 0.0F))
 			worldObj.playSoundEffect(x, y, z, sound, 1.0F, 0.6F);
@@ -113,7 +113,7 @@ public class TileEntityBackpack extends TileEntityContainer {
 		if (despawnTime < 0) return;
 		if (despawnTime++ > 20 * 60 * 5) {
 			equipped = true; // Prevents stuff from being dropped.
-			worldObj.setBlockToAir(xCoord, yCoord, zCoord);
+			worldObj.setBlockToAir(getPos());
 		} else if (((despawnTime % 40) == 0) &&
 		           (worldObj.getClosestPlayer(x, y, z, 24) != null))
 			despawnTime = -1;
@@ -125,11 +125,11 @@ public class TileEntityBackpack extends TileEntityContainer {
 	public Packet getDescriptionPacket() {
 		NBTTagCompound compound = new NBTTagCompound();
 		compound.setTag("stack", stack.writeToNBT(new NBTTagCompound()));
-		return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, compound);
+		return new S35PacketUpdateTileEntity(getPos(), 0, compound);
 	}
 	@Override
 	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
-		NBTTagCompound compound = packet.func_148857_g();
+		NBTTagCompound compound = packet.getNbtCompound();
 		stack = ItemStack.loadItemStackFromNBT(compound.getCompoundTag("stack"));
 	}
 	

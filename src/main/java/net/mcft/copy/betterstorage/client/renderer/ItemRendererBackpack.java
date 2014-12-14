@@ -1,17 +1,13 @@
 package net.mcft.copy.betterstorage.client.renderer;
 
-import net.mcft.copy.betterstorage.item.ItemBackpack;
-import net.mcft.copy.betterstorage.proxy.ClientProxy;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityContainer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
-
-import org.lwjgl.opengl.GL11;
-
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
+@Deprecated
 public class ItemRendererBackpack implements IItemRenderer {
 	
 	private final Class<? extends TileEntityContainer> tileEntityClass;
@@ -23,7 +19,7 @@ public class ItemRendererBackpack implements IItemRenderer {
 	
 	@Override
 	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-		boolean entity = (type == ItemRenderType.ENTITY);
+		/*boolean entity = (type == ItemRenderType.ENTITY);
 		boolean equippedFirstPerson = (type == ItemRenderType.EQUIPPED_FIRST_PERSON);
 		boolean equippedThirdPerson = (type == ItemRenderType.EQUIPPED);
 		boolean equipped = (equippedFirstPerson || equippedThirdPerson);
@@ -45,7 +41,7 @@ public class ItemRendererBackpack implements IItemRenderer {
 		    (type == ItemRenderType.EQUIPPED_FIRST_PERSON))
 			GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 		renderingHandler.renderInventoryBlock(((ItemBackpack)item.getItem()).getBlockType(), 0, 0, null);
-		GL11.glPopMatrix();
+		GL11.glPopMatrix();*/
 	}
 
 	@Override

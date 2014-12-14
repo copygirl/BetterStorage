@@ -138,7 +138,8 @@ public abstract class TileEntityContainer extends TileEntity {
 	public void dropContents() {
 		if (contents != null)
 			for (ItemStack stack : contents)
-				WorldUtils.dropStackFromBlock(worldObj, this.getPos(), stack);
+				WorldUtils.dropStackFromBlock(worldObj, getPos(), stack);
+
 	}
 	
 	/** Called before the tile entity is being rendered as an item.
@@ -196,14 +197,17 @@ public abstract class TileEntityContainer extends TileEntity {
 	protected void comparatorUpdateAndReset() {
 		compAccessed = false;
 		compContentsChanged = false;
-		worldObj.notifyBlockOfStateChange(this.getPos(), getBlockType());
+		worldObj.notifyNeighborsOfStateChange(getPos(), getBlockType());
+
 	}
 	
 	/** Calls the TileEntity.markDirty function without affecting the
 	 *  attached inventory (if any). Marks the tile entity to be saved. */
 	public void markDirtySuper() {
 		if (worldObj.isRemote) return;
-		worldObj.markTileEntityChunkModified(this.getPos(), this);
+		//TODO (1.8): What's that for? Why is it needed?
+		//worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
+
 		if (hasComparatorAccessed())
 			markContentsChanged();
 	}
@@ -227,6 +231,7 @@ public abstract class TileEntityContainer extends TileEntity {
 	protected boolean doesSyncPlayers() { return false; }
 	/** Returns if the container should synchronize playersUsing over the network, called each tick. */
 	protected boolean syncPlayersUsing() {
+		//TODO (1.8): Change it. Simple.
 		return (!worldObj.isRemote && doesSyncPlayers() &&
 		        (((ticksExisted + pos.getX() + pos.getY() + pos.getZ()) & 0xFF) == 0) &&
 		        worldObj.doChunksNearChunkExist(this.getPos(), 16));
@@ -234,7 +239,7 @@ public abstract class TileEntityContainer extends TileEntity {
 	/** Synchronizes playersUsing over the network. */
 	private void doSyncPlayersUsing(int playersUsing) {
 		if (!doesSyncPlayers()) return;
-		worldObj.addBlockEvent(this.getPos(), getBlockType(), 0, playersUsing);
+		worldObj.addBlockEvent(getPos(), getBlockType(), 0, playersUsing);
 	}
 	
 	@Override
@@ -256,7 +261,8 @@ public abstract class TileEntityContainer extends TileEntity {
 	
 	protected float getLidSpeed() { return 0.1F; }
 	
-	@Override
+	//TODO (1.8): This can't be gone. Not possible.
+//	@Override
 	public void updateEntity() {
 		ticksExisted++;
 		
@@ -305,7 +311,7 @@ public abstract class TileEntityContainer extends TileEntity {
 	/** Marks the block for an update, which will cause
 	 *  a description packet to be send to players. */
 	public void markForUpdate() {
-		worldObj.markBlockForUpdate(this.getPos());
+		worldObj.markBlockForUpdate(getPos());
 		markDirty();
 	}
 	

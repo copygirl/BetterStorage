@@ -85,13 +85,13 @@ public class TileEntityCardboardBox extends TileEntityContainer {
 	public Packet getDescriptionPacket() {
 		NBTTagCompound compound = new NBTTagCompound();
 		if (color >= 0) compound.setInteger("color", color);
-		return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, compound);
+		return new S35PacketUpdateTileEntity(getPos(), 0, compound);
 	}
 	@Override
 	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
-		NBTTagCompound compound = packet.func_148857_g();
+		NBTTagCompound compound = packet.getNbtCompound();
 		color = (compound.hasKey("color") ? compound.getInteger("color") : -1);
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		worldObj.markBlockForUpdate(getPos());
 	}
 	
 	// Reading from / writing to NBT

@@ -6,10 +6,11 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 
 public class SlotArmorBackpack extends Slot {
 	
@@ -19,10 +20,18 @@ public class SlotArmorBackpack extends Slot {
 		super(inventory, slot, x, y);
 	}
 	
+
+	//TODO (1.8): getBackgroundSprite looks promising. Actually, that WAS the only IIcon implementation I knew about.
+	/*@Override
+	@SideOnly(Side.CLIENT)
+	public IIcon getBackgroundIconIndex() {
+		return ItemArmor.func_94602_b(armorType);
+	}*/
+
 	
 	@Override
 	public int getSlotStackLimit() { return 1; }
-	
+
 	@Override
 	public boolean isItemValid(ItemStack stack) {
 		if (stack == null) return false;

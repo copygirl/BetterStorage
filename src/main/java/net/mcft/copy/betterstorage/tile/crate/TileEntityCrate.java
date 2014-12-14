@@ -24,12 +24,14 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IChatComponent;
 
 public class TileEntityCrate extends TileEntityContainer implements IInventory, ICrateStorage, ICrateWatcher {
 	
-	private static final ForgeDirection[] sideDirections = {
-		ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.WEST, ForgeDirection.EAST
+	private static final EnumFacing[] sideDirections = {
+		EnumFacing.NORTH, EnumFacing.SOUTH, EnumFacing.WEST, EnumFacing.EAST
 	};
 	
 	public static final int slotsPerCrate = 18;
@@ -67,21 +69,19 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 	/** Destroys all crates above, and makes sure when piles split,
 	 *  each pile gets their own CratePileData object. */
 	private void checkPileConnections(CratePileData data) {
-		int x = xCoord, y = yCoord, z = zCoord;
-		
 		// Destroy all crates above.
-		TileEntityCrate crateAbove = WorldUtils.get(worldObj, x, y + 1, z, TileEntityCrate.class);
+		TileEntityCrate crateAbove = WorldUtils.get(worldObj, getPos().offsetUp(), TileEntityCrate.class);
 		if ((crateAbove != null) && (crateAbove.data == data)) {
-			worldObj.setBlockToAir(x, y + 1, z);
+			worldObj.setBlockToAir(getPos().offsetUp());
 			crateAbove.dropItem(new ItemStack(BetterStorageTiles.crate));
 		}
 		
 		// If there's still some crates left and this is a
 		// base crate, see which crates are still connected.
-		if ((data.getNumCrates() <= 0) || (y != data.getRegion().minY)) return;
+		if ((data.getNumCrates() <= 0) || (getPos().getY() != data.getRegion().minY)) return;
 		
 		// If there's more than one crate set, they need to split.
-		List<HashSet<TileEntityCrate>> crateSets = getCrateSets(x, y, z, data);
+		List<HashSet<TileEntityCrate>> crateSets = getCrateSets(getPos(), data);
 		if (crateSets.size() <= 1) return;
 		
 		// The first crate set will keep the original pile data.
@@ -95,7 +95,7 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 				newPileCrate.setPileData(newPileData, true);
 				// Add all crates above the base crate.
 				while (true) {
-					newPileCrate = WorldUtils.get(worldObj, newPileCrate.xCoord, newPileCrate.yCoord + 1, newPileCrate.zCoord, TileEntityCrate.class);
+					newPileCrate = WorldUtils.get(worldObj, newPileCrate.getPos().offsetUp(), TileEntityCrate.class);
 					if (newPileCrate == null) break;
 					newPileCrate.setPileData(newPileData, true);
 					numCrates++;
@@ -115,17 +115,16 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 		data.trimMap();
 	}
 	
-	private List<HashSet<TileEntityCrate>> getCrateSets(int x, int y, int z, CratePileData data) {
+	private List<HashSet<TileEntityCrate>> getCrateSets(BlockPos pos, CratePileData data) {
 		List<HashSet<TileEntityCrate>> crateSets = new ArrayList<HashSet<TileEntityCrate>>();
 		int checkedCrates = 0;
 		
-		neighborLoop: // Suck it :P
-		for (ForgeDirection dir : sideDirections) {
-			int nx = x + dir.offsetX;
-			int nz = z + dir.offsetZ;
+		neighborLoop: // Suck it :P //TODO (1.8): Nah.
+		for (EnumFacing dir : sideDirections) {
+			BlockPos offset = pos.offset(dir);
 			
 			// Continue if this neighbor block is not part of the crate pile.
-			TileEntityCrate neighborCrate = WorldUtils.get(worldObj, nx, y, nz, TileEntityCrate.class);
+			TileEntityCrate neighborCrate = WorldUtils.get(worldObj, offset, TileEntityCrate.class);
 			if ((neighborCrate == null) || (neighborCrate.data != data)) continue;
 			
 			// See if the neighbor crate is already in a crate set,
@@ -136,8 +135,8 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 			// Create a new set of crates and fill it with all connecting crates.
 			HashSet<TileEntityCrate> set = new HashSet<TileEntityCrate>();
 			set.add(neighborCrate);
-			for (ForgeDirection ndir : sideDirections)
-				checkConnections(nx + ndir.offsetX, y, nz + ndir.offsetZ, data, set);
+			for (EnumFacing ndir : sideDirections)
+				checkConnections(offset.offset(ndir), data, set);
 			crateSets.add(set);
 			
 			// If we checked all crates, stop the loop.
@@ -148,12 +147,12 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 		return crateSets;
 	}
 	
-	private void checkConnections(int x, int y, int z, CratePileData data, HashSet<TileEntityCrate> set) {
-		TileEntityCrate crate = WorldUtils.get(worldObj, x, y, z, TileEntityCrate.class);
+	private void checkConnections(BlockPos pos, CratePileData data, HashSet<TileEntityCrate> set) {
+		TileEntityCrate crate = WorldUtils.get(worldObj, pos, TileEntityCrate.class);
 		if ((crate == null) || (data != crate.data) || set.contains(crate)) return;
 		set.add(crate);
-		for (ForgeDirection ndir : sideDirections)
-			checkConnections(x + ndir.offsetX, y, z + ndir.offsetZ, data, set);
+		for (EnumFacing ndir : sideDirections)
+			checkConnections(pos.offset(ndir), data, set);
 	}
 	
 	@Override
@@ -163,12 +162,9 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 		if (!isInvalid()) getPileData();
 	}
 	
-	public void attemptConnect(ForgeDirection side) {
-		if (worldObj.isRemote || (side == ForgeDirection.UP)) return;
-		int x = xCoord + side.offsetX;
-		int y = yCoord + side.offsetY;
-		int z = zCoord + side.offsetZ;
-		TileEntityCrate crateClicked = WorldUtils.get(worldObj, x, y, z, TileEntityCrate.class);
+	public void attemptConnect(EnumFacing side) {
+		if (worldObj.isRemote || (side == EnumFacing.UP)) return;
+		TileEntityCrate crateClicked = WorldUtils.get(worldObj, getPos().offset(side), TileEntityCrate.class);
 		if (crateClicked == null) return;
 		CratePileData pileData = crateClicked.getPileData();
 		if (pileData.canAdd(this))
@@ -189,7 +185,7 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 	
 	/** Drops a single item from the (destroyed) crate. */
 	private void dropItem(ItemStack stack) {
-		WorldUtils.dropStackFromBlock(worldObj, xCoord, yCoord, zCoord, stack);
+		WorldUtils.dropStackFromBlock(worldObj, getPos(), stack);
 	}
 	/** Drops multiple item from the (destroyed) crate. */
 	private void dropItems(List<ItemStack> stacks) {
@@ -263,8 +259,6 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 	// IInventory implementation
 
 	@Override
-	public String getInventoryName() { return getName(); }
-	@Override
 	public int getInventoryStackLimit() { return 64; }
 	
 	@Override
@@ -312,12 +306,12 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) { return false; }
 	@Override
-	public boolean hasCustomInventoryName() { return false; }
+	public boolean hasCustomName() { return false; }
 	
 	@Override
-	public void openInventory() { getPileData().blockView.openInventory(); }
+	public void openInventory(EntityPlayer player) { getPileData().blockView.openInventory(player); }
 	@Override
-	public void closeInventory() { getPileData().blockView.closeInventory(); }
+	public void closeInventory(EntityPlayer player) { getPileData().blockView.closeInventory(player); }
 	
 	// ICrateStorage implementation
 	
@@ -374,12 +368,12 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 	public Packet getDescriptionPacket() {
 		NBTTagCompound compound = new NBTTagCompound();
 		compound.setInteger("crateId", id);
-        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, compound);
+        return new S35PacketUpdateTileEntity(getPos(), 0, compound);
 	}
 	@Override
 	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
-		id = packet.func_148857_g().getInteger("crateId");
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		id = packet.getNbtCompound().getInteger("crateId");
+		worldObj.markBlockForUpdate(getPos());
 	}
 	
 	// Reading from / writing to NBT
@@ -395,6 +389,36 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 		compound.setInteger("crateId", id);
 		// TODO: This might not be the best place to save the crate data.
 		getPileData().save();
+	}
+
+	@Override
+	public IChatComponent getDisplayName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public int getField(int id) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void setField(int id, int value) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int getFieldCount() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void clear() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

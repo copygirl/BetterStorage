@@ -1,39 +1,10 @@
 package net.mcft.copy.betterstorage.addon.thaumcraft;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.addon.Addon;
-import net.mcft.copy.betterstorage.client.renderer.ItemRendererBackpack;
-import net.mcft.copy.betterstorage.client.renderer.TileEntityReinforcedChestRenderer;
-import net.mcft.copy.betterstorage.config.setting.BooleanSetting;
-import net.mcft.copy.betterstorage.content.BetterStorageItems;
-import net.mcft.copy.betterstorage.content.BetterStorageTiles;
-import net.mcft.copy.betterstorage.misc.Constants;
-import net.mcft.copy.betterstorage.proxy.ClientProxy;
-import net.mcft.copy.betterstorage.tile.TileBackpack;
-import net.mcft.copy.betterstorage.tile.entity.TileEntityBackpack;
-import net.mcft.copy.betterstorage.utils.MiscUtils;
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.client.MinecraftForgeClient;
-import thaumcraft.api.ItemApi;
-import thaumcraft.api.ThaumcraftApi;
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.crafting.InfusionRecipe;
-import thaumcraft.api.research.ResearchItem;
-import thaumcraft.api.research.ResearchPage;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ThaumcraftAddon extends Addon {
 	
-	public static final String thaumcraftBackpackEnabled = "tile.thaumcraftBackpack";
+	/*public static final String thaumcraftBackpackEnabled = "tile.thaumcraftBackpack";
 	public static final String thaumiumChestEnabled = "tile.thaumiumChest";
 	
 	public static TileBackpack thaumcraftBackpack;
@@ -48,12 +19,12 @@ public class ThaumcraftAddon extends Addon {
 	public static ItemStack fabric;
 	
 	public static InfusionRecipe thaumcraftBackpackRecipe;
-	public static InfusionRecipe thaumiumChestRecipe;
+	public static InfusionRecipe thaumiumChestRecipe;*/
 	
 	public ThaumcraftAddon() {
 		super("Thaumcraft");
 	}
-	
+	/*
 	@Override
 	public void setupConfig() {
 		
@@ -203,5 +174,5 @@ public class ThaumcraftAddon extends Addon {
 		}
 		
 	}
-	
+	*/
 }

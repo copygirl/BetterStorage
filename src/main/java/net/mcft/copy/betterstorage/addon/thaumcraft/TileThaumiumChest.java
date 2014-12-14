@@ -2,10 +2,6 @@ package net.mcft.copy.betterstorage.addon.thaumcraft;
 
 import net.mcft.copy.betterstorage.tile.TileReinforcedChest;
 import net.minecraft.block.material.Material;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TileThaumiumChest extends TileReinforcedChest {
 	
@@ -19,7 +15,7 @@ public class TileThaumiumChest extends TileReinforcedChest {
 		setHarvestLevel("pickaxe", 2);
 	}
 	
-	@Override
+	/*@Override
 	public boolean hasMaterial() { return false; }
 	
 	@Override
@@ -29,6 +25,6 @@ public class TileThaumiumChest extends TileReinforcedChest {
 	@Override
 	public TileEntity createTileEntity(World world, int metadata) {
 		return new TileEntityThaumiumChest();
-	}
+	}*/
 	
 }

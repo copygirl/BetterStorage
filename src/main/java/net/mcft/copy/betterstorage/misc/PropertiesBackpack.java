@@ -78,7 +78,7 @@ public class PropertiesBackpack implements IExtendedEntityProperties {
 		if (!entity.worldObj.isRemote) {
 			
 			// Play sound when equipped backpack opens / closes.
-			String sound = Block.soundTypeSnow.getStepResourcePath();
+			String sound = Block.soundTypeSnow.getStepSound();
 			if ((lidAngle > 0.0F) && (prevLidAngle <= 0.0F))
 				entity.worldObj.playSoundEffect(entity.posX, entity.posY, entity.posZ, sound, 1.0F, 0.6F);
 			if ((lidAngle < 0.2F) && (prevLidAngle >= 0.2F))

@@ -7,20 +7,18 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class TileEntityPresentRenderer extends TileEntitySpecialRenderer {
@@ -31,10 +29,10 @@ public class TileEntityPresentRenderer extends TileEntitySpecialRenderer {
 	private ModelPresent model = new ModelPresent();
 	
 	@Override
-	public void renderTileEntityAt(TileEntity entity, double x, double y, double z, float par8) {
-		renderTileEntityAt((TileEntityPresent)entity, x, y, z, par8);
+	public void renderTileEntityAt(TileEntity entity, double x, double y, double z, float par8, int par9) {
+		renderTileEntityAt((TileEntityPresent)entity, x, y, z, par8, par9);
 	}
-	public void renderTileEntityAt(TileEntityPresent present, double x, double y, double z, float partialTicks) {
+	public void renderTileEntityAt(TileEntityPresent present, double x, double y, double z, float partialTicks, int par9) {
 		
 		TextureManager texMan = Minecraft.getMinecraft().getTextureManager();
 		
@@ -42,7 +40,8 @@ public class TileEntityPresentRenderer extends TileEntitySpecialRenderer {
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		GL11.glTranslated(x + 0.5, y, z + 0.5);
 		
-		texMan.bindTexture(texMan.getResourceLocation(0));
+		//TODO (1.8): This was probably used to make it load the terrain texture.
+//		texMan.bindTexture(texMan.getResourceLocation(0));
 		
 		renderSome(present.colorInner, 1);
 		renderSome(present.colorOuter, (present.skojanzaMode
@@ -58,11 +57,11 @@ public class TileEntityPresentRenderer extends TileEntitySpecialRenderer {
 		GL11.glDisable(GL11.GL_BLEND);
 		
 		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-		if ((present.nameTag != null) && (present.getWorldObj() != null) && (player != null) &&
-		    (player.getDistanceSq(present.xCoord + 0.5, present.yCoord + 0.5, present.zCoord + 0.5) < NAMETAG_RENDER_RANGE_SQ)) {
+		if ((present.nameTag != null) && (present.getWorld() != null) && (player != null) &&
+		    (player.getDistanceSqToCenter(present.getPos()) < NAMETAG_RENDER_RANGE_SQ)) {
 			MovingObjectPosition o = Minecraft.getMinecraft().objectMouseOver;
-			renderNameTag(present.nameTag, player.getCommandSenderName().equalsIgnoreCase(present.nameTag),
-			              ((o.blockX == present.xCoord) && (o.blockY == present.yCoord) && (o.blockZ == present.zCoord)));
+			renderNameTag(present.nameTag, player.getName().equalsIgnoreCase(present.nameTag),
+			             o.func_178782_a().equals(present.getPos()));
 		}
 		
 		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
@@ -71,7 +70,8 @@ public class TileEntityPresentRenderer extends TileEntitySpecialRenderer {
 	}
 	
 	private void renderSome(int color, int... layers) {
-		IIcon icon = ((color < 16) ? Blocks.wool.getIcon(0, color) : Blocks.gold_block.getIcon(0, 0));
+		//TODO (1.8): Icons are dead. Find a replacement. Needle in a haystack, again.
+		/*IIcon icon = ((color < 16) ? Blocks.wool.getIcon(0, color) : Blocks.gold_block.getIcon(0, 0));
 		
 		GL11.glMatrixMode(GL11.GL_TEXTURE);
 		GL11.glPushMatrix();
@@ -83,13 +83,13 @@ public class TileEntityPresentRenderer extends TileEntitySpecialRenderer {
 			model.render(layers[i]);
 		
 		GL11.glPopMatrix();
-		GL11.glMatrixMode(GL11.GL_MODELVIEW);
+		GL11.glMatrixMode(GL11.GL_MODELVIEW);*/
 	}
 	
 	private void renderNameTag(String owner, boolean isOwner, boolean lookingAt) {
 		
-		FontRenderer fontRen = Minecraft.getMinecraft().fontRenderer;
-		RenderManager renMan = RenderManager.instance;
+		FontRenderer fontRen = Minecraft.getMinecraft().fontRendererObj;
+		RenderManager renMan = Minecraft.getMinecraft().getRenderManager();
 		
 		int boxColor = 0;
 		int boxAlpha = (lookingAt ? 128 : 48);
@@ -110,15 +110,15 @@ public class TileEntityPresentRenderer extends TileEntitySpecialRenderer {
         OpenGlHelper.glBlendFunc(770, 771, 1, 0);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         
-        Tessellator tessellator = Tessellator.instance;
-        tessellator.startDrawingQuads();
+        WorldRenderer wr = Tessellator.getInstance().getWorldRenderer();
+        wr.startDrawingQuads();
         int j = fontRen.getStringWidth(owner) / 2;
-        tessellator.setColorRGBA_I(boxColor, boxAlpha);
-        tessellator.addVertex(-j - 2, -1, 0.0D);
-        tessellator.addVertex(-j - 2,  9, 0.0D);
-        tessellator.addVertex( j + 2,  9, 0.0D);
-        tessellator.addVertex( j + 2, -1, 0.0D);
-        tessellator.draw();
+        wr.func_178974_a(boxColor, boxAlpha); //setColorRGBA_i
+        wr.addVertex(-j - 2, -1, 0.0D);
+        wr.addVertex(-j - 2,  9, 0.0D);
+        wr.addVertex( j + 2,  9, 0.0D);
+        wr.addVertex( j + 2, -1, 0.0D);
+        Tessellator.getInstance().draw();
         
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glDepthMask(true);

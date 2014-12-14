@@ -13,7 +13,11 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IChatComponent;
 import net.minecraftforge.common.util.Constants.NBT;
+import scala.actors.threadpool.Arrays;
 
 public class TileEntityCraftingStation extends TileEntityContainer
                                        implements IInventory, ISidedInventory {
@@ -50,19 +54,17 @@ public class TileEntityCraftingStation extends TileEntityContainer
 	@Override
 	public void dropContents() {
 		for (ItemStack stack : crafting)
-			WorldUtils.dropStackFromBlock(worldObj, xCoord, yCoord, zCoord, stack);
+			WorldUtils.dropStackFromBlock(worldObj, getPos(), stack);
 		if (stationInventory.outputIsReal)
 			for (ItemStack stack : output)
-				WorldUtils.dropStackFromBlock(worldObj, xCoord, yCoord, zCoord, stack);
+				WorldUtils.dropStackFromBlock(worldObj, getPos(), stack);
 		super.dropContents();
 	}
 	
 	// IInventory implementation
 	
 	@Override
-	public String getInventoryName() { return getName(); }
-	@Override
-	public boolean hasCustomInventoryName() { return !shouldLocalizeTitle(); }
+	public boolean hasCustomName() { return !shouldLocalizeTitle(); }
 	@Override
 	public int getInventoryStackLimit() { return 64; }
 	@Override
@@ -89,9 +91,9 @@ public class TileEntityCraftingStation extends TileEntityContainer
 	@Override
 	public void markDirty() { stationInventory.markDirty(); }
 	@Override
-	public void openInventory() {  }
+	public void openInventory(EntityPlayer player) {  }
 	@Override
-	public void closeInventory() {  }
+	public void closeInventory(EntityPlayer player) {  }
 	
 	// ISidedInventory implementation
 	
@@ -99,12 +101,12 @@ public class TileEntityCraftingStation extends TileEntityContainer
 	private static int[] slotsBottom = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
 	
 	@Override
-	public int[] getAccessibleSlotsFromSide(int side) { return ((side == 0) ? slotsBottom : slotsAny); }
+	public int[] getSlotsForFace(EnumFacing facing) { return facing == EnumFacing.DOWN ? slotsBottom : slotsAny; }
 	@Override
-	public boolean canInsertItem(int slot, ItemStack stack, int side) { return (side != 0); }
+	public boolean canInsertItem(int slot, ItemStack stack, EnumFacing facing) { return facing != EnumFacing.DOWN; }
 	@Override
-	public boolean canExtractItem(int slot, ItemStack stack, int side) {
-		return ((side != 0) || (GlobalConfig.enableStationAutoCraftingSetting.getValue() &&
+	public boolean canExtractItem(int slot, ItemStack stack, EnumFacing facing) {
+		return ((facing != EnumFacing.DOWN) || (GlobalConfig.enableStationAutoCraftingSetting.getValue() &&
 		                        stationInventory.canTake(null)));
 	}
 	
@@ -128,6 +130,35 @@ public class TileEntityCraftingStation extends TileEntityContainer
 		if (stationInventory.outputIsReal)
 			compound.setTag("Output", NbtUtils.writeItems(output));
 		compound.setInteger("progress", stationInventory.progress);
+	}
+
+	@Override
+	public IChatComponent getDisplayName() {
+		return new ChatComponentText(getName());
+	}
+
+	@Override
+	public int getField(int id) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void setField(int id, int value) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int getFieldCount() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void clear() {
+		Arrays.fill(crafting, null);
+		Arrays.fill(output, null);
 	}
 	
 }

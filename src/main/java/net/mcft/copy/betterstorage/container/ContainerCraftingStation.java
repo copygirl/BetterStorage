@@ -1,13 +1,5 @@
 package net.mcft.copy.betterstorage.container;
 
-import invtweaks.api.container.ContainerSection;
-import invtweaks.api.container.ContainerSectionCallback;
-import invtweaks.api.container.InventoryContainer;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import net.mcft.copy.betterstorage.inventory.InventoryCraftingStation;
 import net.mcft.copy.betterstorage.inventory.InventoryTileEntity;
 import net.mcft.copy.betterstorage.item.recipe.VanillaStationCrafting;
@@ -23,7 +15,7 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@InventoryContainer
+//@InventoryContainer
 public class ContainerCraftingStation extends ContainerBetterStorage {
 	
 	public InventoryCraftingStation inv;
@@ -38,13 +30,13 @@ public class ContainerCraftingStation extends ContainerBetterStorage {
 		super(player, inventory, 9, 2);
 	}
 	
-	@ContainerSectionCallback
+	/*@ContainerSectionCallback
 	@SideOnly(Side.CLIENT)
 	public Map<ContainerSection, List<Slot>> getContainerSections() {
 		HashMap<ContainerSection, List<Slot>> map = new HashMap<ContainerSection, List<Slot>>();
 		map.put(ContainerSection.CHEST, inventorySlots.subList(17, 17 + getRows() * getColumns()));
 		return map;
-	}
+	}*/
 	
 	@Override
 	public int getHeight() { return 209; }

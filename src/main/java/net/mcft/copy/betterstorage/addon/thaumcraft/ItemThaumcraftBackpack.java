@@ -1,36 +1,15 @@
 package net.mcft.copy.betterstorage.addon.thaumcraft;
 
-import java.lang.reflect.Method;
-import java.util.List;
-
 import net.mcft.copy.betterstorage.item.ItemBackpack;
-import net.mcft.copy.betterstorage.misc.Constants;
-import net.mcft.copy.betterstorage.tile.TileBackpack;
-import net.mcft.copy.betterstorage.utils.StackUtils;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import thaumcraft.api.IRepairable;
-import thaumcraft.api.IVisDiscountGear;
-import thaumcraft.api.ThaumcraftApi;
-import thaumcraft.api.aspects.Aspect;
 
-public class ItemThaumcraftBackpack extends ItemBackpack implements IRepairable, IVisDiscountGear {
+public class ItemThaumcraftBackpack extends ItemBackpack /*implements IRepairable, IVisDiscountGear*/ {
 	
 	public ItemThaumcraftBackpack() {
 		super(ItemBackpack.material);
 		setMaxDamage(288);
 	}
 	
-	@Override
+	/*@Override
 	public String getBackpackName() { return Constants.containerThaumcraftBackpack; }
 	
 	@Override
@@ -74,7 +53,7 @@ public class ItemThaumcraftBackpack extends ItemBackpack implements IRepairable,
 			repairItems(backpack, (EntityPlayer)entity);
 	}
 	
-	/* TODO: Readd flux effects.
+	//TODO: Read flux effects.
 	
 	private void createFlux(EntityPlayer player, ItemStack backpack) {
 		
@@ -109,7 +88,7 @@ public class ItemThaumcraftBackpack extends ItemBackpack implements IRepairable,
 		effect.apply(player, backpack);
 		
 	}
-	*/
+	
 	
 	public void repairItems(ItemStack backpack, EntityPlayer player) {
 		
@@ -143,5 +122,5 @@ public class ItemThaumcraftBackpack extends ItemBackpack implements IRepairable,
 	
 	@Override
 	public int getVisDiscount(ItemStack stack, EntityPlayer player, Aspect aspect) { return 2; }
-	
+	*/
 }

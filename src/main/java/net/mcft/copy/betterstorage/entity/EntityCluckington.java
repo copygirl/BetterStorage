@@ -33,7 +33,7 @@ public class EntityCluckington extends EntityChicken {
 		tasks.addTask(2, new EntityAIAttackOnCollide(this, EntityZombie.class, 1.0D, false));
 		tasks.addTask(2, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.0D, false));
         targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
-        targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityZombie.class, 0, true));
+        targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityZombie.class, true));
 	}
 	
 	@Override
@@ -45,7 +45,7 @@ public class EntityCluckington extends EntityChicken {
 	}
 	
 	@Override
-	public boolean hasCustomNameTag() { return true; }
+	public boolean hasCustomName() { return true; }
 	@Override
 	public String getCustomNameTag() { return "Cluckington"; }
 	

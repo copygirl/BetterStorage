@@ -1,13 +1,10 @@
 package net.mcft.copy.betterstorage.client.renderer;
 
-import net.mcft.copy.betterstorage.utils.RenderUtils;
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 
-import org.lwjgl.opengl.GL11;
-
+@Deprecated
 public class ItemRendererCardboardBox implements IItemRenderer {
 	
 	// This custom item renderer is only necessary because of a bug in Vanilla.
@@ -31,7 +28,7 @@ public class ItemRendererCardboardBox implements IItemRenderer {
 	
 	@Override
 	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-		int color = item.getItem().getColorFromItemStack(item, 0);
+		/*int color = item.getItem().getColorFromItemStack(item, 0);
 		RenderUtils.setColorFromInt(color);
 		RenderBlocks render = RenderBlocks.getInstance();
 		render.useInventoryTint = false;
@@ -39,7 +36,7 @@ public class ItemRendererCardboardBox implements IItemRenderer {
 		    (type == ItemRenderType.EQUIPPED_FIRST_PERSON))
 			GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 		render.renderBlockAsItem(block, item.getItemDamage(), 1.0F);
-		render.useInventoryTint = true;
+		render.useInventoryTint = true;*/
 	}
 	
 }

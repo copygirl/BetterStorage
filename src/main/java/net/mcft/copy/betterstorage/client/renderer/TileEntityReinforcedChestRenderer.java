@@ -6,12 +6,11 @@ import net.minecraft.client.model.ModelChest;
 import net.minecraft.client.model.ModelLargeChest;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class TileEntityReinforcedChestRenderer extends TileEntitySpecialRenderer {
@@ -19,7 +18,7 @@ public class TileEntityReinforcedChestRenderer extends TileEntitySpecialRenderer
 	private ModelChest chestModel = new ModelChest();
 	private ModelChest largeChestModel = new ModelLargeChest();
 	
-	public void renderTileEntityAt(TileEntityReinforcedChest chest, double x, double y, double z, float partialTicks) {
+	public void renderTileEntityAt(TileEntityReinforcedChest chest, double x, double y, double z, float partialTicks, int par5) {
 		
 		boolean large = chest.isConnected();
 		if (large && !chest.isMain()) return;
@@ -61,8 +60,8 @@ public class TileEntityReinforcedChestRenderer extends TileEntitySpecialRenderer
 	}
 	
 	@Override
-	public void renderTileEntityAt(TileEntity entity, double x, double y, double z, float partialTicks) {
-		renderTileEntityAt((TileEntityReinforcedChest) entity, x, y, z, partialTicks);
+	public void renderTileEntityAt(TileEntity entity, double x, double y, double z, float partialTicks, int par5) {
+		renderTileEntityAt((TileEntityReinforcedChest) entity, x, y, z, partialTicks, par5);
 	}
 	
 }

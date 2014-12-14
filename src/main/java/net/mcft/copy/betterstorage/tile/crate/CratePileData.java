@@ -14,6 +14,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.BlockPos;
 import net.minecraftforge.common.util.Constants.NBT;
 
 /** Holds data for a single crate pile, a multi-block
@@ -104,23 +105,24 @@ public class CratePileData {
 	public boolean canAdd(TileEntityCrate crate) {
 		return ((map != null) && (numCrates < maxCratePileSize) &&
 		        (map.region.contains(crate) || canExpand(crate)) &&
-		        (map.get(crate.xCoord, crate.yCoord - 1, crate.zCoord) || (crate.yCoord == map.region.minY)));
+		        (map.get(crate.getPos().offsetDown()) || (crate.getPos().getY() == map.region.minY)));
 	}
 	/** Returns if the crate can expand the crate pile. */
 	private boolean canExpand(TileEntityCrate crate) {
+		//TODO (1.8): Use AABB, the future is now!
 		int volume = map.region.volume();
 		// Can't expand if there's not enough crates in the bounding box.
 		if (numCrates < Math.min((int)(volume * 0.8), volume - 5)) return false;
 		
-		if (crate.xCoord < map.region.minX || crate.xCoord > map.region.maxX) {
+		if (crate.getPos().getX() < map.region.minX || crate.getPos().getX() > map.region.maxX) {
 			int maxDiff = ((map.region.height() == 1) ? 1 : 3);
 			if (map.region.width() >= maxDiff + Math.min(map.region.height(), map.region.depth()))
 				return false;
-		} else if (crate.zCoord < map.region.minZ || crate.zCoord > map.region.maxZ) {
+		} else if (crate.getPos().getZ() < map.region.minZ || crate.getPos().getZ() > map.region.maxZ) {
 			int maxDiff = ((map.region.width() == 1) ? 1 : 3);
 			if (map.region.height() >= maxDiff + Math.min(map.region.width(), map.region.depth()))
 				return false;
-		} else if (crate.yCoord < map.region.minY || crate.yCoord > map.region.maxY) {
+		} else if (crate.getPos().getY() < map.region.minY || crate.getPos().getY() > map.region.maxY) {
 			int maxDiff = ((map.region.width() == 1 || map.region.height() == 1) ? 1 : 4);
 			if (map.region.depth() >= maxDiff + Math.min(map.region.width(), map.region.height()))
 				return false;
@@ -156,8 +158,8 @@ public class CratePileData {
 	}
 	
 	/** Returns if there's a crate from the crate pile at that position. */
-	public boolean hasCrate(int x, int y, int z) {
-		return map.get(x, y, z);
+	public boolean hasCrate(BlockPos pos) {
+		return map.get(pos);
 	}
 	
 	// Adding items
@@ -277,7 +279,7 @@ public class CratePileData {
 			int damage = stackCompound.getShort("Damage");
 			ItemStack stack = new ItemStack(item, count, damage);
 			if (stackCompound.hasKey("tag"))
-				stack.stackTagCompound = stackCompound.getCompoundTag("tag");
+				stack.setTagCompound(stackCompound.getCompoundTag("tag"));
 			if (stack.getItem() != null)
 				pileData.getContents().set(new ItemIdentifier(stack), stack.stackSize);
 		}

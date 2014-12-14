@@ -17,8 +17,8 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -26,7 +26,7 @@ public class TileEntityLockableDoor extends TileEntity implements ILockable, IHa
 
 	private Attachments attachments = new Attachments(this);	
 	public LockAttachment lockAttachment;
-	public ForgeDirection orientation = ForgeDirection.NORTH;
+	public EnumFacing orientation = EnumFacing.NORTH;
 	
 	private boolean powered = false;
 	private boolean swing = false;
@@ -88,19 +88,20 @@ public class TileEntityLockableDoor extends TileEntity implements ILockable, IHa
 		// Turn it back into a normal iron door
 		if(lock == null) {
 			lockAttachment.setItem(null);		
-			int rotation = orientation == ForgeDirection.WEST ? 0 : orientation == ForgeDirection.NORTH ? 1 : orientation == ForgeDirection.EAST ? 2 : 3;
+			int rotation = orientation == EnumFacing.WEST ? 0 : orientation == EnumFacing.NORTH ? 1 : orientation == EnumFacing.EAST ? 2 : 3;
 			rotation = isMirrored ? (rotation == 0 ? 1 : rotation == 1 ? 2 : rotation == 2 ? 3 : 0) : rotation;
-			worldObj.setBlock(xCoord, yCoord, zCoord, Blocks.iron_door, rotation, SetBlockFlag.SEND_TO_CLIENT);
-			worldObj.setBlock(xCoord, yCoord + 1, zCoord, Blocks.iron_door, isMirrored ? 9 : 8, SetBlockFlag.SEND_TO_CLIENT);
-			worldObj.notifyBlockChange(xCoord, yCoord, zCoord, Blocks.iron_door);
-			worldObj.notifyBlockChange(xCoord, yCoord + 1, zCoord, Blocks.iron_door);
+			//TODO (1.8): This will fail horribly, I swear!
+			worldObj.setBlockState(getPos(), Blocks.iron_door.getDefaultState(), SetBlockFlag.SEND_TO_CLIENT);
+			worldObj.setBlockState(getPos().offsetUp(), Blocks.iron_door.getDefaultState(), SetBlockFlag.SEND_TO_CLIENT);
+//			worldObj.notifyBlockChange(xCoord, yCoord, zCoord, Blocks.iron_door);
+//			worldObj.notifyBlockChange(xCoord, yCoord + 1, zCoord, Blocks.iron_door);
 		} else setLockWithUpdate(lock);		
 	}
 	
 	public void setLockWithUpdate(ItemStack lock) {
 		lockAttachment.setItem(lock);
 		updateLockPosition();
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+//		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 		markDirty();
 	}
 
@@ -112,7 +113,7 @@ public class TileEntityLockableDoor extends TileEntity implements ILockable, IHa
 	@Override
 	public void useUnlocked(EntityPlayer player) {
 		isOpen = !isOpen;
-		worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), 0, isOpen ? 1 : 0);
+		worldObj.addBlockEvent(getPos(), getBlockType(), 0, isOpen ? 1 : 0);
 		updateLockPosition();
 	}
 
@@ -130,26 +131,26 @@ public class TileEntityLockableDoor extends TileEntity implements ILockable, IHa
 	
 	@Override
 	public boolean receiveClientEvent(int eventID, int par) {
-		worldObj.playAuxSFX(1003, xCoord, yCoord, zCoord, 0);
+		worldObj.playAuxSFX(1003, getPos(), 0);
 		swing = true;
 		isOpen = par == 1;
 		updateLockPosition();
-		worldObj.markBlockRangeForRenderUpdate(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
+		worldObj.markBlockRangeForRenderUpdate(getPos(), getPos());
 		return true;
 	}
 
-	@Override
+	/*@Override
 	public void updateEntity() 
 	{	
 		attachments.update();	
-	}
+	}*/
 
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
 		isOpen = compound.getBoolean("isOpen");
 		isMirrored = compound.getBoolean("isMirrored");
-		orientation = ForgeDirection.getOrientation(compound.getByte("orientation"));
+		orientation = EnumFacing.getFront(compound.getByte("orientation"));
 		if (compound.hasKey("lock")) lockAttachment.setItem(ItemStack.loadItemStackFromNBT(compound.getCompoundTag("lock")));
 		updateLockPosition();
 	}
@@ -170,16 +171,16 @@ public class TileEntityLockableDoor extends TileEntity implements ILockable, IHa
 		compound.setBoolean("isMirrored", isMirrored);
 		compound.setByte("orientation", (byte) orientation.ordinal());
 		if (lockAttachment.getItem() != null) compound.setTag("lock", lockAttachment.getItem().writeToNBT(new NBTTagCompound()));
-		return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, compound);
+		return new S35PacketUpdateTileEntity(getPos(), 0, compound);
 	}
 
 	@Override
 	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
 		super.onDataPacket(net, pkt);
-		NBTTagCompound compound = pkt.func_148857_g();
+		NBTTagCompound compound = pkt.getNbtCompound();
 		if (!compound.hasKey("lock")) lockAttachment.setItem(null);
 		else lockAttachment.setItem(ItemStack.loadItemStackFromNBT(compound.getCompoundTag("lock")));
-		orientation = ForgeDirection.getOrientation(compound.getByte("orientation"));
+		orientation = EnumFacing.getFront(compound.getByte("orientation"));
 		isOpen = compound.getBoolean("isOpen");
 		isMirrored = compound.getBoolean("isMirrored");
 		updateLockPosition();
@@ -194,9 +195,9 @@ public class TileEntityLockableDoor extends TileEntity implements ILockable, IHa
 		if (this.powered == powered) return;
 		this.powered = powered;
 		
-		if (powered) worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, getBlockType(), 10);
-		WorldUtils.notifyBlocksAround(worldObj, xCoord, yCoord, zCoord);
-		WorldUtils.notifyBlocksAround(worldObj, xCoord, yCoord + 1, zCoord);
+		if (powered) worldObj.scheduleUpdate(getPos(), getBlockType(), 10);
+		WorldUtils.notifyBlocksAround(worldObj, getPos());
+		WorldUtils.notifyBlocksAround(worldObj, getPos().offsetUp());
 	}	
 	
 }

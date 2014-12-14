@@ -35,7 +35,7 @@ public class EnchantmentBetterStorage extends Enchantment {
 		if (BetterStorageItems.key != null) {
 			EnumEnchantmentType key = EnumHelper.addEnchantmentType("key");
 			
-			//TODO Investigate what the ResourceLocation is used for and if we need it
+			//TODO (1.8): Investigate what the ResourceLocation is used for and if we need it
 			EnchantmentBetterStorage unlocking   = conditialNew("unlocking",   key, null, GlobalConfig.enchUnlockingId,   8, 5,  5, 10, 30, 0);
 			EnchantmentBetterStorage lockpicking = conditialNew("lockpicking", key, null, GlobalConfig.enchLockpickingId, 6, 5,  5,  8, 30, 0);
 			EnchantmentBetterStorage morphing    = conditialNew("morphing",    key, null, GlobalConfig.enchMorphingId,    1, 5, 10, 12, 30, 0);

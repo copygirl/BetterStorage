@@ -25,12 +25,12 @@ public class CratePileCollection {
 	
 	public CratePileCollection(World world) {
 		this.world = world;
-		this.dimension = world.provider.dimensionId;
+		this.dimension = world.provider.getDimensionId();
 	}
 	
 	/** Gets or creates a CratePileCollection for the world. */
 	public static CratePileCollection getCollection(World world) {
-		int dimension = world.provider.dimensionId;
+		int dimension = world.provider.getDimensionId();
 		CratePileCollection collection;
 		if (!collectionMap.containsKey(dimension)) {
 			collection = new CratePileCollection(world);
@@ -117,7 +117,7 @@ public class CratePileCollection {
 	/** Called when the world unloads, removes the
 	 *  crate pile connection from the collection map. */
 	public static void unload(World world) {
-		int dimension = world.provider.dimensionId;
+		int dimension = world.provider.getDimensionId();
 		collectionMap.remove(dimension);
 	}
 	

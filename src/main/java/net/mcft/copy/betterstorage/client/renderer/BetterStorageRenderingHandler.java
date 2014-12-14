@@ -1,26 +1,14 @@
 package net.mcft.copy.betterstorage.client.renderer;
 
-import net.mcft.copy.betterstorage.tile.entity.TileEntityContainer;
-import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.IBlockAccess;
-
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
-import net.minecraftforge.fml.client.registry.ISimpleBlockRenderingHandler;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class BetterStorageRenderingHandler implements ISimpleBlockRenderingHandler {
+@Deprecated
+public class BetterStorageRenderingHandler /*implements ISimpleBlockRenderingHandler*/ {
 	
-	public TileEntity tileEntity;
+	//TODO (1.8): Investigate how this can be done with the new JSON magic, ISimpleBlockRenderingHandler is gone.
+	/*public TileEntity tileEntity;
 	public TileEntitySpecialRenderer tileEntityRenderer;
 	
 	public final int renderId;
@@ -69,6 +57,6 @@ public class BetterStorageRenderingHandler implements ISimpleBlockRenderingHandl
 	public boolean shouldRender3DInInventory(int modelId) { return render3dInInventory; }
 	
 	@Override
-	public int getRenderId() { return renderId; }
+	public int getRenderId() { return renderId; }*/
 	
 }
