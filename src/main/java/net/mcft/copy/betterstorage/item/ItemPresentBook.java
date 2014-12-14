@@ -29,7 +29,6 @@ public class ItemPresentBook extends ItemEditableBook {
 		
 		String name = MiscUtils.getName(this);
 		setUnlocalizedName(Constants.modId + "." + name);
-		setTextureName(Constants.modId + ":" + name);
 		GameRegistry.registerItem(this, name);
 	}
 	
@@ -38,7 +37,7 @@ public class ItemPresentBook extends ItemEditableBook {
 	public boolean hasEffect(ItemStack stack) { return true; }
 	
 	@Override
-	public EnumRarity getRarity(ItemStack stack) { return EnumRarity.rare; }
+	public EnumRarity getRarity(ItemStack stack) { return EnumRarity.RARE; }
 	
 	@Override
 	public String getItemStackDisplayName(ItemStack stack) {

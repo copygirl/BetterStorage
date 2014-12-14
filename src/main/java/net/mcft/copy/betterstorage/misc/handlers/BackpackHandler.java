@@ -370,7 +370,7 @@ public class BackpackHandler {
 					while (iter.hasNext()) {
 						BlockCoordinate coord = iter.next();
 						BlockPos pos = new BlockPos(coord.x, coord.y, coord.z);
-						if (ItemBackpack.placeBackpack(entity, player, backpack, pos, 1, orientation, despawn, true)) {
+						if (ItemBackpack.placeBackpack(entity, player, backpack, pos, EnumFacing.UP, orientation, despawn, true)) {
 							ItemBackpack.setBackpack(entity, null, null);
 							return;
 						}
@@ -438,7 +438,7 @@ public class BackpackHandler {
 		if ((stack == null) || !(stack.getItem() instanceof ItemEnderBackpack)) return;
 		event.setCanceled(true);
 		for (int i = 0; i < 64; i++)
-			if (TileEnderBackpack.teleportRandomly(entity.worldObj, entity.posX, entity.posY, entity.posZ, (i > 48), stack))
+			if (TileEnderBackpack.teleportRandomly(entity.worldObj, new BlockPos(entity), (i > 48), stack))
 				break;
 		
 	}

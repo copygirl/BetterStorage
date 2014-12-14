@@ -106,14 +106,14 @@ public class CardboardEnchantmentRecipe implements IStationRecipe {
 		List<IRecipeInput[]> sampleInputs = new ArrayList<IRecipeInput[]>();
 		makeInput(sampleInputs, BetterStorageItems.cardboardHelmet, BetterStorageItems.cardboardChestplate, null,
 		                        BetterStorageItems.cardboardLeggings, BetterStorageItems.cardboardBoots,
-		                        makeEnchantedBook(Enchantment.protection, 4));
+		                        makeEnchantedBook(Enchantment.field_180310_c, 4));
 		makeInput(sampleInputs, null, BetterStorageItems.cardboardPickaxe, null,
 		                        null, BetterStorageItems.cardboardShovel, makeEnchantedBook(Enchantment.efficiency, 5),
 		                        null, BetterStorageItems.cardboardAxe);
 		makeInput(sampleInputs, null, null, null,
 	                            BetterStorageItems.cardboardSword,
 	                            BetterStorageItems.cardboardAxe,
-	                            makeEnchantedBook(Enchantment.sharpness, 5));
+	                            makeEnchantedBook(Enchantment.field_180314_l, 5));
 		makeInput(sampleInputs, BetterStorageItems.cardboardChestplate, BetterStorageItems.cardboardLeggings, null,
 		                        BetterStorageItems.cardboardSword, BetterStorageItems.cardboardPickaxe,
 		                        makeEnchantedBook(Enchantment.unbreaking, 3),

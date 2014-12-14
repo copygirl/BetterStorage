@@ -211,7 +211,8 @@ public class TileLockableDoor extends TileBetterStorage {
 		if (metadata == 0) WorldUtils.spawnItem(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(Items.iron_door));
 	}
 	
-	@Override
+	/* Removed in 1.8
+	  @Override
 	public void onBlockPreDestroy(World world, int x, int y, int z, int meta) {
 		if(meta == 0) {
 			TileEntityLockableDoor te = WorldUtils.get(world, x, y, z, TileEntityLockableDoor.class);
@@ -219,12 +220,12 @@ public class TileLockableDoor extends TileBetterStorage {
 			te.setLockWithUpdate(null);
 		}
 		super.onBlockPreDestroy(world, x, y, z, meta);
-	}
+	}*/
 
 	@Override
 	public boolean isOpaqueCube() { return false; }
-	@Override
-	public boolean renderAsNormalBlock() { return false; }
+	/*@Override
+	public boolean renderAsNormalBlock() { return false; }*/
 
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -233,28 +234,31 @@ public class TileLockableDoor extends TileBetterStorage {
 	}
 
 	@Override
-	public int quantityDropped(int meta, int fortune, Random random) {
-		return ((meta == 0) ? 1 : 0);
+	public int quantityDropped(IBlockState state, int fortune, Random random) {
+		EnumFacing face = (EnumFacing) state.getValue(FACING_PROP);
+		return ((face.equals(DOWN)) ? 1 : 0);
 	} 
 	
 	@Override
 	public boolean canProvidePower() { return true; }
 	
 	@Override
-	public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int side) {
-		if (world.getBlockMetadata(x, y, z) > 0) y -= 1;
-		TileEntityLockableDoor te = WorldUtils.get(world, x, y, z, TileEntityLockableDoor.class);
+	public int isProvidingWeakPower(IBlockAccess world, BlockPos pos, IBlockState state, EnumFacing side) {
+		EnumFacing face = (EnumFacing) state.getValue(FACING_PROP);
+		if (!face.equals(DOWN)) pos = pos.offsetDown();
+		TileEntityLockableDoor te = WorldUtils.get(world, pos, TileEntityLockableDoor.class);
 		return te == null ? 0 : (te.isPowered() ? 15 : 0);
 	}
 	@Override
-	public int isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int side) {
-		return isProvidingWeakPower(world, x, y, z, side);
+	public int isProvidingStrongPower(IBlockAccess world, BlockPos pos, IBlockState state, EnumFacing side) {
+		return isProvidingWeakPower(world, pos, state, side);
 	}
 	
 	@Override
-	public void updateTick(World world, int x, int y, int z, Random random) {
-		if(world.getBlockMetadata(x, y, z) != 0) return;
-		WorldUtils.get(world, x, y, z, TileEntityLockableDoor.class).setPowered(false);
+	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
+		EnumFacing face = (EnumFacing) state.getValue(FACING_PROP);
+		if (!face.equals(DOWN)) return;
+		WorldUtils.get(world, pos, TileEntityLockableDoor.class).setPowered(false);
 	}
 	
 	@Override

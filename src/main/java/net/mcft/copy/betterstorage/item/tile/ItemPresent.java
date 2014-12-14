@@ -18,7 +18,7 @@ public class ItemPresent extends ItemCardboardBox {
 	}
 	
 	@Override
-	public EnumRarity getRarity(ItemStack stack) { return EnumRarity.uncommon; }
+	public EnumRarity getRarity(ItemStack stack) { return EnumRarity.UNCOMMON; }
 	
 	@Override
 	public boolean showDurabilityBar(ItemStack stack) { return false; }

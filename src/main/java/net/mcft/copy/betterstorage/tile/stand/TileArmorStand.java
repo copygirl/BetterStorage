@@ -36,12 +36,12 @@ public class TileArmorStand extends TileContainerBetterStorage {
 	public Class<? extends ItemBlock> getItemClass() { return ItemArmorStand.class; }
 	
 	
-	@Override
+	/*@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
 		int metadata = world.getBlockMetadata(x, y, z);
 		if (metadata == 0) setBlockBounds(2 / 16.0F, 0, 2 / 16.0F, 14 / 16.0F, 2, 14 / 16.0F);
 		else setBlockBounds(2 / 16.0F, -1, 2 / 16.0F, 14 / 16.0F, 1, 14 / 16.0F);
-	}
+	}*/
 	
 	@Override
 	public boolean isOpaqueCube() { return false; }
@@ -53,8 +53,9 @@ public class TileArmorStand extends TileContainerBetterStorage {
 	public int getRenderType() { return ClientProxy.armorStandRenderId; }
 	
 	@Override
-	public int quantityDropped(int meta, int fortune, Random random) {
-		return ((meta == 0) ? 1 : 0);
+	public int quantityDropped(IBlockState state, int fortune, Random random) {
+		EnumFacing side = (EnumFacing) state.getValue(FACING_PROP);
+		return ((side.equals(EnumFacing.DOWN)) ? 1 : 0);
 	}
 	
 	@Override
@@ -66,28 +67,28 @@ public class TileArmorStand extends TileContainerBetterStorage {
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ){
 		if (world.isRemote) return true;
-		if (world.getBlockMetadata(x, y, z) > 0) { y -= 1; hitY += 1; }
+		if (((EnumFacing) world.getBlockState(pos).getValue(FACING_PROP)).getIndex() > 0) { pos = pos.offsetDown(); hitY += 1; }
 		return super.onBlockActivated(world, pos, state, playerIn, side, hitX, hitY, hitZ);
 	}
 	@Override
 	public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos) {
-		if (world.getBlockMetadata(x, y, z) > 0) { y -= 1; }
+		if (((EnumFacing) world.getBlockState(pos).getValue(FACING_PROP)).getIndex() > 0) { pos = pos.offsetDown(); }
 		return super.getPickBlock(target, world, pos);
 	}
 	
 	@Override
-	public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
-		if (meta > 0) return;
+	public void breakBlock(World worldIn, BlockPos pos, IBlockState state){
+		if (((EnumFacing) state.getValue(FACING_PROP)).getIndex() > 0) return;
 		super.breakBlock(worldIn, pos, state);
 	}
 	
 	@Override
 	public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighborBlock) {
-		int metadata = world.getBlockMetadata(x, y, z);
+		int metadata = ((EnumFacing) state.getValue(FACING_PROP)).getIndex();
 		int yModifier = ((metadata == 0) ? 1 : -1);
 		int targetMeta = ((metadata == 0) ? 1 : 0);
-		if ((world.getBlockState(pos.add(0, yModifier, 0)).getBlock() == this) &&
-		    (world.getBlockMetadata(x, targetY, z) == targetMeta)) return;
+		if ((world.getBlockState(pos.offsetUp(yModifier)).getBlock() == this) &&
+		    (((EnumFacing) world.getBlockState(pos.offsetUp(yModifier)).getValue(FACING_PROP)).getIndex()) == targetMeta) return;
 		world.setBlockToAir(pos);
 		if (metadata == 0)
 			dropBlockAsItem(world, pos, state, 0);

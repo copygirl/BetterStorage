@@ -19,7 +19,6 @@ import net.mcft.copy.betterstorage.misc.handlers.KeyBindingHandler;
 import net.mcft.copy.betterstorage.network.packet.PacketBackpackHasItems;
 import net.mcft.copy.betterstorage.tile.TileBackpack;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityBackpack;
-import net.mcft.copy.betterstorage.utils.DirectionUtils;
 import net.mcft.copy.betterstorage.utils.EntityUtils;
 import net.mcft.copy.betterstorage.utils.LanguageUtils;
 import net.mcft.copy.betterstorage.utils.PlayerUtils;
@@ -53,7 +52,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmor, IDyeableItem {
 	
 	public static final ArmorMaterial material = EnumHelper.addArmorMaterial(
-			"backpack", 14, new int[]{ 0, 2, 0, 0 }, 15);
+			"backpack", Constants.modId + "backpack", 14, new int[]{ 0, 2, 0, 0 }, 15);
 	static { material.customCraftingMaterial = Items.leather; }
 	
 	protected ItemBackpack(ArmorMaterial material) { super(material, 0, 1); }
@@ -270,8 +269,8 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 			if (immune.equals(source.getDamageType())) return false;
 		// Protection enchantments protect the backpack
 		// from taking damage from that damage type.
-		return (!enchantmentProtection(stack, Enchantment.protection, 0.3, 0.35, 0.4, 0.45) &&
-		        !(source.isProjectile() && enchantmentProtection(stack, Enchantment.projectileProtection, 0.4, 0.5, 0.6, 0.7)) &&
+		return (!enchantmentProtection(stack, Enchantment.field_180310_c, 0.3, 0.35, 0.4, 0.45) &&
+		        !(source.isProjectile() && enchantmentProtection(stack, Enchantment.field_180308_g, 0.4, 0.5, 0.6, 0.7)) &&
 		        !(source.isFireDamage() && enchantmentProtection(stack, Enchantment.fireProtection, 0.55, 0.65, 0.75, 0.85)) &&
 		        !(source.isExplosion() && enchantmentProtection(stack, Enchantment.blastProtection, 0.65, 0.75, 0.85, 0.95)));
 	}
@@ -449,8 +448,8 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 		
 		// Actually place the block in the world,
 		// play place sound and decrease stack size if successful.
-		
-		if (!world.setBlock(pos, blockBackpack, orientation.ordinal(), 3))
+        BlockPos targetPos = pos.offset(orientation);
+		if (!world.setBlockState(targetPos, blockBackpack.getDefaultState(), 3))
 			return false;
 		
 		if (world.getBlockState(pos).getBlock() != blockBackpack)

@@ -234,7 +234,7 @@ public abstract class TileEntityContainer extends TileEntity {
 		//TODO (1.8): Change it. Simple.
 		return (!worldObj.isRemote && doesSyncPlayers() &&
 		        (((ticksExisted + pos.getX() + pos.getY() + pos.getZ()) & 0xFF) == 0) &&
-		        worldObj.doChunksNearChunkExist(this.getPos(), 16));
+		        worldObj.isAreaLoaded(this.getPos(), 16));
 	}
 	/** Synchronizes playersUsing over the network. */
 	private void doSyncPlayersUsing(int playersUsing) {
