@@ -141,7 +141,7 @@ public final class WorldUtils {
 	
 	/** This will perform a {@link World#notifyBlockOfNeighborChange()} on every adjacent block including the block at x|y|z.*/
 	public static void notifyBlocksAround(World world, BlockPos pos) {
-		Block block = world.getChunkFromBlockCoords(pos).getBlock(pos);
+		Block block = world.getBlockState(pos).getBlock();
 		world.notifyBlockOfStateChange(pos, block);
 		world.notifyBlockOfStateChange(pos.offsetDown(), block);
 		world.notifyBlockOfStateChange(pos.offsetUp(), block);

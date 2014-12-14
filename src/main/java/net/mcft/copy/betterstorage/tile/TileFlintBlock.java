@@ -1,10 +1,6 @@
 package net.mcft.copy.betterstorage.tile;
 
-import net.mcft.copy.betterstorage.misc.Constants;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TileFlintBlock extends TileBetterStorage {
 	
@@ -16,10 +12,11 @@ public class TileFlintBlock extends TileBetterStorage {
 		setStepSound(soundTypeStone);
 	}
 	
-	@Override
+	//TODO (1.8): Left for reference.
+	/*@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
 		blockIcon = iconRegister.registerIcon(Constants.modId + ":" + getTileName());
-	}
+	}*/
 	
 }

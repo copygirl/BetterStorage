@@ -375,7 +375,7 @@ public class BackpackHandler {
 							return;
 						}
 						
-						boolean replacable = entity.worldObj.getChunkFromBlockCoords(pos).getBlock(pos)
+						boolean replacable = entity.worldObj.getBlockState(pos).getBlock()
 								.isReplaceable(entity.worldObj, pos);
 						coord.y += (replacable ? -1 : 1);
 						coord.moved += (replacable ? 1 : 5);

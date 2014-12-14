@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "normal": [
+            { "model": "betterstorage.backpack" },
+            { "model": "betterstorage.backpack", "y": 90 },
+            { "model": "betterstorage.backpack", "y": 180 },
+            { "model": "betterstorage.backpack", "y": 270 }
+        ]
+    }
+}

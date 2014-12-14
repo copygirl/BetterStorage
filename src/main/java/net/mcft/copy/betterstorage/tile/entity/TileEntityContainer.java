@@ -13,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.Constants.NBT;
@@ -104,7 +105,7 @@ public abstract class TileEntityContainer extends TileEntity {
 	
 	/** Called then the block is activated (right clicked).
 	 *  Usually opens the GUI of the container.*/
-	public boolean onBlockActivated(EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(EntityPlayer player, EnumFacing side, float hitX, float hitY, float hitZ) {
 		if (worldObj.isRemote) return true;
 		if (!canPlayerUseContainer(player)) return true;
 		openGui(player);

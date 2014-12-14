@@ -52,8 +52,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmor, IDyeableItem {
 	
+	//TODO (1.8): Empty string for the texture name.
 	public static final ArmorMaterial material = EnumHelper.addArmorMaterial(
-			"backpack", 14, new int[]{ 0, 2, 0, 0 }, 15);
+			"backpack", "", 14, new int[]{ 0, 2, 0, 0 }, 15);
 	static { material.customCraftingMaterial = Items.leather; }
 	
 	protected ItemBackpack(ArmorMaterial material) { super(material, 0, 1); }
@@ -126,13 +127,13 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 	
 	// Item stuff
 	
-	@Override
+	/*@Override
 	@SideOnly(Side.CLIENT)
 	public int getSpriteNumber() { return 0; }
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister iconRegister) {  }
+	public void registerIcons(IIconRegister iconRegister) {  }*/
 	
 	@Override
 	public String getUnlocalizedName() { return getBlockType().getUnlocalizedName(); }
@@ -149,8 +150,9 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 		int color = getDefaultColor();
 		return ((color >= 0) ? StackUtils.get(stack, color, "display", "color") : color);
 	}
-	@Override
-	public int getRenderPasses(int metadata) { return ((getDefaultColor() >= 0) ? 2 : 1); }
+	
+//	@Override
+//	public int getRenderPasses(int metadata) { return ((getDefaultColor() >= 0) ? 2 : 1); }
 	
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -223,10 +225,10 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 	
 	@Override
 	public boolean onItemUse(ItemStack stack, EntityPlayer player,
-	                         World world, int x, int y, int z, int side,
+	                         World world, BlockPos pos, EnumFacing side,
 	                         float hitX, float hitY, float hitZ) {
-		ForgeDirection orientation = DirectionUtils.getOrientation(player).getOpposite();
-		return placeBackpack(player, player, stack, x, y, z, side, orientation, false, false);
+		EnumFacing orientation = DirectionUtils.getOrientation(player).getOpposite();
+		return placeBackpack(player, player, stack, pos, side, orientation, false, false);
 	}
 	
 	/** Called every tick regardless of whether the
@@ -269,8 +271,8 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 			if (immune.equals(source.getDamageType())) return false;
 		// Protection enchantments protect the backpack
 		// from taking damage from that damage type.
-		return (!enchantmentProtection(stack, Enchantment.protection, 0.3, 0.35, 0.4, 0.45) &&
-		        !(source.isProjectile() && enchantmentProtection(stack, Enchantment.projectileProtection, 0.4, 0.5, 0.6, 0.7)) &&
+		return (!enchantmentProtection(stack, Enchantment.field_180310_c, 0.3, 0.35, 0.4, 0.45) && //protection
+		        !(source.isProjectile() && enchantmentProtection(stack, Enchantment.field_180308_g, 0.4, 0.5, 0.6, 0.7)) && //projectileProtection
 		        !(source.isFireDamage() && enchantmentProtection(stack, Enchantment.fireProtection, 0.55, 0.65, 0.75, 0.85)) &&
 		        !(source.isExplosion() && enchantmentProtection(stack, Enchantment.blastProtection, 0.65, 0.75, 0.85, 0.95)));
 	}
@@ -323,6 +325,7 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 	public static void initBackpackData(EntityLivingBase entity) {
 		EntityUtils.createProperties(entity, PropertiesBackpack.class);
 	}
+	
 	public static PropertiesBackpack getBackpackData(EntityLivingBase entity) {
 		PropertiesBackpack backpackData = EntityUtils.getOrCreateProperties(entity, PropertiesBackpack.class);
 		if (!backpackData.initialized) {
@@ -362,7 +365,7 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 		Container container = new ContainerBetterStorage(player, inventory, columns, rows);
 		
 		String title = StackUtils.get(backpack, "", "display", "Name");
-		PlayerUtils.openGui(player, inventory.getInventoryName(), columns, rows, title, container);
+		PlayerUtils.openGui(player, inventory.getName(), columns, rows, title, container);
 		
 		return true;
 		
@@ -411,7 +414,7 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 	 *                  Will not check for block solidity or entities.
 	 * @return If the backpack was placed successfully. */
 	public static boolean placeBackpack(EntityLivingBase carrier, EntityPlayer player, ItemStack backpack, 
-										BlockPos pos, int side, EnumFacing orientation,
+										BlockPos pos, EnumFacing side, EnumFacing orientation,
 	                                    boolean despawn, boolean deathDrop) {
 		
 		if (backpack.stackSize == 0) return false;

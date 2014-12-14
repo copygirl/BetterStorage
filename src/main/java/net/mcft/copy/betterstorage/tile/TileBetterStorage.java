@@ -19,7 +19,7 @@ public class TileBetterStorage extends Block {
 		
 		setCreativeTab(BetterStorage.creativeTab);
 		
-		setBlockName(Constants.modId + "." + getTileName());
+		setUnlocalizedName(Constants.modId + "." + getTileName());
 		registerBlock();
 		
 	}
@@ -37,9 +37,9 @@ public class TileBetterStorage extends Block {
 		Class<? extends Item> itemClass = getItemClass();
 		
 		if (itemClass != null) {
-			GameRegistry.registerBlock(this, (Class<? extends ItemBlock>)itemClass, getTileName(), Constants.modId);
+			GameRegistry.registerBlock(this, (Class<? extends ItemBlock>)itemClass, getTileName());
 		} else {
-			GameRegistry.registerBlock(this, null, getTileName(), Constants.modId);
+			GameRegistry.registerBlock(this, null, getTileName());
 		}
 	}
 	

@@ -60,7 +60,8 @@ public final class BetterStorageItems {
 		masterKey      = MiscUtils.conditionalNew(ItemMasterKey.class, GlobalConfig.masterKeyEnabled);
 		drinkingHelmet = MiscUtils.conditionalNew(ItemDrinkingHelmet.class, GlobalConfig.drinkingHelmetEnabled);
 		slimeBucket    = MiscUtils.conditionalNew(ItemBucketSlime.class, GlobalConfig.slimeBucketEnabled);
-		presentBook    = new ItemPresentBook();
+		//TODO (1.8): Why is this one not conditional?
+//		presentBook    = new ItemPresentBook();
 		
 		itemBackpack        = MiscUtils.conditionalNew(ItemBackpack.class, GlobalConfig.backpackEnabled);
 		itemEnderBackpack   = MiscUtils.conditionalNew(ItemEnderBackpack.class, GlobalConfig.enderBackpackEnabled);
