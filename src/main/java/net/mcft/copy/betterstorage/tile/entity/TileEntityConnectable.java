@@ -213,8 +213,15 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 	// Tile entity synchronization
 	
 	public NBTTagCompound getDescriptionPacketData(NBTTagCompound compound) {
-		compound.setByte("orientation", (byte)getOrientation().ordinal());
-		compound.setByte("connected", (byte)getConnected().ordinal());
+		
+		byte orientationID = -1, connectedID = -1;
+		if(orientation != null)
+			orientationID = (byte)orientation.ordinal();
+		if(connected != null)
+			connectedID = (byte)connected.ordinal();
+		
+		compound.setByte("orientation", orientationID);
+		compound.setByte("connected", connectedID);
 		return compound;
 	}
 	
@@ -226,8 +233,11 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 	@Override
 	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
 		NBTTagCompound compound = packet.getNbtCompound();
-		setOrientation(EnumFacing.getFront(compound.getByte("orientation")));
-		setConnected(EnumFacing.getFront(compound.getByte("connected")));
+		int orientationID = compound.getByte("orientation"), connectedID =  compound.getByte("connected");
+		if(orientationID != -1)
+			setOrientation(EnumFacing.getFront(orientationID));
+		if(connectedID != -1)
+			setConnected(EnumFacing.getFront(connectedID));
 	}
 	
 	// Reading from / writing to NBT
@@ -235,15 +245,25 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
-		setOrientation(EnumFacing.getFront(compound.getByte("orientation")));
-		setConnected(EnumFacing.getFront(compound.getByte("connected")));
+		int orientationID = compound.getByte("orientation"), connectedID =  compound.getByte("connected");
+		if(orientationID != -1)
+			setOrientation(EnumFacing.getFront(orientationID));
+		if(connectedID != -1)
+			setConnected(EnumFacing.getFront(connectedID));
 	}
 	
 	@Override
 	public void writeToNBT(NBTTagCompound compound) {
 		super.writeToNBT(compound);
-		compound.setByte("orientation", (byte)getOrientation().ordinal());
-		compound.setByte("connected", (byte)getConnected().ordinal());
+		
+		byte orientationID = -1, connectedID = -1;
+		if(orientation != null)
+			orientationID = (byte)orientation.ordinal();
+		if(connected != null)
+			connectedID = (byte)connected.ordinal();
+		
+		compound.setByte("orientation", orientationID);
+		compound.setByte("connected", connectedID);
 	}
 	
 }
