@@ -68,7 +68,10 @@ public class VanillaStationCrafting extends StationCrafting {
 			for (int i = 0; i < input.length; i++)
 				crafting.setInventorySlotContents(i, ItemStack.copyItemStack(input[i]));
 			
-			expectedOutput = recipe.getCraftingResult(crafting).copy();
+			ItemStack output = recipe.getCraftingResult(crafting);
+			if (output == null)
+				throw new IllegalArgumentException(recipe.getClass() + " returned null for getCraftingResult.");
+			expectedOutput = output.copy();
 		}
 		
 		@Override
