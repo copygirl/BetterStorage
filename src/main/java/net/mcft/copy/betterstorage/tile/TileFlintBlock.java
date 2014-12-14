@@ -12,11 +12,21 @@ public class TileFlintBlock extends TileBetterStorage {
 		setStepSound(soundTypeStone);
 	}
 	
+<<<<<<< HEAD
 	//TODO (1.8): Left for reference.
 	/*@Override
+=======
+	/*
+	@Override
+>>>>>>> refs/remotes/Thog92/1.8
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
 		blockIcon = iconRegister.registerIcon(Constants.modId + ":" + getTileName());
+<<<<<<< HEAD
 	}*/
+=======
+	}
+	*/
+>>>>>>> refs/remotes/Thog92/1.8
 	
 }

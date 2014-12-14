@@ -10,9 +10,12 @@ import net.mcft.copy.betterstorage.proxy.ClientProxy;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityLockableDoor;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockDoor;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.IconFlipped;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -20,21 +23,25 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import static net.minecraft.util.EnumFacing.*;
 
+//TODO: Rewrite the door
 public class TileLockableDoor extends TileBetterStorage {
 
-	private IIcon iconUpper;
-	private IIcon iconLower;
-	private IIcon iconUpperFlipped;
-	private IIcon iconLowerFlipped;
-	
+    public final PropertyBool OPEN_PROP = PropertyBool.create("open");
+    public final PropertyEnum HINGEPOSITION_PROP = PropertyEnum.create("hinge", BlockDoor.EnumHingePosition.class);
+    public final PropertyBool POWERED_PROP = PropertyBool.create("powered");
+    public final PropertyEnum HALF_PROP = PropertyEnum.create("half", BlockDoor.EnumDoorHalf.class);
+    
 	public TileLockableDoor() {
 		super(Material.wood);
 		
@@ -44,7 +51,7 @@ public class TileLockableDoor extends TileBetterStorage {
 		setStepSound(soundTypeWood);	
 		setHarvestLevel("axe", 2);
 	}
-	
+	/*
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
 		int metadata = world.getBlockMetadata(x, y, z);
@@ -78,7 +85,7 @@ public class TileLockableDoor extends TileBetterStorage {
 		setBlockBoundsBasedOnState(world, x, y, z);
 		return super.getCollisionBoundingBoxFromPool(world, x, y, z);
 	}
-
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
@@ -124,84 +131,88 @@ public class TileLockableDoor extends TileBetterStorage {
 		icon = flip ? (icon == iconLower ? iconLowerFlipped : iconUpperFlipped) : icon;
 		return icon;
 	}
+	*/
 
 	@Override
-	public float getBlockHardness(World world, int x, int y, int z) {
-		if (world.getBlockMetadata(x, y, z) > 0) y -= 1;
-		TileEntityLockableDoor lockable = WorldUtils.get(world, x, y, z, TileEntityLockableDoor.class);
+	 public float getBlockHardness(World world, BlockPos pos){
+		EnumFacing side = (EnumFacing) world.getBlockState(pos).getValue(FACING_PROP);
+		if (!side.equals(DOWN)) pos = pos.offsetDown();
+		TileEntityLockableDoor lockable = WorldUtils.get(world, pos, TileEntityLockableDoor.class);
 		if ((lockable != null) && (lockable.getLock() != null)) return -1;
-		else return super.getBlockHardness(world, x, y, z);
+		else return super.getBlockHardness(world, pos);
 	}
 	
 	@Override
-	public float getExplosionResistance(Entity entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ) {
-		if (world.getBlockMetadata(x, y, z) > 0) y -= 1;
+	public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion){
+		EnumFacing side = (EnumFacing) world.getBlockState(pos).getValue(FACING_PROP);
+		if (!side.equals(DOWN)) pos = pos.offsetDown();
 		float modifier = 1.0F;
-		TileEntityLockableDoor lockable = WorldUtils.get(world, x, y, z, TileEntityLockableDoor.class);
+		TileEntityLockableDoor lockable = WorldUtils.get(world, pos, TileEntityLockableDoor.class);
 		if (lockable != null) {
 			int persistance = BetterStorageEnchantment.getLevel(lockable.getLock(), "persistance");
 			if (persistance > 0) modifier += Math.pow(2, persistance);
 		}
-		return super.getExplosionResistance(entity) * modifier;
+		return super.getExplosionResistance(exploder) * modifier;
 	}
 	
 	@Override
-	public boolean onBlockEventReceived(World world, int x, int y, int z, int eventId, int eventPar) {
-		TileEntity te = world.getTileEntity(x, y, z);
-        return ((te != null) ? te.receiveClientEvent(eventId, eventPar) : false);
+	public boolean onBlockEventReceived(World world, BlockPos pos, IBlockState state, int eventID, int eventParam){
+		TileEntity te = world.getTileEntity(pos);
+        return ((te != null) ? te.receiveClientEvent(eventID, eventParam) : false);
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
-		if (world.getBlockMetadata(x, y, z) > 0) y -= 1;
-		TileEntityLockableDoor te = WorldUtils.get(world, x, y, z, TileEntityLockableDoor.class);
-		return te.onBlockActivated(world, x, y, z, player, side, hitX, hitY, hitZ);
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumFacing side, float hitX, float hitY, float hitZ) {
+		if (!side.equals(DOWN)) pos = pos.offsetDown();
+		TileEntityLockableDoor te = WorldUtils.get(world, pos, TileEntityLockableDoor.class);
+		return te.onBlockActivated(world, pos, player, side, hitX, hitY, hitZ);
 	}
 	
 	@Override
-	public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player) {
-		if (world.getBlockMetadata(x, y, z) > 0) y -= 1;
-		Attachments attachments = WorldUtils.get(world, x, y, z, IHasAttachments.class).getAttachments();
+	public void onBlockClicked(World world, BlockPos pos, EntityPlayer player) {
+		EnumFacing side = (EnumFacing) world.getBlockState(pos).getValue(FACING_PROP);
+		if (!side.equals(DOWN)) pos = pos.offsetDown();
+		Attachments attachments = WorldUtils.get(world, pos, IHasAttachments.class).getAttachments();
 		boolean abort = attachments.interact(WorldUtils.rayTrace(player, 1.0F), player, EnumAttachmentInteraction.attack);
 	}
 	
 	@Override
-	public MovingObjectPosition collisionRayTrace(World world, int x, int y, int z, Vec3 start, Vec3 end) {
-		int metadata = world.getBlockMetadata(x, y, z);
-		IHasAttachments te = WorldUtils.get(world, x, y - (metadata > 0 ? 1 : 0), z, IHasAttachments.class);
-		if(te == null) return super.collisionRayTrace(world, x, y, z, start, end);
-		MovingObjectPosition pos = te.getAttachments().rayTrace(world, x, y - (metadata > 0 ? 1 : 0), z, start, end);
-		return pos != null ? pos : super.collisionRayTrace(world, x, y, z, start, end);
+	public MovingObjectPosition collisionRayTrace(World world, BlockPos pos, Vec3 start, Vec3 end) {
+		EnumFacing side = (EnumFacing) world.getBlockState(pos).getValue(FACING_PROP);
+		pos = pos.offsetDown((side != DOWN ? 1 : 0));
+		IHasAttachments te = WorldUtils.get(world, pos, IHasAttachments.class);
+		if(te == null) return super.collisionRayTrace(world, pos, start, end);
+		MovingObjectPosition movPos = te.getAttachments().rayTrace(world, pos, start, end);
+		return movPos != null ? movPos : super.collisionRayTrace(world, pos, start, end);
 	}
 
 	@Override
-	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
+	public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos) {
 		return new ItemStack(Items.iron_door);
 	}
 	
+	
 	@Override
-	public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z) {
-		return world.setBlockToAir(x, y, z);
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+		EnumFacing side = (EnumFacing) state.getValue(FACING_PROP);
+		if (!side.equals(DOWN)) return;
+		super.breakBlock(world, pos, state);
 	}
 	
 	@Override
-	public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
-		if (meta > 0) return;
-		super.breakBlock(world, x, y, z, block, meta);
-	}
-	
-	@Override
-	public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
-		int metadata = world.getBlockMetadata(x, y, z);
-		int targetY = y + ((metadata == 0) ? 1 : -1);
+	public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighborBlock) {
+		int metadata = ((EnumFacing) state.getValue(FACING_PROP)).getIndex();
+		int yModifier = ((metadata == 0) ? 1 : -1);
 		int targetMeta = ((metadata == 0) ? 8 : 0);
-		if (world.getBlock(x, y - 1, z) == Blocks.air && metadata == 0) world.setBlockToAir(x, y, z);
-		if ((world.getBlock(x, targetY, z) == this) && (world.getBlockMetadata(x, targetY, z) == targetMeta)) return;
-		world.setBlockToAir(x, y, z);
-		if (metadata == 0) WorldUtils.spawnItem(world, x, y, z, new ItemStack(Items.iron_door));
+		if (world.getBlockState(pos.offsetDown()).getBlock() == Blocks.air && metadata == 0) world.setBlockToAir(pos);
+		EnumFacing side = (EnumFacing) world.getBlockState(pos.offsetDown(yModifier)).getValue(FACING_PROP);
+		if ((world.getBlockState(pos.offsetDown(yModifier)).getBlock() == this) && (side.getIndex() == targetMeta)) return;
+		world.setBlockToAir(pos);
+		if (metadata == 0) WorldUtils.spawnItem(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(Items.iron_door));
 	}
 	
-	@Override
+	/* Removed in 1.8
+	  @Override
 	public void onBlockPreDestroy(World world, int x, int y, int z, int meta) {
 		if(meta == 0) {
 			TileEntityLockableDoor te = WorldUtils.get(world, x, y, z, TileEntityLockableDoor.class);
@@ -209,12 +220,12 @@ public class TileLockableDoor extends TileBetterStorage {
 			te.setLockWithUpdate(null);
 		}
 		super.onBlockPreDestroy(world, x, y, z, meta);
-	}
+	}*/
 
 	@Override
 	public boolean isOpaqueCube() { return false; }
-	@Override
-	public boolean renderAsNormalBlock() { return false; }
+	/*@Override
+	public boolean renderAsNormalBlock() { return false; }*/
 
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -223,36 +234,41 @@ public class TileLockableDoor extends TileBetterStorage {
 	}
 
 	@Override
-	public int quantityDropped(int meta, int fortune, Random random) {
-		return ((meta == 0) ? 1 : 0);
+	public int quantityDropped(IBlockState state, int fortune, Random random) {
+		EnumFacing face = (EnumFacing) state.getValue(FACING_PROP);
+		return ((face.equals(DOWN)) ? 1 : 0);
 	} 
 	
 	@Override
 	public boolean canProvidePower() { return true; }
 	
 	@Override
-	public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int side) {
-		if (world.getBlockMetadata(x, y, z) > 0) y -= 1;
-		TileEntityLockableDoor te = WorldUtils.get(world, x, y, z, TileEntityLockableDoor.class);
+	public int isProvidingWeakPower(IBlockAccess world, BlockPos pos, IBlockState state, EnumFacing side) {
+		EnumFacing face = (EnumFacing) state.getValue(FACING_PROP);
+		if (!face.equals(DOWN)) pos = pos.offsetDown();
+		TileEntityLockableDoor te = WorldUtils.get(world, pos, TileEntityLockableDoor.class);
 		return te == null ? 0 : (te.isPowered() ? 15 : 0);
 	}
 	@Override
-	public int isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int side) {
-		return isProvidingWeakPower(world, x, y, z, side);
+	public int isProvidingStrongPower(IBlockAccess world, BlockPos pos, IBlockState state, EnumFacing side) {
+		return isProvidingWeakPower(world, pos, state, side);
 	}
 	
 	@Override
-	public void updateTick(World world, int x, int y, int z, Random random) {
-		if(world.getBlockMetadata(x, y, z) != 0) return;
-		WorldUtils.get(world, x, y, z, TileEntityLockableDoor.class).setPowered(false);
+	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
+		EnumFacing face = (EnumFacing) state.getValue(FACING_PROP);
+		if (!face.equals(DOWN)) return;
+		WorldUtils.get(world, pos, TileEntityLockableDoor.class).setPowered(false);
 	}
 	
 	@Override
-	public TileEntity createTileEntity(World world, int metadata) {
-		return ((metadata == 0) ? new TileEntityLockableDoor() : null);
+	public TileEntity createTileEntity(World world, IBlockState state)
+	{
+		EnumFacing enumfacing = (EnumFacing)state.getValue(FACING_PROP);
+		return ((enumfacing.equals(DOWN)) ? new TileEntityLockableDoor() : null);
 	}
 
 	@Override
-	public boolean hasTileEntity(int metadata) { return true; }
+	public boolean hasTileEntity(IBlockState state) { return true; }
 	
 }

@@ -2,18 +2,19 @@ package net.mcft.copy.betterstorage.tile.stand;
 
 import java.util.Random;
 
-import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.misc.SetBlockFlag;
 import net.mcft.copy.betterstorage.proxy.ClientProxy;
 import net.mcft.copy.betterstorage.tile.TileContainerBetterStorage;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -34,82 +35,69 @@ public class TileArmorStand extends TileContainerBetterStorage {
 	@Override
 	public Class<? extends ItemBlock> getItemClass() { return ItemArmorStand.class; }
 	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister iconRegister) {
-		blockIcon = iconRegister.registerIcon("stone_slab_top");
-	}
 	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public String getItemIconName() { return Constants.modId + ":armorStand"; }
-	
-	@Override
+	/*@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
 		int metadata = world.getBlockMetadata(x, y, z);
 		if (metadata == 0) setBlockBounds(2 / 16.0F, 0, 2 / 16.0F, 14 / 16.0F, 2, 14 / 16.0F);
 		else setBlockBounds(2 / 16.0F, -1, 2 / 16.0F, 14 / 16.0F, 1, 14 / 16.0F);
-	}
+	}*/
 	
 	@Override
 	public boolean isOpaqueCube() { return false; }
-	@Override
-	public boolean renderAsNormalBlock() { return false; }
+	
+	
 	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public int getRenderType() { return ClientProxy.armorStandRenderId; }
 	
 	@Override
-	public int quantityDropped(int meta, int fortune, Random random) {
-		return ((meta == 0) ? 1 : 0);
+	public int quantityDropped(IBlockState state, int fortune, Random random) {
+		EnumFacing side = (EnumFacing) state.getValue(FACING_PROP);
+		return ((side.equals(EnumFacing.DOWN)) ? 1 : 0);
 	}
 	
 	@Override
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
-		super.onBlockPlacedBy(world, x, y, z, player, stack);
-		// Set block above to armor stand with metadata 1.
-		world.setBlock(x, y + 1, z, this, 1, SetBlockFlag.DEFAULT);
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+		super.onBlockPlacedBy(world, pos, state, placer, stack);
+		world.setBlockState(pos.add(0, 1, 0), state, SetBlockFlag.DEFAULT);
 	}
 	
 	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player,
-	                                int side, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ){
 		if (world.isRemote) return true;
-		if (world.getBlockMetadata(x, y, z) > 0) { y -= 1; hitY += 1; }
-		return super.onBlockActivated(world, x, y, z, player, side, hitX, hitY, hitZ);
+		if (((EnumFacing) world.getBlockState(pos).getValue(FACING_PROP)).getIndex() > 0) { pos = pos.offsetDown(); hitY += 1; }
+		return super.onBlockActivated(world, pos, state, playerIn, side, hitX, hitY, hitZ);
 	}
 	@Override
-	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
-		if (world.getBlockMetadata(x, y, z) > 0) { y -= 1; }
-		return super.getPickBlock(target, world, x, y, z);
-	}
-	
-	@Override
-	public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z) {
-		return world.setBlockToAir(x, y, z);
-	}
-	@Override
-	public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
-		if (meta > 0) return;
-		super.breakBlock(world, x, y, z, block, meta);
+	public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos) {
+		if (((EnumFacing) world.getBlockState(pos).getValue(FACING_PROP)).getIndex() > 0) { pos = pos.offsetDown(); }
+		return super.getPickBlock(target, world, pos);
 	}
 	
 	@Override
-	public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
-		int metadata = world.getBlockMetadata(x, y, z);
-		int targetY = y + ((metadata == 0) ? 1 : -1);
+	public void breakBlock(World worldIn, BlockPos pos, IBlockState state){
+		if (((EnumFacing) state.getValue(FACING_PROP)).getIndex() > 0) return;
+		super.breakBlock(worldIn, pos, state);
+	}
+	
+	@Override
+	public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighborBlock) {
+		int metadata = ((EnumFacing) state.getValue(FACING_PROP)).getIndex();
+		int yModifier = ((metadata == 0) ? 1 : -1);
 		int targetMeta = ((metadata == 0) ? 1 : 0);
-		if ((world.getBlock(x, targetY, z) == this) &&
-		    (world.getBlockMetadata(x, targetY, z) == targetMeta)) return;
-		world.setBlockToAir(x, y, z);
+		if ((world.getBlockState(pos.offsetUp(yModifier)).getBlock() == this) &&
+		    (((EnumFacing) world.getBlockState(pos.offsetUp(yModifier)).getValue(FACING_PROP)).getIndex()) == targetMeta) return;
+		world.setBlockToAir(pos);
 		if (metadata == 0)
-			dropBlockAsItem(world, x, y, z, metadata, 0);
+			dropBlockAsItem(world, pos, state, 0);
 	}
 	
 	@Override
-	public TileEntity createTileEntity(World world, int metadata) {
-		return ((metadata == 0) ? new TileEntityArmorStand() : null);
+	public TileEntity createTileEntity(World world, IBlockState state)
+	{
+		return new TileEntityArmorStand();
 	}
 	
 	@Override

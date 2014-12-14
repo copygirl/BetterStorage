@@ -43,13 +43,14 @@ public class TileEntityBackpackRenderer extends TileEntitySpecialRenderer {
 		angle = 1.0F - angle * angle;
 		backpackModel.setLidRotation((float)(angle * Math.PI / 4.0));
 		
-		int renderPasses = item.getRenderPasses(0);
-		for (int pass = 0; pass < renderPasses; pass++) {
-			String type = ((pass == 0) ? null : "overlay");
-			bindTexture(new ResourceLocation(item.getArmorTexture(stack, null, 0, type)));
-			RenderUtils.setColorFromInt(item.getColorFromItemStack(stack, pass));
-			backpackModel.renderAll();
-		}
+		//TODO (1.8): Search a replacement
+//		int renderPasses = item.getRenderPasses(0);
+//		for (int pass = 0; pass < renderPasses; pass++) {
+//			String type = ((pass == 0) ? null : "overlay");
+//			bindTexture(new ResourceLocation(item.getArmorTexture(stack, null, 0, type)));
+//			RenderUtils.setColorFromInt(item.getColorFromItemStack(stack, pass));
+//			backpackModel.renderAll();
+//		}
 		
 		if ((backpack.stack != null) &&
 		    (backpack.stack.isItemEnchanted())) {

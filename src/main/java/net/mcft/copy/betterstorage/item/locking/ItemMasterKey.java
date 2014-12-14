@@ -10,7 +10,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -28,25 +27,33 @@ public class ItemMasterKey extends ItemKey {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public EnumRarity getRarity(ItemStack stack) { return EnumRarity.rare; }
+	public EnumRarity getRarity(ItemStack stack) { return EnumRarity.RARE; }
 	
+	/*
 	@Override
 	@SideOnly(Side.CLIENT)
 	public boolean hasEffect(ItemStack stack, int pass) { return (pass == 0); }
+	*/
 	
 	@Override
 	public void onCreated(ItemStack stack, World world, EntityPlayer player) {  }
 	@Override
 	public void onUpdate(ItemStack stack, World world, Entity entity, int slot, boolean isBeingHeld) {  }
 	
+	/*
 	@SideOnly(Side.CLIENT)
 	@Override
 	public boolean requiresMultipleRenderPasses() { return false; }
+	*/
+	
 	@SideOnly(Side.CLIENT)
 	@Override
 	public int getColorFromItemStack(ItemStack stack, int renderPass) { return 0xFFFFFF; }
+	
+	/*
 	@Override
 	public IIcon getIcon(ItemStack stack, int renderPass) { return itemIcon; }
+	*/
 	
 	// IKey implementation
 	

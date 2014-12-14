@@ -1,30 +1,25 @@
 package net.mcft.copy.betterstorage.tile.crate;
 
 import net.mcft.copy.betterstorage.item.tile.ItemTileBetterStorage;
-import net.mcft.copy.betterstorage.misc.ConnectedTexture;
-import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.tile.TileContainerBetterStorage;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import vazkii.botania.api.mana.ILaputaImmobile;
 import net.minecraftforge.fml.common.Optional.Interface;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import vazkii.botania.api.mana.ILaputaImmobile;
 
 @Interface(modid = "Botania", iface = "vazkii.botania.api.mana.ILaputaImmobile", striprefs = true)
 public class TileCrate extends TileContainerBetterStorage implements ILaputaImmobile {
 	
-	private ConnectedTexture texture = new ConnectedTextureCrate();
+	//private ConnectedTexture texture = new ConnectedTextureCrate();
 	
 	public TileCrate() {
 		super(Material.wood);
@@ -38,6 +33,7 @@ public class TileCrate extends TileContainerBetterStorage implements ILaputaImmo
 	@Override
 	public Class<? extends ItemBlock> getItemClass() { return ItemTileBetterStorage.class; }
 	
+	/*
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
@@ -51,33 +47,34 @@ public class TileCrate extends TileContainerBetterStorage implements ILaputaImmo
 	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
 		return texture.getConnectedIcon(world, x, y, z, ForgeDirection.getOrientation(side));
 	}
+	*/
 	
 	@Override
-	public TileEntity createTileEntity(World world, int metadata) {
+	public TileEntity createTileEntity(World world, IBlockState state) {
         return new TileEntityCrate();
     }
 	
-	public void onBlockPlacedExtended(World world, int x, int y, int z,
-	                                  int side, float hitX, float hitY, float hitZ,
+	public void onBlockPlacedExtended(World world, BlockPos pos,
+	                                  EnumFacing side, float hitX, float hitY, float hitZ,
 	                                  EntityLivingBase entity, ItemStack stack) {
-		TileEntityCrate crate = WorldUtils.get(world, x, y, z, TileEntityCrate.class);
+		TileEntityCrate crate = WorldUtils.get(world, pos, TileEntityCrate.class);
 		if (stack.hasDisplayName())
 			crate.setCustomTitle(stack.getDisplayName());
-		crate.attemptConnect(ForgeDirection.getOrientation(side).getOpposite());
+		crate.attemptConnect(side.getOpposite());
 	}
 	
 	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player,
-	                                int side, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumFacing side, float hitX, float hitY, float hitZ){
 		if (world.isRemote) return true;
-		WorldUtils.get(world, x, y, z, TileEntityCrate.class).openGui(player);
+		WorldUtils.get(world, pos, TileEntityCrate.class).openGui(player);
 		return true;
 	}
 	
 	@Override
 	public boolean hasComparatorInputOverride() { return true; }
 	
-	private class ConnectedTextureCrate extends ConnectedTexture {
+	//TODO (1.8): IIcons? What's that?
+	/*private class ConnectedTextureCrate extends ConnectedTexture {
 		@Override
 		public boolean canConnect(IBlockAccess world, int x, int y, int z, ForgeDirection side, ForgeDirection connected) {
 			if (world.getBlock(x, y, z) != TileCrate.this) return false;
@@ -90,6 +87,7 @@ public class TileCrate extends TileContainerBetterStorage implements ILaputaImmo
 			return (crate.getID() == connectedCrate.getID());
 		}
 	}
+	*/
 
 	@Override
 	public boolean canMove(World world, int x, int y, int z) {

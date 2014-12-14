@@ -50,7 +50,7 @@ public class ItemEnderBackpack extends ItemBackpack {
 	
 	class InventoryEnderBackpackEquipped extends InventoryWrapper {
 		public InventoryEnderBackpackEquipped(IInventory base) { super(base); }
-		@Override public String getInventoryName() { return getBackpackName(); }
+		@Override public String getName() { return getBackpackName(); }
 	}
 	
 }

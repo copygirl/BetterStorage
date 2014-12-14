@@ -140,6 +140,7 @@ public abstract class TileEntityContainer extends TileEntity {
 		if (contents != null)
 			for (ItemStack stack : contents)
 				WorldUtils.dropStackFromBlock(worldObj, getPos(), stack);
+
 	}
 	
 	/** Called before the tile entity is being rendered as an item.
@@ -198,6 +199,7 @@ public abstract class TileEntityContainer extends TileEntity {
 		compAccessed = false;
 		compContentsChanged = false;
 		worldObj.notifyNeighborsOfStateChange(getPos(), getBlockType());
+
 	}
 	
 	/** Calls the TileEntity.markDirty function without affecting the
@@ -205,7 +207,8 @@ public abstract class TileEntityContainer extends TileEntity {
 	public void markDirtySuper() {
 		if (worldObj.isRemote) return;
 		//TODO (1.8): What's that for? Why is it needed?
-//		worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
+		//worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
+
 		if (hasComparatorAccessed())
 			markContentsChanged();
 	}
@@ -231,8 +234,8 @@ public abstract class TileEntityContainer extends TileEntity {
 	protected boolean syncPlayersUsing() {
 		//TODO (1.8): Change it. Simple.
 		return (!worldObj.isRemote && doesSyncPlayers() &&
-		        (((ticksExisted + xCoord + yCoord + zCoord) & 0xFF) == 0) &&
-		        worldObj.doChunksNearChunkExist(getPos(), 16));
+		        (((ticksExisted + pos.getX() + pos.getY() + pos.getZ()) & 0xFF) == 0) &&
+		        worldObj.isAreaLoaded(this.getPos(), 16));
 	}
 	/** Synchronizes playersUsing over the network. */
 	private void doSyncPlayersUsing(int playersUsing) {

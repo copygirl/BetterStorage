@@ -1,18 +1,14 @@
 package net.mcft.copy.betterstorage.item.cardboard;
 
 import net.mcft.copy.betterstorage.item.ItemArmorBetterStorage;
-import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.misc.Resources;
 import net.mcft.copy.betterstorage.utils.StackUtils;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.common.ISpecialArmor;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemCardboardArmor extends ItemArmorBetterStorage implements ICardboardItem, ISpecialArmor {
 	
@@ -25,11 +21,13 @@ public class ItemCardboardArmor extends ItemArmorBetterStorage implements ICardb
 	@Override
 	public String getItemName() { return ("cardboard" + armorText[armorType]); }
 	
+	/*
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister iconRegister) {
 		itemIcon = iconRegister.registerIcon(Constants.modId + ":" + getItemName());
 	}
+	*/
 	
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {

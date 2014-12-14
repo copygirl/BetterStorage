@@ -14,7 +14,6 @@ import net.mcft.copy.betterstorage.misc.handlers.KeyBindingHandler;
 import net.mcft.copy.betterstorage.utils.LanguageUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -27,23 +26,23 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemDrinkingHelmet extends ItemArmorBetterStorage {
 	
-	private IIcon iconPotions;
+	//private IIcon iconPotions;
 	
 	public static final int maxUses = 12;
 	
 	public static final ArmorMaterial material = EnumHelper.addArmorMaterial(
-			"drinkingHelmet", 11, new int[]{ 3, 0, 0, 0 }, 15);
+			"drinkingHelmet", Constants.modId + ":drinkingHelmet", 11, new int[]{ 3, 0, 0, 0 }, 15);
 	static { material.customCraftingMaterial = Item.getItemFromBlock(Blocks.redstone_block); }
 	
 	public ItemDrinkingHelmet() { super(material, 0, 0); }
 	
+	/*
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister iconRegister) {
@@ -60,6 +59,7 @@ public class ItemDrinkingHelmet extends ItemArmorBetterStorage {
 	public IIcon getIconIndex(ItemStack stack) {
 		return getIcon(stack, 0);
 	}
+	*/
 	
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
@@ -74,7 +74,7 @@ public class ItemDrinkingHelmet extends ItemArmorBetterStorage {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public EnumRarity getRarity(ItemStack stack) {
-		return (StackUtils.has(stack, "display", "Lore") ? EnumRarity.epic : EnumRarity.rare);
+		return (StackUtils.has(stack, "display", "Lore") ? EnumRarity.EPIC : EnumRarity.RARE);
 	}
 	
 	@Override
