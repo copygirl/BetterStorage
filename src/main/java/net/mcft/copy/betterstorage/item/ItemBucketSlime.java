@@ -11,7 +11,6 @@ import net.mcft.copy.betterstorage.misc.EquipmentSlot;
 import net.mcft.copy.betterstorage.utils.LanguageUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
@@ -24,10 +23,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.Facing;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
 import net.minecraft.util.StringUtils;
@@ -39,12 +38,11 @@ public class ItemBucketSlime extends ItemBetterStorage {
 	
 	private static Map<String, Handler> handlers = new HashMap<String, Handler>();
 	
-	private IIcon empty;
-	
 	public ItemBucketSlime() {
 		setContainerItem(Items.bucket);
 	}
 	
+	/*
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister iconRegister) {
@@ -68,11 +66,13 @@ public class ItemBucketSlime extends ItemBetterStorage {
 	@SideOnly(Side.CLIENT)
 	public boolean requiresMultipleRenderPasses() { return true; }
 	
+	*/
+	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public boolean hasEffect(ItemStack stack, int pass) {
+	public boolean hasEffect(ItemStack stack) {
 		return (stack.isItemEnchanted() ||
-		        ((pass == 0) && StackUtils.has(stack, "Effects")));
+		        (/*(pass == 0) && */ StackUtils.has(stack, "Effects")));
 	}
 	
 	@Override
@@ -117,18 +117,14 @@ public class ItemBucketSlime extends ItemBetterStorage {
 	}
 	
 	@Override
-	public boolean onItemUse(ItemStack stack, EntityPlayer player,
-	                         World world, int x, int y, int z, int side,
-	                         float hitX, float hitY, float hitZ) {
+	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ){
 		// If player is sneaking, eat slime
 		// instead of placing it in the world.
 		if (player.isSneaking()) return false;
 		
 		if (world.isRemote) return true;
 		
-		x += Facing.offsetsXForSide[side];
-		y += Facing.offsetsYForSide[side];
-		z += Facing.offsetsZForSide[side];
+		pos = pos.add(side.getDirectionVec());
 		
 		String id = getSlimeId(stack);
 		String name = StackUtils.get(stack, (String)null, "Slime", "name");
@@ -140,7 +136,7 @@ public class ItemBucketSlime extends ItemBetterStorage {
 			EntityLiving slime = (EntityLiving)entity;
 			
 			float rotation = MathHelper.wrapAngleTo180_float(world.rand.nextFloat() * 360.0F);
-			slime.setLocationAndAngles(x + 0.5, y, z + 0.5, rotation, 0.0F);
+			slime.setLocationAndAngles(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, rotation, 0.0F);
 			slime.rotationYawHead = slime.renderYawOffset = rotation;
 			
 			if (name != null) slime.setCustomNameTag(name);
@@ -164,7 +160,7 @@ public class ItemBucketSlime extends ItemBetterStorage {
 	// Eating slime
 	
 	@Override
-	public EnumAction getItemUseAction(ItemStack stack) { return EnumAction.drink; }
+	public EnumAction getItemUseAction(ItemStack stack) { return EnumAction.DRINK; }
 	
 	@Override
 	public int getMaxItemUseDuration(ItemStack stack) { return 48; }
@@ -176,7 +172,7 @@ public class ItemBucketSlime extends ItemBetterStorage {
 	}
 	
 	@Override
-	public ItemStack onEaten(ItemStack stack, World world, EntityPlayer player) {
+	public ItemStack onItemUseFinish(ItemStack stack, World world, EntityPlayer player) {
 		Handler handler = getHandler(stack);
 		if (handler != null) {
 			player.getFoodStats().addStats(handler.foodAmount(), handler.saturationAmount());
@@ -209,7 +205,7 @@ public class ItemBucketSlime extends ItemBetterStorage {
 		String entityId = EntityList.getEntityString(slime);
 		if (!entityId.equals("Slime"))
 			StackUtils.set(stack, entityId, "Slime", "id");
-		if (slime.hasCustomNameTag())
+		if (slime.hasCustomName())
 			StackUtils.set(stack, slime.getCustomNameTag(), "Slime", "name");
 		
 		Collection<PotionEffect> effects = slime.getActivePotionEffects();
@@ -277,7 +273,7 @@ public class ItemBucketSlime extends ItemBetterStorage {
 			@Override public float saturationAmount() { return 0.75F; }
 			@Override public void onEaten(EntityPlayer player, boolean potionEffects) {
 				super.onEaten(player, potionEffects);
-				player.addPotionEffect(new PotionEffect(Potion.field_76434_w.id, (potionEffects ? 40 : 60) * 20, 4));
+				player.addPotionEffect(new PotionEffect(Potion.field_180152_w.id, (potionEffects ? 40 : 60) * 20, 4));
 			}
 		});
 		registerHandler(new Handler("thaumicSlime", "Thaumcraft.ThaumSlime") {
@@ -308,17 +304,18 @@ public class ItemBucketSlime extends ItemBetterStorage {
 		public final String name;
 		public final String entityName;
 		
-		public IIcon icon;
+		//public IIcon icon;
 		
 		public Handler(String name, String entityName) {
 			this.name = name;
 			this.entityName = entityName;
 		}
 		
-		/** Returns the icon location to be used in registerIcons. */
+		/* Returns the icon location to be used in registerIcons. 
 		public void registerIcon(IIconRegister iconRegister) {
 			icon = iconRegister.registerIcon(Constants.modId + ":bucketSlime_" + name);
 		}
+		*/
 		
 		/** Returns the size of the slime. */
 		public int getSize(EntityLiving slime) {

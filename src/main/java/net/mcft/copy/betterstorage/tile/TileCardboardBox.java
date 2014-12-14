@@ -3,22 +3,16 @@ package net.mcft.copy.betterstorage.tile;
 import java.util.Random;
 
 import net.mcft.copy.betterstorage.item.tile.ItemCardboardBox;
-import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityCardboardBox;
-import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TileCardboardBox extends TileContainerBetterStorage {
 	
-	private IIcon sideIcon;
+	//private IIcon sideIcon;
 	
 	public TileCardboardBox() {
 		super(Material.wood);
@@ -31,6 +25,7 @@ public class TileCardboardBox extends TileContainerBetterStorage {
 	@Override
 	public Class<? extends ItemBlock> getItemClass() { return ItemCardboardBox.class; }
 	
+	/*
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
@@ -51,16 +46,19 @@ public class TileCardboardBox extends TileContainerBetterStorage {
 		return (((box != null) && (box.color >= 0)) ? box.color : 0x705030);
 	}
 	
-	@Override
-	public boolean isOpaqueCube() { return false; }
+
 	@Override
 	public boolean renderAsNormalBlock() { return false; }
+	*/
+	
+	@Override
+	public boolean isOpaqueCube() { return false; }
 	
 	@Override
 	public int quantityDropped(Random rand) { return 0; }
 	
 	@Override
-	public TileEntity createTileEntity(World world, int metadata) {
+	public TileEntity createTileEntity(World world, IBlockState state) {
 		return new TileEntityCardboardBox();
 	}
 	

@@ -126,6 +126,7 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 	
 	// Item stuff
 	
+	/*
 	@Override
 	@SideOnly(Side.CLIENT)
 	public int getSpriteNumber() { return 0; }
@@ -133,6 +134,7 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister iconRegister) {  }
+	*/
 	
 	@Override
 	public String getUnlocalizedName() { return getBlockType().getUnlocalizedName(); }
@@ -149,9 +151,10 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 		int color = getDefaultColor();
 		return ((color >= 0) ? StackUtils.get(stack, color, "display", "color") : color);
 	}
+	/*
 	@Override
 	public int getRenderPasses(int metadata) { return ((getDefaultColor() >= 0) ? 2 : 1); }
-	
+	*/
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advancedTooltips) {
@@ -222,11 +225,9 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) { return stack; }
 	
 	@Override
-	public boolean onItemUse(ItemStack stack, EntityPlayer player,
-	                         World world, int x, int y, int z, int side,
-	                         float hitX, float hitY, float hitZ) {
-		ForgeDirection orientation = DirectionUtils.getOrientation(player).getOpposite();
-		return placeBackpack(player, player, stack, x, y, z, side, orientation, false, false);
+	public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
+		EnumFacing orientation = side.getOpposite();
+		return placeBackpack(playerIn, playerIn, stack, pos, side, orientation, false, false);
 	}
 	
 	/** Called every tick regardless of whether the
@@ -362,7 +363,7 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 		Container container = new ContainerBetterStorage(player, inventory, columns, rows);
 		
 		String title = StackUtils.get(backpack, "", "display", "Name");
-		PlayerUtils.openGui(player, inventory.getInventoryName(), columns, rows, title, container);
+		PlayerUtils.openGui(player, inventory.getName(), columns, rows, title, container);
 		
 		return true;
 		
@@ -411,7 +412,7 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 	 *                  Will not check for block solidity or entities.
 	 * @return If the backpack was placed successfully. */
 	public static boolean placeBackpack(EntityLivingBase carrier, EntityPlayer player, ItemStack backpack, 
-										BlockPos pos, int side, EnumFacing orientation,
+										BlockPos pos, EnumFacing side, EnumFacing orientation,
 	                                    boolean despawn, boolean deathDrop) {
 		
 		if (backpack.stackSize == 0) return false;
@@ -420,28 +421,28 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 		Block blockBackpack = ((ItemBackpack)backpack.getItem()).getBlockType();
 		
 		// Return false if there's block is too low or too high.
-		if ((y <= 0) || (y >= world.getHeight() - 1)) return false;
+		if ((pos.getY() <= 0) || (pos.getY() >= world.getHeight() - 1)) return false;
 		
 		// If a replaceable block was clicked, move on.
 		// Otherwise, check if the top side was clicked and adjust the position.
-		if (!world.getBlock(x, y, z).isReplaceable(world, x, y, z)) {
-			if (side != 1) return false;
-			y++;
+		if (!world.getBlockState(pos).getBlock().isReplaceable(world, pos)) {
+			if (side != EnumFacing.UP) return false;
+			pos = pos.offsetUp();
 		}
 		
 		// If the backpack is dropped on death, return false
 		// if it's placed on a non-replaceable block. Otherwise,
 		// return false if the block isn't solid on top.
-		Block blockBelow = world.getBlock(x, y - 1, z);
-		if ((deathDrop ? blockBelow.isReplaceable(world, x, y - 1, z)
-		               : !world.isSideSolid(x, y - 1, z, ForgeDirection.UP))) return false;
+		Block blockBelow = world.getBlockState(pos.offsetDown()).getBlock();
+		if ((deathDrop ? blockBelow.isReplaceable(world, pos.offsetDown())
+		               : !world.isSideSolid(pos.offsetDown(), EnumFacing.UP))) return false;
 		
 		// Return false if there's an entity blocking the placement.
-		if (!world.canPlaceEntityOnSide(blockBackpack, x, y, z, deathDrop, side, carrier, backpack)) return false;
+		if (!world.canBlockBePlaced(blockBackpack, pos, deathDrop, side, carrier, backpack)) return false;
 		
 		// Return false if the player can't edit the block.
-		if ((player != null) && (!world.canMineBlock(player, x, y, z) ||
-		                         !player.canPlayerEdit(x, y, z, side, backpack))) return false;
+		if ((player != null) && (!world.isBlockModifiable(player, pos) ||
+		                         !player.func_175151_a(pos, side, backpack))) return false;
 		
 		// Do not actually place the backpack on the client.
 		if (world.isRemote) return true;
@@ -449,24 +450,24 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 		// Actually place the block in the world,
 		// play place sound and decrease stack size if successful.
 		
-		if (!world.setBlock(x, y, z, blockBackpack, orientation.ordinal(), 3))
+		if (!world.setBlock(pos, blockBackpack, orientation.ordinal(), 3))
 			return false;
 		
-		if (world.getBlock(x, y, z) != blockBackpack)
+		if (world.getBlockState(pos).getBlock() != blockBackpack)
 			return false;
 		
-		blockBackpack.onBlockPlacedBy(world, x, y, z, carrier, backpack);
-		blockBackpack.onPostBlockPlaced(world, x, y, z, orientation.ordinal());
+		blockBackpack.onBlockPlacedBy(world, pos, world.getBlockState(pos), carrier, backpack);
+		//blockBackpack.onPostBlockPlaced(world, pos, orientation.ordinal());
 		
-		TileEntityBackpack te = WorldUtils.get(world, x, y, z, TileEntityBackpack.class);
+		TileEntityBackpack te = WorldUtils.get(world, pos, TileEntityBackpack.class);
 		te.stack = backpack.copy();
 		if (ItemBackpack.getBackpack(carrier) == backpack)
 			te.unequip(carrier, despawn);
 		
-		String sound = blockBackpack.stepSound.func_150496_b();
+		String sound = blockBackpack.stepSound.getPlaceSound();
 		float volume = (blockBackpack.stepSound.getVolume() + 1.0F) / 2.0F;
-		float pitch = blockBackpack.stepSound.getPitch() * 0.8F;
-		world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5F, sound, volume, pitch);
+		float pitch = blockBackpack.stepSound.getFrequency() * 0.8F;
+		world.playSoundEffect(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, sound, volume, pitch);
 		
 		backpack.stackSize--;
 		

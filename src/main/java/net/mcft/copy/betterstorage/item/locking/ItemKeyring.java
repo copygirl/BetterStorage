@@ -7,19 +7,15 @@ import net.mcft.copy.betterstorage.item.ItemBetterStorage;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.PlayerUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemKeyring extends ItemBetterStorage implements IKey, IContainerItem {
 	
-	private IIcon[] icons = new IIcon[4];
+	/*private IIcon[] icons = new IIcon[4];
 	
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -34,6 +30,7 @@ public class ItemKeyring extends ItemBetterStorage implements IKey, IContainerIt
 	public IIcon getIconFromDamage(int damage) {
 		return icons[Math.min(damage, icons.length - 1)];
 	}
+	*/
 	
 	@Override
 	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {

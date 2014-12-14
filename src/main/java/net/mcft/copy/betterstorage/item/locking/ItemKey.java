@@ -4,24 +4,21 @@ import net.mcft.copy.betterstorage.api.BetterStorageEnchantment;
 import net.mcft.copy.betterstorage.api.lock.IKey;
 import net.mcft.copy.betterstorage.api.lock.ILock;
 import net.mcft.copy.betterstorage.item.ItemBetterStorage;
-import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.RandomUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemKey extends ItemBetterStorage implements IKey {
 	
-	private IIcon iconColor, iconFullColor;
+	//private IIcon iconColor, iconFullColor;
 	
 	public ItemKey() {
 		// This is needed to make sure the item stays in the crafting
@@ -29,6 +26,8 @@ public class ItemKey extends ItemBetterStorage implements IKey {
 		setContainerItem(this);
 	}
 	
+	
+	/*
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister iconRegister) {
@@ -36,14 +35,13 @@ public class ItemKey extends ItemBetterStorage implements IKey {
 		iconColor = iconRegister.registerIcon(Constants.modId + ":key_color");
 		iconFullColor = iconRegister.registerIcon(Constants.modId + ":key_fullColor");
 	}
+	*/
 
 	@Override
 	public boolean isDamageable() { return true; }
 	@Override
 	public int getItemEnchantability() { return 20; }
 	
-	@Override
-	public boolean doesContainerItemLeaveCraftingGrid(ItemStack stack) { return false; }
 	@Override
 	public ItemStack getContainerItem(ItemStack stack) { return stack; }
 	
@@ -56,9 +54,11 @@ public class ItemKey extends ItemBetterStorage implements IKey {
 		if (!world.isRemote) ensureHasID(stack);
 	}
 	
+	/*
 	@SideOnly(Side.CLIENT)
 	@Override
 	public boolean requiresMultipleRenderPasses() { return true; }
+	*/
 	
 	@SideOnly(Side.CLIENT)
 	@Override
@@ -70,6 +70,8 @@ public class ItemKey extends ItemBetterStorage implements IKey {
 			return ((color < 0) ? fullColor : color);
 		} else return fullColor;
 	}
+	
+	/*
 	@Override
 	public IIcon getIcon(ItemStack stack, int renderPass) {
 		boolean hasFullColor = (getFullColor(stack) >= 0);

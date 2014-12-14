@@ -6,6 +6,7 @@ import net.mcft.copy.betterstorage.item.tile.ItemPresent;
 import net.mcft.copy.betterstorage.proxy.ClientProxy;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityPresent;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
@@ -26,6 +27,7 @@ public class TilePresent extends TileContainerBetterStorage {
 		setBlockBounds(0.0625F, 0.0F, 0.0625F, 0.9375F, 0.875F, 0.9375F);
 	}
 	
+	/*
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {  }
@@ -35,14 +37,18 @@ public class TilePresent extends TileContainerBetterStorage {
 	public IIcon getIcon(int side, int meta) {
 		return Blocks.wool.getIcon(side, meta);
 	}
+	*/
 	
 	@Override
 	public Class<? extends ItemBlock> getItemClass() { return ItemPresent.class; }
 	
 	@Override
 	public boolean isOpaqueCube() { return false; }
+	
+	/*
 	@Override
 	public boolean renderAsNormalBlock() { return false; }
+	*/
 	
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -52,7 +58,7 @@ public class TilePresent extends TileContainerBetterStorage {
 	public int quantityDropped(Random rand) { return 0; }
 	
 	@Override
-	public TileEntity createTileEntity(World world, int metadata) {
+	public TileEntity createTileEntity(World world, IBlockState state) {
 		return new TileEntityPresent();
 	}
 	

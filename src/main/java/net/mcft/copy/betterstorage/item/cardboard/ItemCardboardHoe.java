@@ -11,6 +11,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -32,11 +33,14 @@ public class ItemCardboardHoe extends ItemHoe implements ICardboardItem {
 		return ((name != null) ? name : (name = MiscUtils.getName(this)));
 	}
 	
+	
+	/*
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister iconRegister) {
 		itemIcon = iconRegister.registerIcon(Constants.modId + ":" + getItemName());
 	}
+	*/
 	
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -53,8 +57,8 @@ public class ItemCardboardHoe extends ItemHoe implements ICardboardItem {
 		return ItemCardboardSheet.canHarvestBlock(stack, super.canHarvestBlock(block, stack)); }
 	@Override public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity) {
 		return !ItemCardboardSheet.isEffective(stack); }
-	@Override public boolean onBlockDestroyed(ItemStack stack, World world, Block block, int x, int y, int z, EntityLivingBase player) {
-		return ItemCardboardSheet.onBlockDestroyed(world, block, x, y, z, stack, player); }
+	@Override public boolean onBlockDestroyed(ItemStack stack, World world, Block block, BlockPos pos, EntityLivingBase player) {
+		return ItemCardboardSheet.onBlockDestroyed(world, block, pos, stack, player); }
 	@Override public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase player) {
 		return ItemCardboardSheet.damageItem(stack, 1, player); }
 	

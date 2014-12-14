@@ -5,29 +5,27 @@ import net.mcft.copy.betterstorage.api.lock.EnumLockInteraction;
 import net.mcft.copy.betterstorage.api.lock.ILock;
 import net.mcft.copy.betterstorage.api.lock.ILockable;
 import net.mcft.copy.betterstorage.item.ItemBetterStorage;
-import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.RandomUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemLock extends ItemBetterStorage implements ILock {
 	
-	private IIcon iconColor, iconFullColor;
+	//private IIcon iconColor, iconFullColor;
 	
 	public ItemLock() {
 		setMaxDamage(64);
 	}
 	
+	/*
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister iconRegister) {
@@ -35,6 +33,7 @@ public class ItemLock extends ItemBetterStorage implements ILock {
 		iconColor = iconRegister.registerIcon(Constants.modId + ":lock_color");
 		iconFullColor = iconRegister.registerIcon(Constants.modId + ":lock_fullColor");
 	}
+	*/
 	
 	@Override
 	public boolean isRepairable() { return true; }
@@ -57,9 +56,11 @@ public class ItemLock extends ItemBetterStorage implements ILock {
 		if (!world.isRemote) ensureHasID(stack);
 	}
 	
+	/*
 	@SideOnly(Side.CLIENT)
 	@Override
 	public boolean requiresMultipleRenderPasses() { return true; }
+	*/
 	
 	@SideOnly(Side.CLIENT)
 	@Override
@@ -71,12 +72,15 @@ public class ItemLock extends ItemBetterStorage implements ILock {
 			return ((color < 0) ? fullColor : color);
 		} else return fullColor;
 	}
+	
+	/*
 	@Override
 	public IIcon getIcon(ItemStack stack, int renderPass) {
 		boolean hasFullColor = (getFullColor(stack) >= 0);
 		if ((renderPass > 0) && (getColor(stack) >= 0)) return iconColor;
 		return (hasFullColor ? iconFullColor : itemIcon);
 	}
+	*/
 	
 	/** Gives the lock a random ID if it doesn't have one. <br>
 	 *  This is usually only when the lock is taken out of creative. */

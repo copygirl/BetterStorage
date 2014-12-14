@@ -9,15 +9,14 @@ import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.proxy.ClientProxy;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityBackpack;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -42,6 +41,8 @@ public class TileBackpack extends TileContainerBetterStorage {
 
 	public ItemBackpack getItemType() { return BetterStorageItems.itemBackpack; }
 	
+	
+	/*
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
@@ -60,22 +61,21 @@ public class TileBackpack extends TileContainerBetterStorage {
 			setBlockBounds(0.5F - d / 2, 0.0F, 0.5F - w / 2, 0.5F + d / 2, h, 0.5F + w / 2);
 		else setBlockBounds(0.5F - w / 2, 0.0F, 0.5F - w / 2, 0.5F + w / 2, h, 0.5F + w / 2);
 	}
+	*/
 	
 	@Override
 	public boolean isOpaqueCube() { return false; }
-	@Override
-	public boolean renderAsNormalBlock() { return false; }
 	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public int getRenderType() { return ClientProxy.backpackRenderId; }
 	
 	@Override
-	public int quantityDropped(int meta, int fortune, Random random) { return 0; }
+	public int quantityDropped(IBlockState state, int fortune, Random random) { return 0; }
 	
 	@Override
-	public float getPlayerRelativeBlockHardness(EntityPlayer player, World world, int x, int y, int z) {
-		float hardness = super.getPlayerRelativeBlockHardness(player, world, x, y, z);
+	public float getPlayerRelativeBlockHardness(EntityPlayer player, World world, BlockPos pos) {
+		float hardness = super.getPlayerRelativeBlockHardness(player, world, pos);
 		boolean sneaking = player.isSneaking();
 		boolean canEquip = ItemBackpack.canEquipBackpack(player);
 		boolean stoppedSneaking = localPlayerStoppedSneaking(player);
@@ -92,7 +92,7 @@ public class TileBackpack extends TileContainerBetterStorage {
 	
 	private long lastHelpMessage = System.currentTimeMillis();
 	@Override
-	public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player) {
+	public void onBlockClicked(World world, BlockPos pos, EntityPlayer player) {
 		if (world.isRemote && player.isSneaking() && !ItemBackpack.canEquipBackpack(player) &&
 		    BetterStorage.globalConfig.getBoolean(GlobalConfig.enableHelpTooltips) &&
 		    (System.currentTimeMillis() > lastHelpMessage + 10 * 1000)) {
@@ -103,7 +103,7 @@ public class TileBackpack extends TileContainerBetterStorage {
 	}
 	
 	@Override
-	public TileEntity createTileEntity(World world, int metadata) {
+	public TileEntity createTileEntity(World world, IBlockState state) {
 		return new TileEntityBackpack();
 	}
 	

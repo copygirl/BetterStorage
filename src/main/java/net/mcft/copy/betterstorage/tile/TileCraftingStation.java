@@ -1,22 +1,16 @@
 package net.mcft.copy.betterstorage.tile;
 
-import net.mcft.copy.betterstorage.BetterStorage;
-import net.mcft.copy.betterstorage.config.GlobalConfig;
-import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityCraftingStation;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TileCraftingStation extends TileContainerBetterStorage {
 	
-	private IIcon topIcon;
-	private IIcon bottomIconDisabled;
-	private IIcon bottomIconEnabled;
+//	private IIcon topIcon;
+//	private IIcon bottomIconDisabled;
+//	private IIcon bottomIconEnabled;
 	
 	public TileCraftingStation() {
 		super(Material.iron);
@@ -25,6 +19,7 @@ public class TileCraftingStation extends TileContainerBetterStorage {
 		setStepSound(soundTypeStone);
 	}
 	
+	/*
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
@@ -43,8 +38,10 @@ public class TileCraftingStation extends TileContainerBetterStorage {
 				: ((side == 1) ? topIcon : blockIcon));
 	}
 	
+	*/
+	
 	@Override
-	public TileEntity createTileEntity(World world, int metadata) {
+	public TileEntity createTileEntity(World world, IBlockState state) {
 		return new TileEntityCraftingStation();
 	}
 	
