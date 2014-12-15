@@ -40,7 +40,7 @@ public class PresentRemoveNametagRecipe extends ShapelessStationRecipe {
 			if (stack.getItem() == Item.getItemFromBlock(BetterStorageTiles.present)) {
 				nameTag = StackUtils.get(stack, null, TileEntityPresent.TAG_NAMETAG);
 				StackUtils.remove((output[i] = stack.copy()), TileEntityPresent.TAG_NAMETAG);
-			} else if (stack.getItem() == Items.shears)
+			} else if (stack.getItem() instanceof ItemShears)
 				shearsIndex = i;
 		}
 		(output[shearsIndex] = new ItemStack(Items.name_tag)).setStackDisplayName(nameTag);
