@@ -15,6 +15,10 @@ import net.minecraft.world.World;
 
 public class ItemKeyring extends ItemBetterStorage implements IKey, IContainerItem {
 	
+	public ItemKeyring() {
+		this.setHasSubtypes(true);
+	}
+	
 	/*private IIcon[] icons = new IIcon[4];
 	
 	@Override

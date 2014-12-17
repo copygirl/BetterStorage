@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "betterstorage:items/cardboardHoe"
+        "layer0": "betterstorage:items/key"
     },
     "display": {
         "thirdperson": {
