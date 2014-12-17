@@ -61,6 +61,11 @@ public class BetterStorage {
 		globalConfig.load();
 		globalConfig.save();
 		
+	}
+	
+	@EventHandler
+	public void load(FMLInitializationEvent event) {
+		
 		BetterStorageTiles.initialize();
 		BetterStorageItems.initialize();
 		
@@ -69,12 +74,6 @@ public class BetterStorage {
 		BetterStorageTileEntities.register();
 		BetterStorageEntities.register();
 		DungeonLoot.add();
-		
-	}
-	
-	@EventHandler
-	public void load(FMLInitializationEvent event) {
-		
 		Recipes.add();
 		proxy.initialize();
 		

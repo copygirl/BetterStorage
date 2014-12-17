@@ -16,6 +16,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TileReinforcedChest extends TileLockable {
 	
+	public TileReinforcedChest() {
+		this(Material.wood);
+	}
+	
 	public TileReinforcedChest(Material material) {
 		super(material);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING_PROP, EnumFacing.NORTH));
@@ -26,9 +30,7 @@ public class TileReinforcedChest extends TileLockable {
 		
 		setHarvestLevel("axe", 2);
 	}
-	public TileReinforcedChest() {
-		this(Material.wood);
-	}
+
 	
 	@Override
 	public Class<? extends ItemBlock> getItemClass() { return ItemLockable.class; }

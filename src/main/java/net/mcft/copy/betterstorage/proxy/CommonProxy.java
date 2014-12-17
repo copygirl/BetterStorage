@@ -23,6 +23,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Vec3;
@@ -282,5 +283,13 @@ public class CommonProxy {
 				event.player.setCurrentItemOrArmor(EquipmentSlot.CHEST, backpack);
 			}
 		}
+	}
+	/**
+	 * Register a item model because Forge don't.
+	 * @param item The item to register
+	 * @param name The model name
+	 */
+	public void registerItemRender(Item item, String name){
+		
 	}
 }

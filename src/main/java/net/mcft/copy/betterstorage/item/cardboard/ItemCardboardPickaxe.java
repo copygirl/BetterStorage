@@ -25,6 +25,7 @@ public class ItemCardboardPickaxe extends ItemPickaxe implements ICardboardItem 
 		setCreativeTab(BetterStorage.creativeTab);
 		setUnlocalizedName(Constants.modId + "." + getItemName());
 		GameRegistry.registerItem(this, getItemName());
+		BetterStorage.proxy.registerItemRender(this, getItemName());
 	}
 	
 	/** Returns the name of this item, for example "drinkingHelmet". */

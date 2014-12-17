@@ -3,6 +3,7 @@ package net.mcft.copy.betterstorage.proxy;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.addon.Addon;
 import net.mcft.copy.betterstorage.api.stand.BetterStorageArmorStand;
 import net.mcft.copy.betterstorage.attachment.Attachment;
@@ -26,6 +27,7 @@ import net.mcft.copy.betterstorage.content.BetterStorageTiles;
 import net.mcft.copy.betterstorage.entity.EntityCluckington;
 import net.mcft.copy.betterstorage.entity.EntityFrienderman;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
+import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.misc.Resources;
 import net.mcft.copy.betterstorage.misc.handlers.KeyBindingHandler;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityBackpack;
@@ -42,6 +44,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderChicken;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -305,6 +308,12 @@ public class ClientProxy extends CommonProxy {
 			
 		} else backpack = ItemBackpack.getBackpack(event.entityPlayer);
 		if (backpack != null) event.renderCape = false;
+	}
+	
+	@Override
+	public void registerItemRender(Item item, String name){
+		BetterStorage.log.info("Registering item render for " + name + "...");
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(item, 0, new ModelResourceLocation(Constants.modId+ ":" + name, "inventory"));
 	}
 	
 }
