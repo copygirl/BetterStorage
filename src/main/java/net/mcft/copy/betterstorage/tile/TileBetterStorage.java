@@ -43,6 +43,8 @@ public class TileBetterStorage extends Block {
 		} else {
 			GameRegistry.registerBlock(this, null, getTileName());
 		}
+		
+		BetterStorage.proxy.registerItemRender(Item.getItemFromBlock(this), 0, getTileName());
 	}
 	
 }

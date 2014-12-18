@@ -1,0 +1,12 @@
+{
+    "parent": "block/cube",
+    "textures": {
+        "particle": "betterstorage:blocks/craftingStation",
+        "down": "betterstorage:blocks/craftingStation_bottom_0",
+        "up": "betterstorage:blocks/craftingStation_top",
+        "north": "betterstorage:blocks/craftingStation",
+        "east": "betterstorage:blocks/craftingStation",
+        "south": "betterstorage:blocks/craftingStation",
+        "west": "betterstorage:blocks/craftingStation"
+    }
+}
