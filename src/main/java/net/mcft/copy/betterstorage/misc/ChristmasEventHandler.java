@@ -174,7 +174,7 @@ public class ChristmasEventHandler {
 		
 		ItemStack sword = new ItemStack((BetterStorageItems.cardboardSword != null)
 				? BetterStorageItems.cardboardSword : Items.wooden_sword);
-		sword.addEnchantment(Enchantment.baneOfArthropods, 5);
+		sword.addEnchantment(Enchantment.looting, 4);
 		sword.addEnchantment(Enchantment.knockback, 3);
 		if (BetterStorageItems.cardboardSword != null) {
 			sword.setStackDisplayName(player.getCommandSenderName() + "'s Magical Sword");
@@ -220,7 +220,7 @@ public class ChristmasEventHandler {
 			ItemStack drinkingHelmet = new ItemStack(BetterStorageItems.drinkingHelmet);
 			drinkingHelmet.setStackDisplayName("Splash Drinking Helmet");
 			drinkingHelmet.addEnchantment(Enchantment.protection, 5);
-			drinkingHelmet.addEnchantment(Enchantment.respiration, 3);
+			drinkingHelmet.addEnchantment(Enchantment.respiration, 4);
 			ItemStack speedPotion = new ItemStack(Items.potionitem, 1, 16418);
 			StackUtils.set(speedPotion, NbtUtils.createList(
 					NbtUtils.createCompound("Id", 1, "Amplifier", 3, "Duration", 2000),
@@ -263,7 +263,7 @@ public class ChristmasEventHandler {
 			items.add(new ItemStack(BetterStorageTiles.craftingStation));
 		else vouchers = createVoucher(items, "Crafting Station");
 		items.add(new ItemStack(Items.diamond, 8));
-		items.add(new ItemStack(Items.gold_ingot, 20));
+		items.add(new ItemStack(Items.emerald, 16));
 		
 		if (vouchers) {
 			ItemStack book = new ItemStack(Items.written_book);
