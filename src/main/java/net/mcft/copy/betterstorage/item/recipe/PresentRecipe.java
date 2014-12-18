@@ -59,6 +59,7 @@ public class PresentRecipe extends ShapedRecipes {
 		compound.setBoolean(TileEntityPresent.TAG_SKOJANZA_MODE, skojanzaMode);
 		int color = StackUtils.get(box, -1, "display", "color");
 		if (color >= 0) compound.setInteger("color", color);
+		StackUtils.remove(box, "display", "color");
 		present.setTagCompound(compound);
 		return present;
 	}
