@@ -28,9 +28,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
 
 public class ChristmasEventHandler {
 	
@@ -60,9 +62,10 @@ public class ChristmasEventHandler {
 			
 			event.player.inventory.addItemStackToInventory(book);
 			properties.year = getYear();
+			properties.gotPresent = false;
 		}
 		
-		if (isPresentTime()) {
+		if (isPresentTime() && !properties.gotPresent) {
 			IInventory inv = event.player.inventory;
 			for (int i = 0; i < inv.getSizeInventory(); i++) {
 				ItemStack stack = inv.getStackInSlot(i);
@@ -94,6 +97,7 @@ public class ChristmasEventHandler {
 					}
 					
 					inv.setInventorySlotContents(i, present);
+					properties.gotPresent = true;
 					break;
 				}
 			}
@@ -104,6 +108,40 @@ public class ChristmasEventHandler {
 	public void onEntityConstructing(EntityConstructing event) {
 		if (event.entity instanceof EntityPlayerMP)
 			EntityUtils.createProperties(event.entity, BetterChristmasProperties.class);
+	}
+	
+	@SubscribeEvent
+	public void onPlayerDeath(LivingDeathEvent event) {
+		if (!(event.entity instanceof EntityPlayerMP)) return;
+		EntityPlayer player = (EntityPlayer)event.entity;
+		BetterChristmasProperties properties =
+				EntityUtils.getProperties(player, BetterChristmasProperties.class);
+		
+		NBTTagCompound entityData = player.getEntityData();
+		NBTTagCompound persistent = entityData.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG);
+		entityData.setTag(EntityPlayer.PERSISTED_NBT_TAG, persistent);
+		
+		NBTTagCompound propertiesCompound = new NBTTagCompound();
+		properties.saveNBTData(propertiesCompound);
+		persistent.setTag(BetterChristmasProperties.identifier, propertiesCompound);
+	}
+	
+	@SubscribeEvent
+	public void onPlayerRespawn(PlayerRespawnEvent event) {
+		EntityPlayer player = event.player;
+		BetterChristmasProperties properties =
+				EntityUtils.getProperties(player, BetterChristmasProperties.class);
+		
+		NBTTagCompound entityData = player.getEntityData();
+		NBTTagCompound persistent = entityData.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG);
+		NBTTagCompound propertiesCompound = persistent.getCompoundTag(BetterChristmasProperties.identifier);
+		if (propertiesCompound.hasNoTags()) return;
+		
+		properties.loadNBTData(propertiesCompound);
+		
+		persistent.removeTag(BetterChristmasProperties.identifier);
+		if (persistent.hasNoTags())
+			entityData.removeTag(EntityPlayer.PERSISTED_NBT_TAG);
 	}
 	
 	
@@ -260,6 +298,7 @@ public class ChristmasEventHandler {
 		public static final String identifier = Constants.modId + ".betterChristmas";
 		
 		public int year = 2013;
+		public boolean gotPresent = false;
 		
 		@Override
 		public void init(Entity entity, World world) {  }
