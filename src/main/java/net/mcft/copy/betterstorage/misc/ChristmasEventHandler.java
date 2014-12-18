@@ -305,11 +305,18 @@ public class ChristmasEventHandler {
 		
 		@Override
 		public void saveNBTData(NBTTagCompound compound) {
-			compound.setInteger("betterChristmasYear", year);
+			NBTTagCompound data = new NBTTagCompound();
+			data.setShort("year", (short)year);
+			data.setBoolean("gotPresent", gotPresent);
+			compound.setTag(identifier, data);
 		}
 		@Override
 		public void loadNBTData(NBTTagCompound compound) {
-			year = compound.getInteger("betterChristmasYear");
+			NBTTagCompound data = compound.getCompoundTag(identifier);
+			if (!data.hasNoTags()) {
+				year = data.getShort("year");
+				gotPresent = data.getBoolean("gotPresent");
+			} else year = compound.getInteger("betterChristmasYear");
 		}
 		
 	}
