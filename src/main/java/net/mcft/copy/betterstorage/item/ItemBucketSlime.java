@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.content.BetterStorageItems;
-import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.misc.EquipmentSlot;
 import net.mcft.copy.betterstorage.utils.LanguageUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
@@ -18,6 +18,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumAction;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -40,6 +41,54 @@ public class ItemBucketSlime extends ItemBetterStorage {
 	
 	public ItemBucketSlime() {
 		setContainerItem(Items.bucket);
+		registerHandler(new Handler("slime", "Slime") {
+			@Override public int foodAmount() { return 3; }
+			@Override public float saturationAmount() { return 0.2F; }
+		});
+		registerHandler(new Handler("magmaCube", "LavaSlime") {
+			@Override public float durationMultiplier() { return 0.4F; }
+			@Override public void onEaten(EntityPlayer player, boolean potionEffects) {
+				player.setFire(2);
+				player.addPotionEffect(new PotionEffect(Potion.jump.id, (potionEffects ? 10 : 20) * 20,
+				                                                        (potionEffects ? 2 : 3)));
+				player.addPotionEffect(new PotionEffect(Potion.damageBoost.id, (potionEffects ? 24 : 32) * 20, 0));
+			}});
+		registerHandler(new Handler("mazeSlime", "TwilightForest.Maze Slime") {
+			@Override public void onEaten(EntityPlayer player, boolean potionEffects) {
+				player.attackEntityFrom(DamageSource.magic, 3.0F);
+				player.addPotionEffect(new PotionEffect(Potion.jump.id, (potionEffects ? 4 : 8) * 20, 0));
+				player.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, (potionEffects ? 4 : 8) * 20, 1));
+				player.addPotionEffect(new PotionEffect(Potion.resistance.id, 30 * 20, 1));
+			}});
+		registerHandler(new Handler("pinkSlime", "MineFactoryReloaded.mfrEntityPinkSlime") {
+			@Override public int foodAmount() { return 6; }
+			@Override public float saturationAmount() { return 0.75F; }
+			@Override public void onEaten(EntityPlayer player, boolean potionEffects) {
+				super.onEaten(player, potionEffects);
+				player.addPotionEffect(new PotionEffect(Potion.field_180152_w.id, (potionEffects ? 40 : 60) * 20, 4));
+			}
+		});
+		registerHandler(new Handler("thaumicSlime", "Thaumcraft.ThaumSlime") {
+			private int potionFluxId = -1;
+			@Override public float durationMultiplier() { return 1.0F; }
+			@Override public void onEaten(EntityPlayer player, boolean potionEffects) {
+				if (potionFluxId == -1) {
+					// Look for flux potion effect.
+					for (Potion potion : Potion.potionTypes)
+						if (potion != null)
+							if (potion.getName() == "potion.fluxtaint") {
+								potionFluxId = potion.id; break; }
+					// If not found, just use wither.
+					if (potionFluxId == -1)
+						potionFluxId = Potion.wither.id;
+				}
+				super.onEaten(player, potionEffects);
+				player.addPotionEffect(new PotionEffect(potionFluxId, 8 * 20, 0));
+			}
+		});
+		registerHandler(new Handler("blueSlime", "TConstruct.EdibleSlime") {
+			@Override public float durationMultiplier() { return 0.2F; }
+		});
 	}
 	
 	/*
@@ -67,6 +116,7 @@ public class ItemBucketSlime extends ItemBetterStorage {
 	public boolean requiresMultipleRenderPasses() { return true; }
 	
 	*/
+	
 	
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -234,6 +284,7 @@ public class ItemBucketSlime extends ItemBetterStorage {
 	/** Registers a slime handler. */
 	public static void registerHandler(Handler handler) {
 		handlers.put(handler.entityName, handler);
+		BetterStorage.proxy.registerItemRender(BetterStorageItems.slimeBucket, 0, "bucketSlime_" + handler.name);
 	}
 	/** Returns the handler for an entity id, null if none. */
 	public static Handler getHandler(String id) { return handlers.get(id); }
@@ -247,58 +298,7 @@ public class ItemBucketSlime extends ItemBetterStorage {
 	}
 	
 	// Slime handlers
-	
-	static {
-		registerHandler(new Handler("slime", "Slime") {
-			@Override public int foodAmount() { return 3; }
-			@Override public float saturationAmount() { return 0.2F; }
-		});
-		registerHandler(new Handler("magmaCube", "LavaSlime") {
-			@Override public float durationMultiplier() { return 0.4F; }
-			@Override public void onEaten(EntityPlayer player, boolean potionEffects) {
-				player.setFire(2);
-				player.addPotionEffect(new PotionEffect(Potion.jump.id, (potionEffects ? 10 : 20) * 20,
-				                                                        (potionEffects ? 2 : 3)));
-				player.addPotionEffect(new PotionEffect(Potion.damageBoost.id, (potionEffects ? 24 : 32) * 20, 0));
-			}});
-		registerHandler(new Handler("mazeSlime", "TwilightForest.Maze Slime") {
-			@Override public void onEaten(EntityPlayer player, boolean potionEffects) {
-				player.attackEntityFrom(DamageSource.magic, 3.0F);
-				player.addPotionEffect(new PotionEffect(Potion.jump.id, (potionEffects ? 4 : 8) * 20, 0));
-				player.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, (potionEffects ? 4 : 8) * 20, 1));
-				player.addPotionEffect(new PotionEffect(Potion.resistance.id, 30 * 20, 1));
-			}});
-		registerHandler(new Handler("pinkSlime", "MineFactoryReloaded.mfrEntityPinkSlime") {
-			@Override public int foodAmount() { return 6; }
-			@Override public float saturationAmount() { return 0.75F; }
-			@Override public void onEaten(EntityPlayer player, boolean potionEffects) {
-				super.onEaten(player, potionEffects);
-				player.addPotionEffect(new PotionEffect(Potion.field_180152_w.id, (potionEffects ? 40 : 60) * 20, 4));
-			}
-		});
-		registerHandler(new Handler("thaumicSlime", "Thaumcraft.ThaumSlime") {
-			private int potionFluxId = -1;
-			@Override public float durationMultiplier() { return 1.0F; }
-			@Override public void onEaten(EntityPlayer player, boolean potionEffects) {
-				if (potionFluxId == -1) {
-					// Look for flux potion effect.
-					for (Potion potion : Potion.potionTypes)
-						if (potion != null)
-							if (potion.getName() == "potion.fluxtaint") {
-								potionFluxId = potion.id; break; }
-					// If not found, just use wither.
-					if (potionFluxId == -1)
-						potionFluxId = Potion.wither.id;
-				}
-				super.onEaten(player, potionEffects);
-				player.addPotionEffect(new PotionEffect(potionFluxId, 8 * 20, 0));
-			}
-		});
-		registerHandler(new Handler("blueSlime", "TConstruct.EdibleSlime") {
-			@Override public float durationMultiplier() { return 0.2F; }
-		});
-	}
-	
+
 	public static class Handler {
 		
 		public final String name;

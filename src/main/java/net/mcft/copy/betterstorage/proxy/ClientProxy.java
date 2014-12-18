@@ -311,9 +311,9 @@ public class ClientProxy extends CommonProxy {
 	}
 	
 	@Override
-	public void registerItemRender(Item item, String name){
+	public void registerItemRender(Item item, int id, String name, String type){
 		BetterStorage.log.info("Registering item render for " + name + "...");
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(item, 0, new ModelResourceLocation(Constants.modId+ ":" + name, "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(item, id, new ModelResourceLocation(Constants.modId+ ":" + name, type));
 	}
 	
 }

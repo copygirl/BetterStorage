@@ -23,7 +23,7 @@ public abstract class ItemBetterStorage extends Item {
 		
 		setUnlocalizedName(Constants.modId + "." + getItemName());
 		GameRegistry.registerItem(this, getItemName());
-		BetterStorage.proxy.registerItemRender(this, getItemName());
+		BetterStorage.proxy.registerItemRender(this, 0, getItemName());
 	}
 	
 	/** Returns the name of this item, for example "drinkingHelmet". */
