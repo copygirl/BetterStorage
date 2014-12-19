@@ -6,6 +6,7 @@ import net.mcft.copy.betterstorage.content.BetterStorageItems;
 import net.mcft.copy.betterstorage.inventory.InventoryTileEntity;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.misc.Constants;
+import net.mcft.copy.betterstorage.misc.SetBlockFlag;
 import net.mcft.copy.betterstorage.network.packet.PacketBackpackTeleport;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityBackpack;
 import net.mcft.copy.betterstorage.utils.PlayerUtils;
@@ -17,12 +18,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TileEnderBackpack extends TileBackpack {
 	
@@ -81,7 +79,7 @@ public class TileEnderBackpack extends TileBackpack {
 		                      "mob.endermen.portal", 1.0F, 1.0F);
 		
 		//TODO: Make the side random (1.8)
-		world.setBlockState(pos, (IBlockState) ((ItemBackpack)stack.getItem()).getBlockType().getDefaultState(), 3);
+		world.setBlockState(pos, (IBlockState) ((ItemBackpack)stack.getItem()).getBlockType().getDefaultState(), SetBlockFlag.DEFAULT);
 		TileEntityBackpack newBackpack = WorldUtils.get(world, pos, TileEntityBackpack.class);
 		newBackpack.stack = stack;
 		

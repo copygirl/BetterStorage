@@ -4,6 +4,7 @@ import net.mcft.copy.betterstorage.attachment.IHasAttachments;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityContainer;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,9 +24,16 @@ public abstract class TileContainerBetterStorage extends TileBetterStorage {
 
 	protected TileContainerBetterStorage(Material material) {
 		super(material);
+		setDefaultState(blockState.getBaseState().withProperty(FACING_PROP, EnumFacing.NORTH));
 		isBlockContainer = true;
 	}
-	
+
+	@Override
+	protected BlockState createBlockState() 
+	{
+		return new BlockState(this, FACING_PROP);
+	}
+
 	@Override
 	public boolean onBlockEventReceived(World world, BlockPos pos, IBlockState state, int eventId, int eventPar) {
         TileEntity te = world.getTileEntity(pos);
@@ -77,5 +85,18 @@ public abstract class TileContainerBetterStorage extends TileBetterStorage {
 	private TileEntityContainer getContainer(World world, BlockPos pos) {
 		return WorldUtils.get(world, pos, TileEntityContainer.class);
 	}
+	
+	@Override
+    public IBlockState getStateFromMeta(int meta) {
+        EnumFacing enumfacing = EnumFacing.getFront(meta);
+        if (enumfacing.getAxis() == EnumFacing.Axis.Y)
+            enumfacing = EnumFacing.NORTH;
+        return this.getDefaultState().withProperty(FACING_PROP, enumfacing);
+    }
+
+	@Override
+    public int getMetaFromState(IBlockState state) {
+        return ((EnumFacing)state.getValue(FACING_PROP)).getIndex();
+    }
 	
 }

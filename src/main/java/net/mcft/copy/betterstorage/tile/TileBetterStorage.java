@@ -12,15 +12,14 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class TileBetterStorage extends Block {
+	
 	public static final PropertyDirection FACING_PROP = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	private String name;
 	
 	public TileBetterStorage(Material material) {
 		
 		super(material);
-		
 		setCreativeTab(BetterStorage.creativeTab);
-		
 		setUnlocalizedName(Constants.modId + "." + getTileName());
 		registerBlock();
 		

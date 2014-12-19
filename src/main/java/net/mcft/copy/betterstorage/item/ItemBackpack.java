@@ -15,6 +15,7 @@ import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.misc.EquipmentSlot;
 import net.mcft.copy.betterstorage.misc.PropertiesBackpack;
 import net.mcft.copy.betterstorage.misc.Resources;
+import net.mcft.copy.betterstorage.misc.SetBlockFlag;
 import net.mcft.copy.betterstorage.misc.handlers.KeyBindingHandler;
 import net.mcft.copy.betterstorage.network.packet.PacketBackpackHasItems;
 import net.mcft.copy.betterstorage.tile.TileBackpack;
@@ -147,17 +148,18 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 	@Override
 	public boolean isValidArmor(ItemStack stack, int armorType, Entity entity) { return false; }
 
-	/*
 	@Override
 	public int getColor(ItemStack stack) {
 		int color = getDefaultColor();
 		return ((color >= 0) ? StackUtils.get(stack, color, "display", "color") : color);
 	}
 	
-	@Override
-	public int getRenderPasses(int metadata) { return ((getDefaultColor() >= 0) ? 2 : 1); }
-	*/
-
+	//TODO (1.8): Removed the @Override, not sure if this is needed.
+	@SideOnly(Side.CLIENT)
+	public int getRenderPasses() { 
+		return ((getDefaultColor() >= 0) ? 2 : 1); 
+	}
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advancedTooltips) {
@@ -455,21 +457,19 @@ public class ItemBackpack extends ItemArmorBetterStorage implements ISpecialArmo
 		
 		// Actually place the block in the world,
 		// play place sound and decrease stack size if successful.
-        BlockPos targetPos = pos.offset(orientation);
-		if (!world.setBlockState(targetPos, blockBackpack.getDefaultState(), 3))
+		if (!world.setBlockState(pos, blockBackpack.getDefaultState().withProperty(TileBackpack.FACING_PROP, orientation), SetBlockFlag.DEFAULT))
 			return false;
 		
 		if (world.getBlockState(pos).getBlock() != blockBackpack)
 			return false;
 		
 		blockBackpack.onBlockPlacedBy(world, pos, world.getBlockState(pos), carrier, backpack);
-		//blockBackpack.onPostBlockPlaced(world, pos, orientation.ordinal());
 		
 		TileEntityBackpack te = WorldUtils.get(world, pos, TileEntityBackpack.class);
 		te.stack = backpack.copy();
 		if (ItemBackpack.getBackpack(carrier) == backpack)
 			te.unequip(carrier, despawn);
-		
+				
 		String sound = blockBackpack.stepSound.getPlaceSound();
 		float volume = (blockBackpack.stepSound.getVolume() + 1.0F) / 2.0F;
 		float pitch = blockBackpack.stepSound.getFrequency() * 0.8F;

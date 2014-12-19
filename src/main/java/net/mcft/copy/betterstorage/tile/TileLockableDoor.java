@@ -1,20 +1,18 @@
 package net.mcft.copy.betterstorage.tile;
 
+import static net.minecraft.util.EnumFacing.DOWN;
+
 import java.util.Random;
 
 import net.mcft.copy.betterstorage.api.BetterStorageEnchantment;
 import net.mcft.copy.betterstorage.attachment.Attachments;
 import net.mcft.copy.betterstorage.attachment.EnumAttachmentInteraction;
 import net.mcft.copy.betterstorage.attachment.IHasAttachments;
-import net.mcft.copy.betterstorage.proxy.ClientProxy;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityLockableDoor;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,7 +20,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MovingObjectPosition;
@@ -30,20 +27,12 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import static net.minecraft.util.EnumFacing.*;
 
-//TODO: Rewrite the door
-public class TileLockableDoor extends TileBetterStorage {
+//TODO (1.8): Rewrite the door
+public class TileLockableDoor extends BlockDoor {
 
-    public final PropertyBool OPEN_PROP = PropertyBool.create("open");
-    public final PropertyEnum HINGEPOSITION_PROP = PropertyEnum.create("hinge", BlockDoor.EnumHingePosition.class);
-    public final PropertyBool POWERED_PROP = PropertyBool.create("powered");
-    public final PropertyEnum HALF_PROP = PropertyEnum.create("half", BlockDoor.EnumDoorHalf.class);
-    
 	public TileLockableDoor() {
-		super(Material.wood);
+		super(Material.iron);
 		
 		setCreativeTab(null);
 		setHardness(8.0F);
@@ -51,6 +40,7 @@ public class TileLockableDoor extends TileBetterStorage {
 		setStepSound(soundTypeWood);	
 		setHarvestLevel("axe", 2);
 	}
+	
 	/*
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
@@ -185,19 +175,6 @@ public class TileLockableDoor extends TileBetterStorage {
 		MovingObjectPosition movPos = te.getAttachments().rayTrace(world, pos, start, end);
 		return movPos != null ? movPos : super.collisionRayTrace(world, pos, start, end);
 	}
-
-	@Override
-	public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos) {
-		return new ItemStack(Items.iron_door);
-	}
-	
-	
-	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		EnumFacing side = (EnumFacing) state.getValue(FACING_PROP);
-		if (!side.equals(DOWN)) return;
-		super.breakBlock(world, pos, state);
-	}
 	
 	@Override
 	public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighborBlock) {
@@ -221,18 +198,7 @@ public class TileLockableDoor extends TileBetterStorage {
 		}
 		super.onBlockPreDestroy(world, x, y, z, meta);
 	}*/
-
-	@Override
-	public boolean isOpaqueCube() { return false; }
-	/*@Override
-	public boolean renderAsNormalBlock() { return false; }*/
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public int getRenderType() {
-		return ClientProxy.lockableDoorRenderId;
-	}
-
+	
 	@Override
 	public int quantityDropped(IBlockState state, int fortune, Random random) {
 		EnumFacing face = (EnumFacing) state.getValue(FACING_PROP);
@@ -270,5 +236,4 @@ public class TileLockableDoor extends TileBetterStorage {
 
 	@Override
 	public boolean hasTileEntity(IBlockState state) { return true; }
-	
 }

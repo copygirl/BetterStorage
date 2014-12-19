@@ -59,6 +59,7 @@ import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -137,13 +138,14 @@ public class ClientProxy extends CommonProxy {
 	@Deprecated
 	public static int registerTileEntityRenderer(Class<? extends TileEntity> tileEntityClass, TileEntitySpecialRenderer renderer,
 	                                             boolean render3dInInventory, float rotation, float scale, float yOffset) {
-		/*ClientRegistry.bindTileEntitySpecialRenderer(tileEntityClass, renderer);
-		BetterStorageRenderingHandler renderingHandler =
-			new BetterStorageRenderingHandler(tileEntityClass, renderer, render3dInInventory, rotation, scale, yOffset);
-		RenderingRegistry.registerBlockHandler(renderingHandler);
-		renderingHandlers.put(tileEntityClass, renderingHandler);
-		return renderingHandler.getRenderId();*/
-		return 0;
+		ClientRegistry.bindTileEntitySpecialRenderer(tileEntityClass, renderer);
+//		BetterStorageRenderingHandler renderingHandler =
+//			new BetterStorageRenderingHandler(tileEntityClass, renderer, render3dInInventory, rotation, scale, yOffset);
+//		RenderingRegistry.registerBlockHandler(renderingHandler);
+//		renderingHandlers.put(tileEntityClass, renderingHandler);
+//		return renderingHandler.getRenderId();
+		//TODO (1.8): Remove the render IDs.
+		return -1;
 	}
 	public static int registerTileEntityRenderer(Class<? extends TileEntity> tileEntityClass, TileEntitySpecialRenderer renderer) {
 		return registerTileEntityRenderer(tileEntityClass, renderer, true, 90, 1, 0);

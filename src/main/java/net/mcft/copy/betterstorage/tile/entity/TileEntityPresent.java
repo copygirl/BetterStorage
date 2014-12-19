@@ -59,7 +59,7 @@ public class TileEntityPresent extends TileEntityCardboardBox {
 	}
 	
 	@Override
-	public void updateEntity() {
+	public void update() {
 		breakPause = Math.max(0, breakPause - 1);
 		if (breakPause <= 0)
 			breakProgress = Math.max(0, breakProgress - 1);

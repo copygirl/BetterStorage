@@ -95,8 +95,8 @@ public class TileEntityBackpack extends TileEntityContainer {
 	protected float getLidSpeed() { return 0.2F; }
 	
 	@Override
-	public void updateEntity() {
-		super.updateEntity();
+	public void update() {
+		super.update();
 		
 		double x = getPos().getX() + 0.5;
 		double y = getPos().getY() + 0.5;

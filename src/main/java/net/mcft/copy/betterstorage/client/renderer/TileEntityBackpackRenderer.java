@@ -34,7 +34,7 @@ public class TileEntityBackpackRenderer extends TileEntitySpecialRenderer {
 		GL11.glScalef(1.0F, -1.0F, -1.0F);
 		GL11.glTranslated(0.5, 0.5, 0.5);
 		
-		EnumFacing orientation = EnumFacing.getFront(backpack.getBlockMetadata());
+		EnumFacing orientation = (EnumFacing) backpack.getState().getValue(TileBackpack.FACING_PROP);
 		int rotation = DirectionUtils.getRotation(orientation);
 		GL11.glRotatef(rotation, 0.0F, 1.0F, 0.0F);
 		
@@ -43,15 +43,14 @@ public class TileEntityBackpackRenderer extends TileEntitySpecialRenderer {
 		angle = 1.0F - angle * angle;
 		backpackModel.setLidRotation((float)(angle * Math.PI / 4.0));
 		
-		//TODO (1.8): Search a replacement
-//		int renderPasses = item.getRenderPasses(0);
-//		for (int pass = 0; pass < renderPasses; pass++) {
-//			String type = ((pass == 0) ? null : "overlay");
-//			bindTexture(new ResourceLocation(item.getArmorTexture(stack, null, 0, type)));
-//			RenderUtils.setColorFromInt(item.getColorFromItemStack(stack, pass));
-//			backpackModel.renderAll();
-//		}
-		
+		int renderPasses = item.getRenderPasses();
+		for (int pass = 0; pass < renderPasses; pass++) {
+			String type = ((pass == 0) ? null : "overlay");
+			bindTexture(new ResourceLocation(item.getArmorTexture(stack, null, 0, type)));
+			RenderUtils.setColorFromInt(item.getColorFromItemStack(stack, pass));
+			backpackModel.renderAll();
+		}
+				
 		if ((backpack.stack != null) &&
 		    (backpack.stack.isItemEnchanted())) {
 			float f9 = (backpack.ticksExisted + partialTicks) / 3;

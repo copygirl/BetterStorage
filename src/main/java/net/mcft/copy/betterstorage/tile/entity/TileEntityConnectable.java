@@ -144,8 +144,8 @@ public abstract class TileEntityConnectable extends TileEntityContainer implemen
 	// Update entity
 	
 	@Override
-	public void updateEntity() {
-		super.updateEntity();
+	public void update() {
+		super.update();
 		
 		double x = getPos().getX() + 0.5;
 		double y = getPos().getY() + 0.5;

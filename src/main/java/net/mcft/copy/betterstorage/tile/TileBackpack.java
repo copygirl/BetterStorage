@@ -16,6 +16,8 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -47,22 +49,21 @@ public class TileBackpack extends TileContainerBetterStorage {
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
 		blockIcon = iconRegister.registerIcon("wool_colored_brown");
-	}
+	}*/
 	
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess world, BlockPos pos) {
 		float w = getBoundsWidth() / 16.0F;
 		float h = getBoundsHeight() / 16.0F;
 		float d = getBoundsDepth() / 16.0F;
-		//TODO (1.8): Get behind block-states.
-		EnumFacing orientation = EnumFacing.getFront(world.getBlockMetadata(x, y, z));
+		
+		EnumFacing orientation = (EnumFacing) world.getBlockState(pos).getValue(FACING_PROP);
 		if ((orientation == EnumFacing.NORTH) || (orientation == EnumFacing.SOUTH))
 			setBlockBounds(0.5F - w / 2, 0.0F, 0.5F - d / 2, 0.5F + w / 2, h, 0.5F + d / 2);
 		else if ((orientation == EnumFacing.WEST) || (orientation == EnumFacing.EAST))
 			setBlockBounds(0.5F - d / 2, 0.0F, 0.5F - w / 2, 0.5F + d / 2, h, 0.5F + w / 2);
 		else setBlockBounds(0.5F - w / 2, 0.0F, 0.5F - w / 2, 0.5F + w / 2, h, 0.5F + w / 2);
 	}
-	*/
 	
 	@Override
 	public boolean isOpaqueCube() { return false; }

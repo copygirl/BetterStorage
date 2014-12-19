@@ -49,7 +49,7 @@ public class TileEntityCraftingStation extends TileEntityContainer
 	}
 	
 	@Override
-	public void updateEntity() { stationInventory.update(); }
+	public void update() { stationInventory.update(); }
 	
 	@Override
 	public void dropContents() {

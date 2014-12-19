@@ -75,8 +75,8 @@ public abstract class TileEntityLockable extends TileEntityConnectable
 	}
 	
 	@Override
-	public void updateEntity() {
-		super.updateEntity();
+	public void update() {
+		super.update();
 		attachments.update();
 	}
 	

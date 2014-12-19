@@ -156,8 +156,8 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 	}
 	
 	@Override
-	public void updateEntity() {
-		super.updateEntity();
+	public void update() {
+		super.update();
 		if (worldObj.isRemote || (data != null)) return;
 		if (!isInvalid()) getPileData();
 	}

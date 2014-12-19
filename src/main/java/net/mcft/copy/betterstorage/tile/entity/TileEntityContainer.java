@@ -5,12 +5,14 @@ import net.mcft.copy.betterstorage.inventory.InventoryTileEntity;
 import net.mcft.copy.betterstorage.utils.NbtUtils;
 import net.mcft.copy.betterstorage.utils.PlayerUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -20,7 +22,7 @@ import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public abstract class TileEntityContainer extends TileEntity {
+public abstract class TileEntityContainer extends TileEntity implements IUpdatePlayerListBox {
 	
 	public final ItemStack[] contents;
 	
@@ -226,6 +228,10 @@ public abstract class TileEntityContainer extends TileEntity {
 		}
 	}
 	
+	public IBlockState getState() {
+		return getWorld().getBlockState(getPos());
+	}
+	
 	// Players using synchronization
 	
 	/** Returns if the container does synchronize playersUsing at all. */
@@ -262,9 +268,8 @@ public abstract class TileEntityContainer extends TileEntity {
 	
 	protected float getLidSpeed() { return 0.1F; }
 	
-	//TODO (1.8): This can't be gone. Not possible.
-//	@Override
-	public void updateEntity() {
+	@Override
+	public void update() {
 		ticksExisted++;
 		
 		// If a comparator or such has accessed the container and
