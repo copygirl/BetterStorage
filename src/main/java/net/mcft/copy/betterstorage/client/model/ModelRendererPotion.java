@@ -3,10 +3,8 @@ package net.mcft.copy.betterstorage.client.model;
 import net.mcft.copy.betterstorage.utils.RenderUtils;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
-
-import org.lwjgl.opengl.GL11;
-
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -29,12 +27,12 @@ public class ModelRendererPotion extends ModelRenderer {
 		@SideOnly(Side.CLIENT)
 		public void render(float par1) {
 			if (stack == null) return;
-			GL11.glPushMatrix();
-			GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
-			GL11.glScalef(0.5F, 0.5F, 0.5F);
+			GlStateManager.pushMatrix();
+			GlStateManager.pushAttrib();
+			GlStateManager.scale(0.5F, 0.5F, 0.5F);
 			RenderUtils.renderItemIn3d(stack);
-			GL11.glPopAttrib();
-			GL11.glPopMatrix();
+			GlStateManager.popAttrib();
+			GlStateManager.popMatrix();
 		}
 	}
 	

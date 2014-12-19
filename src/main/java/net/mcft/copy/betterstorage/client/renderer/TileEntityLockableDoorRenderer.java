@@ -2,25 +2,20 @@ package net.mcft.copy.betterstorage.client.renderer;
 
 import net.mcft.copy.betterstorage.attachment.LockAttachment;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityLockableDoor;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
-
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
 public class TileEntityLockableDoorRenderer extends TileEntitySpecialRenderer {
 
 	public void renderTileEntityAt(TileEntityLockableDoor arg0, double x, double y, double z, float partialTicks, int arg5) {
 		
-		//TODO (1.8): Did you know that the GlStateManager can also pushMatrix()? It calls GL11.glPushMatrix();
-		//right: GlStateManager.pushMatrix();
-		//wrong:
-		GL11.glPushMatrix();
-		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		GL11.glTranslated(x, y + 2.0, z + 1.0);
-		GL11.glScalef(1.0F, -1.0F, -1.0F);
-		GL11.glTranslated(0.5F, 0.5F, 0.5F);
+		GlStateManager.pushMatrix();
+		GlStateManager.enableRescaleNormal();
+		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+		GlStateManager.translate(x, y + 2.0, z + 1.0);
+		GlStateManager.scale(1.0F, -1.0F, -1.0F);
+		GlStateManager.translate(0.5F, 0.5F, 0.5F);
 		
 		float angle = arg0.isOpen ? 1F : 0F;
 		
@@ -31,23 +26,24 @@ public class TileEntityLockableDoorRenderer extends TileEntitySpecialRenderer {
 		default: angle = 1 - angle; angle *= 90F; break;
 		}
 		
-		GL11.glRotatef(180F, 1, 0, 0);
-		GL11.glRotatef(90F, 0, 1, 0);
+		GlStateManager.rotate(180F, 1, 0, 0);
+		GlStateManager.rotate(90F, 0, 1, 0);
 		
 		switch (arg0.orientation) {
-		case WEST: GL11.glTranslatef(0.5F - 1.5F / 16F, -0.5F + 2 / 16F, -0.5F + 1.5F / 16F); break;
-		case EAST: GL11.glTranslatef(-0.5F + 1.5F / 16F, -0.5F + 2 / 16F, 0.5F - 1.5F / 16F); break;
-		case SOUTH: GL11.glTranslatef(-0.5F + 1.5F / 16F, -0.5F + 2 / 16F, -0.5F + 1.5F / 16F); break;
-		default: GL11.glTranslatef(0.5F - 1.5F / 16F, -0.5F + 2 / 16F, 0.5F - 1.5F / 16F); break;
+		case WEST: GlStateManager.translate(0.5F - 1.5F / 16F, -0.5F + 2 / 16F, -0.5F + 1.5F / 16F); break;
+		case EAST: GlStateManager.translate(-0.5F + 1.5F / 16F, -0.5F + 2 / 16F, 0.5F - 1.5F / 16F); break;
+		case SOUTH: GlStateManager.translate(-0.5F + 1.5F / 16F, -0.5F + 2 / 16F, -0.5F + 1.5F / 16F); break;
+		default: GlStateManager.translate(0.5F - 1.5F / 16F, -0.5F + 2 / 16F, 0.5F - 1.5F / 16F); break;
 		}
 		
-		GL11.glRotatef(-angle, 0, 1, 0);
-		GL11.glTranslatef(-0.5F - 3F / 16F, 0F, 0F);	
-		GL11.glScalef(1F, 1F, 2.5F);
+		GlStateManager.rotate(-angle, 0, 1, 0);
+		GlStateManager.translate(-0.5F - 3F / 16F, 0F, 0F);	
+		GlStateManager.scale(1F, 1F, 2.5F);
 		
 		LockAttachment a = arg0.lockAttachment;
 		a.getRenderer().render(a, partialTicks);
-		GL11.glPopMatrix();
+		GlStateManager.popMatrix();
+		GlStateManager.disableRescaleNormal();
 	}
 
 	@Override

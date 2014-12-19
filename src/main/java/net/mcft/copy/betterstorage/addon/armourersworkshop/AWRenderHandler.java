@@ -11,14 +11,14 @@ public class AWRenderHandler /*implements IArmorStandRenderHandler*/ {
 	
 	@Override
 	public <T extends TileEntity & IArmorStand> void onPostRender(T armorStand, ClientArmorStandPlayer player) {
-		GL11.glPushMatrix();
-		GL11.glTranslatef(0, 3 / 16F, 0);
+		GlStateManager.pushMatrix();
+		GlStateManager.translate(0, 3 / 16F, 0);
 		renderIfNonNull(armorStand, AWAddon.eqHandlerHead);
 		renderIfNonNull(armorStand, AWAddon.eqHandlerChest);
 		renderIfNonNull(armorStand, AWAddon.eqHandlerSkirt);
 		renderIfNonNull(armorStand, AWAddon.eqHandlerLegs);
 		renderIfNonNull(armorStand, AWAddon.eqHandlerFeet);
-		GL11.glPopMatrix();
+		GlStateManager.popMatrix();
 	}
 	
 	private <T extends TileEntity & IArmorStand> void renderIfNonNull(T armorStand, AWEquipmentHandler handler) {

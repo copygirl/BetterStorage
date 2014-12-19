@@ -24,24 +24,24 @@ public class ItemRendererBackpack implements IItemRenderer {
 		boolean equippedThirdPerson = (type == ItemRenderType.EQUIPPED);
 		boolean equipped = (equippedFirstPerson || equippedThirdPerson);
 		if (equipped) {
-			if (equippedThirdPerson) GL11.glTranslatef(1.3F, 0.0F, 1.0F);
-			else GL11.glTranslatef(0.0F, 0.0F, 0.85F);
-			GL11.glRotatef((equippedThirdPerson ? 200.0F : 75.0F), 0.0F, 1.0F, 0.0F);
+			if (equippedThirdPerson) GlStateManager.translate(1.3F, 0.0F, 1.0F);
+			else GlStateManager.translate(0.0F, 0.0F, 0.85F);
+			GlStateManager.rotate((equippedThirdPerson ? 200.0F : 75.0F), 0.0F, 1.0F, 0.0F);
 		}
 		if (equippedThirdPerson)
-			GL11.glScalef(1.2F, 1.2F, 1.2F);
+			GlStateManager.scale(1.2F, 1.2F, 1.2F);
 		else if (entity)
-			GL11.glScalef(0.75F, 0.75F, 0.75F);
+			GlStateManager.scale(0.75F, 0.75F, 0.75F);
 		
 		if (renderingHandler == null)
 			renderingHandler = ClientProxy.renderingHandlers.get(tileEntityClass);
 		((TileEntityContainer)renderingHandler.tileEntity).onBlockRenderAsItem(item);
-		GL11.glPushMatrix();
+		GlStateManager.pushMatrix();
 		if ((type == ItemRenderType.EQUIPPED) ||
 		    (type == ItemRenderType.EQUIPPED_FIRST_PERSON))
-			GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+			GlStateManager.translate(0.5F, 0.5F, 0.5F);
 		renderingHandler.renderInventoryBlock(((ItemBackpack)item.getItem()).getBlockType(), 0, 0, null);
-		GL11.glPopMatrix();*/
+		GlStateManager.popMatrix();*/
 	}
 
 	@Override

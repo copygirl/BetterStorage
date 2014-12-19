@@ -45,7 +45,7 @@ public class RenderFrienderman extends RenderEnderman {
 			if (stack.isItemEnchanted()) return 31;
 			return 16;
 		}
-		GL11.glColor3f(1.0F, 1.0F, 1.0F);
+		GlStateManager.color(1.0F, 1.0F, 1.0F);
 		
 		return (stack.isItemEnchanted() ? 15 : 1);
 		

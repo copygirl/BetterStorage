@@ -1,10 +1,8 @@
 package net.mcft.copy.betterstorage.attachment;
 
 import net.mcft.copy.betterstorage.utils.RenderUtils;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
-
-import org.lwjgl.opengl.GL11;
-
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -20,10 +18,10 @@ public class ItemAttachmentRenderer implements IAttachmentRenderer {
 	private void render(ItemAttachment attachment, float partialTicks) {
 		ItemStack item = attachment.getItem();
 		if (item == null) return;
-		GL11.glPushMatrix();
-			GL11.glScalef(attachment.scale, attachment.scale, attachment.scaleDepth);
+		GlStateManager.pushMatrix();
+			GlStateManager.scale(attachment.scale, attachment.scale, attachment.scaleDepth);
 			RenderUtils.renderItemIn3d(item);
-		GL11.glPopMatrix();
+		GlStateManager.popMatrix();
 	}
 	
 }

@@ -29,12 +29,12 @@ public class ItemRendererContainer implements IItemRenderer {
 		/*if (renderingHandler == null)
 			renderingHandler = ClientProxy.renderingHandlers.get(tileEntityClass);
 		((TileEntityContainer)renderingHandler.tileEntity).onBlockRenderAsItem(item);
-		GL11.glPushMatrix();
+		GlStateManager.pushMatrix();
 		if ((type == ItemRenderType.EQUIPPED) ||
 		    (type == ItemRenderType.EQUIPPED_FIRST_PERSON))
-			GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+			GlStateManager.translate(0.5F, 0.5F, 0.5F);
 		renderingHandler.renderInventoryBlock(Block.getBlockFromItem(item.getItem()), 0, 0, null);
-		GL11.glPopMatrix();*/
+		GlStateManager.popMatrix();*/
 	}
 	
 }

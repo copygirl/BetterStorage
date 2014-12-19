@@ -4,13 +4,11 @@ import net.mcft.copy.betterstorage.tile.entity.TileEntityReinforcedChest;
 import net.mcft.copy.betterstorage.utils.DirectionUtils;
 import net.minecraft.client.model.ModelChest;
 import net.minecraft.client.model.ModelLargeChest;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
 @SideOnly(Side.CLIENT)
 public class TileEntityReinforcedChestRenderer extends TileEntitySpecialRenderer {
@@ -26,22 +24,22 @@ public class TileEntityReinforcedChestRenderer extends TileEntitySpecialRenderer
 		ModelChest model = (large ? largeChestModel : chestModel);
 		bindTexture(chest.getResource());
 		
-		GL11.glPushMatrix();
-		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		GL11.glTranslated(x, y, z);
+		GlStateManager.pushMatrix();
+		GlStateManager.enableRescaleNormal();
+		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+		GlStateManager.translate(x, y, z);
 		
-			GL11.glPushMatrix();
-			GL11.glScalef(1.0F, -1.0F, -1.0F);
-			GL11.glTranslatef(0.5F, -0.5F, -0.5F);
+			GlStateManager.pushMatrix();
+			GlStateManager.scale(1.0F, -1.0F, -1.0F);
+			GlStateManager.translate(0.5F, -0.5F, -0.5F);
 			
 			int rotation = DirectionUtils.getRotation(chest.getOrientation());
 			if ((rotation == 180) && large)
-				GL11.glTranslatef(1.0F, 0.0F, 0.0F);
+				GlStateManager.translate(1.0F, 0.0F, 0.0F);
 			if ((rotation == 270) && large)
-				GL11.glTranslatef(0.0F, 0.0F, -1.0F);
-			GL11.glRotatef(rotation, 0.0F, 1.0F, 0.0F);
-			GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+				GlStateManager.translate(0.0F, 0.0F, -1.0F);
+			GlStateManager.rotate(rotation, 0.0F, 1.0F, 0.0F);
+			GlStateManager.translate(-0.5F, -0.5F, -0.5F);
 			
 			float angle = chest.prevLidAngle + (chest.lidAngle - chest.prevLidAngle) * partialTicks;
 			angle = 1.0F - angle;
@@ -49,13 +47,13 @@ public class TileEntityReinforcedChestRenderer extends TileEntitySpecialRenderer
 			model.chestLid.rotateAngleX = -(float)(angle * Math.PI / 2.0);
 			model.renderAll();
 			
-			GL11.glPopMatrix();
+			GlStateManager.popMatrix();
 		
 		chest.getAttachments().render(partialTicks);
 		
-		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-		GL11.glPopMatrix();
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		GlStateManager.disableRescaleNormal();
+		GlStateManager.popMatrix();
+		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		
 	}
 	

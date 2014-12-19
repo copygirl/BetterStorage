@@ -34,7 +34,7 @@ public class ItemRendererCardboardBox implements IItemRenderer {
 		render.useInventoryTint = false;
 		if ((type == ItemRenderType.EQUIPPED) ||
 		    (type == ItemRenderType.EQUIPPED_FIRST_PERSON))
-			GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+			GlStateManager.translate(0.5F, 0.5F, 0.5F);
 		render.renderBlockAsItem(block, item.getItemDamage(), 1.0F);
 		render.useInventoryTint = true;*/
 	}

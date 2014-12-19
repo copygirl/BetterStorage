@@ -30,7 +30,7 @@ public class NEIRecipeHandler /*extends TemplateRecipeHandler*/ {
 	
 	@Override
 	public void drawBackground(int recipe) {
-		GL11.glColor4f(1, 1, 1, 1);
+		GlStateManager.color(1, 1, 1, 1);
 		mc.getTextureManager().bindTexture(Resources.containerCraftingStation);
 		RenderUtils.drawTexturedModalRect(0, 0, 5, 11, 166, 64, 0, 256, 256);
 	}
@@ -40,7 +40,7 @@ public class NEIRecipeHandler /*extends TemplateRecipeHandler*/ {
 		super.drawExtras(recipe);
 		CachedStationRecipe cached = (CachedStationRecipe)arecipes.get(recipe);
 		
-		GL11.glColor4f(1, 1, 1, 1);
+		GlStateManager.color(1, 1, 1, 1);
 		if (cached.craftingTime >= 20) {
 			drawProgressBar(71, 22, 176, 0, 24, 18, cached.craftingTime, 0);
 			int min = cached.craftingTime / 20 / 60;

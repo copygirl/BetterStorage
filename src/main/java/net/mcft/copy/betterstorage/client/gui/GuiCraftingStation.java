@@ -4,6 +4,7 @@ import net.mcft.copy.betterstorage.container.ContainerCraftingStation;
 import net.mcft.copy.betterstorage.inventory.InventoryCraftingStation;
 import net.mcft.copy.betterstorage.misc.Resources;
 import net.mcft.copy.betterstorage.utils.RenderUtils;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.util.ResourceLocation;
@@ -57,20 +58,20 @@ public class GuiCraftingStation extends GuiBetterStorage {
 				Slot slot = inventorySlots.getSlot(i);
 				if (!slot.getHasStack()) continue;
 				
-				GL11.glDisable(GL11.GL_DEPTH_TEST);
-				GL11.glEnable(GL11.GL_BLEND);
-				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+				GlStateManager.disableDepth();
+				GlStateManager.enableBlend();
+				GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 				
 				float a = ((inv.progress < inv.currentCrafting.getCraftingTime()) ? 0.5F : 1.0F);
-				GL11.glColor4f(a, a, a, 0.6F);
+				GlStateManager.color(a, a, a, 0.6F);
 				mc.renderEngine.bindTexture(getResource());
 				int slotX = slot.xDisplayPosition;
 				int slotY = slot.yDisplayPosition;
 				RenderUtils.drawTexturedModalRect(slotX, slotY, slotX, slotY, 16, 16, 0,
 				                                  getTextureWidth(), getTextureHeight());
 				
-				GL11.glDisable(GL11.GL_BLEND);
-				GL11.glEnable(GL11.GL_DEPTH_TEST);
+				GlStateManager.disableBlend();
+				GlStateManager.enableDepth();
 			}
 	}
 	

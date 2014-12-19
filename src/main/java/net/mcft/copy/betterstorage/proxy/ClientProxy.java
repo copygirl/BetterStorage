@@ -41,6 +41,7 @@ import net.mcft.copy.betterstorage.tile.stand.VanillaArmorStandRenderHandler;
 import net.mcft.copy.betterstorage.utils.RenderUtils;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderChicken;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -84,10 +85,8 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void initialize() {
 		
-		super.initialize();
-		
+		super.initialize();	
 		new KeyBindingHandler();
-		
 		registerRenderers();
 		
 	}
@@ -180,9 +179,9 @@ public class ClientProxy extends CommonProxy {
 		double zOff = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * event.partialTicks;
 		box.offset(-xOff, -yOff, -zOff);
         
-		GL11.glEnable(GL11.GL_BLEND);
+		GlStateManager.enableBlend();
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		GL11.glColor4f(0.0F, 0.0F, 0.0F, 0.4F);
+		GlStateManager.color(0.0F, 0.0F, 0.0F, 0.4F);
 		GL11.glLineWidth(2.0F);
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		GL11.glDepthMask(false);
@@ -191,7 +190,7 @@ public class ClientProxy extends CommonProxy {
 		
 		GL11.glDepthMask(true);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
-		GL11.glDisable(GL11.GL_BLEND);
+		GlStateManager.disableBlend();
 		
 		event.setCanceled(true);*/
 		
@@ -270,7 +269,7 @@ public class ClientProxy extends CommonProxy {
 			
 			if (color >= 0) {
 				RenderUtils.bindTexture(new ResourceLocation(backpackType.getArmorTexture(backpack, player, 0, "overlay")));
-				GL11.glColor3f(1.0F, 1.0F, 1.0F);
+				GlStateManager.color(1.0F, 1.0F, 1.0F);
 				model.render(player, 0, 0, 0, 0, 0, 0);
 			}
 			
@@ -279,33 +278,33 @@ public class ClientProxy extends CommonProxy {
 				
 				RenderUtils.bindTexture(Resources.enchantedEffect);
 
-				GL11.glEnable(GL11.GL_BLEND);
-				GL11.glColor4f(0.5F, 0.5F, 0.5F, 1.0F);
-				GL11.glDepthFunc(GL11.GL_EQUAL);
-				GL11.glDepthMask(false);
+				GlStateManager.enableBlend();
+				GlStateManager.color(0.5F, 0.5F, 0.5F, 1.0F);
+				GlStateManager.depthFunc(GL11.GL_EQUAL);
+				GlStateManager.depthMask(false);
 				for (int k = 0; k < 2; ++k) {
-					GL11.glDisable(GL11.GL_LIGHTING);
+					GlStateManager.disableLighting();
 					float f11 = 0.76F;
-					GL11.glColor4f(0.5F * f11, 0.25F * f11, 0.8F * f11, 1.0F);
-					GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE);
-					GL11.glMatrixMode(GL11.GL_TEXTURE);
-					GL11.glLoadIdentity();
+					GlStateManager.color(0.5F * f11, 0.25F * f11, 0.8F * f11, 1.0F);
+					GlStateManager.blendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE);
+					GlStateManager.matrixMode(GL11.GL_TEXTURE);
+					GlStateManager.loadIdentity();
 					float f12 = f9 * (0.001F + k * 0.003F) * 20.0F;
 					float f13 = 0.33333334F;
-					GL11.glScalef(f13, f13, f13);
-					GL11.glRotatef(30.0F - k * 60.0F, 0.0F, 0.0F, 1.0F);
-					GL11.glTranslatef(0.0F, f12, 0.0F);
-					GL11.glMatrixMode(GL11.GL_MODELVIEW);
+					GlStateManager.scale(f13, f13, f13);
+					GlStateManager.rotate(30.0F - k * 60.0F, 0.0F, 0.0F, 1.0F);
+					GlStateManager.translate(0.0F, f12, 0.0F);
+					GlStateManager.matrixMode(GL11.GL_MODELVIEW);
 					model.render(player, 0, 0, 0, 0, 0, 0);
 				}
-				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-				GL11.glMatrixMode(GL11.GL_TEXTURE);
-				GL11.glDepthMask(true);
-				GL11.glLoadIdentity();
-				GL11.glMatrixMode(GL11.GL_MODELVIEW);
-				GL11.glEnable(GL11.GL_LIGHTING);
-				GL11.glDisable(GL11.GL_BLEND);
-				GL11.glDepthFunc(GL11.GL_LEQUAL);
+				GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+				GlStateManager.matrixMode(GL11.GL_TEXTURE);
+				GlStateManager.depthMask(true);
+				GlStateManager.loadIdentity();
+				GlStateManager.matrixMode(GL11.GL_MODELVIEW);
+				GlStateManager.enableLighting();
+				GlStateManager.disableBlend();
+				GlStateManager.depthFunc(GL11.GL_LEQUAL);
 			}
 			
 		} else backpack = ItemBackpack.getBackpack(event.entityPlayer);

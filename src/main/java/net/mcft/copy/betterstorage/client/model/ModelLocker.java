@@ -26,14 +26,14 @@ public class ModelLocker extends ModelBase {
 			float rotatePointZ = -7;
 			if (mirror) doorAngle = -doorAngle;
 			
-			GL11.glTranslated(-rotatePointX, 0, -rotatePointZ);
-			GL11.glRotatef(-doorAngle, 0, 1, 0);
-			GL11.glTranslated(rotatePointX, 0, rotatePointZ);
+			GlStateManager.translate(-rotatePointX, 0, -rotatePointZ);
+			GlStateManager.rotate(-doorAngle, 0, 1, 0);
+			GlStateManager.translate(rotatePointX, 0, rotatePointZ);
 		}
 		model.renderPart("door");
 		
 		if (mirror)
-			GL11.glTranslated(-11, 0, 0);
+			GlStateManager.translate(-11, 0, 0);
 		model.renderPart("handle");*/
 		
 	}

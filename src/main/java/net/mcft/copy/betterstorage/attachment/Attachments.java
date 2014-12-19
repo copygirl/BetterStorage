@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -17,8 +18,6 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import org.lwjgl.opengl.GL11;
 
 public class Attachments implements Iterable<Attachment> {
 	
@@ -82,14 +81,14 @@ public class Attachments implements Iterable<Attachment> {
 	public void render(float partialTicks) {
 		for (Attachment attachment : this) {
 			float rotation = attachment.getRotation();
-			GL11.glPushMatrix();
-				GL11.glTranslated(0.5, 0.5, 0.5);
-				GL11.glPushMatrix();
-					GL11.glRotatef(rotation, 0, -1, 0);
-					GL11.glTranslated(0.5 - attachment.getX(), 0.5 - attachment.getY(), 0.5 - attachment.getZ());
+			GlStateManager.pushMatrix();
+				GlStateManager.translate(0.5, 0.5, 0.5);
+				GlStateManager.pushMatrix();
+					GlStateManager.rotate(rotation, 0, -1, 0);
+					GlStateManager.translate(0.5 - attachment.getX(), 0.5 - attachment.getY(), 0.5 - attachment.getZ());
 					attachment.getRenderer().render(attachment, partialTicks);
-				GL11.glPopMatrix();
-			GL11.glPopMatrix();
+				GlStateManager.popMatrix();
+			GlStateManager.popMatrix();
 		}
 	}
 	
