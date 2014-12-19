@@ -29,8 +29,7 @@ public abstract class TileContainerBetterStorage extends TileBetterStorage {
 	}
 
 	@Override
-	protected BlockState createBlockState() 
-	{
+	protected BlockState createBlockState() {
 		return new BlockState(this, FACING_PROP);
 	}
 

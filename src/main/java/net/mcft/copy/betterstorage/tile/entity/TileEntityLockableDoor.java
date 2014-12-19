@@ -29,6 +29,7 @@ public class TileEntityLockableDoor extends TileEntity implements ILockable, IHa
 	public LockAttachment lockAttachment;
 	public EnumFacing orientation = EnumFacing.NORTH;
 	
+	//TODO (1.8): Replace by using the BlockState
 	private boolean powered = false;
 	private boolean swing = false;
 	

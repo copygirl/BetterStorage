@@ -92,7 +92,7 @@ public class TileEntityBackpackRenderer extends TileEntitySpecialRenderer {
 		}
 		
 		GlStateManager.disableRescaleNormal();
-		GlStateManager.pushMatrix();
+		GlStateManager.popMatrix();
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		
 	}
