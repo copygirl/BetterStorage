@@ -284,21 +284,22 @@ public class CommonProxy {
 			}
 		}
 	}
+	
 	/**
-	 * Register a item model because Forge don't.
-	 * @param item The item to register
-	 * @param id The metadata
-	 * @param name The model name
+	 * Register an item model
+	 * @param item item to register
+	 * @param id metadata
+	 * @param name model name
 	 */
 	public void registerItemRender(Item item, int id, String name){
 		this.registerItemRender(item, id, name, "inventory");
 	}
 	
 	/**
-	 * Register a item model because Forge don't.
-	 * @param item The item to register
-	 * @param id The metadata
-	 * @param name The model name
+	 * Register an item model
+	 * @param item item to register
+	 * @param id metadata
+	 * @param name model name
 	 * @param type
 	 */
 	public void registerItemRender(Item item, int id, String name, String type){

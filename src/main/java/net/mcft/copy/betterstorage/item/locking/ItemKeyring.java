@@ -1,7 +1,5 @@
 package net.mcft.copy.betterstorage.item.locking;
 
-import java.util.List;
-
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.api.IContainerItem;
 import net.mcft.copy.betterstorage.api.lock.IKey;
@@ -10,15 +8,11 @@ import net.mcft.copy.betterstorage.item.ItemBetterStorage;
 import net.mcft.copy.betterstorage.misc.Constants;
 import net.mcft.copy.betterstorage.utils.PlayerUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemKeyring extends ItemBetterStorage implements IKey, IContainerItem {
 	
@@ -26,7 +20,7 @@ public class ItemKeyring extends ItemBetterStorage implements IKey, IContainerIt
 		super();
 		this.setHasSubtypes(true);
 		
-		//TODO; Investigate why this is not working
+		//TODO (1.8): Investigate why this is not working.
 		BetterStorage.proxy.registerItemRender(this, 1, "keyring_1");
 		BetterStorage.proxy.registerItemRender(this, 2, "keyring_2");
 		BetterStorage.proxy.registerItemRender(this, 3, "keyring_3");

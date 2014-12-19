@@ -87,16 +87,16 @@ public abstract class TileContainerBetterStorage extends TileBetterStorage {
 	}
 	
 	@Override
-    public IBlockState getStateFromMeta(int meta) {
-        EnumFacing enumfacing = EnumFacing.getFront(meta);
-        if (enumfacing.getAxis() == EnumFacing.Axis.Y)
-            enumfacing = EnumFacing.NORTH;
-        return this.getDefaultState().withProperty(FACING_PROP, enumfacing);
-    }
+	public IBlockState getStateFromMeta(int meta) {
+		EnumFacing enumfacing = EnumFacing.getFront(meta);
+		if (enumfacing.getAxis() == EnumFacing.Axis.Y)
+			enumfacing = EnumFacing.NORTH;
+		return this.getDefaultState().withProperty(FACING_PROP, enumfacing);
+	}
 
 	@Override
-    public int getMetaFromState(IBlockState state) {
-        return ((EnumFacing)state.getValue(FACING_PROP)).getIndex();
-    }
-	
+	public int getMetaFromState(IBlockState state) {
+		return ((EnumFacing) state.getValue(FACING_PROP)).getIndex();
+	}
+
 }
