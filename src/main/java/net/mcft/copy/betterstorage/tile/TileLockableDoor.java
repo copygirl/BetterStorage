@@ -3,6 +3,7 @@ package net.mcft.copy.betterstorage.tile;
 import static net.minecraft.util.EnumFacing.DOWN;
 
 import java.util.List;
+import java.util.Random;
 
 import net.mcft.copy.betterstorage.api.BetterStorageEnchantment;
 import net.mcft.copy.betterstorage.attachment.Attachments;
@@ -132,6 +133,13 @@ public class TileLockableDoor extends BlockDoor {
 		return movPos != null ? movPos : super.collisionRayTrace(world, pos, start, end);
 	}
 	
+	@Override
+	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+		state = state.withProperty(BlockDoor.POWERED_PROP, true);
+		worldIn.setBlockState(pos, state);
+		worldIn.scheduleUpdate(pos, this, 10);
+	}
+
 	@Override
 	public boolean canProvidePower() {
 		return true;

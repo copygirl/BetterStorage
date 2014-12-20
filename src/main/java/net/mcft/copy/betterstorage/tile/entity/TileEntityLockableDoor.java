@@ -133,6 +133,7 @@ public class TileEntityLockableDoor extends TileEntity implements ILockable, IHa
 		IBlockState state = getWorld().getBlockState(getPos());
 		state.withProperty(BlockDoor.POWERED_PROP, true);
 		worldObj.setBlockState(getPos(), state);
+		worldObj.scheduleUpdate(getPos(), getBlockType(), 10);
 	}
 	
 	public boolean onBlockActivated(World world, BlockPos pos, EntityPlayer player, EnumFacing side, float hitX, float hitY, float hitZ) {
@@ -145,14 +146,6 @@ public class TileEntityLockableDoor extends TileEntity implements ILockable, IHa
 	@Override
 	public void update() {	
 		attachments.update();
-		if (timeout > 0) {
-			timeout--;
-			if (timeout == 0) {
-				IBlockState state = getWorld().getBlockState(getPos());
-				state.withProperty(BlockDoor.POWERED_PROP, false);
-				worldObj.setBlockState(getPos(), state);
-			}
-		}
 	}
 
 	@Override
@@ -160,7 +153,6 @@ public class TileEntityLockableDoor extends TileEntity implements ILockable, IHa
 		super.readFromNBT(compound);
 		if (compound.hasKey("lock")) 
 			lockAttachment.setItem(ItemStack.loadItemStackFromNBT(compound.getCompoundTag("lock")));
-		timeout = compound.getByte("timeout");
 		updateLockPosition();
 	}
 	
@@ -169,7 +161,6 @@ public class TileEntityLockableDoor extends TileEntity implements ILockable, IHa
 		super.writeToNBT(compound);
 		if (lockAttachment.getItem() != null) 
 			compound.setTag("lock", lockAttachment.getItem().writeToNBT(new NBTTagCompound()));
-		compound.setByte("timeout", timeout);
 	}
 
 	@Override

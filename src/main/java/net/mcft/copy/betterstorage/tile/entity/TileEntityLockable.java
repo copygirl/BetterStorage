@@ -193,32 +193,15 @@ public abstract class TileEntityLockable extends TileEntityConnectable
 		Block block = getBlockType();
 		//TODO (1.8): Gah. No, I'll do that later.
 		// Schedule a block update to turn the redstone signal back off.
-		/*if (powered) worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, block, 10);
+		if (powered) worldObj.scheduleUpdate(getPos(), block, 10);
 		
 		// Notify nearby blocks
-		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, block);
-		worldObj.notifyBlocksOfNeighborChange(xCoord + 1, yCoord, zCoord, block);
-		worldObj.notifyBlocksOfNeighborChange(xCoord - 1, yCoord, zCoord, block);
-		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord + 1, zCoord, block);
-		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord - 1, zCoord, block);
-		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord + 1, block);
-		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord - 1, block);
+		WorldUtils.notifyBlocksAround(getWorld(), getPos());
 		
 		// Notify nearby blocks of adjacent chest
-		if (isConnected() && (getConnected() == ForgeDirection.EAST)) {
-			worldObj.notifyBlocksOfNeighborChange(xCoord + 2, yCoord, zCoord, block);
-			worldObj.notifyBlocksOfNeighborChange(xCoord + 1, yCoord + 1, zCoord, block);
-			worldObj.notifyBlocksOfNeighborChange(xCoord + 1, yCoord - 1, zCoord, block);
-			worldObj.notifyBlocksOfNeighborChange(xCoord + 1, yCoord, zCoord + 1, block);
-			worldObj.notifyBlocksOfNeighborChange(xCoord + 1, yCoord, zCoord - 1, block);
+		if (isConnected()) {
+			worldObj.notifyNeighborsOfStateChange(getPos().offset(getConnected()), block);
 		}
-		if (isConnected() && (getConnected() == ForgeDirection.SOUTH)) {
-			worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord + 2, block);
-			worldObj.notifyBlocksOfNeighborChange(xCoord + 1, yCoord, zCoord + 1, block);
-			worldObj.notifyBlocksOfNeighborChange(xCoord - 1, yCoord, zCoord + 1, block);
-			worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord + 1, zCoord + 1, block);
-			worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord - 1, zCoord + 1, block);
-		}*/
 		
 	}
 	
