@@ -10,6 +10,7 @@ import net.mcft.copy.betterstorage.config.GlobalConfig;
 import net.mcft.copy.betterstorage.content.BetterStorageItems;
 import net.mcft.copy.betterstorage.item.ItemBetterStorage;
 import net.mcft.copy.betterstorage.network.packet.PacketLockHit;
+import net.mcft.copy.betterstorage.utils.MathUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.enchantment.Enchantment;
@@ -24,7 +25,6 @@ import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -107,11 +107,7 @@ public class LockAttachment extends ItemAttachment {
 					int unbreaking = EnchantmentHelper.getEnchantmentLevel(Enchantment.unbreaking.effectId, lock);
 					lock.setItemDamage(lock.getItemDamage() + 10 / (1 + unbreaking));
 					if (lock.getItemDamage() < lock.getMaxDamage()) {
-						AxisAlignedBB box = getHighlightBox();
-						double x = (box.minX + box.maxX) / 2;
-						double y = (box.minY + box.maxY) / 2;
-						double z = (box.minZ + box.maxZ) / 2;
-						EntityItem item = WorldUtils.spawnItem(tileEntity.getWorld(), x, y, z, lock);
+						EntityItem item = WorldUtils.spawnItem(tileEntity.getWorld(), MathUtils.getCenter(getHighlightBox()), lock);
 					}
 					lockable.setLock(null);
 					breakProgress = 0;
@@ -131,11 +127,7 @@ public class LockAttachment extends ItemAttachment {
 		wiggleStrength = Math.min(20.0F, wiggleStrength + 12.0F);
 		if (damage) {
 			hit = 10;
-			AxisAlignedBB box = getHighlightBox();
-			double x = (box.minX + box.maxX) / 2;
-			double y = (box.minY + box.maxY) / 2;
-			double z = (box.minZ + box.maxZ) / 2;
-			tileEntity.getWorld().playSound(x, y, z, "random.break", 0.5F, 2.5F, false);
+			WorldUtils.playSound(tileEntity.getWorld(), MathUtils.getCenter(getHighlightBox()), "random.break", 0.5F, 2.5F, false);
 		}
 	}
 	
@@ -160,11 +152,7 @@ public class LockAttachment extends ItemAttachment {
 			if (!success) return true;
 			
 			if (player.isSneaking()) {
-				AxisAlignedBB box = getHighlightBox();
-				double x = (box.minX + box.maxX) / 2;
-				double y = (box.minY + box.maxY) / 2;
-				double z = (box.minZ + box.maxZ) / 2;
-				EntityItem item = WorldUtils.spawnItem(player.worldObj, x, y, z, lock);
+				EntityItem item = WorldUtils.spawnItem(player.worldObj, MathUtils.getCenter(getHighlightBox()), lock);
 				lockable.setLock(null);
 			} else lockable.useUnlocked(player);
 			

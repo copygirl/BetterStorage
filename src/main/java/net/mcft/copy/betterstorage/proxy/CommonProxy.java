@@ -1,8 +1,5 @@
 package net.mcft.copy.betterstorage.proxy;
 
-import java.util.Map.Entry;
-import java.util.Set;
-
 import net.mcft.copy.betterstorage.BetterStorage;
 import net.mcft.copy.betterstorage.api.stand.BetterStorageArmorStand;
 import net.mcft.copy.betterstorage.api.stand.EnumArmorStandRegion;
@@ -24,12 +21,13 @@ import net.mcft.copy.betterstorage.misc.handlers.CraftingHandler;
 import net.mcft.copy.betterstorage.tile.crate.CratePileCollection;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityLockableDoor;
 import net.mcft.copy.betterstorage.tile.stand.VanillaArmorStandEquipHandler;
+import net.mcft.copy.betterstorage.utils.MathUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
+import net.minecraft.block.BlockDoor.EnumDoorHalf;
 import net.minecraft.block.BlockDoor.EnumHingePosition;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -42,6 +40,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumFacing.Axis;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
@@ -99,7 +98,7 @@ public class CommonProxy {
 	@SubscribeEvent
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		
-		//TODO (1.8): More severe changes.
+		//TODO (1.8): Probably add an extra handler for lockable doors as the position of its attachement is rather weird.
 		World world = event.entity.worldObj;
 		
 		EntityPlayer player = event.entityPlayer;
@@ -154,18 +153,13 @@ public class CommonProxy {
 			MovingObjectPosition target = WorldUtils.rayTrace(player, 1F);		
 			if(target != null && getIronDoorHightlightBox(player, world, event.pos, target.hitVec, block) != null) {
 				
-				IBlockState stateLower = world.getBlockState(event.pos);
-				IBlockState stateUpper = world.getBlockState(event.pos.offsetUp());
-				IBlockState stateLowerLockable = BetterStorageTiles.lockableDoor.getDefaultState();
-				IBlockState stateUpperLockable = BetterStorageTiles.lockableDoor.getDefaultState();
+				IBlockState stateUpper = WorldUtils.cloneBlockState(BetterStorageTiles.lockableDoor.getDefaultState(), world.getBlockState(event.pos.offsetUp()));
+				IBlockState stateLower = WorldUtils.cloneBlockState(BetterStorageTiles.lockableDoor.getDefaultState(), world.getBlockState(event.pos));
 				
-				for (Entry entry : (Set<Entry>) stateLower.getProperties().entrySet())
-					stateLowerLockable = stateLowerLockable.withProperty((IProperty) entry.getKey(), (Comparable) entry.getValue());
-				for (Entry entry : (Set<Entry>) stateUpper.getProperties().entrySet())
-					stateUpperLockable = stateUpperLockable.withProperty((IProperty) entry.getKey(), (Comparable) entry.getValue());
-
-				world.setBlockState(event.pos, stateLowerLockable, SetBlockFlag.SEND_TO_CLIENT);
-				world.setBlockState(event.pos.offsetUp(), stateUpperLockable, SetBlockFlag.SEND_TO_CLIENT);
+				world.setBlockState(event.pos, stateLower, SetBlockFlag.SEND_TO_CLIENT);
+				world.setBlockState(event.pos.offsetUp(), stateUpper, SetBlockFlag.SEND_TO_CLIENT);
+				world.markBlockForUpdate(event.pos);
+				world.markBlockForUpdate(event.pos.offsetUp());
 
 				TileEntityLockableDoor te = WorldUtils.get(world, event.pos, TileEntityLockableDoor.class);
 				te.setLock(holding);
@@ -183,38 +177,32 @@ public class CommonProxy {
 	}
 	
 	protected AxisAlignedBB getIronDoorHightlightBox(EntityPlayer player, World world, BlockPos pos, Vec3 hitVec, Block block) {
-		//TODO (1.8): This was really ugly in the first place, might have a better method now.
+		
 		if(!StackUtils.isLock(player.getCurrentEquippedItem())) return null;
 		
 		IBlockState state = world.getBlockState(pos);
+		state = state.getBlock().getActualState(state, world, pos);
+		
+		EnumDoorHalf doorHalf = (EnumDoorHalf) state.getValue(BlockDoor.HALF_PROP);
+		if(doorHalf == EnumDoorHalf.LOWER) pos = pos.offsetUp();
+		
 		boolean isMirrored = ((EnumHingePosition) state.getValue(BlockDoor.HINGEPOSITION_PROP)) == EnumHingePosition.RIGHT;
 		boolean isOpen = (Boolean) state.getValue(BlockDoor.OPEN_PROP);
 		EnumFacing facing = (EnumFacing) state.getValue(BlockDoor.FACING_PROP);
+		if (isOpen && isMirrored) facing = facing.rotateYCCW();
+		else if (isOpen) facing = facing.rotateY();
 
-		AxisAlignedBB box;
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
-		
-		switch(facing) {
-		case NORTH :
-			if(!isOpen) box = AxisAlignedBB.fromBounds(x - 0.005 / 16F, y + 14.5 / 16F, z + 10 / 16F, x + 3.005 / 16F, y + 20.5 / 16F, z + 15 / 16F);
-			else box = AxisAlignedBB.fromBounds(x + 10 / 16F, y + 14.5 / 16F, z - 0.005 / 16F, x + 15 / 16F, y + 20.5 / 16F, z + 3.005 / 16F);
-			break;
-		case EAST :
-			if(!isOpen) box = AxisAlignedBB.fromBounds(x + 1 / 16F, y + 14.5 / 16F, z - 0.005 / 16F, x + 6 / 16F, y + 20.5 / 16F, z + 3.005 / 16F);
-			else box = AxisAlignedBB.fromBounds(x + 12.995 / 16F, y + 14.5 / 16F, z + 10 / 16F, x + 16.005 / 16F, y + 20.5 / 16F, z + 15 / 16F);
-			break;
-		case WEST :
-			if(!isOpen) box = AxisAlignedBB.fromBounds(x + 12.995 / 16F, y + 14.5 / 16F, z + 1 / 16F, x + 16.005 / 16F, y + 20.5 / 16F, z + 6 / 16F);
-			else box = AxisAlignedBB.fromBounds(x + 1 / 16F, y + 14.5 / 16F, z + 12.995 / 16F, x + 6 / 16F, y + 20.5 / 16F, z + 16.005 / 16F);
-			break;
-		default :
-			if(!isOpen) box = AxisAlignedBB.fromBounds(x + 10 / 16F, y + 14.5 / 16F, z + 12.995 / 16F, x + 15 / 16F, y + 20.5 / 16F, z + 16.005 / 16F);
-			else box = AxisAlignedBB.fromBounds(x - 0.005 / 16F, y + 14.5 / 16F, z + 1 / 16F, x + 3.005 / 16F, y + 20.5 / 16F, z + 6 / 16F);
-			break;
+		AxisAlignedBB box = MathUtils.scaleAABB(TileEntityLockableDoor.AABB_LOCK, new Vec3(1 / 16D, 1 / 16D, 1 / 16D));
+		box = MathUtils.rotateAABB(box, facing);
+
+		if (isMirrored != isOpen) {
+			if(facing.getAxis() == Axis.X)
+			     box = AxisAlignedBB.fromBounds(box.minX, box.minY, 1 - box.minZ, box.maxX, box.maxY, 1 - box.maxZ);
+			else box = AxisAlignedBB.fromBounds(1 - box.minX, box.minY, box.minZ, 1 - box.maxX, box.maxY, box.maxZ);
 		}
 		
+		box = box.offset(pos.getX(), pos.getY(), pos.getZ());
+		//TODO (1.8): Doesn't work for the lower part of the door
 		return box.isVecInside(hitVec) ? box : null;
 	}
 	
@@ -292,7 +280,7 @@ public class CommonProxy {
 	 * @param id metadata
 	 * @param name model name
 	 */
-	public void registerItemRender(Item item, int id, String name){
+	public void registerItemRender(Item item, int id, String name) {
 		this.registerItemRender(item, id, name, "inventory");
 	}
 	
@@ -303,7 +291,7 @@ public class CommonProxy {
 	 * @param name model name
 	 * @param type
 	 */
-	public void registerItemRender(Item item, int id, String name, String type){
+	public void registerItemRender(Item item, int id, String name, String type) {
 		
 	}
 }

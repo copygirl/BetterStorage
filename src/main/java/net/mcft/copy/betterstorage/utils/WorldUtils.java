@@ -1,12 +1,16 @@
 package net.mcft.copy.betterstorage.utils;
 
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import net.mcft.copy.betterstorage.attachment.Attachments;
 import net.mcft.copy.betterstorage.container.ContainerBetterStorage;
 import net.mcft.copy.betterstorage.inventory.InventoryTileEntity;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityContainer;
 import net.minecraft.block.Block;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -48,15 +52,15 @@ public final class WorldUtils {
 	// Item spawning related functions
 	
 	/** Spawns an ItemStack in the world. */
-	public static EntityItem spawnItem(World world, double x, double y, double z, ItemStack stack) {
+	public static EntityItem spawnItem(World world, Vec3 pos, ItemStack stack) {
 		if ((stack == null) || (stack.stackSize <= 0)) return null;
-		EntityItem item = new EntityItem(world, x, y, z, stack);
+		EntityItem item = new EntityItem(world, pos.xCoord, pos.yCoord, pos.zCoord, stack);
 		world.spawnEntityInWorld(item);
 		return item;
 	}
 	/** Spawns an ItemStack in the world with random motion. */
-	public static EntityItem spawnItemWithMotion(World world, double x, double y, double z, ItemStack stack) {
-		EntityItem item = spawnItem(world, x, y, z, stack);
+	public static EntityItem spawnItemWithMotion(World world, Vec3 pos, ItemStack stack) {
+		EntityItem item = spawnItem(world, pos, stack);
 		if (item != null) {
 			item.motionX = RandomUtils.getGaussian() * 0.05F;
 			item.motionY = RandomUtils.getGaussian() * 0.05F + 0.2F;
@@ -67,11 +71,10 @@ public final class WorldUtils {
 	
 	/** Spawn an ItemStack dropping from a destroyed block. */
 	public static EntityItem dropStackFromBlock(World world, BlockPos pos, ItemStack stack) {
-		float itemX = pos.getX() + RandomUtils.getFloat(0.1F, 0.9F);
-		float itemY = pos.getY() + RandomUtils.getFloat(0.1F, 0.9F);
-		float itemZ = pos.getZ() + RandomUtils.getFloat(0.1F, 0.9F);
-		return spawnItemWithMotion(world, itemX, itemY, itemZ, stack);
+		return spawnItemWithMotion(world, MathUtils.fromVec3i(pos)
+			.addVector(RandomUtils.getFloat(0.1F, 0.9F), RandomUtils.getFloat(0.1F, 0.9F), RandomUtils.getFloat(0.1F, 0.9F)), stack);
 	}
+	
 	/** Spawn an ItemStack dropping from a destroyed block. */
 	public static EntityItem dropStackFromBlock(TileEntity te, ItemStack stack) {
 		return dropStackFromBlock(te.getWorld(), te.getPos(), stack);
@@ -83,7 +86,7 @@ public final class WorldUtils {
 		EntityItem item;
 		if (player == null) {
 			double y = entity.posY + entity.getEyeHeight() - 0.3;
-			item = spawnItem(entity.worldObj, entity.posX, y, entity.posZ, stack);
+			item = spawnItem(entity.worldObj, new Vec3(entity.posX, y, entity.posZ), stack);
 			if (item == null) return null;
 			item.setPickupDelay(40);
 			float f1 = RandomUtils.getFloat(0.5F);
@@ -142,13 +145,19 @@ public final class WorldUtils {
 	/** This will perform a {@link World#notifyBlockOfNeighborChange()} on every adjacent block including the block at x|y|z.*/
 	public static void notifyBlocksAround(World world, BlockPos pos) {
 		Block block = world.getBlockState(pos).getBlock();
+		world.notifyNeighborsOfStateChange(pos, block);
 		world.notifyBlockOfStateChange(pos, block);
-		world.notifyBlockOfStateChange(pos.offsetDown(), block);
-		world.notifyBlockOfStateChange(pos.offsetUp(), block);
-		world.notifyBlockOfStateChange(pos.offsetNorth(), block);
-		world.notifyBlockOfStateChange(pos.offsetEast(), block);
-		world.notifyBlockOfStateChange(pos.offsetSouth(), block);
-		world.notifyBlockOfStateChange(pos.offsetWest(), block);
+	}
+	
+	public static void playSound(World world, Vec3 pos, String sound, float volume, float pitch, boolean distanceDelay) {
+		world.playSound(pos.xCoord, pos.yCoord, pos.zCoord, "random.break", 0.5F, 2.5F, false);
+	}
+	
+	/** Copys the property array of an {@link IBlockState} to a new one **/
+	public static IBlockState cloneBlockState(IBlockState newState, IBlockState oldState) {
+		for (Entry entry : (Set<Entry>) oldState.getProperties().entrySet())
+			newState = newState.withProperty((IProperty) entry.getKey(), (Comparable) entry.getValue());
+		return newState;
 	}
 	
 	// Misc functions

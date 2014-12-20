@@ -2,7 +2,7 @@ package net.mcft.copy.betterstorage.tile;
 
 import static net.minecraft.util.EnumFacing.DOWN;
 
-import java.util.Random;
+import java.util.List;
 
 import net.mcft.copy.betterstorage.api.BetterStorageEnchantment;
 import net.mcft.copy.betterstorage.attachment.Attachments;
@@ -16,7 +16,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -28,7 +27,8 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-//TODO (1.8): Rewrite the door
+import com.google.common.collect.Lists;
+
 public class TileLockableDoor extends BlockDoor {
 
 	public TileLockableDoor() {
@@ -37,91 +37,53 @@ public class TileLockableDoor extends BlockDoor {
 		setCreativeTab(null);
 		setHardness(8.0F);
 		setResistance(20.0F);
-		setStepSound(soundTypeWood);	
+		setStepSound(soundTypeAnvil);
 		setHarvestLevel("axe", 2);
 	}
-	
-	/*
+
 	@Override
-	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
-		int metadata = world.getBlockMetadata(x, y, z);
-		float offset = metadata == 0 ? 0F : -1F;
-		TileEntityLockableDoor te = WorldUtils.get(world, x, y + (int)offset, z, TileEntityLockableDoor.class);
-		
-		if (te == null) return;
-		
-		switch (te.orientation) {
-		case WEST:
-			if (te.isOpen) setBlockBounds(0F, 0F, 0.005F / 16F, 1F, 1F, 2.995F / 16F);
-			else setBlockBounds(0.005F / 16F, 0F, 0F, 2.995F / 16F, 1F, 1F);
-			break;
-		case EAST:
-			if (te.isOpen) setBlockBounds(0F, 0F, 13.005F / 16F, 1F, 1F, 15.995F / 16F);
-			else setBlockBounds(13.005F / 16F, 0F, 0F, 15.995F / 16F, 1F, 1F);
-			break;
-		case SOUTH:
-			if (te.isOpen) setBlockBounds(0.005F / 16F, 0F, 0F, 2.995F / 16F, 1F, 1F);
-			else setBlockBounds(0F, 0F, 13.005F / 16F, 1F, 1F, 15.995F / 16F);
-			break;
-		default:
-			if (te.isOpen) setBlockBounds(13.005F / 16F, 0F, 0F, 15.995F / 16F, 1F, 1F);
-			else setBlockBounds(0F, 0F, 0.005F / 16F, 1F, 1F, 2.995F / 16F);
-			break;
-		}		
+	public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+		List<ItemStack> drops = Lists.newArrayList();
+		TileEntityLockableDoor te = WorldUtils.get(world, pos, TileEntityLockableDoor.class);
+		if (te == null) te = WorldUtils.get(world, pos.offsetDown(), TileEntityLockableDoor.class);
+		ItemStack lock = te.getLock();
+		if(lock != null) drops.add(lock);
+		drops.add(new ItemStack(Items.iron_door));
+		return drops;
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
-		setBlockBoundsBasedOnState(world, x, y, z);
-		return super.getCollisionBoundingBoxFromPool(world, x, y, z);
-	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister iconRegister) {
-		iconUpper = iconRegister.registerIcon("door_iron_upper");
-		iconLower = iconRegister.registerIcon("door_iron_lower");
-		iconUpperFlipped = new IconFlipped(iconUpper, true, false);
-		iconLowerFlipped = new IconFlipped(iconLower, true, false);
-		blockIcon = iconUpper;
-	}
+	public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock) {
+		if (state.getValue(HALF_PROP) == BlockDoor.EnumDoorHalf.UPPER) {
+			pos = pos.offsetDown();
+			IBlockState lowerState = worldIn.getBlockState(pos);
 
-	@Override
-	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int face) {
-		int meta = world.getBlockMetadata(x, y, z);
-		if (meta > 0) y -= 1;
-		TileEntityLockableDoor lockable = WorldUtils.get(world, x, y, z, TileEntityLockableDoor.class);
-		
-		boolean flip = false;
-		IIcon icon = iconUpper;
-		
-		if(meta == 0 || face == 1) {
-			icon = iconLower;
+			if (lowerState.getBlock() != this)
+				worldIn.setBlockToAir(pos);
+			else if (neighborBlock != this)
+				onNeighborBlockChange(worldIn, pos, lowerState, neighborBlock);
+		} else {
+			boolean drop = false;
+			pos = pos.offsetUp();
+			IBlockState upperState = worldIn.getBlockState(pos);
+
+			if (upperState.getBlock() != this) {
+				worldIn.setBlockToAir(pos);
+				drop = true;
+			}
+
+			if (!World.doesBlockHaveSolidTopSurface(worldIn, pos.offsetDown())) {
+				worldIn.setBlockToAir(pos);
+				drop = true;
+
+				if (upperState.getBlock() == this)
+					worldIn.setBlockToAir(pos);
+			}
+
+			if (drop && !worldIn.isRemote)
+				dropBlockAsItem(worldIn, pos, state, 0);
 		}
-		
-		switch(lockable.orientation) {
-		case WEST: 
-			if(face == 3 && !lockable.isOpen) flip = true;
-			else if(face == 2 && lockable.isOpen) flip = true;
-			break;
-		case EAST:
-			if(face == 4 && !lockable.isOpen) flip = true;
-			else if(face == 3 && lockable.isOpen) flip = true;
-			break;
-		case SOUTH:
-			if(face == 2 && !lockable.isOpen) flip = true;
-			else if(face == 4 && lockable.isOpen) flip = true;
-			break;
-		default: 
-			if(face == 3 && !lockable.isOpen) flip = true;
-			else if(face == 5 && lockable.isOpen) flip = true;
-			break;
-		}
-
-		icon = flip ? (icon == iconLower ? iconLowerFlipped : iconUpperFlipped) : icon;
-		return icon;
 	}
-	*/
 
 	@Override
 	 public float getBlockHardness(World world, BlockPos pos){
@@ -143,12 +105,6 @@ public class TileLockableDoor extends BlockDoor {
 			if (persistance > 0) modifier += Math.pow(2, persistance);
 		}
 		return super.getExplosionResistance(exploder) * modifier;
-	}
-	
-	@Override
-	public boolean onBlockEventReceived(World world, BlockPos pos, IBlockState state, int eventID, int eventParam){
-		TileEntity te = world.getTileEntity(pos);
-        return ((te != null) ? te.receiveClientEvent(eventID, eventParam) : false);
 	}
 
 	@Override
@@ -177,59 +133,23 @@ public class TileLockableDoor extends BlockDoor {
 	}
 	
 	@Override
-	public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighborBlock) {
-		int metadata = ((EnumFacing) state.getValue(FACING_PROP)).getIndex();
-		int yModifier = ((metadata == 0) ? 1 : -1);
-		int targetMeta = ((metadata == 0) ? 8 : 0);
-		if (world.getBlockState(pos.offsetDown()).getBlock() == Blocks.air && metadata == 0) world.setBlockToAir(pos);
-		EnumFacing side = (EnumFacing) world.getBlockState(pos.offsetDown(yModifier)).getValue(FACING_PROP);
-		if ((world.getBlockState(pos.offsetDown(yModifier)).getBlock() == this) && (side.getIndex() == targetMeta)) return;
-		world.setBlockToAir(pos);
-		if (metadata == 0) WorldUtils.spawnItem(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(Items.iron_door));
-	}
-	
-	/* Removed in 1.8
-	  @Override
-	public void onBlockPreDestroy(World world, int x, int y, int z, int meta) {
-		if(meta == 0) {
-			TileEntityLockableDoor te = WorldUtils.get(world, x, y, z, TileEntityLockableDoor.class);
-			WorldUtils.dropStackFromBlock(te, te.getLock());
-			te.setLockWithUpdate(null);
-		}
-		super.onBlockPreDestroy(world, x, y, z, meta);
-	}*/
-	
-	@Override
-	public int quantityDropped(IBlockState state, int fortune, Random random) {
-		EnumFacing face = (EnumFacing) state.getValue(FACING_PROP);
-		return ((face.equals(DOWN)) ? 1 : 0);
-	} 
-	
-	@Override
-	public boolean canProvidePower() { return true; }
-	
-	@Override
-	public int isProvidingWeakPower(IBlockAccess world, BlockPos pos, IBlockState state, EnumFacing side) {
-		EnumFacing face = (EnumFacing) state.getValue(FACING_PROP);
-		if (!face.equals(DOWN)) pos = pos.offsetDown();
-		TileEntityLockableDoor te = WorldUtils.get(world, pos, TileEntityLockableDoor.class);
-		return te == null ? 0 : (te.isPowered() ? 15 : 0);
-	}
-	@Override
-	public int isProvidingStrongPower(IBlockAccess world, BlockPos pos, IBlockState state, EnumFacing side) {
-		return isProvidingWeakPower(world, pos, state, side);
+	public boolean canProvidePower() {
+		return true;
 	}
 	
 	@Override
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
-		EnumFacing face = (EnumFacing) state.getValue(FACING_PROP);
-		if (!face.equals(DOWN)) return;
-		WorldUtils.get(world, pos, TileEntityLockableDoor.class).setPowered(false);
+	public int isProvidingWeakPower(IBlockAccess worldIn, BlockPos pos, IBlockState state, EnumFacing side) {
+		return isProvidingStrongPower(worldIn, pos, state, side);
 	}
-	
+
 	@Override
-	public TileEntity createTileEntity(World world, IBlockState state)
-	{
+	public int isProvidingStrongPower(IBlockAccess worldIn, BlockPos pos, IBlockState state, EnumFacing side) {
+		state = getActualState(state, worldIn, pos);
+		return (Boolean) state.getValue(POWERED_PROP) ? 15 : 0;
+	}
+
+	@Override
+	public TileEntity createTileEntity(World world, IBlockState state) {
 		EnumFacing enumfacing = (EnumFacing)state.getValue(FACING_PROP);
 		return ((enumfacing.equals(DOWN)) ? new TileEntityLockableDoor() : null);
 	}

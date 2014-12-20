@@ -11,6 +11,7 @@ import net.mcft.copy.betterstorage.api.crafting.StationCrafting;
 import net.mcft.copy.betterstorage.config.GlobalConfig;
 import net.mcft.copy.betterstorage.item.recipe.VanillaStationCrafting;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityCraftingStation;
+import net.mcft.copy.betterstorage.utils.MathUtils;
 import net.mcft.copy.betterstorage.utils.InventoryUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
@@ -123,7 +124,7 @@ public class InventoryCraftingStation extends InventoryBetterStorage {
 		if ((containerItem != null) && !simulate) {
 			// Try to add the container item to the internal storage, or spawn the item in the world.
 			if (!InventoryUtils.tryAddItemToInventory(containerItem, new InventoryStacks(contents), true) && (entity != null))
-				WorldUtils.spawnItem(entity.getWorld(), entity.getPos().getX() + 0.5, entity.getPos().getY() + 0.5, entity.getPos().getZ() + 0.5, containerItem);
+				WorldUtils.spawnItem(entity.getWorld(), MathUtils.fromVec3i(entity.getPos()).add(MathUtils.VEC_CENTER), containerItem);
 		}
 		return stack;
 	}

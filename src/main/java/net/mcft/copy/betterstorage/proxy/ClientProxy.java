@@ -39,20 +39,24 @@ import net.mcft.copy.betterstorage.tile.entity.TileEntityReinforcedLocker;
 import net.mcft.copy.betterstorage.tile.stand.TileEntityArmorStand;
 import net.mcft.copy.betterstorage.tile.stand.VanillaArmorStandRenderHandler;
 import net.mcft.copy.betterstorage.utils.RenderUtils;
+import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.entity.RenderChicken;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
@@ -154,7 +158,7 @@ public class ClientProxy extends CommonProxy {
 	public void drawBlockHighlight(DrawBlockHighlightEvent event) {
 		
 		//TODO (1.8): Probably needs some severe changes.
-		/*EntityPlayer player = event.player;
+		EntityPlayer player = event.player;
 		World world = player.worldObj;
 		MovingObjectPosition target = WorldUtils.rayTrace(player, event.partialTicks);
 		
@@ -165,39 +169,40 @@ public class ClientProxy extends CommonProxy {
 		Block block = world.getChunkFromBlockCoords(pos).getBlock(pos);
 		TileEntity tileEntity = world.getTileEntity(pos);
 		
-		if (block instanceof TileArmorStand)
-			box = getArmorStandHighlightBox(player, world, pos, target.hitVec);
-		else if (block == Blocks.iron_door)
+//		if (block instanceof TileArmorStand)
+//			box = getArmorStandHighlightBox(player, world, pos, target.hitVec);
+		/*else*/ if (block == Blocks.iron_door)
 			box = getIronDoorHightlightBox(player, world, pos, target.hitVec, block);
-		else if (tileEntity instanceof IHasAttachments)
-			box = getAttachmentPointsHighlightBox(player, tileEntity, target);
+//		else if (tileEntity instanceof IHasAttachments)
+//			box = getAttachmentPointsHighlightBox(player, tileEntity, target);
 		
 		if (box == null) return;
 		
 		double xOff = player.lastTickPosX + (player.posX - player.lastTickPosX) * event.partialTicks;
 		double yOff = player.lastTickPosY + (player.posY - player.lastTickPosY) * event.partialTicks;
 		double zOff = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * event.partialTicks;
-		box.offset(-xOff, -yOff, -zOff);
+		box = box.offset(-xOff, -yOff, -zOff).expand(0.002, 0.002, 0.002);
         
 		GlStateManager.enableBlend();
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GlStateManager.color(0.0F, 0.0F, 0.0F, 0.4F);
 		GL11.glLineWidth(2.0F);
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
-		GL11.glDepthMask(false);
+		GlStateManager.depthMask(false);
 		
 		RenderGlobal.drawOutlinedBoundingBox(box, -1);
 		
-		GL11.glDepthMask(true);
+		GlStateManager.depthMask(true);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		GlStateManager.disableBlend();
 		
-		event.setCanceled(true);*/
+		event.setCanceled(true);
 		
 	}
 
 	private AxisAlignedBB getArmorStandHighlightBox(EntityPlayer player, World world, BlockPos pos, Vec3 hitVec) {
 		
+		//TODO (1.8): A little rewrite required here.
 		/*int metadata = world.getBlockMetadata(x, y, z);
 		if (metadata > 0) y -= 1;
 		

@@ -1,6 +1,7 @@
 package net.mcft.copy.betterstorage.attachment;
 
 import net.mcft.copy.betterstorage.utils.DirectionUtils;
+import net.mcft.copy.betterstorage.utils.MathUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -14,18 +15,13 @@ public abstract class Attachment {
 	public final TileEntity tileEntity;
 	public final int subId;
 	
-	private double x, y, z;
-	private double width, height, depth;
+	private AxisAlignedBB base = AxisAlignedBB.fromBounds(0, 0, 0, 0, 0, 0);
 	private AxisAlignedBB box = AxisAlignedBB.fromBounds(0, 0, 0, 0, 0, 0);
 	private EnumFacing direction = EnumFacing.NORTH;
 	
-	public double getX() { return x; }
-	public double getY() { return y; }
-	public double getZ() { return z; }
-	
-	public double getWidth()  { return width; }
-	public double getHeight() { return height; }
-	public double getDepth()  { return depth; }
+	public double getX() { return base.minX; }
+	public double getY() { return base.minY; }
+	public double getZ() { return base.minZ; }
 	
 	public float getRotation() { return DirectionUtils.getRotation(direction); }
 	
@@ -40,46 +36,27 @@ public abstract class Attachment {
 	
 	public void setBox(double x, double y, double z,
 	                   double width, double height, double depth, double scale) {
-		this.x = x * scale;
-		this.y = y * scale;
-		this.z = z * scale;
-		this.width = width * scale;
-		this.height = height * scale;
-		this.depth = depth * scale;
+		base = MathUtils.scaleAABB(MathUtils.createAABB(x, y, z, width, height, depth), scale);
 		updateBox();
 	}
+	
 	public void setBox(double x, double y, double z,
 	                   double width, double height, double depth) {
 		setBox(x, y, z, width, height, depth, 1 / 16.0F);
 	}
 	
+	public void setBox(AxisAlignedBB aabb) {
+		box = aabb;
+	}
+	
 	public void setDirection(EnumFacing direction) {
+		if(this.direction == direction) return;
 		this.direction = direction;
 		updateBox();
 	}
 	
 	private void updateBox() {
-		double minX, minY = 1 - (y + height / 2), minZ;
-		double maxX, maxY = 1 - (y - height / 2), maxZ;
-		switch (direction) {
-			case EAST:
-				minX = 1 - (z + depth / 2); minZ = x - width / 2;
-				maxX = 1 - (z - depth / 2); maxZ = x + width / 2;
-				break;
-			case SOUTH:
-				minX = 1 - (x + width / 2); minZ = 1 - (z + depth / 2);
-				maxX = 1 - (x - width / 2); maxZ = 1 - (z - depth / 2);
-				break;
-			case WEST:
-				minX = z - depth / 2; minZ = 1 - (x + width / 2);
-				maxX = z + depth / 2; maxZ = 1 - (x - width / 2);
-				break;
-			default:
-				minX = x - width / 2; minZ = z - depth / 2;
-				maxX = x + width / 2; maxZ = z + depth / 2;
-				break;
-		}
-		box = new AxisAlignedBB(minX, minY, minZ, maxX, maxY, maxZ);
+		box = MathUtils.rotateAABB(base, direction);
 	}
 	
 	public void update() {  }
