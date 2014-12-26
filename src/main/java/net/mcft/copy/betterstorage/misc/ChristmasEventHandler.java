@@ -76,8 +76,8 @@ public class ChristmasEventHandler {
 					
 					int color = DyeUtils.getDyeColor(new ItemStack(Items.dye, 1, 1));
 					StackUtils.set(present, color, "color");
-					StackUtils.set(present, 14, TileEntityPresent.TAG_COLOR_INNER);
-					StackUtils.set(present, 16, TileEntityPresent.TAG_COLOR_OUTER);
+					StackUtils.set(present, (byte)14, TileEntityPresent.TAG_COLOR_INNER);
+					StackUtils.set(present, (byte)16, TileEntityPresent.TAG_COLOR_OUTER);
 					
 					ItemStack[] contents = new ItemStack[ItemCardboardBox.getRows() * 9];
 					for (int j = 0; ((j < contents.length) && !items.isEmpty()); j++)
