@@ -1,0 +1,72 @@
+# Slovak language file by leSamo (twitter: @leSamoSK)
+
+# Containers
+container.betterstorage.craftingStation=Výrobná stanica
+container.betterstorage.backpack=Batoh
+container.betterstorage.cardboardBox=Kartónová krabica
+container.betterstorage.crate=Skladovacia krabica
+container.betterstorage.enderBackpack=Enderový batoh
+container.betterstorage.keyring=Prívesok na kľúče
+container.betterstorage.locker=Skrinka
+container.betterstorage.lockerLarge=Veľká skrinka
+container.betterstorage.reinforcedChest=Vystužená truhlica
+container.betterstorage.reinforcedChestLarge=Veľká vystužená truhlica
+container.betterstorage.reinforcedLocker=Vystužená skrinka
+container.betterstorage.reinforcedLockerLarge=Veľká vystužená skrinka
+container.betterstorage.thaumcraftBackpack=Thaumaturgikov batoh
+container.betterstorage.thaumiumChest=Thaumiová truhlica
+container.betterstorage.thaumiumChestLarge=Veľká thaumiová truhlica
+
+# Enchantments
+enchantment.betterstorage.key.lockpicking=Pakľúčiarstvo
+enchantment.betterstorage.key.morphing=Menenie tvaru
+enchantment.betterstorage.key.unlocking=Odomykanie
+enchantment.betterstorage.lock.persistance=Odolnosť
+enchantment.betterstorage.lock.security=Zabeypečenie
+enchantment.betterstorage.lock.shock=Šok
+enchantment.betterstorage.lock.trigger=Spúšť
+
+# Entities
+entity.betterstorage.Frienderman.name=Enderman
+
+# Items
+item.betterstorage.bucketSlime.name=Slime vo vedre
+item.betterstorage.cardboardAxe.name=Kartónová sekera
+item.betterstorage.cardboardBoots.name=Kartónové topánky
+item.betterstorage.cardboardChestplate.name=Kartónové brnenie
+item.betterstorage.cardboardHelmet.name=Kartónová prilba
+item.betterstorage.cardboardHoe.name=Kartónová motyka
+item.betterstorage.cardboardLeggings.name=Kartónové nohavice
+item.betterstorage.cardboardPickaxe.name=Kartónový krompáč
+item.betterstorage.cardboardSheet.name=Kartón
+item.betterstorage.cardboardShovel.name=Kartónová lopata
+item.betterstorage.cardboardSword.name=Kartónový meč
+item.betterstorage.drinkingHelmet.name=Napájacia prilba
+item.betterstorage.key.name=Kľúč
+item.betterstorage.keyring.name=Prívesok na kľúče
+item.betterstorage.lock.name=Zámok
+item.betterstorage.masterKey.name=Majsterský kľúč
+
+# Creative tab
+itemGroup.betterstorage=BetterStorage
+# Actually, I don't know if I should translate that but "Better Storage" is "Lepšie Skladovanie".
+
+# Keys
+key.betterstorage.backpackOpen=[BetterStorage] Otvoriť batoh
+key.betterstorage.drinkingHelmet=[BetterStorage] Použiť napájaciu prilbu
+
+# Container materials
+material.betterstorage.iron=Železná/ý
+material.betterstorage.gold=Zlatá/ý
+material.betterstorage.diamond=Diamantová/ý
+material.betterstorage.emerald=Smaragdová/ý
+material.betterstorage.copper=Medená/ý
+material.betterstorage.tin=Cínová/ý
+material.betterstorage.silver=Strieborná/ý
+material.betterstorage.steel=Oceľová/ý
+material.betterstorage.zinc=Cínová/ý
+
+# Thaumcraft
+tc.research_name.betterstorage.magicstorage=Magické Skladovanie
+tc.research_text.betterstorage.magicstorage=Očaruj svoje skladovanie
+tc.research_page.betterstorage.magicstorage.1=Infusing a backpack with magic and materials of magical nature will increase its overall durability, enchantability and storage capacity. While worn, items stored inside will still be able to repair, though much slower, unless the backpack itself also has the repair enchantment.<BR>It is also possible to throw together a reinforced iron chest and a bunch of thaumium, which will result in an even more durable chest which can also store more items.
