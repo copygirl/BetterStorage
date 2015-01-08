@@ -1,0 +1,157 @@
+# Slovak language file for mod "BetterStorage" (0.11.3.123)
+# Translated by leSamo, if this translation gets outdated, please contact me on twitter @leSamoSK
+
+# Containers
+container.betterstorage.craftingStation=Výrobná stanica
+container.betterstorage.backpack=Batoh
+container.betterstorage.cardboardBox=Kartónová krabica
+container.betterstorage.crate=Skladovacia krabica
+container.betterstorage.enderBackpack=Batoh z konca
+container.betterstorage.keyring=Prívesok na kľúče
+container.betterstorage.locker=Skrinka
+container.betterstorage.lockerLarge=Veľká skrinka
+container.betterstorage.reinforcedChest=Vystužená truhlica
+container.betterstorage.reinforcedChestLarge=Veľká vystužená truhlica
+container.betterstorage.reinforcedLocker=Vystužená skrinka
+container.betterstorage.reinforcedLockerLarge=Veľká vystužená skrinka
+container.betterstorage.thaumcraftBackpack=Thaumaturgov batoh
+container.betterstorage.thaumiumChest=Thaumiová truhlica
+container.betterstorage.thaumiumChestLarge=Veľká thaumiová truhlica
+
+# Enchantments
+enchantment.betterstorage.key.lockpicking=Pakľúčiarstvo
+enchantment.betterstorage.key.morphing=Menenie tvaru
+enchantment.betterstorage.key.unlocking=Odomykanie
+enchantment.betterstorage.lock.persistance=Odolnosť
+enchantment.betterstorage.lock.security=Zabezpečenie
+enchantment.betterstorage.lock.shock=Šok
+enchantment.betterstorage.lock.trigger=Spúšť
+
+# Entities
+entity.betterstorage.Frienderman.name=Enderman
+
+# Items
+item.betterstorage.bucketSlime.name=Slime vo vedre
+item.betterstorage.cardboardAxe.name=Kartónová sekera
+item.betterstorage.cardboardBoots.name=Kartónové topánky
+item.betterstorage.cardboardChestplate.name=Kartónové brnenie
+item.betterstorage.cardboardHelmet.name=Kartónová prilba
+item.betterstorage.cardboardHoe.name=Kartónová motyka
+item.betterstorage.cardboardLeggings.name=Kartónové nohavice
+item.betterstorage.cardboardPickaxe.name=Kartónový krompáč
+item.betterstorage.cardboardSheet.name=Kartón
+item.betterstorage.cardboardShovel.name=Kartónová lopata
+item.betterstorage.cardboardSword.name=Kartónový meč
+item.betterstorage.drinkingHelmet.name=Napájacia prilba
+item.betterstorage.key.name=Kľúč
+item.betterstorage.keyring.name=Prívesok na kľúče
+item.betterstorage.lock.name=Zámok
+item.betterstorage.masterKey.name=Majsterský kľúč
+
+# Creative tab
+itemGroup.betterstorage=BetterStorage
+# Actually, I don't know if I should translate that but "Better Storage" is "Lepšie Skladovanie".
+
+# Keys
+key.betterstorage.backpackOpen=[BetterStorage] Otvoriť batoh
+key.betterstorage.drinkingHelmet=[BetterStorage] Použiť napájaciu prilbu
+
+# Container materials
+material.betterstorage.iron=Železná
+material.betterstorage.gold=Zlatá
+material.betterstorage.diamond=Diamantová
+material.betterstorage.emerald=Smaragdová
+material.betterstorage.copper=Medená
+material.betterstorage.tin=Cínová
+material.betterstorage.silver=Strieborná
+material.betterstorage.steel=Oceľová
+material.betterstorage.zinc=Cínová
+
+# Thaumcraft
+tc.research_name.betterstorage.magicstorage=Magické Skladovanie
+tc.research_text.betterstorage.magicstorage=Očaruj svoje skladovanie
+tc.research_page.betterstorage.magicstorage.1=Infusing a backpack with magic and materials of magical nature will increase its overall durability, enchantability and storage capacity. While worn, items stored inside will still be able to repair, though much slower, unless the backpack itself also has the repair enchantment.<BR>It is also possible to throw together a reinforced iron chest and a bunch of thaumium, which will result in an even more durable chest which can also store more items.
+
+# Blocks
+tile.betterstorage.craftingStation.name=Výrobná stanica
+tile.betterstorage.armorStand.name=Stojan na brnenie
+tile.betterstorage.backpack.cantEquip.backpack=Už na sebe batoh predsa máš
+tile.betterstorage.backpack.cantEquip.chestplate=Nemôžeš si nasadiť batoh keď máš na sebe brnenie
+tile.betterstorage.backpack.name=Batoh
+tile.betterstorage.cardboardBox.name=Kartónová krabica
+tile.betterstorage.crate.name=Skladovacia krabica
+tile.betterstorage.enderBackpack.name=Enderový batoh
+tile.betterstorage.flintBlock.name=Kocka flintu
+tile.betterstorage.locker.name=Skrinka
+tile.betterstorage.reinforcedChest.name=Vystužená truhlica
+tile.betterstorage.reinforcedChest.name.full=Vystužená %MATERIAL% truhlica
+tile.betterstorage.reinforcedLocker.name=Vystužená skrinka
+tile.betterstorage.reinforcedLocker.name.full=Vystužená %MATERIAL% skrinka
+tile.betterstorage.thaumcraftBackpack.name=Thaumaturgov batoh
+tile.betterstorage.thaumiumChest.name=Thaumiová truhlica
+tile.betterstorage.lockableDoor.name=Zamknuté železné dvere
+tile.betterstorage.present.name=Darček
+
+# Tooltips
+tooltip.betterstorage.backpack.bound=Zviazať batoh s dušou.
+tooltip.betterstorage.backpack.containsItems=Obsahuje predmety.
+tooltip.betterstorage.backpack.equipHint=Polož ho a rozbi pri#čupení pre nasadenie.
+tooltip.betterstorage.backpack.equipHint.extended=Zakrádaj sa a rozbi pre nasadenie.#Zakrádaj sa a klikni pravým tlačídlom#myši s prázdou rukou pre zosadenie.
+tooltip.betterstorage.backpack.openHint=Stlač %KEY% pre otvorenie nasadeného batoha.
+tooltip.betterstorage.backpack.unequipHint=Zakrádaj sa a klikni pravým tlačidlom myši#na zem s prázdnou rukou pre#zosadenie batoha.
+tooltip.betterstorage.backpack.unequipHint.extended=%INFO% Zakrádaj sa a klikni pravým tlačidlom myši#na zem s prázdnou rukou pre#zosadenie batoha.
+tooltip.betterstorage.backpack.used=Práve používané iným hráčom.
+tooltip.betterstorage.bucketSlime.more.1=1 ďalší efekt ...
+tooltip.betterstorage.bucketSlime.more.x=%X% ďalších efektov ...
+tooltip.betterstorage.cardboardBox.useHint=Jednorázové prenosné skladovanie.
+tooltip.betterstorage.cardboardBox.useHint.reusable=Znovu použiteľné prenosné skladovanie.
+tooltip.betterstorage.cardboardBox.uses=Zostávajúce použitia: %USES%
+tooltip.betterstorage.cardboardBox.containsItems=Obsahuje predmety.
+tooltip.betterstorage.drinkingHelmet.craftHint=Vlož do pracovného stola s elixírom.
+tooltip.betterstorage.drinkingHelmet.useHint=Stlač %KEY% pre napitie.
+tooltip.betterstorage.drinkingHelmet.uses=Zostávajúce použitia: %USES%
+
+# Config
+config.betterstorage.category.item=Predmety
+config.betterstorage.category.item.tooltip=Zmeniť kedy je určitý predmet aktívny.
+config.betterstorage.category.tile=Kocky
+config.betterstorage.category.tile.tooltip=Zmeniť kedy je určitá kocka aktívna.
+config.betterstorage.category.enchantment=Očarovania
+config.betterstorage.category.enchantment.tooltip=Zmeniť ID pre očarovania
+
+config.betterstorage.general.reinforcedColumns=Veľkosť truhiel
+config.betterstorage.general.reinforcedColumns.tooltip=Množstvo stĺpcov vo vystužených truhlách a skrinkách. Platné hodnoty sú 9,11 a 13.
+config.betterstorage.general.enableCrateInventoryInterface=Rozhranie inventáru krabíc
+config.betterstorage.general.enableCrateInventoryInterface.tooltip=Ak je táto možnosť aktivovaná, odkryje sa špeciálny pohľad, aby sa predmety dali jednoduchšie presúvať automaticky.
+config.betterstorage.general.enableCrateStorageInterface=Rozhranie skladovania krabíc
+config.betterstorage.general.enableCrateStorageInterface.tooltip=Ak je táto možnosť deaktivovaná, zabráni sa iným módom (napríklad Applied Energistics) používať špeciálne rozhranie krabíc.
+config.betterstorage.general.crateDebugMessages=Vytvárať ladiace informácie
+config.betterstorage.general.crateDebugMessages.tooltip=Ak je táto možnosť aktivovaná, budú vytvárané informácie o ladení.
+config.betterstorage.general.backpackChestplate=Nasadenie batoha
+config.betterstorage.general.backpackChestplate.tooltip=Ak je táto možnosť aktivovaná, batohy nebudú zaberať miesto v hráčovom priestore na brnenie.
+config.betterstorage.general.backpackRows=Veľkosť batoha
+config.betterstorage.general.backpackRows.tooltip=Počet riadkov v batohoch.
+config.betterstorage.general.enableBackpackOpen=Rýchly prístup k batohu
+config.betterstorage.general.enableBackpackOpen.tooltip=Umožní otváranie nasadených batohov klávesou.
+config.betterstorage.general.enableBackpackInteraction=Interakcia batoha
+config.betterstorage.general.enableBackpackInteraction.tooltip=Umožní ostatným hráčom otvárať nasadené batohy.
+config.betterstorage.general.dropBackpackOnDeath=Rozsypanie batoha
+config.betterstorage.general.dropBackpackOnDeath.tooltip=Ak je táto možnosť aktivovaná, po smrti zostanú predmety v batohu namiesto rozsypania sa okolo.
+config.betterstorage.general.cardboardBoxRows=Veľkosť krabíc
+config.betterstorage.general.cardboardBoxRows.tooltip=Počet riadkov v kartónových krabiciach.
+config.betterstorage.general.cardboardBoxUses=Počet použití krabíc
+config.betterstorage.general.cardboardBoxUses.tooltip=Koľkokrát sa môže kartónová krabica zobrať predtým ako sa rozbije. Použi 0 pre nekonečno použití.
+config.betterstorage.general.cardboardBoxShowContents=Viditeľný obsah krabíc
+config.betterstorage.general.cardboardBoxShowContents.tooltip=Ak je táto možnosť deaktivovaná, kartónové krabice nebudú ukazovať obsah v inventári po ukázaní s kurzorom.
+config.betterstorage.general.enableStationAutoCrafting=Výroba výrobnej stanice
+config.betterstorage.general.enableStationAutoCrafting.tooltip=Ak je táto možnosť aktivovaná, automatické systémy môžu vyberať hotové produkty z výrobnej stanice.
+config.betterstorage.general.stationAutocraftDelay=Oneskorenie automatickej výroby
+config.betterstorage.general.stationAutocraftDelay.tooltip=Časový úsek medzi dvomi výrobami. Hodnota sa udáva v tikoch (20 tikov = 1 sekunda).
+config.betterstorage.general.lockBreakable=Rozbiteľné zámky
+config.betterstorage.general.lockBreakable.tooltip=Ak je táto možnosť deaktivovaná, zámky na uzamknutých inventároch sa nebudú dať rozbiť nástrojmi.
+config.betterstorage.general.enableHelpTooltips=Pomôcky
+config.betterstorage.general.enableHelpTooltips.tooltip=Ak je táto možnosť aktivovaná, budú ukazované pomôcky pri rôznych predmetoch, odporúčané pre nových hráčov.
+config.betterstorage.general.enableWarningMessages=Ladiace správy
+config.betterstorage.general.enableWarningMessages.tooltip=Ak je táto možnosť deaktivovaná, bude do konzoly posielať menej informácií.
+config.betterstorage.general.enableChristmasEvent=Vianočná udalosť
+config.betterstorage.general.enableChristmasEvent.tooltip=Ak je táto možnosť deaktivovaná, Vianočná udalosť nebude. Ty bezcitná beštia.
