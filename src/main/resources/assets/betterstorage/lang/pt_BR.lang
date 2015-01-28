@@ -86,6 +86,7 @@ tile.betterstorage.reinforcedLocker.name.full=Armário Grande Reforçado de %MAT
 tile.betterstorage.thaumcraftBackpack.name=Mochila do Thaumaturgo
 tile.betterstorage.thaumiumChest.name=Baú de Thaumium
 tile.betterstorage.lockableDoor.name=Porta de Ferro com Cadeado
+tile.betterstorage.present.name=Presente
 
 # Tooltips
 tooltip.betterstorage.backpack.bound=Mochila equipada.
@@ -148,3 +149,5 @@ config.betterstorage.general.enableHelpTooltips=Dicas
 config.betterstorage.general.enableHelpTooltips.tooltip=Se ativado, mostra dicas sobre alguns itens para ajudar os jogadores novatos do mod.
 config.betterstorage.general.enableWarningMessages=Mensagens de Depuração
 config.betterstorage.general.enableWarningMessages.tooltip=Se desativado, impede que certas mensagens de aviso sejam registradas no console.
+config.betterstorage.general.enableChristmasEvent=Evento de Natalino
+config.betterstorage.general.enableChristmasEvent.tooltip=Se desativado, impede que o Natal aconteça. Você é um monstro.
