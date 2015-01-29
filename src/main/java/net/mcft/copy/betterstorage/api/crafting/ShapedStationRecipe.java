@@ -16,23 +16,33 @@ public class ShapedStationRecipe implements IStationRecipe {
 	public final ItemStack[] recipeOutput;
 	public final int recipeWidth;
 	public final int recipeHeight;
+	public final boolean mirrored;
 	
 	public int requiredExperience = 0;
 	public int craftingTime = 0;
 	
-	public ShapedStationRecipe(IRecipeInput[] input, int width, int height, ItemStack[] output) {
+	public ShapedStationRecipe(IRecipeInput[] input, int width, int height, boolean mirrored, ItemStack[] output) {
 		recipeInput = input;
 		recipeOutput = output;
 		recipeWidth = width;
 		recipeHeight = height;
+		this.mirrored = mirrored;
+	}
+	public ShapedStationRecipe(IRecipeInput[] input, int width, int height, ItemStack[] output) {
+		this(input, width, height, false, output);
 	}
 	
 	public ShapedStationRecipe(ItemStack[] output, Object... input) {
+		if (input.length <= 0)
+			throw new IllegalArgumentException("input has no elements.");
+		
 		int width = 0;
 		int height = 0;
+		mirrored = ((input[0] instanceof Boolean) ? (Boolean)input[0] : false);
 		
-		int inputIndex = 0;
+		int inputIndex = (input[0] instanceof Boolean) ? 1 : 0;
 		Map<Character, IRecipeInput> inputMap = new HashMap<Character, IRecipeInput>();
+		
 		
 		while ((inputIndex < input.length) && (input[inputIndex] instanceof String)) {
 			String line = (String)input[inputIndex++];
@@ -121,20 +131,30 @@ public class ShapedStationRecipe implements IStationRecipe {
 		    (recipeHeight != bounds.getHeight())) return null;
 		
 		IRecipeInput[] requiredInput = new IRecipeInput[9];
-		for (int y = 0; y < recipeHeight; y++) {
-			System.arraycopy(recipeInput, y * recipeWidth, requiredInput,
-			                bounds.minX + (bounds.minY + y) * 3, recipeWidth);
-			for (int x = 0; x < recipeWidth; x++) {
+		if (!checkMatch(input, bounds, requiredInput, false) &&
+		    !(mirrored && checkMatch(input, bounds, requiredInput, true)))
+			return null;
+		return new StationCrafting(recipeOutput, requiredInput, requiredExperience, craftingTime);
+	}
+	
+	private boolean checkMatch(ItemStack[] input, RecipeBounds bounds, IRecipeInput[] requiredInput, boolean mirror) {
+		for (int x = 0; x < recipeWidth; x++) {
+			for (int y = 0; y < recipeHeight; y++) {
+				int mx = (mirror ? (recipeWidth - x - 1) : x);
+				int index = bounds.minX + mx + (bounds.minY + y) * 3;
+				requiredInput[index] = recipeInput[x + y * recipeWidth];
+				
 				int adjustedIndex = (bounds.minX + x) + (bounds.minY + y) * 3;
-				IRecipeInput recipeStack = recipeInput[x + y * recipeWidth];
+				IRecipeInput recipeStack = recipeInput[mx + y * recipeWidth];
 				ItemStack inputStack = input[adjustedIndex];
-				if ((recipeStack == null) ? (inputStack != null)
+				if ((recipeStack == null)
+						? (inputStack != null)
 						: (!recipeStack.matches(inputStack) ||
 						   (inputStack.stackSize < recipeStack.getAmount())))
-					return null;
+					return false;
 			}
 		}
-		return new StationCrafting(recipeOutput, requiredInput, requiredExperience, craftingTime);
+		return true;
 	}
 	
 	// Utility functions
