@@ -53,14 +53,14 @@ public class PresentRecipe extends ShapedRecipes {
 		ItemStack box = crafting.getStackInSlot(4);
 		
 		ItemStack present = new ItemStack(BetterStorageTiles.present);
-		NBTTagCompound compound = box.getTagCompound();
+		NBTTagCompound compound = (NBTTagCompound)box.getTagCompound().copy();
 		compound.setByte(TileEntityPresent.TAG_COLOR_INNER, (byte)colorInner);
 		compound.setByte(TileEntityPresent.TAG_COLOR_OUTER, (byte)colorOuter);
 		compound.setBoolean(TileEntityPresent.TAG_SKOJANZA_MODE, skojanzaMode);
 		int color = StackUtils.get(box, -1, "display", "color");
 		if (color >= 0) compound.setInteger("color", color);
-		StackUtils.remove(box, "display", "color");
 		present.setTagCompound(compound);
+		StackUtils.remove(present, "display", "color");
 		return present;
 	}
 	
