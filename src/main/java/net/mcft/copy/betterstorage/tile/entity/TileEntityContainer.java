@@ -195,7 +195,7 @@ public abstract class TileEntityContainer extends TileEntity {
 	protected void comparatorUpdateAndReset() {
 		compAccessed = false;
 		compContentsChanged = false;
-		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
+		WorldUtils.notifyBlocksAround(worldObj, xCoord, yCoord, zCoord);
 	}
 	
 	/** Calls the TileEntity.markDirty function without affecting the
