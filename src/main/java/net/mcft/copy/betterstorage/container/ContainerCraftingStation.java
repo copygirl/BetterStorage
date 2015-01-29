@@ -120,6 +120,7 @@ public class ContainerCraftingStation extends ContainerBetterStorage {
 					stack = super.slotClick(slotId, button, special, player);
 				} while (!inv.outputIsReal && (inv.currentCrafting != null) &&
 				         (inv.output[slotId - 9] != null) && inv.canTake(player) &&
+				         ((stack == null) || (StackUtils.matches(stack, inv.output[slotId - 9]))) &&
 				         inv.hasItemRequirements() && (count + amount <= craftingStack.getMaxStackSize()));
 				return stack;
 			// Regular clicking: Craft once. 
