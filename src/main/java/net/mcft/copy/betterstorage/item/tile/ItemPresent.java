@@ -34,4 +34,7 @@ public class ItemPresent extends ItemCardboardBox {
 		if (nameTag != null) list.add("for " + nameTag);
 	}
 	
+	@Override
+	public boolean canBeStoredInContainerItem(ItemStack item) { return true; }
+	
 }
