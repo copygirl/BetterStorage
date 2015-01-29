@@ -40,7 +40,6 @@ public class NEIAddon extends Addon {
 				new StationOverlayHandler(-8, 11), "crafting");
 		
 		API.hideItem(new ItemStack(BetterStorageTiles.lockableDoor));
-		API.hideItem(new ItemStack(BetterStorageTiles.present));
 		API.hideItem(new ItemStack(BetterStorageItems.presentBook));
 		
 		// Fake key recipes
