@@ -9,7 +9,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public interface IStationRecipe {
 	
 	/** If the input matches this recipe, returns a new station crafting
-	 *  instance, specific for this input, or null if it didn't match. */
+	 *  instance, specifically for this input, or null if it didn't match. */
 	StationCrafting checkMatch(ItemStack[] input, RecipeBounds bounds);
 	
 	// NEI related functions

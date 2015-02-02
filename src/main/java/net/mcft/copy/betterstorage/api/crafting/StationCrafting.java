@@ -44,8 +44,7 @@ public class StationCrafting {
 	/** Returns the requirements for crafting this recipe again.
 	 *  Called after {@link #canCraft} and before {@link #craft}. <br>
 	 *  After crafting, the crafting grid is filled with items from the
-	 *  crafting station's internal storage that match the requirements.
-	 * @param requiredInput The items needed to craft this recipe again. */
+	 *  crafting station's internal storage that match the requirements. */
 	public IRecipeInput[] getCraftRequirements() { return requiredInput; }
 	
 	/** Called after the recipe is successfully crafted. Experience is removed automatically.
