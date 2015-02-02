@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.mcft.copy.betterstorage.addon.armourersworkshop.AWAddon;
+import net.mcft.copy.betterstorage.addon.minetweaker.MineTweakerAddon;
 import net.mcft.copy.betterstorage.addon.nei.NEIAddon;
 import net.mcft.copy.betterstorage.addon.thaumcraft.ThaumcraftAddon;
 import cpw.mods.fml.common.Loader;
@@ -18,6 +19,7 @@ public abstract class Addon {
 		if (Loader.isModLoaded("Thaumcraft")) new ThaumcraftAddon();
 		if (Loader.isModLoaded("NotEnoughItems")) new NEIAddon();
 		if (Loader.isModLoaded("armourersWorkshop")) new AWAddon();
+		if (Loader.isModLoaded("MineTweaker3")) new MineTweakerAddon();
 	}
 	
 	public static void setupConfigsAll() {
