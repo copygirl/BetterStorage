@@ -5,6 +5,7 @@ import net.mcft.copy.betterstorage.inventory.InventoryTileEntity;
 import net.mcft.copy.betterstorage.utils.NbtUtils;
 import net.mcft.copy.betterstorage.utils.PlayerUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
+import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -127,6 +128,12 @@ public abstract class TileEntityContainer extends TileEntity {
 		return true;
 	}
 	
+	/** Called when a neighbor block changes. */
+	public void onNeighborUpdate(Block neighborBlock) {
+		if (acceptsRedstoneSignal() && neighborBlock.canProvidePower())
+			checkForRedstoneChange();
+	}
+	
 	/** Called after the block is destroyed, drops contents etc. */
 	public void onBlockDestroyed() {
 		dropContents();
@@ -145,6 +152,40 @@ public abstract class TileEntityContainer extends TileEntity {
 	 *  Only gets called if an ItemRendererContainer is registered.*/
 	@SideOnly(Side.CLIENT)
 	public void onBlockRenderAsItem(ItemStack stack) {  }
+	
+	// Redstone related
+	
+	private int redstonePower = 0;
+	
+	/** Returns if the block accepts redstone power. */
+	protected boolean acceptsRedstoneSignal() { return false; }
+	/** Returns if the block requires a strong instead of a weak signal. */
+	protected boolean requiresStrongSignal() { return false; }
+	
+	public int getRedstonePower() { return redstonePower; }
+	public boolean isRedstonePowered() { return (getRedstonePower() > 0); }
+	
+	protected void checkForRedstoneChange() {
+		int previousPower = redstonePower;
+		redstonePower = (requiresStrongSignal() ? getStrongRedstoneSignal()
+		                                        : getWeakRedstoneSignal());
+		if (redstonePower == previousPower) return;
+		onRedstonePowerChanged(previousPower, redstonePower);
+		if (previousPower <= 0) onRedstoneActivated();
+		if (redstonePower <= 0) onRedstoneDeactivated();
+	}
+	
+	/** Called when redstone power going to this block changes. */
+	protected void onRedstonePowerChanged(int previousPower, int currentPower) {  }
+	/** Called when redstone power going to this block activates. */
+	protected void onRedstoneActivated() {  }
+	/** Called when redstone power going to this block deactivates. */
+	protected void onRedstoneDeactivated() {  }
+	
+	/** Returns the strong redstone signal power going into this block. */
+	protected int getStrongRedstoneSignal() { return worldObj.getBlockPowerInput(xCoord, yCoord, zCoord); }
+	/** Returns the weak redstone signal power going into this block. */
+	protected int getWeakRedstoneSignal() { return worldObj.getStrongestIndirectPower(xCoord, yCoord, zCoord); }
 	
 	// Comparator related
 	
@@ -287,6 +328,8 @@ public abstract class TileEntityContainer extends TileEntity {
 			NbtUtils.readItems(contents, compound.getTagList("Items", NBT.TAG_COMPOUND));
 		if (compound.getBoolean("ComparatorAccessed"))
 			compAccessedOnLoad = true;
+		if (acceptsRedstoneSignal())
+			redstonePower = compound.getByte("RedstonePower");
 	}
 	@Override
 	public void writeToNBT(NBTTagCompound compound) {
@@ -297,6 +340,8 @@ public abstract class TileEntityContainer extends TileEntity {
 			compound.setTag("Items", NbtUtils.writeItems(contents));
 		if (hasComparatorAccessed())
 			compound.setBoolean("ComparatorAccessed", true);
+		if (acceptsRedstoneSignal())
+			compound.setByte("RedstonePower", (byte)redstonePower);
 	}
 	
 	// Utility functions

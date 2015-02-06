@@ -3,6 +3,7 @@ package net.mcft.copy.betterstorage.tile;
 import net.mcft.copy.betterstorage.attachment.IHasAttachments;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityContainer;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -72,6 +73,12 @@ public abstract class TileContainerBetterStorage extends TileBetterStorage {
 	
 	private TileEntityContainer getContainer(World world, int x, int y, int z) {
 		return WorldUtils.get(world, x, y, z, TileEntityContainer.class);
+	}
+	
+	@Override
+	public void onNeighborBlockChange(World world, int x, int y, int z, Block neighborBlock) {
+		TileEntityContainer container = getContainer(world, x, y, z);
+		if (container != null) container.onNeighborUpdate(neighborBlock);
 	}
 	
 }
