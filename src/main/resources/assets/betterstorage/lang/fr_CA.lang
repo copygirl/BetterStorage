@@ -91,7 +91,7 @@ tile.betterstorage.present.name=Cadeau
 # Tooltips
 tooltip.betterstorage.backpack.bound=Sac à dos relié.
 tooltip.betterstorage.backpack.containsItems=Contient des objets.
-tooltip.betterstorage.backpack.equipHint=Placez et minez tout en#étant accroupi pour l'équiper.
+tooltip.betterstorage.backpack.equipHint=Placez et minez tout en#étant accroupi(e) pour l'équiper.
 tooltip.betterstorage.backpack.equipHint.extended=Accroupissez-vous et minez pour l'équiper.#Accroupissez-vous et cliquez-droit au sol#avec une main vide pour le déséquiper.
 tooltip.betterstorage.backpack.openHint=Appuyez sur %KEY% pour#l'ouvrir quand il est équipé.
 tooltip.betterstorage.backpack.unequipHint=Accroupissez-vous et cliquez-droit au sol#avec une main vide pour le déséquiper.
