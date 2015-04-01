@@ -165,6 +165,7 @@ public class BackpackHandler {
 		if (event.entity.worldObj.isRemote ||
 		    !(event.entity instanceof EntityPlayerMP) ||
 		    !(event.target instanceof EntityLivingBase) ||
+		    (((EntityPlayerMP)event.entity).playerNetServerHandler == null) ||
 		    ((event.target instanceof EntityPlayer) &&
 		     !BetterStorage.globalConfig.getBoolean(GlobalConfig.enableBackpackInteraction))) return;
 		
