@@ -17,12 +17,12 @@ buildscript {
 
 apply plugin: 'forge'
 
-version = minecraft_version + "-" + mod_version
+version = "${minecraft_version}-${mod_version}"
 group = "net.mcft.copy.betterstorage"
 archivesBaseName = "BetterStorage"
 
 minecraft {
-    version = minecraft_version + "-" + forge_version
+    version = "${minecraft_version}-${forge_version}"
     runDir = "eclipse"
 }
 
