@@ -298,7 +298,10 @@ public abstract class TileEntityContainer extends TileEntity {
 	
 	@Override
 	public void updateEntity() {
-		ticksExisted++;
+		if (ticksExisted++ == 0) {
+			// Only run once after tile entity has loaded.
+			checkForRedstoneChange();
+		}
 		
 		// If a comparator or such has accessed the container and
 		// the contents have been changed, send a block update.

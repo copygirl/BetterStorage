@@ -10,14 +10,18 @@ import net.mcft.copy.betterstorage.api.crafting.IRecipeInput;
 import net.mcft.copy.betterstorage.api.crafting.StationCrafting;
 import net.mcft.copy.betterstorage.config.GlobalConfig;
 import net.mcft.copy.betterstorage.item.recipe.VanillaStationCrafting;
+import net.mcft.copy.betterstorage.misc.FakePlayer;
 import net.mcft.copy.betterstorage.tile.entity.TileEntityCraftingStation;
 import net.mcft.copy.betterstorage.utils.InventoryUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.mcft.copy.betterstorage.utils.WorldUtils;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
+import cpw.mods.fml.common.FMLCommonHandler;
 
 public class InventoryCraftingStation extends InventoryBetterStorage {
 	
@@ -26,8 +30,6 @@ public class InventoryCraftingStation extends InventoryBetterStorage {
 	public final ItemStack[] crafting;
 	public final ItemStack[] output;
 	public final ItemStack[] contents;
-	
-	public final ItemStack[] lastOutput;
 	
 	public StationCrafting currentCrafting = null;
 	public boolean outputIsReal = false;
@@ -48,13 +50,16 @@ public class InventoryCraftingStation extends InventoryBetterStorage {
 		this.crafting = crafting;
 		this.output = output;
 		this.contents = contents;
-		lastOutput = new ItemStack[output.length];
 	}
 	
 	public void update() {
-		if (!outputIsReal && (currentCrafting != null) &&
-		    (((progress < currentCrafting.getCraftingTime()) ||
-		      (progress < GlobalConfig.stationAutocraftDelaySetting.getValue())))) progress++; 
+		if (!outputIsReal && (currentCrafting != null)) {
+			if (progress >= Math.max(currentCrafting.getCraftingTime(), GlobalConfig.stationAutocraftDelaySetting.getValue())) {
+				if ((entity != null) && entity.isRedstonePowered() &&
+				    (currentCrafting.getRequiredExperience() == 0) && hasItemRequirements())
+					craft(null);
+			} else progress++;
+		}
 	}
 	
 	/** Called whenever the crafting input changes. */
@@ -63,35 +68,81 @@ public class InventoryCraftingStation extends InventoryBetterStorage {
 		currentCrafting = BetterStorageCrafting.findMatchingStationCrafting(crafting);
 		if (currentCrafting == null)
 			currentCrafting = VanillaStationCrafting.findVanillaRecipe(this);
-		if (!outputIsReal) {
-			if (currentCrafting != null) {
-				ItemStack[] craftingOutput = currentCrafting.getOutput();
-				for (int i = 0; i < output.length; i++)
-					output[i] = ((i < craftingOutput.length) ? ItemStack.copyItemStack(craftingOutput[i]) : null);
-			} else Arrays.fill(output, null);
-			updateLastOutput();
-		}
+		updateGhostOutput();
 	}
 	
-	/** Called when an item is removed from the output
-	 *  slot while it doesn't store any real items. */
-	public void craft(EntityPlayer player) {
-		boolean hasRequirements = hasItemRequirements();
+	public void updateGhostOutput() {
+		if (outputIsReal) return;
+		if (currentCrafting != null) {
+			ItemStack[] craftingOutput = currentCrafting.getOutput();
+			for (int i = 0; i < output.length; i++)
+				output[i] = ((i < craftingOutput.length) ? ItemStack.copyItemStack(craftingOutput[i]) : null);
+		} else Arrays.fill(output, null);
+	}
+	
+	/** Called when an item is removed from the output slot while it doesn't
+	 *  store any real items. Returns if the recipe can be crafted again.*/
+	private boolean craft(EntityPlayer player, boolean simulate) {
+		ItemStack[] contents = (simulate ? this.contents.clone() : this.contents);
+		ItemStack[] crafting = (simulate ? this.crafting.clone() : this.crafting);
+		if (simulate)
+			for (int i = 0; i < crafting.length; i++)
+				crafting[i] = ItemStack.copyItemStack(crafting[i]);
+		
+		if (currentCrafting instanceof VanillaStationCrafting) {
+			boolean unset = false;
+			if (player == null) {
+				player = FakePlayer.get(entity);
+				unset = true;
+			}
+			
+			ItemStack craftOutput = (simulate ? output[4].copy() : output[4]);
+			IInventory craftMatrix = new InventoryStacks(crafting);
+			FMLCommonHandler.instance().firePlayerCraftingEvent(player, craftOutput, craftMatrix);
+			new CustomSlotCrafting(player, craftOutput);
+			
+			if (unset) {
+				FakePlayer.unset();
+				player = null;
+			}
+		}
+		
 		ICraftingSource source = new CraftingSourceTileEntity(entity, player);
 		currentCrafting.craft(source);
+		
 		IRecipeInput[] requiredInput = currentCrafting.getCraftRequirements();
 		for (int i = 0; i < crafting.length; i++)
 			if (crafting[i] != null)
-				crafting[i] = craftSlot(crafting[i], requiredInput[i], player, false);
-		int requiredExperience = currentCrafting.getRequiredExperience();
-		if ((requiredExperience != 0) && (player != null) && !player.capabilities.isCreativeMode)
-			player.experienceLevel -= requiredExperience;
-		if (hasRequirements)
-			pullRequired(requiredInput, false);
-		outputIsReal = !outputEmpty();
-		progress = 0;
-		inputChanged();
-		checkHasRequirements = true;
+				crafting[i] = craftSlot(crafting[i], requiredInput[i], player, simulate);
+		
+		boolean pulled = pullRequired(contents, crafting, requiredInput);
+		
+		if (!simulate) {
+			int requiredExperience = currentCrafting.getRequiredExperience();
+			if ((requiredExperience != 0) && (player != null) && !player.capabilities.isCreativeMode)
+				player.experienceLevel -= requiredExperience;
+			
+			outputIsReal = !outputEmpty();
+			progress = 0;
+			inputChanged();
+			checkHasRequirements = true;
+		}
+		
+		return pulled;
+	}
+	public void craft(EntityPlayer player) {
+		craft(player, false);
+	}
+	public boolean simulateCraft() {
+		boolean canCraftAgain = craft(FakePlayer.get(entity), true);
+		FakePlayer.unset();
+		return canCraftAgain;
+	}
+	private static class CustomSlotCrafting extends SlotCrafting {
+		public CustomSlotCrafting(EntityPlayer player, ItemStack stack) {
+			super(player, null, null, 0, 0, 0);
+			onCrafting(stack);
+		}
 	}
 	
 	private ItemStack craftSlot(ItemStack stack, IRecipeInput requiredInput, EntityPlayer player, boolean simulate) {
@@ -129,9 +180,7 @@ public class InventoryCraftingStation extends InventoryBetterStorage {
 	}
 	
 	/** Pull items required for the recipe from the internal inventory. Returns if successful. */
-	public boolean pullRequired(IRecipeInput[] requiredInput, boolean simulate) {
-		ItemStack[] contents = (simulate ? this.contents.clone() : this.contents);
-		ItemStack[] crafting = (simulate ? this.crafting.clone() : this.crafting);
+	public boolean pullRequired(ItemStack[] contents, ItemStack[] crafting, IRecipeInput[] requiredInput) {
 		boolean success = true;
 		craftingLoop:
 		for (int i = 0; i < crafting.length; i++) {
@@ -139,8 +188,6 @@ public class InventoryCraftingStation extends InventoryBetterStorage {
 			IRecipeInput required = requiredInput[i];
 			if (required != null) {
 				int currentAmount = 0;
-				if ((stack != null) && simulate)
-					stack = craftSlot(stack, required, null, true);
 				if (stack != null) {
 					if (!required.matches(stack)) return false;
 					currentAmount = stack.stackSize;
@@ -162,18 +209,15 @@ public class InventoryCraftingStation extends InventoryBetterStorage {
 			} else if (stack == null)
 				continue;
 			success = false;
-			if (!simulate) break;
 		}
 		return success;
 	}
 	
 	/** Returns if items can be taken out of the output slots. */
 	public boolean canTake(EntityPlayer player) {
-		return (outputIsReal || ((currentCrafting != null) &&
+		return (outputIsReal || ((player != null) && (currentCrafting != null) &&
 		                         (currentCrafting.canCraft(new CraftingSourceTileEntity(entity, player))) &&
-		                         (progress >= currentCrafting.getCraftingTime()) && hasRequiredExperience(player) &&
-		                          ((player != null) || ((progress >= GlobalConfig.stationAutocraftDelaySetting.getValue()) &&
-		                                                hasItemRequirements()))));
+		                         (progress >= currentCrafting.getCraftingTime()) && hasRequiredExperience(player)));
 	}
 	
 	private boolean hasRequiredExperience(EntityPlayer player) {
@@ -187,7 +231,7 @@ public class InventoryCraftingStation extends InventoryBetterStorage {
 	 *  required in its inventory to craft the recipe again. */
 	public boolean hasItemRequirements() {
 		if (checkHasRequirements) {
-			hasRequirements = pullRequired(currentCrafting.getCraftRequirements(), true);
+			hasRequirements = simulateCraft();
 			checkHasRequirements = false;
 		}
 		return hasRequirements;
@@ -224,44 +268,17 @@ public class InventoryCraftingStation extends InventoryBetterStorage {
 	
 	@Override
 	public void markDirty() {
-		
 		if (entity != null)
 			entity.markDirtySuper();
-		
-		// Craft the items if the ghost output was changed.
-		if (outputChanged() && !outputIsReal &&
-		    (currentCrafting != null) && (entity != null))
-			craft(null);
-		
-		// If the output is empty..
 		if (outputEmpty()) {
-			// ..set the output to not contain any real items.
 			outputIsReal = false;
-			if (currentCrafting != null) {
-				// ..fill the output with ghost output from the recipe.
-				ItemStack[] recipeOutput = currentCrafting.getOutput();
-				for (int i = 0; i < recipeOutput.length; i++)
-					output[i] = ItemStack.copyItemStack(recipeOutput[i]);
-			}
-			updateLastOutput();
+			updateGhostOutput();
 		}
-		
 		checkHasRequirements = true;
-		
 	}
 	
 	// Utility functions
-
-	private void updateLastOutput() {
-		for (int i = 0; i < output.length; i++)
-			lastOutput[i] = ItemStack.copyItemStack(output[i]);
-	}
-	private boolean outputChanged() {
-		for (int i = 0; i < output.length; i++)
-			if (!ItemStack.areItemStacksEqual(output[i], lastOutput[i]))
-				return true;
-		return false;
-	}
+	
 	private boolean outputEmpty() {
 		for (int i = 0; i < output.length; i++)
 			if (output[i] != null) return false;

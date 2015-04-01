@@ -10,16 +10,11 @@ import java.util.Map;
 
 import net.mcft.copy.betterstorage.inventory.InventoryCraftingStation;
 import net.mcft.copy.betterstorage.inventory.InventoryTileEntity;
-import net.mcft.copy.betterstorage.item.recipe.VanillaStationCrafting;
-import net.mcft.copy.betterstorage.utils.ReflectionUtils;
 import net.mcft.copy.betterstorage.utils.StackUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.MinecraftForge;
-import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -27,9 +22,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ContainerCraftingStation extends ContainerBetterStorage {
 	
 	public InventoryCraftingStation inv;
-	
-	private InventoryCrafting craftMatrix;
-	private CustomSlotCrafting slotCrafting;
 	
 	private int lastOutputIsReal = 0;
 	private int lastProgress = 0;
@@ -54,10 +46,6 @@ public class ContainerCraftingStation extends ContainerBetterStorage {
 		inv = ((inventory instanceof InventoryCraftingStation)
 				? (InventoryCraftingStation)inventory
 				: ((InventoryCraftingStation)((InventoryTileEntity)inventory).inventory));
-		craftMatrix = new InventoryCrafting(this, 3, 3);
-		
-		ReflectionUtils.set(InventoryCrafting.class, craftMatrix, "field_70466_a", "stackList", inv.crafting);
-		slotCrafting = new CustomSlotCrafting(player, null, null, 0, 0, 0);
 		
 		// Crafting
 		for (int y = 0; y < 3; y++)
@@ -116,7 +104,7 @@ public class ContainerCraftingStation extends ContainerBetterStorage {
 				int count = 0;
 				do {
 					count += amount;
-					craft(slotId - 9);
+					inv.craft(player);
 					stack = super.slotClick(slotId, button, special, player);
 				} while (!inv.outputIsReal && (inv.currentCrafting != null) &&
 				         (inv.output[slotId - 9] != null) && inv.canTake(player) &&
@@ -128,21 +116,11 @@ public class ContainerCraftingStation extends ContainerBetterStorage {
 				ItemStack holding = player.inventory.getItemStack();
 				if ((holding == null) || (StackUtils.matches(holding, craftingStack) &&
 				                          (holding.stackSize <= holding.getMaxStackSize() - amount)))
-					craft(slotId - 9);
+					inv.craft(player);
 			// No fancy inventory mechanics in the crafting slots.
 			} else return craftingStack;
 		}
 		return super.slotClick(slotId, button, special, player);
-	}
-	
-	private void craft(int slotClicked) {
-		// For full compatibility with vanilla and mods that
-		// use this functionality, we do special stuff here.
-		if (inv.currentCrafting instanceof VanillaStationCrafting) {
-			MinecraftForge.EVENT_BUS.post(new PlayerEvent.ItemCraftedEvent(player, inv.output[slotClicked], craftMatrix));
-			slotCrafting.onCrafting(inv.output[slotClicked]);
-		}
-		inv.craft(player);
 	}
 	
 	@Override

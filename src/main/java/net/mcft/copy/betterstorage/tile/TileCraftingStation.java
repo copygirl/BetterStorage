@@ -26,6 +26,9 @@ public class TileCraftingStation extends TileContainerBetterStorage {
 	}
 	
 	@Override
+	public boolean isNormalCube() { return false; }
+	
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
 		blockIcon = iconRegister.registerIcon(Constants.modId + ":" + getTileName());

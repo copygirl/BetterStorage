@@ -57,6 +57,11 @@ public class TileEntityCraftingStation extends TileEntityContainer
 		super.dropContents();
 	}
 	
+	@Override
+	protected boolean acceptsRedstoneSignal() { return true; }
+	@Override
+	protected boolean requiresStrongSignal() { return true; }
+	
 	// IInventory implementation
 	
 	@Override

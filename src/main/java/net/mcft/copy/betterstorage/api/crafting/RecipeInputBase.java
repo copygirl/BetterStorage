@@ -6,12 +6,6 @@ import net.minecraft.item.ItemStack;
 public abstract class RecipeInputBase implements IRecipeInput {
 	
 	@Override
-	public abstract int getAmount();
-	
-	@Override
-	public abstract boolean matches(ItemStack stack);
-	
-	@Override
 	public void craft(ItemStack input, ContainerInfo containerInfo) {
 		if (input == null) return;
 
