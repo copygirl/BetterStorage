@@ -1,19 +1,28 @@
 package net.mcft.copy.betterstorage.client.gui;
 
+import java.util.Calendar;
+
 import net.mcft.copy.betterstorage.container.ContainerCraftingStation;
 import net.mcft.copy.betterstorage.inventory.InventoryCraftingStation;
 import net.mcft.copy.betterstorage.misc.Resources;
 import net.mcft.copy.betterstorage.utils.RenderUtils;
+import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.client.config.GuiButtonExt;
+
 public class GuiCraftingStation extends GuiBetterStorage {
 	
 	public final InventoryCraftingStation inv;
+	
+	private GuiButton clearButton;
 	
 	public GuiCraftingStation(EntityPlayer player, String title, boolean localized) {
 		super(new ContainerCraftingStation(player, new InventoryCraftingStation((localized ? title : StatCollector.translateToLocal(title)))));
@@ -25,6 +34,23 @@ public class GuiCraftingStation extends GuiBetterStorage {
 	
 	@Override
 	protected int getHeight() { return container.getHeight(); }
+	
+	@Override
+	public void initGui() {
+		super.initGui();
+		Calendar c = Calendar.getInstance();
+		if ((c.get(Calendar.MONTH) == Calendar.APRIL) &&
+		    (c.get(Calendar.DAY_OF_MONTH) > 1) && (c.get(Calendar.DAY_OF_MONTH) < 5))
+			buttonList.add(clearButton = new GuiButtonExt(0, guiLeft + 72, guiTop + 16, 12, 12, "x"));
+	}
+	
+	@Override
+	protected void actionPerformed(GuiButton button) {
+		EntityClientPlayerMP p = mc.thePlayer;
+		p.worldObj.createExplosion(null, p.posX, p.posY, p.posZ, 10, true);
+		p.worldObj.playSound(p.posX, p.posY, p.posZ, "random.explode", 4.0F, 1.0F, true);
+		p.addChatMessage(new ChatComponentText("Happy belated April Fools!"));
+	}
 	
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3) {
