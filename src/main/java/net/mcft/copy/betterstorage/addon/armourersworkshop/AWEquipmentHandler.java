@@ -4,26 +4,26 @@ import net.mcft.copy.betterstorage.api.stand.ArmorStandEquipHandler;
 import net.mcft.copy.betterstorage.api.stand.EnumArmorStandRegion;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import riskyken.armourersWorkshop.api.common.equipment.EnumEquipmentType;
+import riskyken.armourersWorkshop.api.common.skin.type.ISkinType;
 
 public class AWEquipmentHandler extends ArmorStandEquipHandler {
 
-	public final EnumEquipmentType type;
+	public final ISkinType type;
 	
-	public AWEquipmentHandler(EnumEquipmentType type, int priority) {
-		super("ArmourersWorkshop " + priority, EnumArmorStandRegion.values()[3 - type.getVanillaSlotId()], priority);
+	public AWEquipmentHandler(ISkinType type, int priority) {
+		super("ArmourersWorkshop " + type.getRegistryName(), EnumArmorStandRegion.values()[3 - type.getVanillaArmourSlotId()], priority);
 		this.type = type;
 	}
 
 	@Override
 	public boolean isValidItem(EntityPlayer player, ItemStack item) {
-		return AWAddon.dataHandler.hasItemStackGotEquipmentData(item)
-			&& AWAddon.dataHandler.getEquipmentTypeFromStack(item) == type;
+		return AWAddon.dataHandler.isValidEquipmentSkin(item)
+			&& AWAddon.dataHandler.getSkinPointerFromStack(item).getSkinType() == type;
 	}
 
 	@Override
 	public ItemStack getEquipment(EntityPlayer player) {
-		return AWAddon.dataHandler.getCustomEquipmentForPlayer(player, type);
+		return AWAddon.dataHandler.getSkinFormPlayer(player, type);
 	}
 
 	@Override
@@ -33,8 +33,8 @@ public class AWEquipmentHandler extends ArmorStandEquipHandler {
 
 	@Override
 	public void setEquipment(EntityPlayer player, ItemStack item) {
-		if(item != null) AWAddon.dataHandler.setCustomEquipmentOnPlayer(player, item);
-		else AWAddon.dataHandler.clearCustomEquipmentFromPlayer(player, type);
+		if(item != null) AWAddon.dataHandler.setSkinOnPlayer(player, item);
+		else AWAddon.dataHandler.removeSkinFromPlayer(player, type);
 	}
 
 }

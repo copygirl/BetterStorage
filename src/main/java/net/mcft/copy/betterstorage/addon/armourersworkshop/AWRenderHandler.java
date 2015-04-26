@@ -32,7 +32,7 @@ public class AWRenderHandler implements IArmorStandRenderHandler {
 	private <T extends TileEntity & IArmorStand> void renderIfNonNull(T armorStand, AWEquipmentHandler handler) {
 		ItemStack item = armorStand.getItem(handler);
 		if (item != null)
-			AWAddon.renderHandler.renderCustomEquipmentFromStack(item, 0, 0, 0, 0, 0);
+			AWAddon.renderHandler.renderSkinWithHelper(item, 0, 0, 0, 0, 0);
 	}
 	
 }
