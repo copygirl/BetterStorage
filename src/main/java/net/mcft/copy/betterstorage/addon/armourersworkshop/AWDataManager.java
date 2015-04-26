@@ -1,35 +1,23 @@
 package net.mcft.copy.betterstorage.addon.armourersworkshop;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.tileentity.TileEntity;
-import riskyken.armourersWorkshop.api.client.render.IEquipmentRenderHandler;
-import riskyken.armourersWorkshop.api.client.render.IEquipmentRenderManager;
-import riskyken.armourersWorkshop.api.common.equipment.EnumEquipmentPart;
-import riskyken.armourersWorkshop.api.common.equipment.EnumEquipmentType;
-import riskyken.armourersWorkshop.api.common.equipment.IEquipmentDataHandler;
-import riskyken.armourersWorkshop.api.common.equipment.IEquipmentDataManager;
+import riskyken.armourersWorkshop.api.client.IArmourersClientManager;
+import riskyken.armourersWorkshop.api.client.render.ISkinRenderHandler;
+import riskyken.armourersWorkshop.api.common.IArmourersCommonManager;
+import riskyken.armourersWorkshop.api.common.skin.ISkinDataHandler;
+import riskyken.armourersWorkshop.api.common.skin.entity.IEntitySkinHandler;
+import riskyken.armourersWorkshop.api.common.skin.type.ISkinTypeRegistry;
 
-import com.mojang.authlib.GameProfile;
-
-public class AWDataManager implements IEquipmentDataManager, IEquipmentRenderManager {
+public class AWDataManager implements IArmourersClientManager, IArmourersCommonManager {
 	
 	@Override
-	public void onLoad(IEquipmentDataHandler dataHandler) {
+	public void onLoad(ISkinDataHandler dataHandler, ISkinTypeRegistry skinRegistry, IEntitySkinHandler entityHandler) {
 		AWAddon.dataHandler = dataHandler;
+		AWAddon.skinRegistry = skinRegistry;
+		AWAddon.registerSkinTypes();
 	}
-	
+
 	@Override
-	public void onLoad(IEquipmentRenderHandler renderHandler) {
+	public void onLoad(ISkinRenderHandler renderHandler) {
 		AWAddon.renderHandler = renderHandler;
 	}
-	
-	@Override
-	public void onRenderEquipment(Entity entity, EnumEquipmentType armourType) {  }
-	
-	@Override
-	public void onRenderEquipmentPart(Entity entity, EnumEquipmentPart armourPart) {  }
-	
-	@Override
-	public void onRenderMannequin(TileEntity TileEntity, GameProfile gameProfile) {  }
-	
 }
