@@ -1,0 +1,153 @@
+# Containers
+container.betterstorage.craftingStation=Station de fabrication
+container.betterstorage.backpack=Sac à dos
+container.betterstorage.cardboardBox=Boîte en carton
+container.betterstorage.crate=Caisse de stockage
+container.betterstorage.enderBackpack=Sac à dos des limbes
+container.betterstorage.keyring=Porte-clés
+container.betterstorage.locker=Casier
+container.betterstorage.lockerLarge=Grand casier
+container.betterstorage.reinforcedChest=Coffre renforcé
+container.betterstorage.reinforcedChestLarge=Grand coffre renforcé
+container.betterstorage.reinforcedLocker=Casier renforcé
+container.betterstorage.reinforcedLockerLarge=Grand casier renforcé
+container.betterstorage.thaumcraftBackpack=Sac à dos de thaumaturge
+container.betterstorage.thaumiumChest=Coffre en thaumium
+container.betterstorage.thaumiumChestLarge=Grand coffre en thaumium
+
+# Enchantments
+enchantment.betterstorage.key.lockpicking=Crochetage
+enchantment.betterstorage.key.morphing=Métamorphosage
+enchantment.betterstorage.key.unlocking=Déverrouillage
+enchantment.betterstorage.lock.persistance=Persistance
+enchantment.betterstorage.lock.security=Sécurité
+enchantment.betterstorage.lock.shock=Choc
+enchantment.betterstorage.lock.trigger=Déclenchement
+
+# Entities
+entity.betterstorage.Frienderman.name=Enderman
+
+# Items
+item.betterstorage.bucketSlime.name=Slime dans une chaudière
+item.betterstorage.cardboardAxe.name=Hache de carton
+item.betterstorage.cardboardBoots.name=Bottes de carton
+item.betterstorage.cardboardChestplate.name=Plastron de carton
+item.betterstorage.cardboardHelmet.name=Casque de carton
+item.betterstorage.cardboardHoe.name=Houe de carton
+item.betterstorage.cardboardLeggings.name=Jambières de carton
+item.betterstorage.cardboardPickaxe.name=Pioche de carton
+item.betterstorage.cardboardSheet.name=Feuille de carton
+item.betterstorage.cardboardShovel.name=Pelle de carton
+item.betterstorage.cardboardSword.name=Épée de carton
+item.betterstorage.drinkingHelmet.name=Casque pour boire
+item.betterstorage.key.name=Clé
+item.betterstorage.keyring.name=Porte-clés
+item.betterstorage.lock.name=Serrure
+item.betterstorage.masterKey.name=Passe-partout
+
+# Creative tab
+itemGroup.betterstorage=BetterStorage
+
+# Keys
+key.betterstorage.backpackOpen=[BS] Ouvrir le sac à dos
+key.betterstorage.drinkingHelmet=[BS] Boire avec le casque
+
+# Container materials
+material.betterstorage.iron=fer
+material.betterstorage.gold=or
+material.betterstorage.diamond=diamant
+material.betterstorage.emerald=émeraude
+material.betterstorage.copper=cuivre
+material.betterstorage.tin=étain
+material.betterstorage.silver=argent
+material.betterstorage.steel=acier
+material.betterstorage.zinc=zinc
+
+# Thaumcraft
+tc.research_name.betterstorage.magicstorage=Stockage magique
+tc.research_text.betterstorage.magicstorage=Enchanter vos contenants
+tc.research_page.betterstorage.magicstorage.1=Infuser un sac à dos avec de la magie et des matériaux de nature magique va augmenter dans l'ensemble sa durabilité, son enchantabilité et sa capacité de stockage. Lorsque porté, les objets à l'intérieur seront toujours capables de se réparer eux-mêmes, à une vitesse plus lente.<BR>Il est également possible de mélanger ensemble un coffre de fer renforcé et un peu de thaumium, ce qui résultera à un coffre encore plus durable qui peut aussi stocker plus d'objets.
+
+# Blocks
+tile.betterstorage.craftingStation.name=Station de fabrication
+tile.betterstorage.armorStand.name=Porte-armure
+tile.betterstorage.backpack.cantEquip.backpack=Vous avez déjà un sac à dos d'équipé
+tile.betterstorage.backpack.cantEquip.chestplate=Vous ne pouvez pas équiper un sac à dos tout en portant un plastron
+tile.betterstorage.backpack.name=Sac à dos
+tile.betterstorage.cardboardBox.name=Boîte en carton
+tile.betterstorage.crate.name=Caisse de stockage
+tile.betterstorage.enderBackpack.name=Sac à dos des limbes
+tile.betterstorage.flintBlock.name=Bloc de silex
+tile.betterstorage.locker.name=Casier
+tile.betterstorage.reinforcedChest.name=Coffre renforcé
+tile.betterstorage.reinforcedChest.name.full=Coffre renforcé en %MATERIAL%
+tile.betterstorage.reinforcedLocker.name=Casier renforcé
+tile.betterstorage.reinforcedLocker.name.full=Casier renforcé en %MATERIAL%
+tile.betterstorage.thaumcraftBackpack.name=Sac à dos du thaumaturge
+tile.betterstorage.thaumiumChest.name=Coffre de thaumium
+tile.betterstorage.lockableDoor.name=Porte en fer verrouillée
+tile.betterstorage.present.name=Cadeau
+
+# Tooltips
+tooltip.betterstorage.backpack.bound=Sac à dos relié.
+tooltip.betterstorage.backpack.containsItems=Contient des objets.
+tooltip.betterstorage.backpack.equipHint=Placez et minez tout en#étant accroupi(e) pour l'équiper.
+tooltip.betterstorage.backpack.equipHint.extended=Accroupissez-vous et minez pour l'équiper.#Accroupissez-vous et cliquez-droit au sol#avec une main vide pour le déséquiper.
+tooltip.betterstorage.backpack.openHint=Appuyez sur %KEY% pour#l'ouvrir quand il est équipé.
+tooltip.betterstorage.backpack.unequipHint=Accroupissez-vous et cliquez-droit au sol#avec une main vide pour le déséquiper.
+tooltip.betterstorage.backpack.unequipHint.extended=%INFO% Accroupissez-vous et cliquez-droit au#sol avec une main vide pour le déséquiper.
+tooltip.betterstorage.backpack.used=Actuellement utilisé par un joueur.
+tooltip.betterstorage.bucketSlime.more.1=1 effet de plus...
+tooltip.betterstorage.bucketSlime.more.x=%X% effets de plus...
+tooltip.betterstorage.cardboardBox.useHint=Stockage portable à usage unique.
+tooltip.betterstorage.cardboardBox.useHint.reusable=Stockage portable réutilisable.
+tooltip.betterstorage.cardboardBox.uses=Utilisations restantes : %USES%
+tooltip.betterstorage.cardboardBox.containsItems=Contient des objets.
+tooltip.betterstorage.drinkingHelmet.craftHint=Fabriquez avec une potion de chaque côté.
+tooltip.betterstorage.drinkingHelmet.useHint=Appuyez sur %KEY% pour prendre une gorgée.
+tooltip.betterstorage.drinkingHelmet.uses=Utilisations restantes : %USES%
+
+# Config
+config.betterstorage.category.item=Objets
+config.betterstorage.category.item.tooltip=Changer si un certain objet est actif.
+config.betterstorage.category.tile=Blocs
+config.betterstorage.category.tile.tooltip=Changer si un certain bloc est actif.
+config.betterstorage.category.enchantment=Enchantements
+config.betterstorage.category.enchantment.tooltip=Changer les ID pour les enchantements.
+
+config.betterstorage.general.reinforcedColumns=Colonnes renforcées
+config.betterstorage.general.reinforcedColumns.tooltip=Nombre de colonnes dans les coffres et les casiers renforcés. Les valeurs valides sont 9, 11 et 13.
+config.betterstorage.general.enableCrateInventoryInterface=Interface d'inventaire de caisse
+config.betterstorage.general.enableCrateInventoryInterface.tooltip=Si activé, expose une vue de bloc spéciale des caisses, pour que les objets puissent entrer et sortir par des systèmes automatisés.
+config.betterstorage.general.enableCrateStorageInterface=Interface de stockage de caisse
+config.betterstorage.general.enableCrateStorageInterface.tooltip=Si activé, prévient les mods d'utiliser l'interface spéciale de stockage des caisses de stockage (comme Applied Energistics).
+config.betterstorage.general.crateDebugMessages=Messages de débogage des caisses
+config.betterstorage.general.crateDebugMessages.tooltip=Si activé, inscrit dans le log les messages de débogage par rapport aux caisses (comme leur sauvegarde).
+config.betterstorage.general.backpackChestplate=Remplacement de plastron
+config.betterstorage.general.backpackChestplate.tooltip=Si désactivé, les sacs à dos ne prennent pas l'emplacement de plastron d'armure du joueur.
+config.betterstorage.general.backpackRows=Rangées de sac à dos
+config.betterstorage.general.backpackRows.tooltip=Nombre de rangées dans les sacs à dos.
+config.betterstorage.general.enableBackpackOpen=Ouverture de sac à dos
+config.betterstorage.general.enableBackpackOpen.tooltip=Permet les sacs à dos équipés d'être ouverts en appuyant sur une touche.
+config.betterstorage.general.enableBackpackInteraction=Interaction de sac à dos
+config.betterstorage.general.enableBackpackInteraction.tooltip=Permet les sacs à dos équipés d'être ouverts par d'autres joueurs en faisant clic droit.
+config.betterstorage.general.dropBackpackOnDeath=Chute de sac à dos
+config.betterstorage.general.dropBackpackOnDeath.tooltip=Si activé, laisse tomber le sac à dos en tant que bloc au-lieu de répandre les objets autour.
+config.betterstorage.general.cardboardBoxRows=Rangées de boîte en carton
+config.betterstorage.general.cardboardBoxRows.tooltip=Nombre de rangées dans les boîtes en carton.
+config.betterstorage.general.cardboardBoxUses=Utilisations de boîte en carton
+config.betterstorage.general.cardboardBoxUses.tooltip=Nombre de fois que les boîtes en carton peuvent être prises avec les objets avant qu'elles ne brisent. Utilisez 0 pour des utilisations infinies.
+config.betterstorage.general.cardboardBoxShowContents=Montrer le contenu des boîtes en carton
+config.betterstorage.general.cardboardBoxShowContents.tooltip=Si désactivé, ne montre pas le contenu des boîtes en carton dans leur infobulle.
+config.betterstorage.general.enableStationAutoCrafting=Auto-fabrication de station de fabrication
+config.betterstorage.general.enableStationAutoCrafting.tooltip=Si activé, les systèmes automatisés peuvent extraire des stations de fabrication et du coup, auto-fabriquer les objets.
+config.betterstorage.general.stationAutocraftDelay=Délai d'auto-fabrication
+config.betterstorage.general.stationAutocraftDelay.tooltip=Délai entre les recettes auto-fabriquées dans la station de fabrication, en ticks.
+config.betterstorage.general.lockBreakable=Serrures cassables
+config.betterstorage.general.lockBreakable.tooltip=Si désactivé, empêche la capacité de casser les serrures des conteneurs verrouillés avec des outils.
+config.betterstorage.general.enableHelpTooltips=Infobulles
+config.betterstorage.general.enableHelpTooltips.tooltip=Si activé, montre des infobulles sur certains objets pour aider les joueurs qui sont nouveaux au mod.
+config.betterstorage.general.enableWarningMessages=Messages de débogage
+config.betterstorage.general.enableWarningMessages.tooltip=Si activé, prévient certains messages d'avertissement d'être inscrits à la console.
+config.betterstorage.general.enableChristmasEvent=Évènement de Noël
+config.betterstorage.general.enableChristmasEvent.tooltip=Si désactivé, empêche l'évènement de Noël d'arriver. Monstre !
