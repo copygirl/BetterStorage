@@ -43,23 +43,6 @@ public class TileEnderBackpack extends TileBackpack {
 	@Override
 	public ItemBackpack getItemType() { return BetterStorageItems.itemEnderBackpack; }
 	
-	@Override
-	public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z) {
-		if (player.capabilities.isCreativeMode)
-			WorldUtils.get(world, x, y, z, TileEntityBackpack.class).equipped = true;
-		return super.removedByPlayer(world, player, x, y, z);
-	}
-	
-	@Override
-	public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
-		TileEntityBackpack backpack = WorldUtils.get(world, x, y, z, TileEntityBackpack.class);
-		if (!world.isRemote && (backpack != null) && !backpack.equipped)
-			for (int i = 0; i < 64; i++)
-				if (teleportRandomly(world, x, y, z, (i > 48), backpack.stack))
-					break;
-		world.removeTileEntity(x, y, z);
-	}
-	
 	public static boolean teleportRandomly(World world, double sourceX, double sourceY, double sourceZ, boolean canFloat, ItemStack stack) {
 		
 		int x = (int)sourceX + RandomUtils.getInt(-12, 12 + 1);
