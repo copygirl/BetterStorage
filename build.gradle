@@ -35,6 +35,10 @@ repositories {
         name "Thaumcraft"
         artifactPattern "https://dl.dropboxusercontent.com/u/47135879/[module]-([classifier]-)[revision].[ext]"
     }
+    ivy {
+        name "MineTweaker3"
+        artifactPattern "http://minetweaker3.powerofbytes.com/download/[module]-([classifier]-)[revision].[ext]"
+    }
 }
 
 dependencies {
@@ -43,6 +47,7 @@ dependencies {
     compile name: "NotEnoughItems"    , group: "codechicken", version: nei_version, classifier: "dev"
     compile name: "Thaumcraft"        , version: tc_version, classifier: "deobf"
     compile name: "Botania"           , group: "vazkii.botania", version: botania_version, classifier: "deobf"
+    compile name: "MineTweaker3"      , group: "minetweaker", version: minetweaker_version, classifier: "Dev"
 }
 
 processResources {
