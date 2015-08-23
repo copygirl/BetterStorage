@@ -50,6 +50,7 @@ public class GuiCraftingStation extends GuiBetterStorage {
 		p.worldObj.createExplosion(null, p.posX, p.posY, p.posZ, 10, true);
 		p.worldObj.playSound(p.posX, p.posY, p.posZ, "random.explode", 4.0F, 1.0F, true);
 		p.addChatMessage(new ChatComponentText("Happy belated April Fools!"));
+		p.addChatMessage(new ChatComponentText("Don't worry, this is a fake explosion, just reload / relog, and all will be fine. Don't cause drama over this. ¬_¬"));
 	}
 	
 	@Override
