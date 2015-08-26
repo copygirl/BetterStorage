@@ -43,8 +43,8 @@ public class GuiCraftingStation extends GuiBetterStorage {
 	public void initGui() {
 		super.initGui();
 		Calendar c = Calendar.getInstance();
-		//if ((c.get(Calendar.MONTH) == Calendar.APRIL) &&
-		//    (c.get(Calendar.DAY_OF_MONTH) > 1) && (c.get(Calendar.DAY_OF_MONTH) < 5))
+		if ((c.get(Calendar.MONTH) == Calendar.APRIL) &&
+		    (c.get(Calendar.DAY_OF_MONTH) > 1) && (c.get(Calendar.DAY_OF_MONTH) < 5))
 			buttonList.add(clearButton = new GuiButtonExt(0, guiLeft + 72, guiTop + 16, 12, 12, "x"));
 	}
 
@@ -52,11 +52,9 @@ public class GuiCraftingStation extends GuiBetterStorage {
 	@Override
 	protected void actionPerformed(GuiButton button) {
 		final EntityClientPlayerMP p = mc.thePlayer;
-		// This hopefully also is a safety check to make sure that the explosion is only client sided...
-		final WorldClient w = (WorldClient) p.worldObj;
 
-		w.createExplosion(null, p.posX, p.posY, p.posZ, 5, true);
-		w.playSound(p.posX, p.posY, p.posZ, "random.explode", 4.0F, 1.0F, true);
+		p.worldObj.createExplosion(null, p.posX, p.posY, p.posZ, 5, true);
+		p.worldObj.playSound(p.posX, p.posY, p.posZ, "random.explode", 4.0F, 1.0F, true);
 
 		// Let's alert the player that it was a joke... :I
 		p.addChatMessage(new ChatComponentText(""));
@@ -66,27 +64,23 @@ public class GuiCraftingStation extends GuiBetterStorage {
 
 		p.closeScreenNoPacket(); // Makes the message and explosion more visible
 
-		new Thread(new Runnable(){
+		new Thread(){
 			@Override
 			public void run() {
 				int countdown = 3;
 				p.addChatMessage(new ChatComponentText("Logging out (don't forget to log back in! ._.) in " + countdown + "..."));
 				while (countdown > 0) {
-					// all right! time to do some counting!
-					long t = w.getTotalWorldTime() + 20;
-					while (t > w.getTotalWorldTime()) {
-						//System.out.println(w.getTotalWorldTime());
-					}
+					try {Thread.sleep(1000);}
+					catch (InterruptedException e) {return;}
 					countdown--;
 					if (countdown == 0) {
-						w.playSound(p.posX, p.posY, p.posZ, "random.explode", 4.0F, 1.0F, true);
-						w.sendQuittingDisconnectingPacket();
+						p.worldObj.playSound(p.posX, p.posY, p.posZ, "random.explode", 4.0F, 1.0F, true);
+						p.worldObj.sendQuittingDisconnectingPacket();
 					} else p.addChatMessage(new ChatComponentText(countdown + "..."));
 				}
 
-
 			}
-		}).start();
+		}.start();
 }
 
 	@Override
