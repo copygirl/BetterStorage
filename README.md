@@ -11,9 +11,12 @@ it all you want. If you're planning to contribute features to the master reposit
 I'd appreciate if you talk to me first. You can reach me on the forums, via
 [email](mailto:halfnerd.copygirl@gmail.com) or on [IRC](irc://irc.esper.net/#obsidian).
 
-If you want to work with or compile BetterStorage yourself, you will need to grab
-[Thaumcraft's API](http://www.minecraftforum.net/topic/2011841-/) and [Inventory Tweak's API](https://github.com/Kobata/inventory-tweaks/tree/develop/src/main/java/invtweaks/api), as 
-they are both not included in this repository.
+Setting up the Development Environment
+--------------------------------------
+Thanks to the magic of gradle, setting up the development environment is easy.
+
+In the windows or linux/unix command prompt, run ```./gradlew setupDecompWorkspace```,
+then run either ```./gradlew idea``` or ```./gradlew eclipse``` depending on what IDE you use.
 
 Localizations
 -------------

@@ -45,8 +45,11 @@ dependencies {
     compile name: "InventoryTweaks"   , group: "inventorytweaks", version: invtweaks_version, classifier: "deobf"
     compile name: "Armourers-Workshop", group: "riskyken.armourersWorkshop", version: aw_version, classifier: "api"
     compile name: "NotEnoughItems"    , group: "codechicken", version: nei_version, classifier: "dev"
+    runtime name: "CodeChickenLib"    , group: "codechicken", version: ccl_version, classifier: "dev"
+    runtime name: "CodeChickenCore"   , group: "codechicken", version: ccc_version, classifier: "dev"
     compile name: "Thaumcraft"        , version: tc_version, classifier: "deobf"
     compile name: "Botania"           , group: "vazkii.botania", version: botania_version, classifier: "deobf"
+    runtime name: "Baubles"           , group: "com.azanor.baubles", version: baubles_version, classifier: "deobf"
     compile name: "MineTweaker3"      , group: "minetweaker", version: minetweaker_version, classifier: "Dev"
 }
 
