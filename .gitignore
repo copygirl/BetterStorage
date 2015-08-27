@@ -1,21 +1,15 @@
-/.gradle/
-/.settings/
-/gradle/
-/eclipse/
-/build/
-/bin/
-/libs/
+*
 
-/.classpath
-/.project
-/gradlew
-/gradlew.bat
+!/.gitignore
+!/.gitattributes
 
-# Project related files
-# Currently not included
-/downloads/
-/models/
-/images/
+!/gradle/
+!/build.gradle
+!/gradle.properties
+!/gradlew*
 
-# Not including APIs
-/src/api
+!LICENSE.txt
+!README.md
+
+!/src/
+/src/api/
