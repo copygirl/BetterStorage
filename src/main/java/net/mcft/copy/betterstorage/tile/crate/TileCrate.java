@@ -84,10 +84,13 @@ public class TileCrate extends TileContainerBetterStorage implements ILaputaImmo
 			int offX = x + connected.offsetX;
 			int offY = y + connected.offsetY;
 			int offZ = z + connected.offsetZ;
+			
+			if (offY <= 0) return false;
+			
 			TileEntityCrate connectedCrate = WorldUtils.get(world, offX, offY, offZ, TileEntityCrate.class);
 			if (connectedCrate == null) return false;
 			TileEntityCrate crate = WorldUtils.get(world, x, y, z, TileEntityCrate.class);
-			return (crate.getID() == connectedCrate.getID());
+			return (crate.getID() == connectedCrate.getID() && !crate.equals(connectedCrate));
 		}
 	}
 
