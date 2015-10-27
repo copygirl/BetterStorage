@@ -9,7 +9,6 @@ import net.mcft.copy.betterstorage.utils.RandomUtils;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.SaveHandler;
 
 /** Holds all CratePileData objects for one world / dimension. */
 public class CratePileCollection {
@@ -104,7 +103,7 @@ public class CratePileCollection {
 	}
 	
 	private File getSaveDirectory() {
-		File saveFolder = ((SaveHandler)world.getSaveHandler()).getWorldDirectory();
+		File saveFolder = world.getSaveHandler().getWorldDirectory();
 		return new File(saveFolder, "data" + File.separator + "crates");
 	}
 	private File getSaveFile(int id) {
