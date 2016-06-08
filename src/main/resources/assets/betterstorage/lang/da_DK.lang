@@ -30,7 +30,7 @@ entity.betterstorage.Frienderman.name=Enderman
 # Items
 item.betterstorage.bucketSlime.name=Slim i en Spand
 item.betterstorage.cardboardAxe.name=Papøkse
-item.betterstorage.cardboardBoots.name=Papstøver
+item.betterstorage.cardboardBoots.name=Papstøvler
 item.betterstorage.cardboardChestplate.name=Paptrøje
 item.betterstorage.cardboardHelmet.name=Paphjelm
 item.betterstorage.cardboardHoe.name=Paple
@@ -43,7 +43,7 @@ item.betterstorage.drinkingHelmet.name=Drikkehjelm
 item.betterstorage.key.name=Nøgle
 item.betterstorage.keyring.name=Nøglering
 item.betterstorage.lock.name=Lås
-item.betterstorage.masterKey.name=Mester Nøgle
+item.betterstorage.masterKey.name=Hoved-Nøgle
 
 # Creative tab
 itemGroup.betterstorage=BetterStorage
