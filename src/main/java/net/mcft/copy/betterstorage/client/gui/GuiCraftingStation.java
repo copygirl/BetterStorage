@@ -6,10 +6,14 @@ import net.mcft.copy.betterstorage.container.ContainerCraftingStation;
 import net.mcft.copy.betterstorage.inventory.InventoryCraftingStation;
 import net.mcft.copy.betterstorage.misc.Resources;
 import net.mcft.copy.betterstorage.utils.RenderUtils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
+import net.minecraft.network.login.server.S00PacketDisconnect;
+import net.minecraft.network.play.server.S40PacketDisconnect;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
@@ -44,12 +48,38 @@ public class GuiCraftingStation extends GuiBetterStorage {
 			buttonList.add(clearButton = new GuiButtonExt(0, guiLeft + 72, guiTop + 16, 12, 12, "x"));
 	}
 	
+	// Drama generator ahead!
 	@Override
 	protected void actionPerformed(GuiButton button) {
-		EntityClientPlayerMP p = mc.thePlayer;
-		p.worldObj.createExplosion(null, p.posX, p.posY, p.posZ, 10, true);
+		final EntityClientPlayerMP p = mc.thePlayer;
+		
+		p.worldObj.createExplosion(null, p.posX, p.posY, p.posZ, 5, true);
 		p.worldObj.playSound(p.posX, p.posY, p.posZ, "random.explode", 4.0F, 1.0F, true);
+		
+		// Let's alert the player that it was a joke... :I
+		p.addChatMessage(new ChatComponentText(""));
 		p.addChatMessage(new ChatComponentText("Happy belated April Fools!"));
+		p.addChatMessage(new ChatComponentText("(PSA: BetterStorage has fake explosions that look glitchy!) :I"));
+		p.addChatMessage(new ChatComponentText(""));
+		
+		p.closeScreenNoPacket(); // Makes the message and explosion more visible
+		
+		new Thread(){
+			@Override
+			public void run() {
+				int countdown = 3;
+				p.addChatMessage(new ChatComponentText("Logging out (don't forget to log back in! ._.) in " + countdown + "..."));
+				while (countdown > 0) {
+					try {Thread.sleep(1000);}
+					catch (InterruptedException e) {return;}
+					countdown--;
+					if (countdown == 0) {
+						p.worldObj.playSound(p.posX, p.posY, p.posZ, "random.explode", 4.0F, 1.0F, true);
+						p.worldObj.sendQuittingDisconnectingPacket();
+					} else p.addChatMessage(new ChatComponentText(countdown + "..."));
+				}
+			}
+		}.start();
 	}
 	
 	@Override
@@ -86,7 +116,7 @@ public class GuiCraftingStation extends GuiBetterStorage {
 				GL11.glDisable(GL11.GL_DEPTH_TEST);
 				GL11.glEnable(GL11.GL_BLEND);
 				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-				
+	
 				float a = ((inv.progress < inv.currentCrafting.getCraftingTime()) ? 0.5F : 1.0F);
 				GL11.glColor4f(a, a, a, 0.6F);
 				mc.renderEngine.bindTexture(getResource());
