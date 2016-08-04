@@ -18,9 +18,11 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.RecipeSorter.Category;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public final class Recipes {
@@ -29,6 +31,7 @@ public final class Recipes {
 	
 	public static void add() {
 		
+		registerOreDictionary();
 		registerRecipeSorter();
 		
 		addTileRecipes();
@@ -42,12 +45,20 @@ public final class Recipes {
 	
 	private static void registerRecipeSorter() {
 		
-		RecipeSorter.register("betterstorage:drinkinghelmetrecipe", DrinkingHelmetRecipe.class, Category.SHAPED,    "");
-		RecipeSorter.register("betterstorage:keyrecipe",            KeyRecipe.class,            Category.SHAPED,    "");
-		RecipeSorter.register("betterstorage:lockrecipe",           LockRecipe.class,           Category.SHAPED,    "");
+		RecipeSorter.register("betterstorage:drinkinghelmetrecipe", DrinkingHelmetRecipe.class, RecipeSorter.Category.SHAPED, "after:minecraft:shaped");
+		RecipeSorter.register("betterstorage:keyrecipe", KeyRecipe.class, RecipeSorter.Category.SHAPED, "after:minecraft:shaped");
+		RecipeSorter.register("betterstorage:lockrecipe", LockRecipe.class, RecipeSorter.Category.SHAPED, "after:minecraft:shaped");
+		RecipeSorter.register("betterstorage:presentrecipe", PresentRecipe.class, RecipeSorter.Category.SHAPED, "after:minecraft:shaped");
 		
-		RecipeSorter.register("betterstorage:dyerecipe",       DyeRecipe.class,       Category.SHAPELESS, "");
-		RecipeSorter.register("betterstorage:lockcolorrecipe", LockColorRecipe.class, Category.SHAPELESS, "");
+		RecipeSorter.register("betterstorage:dyerecipe", DyeRecipe.class, RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
+		RecipeSorter.register("betterstorage:lockcolorrecipe", LockColorRecipe.class, RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
+		
+	}
+	
+	private static void registerOreDictionary() {
+		
+		OreDictionary.registerOre("chestWood", Blocks.chest);
+		OreDictionary.registerOre("craftingTableWood", Blocks.crafting_table);
 		
 	}
 	
@@ -91,21 +102,21 @@ public final class Recipes {
 		
 		// Armor stand recipe
 		if (BetterStorageTiles.armorStand != null)
-			GameRegistry.addShapedRecipe(new ItemStack(BetterStorageTiles.armorStand),
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BetterStorageTiles.armorStand),
 					" i ",
 					"/i/",
 					" s ", 's', new ItemStack(Blocks.stone_slab, 1, 0),
-					       'i', Items.iron_ingot,
-					       '/', Items.stick);
+					       'i', "ingotIron",
+					       '/', "stickWood"));
 		
 		// Backpack recipe
 		if (BetterStorageTiles.backpack != null)
-			GameRegistry.addShapedRecipe(new ItemStack(BetterStorageItems.itemBackpack),
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BetterStorageItems.itemBackpack),
 					"#i#",
 					"#O#",
 					"###", '#', Items.leather,
 					       'O', Blocks.wool,
-					       'i', Items.gold_ingot);
+					       'i', "ingotGold"));
 		
 		// Cardboard box recipe
 		if ((BetterStorageTiles.cardboardBox != null) &&
@@ -123,7 +134,7 @@ public final class Recipes {
 					"WCW", 'B', Blocks.stonebrick,
 					       '-', Blocks.light_weighted_pressure_plate,
 					       'P', Blocks.piston,
-					       'T', Blocks.crafting_table,
+					       'T', "craftingTableWood",
 					       'W', "plankWood",
 					       'C', ((BetterStorageTiles.crate != null) ? BetterStorageTiles.crate : Blocks.chest)));
 		
@@ -170,10 +181,10 @@ public final class Recipes {
 		
 		// Keyring recipe
 		if (BetterStorageItems.keyring != null)
-			GameRegistry.addShapedRecipe(new ItemStack(BetterStorageItems.keyring),
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BetterStorageItems.keyring),
 					"...",
 					". .",
-					"...", '.', Items.gold_nugget);
+					"...", '.', "nuggetGold"));
 
 		// Drinking helmet recipe
 		if (BetterStorageItems.drinkingHelmet != null)
@@ -185,10 +196,10 @@ public final class Recipes {
 		
 		// Cardboard sheet recipe
 		if (BetterStorageItems.cardboardSheet != null) {
-			GameRegistry.addShapelessRecipe(new ItemStack(BetterStorageItems.cardboardSheet, 4),
+			GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(BetterStorageItems.cardboardSheet, 4),
 					Items.paper, Items.paper, Items.paper,
 					Items.paper, Items.paper, Items.paper,
-					Items.paper, Items.paper, Items.slime_ball);
+					Items.paper, Items.paper, "slimeball"));
 		}
 		
 		// Cardboard helmet recipe
@@ -220,21 +231,21 @@ public final class Recipes {
 					"o",
 					"o",
 					"/", 'o', "sheetCardboard",
-					     '/', Items.stick));
+					     '/', "stickWood"));
 		// Cardboard pickaxe recipe
 		if (BetterStorageItems.cardboardPickaxe != null)
 			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BetterStorageItems.cardboardPickaxe),
 					"ooo",
 					" / ",
 					" / ", 'o', "sheetCardboard",
-					       '/', Items.stick));
+					       '/', "stickWood"));
 		// Cardboard shovel recipe
 		if (BetterStorageItems.cardboardShovel != null)
 			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BetterStorageItems.cardboardShovel),
 					"o",
 					"/",
 					"/", 'o', "sheetCardboard",
-					     '/', Items.stick));
+					     '/', "stickWood"));
 		
 		// Cardboard axe recipe
 		if (BetterStorageItems.cardboardAxe != null) {
@@ -242,12 +253,12 @@ public final class Recipes {
 					"oo",
 					"o/",
 					" /", 'o', "sheetCardboard",
-					      '/', Items.stick));
+					      '/', "stickWood"));
 			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BetterStorageItems.cardboardAxe),
 					"oo",
 					"/o",
 					"/ ", 'o', "sheetCardboard",
-					      '/', Items.stick));
+					      '/', "stickWood"));
 		}
 		
 		// Cardboard hoe recipe
@@ -256,12 +267,12 @@ public final class Recipes {
 					"oo",
 					" /",
 					" /", 'o', "sheetCardboard",
-					      '/', Items.stick));
+					      '/', "stickWood"));
 			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BetterStorageItems.cardboardHoe),
 					"oo",
 					"/ ",
 					"/ ", 'o', "sheetCardboard",
-					      '/', Items.stick));
+					      '/', "stickWood"));
 		}
 		
 		if (BetterStorageItems.anyCardboardItemsEnabled) {
