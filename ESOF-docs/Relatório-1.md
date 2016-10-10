@@ -1,6 +1,9 @@
-#Relatório 1
+#**Relatório 1**
 
-##Descrição do Projeto
+
+
+##Descrição do projeto
+
 
 **BetterStorage** é um mod criado para o jogo [Minecraft](https://minecraft.net/pt/) (v. 1.7.10.1),sendo que este resulta melhor no Vanilla Minecraft (versão original do Minecraft, sem qualquer tipo de mods). Este mod é desenvolvido em **Java** e procura aumentar o número de soluções de armazenamento através do uso de *storage crates*, *backpacks*, *reinforced chests*, *armor stands*, *locks*, entre outros.
 
@@ -12,8 +15,21 @@ A partir do seu repositório, o grupo conseguiu perceber que este foi criado em 
 
 **BetterStorage** está licenciado sob a [licença do MIT](https://github.com/copygirl/BetterStorage/blob/master/LICENSE.txt), permitindo que qualquer um dos contribuidores do projeto possa modifica-lo e distribuí-lo.
 
- 
-##Processo de Desenvolvimento
+
+##Processo de desenvolvimento
+
+
+###Desenvolvimento do projeto
+
+No desevolvimento de **BetterStorage**, os contribuidores do mesmo não se dividiram em grupos, de forma a trabalharem somente em certas partes do projeto, fazendo com que um contribuidor pudesse trabalhar em diferentes blocos do trabalho.
+
+As [*issues*](https://github.com/copygirl/BetterStorage/issues) presentes no *GitHub* do projeto foram utilizadas de forma a que fosse possível verificar novas melhorias, *updates* e alguns problemas/*bugs* que o mesmo pudesse ter, sendo que atualmente se encontram por resolver ainda 24 *issues*. 
+
+Para além disso, verificou-se que até agora não foram adicionadas metas a alcançar, uma vez que não haviam quaiquer *milestones* definidas.
+
+###Processo de software
+
+###Estrutura do repositório 
 
 ##Análise Critica
 
@@ -36,4 +52,3 @@ A partir do seu repositório, o grupo conseguiu perceber que este foi criado em 
 -	Sara Fernandes (up201405955@fe.up.pt)
 -	Vasco Pereira (up201403485@fe.up.pt)
 -	Vasco Ribeiro (up201402723@fe.up.pt)
-
