@@ -21,13 +21,21 @@ A partir do seu repositório, o grupo conseguiu perceber que este foi criado em 
 
 ###Desenvolvimento do projeto
 
+
 No desevolvimento de **BetterStorage**, os contribuidores do mesmo não se dividiram em grupos, de forma a trabalharem somente em certas partes do projeto, fazendo com que um contribuidor pudesse trabalhar em diferentes blocos do trabalho.
 
 As [*issues*](https://github.com/copygirl/BetterStorage/issues) presentes no *GitHub* do projeto foram utilizadas de forma a que fosse possível verificar novas melhorias, *updates* e alguns problemas/*bugs* que o mesmo pudesse ter, sendo que atualmente se encontram por resolver ainda 24 *issues*. 
 
 Para além disso, verificou-se que até agora não foram adicionadas metas a alcançar, uma vez que não haviam quaiquer *milestones* definidas.
 
+
 ###Processo de software
+
+
+O grupo entrou em contacto com a criadora do projeto e, após algumas questões acerca do mesmo, chegou-se à conclusão que este projeto utiliza o modelo ***Incremental Development and Delivery***, uma vez que esta referiu que ao desenvolver o seu código, na maioria das vezes, o testava antes de o submeter e avançar para o passo seguinte, sendo este um método que os outros contribuidores do **BetterStorage** também utilizavam.
+
+Para além disso, consideramos que o modelo ***Software Prototyping*** está também presente neste trabalho, visto que foram divulgadas 50 [*releases*](https://github.com/copygirl/BetterStorage/releases) de novas versões do *mod* que estavam a desenvolver, de forma a que qualquer utilizador pudesse testar o mod de jogo desenvolvido.
+
 
 ###Estrutura do repositório 
 
