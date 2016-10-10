@@ -1,6 +1,6 @@
-Relatório 1
+#Relatório 1
 
-Descrição do Projeto
+##Descrição do Projeto
 
 Better Storage é um mod para o jogo "Minecraft" (v. 1.7.10.1), desenvolvido em Java e com o objetivo de melhorar a capacidade de armazenamento de itens no jogo.
 
@@ -9,27 +9,27 @@ A partir do repositório percebemos que foi criado em dezembro de 2012. A criado
 O projeto está licenciado sob a licença do MIT.
 
  
-Processo de Desenvolvimento
+##Processo de Desenvolvimento
 
  
-Análise Critica 
-Links Externos
+##Análise Critica 
+##Links Externos
 
-Fórum do Projeto:  http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/wip-mods/1442380-betterstorage-0-13-1-127-wip
+##Fórum do Projeto:  http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/wip-mods/1442380-betterstorage-0-13-1-127-wip
 
-Contribuição do Grupo
+##Contribuição do Grupo
 
-Bruno Santos:
-Sara Fernandes:
-Vasco Pereira:
-Vasco Ribeiro: 
+- Bruno Santos: 25%;
+- Sara Fernandes: 25%;
+- Vasco Pereira: 25%;
+- Vasco Ribeiro: 25%;
 
 
-Identificação do Grupo
+##Identificação do Grupo
 
 Grupo 5:
-•	Bruno Santos (up201402962@fe.up.pt)
-•	Sara Fernandes (up201405955@fe.up.pt)
-•	Vasco Pereira (up201403485@fe.up.pt)
-•	Vasco Ribeiro (up201402723@fe.up.pt)
+-	Bruno Santos (up201402962@fe.up.pt)
+-	Sara Fernandes (up201405955@fe.up.pt)
+-	Vasco Pereira (up201403485@fe.up.pt)
+-	Vasco Ribeiro (up201402723@fe.up.pt)
 
