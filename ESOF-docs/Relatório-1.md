@@ -58,7 +58,7 @@ Para além do que já foi mencionado, achámos que o facto de não terem sido cr
 ##Links Externos
 
 
--Fórum do Projeto: http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/wip-mods/1442380-betterstorage-0-13-1-127-wip
+- Fórum do projeto: http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/wip-mods/1442380-betterstorage-0-13-1-127-wip
 
 
 ##Contribuição do Grupo
