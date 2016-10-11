@@ -1,3 +1,4 @@
+
 #**Relatório 1**
 
 
@@ -44,14 +45,24 @@ O repositório do **BetterStorage** não tem vários *branches*, contendo apenas
 As *releases*, faladas no tópico anterior, representam as diferentes versões do *mod* criado, permitindo que qualquer utilizador pudesse instalar e utilizar o mesmo. Estas *releases* têm sempre um comentário referente às modificações executadas, sendo acompanhadas de todo o material necessário para que um possível jogador possa utilizar o **BetterStorage**.
 
 
-
 ##Análise Critica
+
+
+Como já referido, o projeto encontra-se inativo, contudo aquando do contacto com a "gerente do repositório", esta mostrou-se recetiva e animada em relação à nossa futura colaboração, pois assim podemos modificar o *mod* e voltar a ativá-lo.
+
+A inatividade falada veio-se a verificar a partir de meados de 2015, uma vez que os *commits* começaram a ser cada vez menos, apesar de ainda haverem cerca de 24 *issues* abertas, algumas delas com a tag *bug*. Este número de *issues* não é elevado, mas acaba por ser um incentivo, visto que assim podemos tentar corrigir esses problemas encontrados, melhorando o proeto. Da mesma forma que dizemos que as *issues* se tornaram um desafio para o grupo, também podemos dizer que são apelativas e favoráveis ao aparecimento de contribuições por parte de terceiros, o que acabaria por ser uma mais valia para o **BetterStorage**.
+
+Para além do que já foi mencionado, achámos que o facto de não terem sido criados grupos de trabalho que se pudessem focar numa parte específica do projeto e de não terem sido atribuídas tarefas previamente, ou até *milestones*, acabou por prejudicar o desenvolvimento do *mod*, uma vez que tornaria mais eficiente e produtivo o trabalho de cada contribuidor.
+
 
 ##Links Externos
 
-##Fórum do Projeto: http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/wip-mods/1442380-betterstorage-0-13-1-127-wip
+
+-Fórum do Projeto: http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/wip-mods/1442380-betterstorage-0-13-1-127-wip
+
 
 ##Contribuição do Grupo
+
 
 - Bruno Santos: 25%;
 - Sara Fernandes: 25%;
@@ -61,7 +72,9 @@ As *releases*, faladas no tópico anterior, representam as diferentes versões d
 
 ##Identificação do Grupo
 
-####Grupo 5:
+
+####Grupo 05, Turma 04:
+
 -	Bruno Santos (up201402962@fe.up.pt)
 -	Sara Fernandes (up201405955@fe.up.pt)
 -	Vasco Pereira (up201403485@fe.up.pt)
