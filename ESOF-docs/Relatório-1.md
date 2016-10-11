@@ -37,7 +37,13 @@ O grupo entrou em contacto com a criadora do projeto e, após algumas questões 
 Para além disso, consideramos que o modelo ***Software Prototyping*** está também presente neste trabalho, visto que foram divulgadas 50 [*releases*](https://github.com/copygirl/BetterStorage/releases) de novas versões do *mod* que estavam a desenvolver, de forma a que qualquer utilizador pudesse testar o mod de jogo desenvolvido.
 
 
-###Estrutura do repositório 
+###Estrutura do repositório
+
+O repositório do **BetterStorage** não tem vários *branches*, contendo apenas um total de 6, os quais estão inativos, visto que a "gerente do repositório" já fundiu os *branches* dos colaboradores com o *branch* *"master"*. Verificámos, também, que a maioria dos *branches* serviram para trabalhar em diferentes versões do *mod* de jogo, de forma a conseguirem trabalhar e testar o seu código sem interferirem com o trabalho dos outros *developers*.
+
+As *releases*, faladas no tópico anterior, representam as diferentes versões do *mod* criado, permitindo que qualquer utilizador pudesse instalar e utilizar o mesmo. Estas *releases* têm sempre um comentário referente às modificações executadas, sendo acompanhadas de todo o material necessário para que um possível jogador possa utilizar o **BetterStorage**.
+
+
 
 ##Análise Critica
 
