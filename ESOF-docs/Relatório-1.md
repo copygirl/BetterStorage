@@ -6,7 +6,7 @@
 ##Descrição do projeto
 
 
-**BetterStorage** é um mod criado para o jogo [Minecraft](https://minecraft.net/pt/) (v. 1.7.10.1),sendo que este resulta melhor no Vanilla Minecraft (versão original do Minecraft, sem qualquer tipo de mods). Este mod é desenvolvido em **Java** e procura aumentar o número de soluções de armazenamento através do uso de *storage crates*, *backpacks*, *reinforced chests*, *armor stands*, *locks*, entre outros.
+**BetterStorage** é um *mod* criado para o jogo [Minecraft](https://minecraft.net/pt/) (v. 1.7.10.1),sendo que este resulta melhor no Vanilla Minecraft (versão original do Minecraft, sem qualquer tipo de mods). Este mod é desenvolvido em **Java** e procura aumentar o número de soluções de armazenamento através do uso de *storage crates*, *backpacks*, *reinforced chests*, *armor stands*, *locks*, entre outros.
 
 Através do desenvolvimento deste mod os contribuidores procuraram melhorar a experiência básica do jogo ao introduzir complexidade nas opções de armazenamento.
 
