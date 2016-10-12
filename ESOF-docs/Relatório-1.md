@@ -10,11 +10,11 @@
 
 Através do desenvolvimento deste mod os contribuidores procuraram melhorar a experiência básica do jogo ao introduzir complexidade nas opções de armazenamento.
 
-Este projeto *open source* foi criado pela [copygirl](https://github.com/copygirl) e alguns dos seus amigos ([Victorious3](https://github.com/Victorious3) e [Thog](https://github.com/Thog), contudo devido a divergências de horários e à quantidade de tempo despendido para o mesmo, o BetterStorage encontra-se de momento descontinuado/desativado.
+Este projeto *open source* foi criado pela [copygirl](https://github.com/copygirl) e alguns dos seus amigos ([Victorious3](https://github.com/Victorious3) e [Thog](https://github.com/Thog)), contudo devido a divergências de horários e à quantidade de tempo despendido para o mesmo, o BetterStorage encontra-se de momento descontinuado/desativado.
 
 A partir do seu repositório, o grupo conseguiu perceber que este foi criado em dezembro de 2012, tendo o projeto surgido por volta dessa altura. Ao todo, existem 20 contribuidores, sendo que a [copygirl](https://github.com/copygirl) e [Victorious3](https://github.com/Victorious3) são os elementos que mais contribuíram para o desenvolvimento do mesmo, uma vez que foram dos contribuidores que mais commits fizeram. 
 
-**BetterStorage** está licenciado sob a [licença do MIT](https://github.com/copygirl/BetterStorage/blob/master/LICENSE.txt), permitindo que qualquer um dos contribuidores do projeto possa modifica-lo e distribuí-lo.
+**BetterStorage** está licenciado sob a [licença do MIT](https://github.com/copygirl/BetterStorage/blob/master/LICENSE.txt), permitindo que qualquer um dos contribuidores do projeto possa modificá-lo e distribuí-lo.
 
 
 ##Processo de desenvolvimento
@@ -27,7 +27,7 @@ No desevolvimento de **BetterStorage**, os contribuidores do mesmo não se divid
 
 As [*issues*](https://github.com/copygirl/BetterStorage/issues) presentes no *GitHub* do projeto foram utilizadas de forma a que fosse possível verificar novas melhorias, *updates* e alguns problemas/*bugs* que o mesmo pudesse ter, sendo que atualmente se encontram por resolver ainda 24 *issues*. 
 
-Para além disso, verificou-se que até agora não foram adicionadas metas a alcançar, uma vez que não haviam quaiquer *milestones* definidas.
+Para além disso, verificou-se que até agora não foram adicionadas metas a alcançar, uma vez que não haviam quaisquer *milestones* definidas.
 
 
 ###Processo de software
