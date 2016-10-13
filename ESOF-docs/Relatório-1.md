@@ -33,9 +33,9 @@ Para além disso, verificou-se que até agora não foram adicionadas metas a alc
 ###Processo de software
 
 
-O grupo entrou em contacto com a criadora do projeto e, após algumas questões acerca do mesmo, chegou-se à conclusão que este projeto utiliza o modelo ***Incremental Development and Delivery***, uma vez que esta referiu que ao desenvolver o seu código, na maioria das vezes, o testava antes de o submeter e avançar para o passo seguinte, sendo este um método que os outros contribuidores do **BetterStorage** também utilizavam.
+O grupo entrou em contacto com a criadora do projeto e, após algumas questões acerca do mesmo, chegou-se à conclusão que este projeto utiliza os processos ***Incremental Development and Delivery*** e ***Test-Driven Development***,uma vez que a *developer* referiu que só seguia para o passo seguinte quando o passo anterior estivesse concluído e testado corretamente, sendo que os outros contribuidores também faziam o mesmo. Apesar de não se cumprir as todas as etapas do processo ***Test-Driven Development***, o grupo achou que este devia ser indicado como processo de software, visto que utilizavam os testes para verificar a veracidade e a execução do seu código.
 
-Para além disso, consideramos que o modelo ***Software Prototyping*** está também presente neste trabalho, visto que foram divulgadas 50 [*releases*](https://github.com/copygirl/BetterStorage/releases) de novas versões do *mod* que estavam a desenvolver, de forma a que qualquer utilizador pudesse testar o mod de jogo desenvolvido.
+Para além disso, consideramos que o processo ***Software Prototyping*** está também presente neste trabalho, visto que foram divulgadas 50 [*releases*](https://github.com/copygirl/BetterStorage/releases) de novas versões do *mod* que estavam a desenvolver, de forma a que qualquer utilizador pudesse testar o mod de jogo desenvolvido.
 
 
 ###Estrutura do repositório
