@@ -12,7 +12,7 @@ Através do desenvolvimento deste *mod* os contribuidores procuraram melhorar a 
 
 
 <p align="center">
-  <img src="https://github.com/VascoUP/BetterStorage/blob/master/ESOF-docs/resources/image.png" "BetterStorage representation">
+  <img src="https://github.com/VascoUP/BetterStorage/blob/master/ESOF-docs/resources/image.png">
 </p>
 
 
@@ -55,6 +55,12 @@ As *releases*, faladas no tópico anterior, representam as diferentes versões d
 
 
 Como já referido, o projeto encontra-se inativo, contudo aquando do contacto com a "gerente do repositório", esta mostrou-se recetiva e animada em relação à nossa futura colaboração, pois assim podemos modificar o *mod* e voltar a ativá-lo.
+
+
+<p align="center">
+  <img src="https://github.com/VascoUP/BetterStorage/blob/master/ESOF-docs/resources/analiseCommits.png">
+</p>
+
 
 A inatividade falada veio-se a verificar a partir de meados de 2015, uma vez que os *commits* começaram a ser cada vez menos, apesar de ainda haverem cerca de 24 *issues* abertas, algumas delas com a tag *bug*. Este número de *issues* não é elevado, mas acaba por ser um incentivo, visto que assim podemos tentar corrigir esses problemas encontrados, melhorando o projeto. Da mesma forma que dizemos que as *issues* se tornaram um desafio para o grupo, também podemos dizer que são apelativas e favoráveis ao aparecimento de contribuições por parte de terceiros, o que acabaria por ser uma mais valia para o **BetterStorage**.
 
