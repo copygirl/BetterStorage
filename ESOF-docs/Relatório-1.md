@@ -18,7 +18,7 @@ Através do desenvolvimento deste *mod* os contribuidores procuraram melhorar a 
 
 Este projeto *open source* foi criado pela [copygirl](https://github.com/copygirl) e alguns dos seus amigos ([Victorious3](https://github.com/Victorious3) e [Thog](https://github.com/Thog)), contudo devido a divergências de horários e à quantidade de tempo despendido para o mesmo, o **BetterStorage** encontra-se de momento descontinuado/desativado.
 
-A partir do seu repositório, o grupo conseguiu perceber que este foi criado em dezembro de 2012, tendo o projeto surgido por volta dessa altura. Ao todo, existem 20 contribuidores, sendo que a [copygirl](https://github.com/copygirl) e [Victorious3](https://github.com/Victorious3) são os elementos que mais contribuíram para o desenvolvimento do mesmo, uma vez que foram dos contribuidores que mais commits fizeram. 
+A partir do seu repositório, o grupo conseguiu perceber que este foi criado em dezembro de 2012, tendo o projeto surgido por volta dessa altura. Ao todo, existem 20 contribuidores, sendo que a [copygirl](https://github.com/copygirl) e [Victorious3](https://github.com/Victorious3) são os elementos que mais contribuíram para o desenvolvimento do mesmo, uma vez que foram dos contribuidores que mais *commits* fizeram. 
 
 **BetterStorage** está licenciado sob a [licença do MIT](https://github.com/copygirl/BetterStorage/blob/master/LICENSE.txt), permitindo que qualquer um dos contribuidores do projeto possa modificá-lo e distribuí-lo.
 
