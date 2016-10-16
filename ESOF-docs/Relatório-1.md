@@ -6,7 +6,7 @@
 ##Descrição do projeto
 
 
-**BetterStorage** é um *mod* criado para o jogo [Minecraft](https://minecraft.net/pt/) (v. 1.7.10.1), sendo que este resulta melhor no Vanilla Minecraft (versão original do Minecraft, sem qualquer tipo de *mods*). Este *mod* é desenvolvido em **Java** e procura aumentar o número de soluções de armazenamento através do uso de *storage crates*, *backpacks*, *reinforced chests*, *armor stands*, *locks*, entre outros.
+**BetterStorage** é um *mod* criado para o jogo [Minecraft](https://minecraft.net/pt/) (v. 1.7.10.1), sendo que este resulta melhor no **Vanilla Minecraft** (versão original do Minecraft, sem qualquer tipo de *mods*). Este *mod* é desenvolvido em **Java** e procura aumentar o número de soluções de armazenamento através do uso de *storage crates*, *backpacks*, *reinforced chests*, *armor stands*, *locks*, entre outros.
 
 Através do desenvolvimento deste *mod* os contribuidores procuraram melhorar a experiência básica do jogo ao introduzir complexidade nas opções de armazenamento.
 
@@ -16,7 +16,7 @@ Através do desenvolvimento deste *mod* os contribuidores procuraram melhorar a 
 </p>
 
 
-Este projeto *open source* foi criado pela [copygirl](https://github.com/copygirl) e alguns dos seus amigos ([Victorious3](https://github.com/Victorious3) e [Thog](https://github.com/Thog)), contudo devido a divergências de horários e à quantidade de tempo despendido para o mesmo, o BetterStorage encontra-se de momento descontinuado/desativado.
+Este projeto *open source* foi criado pela [copygirl](https://github.com/copygirl) e alguns dos seus amigos ([Victorious3](https://github.com/Victorious3) e [Thog](https://github.com/Thog)), contudo devido a divergências de horários e à quantidade de tempo despendido para o mesmo, o **BetterStorage** encontra-se de momento descontinuado/desativado.
 
 A partir do seu repositório, o grupo conseguiu perceber que este foi criado em dezembro de 2012, tendo o projeto surgido por volta dessa altura. Ao todo, existem 20 contribuidores, sendo que a [copygirl](https://github.com/copygirl) e [Victorious3](https://github.com/Victorious3) são os elementos que mais contribuíram para o desenvolvimento do mesmo, uma vez que foram dos contribuidores que mais commits fizeram. 
 
@@ -39,7 +39,7 @@ Para além disso, verificou-se que até agora não foram adicionadas metas a alc
 ###Processo de software
 
 
-O grupo entrou em contacto com a criadora do projeto e, após algumas questões acerca do mesmo, chegou-se à conclusão que este projeto utiliza os processos ***Incremental Development and Delivery*** e ***Test-Driven Development***, uma vez que a *developer* referiu que só seguia para o passo seguinte quando o passo anterior estivesse concluído e testado corretamente, sendo que os outros contribuidores também faziam o mesmo. Apesar de não se cumprir todas as etapas do processo ***Test-Driven Development***, o grupo achou que este devia ser indicado como processo de software, visto que utilizavam os testes para verificar a veracidade e a execução do seu código.
+O grupo entrou em contacto com a criadora do projeto e, após algumas questões acerca do mesmo, chegou-se à conclusão que este projeto utiliza os processos ***Incremental Development and Delivery*** e ***Test-Driven Development***, uma vez que a *developer* referiu que só seguia para o passo seguinte quando o passo anterior estivesse concluído e testado corretamente, sendo que os outros contribuidores também faziam o mesmo. Apesar de não se cumprir todas as etapas do processo ***Test-Driven Development***, o grupo achou que este devia ser indicado como processo de software, visto que utilizavam testes para verificar a veracidade e a execução do seu código.
 
 Para além disso, consideramos que o processo ***Software Prototyping*** está também presente neste trabalho, visto que foram divulgadas 50 [*releases*](https://github.com/copygirl/BetterStorage/releases) de novas versões do *mod* que estavam a desenvolver, de forma a que qualquer utilizador pudesse testar o *mod* de jogo desenvolvido.
 
@@ -85,7 +85,7 @@ Para além do que já foi mencionado, achámos que o facto de não terem sido cr
 ##Identificação do Grupo
 
 
-####Grupo 05, Turma 04:
+####Grupo 05, Turma 03:
 
 -	Bruno Santos (up201402962@fe.up.pt)
 -	Sara Fernandes (up201405955@fe.up.pt)
