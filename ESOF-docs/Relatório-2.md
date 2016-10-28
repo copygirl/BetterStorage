@@ -16,7 +16,7 @@
 
 ###Requisitos de sistema
 
-A versão mais recente do **BetterStorage** foi desenvolvida para o Minecraft 1.7.10. Para ser instalado e executar, o *mod* necessita que uma versão compatível do jogo e que o **Java** estejam instalados. Necessita também de uma versão recente do [Minecraft Forge](https://files.minecraftforge.net/) (API de modding para o Minecraft).
+A versão mais recente do **BetterStorage** foi desenvolvida para o **Minecraft 1.7.10**. Para ser instalado e executar, o *mod* necessita que uma versão compatível do jogo e que o **Java** estejam instalados. Necessita também de uma versão recente do [Minecraft Forge](https://files.minecraftforge.net/) (API de modding para o Minecraft).
 
 
 ###Elicitação de requisitos
@@ -33,6 +33,9 @@ Cada pessoa que queira contribuir para este projeto pode fazer um novo [*branch*
 
 Relativamente às *issues*, já referidas, estas servem para reportar possíveis problemas, podendo ser uma espécie de lista de melhorias a fazer, uma vez que cada *developer* pode tentar resolver as mesmas, acabando por aperfeiçoar o projeto existente.
 
+
+###Validação
+....
 
 ##Casos de Uso
 
