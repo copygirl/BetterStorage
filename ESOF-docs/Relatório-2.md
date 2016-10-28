@@ -32,3 +32,9 @@ Para determinar os requisítos a aplicar numa aplicação é necessário estar a
 <p align="center">
   <img src="http://s22.postimg.org/rxpenrllt/Executavel.png">
 </p>
+
+Por outro lado, já dentro do jogo, o mod permite acrescentar ao jogo novos tipos de armazenamento. Entre os armazenamentos que podem ser acrescentados: mochilas, baús reforçados, cadeados, capacetes, entre outros.
+
+<p align="center">
+  <img src="http://s22.postimg.org/t7eejk09d/Jogo.png">
+</p>
