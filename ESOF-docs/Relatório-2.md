@@ -7,8 +7,7 @@
 
 **BetterStorage** é um *mod* para o jogo [Minecraft](https://minecraft.net/pt/), desenvolvido em **Java**, e que tem como objectivo aumentar e diversificar as opções de armazenamento de recursos no jogo.
 
-...
-
+Este *mod* permite, ainda, que sejam recolhidos recursos para, posteriormente, serem construídas as tais opções de armazenamento e de seguida serem colocados no jogo. Estas opções de armazenamento podem ser: *storage crates*, *backpacks*, *reinforced chests*, *armor stands*, *locks*, entre outros.
 
 
 ##Requisitos
@@ -49,7 +48,7 @@ Assim, o trabalho efetuado fica acresecentado à versão anterior do projeto, cr
 
 ##Casos de Uso
 
-Para determinar os requisítos a aplicar numa aplicação é necessário estar a par do tipo de utilização. No nosso caso, o desenvolvimento de um mod, apenas afeta, ligeiramente, o executável do jogo "Minecraft" em pequenos parâmetros:
+Para determinar os requisitos a aplicar numa aplicação é necessário estar a par do tipo de utilização. No nosso caso, o desenvolvimento de um mod, apenas afeta, ligeiramente, o executável do jogo "Minecraft" em pequenos parâmetros:
 
 <p align="center">
   <img src="http://s22.postimg.org/rxpenrllt/Executavel.png">
@@ -65,6 +64,37 @@ Por outro lado, já dentro do jogo, o mod permite acrescentar ao jogo novos tipo
 
 ##Análise Crítica
 
-##Referências
 
-##Contribuições
+Em primeiro lugar, tem-se que ter em conta que este projeto tem apenas [20 contribuidores](https://github.com/copygirl/BetterStorage/graphs/contributors), sendo que apenas dois 2 deles é que representam o “núcleo principal” de desenvolvimento do mesmo. Para além disso, tem-se que ter em conta, igualmente, que  o **BetterStorage** não contém quaisquer [*milestones*](https://github.com/copygirl/BetterStorage/milestones) ou *deadlines* para a implementação de novas melhorias, como já referido acima. 
+
+Dito isto, o grupo considerou que a abordagem adotada é de certa forma boa em alguns aspetos, tendo no entanto algumas desvantagens.
+
+Uma das vantagens recai sobre o facto de se centralizar as decisões a serem tomadas, ou seja, as decisões acerca da aceitação dos *pull requests*, numa única pessoa, a [copygirl](https://github.com/copygirl), visto que permite que essa pessoa possa gerir por completo o projeto, estando a par de todas as modificações executadas, sabendo qual o estado de evolução do mesmo.
+
+Por outro lado, o facto de qualquer contribuidor ter a possibilidade de reportar [*issues*](https://github.com/copygirl/BetterStorage/issues) pode ser uma vantagem e ao mesmo tempo uma desvantagem. Primeiramente, pode ser um benefício, devido a permitir que se possa ter mais consciência dos problemas encontrados no projeto, uma vez que poderá haver uma maior reportação de [*issues*](https://github.com/copygirl/BetterStorage/issues) a resolver. Este facto é, também, uma desvantagem, pois assim qualquer pessoa pode reportar um problema e isso pode atrasar o desenvolvimento do projeto, visto que depois há a necessidade de verificar a veracidade das [*issues*](https://github.com/copygirl/BetterStorage/issues) assinaladas, sendo que, essencialmente, é a gestora do repositório que exerce essa função.
+
+
+##Links Externos
+
+
+- Fórum do projeto: http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/wip-mods/1442380-betterstorage-0-13-1-127-wip
+
+
+##Contribuição do Grupo
+
+
+- Bruno Santos: 25%;
+- Sara Fernandes: 25%;
+- Vasco Pereira: 25%;
+- Vasco Ribeiro: 25%;
+
+
+##Identificação do Grupo
+
+
+####Grupo 05, Turma 03:
+
+-	Bruno Santos (up201402962@fe.up.pt)
+-	Sara Fernandes (up201405955@fe.up.pt)
+-	Vasco Pereira (up201403485@fe.up.pt)
+-	Vasco Ribeiro (up201402723@fe.up.pt)
