@@ -112,7 +112,7 @@ Por outro lado, o facto de qualquer contribuidor ter a possibilidade de reportar
 
 Para além disso, o facto de não existirem [*milestones*](https://github.com/copygirl/BetterStorage/milestones) ou *deadlines* pode complicar a execução do trabalho, pois pode originar algum desleixo e desmotivação dos contribuidores do mesmo, assim como um prolongamento do tempo de execução das tarefas a que se propuseram.
 
-Em suma, pode-se consluir que a abordagem utilizada é boa, mas não é perfeita, pois existem desvantagens a ter em conta na mesma.
+Em suma, pode-se concluir que a abordagem utilizada é boa, mas não é perfeita, pois existem desvantagens a ter em conta na mesma.
 
 
 ##Links Externos
