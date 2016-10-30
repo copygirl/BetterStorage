@@ -73,6 +73,10 @@ Por outro lado, já dentro do jogo, o mod permite acrescentar ao jogo novos tipo
 
 ##Domain Model
 
+<p align="center">
+  <img src="https://github.com/VascoUP/BetterStorage/blob/master/ESOF-docs/resources/DOMAIN_MODEL.png">
+</p>
+
 ##Análise Crítica
 
 
