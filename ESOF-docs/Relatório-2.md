@@ -8,7 +8,7 @@
 
 **BetterStorage** é um *mod* para o jogo [Minecraft](https://minecraft.net/pt/), desenvolvido em **Java**, e que tem como objectivo aumentar e diversificar as opções de armazenamento de recursos no jogo.
 
-Este *mod* permite, ainda, que sejam recolhidos recursos para, posteriormente, serem construídas as tais opções de armazenamento e de seguida serem colocados no jogo. Estas opções de armazenamento podem ser: *storage crates*, *backpacks*, *reinforced chests*, *armor stands*, *locks*, entre outros.
+Após serem recolhidos os respetivos recursos necessários para a construção das opções de armazenamento, o jogador pode colocar as mesmas no jogo. Estas opções de armazenamento podem ser: *storage crates*, *backpacks*, *reinforced chests*, *armor stands*, *locks*, entre outros.
 
 
 ##Requisitos
@@ -18,8 +18,6 @@ Este *mod* permite, ainda, que sejam recolhidos recursos para, posteriormente, s
 
 
 A versão mais recente do **BetterStorage** foi desenvolvida para o **Minecraft 1.7.10**. Para ser instalado e executado, o *mod* necessita que haja instalada uma versão compatível do respetivo jogo, assim como esteja presente uma versão atualizada do **Java**. É também necessário que se instale uma versão recente do [Minecraft Forge](https://files.minecraftforge.net/) (API de modding para o Minecraft).
-
-Para que seja possível trabalhar na construção de novos *mods*, cada contribuidor precisa de todos os requisitos, anteriormente, referidos, assim como necessitam de um programa onde seja possível trabalhar o *mod* de jogo e que seja capaz de criar projetos através do ***gradle*** do **BetterStorage**, por exemplo, **Eclipse**. 
 
 
 ###Elicitação de requisitos
@@ -79,15 +77,15 @@ Para determinar os requisitos a aplicar numa aplicação é necessário estar a 
 
 
 <p align="center">
-  <img src="https://github.com/VascoUP/BetterStorage/blob/master/ESOF-docs/resources/Executavel.png">
+  <img src="https://github.com/VascoUP/BetterStorage/blob/master/ESOF-docs/resources/Use%20Case%20Model.png">
 </p>
 
 
-Por outro lado, já dentro do jogo, o *mod* permite acrescentar ao jogo novos tipos de armazenamento como: *storage crates*, *backpacks*, *reinforced chests*, *armor stands*, *locks*, entre outros.
+Por outro lado, já dentro do jogo, o *mod* permite acrescentar ao mesmo novos tipos de armazenamento como: *storage crates*, *backpacks*, *reinforced chests*, *armor stands*, *locks*, entre outros.
 
 
 <p align="center">
-  <img src="https://github.com/VascoUP/BetterStorage/blob/master/ESOF-docs/resources/Jogo.png">
+  <img src="https://github.com/VascoUP/BetterStorage/blob/master/ESOF-docs/resources/use%20case%20Jogo.png">
 </p>
 
 
