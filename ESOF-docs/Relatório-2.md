@@ -24,7 +24,7 @@ A versão mais recente do **BetterStorage** foi desenvolvida para o **Minecraft 
 ###Elicitação de requisitos
 
 
-Em conversação com a "proprietária" do repositório, [copygirl](https://github.com/copygirl), já durante a elaboração do [primeiro relatório](https://github.com/VascoUP/BetterStorage/blob/master/ESOF-docs/Relat%C3%B3rio-1.md) (não tendo existido nenhum tipo de conversa durante a elaboração do segundo relatório, visto que a mesma e os elementos [Victorious3](https://github.com/Victorious3) e [Thog](https://github.com/Thog) não responderam às perguntas elaboradas pelo grupo), chegou-se à conclusão que o **BetterStorage** é um projeto com uma natureza recreativa e simples, fazendo com que qualquer pessoa/[contribuidor](https://github.com/copygirl/BetterStorage/graphs/contributors) possa sugerir *features* e contribuir para o mesmo.
+Em conversação com a "proprietária" do repositório, [copygirl](https://github.com/copygirl), já durante a elaboração do [primeiro relatório](https://github.com/VascoUP/BetterStorage/blob/master/ESOF-docs/Relat%C3%B3rio-1.md) (não tendo existido nenhum tipo de conversa durante a elaboração do presente relatório, visto que a mesma e os elementos [Victorious3](https://github.com/Victorious3) e [Thog](https://github.com/Thog) não responderam às perguntas elaboradas pelo grupo), chegou-se à conclusão que o **BetterStorage** é um projeto com uma natureza recreativa e simples, fazendo com que qualquer pessoa/[contribuidor](https://github.com/copygirl/BetterStorage/graphs/contributors) possa sugerir *features* e contribuir para o mesmo.
 
 As sugestões e discussões podem fazer-se tanto através das [*issues*](https://github.com/copygirl/BetterStorage/issues) do repositório do [GitHub do BetterStorage](https://github.com/copygirl/BetterStorage), como através dos *threads* no [fórum do Minecraft](http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/wip-mods/1442380-betterstorage-0-13-1-127-wip).
 
@@ -68,7 +68,7 @@ Depois de serem executadas as melhorias e funções que o contribuidor se propô
 </p>
 
 
-Assim, o trabalho efetuado fica acresecentado à versão anterior do projeto, criando uma nova versão do mesmo que pode, de seguida, fazer parte das [*releases*](https://github.com/copygirl/BetterStorage/releases) publicadas.
+Assim, o trabalho efetuado fica acrescentado à versão anterior do projeto, criando uma nova versão do mesmo que pode, de seguida, fazer parte das [*releases*](https://github.com/copygirl/BetterStorage/releases) publicadas.
 
 
 ##Casos de Uso
@@ -105,7 +105,7 @@ Em primeiro lugar, tem-se que ter em conta que este projeto tem apenas [20 contr
 
 Dito isto, o grupo considerou que a abordagem adotada é de certa forma boa em alguns aspetos, tendo no entanto algumas desvantagens.
 
-Uma das vantagens recai sobre o facto de se centralizar as decisões a serem tomadas, ou seja, as decisões acerca da aceitação dos *pull requests*, numa única pessoa, a [copygirl](https://github.com/copygirl), visto que permite que essa pessoa possa gerir por completo o projeto, estando a par de todas as modificações executadas, sabendo qual o estado de evolução do mesmo.
+Uma das vantagens recai sobre o facto de se centralizar as decisões a serem tomadas, ou seja, as decisões acerca da aceitação dos *pull requests*, praticamente, numa única pessoa, a [copygirl](https://github.com/copygirl), visto que permite que essa pessoa possa gerir por completo o projeto, estando a par de todas as modificações executadas, sabendo qual o estado de evolução do mesmo.
 
 Por outro lado, o facto de qualquer contribuidor ter a possibilidade de reportar [*issues*](https://github.com/copygirl/BetterStorage/issues) pode ser uma vantagem e ao mesmo tempo uma desvantagem. Primeiramente, pode ser um benefício, devido a permitir que se possa ter mais consciência dos problemas encontrados no projeto, uma vez que poderá haver uma maior reportação de [*issues*](https://github.com/copygirl/BetterStorage/issues) a resolver. Este facto é, também, uma desvantagem, pois assim qualquer pessoa pode reportar um problema e isso pode atrasar o desenvolvimento do projeto, visto que depois há a necessidade de verificar a veracidade das [*issues*](https://github.com/copygirl/BetterStorage/issues) assinaladas, sendo que, essencialmente, é a "gestora" do repositório que exerce essa função.
 
