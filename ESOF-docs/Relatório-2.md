@@ -1,3 +1,4 @@
+
 #**Relatório 2**
 
 
@@ -15,21 +16,24 @@ Este *mod* permite, ainda, que sejam recolhidos recursos para, posteriormente, s
 
 ###Requisitos de sistema
 
+
 A versão mais recente do **BetterStorage** foi desenvolvida para o **Minecraft 1.7.10**. Para ser instalado e executado, o *mod* necessita que haja instalada uma versão compatível do respetivo jogo, assim como esteja presente uma versão atualizada do **Java**. É também necessário que se instale uma versão recente do [Minecraft Forge](https://files.minecraftforge.net/) (API de modding para o Minecraft).
 
 Para que seja possível trabalhar na construção de novos *mods*, cada contribuidor precisa de todos os requisitos, anteriormente, referidos, assim como necessitam de um programa onde seja possível trabalhar o *mod* de jogo e que seja capaz de criar projetos através do ***gradle*** do **BetterStorage**, por exemplo, **Eclipse**. 
 
 
-
 ###Elicitação de requisitos
+
 
 Em conversação com a "proprietária" do repositório, [copygirl](https://github.com/copygirl), já durante a elaboração do [primeiro relatório](https://github.com/VascoUP/BetterStorage/blob/master/ESOF-docs/Relat%C3%B3rio-1.md) (não tendo existido nenhum tipo de conversa durante a elaboração do segundo relatório, visto que a mesma e os elementos [Victorious3](https://github.com/Victorious3) e [Thog](https://github.com/Thog) não responderam às perguntas elaboradas pelo grupo), chegou-se à conclusão que o **BetterStorage** é um projeto com uma natureza recreativa e simples, fazendo com que qualquer pessoa/[contribuidor](https://github.com/copygirl/BetterStorage/graphs/contributors) possa sugerir *features* e contribuir para o mesmo.
 
 As sugestões e discussões podem fazer-se tanto através das [*issues*](https://github.com/copygirl/BetterStorage/issues) do repositório do [GitHub do BetterStorage](https://github.com/copygirl/BetterStorage), como através dos *threads* no [fórum do Minecraft](http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/wip-mods/1442380-betterstorage-0-13-1-127-wip).
 
+
 <p align="center">
   <img src="https://github.com/VascoUP/BetterStorage/blob/master/ESOF-docs/resources/ISSUES.png">
 </p>
+
 
 Os contribuidores (*developers*) têm como principal função corrigir [*issues*](https://github.com/copygirl/BetterStorage/issues), principalmente *bugs*, enquanto que a [copygirl](https://github.com/copygirl) e [Victorious3](https://github.com/Victorious3) é que tratam de lançar as novas versões do *mod*, logo são quem contribuem mais para o desenvolvimento deste projeto.
 
@@ -42,6 +46,7 @@ Relativamente às [*issues*](https://github.com/copygirl/BetterStorage/issues), 
 
 ###Validação
 
+
 Apesar de não haverem [*milestones*](https://github.com/copygirl/BetterStorage/milestones) nem *deadlines*, é necessário que haja algum tipo de validação relativamente às contribuições dos colaboradores, para que o seu contributo seja efetivamente benéfico para o projeto.
 
 No **BetterStorage** não existe nenhuma barreira que impeça os contribuidores de desenvolver novas melhorias para o *mod* de jogo tendo, somente, que aquando da junção do seu código com o código já existente pedir aprovação, principalmente, à “proprietária” do repositório, para que tal ocorra.
@@ -50,32 +55,41 @@ Pode-se, no entanto, obter uma pré-validação das funcionalidades a implementa
 
 Depois de serem executadas as melhorias e funções que o contribuidor se propôs a implementar, este pode fazer um *pull request* para que a “gerente” do repositório, ou alguém mais envolvido no projeto, como a [Victorious3](https://github.com/Victorious3), possam verificar as tais melhorias e de seguida, caso seja validado o trabalho do *developer* se possa fazer *merge* do *branch* que estava a ser usado pelo mesmo (como já referido no [relatório anterior](https://github.com/VascoUP/BetterStorage/blob/master/ESOF-docs/Relat%C3%B3rio-1.md), cada contribuidor cria um novo *branch* para conseguir trabalhar sem interferir com o trabalho dos outros).
 
+
 <p align="center">
   <img src="https://github.com/VascoUP/BetterStorage/blob/master/ESOF-docs/resources/PULL.png">
 </p>
+
 
 Assim, o trabalho efetuado fica acresecentado à versão anterior do projeto, criando uma nova versão do mesmo que pode, de seguida, fazer parte das [*releases*](https://github.com/copygirl/BetterStorage/releases) publicadas.
 
 
 ##Casos de Uso
 
-Para determinar os requisitos a aplicar numa aplicação é necessário estar a par do tipo de utilização. No nosso caso, o desenvolvimento de um mod, apenas afeta, ligeiramente, o executável do jogo "Minecraft" em pequenos parâmetros:
+
+Para determinar os requisitos a aplicar numa aplicação é necessário estar a par do tipo de utilização. No nosso caso, o desenvolvimento de um *mod*, apenas afeta, ligeiramente, o executável do jogo **Minecraft** em pequenos parâmetros:
+
 
 <p align="center">
-  <img src="http://s22.postimg.org/rxpenrllt/Executavel.png">
+  <img src="https://github.com/VascoUP/BetterStorage/blob/master/ESOF-docs/resources/Executavel.png">
 </p>
 
-Por outro lado, já dentro do jogo, o mod permite acrescentar ao jogo novos tipos de armazenamento. Entre os armazenamentos que podem ser acrescentados: mochilas, baús reforçados, cadeados, capacetes, entre outros.
+
+Por outro lado, já dentro do jogo, o *mod* permite acrescentar ao jogo novos tipos de armazenamento como: *storage crates*, *backpacks*, *reinforced chests*, *armor stands*, *locks*, entre outros.
+
 
 <p align="center">
-  <img src="http://s22.postimg.org/t7eejk09d/Jogo.png">
+  <img src="https://github.com/VascoUP/BetterStorage/blob/master/ESOF-docs/resources/Jogo.png">
 </p>
+
 
 ##Domain Model
+
 
 <p align="center">
   <img src="https://github.com/VascoUP/BetterStorage/blob/master/ESOF-docs/resources/DOMAIN_MODEL.png">
 </p>
+
 
 ##Análise Crítica
 
@@ -112,6 +126,7 @@ Em suma, pode-se consluir que a abordagem utilizada é boa, mas não é perfeita
 
 
 ####Grupo 05, Turma 03:
+
 
 -	Bruno Santos (up201402962@fe.up.pt)
 -	Sara Fernandes (up201405955@fe.up.pt)
