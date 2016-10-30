@@ -14,7 +14,7 @@ Este *mod* permite, ainda, que sejam recolhidos recursos para, posteriormente, s
 ##Requisitos
 
 
-###Requisitos de sistema
+###Requisitos do sistema
 
 
 A versão mais recente do **BetterStorage** foi desenvolvida para o **Minecraft 1.7.10**. Para ser instalado e executado, o *mod* necessita que haja instalada uma versão compatível do respetivo jogo, assim como esteja presente uma versão atualizada do **Java**. É também necessário que se instale uma versão recente do [Minecraft Forge](https://files.minecraftforge.net/) (API de modding para o Minecraft).
@@ -41,7 +41,15 @@ Em relação aos requisitos pré-estabelecidos, não se pode concluir com exatid
 
 Cada pessoa que queira contribuir para este projeto pode fazer um novo [*branch*](https://github.com/copygirl/BetterStorage/branches), podendo-se fazer um [*pull request*](https://github.com/copygirl/BetterStorage/pulls) para, posteriormente, se adicionar o trabalho desenvolvido ao projeto principal. Este método permite estruturar o projeto de forma a que cada contribuidor possa desenvolver novas melhorias ou corrigir possíveis erros sem estar a interferir com o trabalho dos outros. Neste caso, não existem muitos colaboradores, existindo apenas 24, mas mesmo assim, poderiam haver muitos conflitos caso todos os *developers* quisessem trabalhar na “versão principal”, pois assim poderia haver código repetido, ou até código que não se conjuga-se entre si.
 
+Para além disso, a gestora do projeto deixa bem claro no ficheiro [README](https://github.com/VascoUP/BetterStorage/blob/master/README.md), presente no repositório do projeto, que todos os contribuidores devem manter a estrutura do projeto intacta, para não haver mudanças repentinas na estrutura repensada, previamente, pelo "núcleo principal" do **BetterStorage**.
+
 Relativamente às [*issues*](https://github.com/copygirl/BetterStorage/issues), já referidas, estas servem para reportar possíveis problemas, podendo ser uma espécie de lista de melhorias a fazer, uma vez que cada *developer* pode tentar resolver as mesmas, acabando por aperfeiçoar o projeto existente.
+
+
+###Especificação
+
+
+Mais uma vez, nenhum processo formal foi utilizado na especificação de requerimentos, visto que não existe nenhum documento **SRC (Software Requirements Specification)**. Este projeto apenas contém um ficheiro [README](https://github.com/VascoUP/BetterStorage/blob/master/README.md) onde está presente uma descrição do projeto e uma breve explicação acerca da preparação do "ambiente de desenvolvimento", com algumas explicações referentes aos requisitos não funcionais do projeto.
 
 
 ###Validação
