@@ -2,7 +2,7 @@
 
 
 
-##Introdução
+##Breve descrição do projeto e respetivas funcionalidades
 
 
 **BetterStorage** é um *mod* para o jogo [Minecraft](https://minecraft.net/pt/), desenvolvido em **Java**, e que tem como objectivo aumentar e diversificar as opções de armazenamento de recursos no jogo.
@@ -50,3 +50,11 @@ Por outro lado, já dentro do jogo, o mod permite acrescentar ao jogo novos tipo
 <p align="center">
   <img src="http://s22.postimg.org/t7eejk09d/Jogo.png">
 </p>
+
+##Domain Model
+
+##Análise Crítica
+
+##Referências
+
+##Contribuições
