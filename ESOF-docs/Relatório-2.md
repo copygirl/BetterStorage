@@ -57,7 +57,7 @@ Mais uma vez, nenhum processo formal foi utilizado na especificação de requeri
 
 Apesar de não haverem [*milestones*](https://github.com/copygirl/BetterStorage/milestones) nem *deadlines*, é necessário que haja algum tipo de validação relativamente às contribuições dos colaboradores, para que o seu contributo seja efetivamente benéfico para o projeto.
 
-No **BetterStorage** não existe nenhuma barreira que impeça os contribuidores de desenvolver novas melhorias para o *mod* de jogo tendo, somente, que aquando da junção do seu código com o código já existente pedir aprovação, principalmente, à “proprietária” do repositório, para que tal ocorra.
+No **BetterStorage** não existe nenhuma barreira que impeça os contribuidores de desenvolver novas melhorias para o *mod* tendo, somente, que aquando da junção do seu código com o código já existente pedir aprovação, principalmente, à “proprietária” do repositório, para que tal ocorra.
 
 Pode-se, no entanto, obter uma pré-validação das funcionalidades a implementar através do [fórum do Minecraft](http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/wip-mods/1442380-betterstorage-0-13-1-127-wip), onde cada contribuidor pode expor as suas ideias e sugerir novos requisitos para o projeto, podendo obter algum *feedback* dos outros *developers* e da principal responsável pelo projeto. Este não é um método que assegure uma validação certa das melhorias que estão a ser propostas, mas é uma forma de se saber se a ideia de um contribuidor tem fundamentos e se causa impacto no **BetterStorage**.
 
