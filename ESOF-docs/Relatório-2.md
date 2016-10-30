@@ -3,12 +3,13 @@
 
 
 
+
 ##Breve descrição do projeto e respetivas funcionalidades
 
 
 **BetterStorage** é um *mod* para o jogo [Minecraft](https://minecraft.net/pt/), desenvolvido em **Java**, e que tem como objectivo aumentar e diversificar as opções de armazenamento de recursos no jogo.
 
-Após serem recolhidos os respetivos recursos necessários para a construção das opções de armazenamento, o jogador pode colocar as mesmas no jogo. Estas opções de armazenamento podem ser: *storage crates*, *backpacks*, *reinforced chests*, *armor stands*, *locks*, entre outros.
+Após serem recolhidos os respetivos materiais necessários para a construção das opções de armazenamento, o jogador pode colocar as mesmas no jogo. Estas opções de armazenamento podem ser: *storage crates*, *backpacks*, *reinforced chests*, *armor stands*, *locks*, entre outros.
 
 
 ##Requisitos
@@ -17,7 +18,7 @@ Após serem recolhidos os respetivos recursos necessários para a construção d
 ###Requisitos do sistema
 
 
-A versão mais recente do **BetterStorage** foi desenvolvida para o **Minecraft 1.7.10**. Para ser instalado e executado, o *mod* necessita que haja instalada uma versão compatível do respetivo jogo, assim como esteja presente uma versão atualizada do **Java**. É também necessário que se instale uma versão recente do [Minecraft Forge](https://files.minecraftforge.net/) (API de modding para o Minecraft).
+A versão mais recente do **BetterStorage** foi desenvolvida para o **Minecraft 1.7.10**. Para ser instalado e executado, o *mod* necessita que haja instalada, igualmente, uma versão compatível do respetivo jogo, assim como esteja presente uma versão atualizada do **Java**. É também necessário que se instale uma versão recente do [Minecraft Forge](https://files.minecraftforge.net/) (API de modding para o Minecraft).
 
 
 ###Elicitação de requisitos
@@ -37,7 +38,7 @@ Os contribuidores (*developers*) têm como principal função corrigir [*issues*
 
 Em relação aos requisitos pré-estabelecidos, não se pode concluir com exatidão a maneira com que estes são criados, pois nunca foram propostas metas de trabalho, visto que não existem [*milestones*](https://github.com/copygirl/BetterStorage/milestones), contudo, cada contribuidor pode entrar em contacto com a [copygirl](https://github.com/copygirl), através das redes sociais da mesma ou através do fórum relativo ao projeto para verificar a possibilidade de trabalhar em novas versões do **BetterStorage**.
 
-Cada pessoa que queira contribuir para este projeto pode fazer um novo [*branch*](https://github.com/copygirl/BetterStorage/branches), podendo-se fazer um [*pull request*](https://github.com/copygirl/BetterStorage/pulls) para, posteriormente, se adicionar o trabalho desenvolvido ao projeto principal. Este método permite estruturar o projeto de forma a que cada contribuidor possa desenvolver novas melhorias ou corrigir possíveis erros sem estar a interferir com o trabalho dos outros. Neste caso, não existem muitos colaboradores, existindo apenas 24, mas mesmo assim, poderiam haver muitos conflitos caso todos os *developers* quisessem trabalhar na “versão principal”, pois assim poderia haver código repetido, ou até código que não se conjuga-se entre si.
+Cada pessoa que queira contribuir para este projeto pode fazer um novo [*branch*](https://github.com/copygirl/BetterStorage/branches), podendo-se fazer um [*pull request*](https://github.com/copygirl/BetterStorage/pulls) para, posteriormente, se adicionar o trabalho desenvolvido ao projeto principal. Este método permite estruturar o projeto de forma a que cada contribuidor possa desenvolver novas melhorias ou corrigir possíveis erros sem estar a interferir com o trabalho dos outros. Neste caso, não existem muitos colaboradores, existindo apenas 20, mas mesmo assim, poderiam haver muitos conflitos caso todos os *developers* quisessem trabalhar na “versão principal”, pois assim poderia haver código repetido, ou até código que não se conjugasse entre si.
 
 Para além disso, a gestora do projeto deixa bem claro no ficheiro [README](https://github.com/VascoUP/BetterStorage/blob/master/README.md), presente no repositório do projeto, que todos os contribuidores devem manter a estrutura do projeto intacta, para não haver mudanças repentinas na estrutura repensada, previamente, pelo "núcleo principal" do **BetterStorage**.
 
@@ -47,7 +48,7 @@ Relativamente às [*issues*](https://github.com/copygirl/BetterStorage/issues), 
 ###Especificação
 
 
-Mais uma vez, nenhum processo formal foi utilizado na especificação de requerimentos, visto que não existe nenhum documento **SRC (Software Requirements Specification)**. Este projeto apenas contém um ficheiro [README](https://github.com/VascoUP/BetterStorage/blob/master/README.md) onde está presente uma descrição do projeto e uma breve explicação acerca da preparação do "ambiente de desenvolvimento", com algumas explicações referentes aos requisitos não funcionais do projeto.
+Mais uma vez, nenhum processo formal foi utilizado na especificação de requerimentos, visto que não existe nenhum documento **SRC (Software Requirements Specification)**. Este projeto apenas contém um ficheiro [README](https://github.com/VascoUP/BetterStorage/blob/master/README.md) onde está presente uma descrição do projeto e um breve esclarecimento acerca da preparação do "ambiente de desenvolvimento", com algumas explicações referentes aos requisitos não funcionais do projeto.
 
 
 ###Validação
@@ -122,10 +123,10 @@ Em suma, pode-se concluir que a abordagem utilizada é boa, mas não é perfeita
 ##Contribuição do Grupo
 
 
-- Bruno Santos: 25%;
-- Sara Fernandes: 25%;
-- Vasco Pereira: 25%;
-- Vasco Ribeiro: 25%;
+- Bruno Santos: 25%
+- Sara Fernandes: 25%
+- Vasco Pereira: 25%
+- Vasco Ribeiro: 25%
 
 
 ##Identificação do Grupo
