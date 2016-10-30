@@ -15,7 +15,10 @@ Este *mod* permite, ainda, que sejam recolhidos recursos para, posteriormente, s
 
 ###Requisitos de sistema
 
-A versão mais recente do **BetterStorage** foi desenvolvida para o **Minecraft 1.7.10**. Para ser instalado e executar, o *mod* necessita que uma versão compatível do jogo e que o **Java** estejam instalados. Necessita também de uma versão recente do [Minecraft Forge](https://files.minecraftforge.net/) (API de modding para o Minecraft).
+A versão mais recente do **BetterStorage** foi desenvolvida para o **Minecraft 1.7.10**. Para ser instalado e executado, o *mod* necessita que haja instalada uma versão compatível do respetivo jogo, assim como esteja presente uma versão atualizada do **Java**. É também necessário que se instale uma versão recente do [Minecraft Forge](https://files.minecraftforge.net/) (API de modding para o Minecraft).
+
+Para que seja possível trabalhar na construção de novos *mods*, cada contribuidor precisa de todos os requisitos, anteriormente, referidos, assim como necessitam de um programa onde seja possível trabalhar o *mod* de jogo e que seja capaz de criar projetos através do ***gradle*** do **BetterStorage**, por exemplo, **Eclipse**. 
+
 
 
 ###Elicitação de requisitos
@@ -72,6 +75,10 @@ Dito isto, o grupo considerou que a abordagem adotada é de certa forma boa em a
 Uma das vantagens recai sobre o facto de se centralizar as decisões a serem tomadas, ou seja, as decisões acerca da aceitação dos *pull requests*, numa única pessoa, a [copygirl](https://github.com/copygirl), visto que permite que essa pessoa possa gerir por completo o projeto, estando a par de todas as modificações executadas, sabendo qual o estado de evolução do mesmo.
 
 Por outro lado, o facto de qualquer contribuidor ter a possibilidade de reportar [*issues*](https://github.com/copygirl/BetterStorage/issues) pode ser uma vantagem e ao mesmo tempo uma desvantagem. Primeiramente, pode ser um benefício, devido a permitir que se possa ter mais consciência dos problemas encontrados no projeto, uma vez que poderá haver uma maior reportação de [*issues*](https://github.com/copygirl/BetterStorage/issues) a resolver. Este facto é, também, uma desvantagem, pois assim qualquer pessoa pode reportar um problema e isso pode atrasar o desenvolvimento do projeto, visto que depois há a necessidade de verificar a veracidade das [*issues*](https://github.com/copygirl/BetterStorage/issues) assinaladas, sendo que, essencialmente, é a gestora do repositório que exerce essa função.
+
+Para além disso, o facto de não existirem [*milestones*](https://github.com/copygirl/BetterStorage/milestones) ou *deadlines* pode complicar a execução do trabalho, pois pode originar algum desleixo e desmotivação dos contribuidores do mesmo, assim como um prolongamento do tempo de execução das tarefas a que se propuseram.
+
+Em suma, pode-se consluir que a abordagem utilizada é boa, mas não é perfeita, pois existem desvantagens a ter em conta na mesma.
 
 
 ##Links Externos
