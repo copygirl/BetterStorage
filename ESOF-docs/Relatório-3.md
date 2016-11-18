@@ -28,6 +28,10 @@ No entanto, há um propósito para a distribuição do código pelos diferentes 
 
 ## Vista de Distribuição
 
+<p align="center">
+  <img src="https://github.com/VascoUP/BetterStorage/blob/master/ESOF-docs/resources/Deployment Model.png">
+</p>
+
 
 ## Análise Crítica
 
