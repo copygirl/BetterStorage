@@ -26,6 +26,9 @@ No entanto, há um propósito para a distribuição do código pelos diferentes 
 
 ## Vista Lógica
 
+<p align="center">
+  <img src="https://github.com/VascoUP/BetterStorage/blob/master/ESOF-docs/resources/Package_Diagram.png">
+</p>
 
 ## Vista de Implementação
 
