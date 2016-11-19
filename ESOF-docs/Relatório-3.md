@@ -32,7 +32,8 @@ De acordo com o que nos foi possível apurar depois de uma análise ao código, 
   <img src="https://github.com/VascoUP/BetterStorage/blob/master/ESOF-docs/resources/Package%20Diagram.png">
 </p>
 
-O package “ *Better Storage*” representa o início do jogo, isto é, onde ocorre a inicialização do programa. Este usa, então, vários packages para inicializar várias instancias necessárias ao desenvolvimento do jogo, inicializa o package “*Network*”, responsável pela parte de rede do jogo, o package “ *Config*”, responsável pelas configurações base do programa, o package “ *Content*”, que regista os “ *Items*”, “ *Entities*” e “ *Tiles*”, o package “ *Addon*” e por fim o package “ *Proxy*”. 
+O package “ *Better Storage*” representa o início do jogo, isto é, onde ocorre a inicialização do programa. Este usa, então, vários packages para inicializar várias instancias necessárias ao desenvolvimento do jogo, inicializa o package “*Network*”, responsável pela parte de rede do jogo, o package “ *Config*”, responsável pelas configurações base do programa, o package “ *Content*”, que regista os “ *Items*”, “ *Entities*” e “ *Tiles*”, o package “ *Addon*” e por fim o package “ *Proxy*”.
+
 De salientar, a existência de um package “ *Utils*” responsável por guardar todas as variáveis e/ou funções que são usadas em comum por outros packages. Deste modo, todos os Packages importam o package “ *Utils*”. No entanto, no diagrama UML foi retirado o *import* de todos os packages, ao mesmo, de forma a simplificar a leitura do diagrama, mesmo assim a inclusão do mesmo está implícito hierarquicamente.
 
 
