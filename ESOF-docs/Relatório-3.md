@@ -56,4 +56,20 @@ Após todos estes "requisitos" serem cumpridos, já se pode utilizar o *mod* atr
 ## Análise Crítica
 
 
+## Links Externos
+
+- Fórum do projeto: http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/wip-mods/1442380-betterstorage-0-13-1-127-wip
+
+
 ## Contribuições
+
+
+## Identificação do grupo
+
+####Grupo 05, Turma 03:
+
+
+-	Bruno Santos (up201402962@fe.up.pt)
+-	Sara Fernandes (up201405955@fe.up.pt)
+-	Vasco Pereira (up201403485@fe.up.pt)
+-	Vasco Ribeiro (up201402723@fe.up.pt)
