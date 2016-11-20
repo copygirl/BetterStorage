@@ -20,11 +20,11 @@
   Para o efeito, foram elaborados **cinco diagramas UML** representando cada uma das 5 vistas relativas ao modelo respetivo.
 
   Esses diagramas consistem em:
-    - **Diagrama de pacotes**, referente à vista lógica;
-    - **Diagrama de componentes**, referente à vista de implementação;
-    - **Diagrama de atividades**, referente à vista de processo;
-    - **Diagrama de distribuição**, referente à vista de distribuição;
-    - **Diagrama de casos de uso**, referente à vista de casos de uso, já elaborado no [relatório anterior](https://github.com/VascoUP/BetterStorage/blob/master/ESOF-docs/Relat%C3%B3rio-2.md).
+   - **Diagrama de pacotes**, referente à vista lógica;
+   - **Diagrama de componentes**, referente à vista de implementação;
+   - **Diagrama de atividades**, referente à vista de processo;
+   - **Diagrama de distribuição**, referente à vista de distribuição;
+   - **Diagrama de casos de uso**, referente à vista de casos de uso, já elaborado no [relatório anterior](https://github.com/VascoUP/BetterStorage/blob/master/ESOF-docs/Relat%C3%B3rio-2.md).
 
 
 <p align="center">
