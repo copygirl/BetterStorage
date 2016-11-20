@@ -23,10 +23,10 @@
   Para o efeito, foram elaborados **cinco diagramas UML** representando cada uma das 5 vistas relativas ao modelo respetivo.
 
   Esses diagramas consistem em:
-   - **Diagrama de pacotes**, referente à **vista lógica**;
+   - **Diagrama de packages**, referente à **vista lógica**;
    - **Diagrama de componentes**, referente à **vista de implementação**;
-   - **Diagrama de atividades**, referente à **vista de processo**;
    - **Diagrama de distribuição**, referente à **vista de distribuição**;
+   - **Diagrama de atividades**, referente à **vista de processo**;
    - **Diagrama de casos de uso**, referente à **vista de casos de uso**, já elaborado no [relatório anterior](https://github.com/VascoUP/BetterStorage/blob/master/ESOF-docs/Relat%C3%B3rio-2.md).
 
 
@@ -49,9 +49,9 @@
 </p>
 
 
-  O package "***Better Storage***” representa o início do jogo, isto é, onde ocorre a inicialização do programa. Este usa, então, vários packages para inicializar várias instancias necessárias ao desenvolvimento do jogo, inicializa o package “***Network***”, responsável pela parte de rede do jogo, o package “***Config***”, responsável pelas configurações base do programa, o package “***Content***”, que regista os “***Items***”, “***Entities***” e “***Tiles***”, o package “***Addon***” e por fim o package “***Proxy***”.
+  O *package* "***Better Storage***” representa o início do jogo, isto é, onde ocorre a inicialização do programa. Este usa, então, vários *packages* para inicializar várias instâncias necessárias ao desenvolvimento do jogo, inicializando o *package* “***Network***”, responsável pela parte de rede do jogo, o *package* “***Config***”, responsável pelas configurações base do programa, o *package* “***Content***”, que regista os “***Items***”, “***Entities***” e “***Tiles***”, o package “***Addon***” e por fim o *package* “***Proxy***”.
 
-  De salientar, a existência de um package “***Utils***” responsável por guardar todas as variáveis e/ou funções que são usadas em comum por outros packages. Deste modo, todos os Packages importam o package “***Utils***”. No entanto, no diagrama UML foi retirado o *import* de todos os packages, ao mesmo, de forma a simplificar a leitura do diagrama, mesmo assim a inclusão do mesmo está implícito hierarquicamente.
+  De salientar, a existência de um *package* “***Utils***” responsável por guardar todas as variáveis e/ou funções que são usadas em comum por outros *packages*. Deste modo, todos os *packages* importam o *package* “***Utils***”. No entanto, no diagrama UML foi retirado o *import* de todos os *packages*, ao mesmo, de forma a simplificar a leitura do diagrama, sendo que mesmo assim a inclusão do mesmo está implícito hierarquicamente.
 
 <a name = "vista implementacao" >
 ## Vista de Implementação
@@ -67,7 +67,7 @@
 </p>
 
 
-  O componente "chave" deste projeto é o componente **BetterStorage**, que tendo o mesmo nome que o *mod* desenvolvido, indica que é aquele onde estão centralizadas todas as funções principais, uma vez que é o mesmo que permite a criação do *mod*.
+  O componente "chave" deste projeto é o componente **BetterStorage**, que tendo o mesmo nome que o *mod* desenvolvido, indica que é aquele onde estão centralizadas todas as funções principais, uma vez que é o mesmo que permite a criação "final" do *mod*.
 
   O componente **Network** tem como objetivo primordial verificar se a ligação está a ser estabelecida pelo servidor ou pelo próprio cliente, permitindo a comunicação entre os mesmos.
 
@@ -77,9 +77,9 @@
 ## Vista de Distribuição
 
 
-  Um [**diagrama de distribuição**](https://en.wikipedia.org/wiki/Deployment_diagram) permite perceber quais os requisitos necessários para executar o projeto criado, mostando de que forma os artefactos do sistema são distribuídos pelos nós de *hardware*. Esses artefactos manifestam fisicamente os componentes de *software* e relacionam-se com certos componentes de *hardware*.
+  Um [**diagrama de distribuição**](https://en.wikipedia.org/wiki/Deployment_diagram) permite perceber quais os requisitos necessários para executar o projeto criado, mostrando de que forma os artefactos do sistema são distribuídos pelos nós de *hardware*. Esses artefactos manifestam fisicamente os componentes de *software* e relacionam-se com certos componentes de *hardware*.
 
-   Neste caso, o diagrama respetivo representação a vista de distribuição relativa à criação do *mod* **BetterStorage**.
+   Neste caso, o diagrama respetivo representa a vista de distribuição relativa à criação do *mod* **BetterStorage**.
 
 
 <p align="center">
@@ -94,6 +94,7 @@
 <a name = "vista processo" >
 ## Vista de Processo
 
+
   Um [**diagrama de actividade**](https://pt.wikipedia.org/wiki/Diagrama_de_atividade) permite saber como é o fluxo de controlo entre actividades num *software*.
   O diagrama respetivo à representação da vista de processo do *mod* **BetterStorage** é o seguinte:
 
@@ -102,10 +103,11 @@
   <img src="https://github.com/VascoUP/BetterStorage/blob/master/ESOF-docs/resources/Activity_Model.png">
 </p>
 
+
   O *mod* **BetterStorage** recorre ao [**Minecraft Forge**](https://files.minecraftforge.net/) para ser initializado no *Minecraft*. O [**Minecraft Forge**](https://files.minecraftforge.net/) é um *loader* que permite simplificar a compatibilidade entre *mods* e *Minecraft*. Para esse efeito, recorre aos 3 eventos vistos no diagrama acima:
-  * PreInitialization: ler configurações, criar blocos, items, etc., e colocá-los no *GameRegistry*;
-  * Load: fazer *setup* do *mod*, adicionar receitas ao registo;
-  * PostInitialization: gerir interações com outros *mods*.
+  * **PreInitialization**: ler configurações, criar blocos, items, etc., e colocá-los no *GameRegistry*;
+  * **Load**: fazer *setup* do *mod*, adicionar receitas ao registo;
+  * **PostInitialization**: gerir interações com outros *mods*.
 
 
 <a name = "analise" >
