@@ -94,7 +94,18 @@
 <a name = "vista processo" >
 ## Vista de Processo
 
+  Um [**diagrama de actividade**](https://pt.wikipedia.org/wiki/Diagrama_de_atividade) permite saber como é o fluxo de controlo entre actividades num *software*.
+  O diagrama respetivo à representação da vista de processo do *mod* **BetterStorage** é o seguinte:
 
+
+<p align="center">
+  <img src="https://github.com/VascoUP/BetterStorage/blob/master/ESOF-docs/resources/Activity_Model.png">
+</p>
+
+  O *mod* **BetterStorage** recorre ao [**Minecraft Forge**](https://files.minecraftforge.net/) para ser initializado no *Minecraft*. O [**Minecraft Forge**](https://files.minecraftforge.net/) é um *loader* que permite simplificar a compatibilidade entre *mods* e *Minecraft*. Para esse efeito, recorre aos 3 eventos vistos no diagrama acima:
+  * PreInitialization: ler configurações, criar blocos, items, etc., e colocá-los no *GameRegistry*;
+  * Load: fazer *setup* do *mod*, adicionar receitas ao registo;
+  * PostInitialization: gerir interações com outros *mods*.
 
 
 <a name = "analise" >
