@@ -1,6 +1,7 @@
 # Relatório 3
 
 
+
 ## Índice
 
 
@@ -22,11 +23,11 @@
   Para o efeito, foram elaborados **cinco diagramas UML** representando cada uma das 5 vistas relativas ao modelo respetivo.
 
   Esses diagramas consistem em:
-   - **Diagrama de pacotes**, referente à vista lógica;
-   - **Diagrama de componentes**, referente à vista de implementação;
-   - **Diagrama de atividades**, referente à vista de processo;
-   - **Diagrama de distribuição**, referente à vista de distribuição;
-   - **Diagrama de casos de uso**, referente à vista de casos de uso, já elaborado no [relatório anterior](https://github.com/VascoUP/BetterStorage/blob/master/ESOF-docs/Relat%C3%B3rio-2.md).
+   - **Diagrama de pacotes**, referente à **vista lógica**;
+   - **Diagrama de componentes**, referente à **vista de implementação**;
+   - **Diagrama de atividades**, referente à **vista de processo**;
+   - **Diagrama de distribuição**, referente à **vista de distribuição**;
+   - **Diagrama de casos de uso**, referente à **vista de casos de uso**, já elaborado no [relatório anterior](https://github.com/VascoUP/BetterStorage/blob/master/ESOF-docs/Relat%C3%B3rio-2.md).
 
 
 <p align="center">
@@ -100,7 +101,11 @@
 ## Conclusões e Análise Crítica
 
 
-  Antes de serem expostas todas as conclusões e análises relativas à arquitetura do **BetterStorage**, é importante referir que todos os diagramas criados e apresentados neste relatório são da autoria dos respetivos elementos do grupo de trabalho, não tendo havia qualquer ajuda por parte dos contribuidores principais do projeto, uma vez que não se conseguiu contactá-los para sabermos mais informações referentes ao **BetterStorage** e à sua arquitetura.
+  Antes de serem expostas todas as conclusões e análises relativas à arquitetura do **BetterStorage**, é importante referir que todos os diagramas criados e apresentados neste relatório são da autoria dos respetivos elementos do grupo de trabalho, não tendo havido qualquer ajuda por parte dos contribuidores principais do projeto, uma vez que não se conseguiu estabelecer contacto para saber mais informações referentes ao **BetterStorage** e à sua arquitetura.
+  
+  Dito isto, o grupo considerou que apesar de não haver uma arquitetura pré-estabelecida e bem definida, o **BetterStorage** está bem organizado, sendo dividido em diversos *packages* que contêm o código referente a essa parte do projeto. Contudo, apesar dos contribuidores terem uma ideia do que se passa em cada *package*, achámos que a análise relativa à arquitetura do projeto seria mais simples se os contribuidores comentassem o seu código ou criassem um documento explicativo acerca de cada pacote (*package*). 
+  
+  A falta de informação relativa à estruturação do **BetterStorage** dificultou um pouco a análise executada pelo grupo, no entanto não impediu que fossem executados os diagramas referentes ao [modelo de vistas **4+1**](https://es.wikipedia.org/wiki/Modelo_de_Vistas_de_Arquitectura_4%2B1). O único diagrama que pode ter um carácter subjetivo é o **diagrama de componentes** (vista de implementação), uma vez que o grupo pode ter uma interpretação relativa aos componentes do **BetterStorage**, que difere em relação à opinião e entendimento de outras pessoas.
   
   
 
@@ -109,7 +114,7 @@
 
    - Fórum do projeto: http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/wip-mods/1442380-betterstorage-0-13-1-127-wip
     
-   - Modelo de Vistas 4 + 1: https://es.wikipedia.org/wiki/Modelo_de_Vistas_de_Arquitectura_4%2B1
+   - Modelo de Vistas 4+1: https://es.wikipedia.org/wiki/Modelo_de_Vistas_de_Arquitectura_4%2B1
    
    - Diagrama de componentes: https://pt.wikipedia.org/wiki/Diagrama_de_componentes
 
