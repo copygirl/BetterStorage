@@ -106,6 +106,11 @@
 <a name = "contribuicoes" >
 ## Contribuições
 
+  - Bruno Santos: **25%**
+  - Sara Fernandes: **25%**
+  - Vasco Pereira: **25%**
+  - Vasco Ribeiro: **25%**
+
 <a name = "id" >
 ## Identificação do Grupo
 
