@@ -130,7 +130,10 @@
    - Diagrama de componentes: https://pt.wikipedia.org/wiki/Diagrama_de_componentes
 
    - Diagrama de distribuição: https://en.wikipedia.org/wiki/Deployment_diagram
+
+   - Diagrama de actividade: https://pt.wikipedia.org/wiki/Diagrama_de_atividade
    
+   - Como funciona o **Minecraft Forge**: http://greyminecraftcoder.blogspot.pt/2013/11/how-forge-starts-up-your-code.html
 
 <a name = "contribuicoes" >
 ## Contribuições
