@@ -7,12 +7,12 @@
   1. [Introdução](#introduction)
   2. [Vista Lógica](#vista lógica)
   3. [Vista de Implementação](#vista implementacao)
-  4. [Vista de distribuição](#vista distribuicao)
-  5. [Vista de processo](#vista processo)
-  6. [Análise Crítica](#analise)
+  4. [Vista de Distribuição](#vista distribuicao)
+  5. [Vista de Processo](#vista processo)
+  6. [Conclusões e Análise Crítica](#analise)
   7. [Links Externos](#links)
   8. [Contribuições](#contribuicoes)
-  9. [Identificação do grupo](#id)
+  9. [Identificação do Grupo](#id)
 
 <a name = "introduction" >
 ## Introdução
@@ -55,6 +55,7 @@
 <a name = "vista implementacao" >
 ## Vista de Implementação
 
+
   Um [**diagrama de componentes**](https://pt.wikipedia.org/wiki/Diagrama_de_componentes) permite saber como é que o *software* está decomposto, através da utilização de **componentes**.
 
   De seguida, é possível visualizar-se a análise feita à arquitetura do projeto do ponto de vista da implementação, detalhando os principais componentes do **BetterStorage** e interações entre eles.
@@ -74,6 +75,7 @@
 <a name = "vista distribuicao" >
 ## Vista de Distribuição
 
+
   Um [**diagrama de distribuição**](https://en.wikipedia.org/wiki/Deployment_diagram) permite perceber quais os requisitos necessários para executar o projeto criado, mostando de que forma os artefactos do sistema são distribuídos pelos nós de *hardware*. Esses artefactos manifestam fisicamente os componentes de *software* e relacionam-se com certos componentes de *hardware*.
 
    Neste caso, o diagrama respetivo representação a vista de distribuição relativa à criação do *mod* **BetterStorage**.
@@ -91,8 +93,16 @@
 <a name = "vista processo" >
 ## Vista de Processo
 
+
+
+
 <a name = "analise" >
-## Análise Crítica
+## Conclusões e Análise Crítica
+
+
+  Antes de serem expostas todas as conclusões e análises relativas à arquitetura do **BetterStorage**, é importante referir que todos os diagramas criados e apresentados neste relatório são da autoria dos respetivos elementos do grupo de trabalho, não tendo havia qualquer ajuda por parte dos contribuidores principais do projeto, uma vez que não se conseguiu contactá-los para sabermos mais informações referentes ao **BetterStorage** e à sua arquitetura.
+  
+  
 
 <a name = "links" >
 ## Links Externos
