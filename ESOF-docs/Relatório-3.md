@@ -35,7 +35,7 @@
 </p>
 
 
-  Depois de uma análise ao código do **BetterStorage**, a toda a sua arquitetura e forma como o mesmo está organizado, o grupo verificou que não existe uma arquitetua pré-estabelicida ou pré-definida. No entanto, todo o seu código está dividido em diferentes *packages*, de forma a organizar o código implementado e de forma a que todos os contribuidores consigam perceber qual a finalidade daquele *package* e por conseguinte, qual a finalidade do código nele presente.
+  Depois de uma análise ao código do **BetterStorage**, a toda a sua arquitetura e forma como o mesmo está organizado, o grupo verificou que não existe uma arquitetua pré-estabelicida ou pré-definida. No entanto, todo o seu código está dividido em diferentes *packages*, de forma a organizar o mesmo e de forma a que todos os contribuidores consigam perceber qual a finalidade daquele *package* e por conseguinte, qual a finalidade do código nele presente.
 
 <a name = "vista lógica" >
 ## Vista Lógica
@@ -105,7 +105,7 @@
 
 
   O *mod* **BetterStorage** recorre ao [**Minecraft Forge**](https://files.minecraftforge.net/) para ser inicializado no *Minecraft*. O [**Minecraft Forge**](https://files.minecraftforge.net/) é um *loader* que permite simplificar a compatibilidade entre *mods* e *Minecraft*. Para esse efeito, recorre aos 3 eventos vistos no diagrama acima:
-  * **PreInitialization**: ler configurações, criar blocos, items, entre outros, e colocando-os no *GameRegistry*;
+  * **PreInitialization**: ler configurações, criar blocos, items, entre outros, colocando-os no *GameRegistry*;
   * **Load**: fazer *setup* do *mod*, adicionar receitas ao registo;
   * **PostInitialization**: gerir interações com outros *mods*.
 
