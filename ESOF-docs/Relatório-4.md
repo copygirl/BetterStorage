@@ -1,6 +1,23 @@
 # Relatório 4
 
 ## Índice
+1. [Introdução](#introduction)
+2. [Grau de Testabilidade](#testability)
+  1. [Contrabilidade](#controllability)
+  2. [Observabilidade](#observability)
+  3. [Isolabilidade](#isolateability)
+  4. [Separação de preocupações](#preocupations)
+  5. [Percetibilidade](#understand)
+  6. [Heterogeneidade](#heterogeneidade)
+3. [Estatísticas de Teste](#statistics)
+4. [Bugs](#bugs)
+  1. [Identificação do bug a tratar](#bugid)
+  2. [Resolução do bug](#bugres)
+5. [Conclusão](#conclusion)
+6. [Links Externos](#links)
+7. [Contribuições](#contribuitions)
+8. [Identificação do Grupo](#idgrupe)
+
 
 <a name="introduction">
 ## Introdução
