@@ -31,7 +31,7 @@ public final class BetterStorageTileEntities {
 		GameRegistry.registerTileEntity(TileEntityPresent.class, Constants.containerPresent);
 		GameRegistry.registerTileEntity(TileEntityLockableDoor.class, Constants.lockableDoor);
 
-		Addon.registerTileEntitesAll();
+		//Addon.registerTileEntitesAll();
 		
 	}
 	

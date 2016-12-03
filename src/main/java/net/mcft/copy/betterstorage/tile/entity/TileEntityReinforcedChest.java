@@ -11,6 +11,11 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class TileEntityReinforcedChest extends TileEntityLockable {
+
+	// TileEntityConnactable stuff
+	
+	private static ForgeDirection[] neighbors = { ForgeDirection.EAST, ForgeDirection.NORTH,
+	                                              ForgeDirection.WEST, ForgeDirection.SOUTH };
 	
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -37,9 +42,6 @@ public class TileEntityReinforcedChest extends TileEntityLockable {
 	public int getColumns() { return BetterStorage.globalConfig.getInteger(GlobalConfig.reinforcedColumns); }
 	
 	// TileEntityConnactable stuff
-	
-	private static ForgeDirection[] neighbors = { ForgeDirection.EAST, ForgeDirection.NORTH,
-	                                              ForgeDirection.WEST, ForgeDirection.SOUTH };
 	
 	@Override
 	protected String getConnectableName() { return Constants.containerReinforcedChest; }

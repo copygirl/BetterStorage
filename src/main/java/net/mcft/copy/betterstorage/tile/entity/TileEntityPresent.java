@@ -49,6 +49,8 @@ public class TileEntityPresent extends TileEntityCardboardBox {
 	protected void onItemDropped(ItemStack stack) {
 		super.onItemDropped(stack);
 		NBTTagCompound compound = stack.getTagCompound();
+		if(compound==null) 
+			return ;
 		compound.setByte(TAG_COLOR_INNER, (byte)colorInner);
 		compound.setByte(TAG_COLOR_OUTER, (byte)colorOuter);
 		compound.setBoolean(TAG_SKOJANZA_MODE, skojanzaMode);
@@ -144,7 +146,9 @@ public class TileEntityPresent extends TileEntityCardboardBox {
 	}
 	
 	@Override
-	public void dropContents() {  }
+	public void dropContents() { 
+		// Do something when contents when dropping contents
+	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
