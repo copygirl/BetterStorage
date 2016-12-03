@@ -89,8 +89,24 @@ Podemos, assim, afirmar que quanto maior for a profundidade do componente, em re
 <a name="preocupations">
 ### Separação de Preocupações
 
+
+**Separação de preocupações**  é a fase em que o componente a ser testado tem responsabilidade única, clara e objetiva.
+
+A separação de preocupações / responsabilidades entre módulos, no **BetterStorage** está muito bem definida, como já foi referido no [relatório anterior](https://github.com/VascoUP/BetterStorage/blob/master/ESOF-docs/Relatório-3.md). Os responsáveis pelo **BetterStorage* optaram por dividir o código por diferentes *packages*, tentando estruturar o mesmo de forma simples, tentando evitar que haja repetição ou criação de código sem qualquer utilidade. Consuante a importância e a complexidade de cada fragmento de código, maior ou mais complexo será o *package* que o contém.
+
+Assim, verifica-se que este projeto tem uma boa **separação de preocupações**, o que faria com que cada componente fosse testado com um certo intuito, caso existissem testes unitários no **BetterStorage**.
+
+
 <a name="understand">
 ### Percetibilidade
+
+
+A **percetibilidade** é a fase onde o componente a ser testado se encontra bem documentado e auto-explicativo.
+
+Como já indicado no [relatório anterior](https://github.com/VascoUP/BetterStorage/blob/master/ESOF-docs/Relat%C3%B3rio-3.md), praticamente todos os módulos do **BetterStorage** não se encontram documentados ou detêm quaiquer tipos de ficheiros auto-explicativos havendo, somente, um número escasso de funções com algumas explicações.
+
+Isto torna muito complicada a perceção e compreensão do código por parte de contribuidores externos fazendo com que, caso houvessem testes unitários, fosse mais difícil a resolução de problemas que poderiam ocorrer, uma vez que um possível contribuidor podia não compreender o que certa função estaria a fazer.
+
 
 <a name="heterogeinidade">
 ### Heterogeneidade
