@@ -1,6 +1,10 @@
 # Relatório 4
 
+
+
 ## Índice
+
+
 1. [Introdução](#introduction)
 2. [Grau de Testabilidade](#testability)
   1. [Contrabilidade](#controllability)
@@ -32,13 +36,24 @@ O processo de **verificação** e **validação** permite confirmar que o *softw
   <img src="https://github.com/VascoUP/BetterStorage/blob/master/ESOF-docs/resources/VerificationValidation.jpg">
 </p>
 
+<p align="center">
+  Figura 1 - Diagrama referente à verificação e validação de software
+</p>
+
+
 O componente de **verificação** tenta garantir, principalmente, através de análises, que os produtos do trabalho e o próprio trabalho final são "bem construídos", isto é, que estão em conformidade com os seus requisitos especificados.
 
 Já o componente de **validação** tenta garantir, através de testes, que o produto final cumpre com a sua intenção. Este pode, igualmente, ser aplicado a produtos intermédios, do respetivo trabalho, como uma espécie de previsão relativa a como é que o produto final irá satisfazer as necessidades do usuário.
 
+
 <p align="center">
   <img src="https://github.com/VascoUP/BetterStorage/blob/master/ESOF-docs/resources/VerificationValidation2.png">
 </p>
+
+<p align="center">
+  Figura 2 - Esquema de interligação entre a verificação e validação de software
+</p>
+
 
 O **BetterStorage**, por ser um projeto "livre" onde qualquer um pode ser um contribuidor, podendo participar no desenvolvimento do mesmo, sofre de alguns problemas de testabilidade. Este não contém um módulo relativo a testes, uma vez que tanto a *developer* principal, [copygirl](http://github.com/copygirl) como os restantes contribuidores preferiram criar código e testá-lo manualmente, jogando o jogo *Minecraft*, verificando aí a possível existência de erros.
 
@@ -117,17 +132,52 @@ Isto torna muito complicada a perceção e compreensão do código por parte de 
 
 Visto que, como já referido anteriormente, o **BetterStorage** não contem um módulo com testes unitários, é impossível analisar a percentagem de **cobertura** dos mesmos, assim como tudo o que poderá advir destes.
 
-Apesar de não se conseguir estimar percentagens relativas aos testes, através do site [codacy](https://www.codacy.com/app/saracouto1318/BetterStorage/dashboard), conseguimos perceber um pouco mais acerca do **BetterStorage**, tendo obtido diversas informações relativas ao **estilo de código**, **compatibilidade** do mesmo, **possibilidade de ocorrência de erros**, **performance**, **segurança** e **percentagem de código não usado**. 
+Apesar de não se conseguir estimar percentagens relativas aos testes, através do site [codacy](https://www.codacy.com), conseguimos perceber um pouco mais acerca do **BetterStorage**, tendo obtido diversas informações relativas ao **estilo de código**, **compatibilidade** do mesmo, **possibilidade de ocorrência de erros**, ***performance***, **segurança** e **percentagem de código não usado**.
+
+Ao todo encontraram-se **203** ***issues*** relativamente ao código desenvolvido no **BetterStorage**.
+
+
+<p align="center">
+  <img src="https://github.com/VascoUP/BetterStorage/blob/master/ESOF-docs/resources/issuesCodacy.png">
+</p>
+
+<p align="center">
+  Figura 3 - Issues reportados pelo site codacy
+</p>
+
+
+As ***issues*** reportadas, como se pode ver através da figura anterior, têm uma distribuição percentual diferente. Essa distribuição pode ser vista em:
+
 
 <p align="center">
   <img src="https://github.com/VascoUP/BetterStorage/blob/master/ESOF-docs/resources/codacy.png">
 </p>
 
+<p align="center">
+  Figura 4 - Distribuição percentual das issues
+</p>
+
+
 Em relação ao **estilo do código**, com uma percentagem de **95%**, pode-se concluir que o **BetterStorage** está implementado com um bom estilo de desenvolvimento, onde os **5%** que faltam para atingir a “perfeição” se referem a métodos vazios, disposição da inicialização de variáveis no código e a métodos com uma definição demasiado longa. Este pequenos “erros” de estilo estão distribuídos uniformemente pelo **BetterStorage**, não havendo um módulo ou componente onde haja uma incidência mais acentuada dos mesmos.
 
-Relativamente à **compatibilidade do código**, com uma percentagem de **100%**, unicamente se pode concluir que é um projeto perfeitamente compatível com a linguagem de programação utilizada (linguagem Java).
+Relativamente à **compatibilidade do código**, com uma percentagem de **100%**, unicamente se pode concluir que é um projeto perfeitamente compatível com a linguagem de programação utilizada (linguagem *Java*).
 
 No caso da **possibilidade de ocorrência de erros** a percentagem marcada é de **39%**, o que significa que existe uma possibilidade de **61%** de ocorrência de erros. Todos os problemas apontados como possíveis potencializadores de erros são pequenos pormenores, cuja maior incidência recai sobre o uso do operador de comparação de igualdade (**'=='**) em vez da função **equals()**, para comparar referências a objetos, ou sobre a reatribuição de parâmetros.
+
+Tanto em termos de ***performance*** como de **segurança**, através da análise da percentagem obtida, que em ambos os casos é de **100%**, chegou-se à conclusão que o **BetterStorage** é executado da melhor forma possível, tendo código perfeitamente seguro.
+
+Por fim, em relação à percentagem de **código não utilizado**, pode-se verificar que esta é de **8%**, uma vez que o [codacy do projeto](https://www.codacy.com/app/saracouto1318/BetterStorage/dashboard) marca **92%** de código usado. Isto significa que praticamente todo o código desenvolvido para o **BetterStorage** é utilizado, o que faz com que se conclua que por norma ao haver contribuições para o mesmo estas são assertivas e realizáveis, uma vez que contribuem verdadeiramente para o projeto.
+
+Assim, o projeto é classificado pelo [codacy](https://www.codacy.com) como um projeto de **nível B**, o que significa que é um bom projeto, a nível estrutural e de desenvolvimento de código,  com algumas falhas, falhas estas que podem causar erros futuros, mas com um peso percentual, avaliando no geral, um pouco reduzido.
+
+
+<p align="center">
+  <img src="https://github.com/VascoUP/BetterStorage/blob/master/ESOF-docs/resources/certification.png">
+</p>
+
+<p align="center">
+  Figura 5 - Certificação do projeto
+</p>
 
 
 <a name="bugs">
@@ -144,8 +194,32 @@ No caso da **possibilidade de ocorrência de erros** a percentagem marcada é de
 <a name="links">
 ## Links Externos
 
+
+  - **Verificação e validação de** ***software***: 
+  
+  
+     - http://testenext.blogspot.pt/2012/10/teste-de-software.html
+      
+     - http://www.lbd.dcc.ufmg.br/colecoes/ihc/2000/0002.pdf
+      
+     - https://moodle.up.pt/pluginfile.php/84648/mod_resource/content/1/ESOF-VV.pdf
+      
+  
+  - **Codacy**: https://www.codacy.com
+  
+  
+  - **Codacy do BetterStorage**: https://www.codacy.com/app/saracouto1318/BetterStorage/dashboard
+
 <a name="contribuitions">
 ## Contribuições
 
 <a name="idgrupe">
 ## Identificação do Grupo
+
+
+####Grupo 05, Turma 03:
+
+   - Bruno Santos (up201402962@fe.up.pt)
+   - Sara Fernandes (up201405955@fe.up.pt)
+   - Vasco Pereira (up201403485@fe.up.pt)
+   - Vasco Ribeiro (up201402723@fe.up.pt)
