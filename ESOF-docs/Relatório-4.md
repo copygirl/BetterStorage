@@ -14,7 +14,7 @@
   5. [Percetibilidade](#understand)
   6. [Heterogeneidade](#heterogeneidade)
 3. [Estatísticas de Teste](#statistics)
-4. [Bugs](#bugs)
+4. [Bug](#bugs)
   1. [Identificação do bug a tratar](#bugid)
   2. [Resolução do bug](#bugres)
 5. [Conclusão](#conclusion)
@@ -188,10 +188,15 @@ Assim, o projeto é classificado pelo [codacy](https://www.codacy.com) como um p
 
 
 <a name="bugs">
-## Bugs
+## Bug
+
+
+Um ***bug*** consiste num erro relativo ao funcionamento de um *software*, consistindo numa falha lógica de um programa, podendo causar comportamentos inesperados, sendo causados por erros no prórpio código-fonte, na maior parte das vezes.
+
 
 <a name="bugid">
 ### Identificação do bug a tratar
+
 <a name="bugres">
 ### Resolução do bug
 
@@ -216,6 +221,9 @@ Assim, o projeto é classificado pelo [codacy](https://www.codacy.com) como um p
   
   
   - **Codacy do BetterStorage**: https://www.codacy.com/app/saracouto1318/BetterStorage/dashboard
+  
+  
+  - ***Bug***: https://pt.wikipedia.org/wiki/Bug
 
 <a name="contribuitions">
 ## Contribuições
