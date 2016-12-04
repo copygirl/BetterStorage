@@ -98,6 +98,13 @@ Podemos, assim, afirmar que quanto maior for a profundidade do componente, em re
 <a name="observability">
 ### Observabilidade
 
+A **observabilidade** é a capacidade de analisando os resultados dos testes, conseguir interpretar os testes e perceber a origem de diversas falhas possíveis.
+
+Uma vez que o **Better Storage** não contém testes, torna-se difícil analisar a **observabilidade** que teriam os mesmos, pois esta depende também da técnica usada para implementar os testes.
+
+No entanto, caso se implementassem testes unitários seria útil ter informações sobre *Code Coverage* (tamanho da cobertura dos testes), *FindBugs* (zonas do código que pode originar bugs), e *Checkstyle* (se usa sempre o mesmo estilo de código em todo o sítio). Principalmente, com estes 3 tipos de testes, a **observabilidade** seria muito boa e de fácil interpretação pois os resultados dos testes, assim divididos, permitiriam uma melhor perceção das falhas do código.
+
+
 <a name="isolateability">
 ### Isolabilidade
 
