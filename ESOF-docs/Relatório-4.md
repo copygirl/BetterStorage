@@ -114,6 +114,22 @@ Isto torna muito complicada a perceção e compreensão do código por parte de 
 <a name="statistics">
 ## Estatísticas de Teste
 
+
+Visto que, como já referido anteriormente, o **BetterStorage** não contem um módulo com testes unitários, é impossível analisar a percentagem de **cobertura** dos mesmos, assim como tudo o que poderá advir destes.
+
+Apesar de não se conseguir estimar percentagens relativas aos testes, através do site [codacy](https://www.codacy.com/app/saracouto1318/BetterStorage/dashboard), conseguimos perceber um pouco mais acerca do **BetterStorage**, tendo obtido diversas informações relativas ao **estilo de código**, **compatibilidade** do mesmo, **possibilidade de ocorrência de erros**, **performance**, **segurança** e **percentagem de código não usado**. 
+
+<p align="center">
+  <img src="https://github.com/VascoUP/BetterStorage/blob/master/ESOF-docs/resources/codacy.png">
+</p>
+
+Em relação ao **estilo do código**, com uma percentagem de **95%**, pode-se concluir que o **BetterStorage** está implementado com um bom estilo de desenvolvimento, onde os **5%** que faltam para atingir a “perfeição” se referem a métodos vazios, disposição da inicialização de variáveis no código e a métodos com uma definição demasiado longa. Este pequenos “erros” de estilo estão distribuídos uniformemente pelo **BetterStorage**, não havendo um módulo ou componente onde haja uma incidência mais acentuada dos mesmos.
+
+Relativamente à **compatibilidade do código**, com uma percentagem de **100%**, unicamente se pode concluir que é um projeto perfeitamente compatível com a linguagem de programação utilizada (linguagem Java).
+
+No caso da **possibilidade de ocorrência de erros** a percentagem marcada é de **39%**, o que significa que existe uma possibilidade de **61%** de ocorrência de erros. Todos os problemas apontados como possíveis potencializadores de erros são pequenos pormenores, cuja maior incidência recai sobre o uso do operador de comparação de igualdade (**'=='**) em vez da função **equals()**, para comparar referências a objetos, ou sobre a reatribuição de parâmetros.
+
+
 <a name="bugs">
 ## Bugs
 
