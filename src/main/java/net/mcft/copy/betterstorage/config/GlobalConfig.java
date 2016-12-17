@@ -15,18 +15,19 @@ public class GlobalConfig extends Config {
 	public static IntegerSetting stationAutocraftDelaySetting;
 	
 	// Tiles
-	public static final String crateEnabled            = "tile.crate";
-	public static final String reinforcedChestEnabled  = "tile.reinforcedChest";
-	public static final String lockerEnabled           = "tile.locker";
-	public static final String armorStandEnabled       = "tile.armorStand";
-	public static final String backpackEnabled         = "tile.backpack";
-	public static final String enderBackpackEnabled    = "tile.enderBackpack";
-	public static final String cardboardBoxEnabled     = "tile.cardboardBox";
-	public static final String reinforcedLockerEnabled = "tile.reinforcedLocker";
-	public static final String craftingStationEnabled  = "tile.craftingStation";
-	public static final String flintBlockEnabled       = "tile.flintBlock";
-	public static final String lockableDoorEnabled     = "tile.lockableDoor";
-	public static final String presentEnabled          = "tile.present";
+	public static final String crateEnabled             = "tile.crate";
+	public static final String reinforcedChestEnabled   = "tile.reinforcedChest";
+	public static final String lockerEnabled            = "tile.locker";
+	public static final String armorStandEnabled        = "tile.armorStand";
+	public static final String backpackEnabled          = "tile.backpack";
+	public static final String enderBackpackEnabled     = "tile.enderBackpack";
+	public static final String cardboardBackpackEnabled = "tile.cardboardBackpack";
+	public static final String cardboardBoxEnabled      = "tile.cardboardBox";
+	public static final String reinforcedLockerEnabled  = "tile.reinforcedLocker";
+	public static final String craftingStationEnabled   = "tile.craftingStation";
+	public static final String flintBlockEnabled        = "tile.flintBlock";
+	public static final String lockableDoorEnabled      = "tile.lockableDoor";
+	public static final String presentEnabled           = "tile.present";
 	
 	// Items
 	public static final String keyEnabled            = "item.key";
@@ -94,6 +95,7 @@ public class GlobalConfig extends Config {
 		new BooleanSetting(this, armorStandEnabled, true, "tile.betterstorage.armorStand.name").setHasComment(false).setRequiresMcRestart(true);
 		new BooleanSetting(this, backpackEnabled, true, "tile.betterstorage.backpack.name").setHasComment(false).setRequiresMcRestart(true);
 		new BooleanSetting(this, enderBackpackEnabled, true, "tile.betterstorage.enderBackpack.name").setHasComment(false).setRequiresMcRestart(true);
+		new BooleanSetting(this, cardboardBackpackEnabled, true, "tile.betterstorage.cardboardBackpack.name").setHasComment(false).setRequiresMcRestart(true);
 		new BooleanSetting(this, cardboardBoxEnabled, true, "tile.betterstorage.cardboardBox.name").setHasComment(false).setRequiresMcRestart(true);
 		new BooleanSetting(this, reinforcedLockerEnabled, true, "tile.betterstorage.reinforcedLocker.name").setHasComment(false).setRequiresMcRestart(true);
 		new BooleanSetting(this, craftingStationEnabled, true, "tile.betterstorage.craftingStation.name").setHasComment(false).setRequiresMcRestart(true);

@@ -56,21 +56,37 @@ public abstract class Addon {
 		addons.add(this);
 	}
 	
-	public void setupConfig() {  }
+	public void setupConfig() {
+		// To be overwritten
+	}
 	
-	public void initializeItems() {  }
+	public void initializeItems() { 
+		// To be overwritten
+	}
 	
-	public void initializeBlocks() {  }
+	public void initializeBlocks() { 
+		// To be overwritten
+	}
 	
-	public void addRecipes() {  }
+	public void addRecipes() { 
+		// To be overwritten
+	}
 	
-	public void registerEntities() {  }
+	public void registerEntities() { 
+		// To be overwritten
+	}
 	
-	public void registerTileEntities() {  }
+	public void registerTileEntities() { 
+		// To be overwritten
+	}
 	
 	@SideOnly(Side.CLIENT)
-	public void registerRenderers() {  }
+	public void registerRenderers() { 
+		// To be overwritten
+	}
 	
-	public void postInitialize() {  }
+	public void postInitialize() { 
+		// To be overwritten		
+	}
 	
 }

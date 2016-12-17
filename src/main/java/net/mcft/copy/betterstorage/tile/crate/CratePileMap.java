@@ -90,8 +90,12 @@ public class CratePileMap {
 		if (region.contains(x, y, z)) {
 			internalSet(x - mapRegion.minX, y - mapRegion.minY * 8, z - mapRegion.minZ, value);
 			if (!value) {
-				int minX = region.minX, minY = region.minY, minZ = region.minZ;
-				int maxX = region.maxX, maxY = region.maxY, maxZ = region.maxZ;
+				int minX = region.minX;
+				int minY = region.minY;
+				int minZ = region.minZ;
+				int maxX = region.maxX;
+				int maxY = region.maxY;
+				int maxZ = region.maxZ;
 				if ((x == minX) && checkCuboid(minX, minY, minZ, minX, maxY, maxZ)) region.minX += 1;
 				if ((y == minY) && checkCuboid(minX, minY, minZ, maxX, minY, maxZ)) region.minY += 1;
 				if ((z == minZ) && checkCuboid(minX, minY, minZ, maxX, maxY, minZ)) region.minZ += 1;

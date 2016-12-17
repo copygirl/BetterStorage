@@ -110,6 +110,7 @@ public class ThaumcraftAddon extends Addon {
 		addAspectsFor(BetterStorageTiles.craftingStation, -1, true, Aspect.CRAFT, 6, Aspect.MECHANISM, 4);
 		
 		addAspectsFor(BetterStorageItems.itemBackpack, -1, true, Aspect.VOID, 4, Aspect.EXCHANGE, 6);
+		addAspectsFor(BetterStorageItems.itemCardboardBackpack, -1, true, Aspect.VOID, 4, Aspect.EXCHANGE, 6);
 		addAspectsFor(BetterStorageItems.itemEnderBackpack, -1, true, Aspect.DARKNESS, 8, Aspect.VOID, 4, Aspect.EXCHANGE, 8,
 		                                             Aspect.TRAVEL, 4, Aspect.ELDRITCH, 4, Aspect.MAGIC, 4);
 		

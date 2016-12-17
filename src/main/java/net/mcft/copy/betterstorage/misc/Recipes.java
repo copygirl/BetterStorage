@@ -36,7 +36,7 @@ public final class Recipes {
 		addCardboardRecipes();
 		
 		GameRegistry.addRecipe(new DyeRecipe());
-		Addon.addRecipesAll();
+		//Addon.addRecipesAll();
 		
 	}
 	
@@ -262,6 +262,13 @@ public final class Recipes {
 					"/ ",
 					"/ ", 'o', "sheetCardboard",
 					      '/', Items.stick));
+		}
+		
+		if (BetterStorageItems.itemCardboardBackpack != null) {			
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BetterStorageItems.itemCardboardBackpack),
+				" o ",
+				"ooo",
+				"ooo", 'o', "sheetCardboard"));
 		}
 		
 		if (BetterStorageItems.anyCardboardItemsEnabled) {
