@@ -89,7 +89,7 @@ public final class BetterStorageItems {
 		if (cardboardSheet != null)
 			OreDictionary.registerOre("sheetCardboard", cardboardSheet);
 		
-		Addon.initializeItemsAll();
+		//Addon.initializeItemsAll();
 		
 	}
 	private static ItemCardboardArmor conditionalNewArmor(String configName, int armorType) {

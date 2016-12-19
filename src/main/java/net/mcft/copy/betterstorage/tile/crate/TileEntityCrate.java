@@ -67,7 +67,9 @@ public class TileEntityCrate extends TileEntityContainer implements IInventory, 
 	/** Destroys all crates above, and makes sure when piles split,
 	 *  each pile gets their own CratePileData object. */
 	private void checkPileConnections(CratePileData data) {
-		int x = xCoord, y = yCoord, z = zCoord;
+		int x = xCoord;
+		int y = yCoord;
+		int z = zCoord;
 		
 		// Destroy all crates above.
 		TileEntityCrate crateAbove = WorldUtils.get(worldObj, x, y + 1, z, TileEntityCrate.class);

@@ -48,7 +48,7 @@ public final class BetterStorageTiles {
 		lockableDoor     = MiscUtils.conditionalNew(TileLockableDoor.class, GlobalConfig.lockableDoorEnabled);
 		present          = MiscUtils.conditionalNew(TilePresent.class, GlobalConfig.presentEnabled);
 		
-		Addon.initializeTilesAll();
+		//Addon.initializeTilesAll();
 		
 	}
 	

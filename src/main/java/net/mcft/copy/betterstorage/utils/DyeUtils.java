@@ -55,7 +55,9 @@ public final class DyeUtils {
 	public static int getColorFromDyes(int color, Collection<ItemStack> dyes) {
 		int number = dyes.size();
 		if (number < 1) return -1;
-		int r = 0, g = 0, b = 0;
+		int r = 0;
+		int g = 0;
+		int b = 0;
 		if (color >= 0) {
 			r = (color >> 16);
 			g = ((color >> 8) & 0xFF);

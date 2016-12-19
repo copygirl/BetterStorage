@@ -126,7 +126,7 @@ public class ClientProxy extends CommonProxy {
 		lockableDoorRenderId = registerTileEntityRenderer(TileEntityLockableDoor.class, new TileEntityLockableDoorRenderer());
 		presentRenderId = registerTileEntityRenderer(TileEntityPresent.class, new TileEntityPresentRenderer());
 		RenderingRegistry.registerBlockHandler(new TileLockableDoorRenderingHandler());
-		Addon.registerRenderersAll();
+		//Addon.registerRenderersAll();
 		
 	}
 	

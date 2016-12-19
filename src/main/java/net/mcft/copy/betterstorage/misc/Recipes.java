@@ -36,7 +36,7 @@ public final class Recipes {
 		addCardboardRecipes();
 		
 		GameRegistry.addRecipe(new DyeRecipe());
-		Addon.addRecipesAll();
+		//Addon.addRecipesAll();
 		
 	}
 	

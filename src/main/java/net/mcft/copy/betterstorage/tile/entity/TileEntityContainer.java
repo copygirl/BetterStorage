@@ -36,6 +36,12 @@ public abstract class TileEntityContainer extends TileEntity {
 	public float lidAngle = 0;
 	public float prevLidAngle = 0;
 	
+	// Comparator related
+	
+	private boolean compAccessedOnLoad = false;
+	private boolean compAccessed = false;
+	private boolean compContentsChanged = false;
+	
 	/** The amount of columns in the container. */
 	public int getColumns() { return 9; }
 	/** The amount of rows in the container. */
@@ -151,7 +157,9 @@ public abstract class TileEntityContainer extends TileEntity {
 	 *  Sets things like the material taken from the stack. <br>
 	 *  Only gets called if an ItemRendererContainer is registered.*/
 	@SideOnly(Side.CLIENT)
-	public void onBlockRenderAsItem(ItemStack stack) {  }
+	public void onBlockRenderAsItem(ItemStack stack) {  
+		// Do something if necessary
+	}
 	
 	// Redstone related
 	
@@ -176,22 +184,24 @@ public abstract class TileEntityContainer extends TileEntity {
 	}
 	
 	/** Called when redstone power going to this block changes. */
-	protected void onRedstonePowerChanged(int previousPower, int currentPower) {  }
+	protected void onRedstonePowerChanged(int previousPower, int currentPower) {  
+		//Might be used in the future
+	}
 	/** Called when redstone power going to this block activates. */
-	protected void onRedstoneActivated() {  }
+	protected void onRedstoneActivated() {  
+		//Might be used in the future
+	}
 	/** Called when redstone power going to this block deactivates. */
-	protected void onRedstoneDeactivated() {  }
+	protected void onRedstoneDeactivated() {
+		//Might be used in the future
+	}
 	
 	/** Returns the strong redstone signal power going into this block. */
 	protected int getStrongRedstoneSignal() { return worldObj.getBlockPowerInput(xCoord, yCoord, zCoord); }
 	/** Returns the weak redstone signal power going into this block. */
 	protected int getWeakRedstoneSignal() { return worldObj.getStrongestIndirectPower(xCoord, yCoord, zCoord); }
-	
+
 	// Comparator related
-	
-	private boolean compAccessedOnLoad = false;
-	private boolean compAccessed = false;
-	private boolean compContentsChanged = false;
 	
 	protected boolean hasComparatorAccessed() { return compAccessed; }
 	protected boolean hasContentsChanged() { return compContentsChanged; }
