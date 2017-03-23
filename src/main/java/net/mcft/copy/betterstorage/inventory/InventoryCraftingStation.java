@@ -66,7 +66,7 @@ public class InventoryCraftingStation extends InventoryBetterStorage {
 	public void inputChanged() {
 		progress = 0;
 		currentCrafting = BetterStorageCrafting.findMatchingStationCrafting(crafting);
-		if (currentCrafting == null)
+		if ((currentCrafting == null) && GlobalConfig.enableStationVanillaCraftingSetting.getValue())
 			currentCrafting = VanillaStationCrafting.findVanillaRecipe(this);
 		updateGhostOutput();
 	}

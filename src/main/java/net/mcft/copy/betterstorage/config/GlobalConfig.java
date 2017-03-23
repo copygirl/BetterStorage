@@ -12,6 +12,7 @@ public class GlobalConfig extends Config {
 	public static BooleanSetting enableCrateInventoryInterfaceSetting;
 	public static BooleanSetting enableCrateStorageInterfaceSetting;
 	public static BooleanSetting enableStationAutoCraftingSetting;
+	public static BooleanSetting enableStationVanillaCraftingSetting;
 	public static IntegerSetting stationAutocraftDelaySetting;
 	
 	// Tiles
@@ -75,6 +76,7 @@ public class GlobalConfig extends Config {
 	public static final String cardboardBoxShowContents      = "general.cardboardBoxShowContents";
 	
 	public static final String enableStationAutoCrafting     = "general.enableStationAutoCrafting";
+	public static final String enableStationVanillaCrafting  = "general.enableStationVanillaCrafting";
 	public static final String stationAutocraftDelay         = "general.stationAutocraftDelay";
 	
 	public static final String lockBreakable                 = "general.lockBreakable";
@@ -168,6 +170,9 @@ public class GlobalConfig extends Config {
 		enableStationAutoCraftingSetting =
 		new BooleanSetting(this, enableStationAutoCrafting, false).setSynced().setComment(
 				"If enabled, automated systems can pull out of crafting stations and therefore auto-craft items.");
+		enableStationVanillaCraftingSetting =
+		new BooleanSetting(this, enableStationVanillaCrafting, true).setSynced().setComment(
+				"If enabled, regular vanilla crafting recipes can be made inside crafting stations.");
 		stationAutocraftDelaySetting =
 		new IntegerSetting(this, stationAutocraftDelay, 10).setValidRange(0, Integer.MAX_VALUE).setComment(
 				"Delay between recipes being autocrafted in the crafting station, in ticks. (Default: 10)");
