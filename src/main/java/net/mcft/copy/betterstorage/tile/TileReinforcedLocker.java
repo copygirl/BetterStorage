@@ -57,8 +57,12 @@ public class TileReinforcedLocker extends TileLockable {
 	
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
-		float minX = 0, minY = 0, minZ = 0;
-		float maxX = 1, maxY = 1, maxZ = 1;
+		float minX = 0;
+		float minY = 0;
+		float minZ = 0;
+		float maxX = 1;
+		float maxY = 1;
+		float maxZ = 1;
 		switch (WorldUtils.get(world, x, y, z, TileEntityLocker.class).getOrientation()) {
 			case EAST: maxX -= 1.0F / 16; break;
 			case WEST: minX += 1.0F / 16; break;

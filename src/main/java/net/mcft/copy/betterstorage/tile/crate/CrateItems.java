@@ -42,7 +42,8 @@ public class CrateItems {
 	 *  and marks the weighted map as dirty if necessary. */
 	public void set(ItemIdentifier item, int amount) {
 		ItemStack stack = itemsMap.get(item);
-		int stacksBefore, stacksAfter;
+		int stacksBefore;
+		int stacksAfter;
 		if (stack != null) {
 			if (amount == stack.stackSize) return;
 			stacksBefore = StackUtils.calcNumStacks(stack);

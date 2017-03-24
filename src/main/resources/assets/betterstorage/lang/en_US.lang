@@ -4,6 +4,7 @@ container.betterstorage.backpack=Backpack
 container.betterstorage.cardboardBox=Cardboard Box
 container.betterstorage.crate=Storage Crate
 container.betterstorage.enderBackpack=Ender Backpack
+container.betterstorage.cardboardBackpack=Cardboard Backpack
 container.betterstorage.keyring=Keyring
 container.betterstorage.locker=Locker
 container.betterstorage.lockerLarge=Large Locker
@@ -29,6 +30,7 @@ entity.betterstorage.Frienderman.name=Enderman
 
 # Items
 item.betterstorage.bucketSlime.name=Slime in a Bucket
+item.betterstorage.cardboardBackpack.name=Cardboard Backpack
 item.betterstorage.cardboardAxe.name=Cardboard Axe
 item.betterstorage.cardboardBoots.name=Cardboard Boots
 item.betterstorage.cardboardChestplate.name=Cardboard Chestplate
@@ -77,6 +79,7 @@ tile.betterstorage.backpack.name=Backpack
 tile.betterstorage.cardboardBox.name=Cardboard Box
 tile.betterstorage.crate.name=Storage Crate
 tile.betterstorage.enderBackpack.name=Ender Backpack
+tile.betterstorage.cardboardBackpack=Cardboard Backpack
 tile.betterstorage.flintBlock.name=Block of Flint
 tile.betterstorage.locker.name=Locker
 tile.betterstorage.reinforcedChest.name=Reinforced Chest

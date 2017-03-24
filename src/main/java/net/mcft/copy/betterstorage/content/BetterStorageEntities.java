@@ -15,7 +15,7 @@ public final class BetterStorageEntities {
 		EntityRegistry.registerModEntity(EntityFrienderman.class, "Frienderman", 1, BetterStorage.instance, 64, 4, true);
 		EntityRegistry.registerModEntity(EntityCluckington.class, "Cluckington", 2, BetterStorage.instance, 64, 4, true);
 		
-		Addon.registerEntitesAll();
+		//Addon.registerEntitesAll();
 		
 	}
 	

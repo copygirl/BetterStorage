@@ -6,6 +6,7 @@ import net.mcft.copy.betterstorage.config.GlobalConfig;
 import net.mcft.copy.betterstorage.item.ItemBackpack;
 import net.mcft.copy.betterstorage.item.ItemBucketSlime;
 import net.mcft.copy.betterstorage.item.ItemDrinkingHelmet;
+import net.mcft.copy.betterstorage.item.ItemCardboardBackpack;
 import net.mcft.copy.betterstorage.item.ItemEnderBackpack;
 import net.mcft.copy.betterstorage.item.ItemPresentBook;
 import net.mcft.copy.betterstorage.item.cardboard.ItemCardboardArmor;
@@ -34,6 +35,7 @@ public final class BetterStorageItems {
 	public static ItemPresentBook presentBook;
 	
 	public static ItemBackpack itemBackpack;
+	public static ItemCardboardBackpack itemCardboardBackpack;
 	public static ItemEnderBackpack itemEnderBackpack;
 	
 	public static ItemCardboardArmor cardboardHelmet;
@@ -63,6 +65,7 @@ public final class BetterStorageItems {
 		presentBook    = new ItemPresentBook();
 		
 		itemBackpack        = MiscUtils.conditionalNew(ItemBackpack.class, GlobalConfig.backpackEnabled);
+		itemCardboardBackpack   = MiscUtils.conditionalNew(ItemCardboardBackpack.class, GlobalConfig.cardboardBackpackEnabled);
 		itemEnderBackpack   = MiscUtils.conditionalNew(ItemEnderBackpack.class, GlobalConfig.enderBackpackEnabled);
 		
 		cardboardHelmet     = conditionalNewArmor(GlobalConfig.cardboardHelmetEnabled, 0);
@@ -89,7 +92,7 @@ public final class BetterStorageItems {
 		if (cardboardSheet != null)
 			OreDictionary.registerOre("sheetCardboard", cardboardSheet);
 		
-		Addon.initializeItemsAll();
+		//Addon.initializeItemsAll();
 		
 	}
 	private static ItemCardboardArmor conditionalNewArmor(String configName, int armorType) {
